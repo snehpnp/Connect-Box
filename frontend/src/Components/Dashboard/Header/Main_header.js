@@ -1,4 +1,4 @@
-
+import DropDown from './DrapDown'
 const Main_Header = () => {
 
 
@@ -70,11 +70,18 @@ const Main_Header = () => {
             </button>
           </form>
         </div>
+
         <a className="mobile_btn" id="mobile_btn">
           <i className="fas fa-bars" />
         </a>
-        <ul className="nav nav-tabs user-menu">
 
+
+        {/* <li className="nav-item dropdown header-profile ">
+          <h1>hello</h1>
+                <DropDown />
+        </li> */}
+        
+        <ul className="nav nav-tabs user-menu">
           <li className="nav-item dropdown">
             <a
               href="javascript:void(0)"
@@ -89,9 +96,10 @@ const Main_Header = () => {
                 />
                 <span className="animate-circle" />
               </span>
+               
               <span className="user-content">
                 <span className="user-details">Admin</span>
-                <span className="user-name">John Smith</span>
+                <span className="user-name">Chandra Prakash</span>
               </span>
             </a>
             <div className="dropdown-menu menu-drop-user">

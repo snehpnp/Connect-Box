@@ -7,9 +7,7 @@ function App() {
   // console.log("Admin_Routes :", Routing)
   return (
     <div className="App">
-
       <Routing/>
-     
     </div>
   );
 }

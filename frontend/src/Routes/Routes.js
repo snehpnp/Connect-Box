@@ -11,9 +11,7 @@ import Main_header from '../Components/Dashboard/Header/Main_header';
 
 const Routing = () => {
 
-    const location = useLocation();
-    const navigate = useNavigate()
-    // console.log("location.pathname ",location.pathname )
+ 
 
 
     return (
@@ -22,6 +20,7 @@ const Routing = () => {
             <Routes>
                 {/* <Route path="/super/*" element={(roles === "SUPERADMIN") ? <SuperAdmin /> : <Login />} /> */}
                 {/* <Route path="/admin/*" element={(roles === "ADMIN") ? <Admin_Routing /> : <Login />} /> */}
+                {/* <Route path="/admin/*" element={<Admin_Routing />} /> */}
                 <Route path="/admin/*" element={<Admin_Routing />} />
 
                 {/* <Route path="/subadmin/*" element={(roles === "SUBADMIN") ? <SubAdmin /> : <Login />} /> */}
