@@ -17,6 +17,7 @@ function Login() {
                             src="assets/img/logo2-white.png"
                             alt="Logo"
                         />
+                        
 
                         <div className="loginbox">
                             <div className="login-right">
