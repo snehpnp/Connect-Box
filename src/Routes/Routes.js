@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
 
-import AdminRouting from './Admin_routes';
+import Admin_Routing from './Admin_routes';
 import MainHeader from '../Components/Dashboard/Header/Main_header';
 
 
