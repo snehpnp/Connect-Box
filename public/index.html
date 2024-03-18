@@ -76,21 +76,21 @@
   <script src="%PUBLIC_URL%/assets/js/script.js" type="1492db9c4e3e2161cceefe8f-text/javascript"></script>
   <script src="../../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js"
     data-cf-settings="1492db9c4e3e2161cceefe8f-|49" defer></script>
-  <script>
-    (function ($){
+    <script>
+      (function ($) {
         "use strict";
-
+  
         // Variables declarations
-
+  
         var $wrapper = $('.main-wrapper');
         var $pageWrapper = $('.page-wrapper');
         var $slimScrolls = $('.slimscroll');
-
+  
         // Sidebar
         var Sidemenu = function () {
           this.$menuItem = $('#sidebar-menu a');
         };
-
+  
         function init() {
           var $this = Sidemenu;
           $('#sidebar-menu a').on('click', function (e) {
@@ -110,7 +110,7 @@
           $('#sidebar-menu ul.sidebar-vertical li.submenu a.active').parents('li:last').children('a:first').addClass('active').trigger('click');
         }
       })(jQuery);
-  </script>
+    </script>
 
 </body>
 
