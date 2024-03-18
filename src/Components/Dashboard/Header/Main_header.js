@@ -1,7 +1,9 @@
+import React, { useState } from 'react';
+import DrapDown from './DrapDown'
 
 const Main_Header = () => {
 
-
+  
   return (
     <div>
       {/* MAIN TOP HEADER */}
@@ -70,65 +72,19 @@ const Main_Header = () => {
             </button>
           </form>
         </div>
+
         <a className="mobile_btn" id="mobile_btn">
           <i className="fas fa-bars" />
         </a>
-        <ul className="nav nav-tabs user-menu">
 
-          <li className="nav-item dropdown">
-            <a
-              href="javascript:void(0)"
-              className="user-a  nav-a"
-              data-bs-toggle="dropdown"
-            >
-              <span className="user-img">
-                <img
-                  src="assets/img/profiles/avatar-07.jpg"
-                  alt="img"
-                  className="profilesidebar"
-                />
-                <span className="animate-circle" />
-              </span>
-              <span className="user-content">
-                <span className="user-details">Admin</span>
-                <span className="user-name">John Smith</span>
-              </span>
-            </a>
-            <div className="dropdown-menu menu-drop-user">
-              <div className="profilemenu">
-                <div className="subscription-menu">
-                  <ul>
-                    <li>
-                      <a className="dropdown-item" href="profile.html">
-                        Profile
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="settings.html">
-                        Settings
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="subscription-logout">
-                  <ul>
-                    <li className="pb-0">
-                      <a className="dropdown-item" href="login.html">
-                        Log Out
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
+
+   
+        <DrapDown/>
+       
       </div>
 
   
       
-      {/* <Overview /> */}
-
     </div>
   )
 }
