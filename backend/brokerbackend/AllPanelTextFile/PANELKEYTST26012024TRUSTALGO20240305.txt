@@ -1,0 +1,274 @@
+
+NEW TRADE TIME Tue Mar 05 2024 09:26:59 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709611019,Symbol:NIFTY,TType:LE,Tr_Price:131,Price:90.45,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:22300,OType:PUT,Expiry:07032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 09:26:59 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 41616
+TIME Tue Mar 05 2024 09:26:59 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 09:26:59 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 09:26:59 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 09:26:59 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER ENTRY- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"NIFTY07MAR24P22300","complexty":"REGULAR","discqty":"0","transtype":"BUY","orderTag":"order1","pCode":"NRML","price":"0","qty":"50","symbol_id":"41616","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 09:26:59 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 09:27:00 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER ENTRY - bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500021895"}]
+
+NEW TRADE TIME Tue Mar 05 2024 09:35:12 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709611511,Symbol:NIFTY,TType:LE,Tr_Price:131,Price:72.50,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:22250,OType:PUT,Expiry:07032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 09:35:12 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 41610
+TIME Tue Mar 05 2024 09:35:12 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 09:35:12 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 09:35:12 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 09:35:12 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 09:35:12 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER ENTRY- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"NIFTY07MAR24P22250","complexty":"REGULAR","discqty":"0","transtype":"BUY","orderTag":"order1","pCode":"NRML","price":"0","qty":"50","symbol_id":"41610","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 09:35:12 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER ENTRY - bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500033441"}]
+
+NEW TRADE TIME Tue Mar 05 2024 10:05:29 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709613329,Symbol:NIFTY,TType:LX,Tr_Price:131,Price:100.10,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:22300,OType:PUT,Expiry:07032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 10:05:29 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 41616
+TIME Tue Mar 05 2024 10:05:29 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 10:05:29 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:05:29 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:05:29 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:05:29 GMT+0530 (India Standard Time) ALICE BLUE POSITION DATA - bhavesh LENGTH = 2
+TIME Tue Mar 05 2024 10:05:29 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER EXIT- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"NIFTY07MAR24P22300","complexty":"REGULAR","discqty":"0","transtype":"SELL","orderTag":"order1","pCode":"NRML","price":"0","qty":"50","symbol_id":"41616","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 10:05:29 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER EXIT- bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500067064"}]
+
+NEW TRADE TIME Tue Mar 05 2024 10:11:22 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709613681,Symbol:NIFTY,TType:LX,Tr_Price:131,Price:79.50,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:22250,OType:PUT,Expiry:07032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 10:11:22 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 41610
+TIME Tue Mar 05 2024 10:11:22 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 10:11:22 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:11:22 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:11:22 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:11:22 GMT+0530 (India Standard Time) ALICE BLUE POSITION DATA - bhavesh LENGTH = 2
+TIME Tue Mar 05 2024 10:11:22 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER EXIT- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"NIFTY07MAR24P22250","complexty":"REGULAR","discqty":"0","transtype":"SELL","orderTag":"order1","pCode":"NRML","price":"0","qty":"50","symbol_id":"41610","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 10:11:22 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER EXIT- bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500073330"}]
+
+NEW TRADE TIME Tue Mar 05 2024 10:22:05 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709614325,Symbol:BANKNIFTY,TType:LE,Tr_Price:131,Price:254.15,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47300,OType:PUT,Expiry:06032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 10:22:05 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39326
+TIME Tue Mar 05 2024 10:22:05 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 10:22:05 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:22:05 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:22:05 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:22:05 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER ENTRY- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"BANKNIFTY06MAR24P47300","complexty":"REGULAR","discqty":"0","transtype":"BUY","orderTag":"order1","pCode":"NRML","price":"0","qty":"15","symbol_id":"39326","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 10:22:05 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER ENTRY - bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500086029"}]
+
+NEW TRADE TIME Tue Mar 05 2024 10:24:45 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709614484,Symbol:BANKNIFTY,TType:LE,Tr_Price:131,Price:221.25,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47200,OType:PUT,Expiry:06032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 10:24:45 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39321
+TIME Tue Mar 05 2024 10:24:45 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 10:24:45 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:24:45 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:24:45 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:24:45 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER ENTRY- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"BANKNIFTY06MAR24P47200","complexty":"REGULAR","discqty":"0","transtype":"BUY","orderTag":"order1","pCode":"NRML","price":"0","qty":"15","symbol_id":"39321","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 10:24:45 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER ENTRY - bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500090005"}]
+
+NEW TRADE TIME Tue Mar 05 2024 10:28:50 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709614729,Symbol:BANKNIFTY,TType:LE,Tr_Price:131,Price:,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47100,OType:CALL,Expiry:06032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 10:28:50 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 0
+TIME Tue Mar 05 2024 10:28:50 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 10:28:50 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:28:50 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:28:50 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+
+NEW TRADE TIME Tue Mar 05 2024 10:30:56 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709614856,Symbol:BANKNIFTY,TType:LX,Tr_Price:131,Price:192.70,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47200,OType:PUT,Expiry:06032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 10:30:56 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39321
+TIME Tue Mar 05 2024 10:30:56 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 10:30:56 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:30:56 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:30:56 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:30:56 GMT+0530 (India Standard Time) ALICE BLUE POSITION DATA - bhavesh LENGTH = 5
+TIME Tue Mar 05 2024 10:30:56 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER EXIT- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"BANKNIFTY06MAR24P47200","complexty":"REGULAR","discqty":"0","transtype":"SELL","orderTag":"order1","pCode":"NRML","price":"0","qty":"15","symbol_id":"39321","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 10:30:56 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER EXIT- bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500096939"}]
+
+NEW TRADE TIME Tue Mar 05 2024 10:40:46 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709615445,Symbol:FINNIFTY,TType:LE,Tr_Price:131,Price:28.60,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:20850,OType:CALL,Expiry:05032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 10:40:46 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 62472
+TIME Tue Mar 05 2024 10:40:46 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 10:40:46 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER ENTRY- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"FINNIFTY05MAR24C20850","complexty":"REGULAR","discqty":"0","transtype":"BUY","orderTag":"order1","pCode":"NRML","price":"0","qty":"40","symbol_id":"62472","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 10:40:46 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:40:46 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:40:46 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:40:46 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER ENTRY - bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500104590"}]
+
+NEW TRADE TIME Tue Mar 05 2024 10:43:05 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709615584,Symbol:NIFTY,TType:LE,Tr_Price:131,Price:165.30,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:22200,OType:CALL,Expiry:07032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 10:43:05 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 41574
+TIME Tue Mar 05 2024 10:43:05 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 10:43:05 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:43:05 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:43:05 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:43:05 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER ENTRY- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"NIFTY07MAR24C22200","complexty":"REGULAR","discqty":"0","transtype":"BUY","orderTag":"order1","pCode":"NRML","price":"0","qty":"50","symbol_id":"41574","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 10:43:05 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER ENTRY - bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500106508"}]
+
+NEW TRADE TIME Tue Mar 05 2024 10:47:52 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709615872,Symbol:FINNIFTY,TType:LX,Tr_Price:131,Price:23.4,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:20850,OType:CALL,Expiry:05032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 10:47:52 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 62472
+TIME Tue Mar 05 2024 10:47:52 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 10:47:52 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:47:52 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:47:52 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:47:53 GMT+0530 (India Standard Time) ALICE BLUE POSITION DATA - bhavesh LENGTH = 7
+TIME Tue Mar 05 2024 10:47:53 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER EXIT- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"FINNIFTY05MAR24C20850","complexty":"REGULAR","discqty":"0","transtype":"SELL","orderTag":"order1","pCode":"NRML","price":"0","qty":"40","symbol_id":"62472","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 10:47:53 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER EXIT- bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500109946"}]
+
+NEW TRADE TIME Tue Mar 05 2024 10:57:52 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709616471,Symbol:BANKNIFTY,TType:LE,Tr_Price:131,Price:157.50,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47500,OType:CALL,Expiry:06032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 10:57:52 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39339
+TIME Tue Mar 05 2024 10:57:52 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 10:57:52 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:57:52 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:57:52 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 10:57:52 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER ENTRY- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"BANKNIFTY06MAR24C47500","complexty":"REGULAR","discqty":"0","transtype":"BUY","orderTag":"order1","pCode":"NRML","price":"0","qty":"15","symbol_id":"39339","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 10:57:52 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER ENTRY - bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500115946"}]
+
+NEW TRADE TIME Tue Mar 05 2024 11:01:53 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709616713,Symbol:BANKNIFTY,TType:LX,Tr_Price:131,Price:192.25,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47300,OType:PUT,Expiry:06032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 11:01:53 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39326
+TIME Tue Mar 05 2024 11:01:53 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 11:01:53 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:01:53 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:01:53 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:01:53 GMT+0530 (India Standard Time) ALICE BLUE POSITION DATA - bhavesh LENGTH = 8
+TIME Tue Mar 05 2024 11:01:53 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER EXIT- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"BANKNIFTY06MAR24P47300","complexty":"REGULAR","discqty":"0","transtype":"SELL","orderTag":"order1","pCode":"NRML","price":"0","qty":"15","symbol_id":"39326","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 11:01:53 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER EXIT- bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500121199"}]
+
+NEW TRADE TIME Tue Mar 05 2024 11:03:06 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709616785,Symbol:NIFTY,TType:LX,Tr_Price:131,Price:161.05,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:22200,OType:CALL,Expiry:07032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 11:03:06 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 41574
+TIME Tue Mar 05 2024 11:03:06 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 11:03:06 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:06 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:06 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:06 GMT+0530 (India Standard Time) ALICE BLUE POSITION DATA - bhavesh LENGTH = 8
+TIME Tue Mar 05 2024 11:03:06 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER EXIT- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"NIFTY07MAR24C22200","complexty":"REGULAR","discqty":"0","transtype":"SELL","orderTag":"order1","pCode":"NRML","price":"0","qty":"50","symbol_id":"41574","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 11:03:06 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER EXIT- bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500122476"}]
+
+NEW TRADE TIME Tue Mar 05 2024 11:03:12 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709616792,Symbol:BANKNIFTY,TType:LX,Tr_Price:131,Price:,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47100,OType:CALL,Expiry:06032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 11:03:12 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39314
+TIME Tue Mar 05 2024 11:03:12 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 11:03:12 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:12 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:12 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:12 GMT+0530 (India Standard Time) ALICE BLUE POSITION DATA - bhavesh LENGTH = 8
+
+NEW TRADE TIME Tue Mar 05 2024 11:03:55 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709616833,Symbol:BANKNIFTY,TType:LE,Tr_Price:131,Price:13.60,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:48300,OType:CALL,Expiry:06032024,Strategy:demo,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+
+NEW TRADE TIME Tue Mar 05 2024 11:03:55 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709616833,Symbol:BANKNIFTY,TType:LE,Tr_Price:131,Price:15.85,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:46100,OType:PUT,Expiry:06032024,Strategy:demo,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 11:03:55 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39238
+TIME Tue Mar 05 2024 11:03:55 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39383
+TIME Tue Mar 05 2024 11:03:55 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:55 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:55 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:55 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:55 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:55 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:55 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:03:55 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+
+NEW TRADE TIME Tue Mar 05 2024 11:15:01 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709617497,Symbol:BANKNIFTY,TType:LE,Tr_Price:131,Price:261.25,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47400,OType:PUT,Expiry:06032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 11:15:01 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39338
+TIME Tue Mar 05 2024 11:15:01 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 11:15:01 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:15:01 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:15:01 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:15:02 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER ENTRY- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"BANKNIFTY06MAR24P47400","complexty":"REGULAR","discqty":"0","transtype":"BUY","orderTag":"order1","pCode":"NRML","price":"0","qty":"15","symbol_id":"39338","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 11:15:02 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER ENTRY - bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500131425"}]
+
+NEW TRADE TIME Tue Mar 05 2024 11:15:06 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709617506,Symbol:NIFTY,TType:LE,Tr_Price:131,Price:115.80,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:22300,OType:PUT,Expiry:07032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 11:15:06 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 41616
+TIME Tue Mar 05 2024 11:15:06 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 11:15:06 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:15:06 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:15:06 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:15:07 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER ENTRY- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"NIFTY07MAR24P22300","complexty":"REGULAR","discqty":"0","transtype":"BUY","orderTag":"order1","pCode":"NRML","price":"0","qty":"50","symbol_id":"41616","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 11:15:07 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER ENTRY - bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500131465"}]
+
+NEW TRADE TIME Tue Mar 05 2024 11:18:55 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709617734,Symbol:NIFTY,TType:LE,Tr_Price:131,Price:82.95,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:22200,OType:PUT,Expiry:07032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 11:18:55 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 41576
+TIME Tue Mar 05 2024 11:18:55 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 11:18:55 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:18:55 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:18:55 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:18:55 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER ENTRY- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"NIFTY07MAR24P22200","complexty":"REGULAR","discqty":"0","transtype":"BUY","orderTag":"order1","pCode":"NRML","price":"0","qty":"50","symbol_id":"41576","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 11:18:55 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER ENTRY - bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500134602"}]
+
+NEW TRADE TIME Tue Mar 05 2024 11:42:33 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709619152,Symbol:NIFTY,TType:LX,Tr_Price:131,Price:99.60,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:22300,OType:PUT,Expiry:07032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 11:42:33 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 41616
+TIME Tue Mar 05 2024 11:42:33 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 11:42:33 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:42:33 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:42:33 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:42:33 GMT+0530 (India Standard Time) ALICE BLUE POSITION DATA - bhavesh LENGTH = 10
+TIME Tue Mar 05 2024 11:42:33 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER EXIT- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"NIFTY07MAR24P22300","complexty":"REGULAR","discqty":"0","transtype":"SELL","orderTag":"order1","pCode":"NRML","price":"0","qty":"50","symbol_id":"41616","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 11:42:33 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER EXIT- bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500153163"}]
+
+NEW TRADE TIME Tue Mar 05 2024 11:47:01 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709619420,Symbol:BANKNIFTY,TType:LE,Tr_Price:131,Price:123.40,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47100,OType:PUT,Expiry:06032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 11:47:01 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39315
+TIME Tue Mar 05 2024 11:47:01 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 11:47:01 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:47:01 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:47:01 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:47:01 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER ENTRY- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"BANKNIFTY06MAR24P47100","complexty":"REGULAR","discqty":"0","transtype":"BUY","orderTag":"order1","pCode":"NRML","price":"0","qty":"15","symbol_id":"39315","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 11:47:01 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER ENTRY - bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500156290"}]
+
+NEW TRADE TIME Tue Mar 05 2024 11:53:48 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709619828,Symbol:NIFTY,TType:LX,Tr_Price:131,Price:53.75,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:22200,OType:PUT,Expiry:07032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 11:53:48 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 41576
+TIME Tue Mar 05 2024 11:53:48 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 11:53:48 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:53:48 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:53:48 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 11:53:48 GMT+0530 (India Standard Time) ALICE BLUE POSITION DATA - bhavesh LENGTH = 11
+TIME Tue Mar 05 2024 11:53:48 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER EXIT- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"NIFTY07MAR24P22200","complexty":"REGULAR","discqty":"0","transtype":"SELL","orderTag":"order1","pCode":"NRML","price":"0","qty":"50","symbol_id":"41576","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 11:53:48 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER EXIT- bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500160927"}]
+
+NEW TRADE TIME Tue Mar 05 2024 12:04:46 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709620486,Symbol:BANKNIFTY,TType:LX,Tr_Price:131,Price:200.2,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47400,OType:PUT,Expiry:06032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 12:04:46 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39338
+TIME Tue Mar 05 2024 12:04:46 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 12:04:46 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 12:04:46 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 12:04:46 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 12:04:47 GMT+0530 (India Standard Time) ALICE BLUE POSITION DATA - bhavesh LENGTH = 11
+TIME Tue Mar 05 2024 12:04:47 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER EXIT- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"BANKNIFTY06MAR24P47400","complexty":"REGULAR","discqty":"0","transtype":"SELL","orderTag":"order1","pCode":"NRML","price":"0","qty":"15","symbol_id":"39338","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 12:04:47 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER EXIT- bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500169233"}]
+
+NEW TRADE TIME Tue Mar 05 2024 12:24:51 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709621691,Symbol:BANKNIFTY,TType:LE,Tr_Price:131,Price:170.35,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47500,OType:CALL,Expiry:06032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 12:24:51 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39339
+TIME Tue Mar 05 2024 12:24:51 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 12:24:51 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 12:24:51 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 12:24:51 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER ENTRY- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"BANKNIFTY06MAR24C47500","complexty":"REGULAR","discqty":"0","transtype":"BUY","orderTag":"order1","pCode":"NRML","price":"0","qty":"15","symbol_id":"39339","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 12:24:51 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 12:24:51 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER ENTRY - bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500181374"}]
+
+NEW TRADE TIME Tue Mar 05 2024 12:50:04 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709623203,Symbol:BANKNIFTY,TType:LX,Tr_Price:131,Price:251.20,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47500,OType:CALL,Expiry:06032024,Strategy:aiall,Quntity:200,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 12:50:04 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39339
+TIME Tue Mar 05 2024 12:50:04 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 12:50:04 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 12:50:04 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 12:50:04 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 12:50:04 GMT+0530 (India Standard Time) ALICE BLUE POSITION DATA - bhavesh LENGTH = 11
+TIME Tue Mar 05 2024 12:50:04 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER EXIT- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"BANKNIFTY06MAR24C47500","complexty":"REGULAR","discqty":"0","transtype":"SELL","orderTag":"order1","pCode":"NRML","price":"0","qty":"15","symbol_id":"39339","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 12:50:04 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER EXIT- bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500199312"}]
+
+NEW TRADE TIME Tue Mar 05 2024 12:50:25 GMT+0530 (India Standard Time)
+RECEIVED_SIGNALS DTime:1709623224,Symbol:BANKNIFTY,TType:LX,Tr_Price:131,Price:73.50,Sq_Value:0.00,Sl_Value:0.00,TSL:0.00,Segment:O,Strike:47100,OType:PUT,Expiry:06032024,Strategy:aiall,Quntity:100,Key:TST26012024,TradeType:OPTION_CHAIN,Demo:demo
+TIME Tue Mar 05 2024 12:50:25 GMT+0530 (India Standard Time) RECEIVED_SIGNALS_TOKEN 39315
+TIME Tue Mar 05 2024 12:50:25 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 1
+TIME Tue Mar 05 2024 12:50:25 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 12:50:25 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 12:50:25 GMT+0530 (India Standard Time) ALICE BLUE ALL CLIENT LENGTH 0
+TIME Tue Mar 05 2024 12:50:25 GMT+0530 (India Standard Time) ALICE BLUE POSITION DATA - bhavesh LENGTH = 11
+TIME Tue Mar 05 2024 12:50:25 GMT+0530 (India Standard Time) ALICE BLUE BEFORE PLACE ORDER USER EXIT- bhavesh REQUEST -{"exch":"NFO","prctyp":"MKT","trading_symbol":"BANKNIFTY06MAR24P47100","complexty":"REGULAR","discqty":"0","transtype":"SELL","orderTag":"order1","pCode":"NRML","price":"0","qty":"15","symbol_id":"39315","trigPrice":"","ret":"DAY"}
+TIME Tue Mar 05 2024 12:50:25 GMT+0530 (India Standard Time) ALICE BLUE AFTER PLACE ORDER USER EXIT- bhavesh RESPONSE -[{"stat":"Ok","NOrdNo":"24030500200499"}]
