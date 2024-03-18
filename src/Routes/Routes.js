@@ -1,8 +1,8 @@
 import React from 'react';
-import { Route, Routes, Link, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
-import Admin_Routing from './Admin_routes';
-import Main_header from '../Components/Dashboard/Header/Main_header';
+import AdminRouting from './Admin_routes';
+import MainHeader from '../Components/Dashboard/Header/Main_header';
 
 
 
@@ -16,12 +16,12 @@ const Routing = () => {
 
     return (
         <>
-            <Main_header />
+            <MainHeader />
             <Routes>
                 {/* <Route path="/super/*" element={(roles === "SUPERADMIN") ? <SuperAdmin /> : <Login />} /> */}
                 {/* <Route path="/admin/*" element={(roles === "ADMIN") ? <Admin_Routing /> : <Login />} /> */}
                 {/* <Route path="/admin/*" element={<Admin_Routing />} /> */}
-                <Route path="/admin/*" element={<Admin_Routing />} />
+                <Route path="/admin/*" element={<AdminRouting />} />
 
                 {/* <Route path="/subadmin/*" element={(roles === "SUBADMIN") ? <SubAdmin /> : <Login />} /> */}
                 {/* <Route path="/client/*" element={gotodashboard != null ? <Client /> : (roles === "USER") ? <Client /> : <Login />} />
