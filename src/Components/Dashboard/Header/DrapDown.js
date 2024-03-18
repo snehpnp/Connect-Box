@@ -14,21 +14,7 @@ const DropDown = () => {
     const profile_Route = () => {
         console.log("Profile btn Click")
 
-        // if (Role === "USER") {
-        //     return "/client/profile"
-        // }
-        // else if (Role === "ADMIN") {
-        //     return "/admin/profile"
-        // }
-        // else if (Role === "SUBADMIN") {
-        //     return "/subadmin/profile"
-        // }
-        // else if (Role === "SUPERADMIN") {
-        //     return "/super/profile"
-        // } else {
-        //     return "/client/profile"
-        // }
-
+       
     }
 
 
