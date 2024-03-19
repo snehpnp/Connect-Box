@@ -165,7 +165,7 @@ const Overview = () => {
                         >
                           <li>
                             <a
-                              href="javascript:void(0);"
+                              // href="javascript:void(0)"
                               className="dropdown-item"
                             >
                               Weekly
@@ -173,7 +173,7 @@ const Overview = () => {
                           </li>
                           <li>
                             <a
-                              href="javascript:void(0);"
+                              // href="javascript:void(0)"
                               className="dropdown-item"
                             >
                               Monthly
@@ -181,7 +181,7 @@ const Overview = () => {
                           </li>
                           <li>
                             <a
-                              href="javascript:void(0);"
+                              // href="javascript:void(0)"
                               className="dropdown-item"
                             >
                               Yearly
@@ -237,7 +237,7 @@ const Overview = () => {
                         >
                           <li>
                             <a
-                              href="javascript:void(0);"
+                              // href="javascript:void(0)"
                               className="dropdown-item"
                             >
                               Weekly
@@ -245,7 +245,7 @@ const Overview = () => {
                           </li>
                           <li>
                             <a
-                              href="javascript:void(0);"
+                              // href="javascript:void(0)"
                               className="dropdown-item"
                             >
                               Monthly
@@ -253,7 +253,7 @@ const Overview = () => {
                           </li>
                           <li>
                             <a
-                              href="javascript:void(0);"
+                              // href="javascript:void(0)"
                               className="dropdown-item"
                             >
                               Yearly
@@ -430,28 +430,28 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-trash-alt me-2" />
                                     Delete
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as sent
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-paper-plane me-2" />
                                     Send Invoice
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-copy me-2" />
                                     Clone Invoice
@@ -507,28 +507,28 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-trash-alt me-2" />
                                     Delete
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as sent
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-paper-plane me-2" />
                                     Send Invoice
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-copy me-2" />
                                     Clone Invoice
@@ -584,28 +584,28 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-trash-alt me-2" />
                                     Delete
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as sent
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-paper-plane me-2" />
                                     Send Invoice
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-copy me-2" />
                                     Clone Invoice
@@ -661,28 +661,28 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-trash-alt me-2" />
                                     Delete
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as sent
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-paper-plane me-2" />
                                     Send Invoice
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-copy me-2" />
                                     Clone Invoice
@@ -738,28 +738,28 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-trash-alt me-2" />
                                     Delete
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as sent
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-paper-plane me-2" />
                                     Send Invoice
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-copy me-2" />
                                     Clone Invoice
@@ -885,7 +885,7 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-trash-alt me-2" />
                                     Delete
@@ -899,35 +899,35 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-file-alt me-2" />
                                     Convert to Invoice
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as sent
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-paper-plane me-2" />
                                     Send Estimate
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as Accepted
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-times-circle me-2" />
                                     Mark as Rejected
@@ -976,7 +976,7 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-trash-alt me-2" />
                                     Delete
@@ -990,35 +990,35 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-file-alt me-2" />
                                     Convert to Invoice
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as sent
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-paper-plane me-2" />
                                     Send Estimate
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as Accepted
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-times-circle me-2" />
                                     Mark as Rejected
@@ -1067,7 +1067,7 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-trash-alt me-2" />
                                     Delete
@@ -1081,35 +1081,35 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-file-alt me-2" />
                                     Convert to Invoice
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as sent
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-paper-plane me-2" />
                                     Send Estimate
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as Accepted
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-times-circle me-2" />
                                     Mark as Rejected
@@ -1158,7 +1158,7 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-trash-alt me-2" />
                                     Delete
@@ -1172,35 +1172,35 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-file-alt me-2" />
                                     Convert to Invoice
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as sent
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-paper-plane me-2" />
                                     Send Estimate
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as Accepted
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-times-circle me-2" />
                                     Mark as Rejected
@@ -1249,7 +1249,7 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-trash-alt me-2" />
                                     Delete
@@ -1263,35 +1263,35 @@ const Overview = () => {
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-file-alt me-2" />
                                     Convert to Invoice
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as sent
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-paper-plane me-2" />
                                     Send Estimate
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-check-circle me-2" />
                                     Mark as Accepted
                                   </a>
                                   <a
                                     className="dropdown-item"
-                                    href="javascript:void(0);"
+                                    // href="javascript:void(0)"
                                   >
                                     <i className="far fa-times-circle me-2" />
                                     Mark as Rejected
