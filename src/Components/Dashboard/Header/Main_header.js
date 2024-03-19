@@ -52,7 +52,7 @@ const Main_Header = () => {
             </a>
           </div>
         </div>
-        <a href="javascript:void(0);" id="toggle_btn">
+        <a href="/" id="toggle_btn">
           <span className="toggle-bars">
             <span className="bar-icons" />
             <span className="bar-icons" />

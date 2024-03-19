@@ -135,73 +135,32 @@ const AuthSlice = createSlice({
   initialState: {
     isLoading: false,
     isError: false,
-    logdatails: [],
-    device_user: [],
-    userlogout: [],
-    getheme: [],
-    forgetpassword: [],
-    updatepassword: [],
-    resetpassword: [],
-    panel_details: [],
-    otpStore: [],
-    logout: []
+    signIn : [],
+     
   },
 
-  recuders: {},
-  extraReducers: {
-    [SignIn.pending]: (state, action) => {
-      
-    },
-    [SignIn.fulfilled]: (state, { payload }) => {
-      state.isLoading = false;
-      return { ...state, logdatails: payload };
-    },
-    [SignIn.rejected]: (state, action) => {
-    
-    },
-        // [Verify_User_Device.fulfilled]: (state, { payload }) => {
-        //     // state.isLoading = false;
-        //     return { ...state, device_user: payload, isLoading: false };
-        // },
-        // [Verify_User_Device.rejected]: (state, action) => {
-        //     return { ...state, device_user: action, isLoading: false };
-        // },
-        // [Log_Out_User.fulfilled]: (state, { payload }) => {
-        //     return { ...state, device_user: payload, isLoading: false };
-        // },
-        // [Log_Out_User.rejected]: (state, action) => {
-        //     return { ...state, device_user: action, isLoading: false };
-        // },
-        // [get_theme_details.fulfilled]: (state, { payload }) => {
-        //     return { ...state, getheme: payload, isLoading: false };
-        // },
-        // [get_theme_details.rejected]: (state, action) => {
-        //     return { ...state, getheme: action, isLoading: false };
-        // },
-        // [Forget_Password.fulfilled]: (state, { payload }) => {
-        //     return { ...state, forgetpassword: payload, isLoading: false };
-        // },
-        // [OTP_SEND_USEHERES.fulfilled]: (state, { payload }) => {
-        //     return { ...state, otpStore: payload, isLoading: false };
-        // },
-        // [Update_Password.fulfilled]: (state, { payload }) => {
-        //     return { ...state, updatepassword: payload, isLoading: false };
-        // },
-        // [Reset_Password.fulfilled]: (state, { payload }) => {
-        //     return { ...state, resetpassword: payload, isLoading: false };
-        // },
-        // [Logout_From_Other_Device.fulfilled]: (state, { payload }) => {
-        //     return { ...state, logout: payload, isLoading: false };
-        // },
-        // [Reset_Password.rejected]: (state, action) => {
-        //     return { ...state, resetpassword: action, isLoading: false };
-        // },
-    },
+   
 
-    // [Get_Panel_Informtion.fulfilled]: (state, { payload }) => {
-    //     return { ...state, panel_details: payload, isLoading: false };
-    // },
-
+  
+  reducers: {}, // Reducers object is empty
+  extraReducers: (builder) => {
+    // Use builder callback to define extra reducers
+    builder
+      .addCase(SignIn.pending, (state, action) => {
+        // Handle pending action
+        state.isLoading = true;
+      })
+      .addCase(SignIn.fulfilled, (state, action) => {
+        // Handle fulfilled action
+        state.isLoading = false;
+        state.signIn = action.payload;
+      })
+      .addCase(SignIn.rejected, (state, action) => {
+        // Handle rejected action
+        state.isLoading = false;
+        state.isError = true;
+      });
+  },
    
 });
 

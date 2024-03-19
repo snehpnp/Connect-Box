@@ -5,22 +5,28 @@ const DropDown = () => {
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
-  
+
     const toggleDropdown = () => {
-      setIsDropdownOpen(!isDropdownOpen);
+        setIsDropdownOpen(!isDropdownOpen);
     };
-  
+
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
+        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+            setIsDropdownOpen(false);
+        }
     };
-  
+
+    const LogoutUser = ()=>{
+        console.log("RUNNNNNNNNNNN")
+     localStorage.clear() 
+     window.location.reload()  
+    }
+
     useEffect(() => {
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
 
     return (
@@ -28,7 +34,7 @@ const DropDown = () => {
             <ul className="nav nav-tabs user-menu">
                 <li className="nav-item dropdown">
                     <a
-                        
+
                         className="user-a nav-a"
                         onClick={toggleDropdown}
                         ref={dropdownRef}
@@ -66,9 +72,9 @@ const DropDown = () => {
                             <div className="subscription-logout">
                                 <ul>
                                     <li className="pb-0">
-                                        <a className="dropdown-item" href="login.html">
-                                            Log Out
-                                        </a>
+                                        <button className="btn btn-primary  w-100" onClick={ LogoutUser}>
+                                            Log out
+                                        </button>
                                     </li>
                                 </ul>
                             </div>

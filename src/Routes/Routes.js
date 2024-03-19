@@ -1,51 +1,63 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
-import Admin_Routing from './Admin_routes';
-import Login from '../Layouts/Auth/Login';
+import AdminRouting from './Admin_routes';
+import EmployeeRouting from './Employee_routes';
+import SubadminRouting from './Subadmin_routes';
+import UserRouting from './User_routes';
 
+import Login from '../Layouts/Auth/Login';
 
 const Routing = () => {
     const location = useLocation();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if (location.pathname === "/") {
+        const user_details = JSON.parse(localStorage.getItem("user_details"));
+        const roles = JSON.parse(localStorage.getItem('user_role'));
+
+        // Check if user details exist
+        if (!user_details || !roles || user_details === "null" || roles === "null") {
             navigate("/login");
+            return;
         }
 
-    }, [location.pathname])
+        // Redirect based on user role
+        switch (roles) {
+            case "ADMIN":
+                if (location.pathname === "/login") {
+                    navigate("/admin/dashboard");
+                }
+                break;
+            case "USER":
+                if (location.pathname === "/login") {
+                    navigate("/client/dashboard");
+                }
+                break;
+            case "SUBADMIN":
+                if (location.pathname === "/login") {
+                    navigate("/subadmin/clients");
+                }
+                break;
+            case "SUPERADMIN":
+                if (location.pathname === "/login") {
+                    navigate("/super/dashboard");
+                }
+                break;
+            default:
+                break;
+        }
+    }, [location.pathname]);
+
     return (
-        <>
-            <Routes>
-                {/* <Route path="/super/*" element={(roles === "SUPERADMIN") ? <SuperAdmin /> : <Login />} /> */}
-                {/* <Route path="/admin/*" element={(roles === "ADMIN") ? <Admin_Routing /> : <Login />} /> */}
-                {/* <Route path="/admin/*" element={<Admin_Routing />} /> */}
-
-                <Route path="/admin/*" element={<Admin_Routing />} />
-
-                {/* <Route path="/subadmin/*" element={(roles === "SUBADMIN") ? <SubAdmin /> : <Login />} /> */}
-                {/* <Route path="/client/*" element={gotodashboard != null ? <Client /> : (roles === "USER") ? <Client /> : <Login />} />
-
-                <Route path="/subadmin/*" element={gotodashboard != null ? <SubAdmin /> : (roles === "SUBADMIN") ? <SubAdmin /> : <Login />} />
-
-                <Route path="/subadmin/*" element={(roles === "SUBADMIN") ? <SubAdmin /> : <Login />} />
-                <Route path="/client/*" element={gotodashboard != null ? <Client /> : (roles === "USER") ? <Client /> : <Login />} /> */}
-                <Route path="/login" element={<Login />} />
-
-                {/* <Route path="/forget" element={<ForgetPassword />} />
-                <Route path="/profile" element={<ForgetPassword />} />
-                <Route path="/update/:id" element={<UpdatePassword />} />
-                <Route path="/Testing" element={<Testing />} />
-                <Route path="/notfound" element={<Deactivate_Company />} /> */}
-
-                {/* <Route path="/*" element={<NotFound />} /> */}
-
-            </Routes>
-
-
-        </>
-    )
+        <Routes>
+            <Route path="/admin/*" element={<AdminRouting />} />
+            <Route path="/employee/*" element={<EmployeeRouting />} />
+            <Route path="/subadmin/*" element={<SubadminRouting />} />
+            <Route path="/user/*" element={<UserRouting />} />
+            <Route path="/login" element={<Login />} />
+        </Routes>
+    );
 }
 
-export default Routing
+export default Routing;

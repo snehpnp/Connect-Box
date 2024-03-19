@@ -1,16 +1,21 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+
 import * as Config from "../../Utils/Config";
 import axios from 'axios';
-// import {
-//     SignIn
-//   } from "../../ReduxStore/Slice/Auth/AuthSlice";
-  import { useDispatch, useSelector } from "react-redux";
-  import toast, { Toaster } from "react-hot-toast";
-  import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
+import { SignIn } from "../../ReduxStore/Slice/Auth/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
+import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
 
 
 
 function Login() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -22,51 +27,71 @@ function Login() {
         setPassword(event.target.value);
     };
 
-    const handleSubmit = async() => {
-        // let req = {
-        //     Email: email,
-        //     Password: password,
-        //     device: "WEB",
-        //   };
-    
-        //   await dispatch(SignIn(req))
-        //     .unwrap()
-        //     .then(async (response) => {
-    
-    
-        //       if (response.status) {
-        //         await SetTheme()
-    
-        //         if (response.data.Role !== "SUPERADMIN") {
-        //           setshowModal(true);
-        //           setUserData(response.data);
-        //         } else if (response.data.Role === "SUPERADMIN") {
-        //           toast.success(response.msg);
-        //           localStorage.setItem(
-        //             "user_details",
-        //             JSON.stringify(response.data)
-        //           );
-        //           localStorage.setItem(
-        //             "user_role",
-        //             JSON.stringify(response.data.Role)
-        //           );
-        //           setTimeout(() => {
-        //             navigate("/super/dashboard");
-        //           }, 1000);
-        //         }
-        //       } else {
-    
-        //         toast.error(response.msg);
-        //       }
-        //     })
-        //     .catch((error) => {
-        //       console.log("Error", error);
-        //     });
+    const handleSubmit = async () => {
+        let req = {
+            Email: email,
+            Password: password,
+            device: "WEB",
+        };
+
+        await dispatch(SignIn(req))
+            .unwrap()
+            .then(async (response) => {
+                if (response.status) {
+
+                    if (response.data.Role == "ADMIN") {
+                        toast.success(response.msg);
+                        localStorage.setItem(
+                            "user_details",
+                            JSON.stringify(response.data)
+                        );
+                        localStorage.setItem(
+                            "user_role",
+                            JSON.stringify(response.data.Role)
+                        );
+                        setTimeout(() => {
+                            navigate("/admin/dashboard");
+                        }, 1000);
+                    } else if (response.data.Role === "SUBADMIN") {
+                        toast.success(response.msg);
+                        localStorage.setItem(
+                            "user_details",
+                            JSON.stringify(response.data)
+                        );
+                        localStorage.setItem(
+                            "user_role",
+                            JSON.stringify(response.data.Role)
+                        );
+                        setTimeout(() => {
+                            navigate("/subadmin/dashboard");
+                        }, 1000);
+                    }else{
+                        toast.success(response.msg);
+                        localStorage.setItem(
+                            "user_details",
+                            JSON.stringify(response.data)
+                        );
+                        localStorage.setItem(
+                            "user_role",
+                            JSON.stringify(response.data.Role)
+                        );
+                        setTimeout(() => {
+                            navigate("/admin/dashboard");
+                        }, 1000);
+                    }
+                } else {
+                    toast.error(response.msg);
+                }
+
+            })
+            .catch((error) => {
+                console.log("Error", error);
+            });
     };
-    
-    
-    
-    
+
+
+
+
 
     return (
         <>
