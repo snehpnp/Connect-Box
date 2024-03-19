@@ -1,4 +1,14 @@
 import React, { useState } from 'react';
+import * as Config from "../../Utils/Config";
+import axios from 'axios';
+// import {
+//     SignIn
+//   } from "../../ReduxStore/Slice/Auth/AuthSlice";
+  import { useDispatch, useSelector } from "react-redux";
+  import toast, { Toaster } from "react-hot-toast";
+  import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
+
+
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -12,12 +22,51 @@ function Login() {
         setPassword(event.target.value);
     };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        // Perform any necessary login logic here using 'email' and 'password' states
-        console.log('Email:', email);
-        console.log('Password:', password);
+    const handleSubmit = async() => {
+        // let req = {
+        //     Email: email,
+        //     Password: password,
+        //     device: "WEB",
+        //   };
+    
+        //   await dispatch(SignIn(req))
+        //     .unwrap()
+        //     .then(async (response) => {
+    
+    
+        //       if (response.status) {
+        //         await SetTheme()
+    
+        //         if (response.data.Role !== "SUPERADMIN") {
+        //           setshowModal(true);
+        //           setUserData(response.data);
+        //         } else if (response.data.Role === "SUPERADMIN") {
+        //           toast.success(response.msg);
+        //           localStorage.setItem(
+        //             "user_details",
+        //             JSON.stringify(response.data)
+        //           );
+        //           localStorage.setItem(
+        //             "user_role",
+        //             JSON.stringify(response.data.Role)
+        //           );
+        //           setTimeout(() => {
+        //             navigate("/super/dashboard");
+        //           }, 1000);
+        //         }
+        //       } else {
+    
+        //         toast.error(response.msg);
+        //       }
+        //     })
+        //     .catch((error) => {
+        //       console.log("Error", error);
+        //     });
     };
+    
+    
+    
+    
 
     return (
         <>
@@ -41,13 +90,13 @@ function Login() {
                                     <h1>Login</h1>
                                     <p className="account-subtitle">Access to our dashboard</p>
                                     <form onSubmit={handleSubmit}>
-                                        <div className="input-block mb-3">
-                                            <label className="form-control-label" htmlFor="email">Email Address</label>
+                                        <div className="mb-3   ">
+                                            <label className="form-control-label d-flex justify-content-start" htmlFor="email">Email Address</label>
                                             <input type="email" id="email" className="form-control" value={email} onChange={handleEmailChange} />
                                         </div>
 
                                         <div className="input-block mb-3">
-                                            <label className="form-control-label" htmlFor="password">Password</label>
+                                            <label className="form-control-label d-flex justify-content-start" htmlFor="password">Password</label>
                                             <div className="pass-group">
                                                 <input type="password" id="password" className="form-control pass-input" value={password} onChange={handlePasswordChange} />
                                                 <span className="fas fa-eye toggle-password" />
@@ -56,18 +105,23 @@ function Login() {
 
                                         <div className="input-block mb-3">
                                             <div className="row">
-                                                <div className="col-6">
-                                                    <div className="form-check custom-checkbox">
-                                                        <input type="checkbox" className="form-check-input" id="cb1" />
-                                                        <label className="custom-control-label" htmlFor="cb1">
+                                                <div className='d-flex justify-content-between'>
+                                                    <div className="form-check custom-checkbox ">
+                                                        <input type="checkbox" className="form-check-input " id="cb1" />
+                                                        <label className="custom-control-label " htmlFor="cb1">
                                                             Remember me
                                                         </label>
                                                     </div>
+                                                    <div className="form-check custom-checkbox gap-2">
+                                                        <a className="forgot-link" href="forgot-password.html" style={{ color: 'white' }}>
+                                                            Forgot Password ?
+                                                        </a>
+                                                    </div>
                                                 </div>
+
+
                                                 <div className="col-6 text-end">
-                                                    <a className="forgot-link" href="forgot-password.html">
-                                                        Forgot Password ?
-                                                    </a>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -81,14 +135,17 @@ function Login() {
                                             <span className="span-or">or</span>
                                         </div>
 
-                                        <div className="social-login mb-3">
-                                            <span>Login with</span>
-                                            <a href="#" className="facebook">
-                                                <i className="fab fa-facebook-f" />
-                                            </a>
-                                            <a href="#" className="google">
-                                                <i className="fab fa-google" />
-                                            </a>
+                                        <div className="social-login mb-5">
+                                            <span >Login with</span>
+                                            <div className='mt-2'>
+                                                <a href="#" className="facebook">
+                                                    <i className="fab fa-facebook-f" />
+                                                </a>
+                                                <a href="#" className="google">
+                                                    <i className="fab fa-google" />
+                                                </a>
+                                            </div>
+
                                         </div>
 
                                         <div className="text-center dont-have">
@@ -101,6 +158,7 @@ function Login() {
                         </div>
                     </div>
                 </div>
+                <ToastButton />
             </div>
         </>
     );

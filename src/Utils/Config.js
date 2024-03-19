@@ -5,7 +5,7 @@ export const react_domain = `${window.location.origin}`;
 
 
 
-export const backend = `https://newpenal.pandpinfotech.com/backend/`;
+export const base_url = `http://185.209.75.6:7700/`;
 
 
 
