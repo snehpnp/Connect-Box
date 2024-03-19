@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import AdminHeader from './Header_config'; // Assuming Header_config exports admin_header as AdminHeader
 
 const Header = () => {
-  const [openSubMenu, setOpenSubMenu] = useState(null);
+  const [openSubMenu, setOpenSubMenu] = useState('');
 
-  const toggleSubMenu = (id) => {
-    setOpenSubMenu((prevId) => (prevId === id ? null : id));
+  const toggleSubMenu = (menuTitle) => {
+    setOpenSubMenu(openSubMenu === menuTitle ? '' : menuTitle);
   };
 
   return (
@@ -16,27 +16,25 @@ const Header = () => {
         <div className="sidebar-inner slimscroll">
           <div id="sidebar-menu" className="sidebar-menu">
             <nav className="greedys sidebar-horizantal">
-              <ul className="list-inline-item list-unstyled as">
+              <ul className="list-inline-item list-unstyled links">
                 {AdminHeader && AdminHeader.map((data) => {
                   const isOpen = openSubMenu === data.id;
 
                   return (
-                    <li className="submenu" key={data.id}>
-                      <Link to={data.route} onClick={() => toggleSubMenu(data.id)}>
-                        <i className="fe fe-home" /> <span> {data.name}</span>{" "}
-                        <span className={`menu-arrow ${isOpen ? 'open' : ''}`} />
+                    <li className='submenu' key={data.id}>
+                      <Link to={data.route} onClick={() => toggleSubMenu(data.id)} className={openSubMenu === data.id ? 'subdrop' : ''}>
+                        <i className="fe fe-home"></i> <span> {data.name}</span> <span className="menu-arrow"></span>
                       </Link>
-                      {isOpen && (
-                        <ul>
-                          {data.Data.map((item) => (
-                            <li key={item.id}>
-                              <Link to={item.route} className="active">
-                                {item.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+
+                      <ul style={{ display: openSubMenu === data.id ? 'block' : 'none' }}>
+                        {data.Data.map((item) => (
+                          <li key={item.id}>
+                            <Link to={item.route} className="active">
+                              {item.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
                     </li>
                   );
                 })}

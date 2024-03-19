@@ -1,22 +1,22 @@
-import React from 'react';
-import { Route, Routes } from "react-router-dom";
+import React, { useEffect } from 'react'
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
 import Admin_Routing from './Admin_routes';
-import MainHeader from '../Components/Dashboard/Header/Main_header';
+import Login from '../Layouts/Auth/Login';
 
-// CP
-
-
-// strategydesc
 
 const Routing = () => {
+    const location = useLocation();
+    const navigate = useNavigate()
 
- 
+    useEffect(() => {
+        if (location.pathname === "/") {
+            navigate("/login");
+        }
 
-
+    }, [location.pathname])
     return (
         <>
-            <MainHeader />
             <Routes>
                 {/* <Route path="/super/*" element={(roles === "SUPERADMIN") ? <SuperAdmin /> : <Login />} /> */}
                 {/* <Route path="/admin/*" element={(roles === "ADMIN") ? <Admin_Routing /> : <Login />} /> */}
@@ -31,7 +31,7 @@ const Routing = () => {
 
                 <Route path="/subadmin/*" element={(roles === "SUBADMIN") ? <SubAdmin /> : <Login />} />
                 <Route path="/client/*" element={gotodashboard != null ? <Client /> : (roles === "USER") ? <Client /> : <Login />} /> */}
-                {/* <Route path="/login" element={<Login />} /> */}
+                <Route path="/login" element={<Login />} />
 
                 {/* <Route path="/forget" element={<ForgetPassword />} />
                 <Route path="/profile" element={<ForgetPassword />} />
