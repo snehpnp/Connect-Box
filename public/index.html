@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-layout="horizontal" data-topbar="light" data-sidebar="light" data-sidebar-size="lg"
-  data-sidebar-image="none" data-layout-mode="dark" data-layout-width="fluid" data-layout-position="fixed"
+  data-sidebar-image="none" data-layout-mode="light" data-layout-width="fluid" data-layout-position="fixed"
   data-layout-style="default">
 
 <head>
@@ -11,10 +11,12 @@
   <meta name="description" content="Web site created using create-react-app" />
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
   <!--
+
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
   <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <link rel="shortcut icon" href="%PUBLIC_URL%/assets/img/favicon.png">
 
   <link rel="stylesheet" href="%PUBLIC_URL%/assets/css/bootstrap.min.css">
@@ -76,40 +78,38 @@
   <script src="%PUBLIC_URL%/assets/js/script.js" type="1492db9c4e3e2161cceefe8f-text/javascript"></script>
   <!-- <script src="../../cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js"
     data-cf-settings="1492db9c4e3e2161cceefe8f-|49" defer></script> -->
-    <script>
-      (function ($) {
-        "use strict";
+    <label class="theme-switch">
+      <input type="checkbox" onclick="toggleTheme()" />
+      <span class="slider"></span>
+    </label>
   
-        // Variables declarations
+   <script>
+      // Function to toggle the theme attributes
+      function toggleTheme() {
+        const htmlElement = document.querySelector('html');
+        const currentSidebar = htmlElement.getAttribute('data-sidebar');
+        const currentLayoutMode = htmlElement.getAttribute('data-layout-mode');
+        const currentTopBarMode = htmlElement.getAttribute('data-topbar');
   
-        var $wrapper = $('.main-wrapper');
-        var $pageWrapper = $('.page-wrapper');
-        var $slimScrolls = $('.slimscroll');
-  
-        // Sidebar
-        var Sidemenu = function () {
-          this.$menuItem = $('#sidebar-menu a');
-        };
-  
-        function init() {
-          var $this = Sidemenu;
-          $('#sidebar-menu a').on('click', function (e) {
-            if ($(this).parent().hasClass('submenu')) {
-              e.preventDefault();
-            }
-            if (!$(this).hasClass('subdrop')) {
-              $('ul', $(this).parents('ul:first')).slideUp(350);
-              $('a', $(this).parents('ul:first')).removeClass('subdrop');
-              $(this).next('ul').slideDown(350);
-              $(this).addClass('subdrop');
-            } else if ($(this).hasClass('subdrop')) {
-              $(this).removeClass('subdrop');
-              $(this).next('ul').slideUp(350);
-            }
-          });
-          $('#sidebar-menu ul.sidebar-vertical li.submenu a.active').parents('li:last').children('a:first').addClass('active').trigger('click');
+        // Toggle data-sidebar attribute
+        if (currentSidebar === 'light') {
+          htmlElement.setAttribute('data-sidebar', 'dark');
+        } else {
+          htmlElement.setAttribute('data-sidebar', 'light');
         }
-      })(jQuery);
+  
+        // Toggle data-layout-mode attribute
+        if (currentLayoutMode === 'light') {
+          htmlElement.setAttribute('data-layout-mode', 'dark');
+        } else {
+          htmlElement.setAttribute('data-layout-mode', 'light');
+        }
+        if (currentTopBarMode === 'light') {
+          htmlElement.setAttribute('data-topbar', 'dark');
+        } else {
+          htmlElement.setAttribute('data-topbar', 'light');
+        }
+      }
     </script>
 
 </body>
