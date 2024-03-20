@@ -18,6 +18,7 @@ const SubAdmin_Routing = () => {
         <>
             <MainHeader />
             <Header />
+            <div className='page-wrapper' >
 
             <Routes>
                 <Route exact path="/dashboard" element={<Overview />} />
@@ -25,7 +26,7 @@ const SubAdmin_Routing = () => {
 
             </Routes>
 
-
+</div>
         </>
     )
 }

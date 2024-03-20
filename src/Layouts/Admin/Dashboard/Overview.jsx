@@ -3,20 +3,21 @@ import React from 'react'
 const Overview = () => {
   return (
     <div className="main-wrapper">
-      <div >
-        <div className="content container-fluid">
-          <div className="row">
-            <div className="col-xl-3 col-sm-6 col-12">
-              <div className="card">
-                <div className="card-body">
-                  <div className="dash-widget-header">
-                    <span className="dash-widget-icon bg-1">
-                      <i className="fas fa-dollar-sign" />
-                    </span>
-                    <div className="dash-count">
-                      <div className="dash-title">Amount Due</div>
-                      <div className="dash-counts">
-                        <p>1,642</p>
+         <div >
+          <div className="content container-fluid">
+            <div className="row">
+              <div className="col-xl-3 col-sm-6 col-12">
+                <div className="card">
+                  <div className="card-body">
+                    <div className="dash-widget-header">
+                      <span className="dash-widget-icon bg-1">
+                        <i className="fas fa-dollar-sign" />
+                      </span>
+                      <div className="dash-count">
+                        <div className="dash-title">Amount Due</div>
+                        <div className="dash-counts">
+                          <p>1,642</p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1304,7 +1305,6 @@ const Overview = () => {
         </div>
       </div>
 
-    </div>
   )
 }
 
