@@ -18,7 +18,8 @@ const columns = [
         text: "Email",
     },   
 ];
- 
+
+ const data =[]
 
 
  
@@ -28,9 +29,12 @@ const AllSubAdmin = () => {
     return (
         <>
             <div className="table-responsive">
-                <FullDataTable 
+                
+                {/* <FullDataTable 
                  TableColumns={columns}
-                 />
+                 tableData={data}
+
+                 /> */}
             </div>
         </>
     )
