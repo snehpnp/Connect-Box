@@ -18,14 +18,15 @@ const User_Routing = () => {
         <>
             <MainHeader />
             <Header />
+            <div className='page-wrapper' >
 
-            <Routes>
-                <Route exact path="/dashboard" element={<Overview />} />
-                <Route exact path="/system" element={<System />} />
+                <Routes>
+                    <Route exact path="/dashboard" element={<Overview />} />
+                    <Route exact path="/system" element={<System />} />
 
-            </Routes>
+                </Routes>
 
-
+            </div>
         </>
     )
 }
