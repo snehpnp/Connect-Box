@@ -18,18 +18,13 @@ const admin_header = [
     {
         'id': 3,
         "name": 'Research Analyst',
-        "route": "/admin/research_analyst",
         "Icon": "Building2",
         "Data": [
+           
             {
                 'id': 1,
-                "name": 'Add Subamin',
-                "route": "/admin/subadmin/add",
-            },
-            {
-                'id': 2,
-                "name": 'Edit Subadmin',
-                "route": "/admin/subadmin/edit",
+                "name": 'All Subadmin',
+                "route": "/admin/allsubadmin",
             },
          
            

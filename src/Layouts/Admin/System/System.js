@@ -3,7 +3,7 @@ import React from 'react'
 function System() {
     console.log("RUNN")
     return (
-        <div className='page-wrapper' style={{ backgroundColor: "red" }}>
+        <div  style={{ backgroundColor: "red" }}>
             
             System</div>
     )
