@@ -6,36 +6,38 @@ import { f_time } from '../../../Utils/Date_formet';
 
 const Content = ({ Page_title, button_title, Page_title_showClient, button_status, show_csv_button, show_Stat_End_date, showEdit, csv_title, csv_data, route, ...rest }) => {
 
-
-    return (
-        <div>
-            <div className="content-body">
-                <div className="container-fluid">
-
-                    <div className="row page-titles">
-                        <div className='row mb-3'>
-                            <div className="col-lg-6"></div>
-                        </div>
-                        <ol className="breadcrumb">
-                            <div className="col-lg-6">
-                                <li className="breadcrumb-item">
-                                    <h4 className="font-w500 mb-0">{Page_title}</h4>
-                                    <h4 className="font-w500 mb-0">{Page_title_showClient}</h4>
-
-                                </li>
-                            </div>
-
-                            {button_status == false ? "" : <div className="col-lg-6 ">
-                                <Link to={route} className='btn btn-primary float-lg-end ' style={{ padding: '10px !important' }} >
-                                    <i className={`fa-solid  ${button_title === "Back" ? 'fa-arrow-left' : 'fa-plus'} `}></i> {button_title}</Link>
-                            </div>}
+ 
 
 
-                        </ol>
+  return (
+    <div>
+      <div className="content-body mt-5" style={{ border: '2px solid red' }} >
+        <div className="container-fluid ">
 
-                    </div>
+          <div className="row page-titles mx-1"   >
+            <div className='row mb-3'>
+              <div className="col-lg-6"></div>
+            </div>
+            <ol className="breadcrumb mb-3 border p-3" >
+              <div className="col-lg-6" >
+                <li className="breadcrumb-item" >
+                  <h4 className="font-w500 mb-0" >{Page_title}</h4>
+                  <h4 className="font-w500 mb-0">{Page_title_showClient}</h4>
 
-                    <div className="row">
+                </li>
+              </div>
+
+              {button_status == false ? "" : <div className="col-lg-6 ">
+                <Link to={route} className='btn btn-primary float-lg-end active' style={{ padding: '10px !important' }} >
+                  <i className={`fa-solid  ${button_title === "Back" ? 'fa-arrow-left' : 'fa-plus'} `}></i> {button_title}</Link>
+              </div>}
+
+
+            </ol>
+
+          </div>
+
+          <div className="row">
             <div className="col-xl-12">
 
               <div className="row">
@@ -55,8 +57,10 @@ const Content = ({ Page_title, button_title, Page_title_showClient, button_statu
                           apiData={csv_data}
                           fileName={csv_title} />
                         : ""} */}
+                      huui
 
                       <div className="form-validation">
+                         
                         {rest.children}
                       </div>
                     </div>
@@ -65,11 +69,11 @@ const Content = ({ Page_title, button_title, Page_title_showClient, button_statu
               </div>
             </div>
           </div>
-                </div>
-            </div>
-
         </div>
-    )
+      </div>
+
+    </div>
+  )
 }
 
 export default Content

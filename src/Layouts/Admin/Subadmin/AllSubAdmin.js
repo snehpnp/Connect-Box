@@ -1,43 +1,9 @@
-import React from 'react'
-import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable'
+ import React from 'react'
  
-const columns = [
-    {
-        dataField: "index",
-        text: "SR. No.",
-        formatter: (cell, row, rowIndex) => rowIndex + 1,
-    },
-    {
-        dataField: "UserName",
-        text: "User Name",
-      
-
-    },
-    {
-        dataField: "Email",
-        text: "Email",
-    },   
-];
-
- const data =[]
-
-
+ const AllSubAdmin = () => {
+   return (
+     <div>AllSubAdmin</div>
+   )
+ }
  
-
-
-const AllSubAdmin = () => {
-    return (
-        <>
-            <div className="table-responsive">
-                
-                {/* <FullDataTable 
-                 TableColumns={columns}
-                 tableData={data}
-
-                 /> */}
-            </div>
-        </>
-    )
-}
-
-export default AllSubAdmin
+ export default AllSubAdmin
