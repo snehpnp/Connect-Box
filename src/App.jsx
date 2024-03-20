@@ -6,8 +6,6 @@ function App() {
   const pageRef = useRef(null);
 
 
-
-
   return (
     <div id="App">
       <div ref={pageRef} >
@@ -17,5 +15,10 @@ function App() {
     </div>
   );
 }
+
+
+
+
+
 
 export default App;
