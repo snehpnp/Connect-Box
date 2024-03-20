@@ -52,14 +52,8 @@ const Main_Header = () => {
             </a>
           </div>
         </div>
-        <a href="/" id="toggle_btn">
-          <span className="toggle-bars">
-            <span className="bar-icons" />
-            <span className="bar-icons" />
-            <span className="bar-icons" />
-            <span className="bar-icons" />
-          </span>
-        </a>
+   
+
         <div className="top-nav-search">
           <form>
             <input
@@ -77,10 +71,8 @@ const Main_Header = () => {
           <i className="fas fa-bars" />
         </a>
 
-
-   
+        {/* Drop Down Btn */}
         <DrapDown/>
-       
       </div>
 
   

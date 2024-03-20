@@ -54,7 +54,7 @@ const DropDown = () => {
                         </span>
                     </a>
                     <div className={`dropdown-menu menu-drop-user ${isDropdownOpen ? 'show' : ''}`}>
-                        <div className="profilemenu">
+                        <div className="profilemenu table table-hover">
                             <div className="subscription-menu">
                                 <ul>
                                     <li>
@@ -86,4 +86,6 @@ const DropDown = () => {
     )
 }
 
-export default DropDown
+export default DropDown;
+
+
