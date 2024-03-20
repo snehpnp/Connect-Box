@@ -50,7 +50,7 @@ console.log('title :', title)
 
         <form onSubmit={formik.handleSubmit}>
             <div className='row d-flex justify-content-center ' style={{ height: `${title === "addgroup" ? '65vh' : ""}`, overflowY: `${title === "addgroup" ? 'scroll' : ""}` }}>
-                <div className={`row d-flex justify-content-center `}>
+                <div className={`row d-flex  `}>
                     {fieldtype.map((field, index) => (
                         <React.Fragment key={index}>
                             {field.type === 'select' ? <>
@@ -65,7 +65,7 @@ console.log('title :', title)
                                         </label>
                                         <div className={`col-lg-${title === "addgroup" ? 12 : 12}`}>
                                             <select
-                                                className="default-select wide form-control"
+                                                className="default-select wide form-control p-3"
                                                 id={field.name}
                                                 {...formik.getFieldProps(field.name)}
                                             >
@@ -177,7 +177,7 @@ console.log('title :', title)
                                                             type={passwordVisible[field.name] ? 'text' : field.type}
                                                             placeholder={field.label}
                                                             {...formik.getFieldProps(field.name)}
-                                                            className={` form-control`}
+                                                            className={` form-control p-3`}
                                                         />
                                                         <i class={`fa-solid ${passwordVisible[field.name] ? 'fa-eye-slash' : 'fa-eye'}`} style={{
                                                             position: 'absolute',
@@ -218,7 +218,7 @@ console.log('title :', title)
                                                                 type={passwordVisible[field.name] ? 'text' : field.type}
                                                                 placeholder={field.label}
                                                                 {...formik.getFieldProps(field.name)}
-                                                                className={` form-control`}
+                                                                className={` form-control p-3`}
                                                             />
                                                             <i class={`fa-solid ${passwordVisible[field.name] ? 'fa-eye-slash' : 'fa-eye'}`} style={{
                                                                 position: 'absolute',
@@ -248,7 +248,7 @@ console.log('title :', title)
                                                             <div className="col-lg-12 ">
                                                                 <div class="form-check custom-checkbox mb-3">
                                                                     <label className="col-lg-6 " for={field.name}>{field.name}</label>
-                                                                    <input type={field.type} name={field.name} className="form-control" id={field.name}
+                                                                    <input type={field.type} name={field.name} className="form-control p-3" id={field.name}
                                                                         {...formik.getFieldProps(field.name)}
 
                                                                         min={field.name === "todate" ? fromDate : field.name}
@@ -284,7 +284,7 @@ console.log('title :', title)
                                                                 <div className="row d-flex">
                                                                     <div className="col-lg-12 ">
                                                                         <div class="form-check custom-checkbox mb-3">
-                                                                            <input type={field.type} name={field.name} className="form-check-input" id={field.name}
+                                                                            <input type={field.type} name={field.name} className="form-check-input p-3" id={field.name}
                                                                                 {...formik.getFieldProps(field.name)}
                                                                             />
                                                                             <label className="form-check-label" for={field.name}>{field.name}</label>
@@ -325,7 +325,7 @@ console.log('title :', title)
                                                                                         type="file"
                                                                                         id={field.name}
                                                                                         onChange={(e) => handleFileChange(e, index, field.name)} // Pass the index to the handler
-                                                                                        className={`form-control`}
+                                                                                        className={`form-control p-3`}
                                                                                     />
                                                                                 </div>
                                                                             </div>
@@ -346,7 +346,7 @@ console.log('title :', title)
                                                                                 <div className={`col-lg-${title === "forlogin1" ? 12 : title === "forResetPassword" || "forUpdatePassword" ? 12 : 7} `}>
                                                                                     <input
                                                                                         type="text"
-                                                                                        className="form-control"
+                                                                                        className="form-control p-3"
                                                                                         id={field.name}
                                                                                         placeholder={`Enter ${field.label}`}
                                                                                         {...formik.getFieldProps(field.name)}
@@ -363,7 +363,7 @@ console.log('title :', title)
 
                                                                         </div>
                                                                         :
-                                                                        <div className={`col-lg-${title === "forlogin" || title === "brokerkey" ? 12 : title === "forResetPassword" ? 12 : title === "forUpdatePassword" ? 12 : 3} `}>
+                                                                        <div className={`col-lg-${title === "forlogin" || title === "brokerkey" ? 12 : title === "forResetPassword" ? 12 : title === "forUpdatePassword" ? 12 : 6} `}>
                                                                             <div className="mb-3 row">
                                                                                 <label
                                                                                     className={`col-lg-${title === "forlogin" ? 3 : title === "brokerkey" ? 6 : 4} col-form-label `}
@@ -375,7 +375,7 @@ console.log('title :', title)
                                                                                 <div className={`col-lg-${title === "forlogin" ? 8 : title === "forResetPassword" || "forUpdatePassword" ? 12 : 7} `}>
                                                                                     <input
                                                                                         type="text"
-                                                                                        className="form-control"
+                                                                                        className="form-control p-3"
                                                                                         id={field.name}
                                                                                         placeholder={`Enter ${field.label}`}
                                                                                         {...formik.getFieldProps(field.name)}
