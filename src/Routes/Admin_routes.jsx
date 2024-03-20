@@ -37,6 +37,9 @@ const Admin_Routing = () => {
                     <Route exact path="/subadmin/add" element={<AddSubadmin />} />
                     <Route exact path="/subadmin/edit" element={<EditSubadmin />} />
                     <Route exact path="/allsubadmin" element={<AllSubadmin />} />
+
+                    <Route exact path="/help" element={<Help />} />
+                    <Route exact path="/message-broadcast" element={<MessageBrodcast />} />
                 </Routes>
             </div>
         </>
