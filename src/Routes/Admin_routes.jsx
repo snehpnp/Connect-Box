@@ -9,8 +9,6 @@ import System from '../Layouts/Admin/System/System';
 
 
 
-// strategydesc
-
 const Admin_Routing = () => {
 
 

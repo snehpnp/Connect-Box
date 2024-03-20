@@ -11,10 +11,10 @@ import Login from '../Layouts/Auth/Login';
 const Routing = () => {
     const location = useLocation();
     const navigate = useNavigate();
+    const user_details = JSON.parse(localStorage.getItem("user_details"));
+    const roles = JSON.parse(localStorage.getItem('user_role'));
 
     useEffect(() => {
-        const user_details = JSON.parse(localStorage.getItem("user_details"));
-        const roles = JSON.parse(localStorage.getItem('user_role'));
 
         // Check if user details exist
         if (!user_details || !roles || user_details === "null" || roles === "null") {
@@ -25,23 +25,23 @@ const Routing = () => {
         // Redirect based on user role
         switch (roles) {
             case "ADMIN":
-                if (location.pathname === "/login") {
+                if (location.pathname === "/login" || location.pathname === "/") {
                     navigate("/admin/dashboard");
                 }
                 break;
             case "USER":
-                if (location.pathname === "/login") {
-                    navigate("/client/dashboard");
+                if (location.pathname === "/login" || location.pathname === "/") {
+                    navigate("/user/dashboard");
                 }
                 break;
             case "SUBADMIN":
-                if (location.pathname === "/login") {
-                    navigate("/subadmin/clients");
+                if (location.pathname === "/login" || location.pathname === "/") {
+                    navigate("/subadmin/dashboard");
                 }
                 break;
             case "SUPERADMIN":
-                if (location.pathname === "/login") {
-                    navigate("/super/dashboard");
+                if (location.pathname === "/login" || location.pathname === "/") {
+                    navigate("/employee/dashboard");
                 }
                 break;
             default:
@@ -49,12 +49,13 @@ const Routing = () => {
         }
     }, [location.pathname]);
 
+
     return (
         <Routes>
-            <Route path="/admin/*" element={<AdminRouting />} />
-            <Route path="/employee/*" element={<EmployeeRouting />} />
-            <Route path="/subadmin/*" element={<SubadminRouting />} />
-            <Route path="/user/*" element={<UserRouting />} />
+            <Route path="/admin/*" element={(roles === "ADMIN") ? <AdminRouting /> : <Login />} />
+            <Route path="/employee/*" element={(roles === "EMPLOYEE") ? <EmployeeRouting /> : <Login />} />
+            <Route path="/subadmin/*" element={(roles === "SUBADMIN") ? <SubadminRouting /> : <Login />} />
+            <Route path="/user/*" element={(roles === "USER") ? <UserRouting /> : <Login />} />
             <Route path="/login" element={<Login />} />
         </Routes>
     );

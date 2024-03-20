@@ -8,13 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
 
-
-
 function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -65,7 +61,7 @@ function Login() {
                         setTimeout(() => {
                             navigate("/subadmin/dashboard");
                         }, 1000);
-                    }else{
+                    } else {
                         toast.success(response.msg);
                         localStorage.setItem(
                             "user_details",
@@ -89,10 +85,6 @@ function Login() {
             });
     };
 
-
-
-
-
     return (
         <>
             <div className="main-wrapper login-body">
@@ -114,8 +106,9 @@ function Login() {
                                 <div className="login-right-wrap">
                                     <h1>Login</h1>
                                     <p className="account-subtitle">Access to our dashboard</p>
-                                    <form onSubmit={handleSubmit}>
-                                        <div className="mb-3   ">
+
+                                    <div>
+                                        <div className="mb-3">
                                             <label className="form-control-label d-flex justify-content-start" htmlFor="email">Email Address</label>
                                             <input type="email" id="email" className="form-control" value={email} onChange={handleEmailChange} />
                                         </div>
@@ -128,56 +121,31 @@ function Login() {
                                             </div>
                                         </div>
 
-                                        <div className="input-block mb-3">
-                                            <div className="row">
-                                                <div className='d-flex justify-content-between'>
-                                                    <div className="form-check custom-checkbox ">
-                                                        <input type="checkbox" className="form-check-input " id="cb1" />
-                                                        <label className="custom-control-label " htmlFor="cb1">
-                                                            Remember me
-                                                        </label>
-                                                    </div>
-                                                    <div className="form-check custom-checkbox gap-2">
-                                                        <a className="forgot-link" href="forgot-password.html" style={{ color: 'white' }}>
-                                                            Forgot Password ?
-                                                        </a>
-                                                    </div>
-                                                </div>
-
-
-                                                <div className="col-6 text-end">
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <button className="btn btn-lg btn-primary w-100" type="submit">
+                                        <button className="btn btn-lg btn-primary w-100" onClick={handleSubmit}>
                                             Login
                                         </button>
+                                    </div>
 
-                                        <div className="login-or">
-                                            <span className="or-line" />
-                                            <span className="span-or">or</span>
+                                    <div className="login-or">
+                                        <span className="or-line" />
+                                        <span className="span-or">or</span>
+                                    </div>
+
+                                    <div className="social-login mb-5">
+                                        <span >Login with</span>
+                                        <div className='mt-2'>
+                                            <a href="/" className="facebook">
+                                                <i className="fab fa-facebook-f" />
+                                            </a>
+                                            <a href="#" className="google">
+                                                <i className="fab fa-google" />
+                                            </a>
                                         </div>
+                                    </div>
 
-                                        <div className="social-login mb-5">
-                                            <span >Login with</span>
-                                            <div className='mt-2'>
-                                                <a href="#" className="facebook">
-                                                    <i className="fab fa-facebook-f" />
-                                                </a>
-                                                <a href="#" className="google">
-                                                    <i className="fab fa-google" />
-                                                </a>
-                                            </div>
-
-                                        </div>
-
-                                        <div className="text-center dont-have">
-                                            Don't have an account yet? <a href="register.html">Register</a>
-                                        </div>
-                                    </form>
-
+                                    <div className="text-center dont-have">
+                                        Don't have an account yet? <a href="register.html">Register</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
