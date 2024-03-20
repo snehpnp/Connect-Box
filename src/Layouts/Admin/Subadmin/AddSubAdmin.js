@@ -1,9 +1,10 @@
 import React from 'react'
 import Formikform from "../../../Components/ExtraComponents/forms/Formik_form"
 import { useFormik } from 'formik';
- 
+import ToastButton from '../../../Components/ExtraComponents/Alert_Toast'
+
 import Content from '../../../Components/Dashboard/Content/Content';
- 
+
 
 
 
@@ -42,10 +43,36 @@ const AddClient = () => {
 
 
     const fields = [
-        { name: 'username', label: 'Username', type: 'text', label_size: 12, col_size: 6, disable: false },
-        { name: 'fullName', label: 'FullName', type: 'text', label_size: 12, col_size: 6, disable: false },
-        { name: 'email', label: 'Email', type: 'text', label_size: 12, col_size: 6, disable: false },
-        { name: 'mobile', label: 'Mobile', type: 'text', label_size: 12, col_size: 6, disable: false },
+        { name: 'fullName', label: 'FullName', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'email', label: 'Email', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
+        { name: 'mobile', label: 'Mobile', type: 'text', label_size:6, col_size: 3, disable: false },
 
     ];
 
@@ -59,7 +86,7 @@ const AddClient = () => {
                         toDate={formik.values.todate}
                     />
 
-                    {/* <ToastButton /> */}
+                    <ToastButton />
                 </Content >
 
             </div>

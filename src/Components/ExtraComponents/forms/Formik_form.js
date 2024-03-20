@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const ReusableForm = ({ initialValues, validationSchema, onSubmit, btn_name_signUp, btn_name_login, fromDate, fieldtype, formik, btn_name, forlogin, title, additional_field }) => {
 
 
-
+console.log('title :', title)
     const location = useLocation()
     const navigate = useNavigate()
 
@@ -140,7 +140,6 @@ const ReusableForm = ({ initialValues, validationSchema, onSubmit, btn_name_sign
 
 
                                 </> :
-
                                     field.type === "radio" ? <>
                                         {field.index === '1' ? <>
 
@@ -280,7 +279,6 @@ const ReusableForm = ({ initialValues, validationSchema, onSubmit, btn_name_sign
                                                             </div>
                                                         </div>
                                                     </> :
-
                                                         field.type === "test" ? <>
                                                             <div className="col-lg-3">
                                                                 <div className="row d-flex">
@@ -296,8 +294,6 @@ const ReusableForm = ({ initialValues, validationSchema, onSubmit, btn_name_sign
                                                             </div>
 
                                                         </> :
-
-
                                                             field.type === "number" ? (
                                                                 <div className="col-lg-3">
                                                                     <div className="row d-flex">
@@ -316,10 +312,6 @@ const ReusableForm = ({ initialValues, validationSchema, onSubmit, btn_name_sign
                                                                     </div>
                                                                 </div>
                                                             ) :
-
-
-
-
                                                                 field.type === "file" ? <>
                                                                     <div className="col-lg-6">
                                                                         <div className="row d-flex">
@@ -342,7 +334,6 @@ const ReusableForm = ({ initialValues, validationSchema, onSubmit, btn_name_sign
                                                                     </div>
                                                                 </> :
                                                                     title === "forlogin1" ?
-
                                                                         <div className={`col-lg-${title === "forlogin1" || title === "brokerkey" ? 12 : title === "forResetPassword" ? 12 : title === "forUpdatePassword" ? 12 : 6} `}>
                                                                             <div className="mb-3 d-flex justify-content-center row">
                                                                                 <label
@@ -372,7 +363,7 @@ const ReusableForm = ({ initialValues, validationSchema, onSubmit, btn_name_sign
 
                                                                         </div>
                                                                         :
-                                                                        <div className={`col-lg-${title === "forlogin" || title === "brokerkey" ? 12 : title === "forResetPassword" ? 12 : title === "forUpdatePassword" ? 12 : 6} `}>
+                                                                        <div className={`col-lg-${title === "forlogin" || title === "brokerkey" ? 12 : title === "forResetPassword" ? 12 : title === "forUpdatePassword" ? 12 : 3} `}>
                                                                             <div className="mb-3 row">
                                                                                 <label
                                                                                     className={`col-lg-${title === "forlogin" ? 3 : title === "brokerkey" ? 6 : 4} col-form-label `}
@@ -415,7 +406,7 @@ const ReusableForm = ({ initialValues, validationSchema, onSubmit, btn_name_sign
                                     {btn_name}
                                 </button>
                             </ > : <>
-                                <button className={`btn btn-primary col-lg-12 btn-rounded ${location.pathname === "resetpassword" ? "col-md-11" : ""}`} type="submit">
+                                <button className={`btn btn-primary col-lg-1 btn-rounded ${location.pathname === "resetpassword" ? "col-md-11" : ""}`} type="submit">
                                     {btn_name}
                                 </button>
                             </>

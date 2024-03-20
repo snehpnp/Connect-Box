@@ -31,6 +31,12 @@ export const admin_header = [
                 Icon: "fe fe-edit",
                 route: "/admin/subadmin/edit",
             },
+            {
+                id: 33,
+                name: 'All Subadmin',
+                Icon: "fe fe-user",
+                route: "/admin/allsubadmin",
+            },
         ]
     },
     {
