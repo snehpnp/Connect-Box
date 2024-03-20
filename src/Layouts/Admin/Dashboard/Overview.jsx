@@ -3,7 +3,7 @@ import React from 'react'
 const Overview = () => {
   return (
     <div className="main-wrapper">
-         <div className="page-wrapper">
+         <div >
           <div className="content container-fluid">
             <div className="row">
               <div className="col-xl-3 col-sm-6 col-12">
