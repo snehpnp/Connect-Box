@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import * as Config from "../../Utils/Config";
-import axios from 'axios';
 import { SignIn } from "../../ReduxStore/Slice/Auth/AuthSlice";
-import { useDispatch, useSelector } from "react-redux";
-import toast, { Toaster } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
-import LoginForm from './LoginForm';
-import Overview from '../../Layouts/Admin/Dashboard/Overview';
+
 import Modal from '../../Components/Dashboard/Models/Model'
 import OtpInput from "react-otp-input";
 import Lodding from '../../Components/ExtraComponents/Lodding';
@@ -28,7 +25,6 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    console.log("typeOtp :", typeOtp)
 
     const verifyOTP = () => {
 
@@ -53,6 +49,7 @@ function Login() {
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
+                navigate("/admin/dashboard");
 
             } else if (getData.Role === "SUBADMIN") {
                 toast.success("login Successful");
@@ -64,9 +61,9 @@ function Login() {
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
-                setTimeout(() => {
-                    navigate("/subadmin/dashboard");
-                }, 1000);
+
+                navigate("/subadmin/dashboard");
+
             } else {
                 toast.success("login Successful");
                 localStorage.setItem(
@@ -77,9 +74,9 @@ function Login() {
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
-                setTimeout(() => {
-                    navigate("/admin/dashboard");
-                }, 1000);
+
+                navigate("/user/dashboard");
+
             }
         }
 
@@ -129,7 +126,7 @@ function Login() {
         const numericValue = value.replace(/\D/g, '');
         setTypeOtp(numericValue);
     };
-    
+
 
 
 
