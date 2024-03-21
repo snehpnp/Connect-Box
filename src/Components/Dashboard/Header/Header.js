@@ -31,7 +31,11 @@ const Header = () => {
 
                   return (
                     <li className='submenu' key={data.id} onMouseEnter={() => toggleSubMenu(data.id)} onMouseLeave={() => setOpenSubMenu('')}>
-                      <Link to={data.route} className={openSubMenu === data.id ? 'subdrop' : ''}>
+                      <Link
+                        to={data.route}
+                        className={openSubMenu === data.id ? 'subdrop' : ''}
+                        style={{ textDecoration: 'none', color: 'inherit' }} // Add inline style to remove underline and retain original color
+                      >
                         <i className={data.Icon}></i> <span> {data.name}</span> {data.Data.length > 0 ? <span className="menu-arrow"></span> : ""}
                       </Link>
 
