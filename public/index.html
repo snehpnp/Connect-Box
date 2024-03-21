@@ -92,11 +92,14 @@
         const currentTopBarMode = htmlElement.getAttribute('data-topbar');
   
         // Toggle data-sidebar attribute
+        
+        localStorage.setItem('theam_mode', currentSidebar)
         if (currentSidebar === 'light') {
           htmlElement.setAttribute('data-sidebar', 'dark');
         } else {
           htmlElement.setAttribute('data-sidebar', 'light');
         }
+  
   
         // Toggle data-layout-mode attribute
         if (currentLayoutMode === 'light') {
