@@ -19,7 +19,14 @@
     padding: 0;
     margin: 0
 }
+a
+{
+    text-decoration:none !important;
+}
+ul{
 
+    padding-left:0px !important;
+}
 .css-equal-content {
     color: red;
     float: left
@@ -796,9 +803,9 @@ strong {
 }
 
 .dropdown.main .btn-white:hover {
-    background-color: #7539ff;
-    border-color: #7539ff;
-    color: #fff;
+    background-color: #7539ff !important;
+    border-color: #7539ff !important;
+    color: #fff !important;
     box-shadow: inset 0 50px 0 0 #7539ff
 }
 
@@ -1476,8 +1483,8 @@ div#global-loader,
 }
 
 .btn {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 14px !important;
+    font-weight: 600 !important;
     position: relative;
     margin: 0;
     z-index: 1;
@@ -1485,8 +1492,8 @@ div#global-loader,
     -webkit-transition: all .5s;
     -moz-transition: all .5s;
     -o-transition: all .5s;
-    transition: all .5s;
-    padding: 8px 15px
+    transition: all .5s !important;
+    padding: 8px 15px !important;
 }
 
 .btn:hover {
@@ -1497,9 +1504,9 @@ div#global-loader,
 }
 
 .btn-white {
-    background-color: #fff;
-    border-color: #e7eaf3;
-    color: #7539ff;
+    background-color: #fff !important;
+    border-color: #e7eaf3 !important;
+    color: #7539ff !important;
     box-shadow: inset 0 0 0 0 #fff
 }
 
@@ -1609,13 +1616,14 @@ div#global-loader,
 }
 
 .btn-outline-primary {
-    color: #7539ff;
-    border-color: #7539ff
+    color: #7539ff !important;
+    border-color: #7539ff !important;
 }
 
 .btn-outline-primary:hover {
-    background-color: #7539ff;
-    border-color: #7539ff
+    background-color: #7539ff !important;
+    border-color: #7539ff !important;
+    color:#fff !important;
 }
 
 .btn-check:focus+.btn-primary,
@@ -3732,7 +3740,8 @@ div.dataTables_wrapper div.dataTables_filter label i {
     padding: 0;
     height: 60px;
     display: -webkit-flex;
-    align-items: center
+    align-items: center;
+    margin-top: 10px;
 }
 
 @media(max-width: 991.98px) {
@@ -4660,7 +4669,7 @@ span.select2-container.select2-container--default.select2-container--open {
 
 .sidebar .sidebar-menu ul li a span {
     padding: 0 10px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     line-height: 18px
 }
@@ -5296,10 +5305,13 @@ span.select2-container.select2-container--default.select2-container--open {
     border-radius: 4px
 }
 
-[data-layout-mode=light] body .nav-link {
-    color: #888
+ .nav-link {
+    color: #888 !important;
+    font-size: 16px !important;
+    padding: 15px 20px !important;
+    border: 1px solid #e7e3e3 !important;
+    border-radius: 0;
 }
-
 .card-buttons p {
     margin-bottom: 20px
 }
@@ -7993,7 +8005,8 @@ table .badge {
 [data-layout-mode=dark] body .custom_radio_one .checkmark:after,
 [data-layout-mode=dark] body #add_package .modal-body ul li h6.active,
 [data-layout-mode=dark] body .file-link .print-link:hover,
-[data-layout-mode=dark] body .file-link .download-link:hover {
+[data-layout-mode=dark] body .file-link .download-link:hover,
+[data-layout-mode=dark] body .MuiButton-sizeMedium  {
     border-color: rgba(117, 57, 255, .3);
     background: rgba(117, 57, 255, .3);
     color: #7539ff;
@@ -9257,7 +9270,8 @@ table .badge {
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul.links>li>a {
     padding-top: 20.5px;
-    padding-bottom: 20.5px
+    padding-bottom: 20.5px;
+    text-decoration: none;
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul.links>li>a .menu-arrow {
@@ -10907,12 +10921,13 @@ table .badge {
 
 .invoice-total-box p {
     position: relative;
-    margin: 0 0 11px;
+    margin: 15px 0 15px;
     display: flex;
     justify-content: space-between;
     position: relative;
     font-weight: 500;
-    color: #878a99
+    color: #878a99;
+    font-size: 16px;
 }
 
 .invoice-total-box p span {
@@ -14128,8 +14143,8 @@ body[data-layout-mode=dark] .alertify .ajs-header {
     margin: 0 0 24px;
     display: inline-block;
     width: 100%;
-    border: 0;
-    border-radius: 8px
+    border: 0 !important;
+    border-radius: 8px !important;
 }
 
 .card .card-header {
@@ -14139,8 +14154,8 @@ body[data-layout-mode=dark] .alertify .ajs-header {
 }
 
 .card .card-header:first-child {
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px
 }
 
 @media(max-width: 1199.98px) {
@@ -32249,8 +32264,8 @@ td .invoice-detail i {
     display: inline-block;
     width: 60px;
     height: 34px;
-    top: 70px;
-    right: 11px;
+    top: 0;
+    right: 0;
     z-index: 999;
 }
 
@@ -32324,4 +32339,28 @@ td .invoice-detail i {
     color: #495057 !important;
     background:linear-gradient(320deg,#DDCEFF 0%,#DBECFF 100%) !important;
     /* border-color: #dee2e6 #dee2e6 #fff; */
+}
+
+[data-layout-mode=dark] body .css-ysrc8t-MuiPaper-root-MuiCard-root
+{
+    background-color: #16191c !important;
+    border: 1px solid #2e3840;
+    --bs-table-bg: #16191c !important;
+}
+[data-layout-mode=dark] body .MuiDataGrid-columnHeaderTitle, 
+[data-layout-mode=dark] body .MuiDataGrid-cellContent,
+[data-layout-mode=dark] body .MuiDataGrid-columnHeaderTitleContainer,
+[data-layout-mode=dark] body .MuiDataGrid-checkboxInput,
+[data-layout-mode=dark] body .MuiIconButton-root {
+    color: #aaa;
+}
+.gif-div iframe
+{
+    width: 100%;
+    height: 100%;
+}
+
+[data-layout-mode=light] body .card .card-header {
+    border-color: #f0f1f5;
+    background-color: #f1ebff;
 }
