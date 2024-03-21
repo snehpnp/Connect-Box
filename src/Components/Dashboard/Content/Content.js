@@ -14,7 +14,7 @@ const Content = ({ Page_title, button_title, Page_title_showClient, button_statu
       <div className="content-body mt-5"  >
         <div className="container-fluid ">
 
-          {/* <div className="row page-titles mx-1"   >
+          <div className="row page-titles mx-1"   >
             <div className='row mb-3'>
               <div className="col-lg-6"></div>
             </div>
@@ -35,7 +35,7 @@ const Content = ({ Page_title, button_title, Page_title_showClient, button_statu
 
             </ol>
 
-          </div> */}
+          </div>
 
           <div className="row">
             <div className="col-xl-12">
@@ -49,7 +49,7 @@ const Content = ({ Page_title, button_title, Page_title_showClient, button_statu
                         <h6 className="fw-bold">End Date - {f_time(show_Stat_End_date.EndDate !== undefined && show_Stat_End_date.EndDate)}</h6>
                       </div>
                     </> : ""}
-
+               
                     <div className="card-body">
                       {/* {show_csv_button ?
                         <ExportToExcel
@@ -58,9 +58,7 @@ const Content = ({ Page_title, button_title, Page_title_showClient, button_statu
                           fileName={csv_title} />
                         : ""} */}
                       <div className="row page-titles mx-1"   >
-                        <div className='row mb-3'>
-                          <div className="col-lg-6"></div>
-                        </div>
+                       
                         <ol className="breadcrumb mb-3  p-3" >
                           <div className="col-lg-6" >
                             <li className="breadcrumb-item" >
@@ -77,6 +75,20 @@ const Content = ({ Page_title, button_title, Page_title_showClient, button_statu
 
 
                         </ol>
+                        <h5>Basic Details</h5>
+                        <span className="user-img d-flex justify-content-start gap-4 mt-3 mb-3"  >
+                            <img
+                                src="assets/img/profiles/avatar-07.jpg"
+                                alt="img"
+                                className="profilesidebar"
+                                style={{height:'100px', width:'100px' , borderRadius:'50%'}}
+                            />
+                            <h5>Upload a New Photo</h5>
+                            <button className='btn btn-primary'>Upload</button>
+                            <button className='btn btn-danger'>Remove</button>
+
+                             
+                        </span>
 
                       </div>
 

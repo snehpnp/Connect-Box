@@ -16,7 +16,6 @@ export const admin_header = [
     {
         id: 3,
         name: 'Research Analyst',
-        route: "",
         Icon: "fe fe-users",
         Data: [
             {
@@ -25,14 +24,14 @@ export const admin_header = [
                 Icon: "fe fe-user-plus",
                 route: "/admin/subadmin/add",
             },
+            // {
+            //     id: 32,
+            //     name: 'Edit Subadmin',
+            //     Icon: "fe fe-edit",
+            //     route: "/admin/subadmin/edit",
+            // },
             {
                 id: 32,
-                name: 'Edit Subadmin',
-                Icon: "fe fe-edit",
-                route: "/admin/subadmin/edit",
-            },
-            {
-                id: 33,
                 name: 'All Subadmin',
                 Icon: "fe fe-user",
                 route: "/admin/allsubadmin",
@@ -42,7 +41,7 @@ export const admin_header = [
     {
         id: 4,
         name: 'Trade',
-        route: "",
+        // route: "",
         Icon: "fe fe-shopping-cart",
         Data: [
             {
@@ -64,21 +63,21 @@ export const admin_header = [
     {
         id: 5,
         name: 'Payment',
-        route: "/admin/payment",
+        // route: "/admin/payment",
         Icon: "fe fe-credit-card",
         Data: []
     },
     {
         id: 6,
         name: 'Message Broadcast',
-        route: "/admin/message-broadcast",
+        // route: "/admin/message-broadcast",
         Icon: "fe fe-message-circle",
         Data: []
     },
     {
         id: 7,
         name: 'Help',
-        route: "/admin/help",
+        // route: "/admin/help",
         Icon: "fe fe-help-circle",
         Data: []
     }
