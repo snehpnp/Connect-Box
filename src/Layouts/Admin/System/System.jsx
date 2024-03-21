@@ -3,7 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 function System() {
   return (
-    <div className="page-wrapper">
+   
       <div className="content container-fluid">
         <div class="page-header">
           <div class="content-page-header">
@@ -12,10 +12,10 @@ function System() {
         </div>
 
         <div className="row">
-          <div className="col-lg-4 col-md-4">
+          <div className="col-lg-4 col-md-4" data-aos="fade-right">
             <div className="card">
               <div className="card-body">
-                <ul className="nav nav-tabs nav-tabs-solid flex-column">
+                <ul className="nav nav-tabs nav-tabs-solid flex-column border">
                   <li className="nav-item">
                     <a
                       className="nav-link active"
@@ -46,8 +46,12 @@ function System() {
                 </ul>
               </div>
             </div>
+             <div className="card">
+            <div data-aos="fade-down" className="gif-div card-body"style={{height:'200px'}}>
+            <iframe src="https://lottie.host/embed/f3fed07f-0f56-45f1-ae1f-8e87bad0c51b/q3MDJRT4iV.json"></iframe>            </div>
           </div>
-          <div className="col-lg-8 col-md-8">
+          </div>
+          <div className="col-lg-8 col-md-8" data-aos="fade-left">
             <div className="card ">
               <div className="card-body ">
                 <div className="tab-content">
@@ -184,7 +188,7 @@ function System() {
           </div>
         </div>
       </div>
-    </div>
+    
   );
 }
 
