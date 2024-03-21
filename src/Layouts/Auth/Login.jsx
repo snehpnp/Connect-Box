@@ -88,7 +88,7 @@ function Login() {
     return (
         <>
             <div className="main-wrapper login-body">
-                <div className="login-wrapper">
+                <div data-aos="fade-down" className="login-wrapper">
                     <div className="container">
                         <img
                             className="img-fluid logo-dark mb-2 logo-color"

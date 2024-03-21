@@ -64,7 +64,7 @@ const Content = ({ Page_title, button_title, Page_title_showClient, button_statu
                         <ol className="breadcrumb mb-3  p-3" >
                           <div className="col-lg-6" >
                             <li className="breadcrumb-item" >
-                              <h4 className="font-w500 mb-0" >{Page_title}</h4>
+                              <h4 data-aos="zoom-y-out" className="font-w500 mb-0" >{Page_title}</h4>
                               <h4 className="font-w500 mb-0">{Page_title_showClient}</h4>
 
                             </li>

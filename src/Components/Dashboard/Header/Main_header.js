@@ -52,7 +52,8 @@ const Main_Header = () => {
             </a>
           </div>
         </div>
-   
+       
+  
 
         <div className="top-nav-search">
           <form>
@@ -66,7 +67,7 @@ const Main_Header = () => {
             </button>
           </form>
         </div>
-
+      
         <a className="mobile_btn" id="mobile_btn">
           <i className="fas fa-bars" />
         </a>
