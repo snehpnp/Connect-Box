@@ -16,7 +16,6 @@ export const admin_header = [
     {
         id: 3,
         name: 'Research Analyst',
-        route: "",
         Icon: "fe fe-users",
         Data: [
             {
@@ -25,14 +24,9 @@ export const admin_header = [
                 Icon: "fe fe-user-plus",
                 route: "/admin/subadmin/add",
             },
+          
             {
                 id: 32,
-                name: 'Edit Subadmin',
-                Icon: "fe fe-edit",
-                route: "/admin/subadmin/edit",
-            },
-            {
-                id: 33,
                 name: 'All Subadmin',
                 Icon: "fe fe-user",
                 route: "/admin/allsubadmin",
@@ -41,8 +35,7 @@ export const admin_header = [
     },
     {
         id: 4,
-        name: 'Trade',
-        route: "",
+        name: 'Trade', 
         Icon: "fe fe-shopping-cart",
         Data: [
             {

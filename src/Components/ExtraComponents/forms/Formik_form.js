@@ -6,9 +6,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 const ReusableForm = ({ initialValues, validationSchema, onSubmit, btn_name_signUp, btn_name_login, fromDate, fieldtype, formik, btn_name, forlogin, title, additional_field }) => {
 
 
-console.log('title :', title)
+    console.log('title :', title)
     const location = useLocation()
     const navigate = useNavigate()
+
+    const [theamMode, setTheamMode] = useState('')
+
+
+
+
 
 
     const [passwordVisible, setPasswordVisible] = useState({});
@@ -92,7 +98,7 @@ console.log('title :', title)
                                                 <div className={`col-lg-${title === "addgroup" ? 2 : 3}`} key={option.id}>
                                                     <div className="row d-flex">
                                                         <div className="col-lg-12 ">
-                                                            <div class="form-check custom-checkbox mb-3">
+                                                            <div className="form-check custom-checkbox mb-3">
                                                                 <input type={field.type} className="form-check-input" id={option.label}   {...formik.getFieldProps(option.label)}
                                                                 />
                                                                 <label className="form-check-label" for={option.label} >{option.label}</label>
@@ -107,13 +113,13 @@ console.log('title :', title)
                                     </> :
                                         field.s === "toggle" ? <>
                                             <div id="app-cover">
-                                                {/* <div class="row"> */}
-                                                <div class="toggle-button-cover">
-                                                    <div class="button-cover">
-                                                        <div class="button r" id="button-1">
-                                                            <input type="checkbox" class="checkbox" />
-                                                            <div class="knobs"></div>
-                                                            <div class="layer"></div>
+                                                {/* <div className="row"> */}
+                                                <div className="toggle-button-cover">
+                                                    <div className="button-cover">
+                                                        <div className="button r" id="button-1">
+                                                            <input type="checkbox" className="checkbox" />
+                                                            <div className="knobs"></div>
+                                                            <div className="layer"></div>
                                                             <label className="form-check-label" for={field.label} >{field.label}</label>
                                                         </div>
                                                     </div>
@@ -127,7 +133,7 @@ console.log('title :', title)
                                                 <div className={`col-lg-${title === "addgroup" ? 2 : 3}`} key={field.id}>
                                                     <div className="row d-flex">
                                                         <div className="col-lg-12 ">
-                                                            <div class="form-check custom-checkbox mb-3">
+                                                            <div className="form-check custom-checkbox mb-3">
                                                                 <input type={field.type} className="form-check-input" id={field.label}   {...formik.getFieldProps(field.label)}
                                                                 />
                                                                 <label className="form-check-label" for={field.label} >{field.label}</label>
@@ -149,7 +155,7 @@ console.log('title :', title)
                                         <div className="col-lg-3">
                                             <div className="row d-flex">
                                                 <div className="col-lg-12 ">
-                                                    <div class="form-check custom-checkbox mb-3">
+                                                    <div className="form-check custom-checkbox mb-3">
                                                         <input type={field.type} name={field.name} className="form-check-input" id={field.name}
                                                             {...formik.getFieldProps(field.name)}
                                                         />
@@ -179,7 +185,7 @@ console.log('title :', title)
                                                             {...formik.getFieldProps(field.name)}
                                                             className={` form-control p-3`}
                                                         />
-                                                        <i class={`fa-solid ${passwordVisible[field.name] ? 'fa-eye-slash' : 'fa-eye'}`} style={{
+                                                        <i className={`fa-solid ${passwordVisible[field.name] ? 'fa-eye-slash' : 'fa-eye'}`} style={{
                                                             position: 'absolute',
                                                             top: '1.5px',
                                                             right: '20px',
@@ -220,7 +226,7 @@ console.log('title :', title)
                                                                 {...formik.getFieldProps(field.name)}
                                                                 className={` form-control p-3`}
                                                             />
-                                                            <i class={`fa-solid ${passwordVisible[field.name] ? 'fa-eye-slash' : 'fa-eye'}`} style={{
+                                                            <i className={`fa-solid ${passwordVisible[field.name] ? 'fa-eye-slash' : 'fa-eye'}`} style={{
                                                                 position: 'absolute',
                                                                 top: '1.5px',
                                                                 right: '20px',
@@ -246,7 +252,7 @@ console.log('title :', title)
                                                     <div className="col-lg-3">
                                                         <div className="row d-flex">
                                                             <div className="col-lg-12 ">
-                                                                <div class="form-check custom-checkbox mb-3">
+                                                                <div className="form-check custom-checkbox mb-3">
                                                                     <label className="col-lg-6 " for={field.name}>{field.name}</label>
                                                                     <input type={field.type} name={field.name} className="form-control p-3" id={field.name}
                                                                         {...formik.getFieldProps(field.name)}
@@ -264,9 +270,9 @@ console.log('title :', title)
                                                         <div className="col-lg-12">
                                                             <div className="row d-flex">
                                                                 <div className="col-lg-12 ">
-                                                                    <div class="mb-3">
+                                                                    <div className="mb-3">
                                                                         <label className="col-lg-4 " for={field.name}>{field.label}</label>
-                                                                        <textarea class="form-control" rows="2" id={field.name} name={field.name}
+                                                                        <textarea className="form-control" rows="2" id={field.name} name={field.name}
                                                                             {...formik.getFieldProps(field.name)}
                                                                             placeholder={field.label}
                                                                         ></textarea>
@@ -283,7 +289,7 @@ console.log('title :', title)
                                                             <div className="col-lg-3">
                                                                 <div className="row d-flex">
                                                                     <div className="col-lg-12 ">
-                                                                        <div class="form-check custom-checkbox mb-3">
+                                                                        <div className="form-check custom-checkbox mb-3">
                                                                             <input type={field.type} name={field.name} className="form-check-input p-3" id={field.name}
                                                                                 {...formik.getFieldProps(field.name)}
                                                                             />
@@ -376,6 +382,7 @@ console.log('title :', title)
                                                                                     <input
                                                                                         type="text"
                                                                                         className="form-control p-3"
+                                                                                        // style={{ backgroundColor: '#1C1D22', color: 'white' }}
                                                                                         id={field.name}
                                                                                         placeholder={`Enter ${field.label}`}
                                                                                         {...formik.getFieldProps(field.name)}
@@ -415,7 +422,6 @@ console.log('title :', title)
                 </div>
             </div >
         </form>
-
     );
 };
 
