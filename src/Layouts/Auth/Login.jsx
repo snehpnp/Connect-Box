@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 
 import { SignIn } from "../../ReduxStore/Slice/Auth/AuthSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
-
 import Modal from '../../Components/Dashboard/Models/Model'
 import OtpInput from "react-otp-input";
 import Lodding from '../../Components/ExtraComponents/Lodding';
@@ -14,7 +12,7 @@ import Lodding from '../../Components/ExtraComponents/Lodding';
 
 function Login() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+ 
     const [typeOtp, setTypeOtp] = useState("");
 
     const [getData, SetData] = useState([]);
@@ -49,8 +47,9 @@ function Login() {
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
-                navigate("/admin/dashboard");
-
+                setIsLoading(true)
+                setShowModal(false)
+    
             } else if (getData.Role === "SUBADMIN") {
                 toast.success("login Successful");
                 localStorage.setItem(
@@ -62,8 +61,9 @@ function Login() {
                     JSON.stringify(getData.Role)
                 );
 
-                navigate("/subadmin/dashboard");
-
+                setIsLoading(true)
+                setShowModal(false)
+                 
             } else {
                 toast.success("login Successful");
                 localStorage.setItem(
@@ -74,9 +74,9 @@ function Login() {
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
-
-                navigate("/user/dashboard");
-
+                setIsLoading(true)
+                setShowModal(false)
+               
             }
         }
 

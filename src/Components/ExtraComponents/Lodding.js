@@ -1,14 +1,46 @@
 import React from 'react'
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Lodding = () => {
-    const navigate = useNavigate()
+  const User = JSON.parse(localStorage.getItem("user_details"));
+  const navigate = useNavigate()
+
+
+  if (User.Role == "ADMIN") {
     setTimeout(() => {
       navigate("/admin/dashboard");
-        
-    },4000);
+    }, 20000);
+  }
+  else if (User.Role == "SUBADMIN") {
+    setTimeout(() => {
+      navigate("/subadmin/dashboard");
+    }, 20000);
+  }
+  else {
+    setTimeout(() => {
+      navigate("/admin/dashboard");
+    }, 4000);
+  }
+
+
   return (
-    <div>Lodding........</div>
+    <div>
+      <div className="center">
+        WElCOME TO CONNECT BOX
+      </div>
+      <div className="center">
+        <div className="wave" />
+        <div className="wave" />
+        <div className="wave" />
+        <div className="wave" />
+        <div className="wave" />
+        <div className="wave" />
+        <div className="wave" />
+        <div className="wave" />
+        <div className="wave" />
+        <div className="wave" />
+      </div>
+    </div>
   )
 }
 
