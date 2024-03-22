@@ -74,6 +74,13 @@ export const admin_header = [
         route: "/admin/help",
         Icon: "fe fe-help-circle",
         Data: []
+    },
+    {
+        id: 8,
+        name: 'Faqs',
+        route: "/admin/faqs",
+        Icon: "fe fe-help-circle",
+        Data: []
     }
 ];
 

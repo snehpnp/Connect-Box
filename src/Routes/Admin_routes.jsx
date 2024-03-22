@@ -8,6 +8,8 @@ import System from '../Layouts/Admin/System/System';
 import System1 from '../Layouts/Admin/System/System1';
 
 import Help from '../Layouts/Admin/Help/Help';
+import Faqs from '../Layouts/Admin/Help/Faqs';
+
 import MessageBrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast';
 
 
@@ -34,6 +36,8 @@ const Admin_Routing = () => {
                     <Route exact path="/subadmin/edit" element={<EditSubadmin />} />
                     <Route exact path="/allsubadmin" element={<AllSubadmin />} />
                     <Route exact path="/help" element={<Help />} />
+                    <Route exact path="/faqs" element={<Faqs />} />
+
                     <Route exact path="/message-broadcast" element={<MessageBrodcast />} />
                     <Route exact path="/lodding" element={<Lodding />} />
 
