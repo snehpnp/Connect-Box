@@ -58,7 +58,7 @@ function System() {
          
         </div>
         <div className="col-lg-8 col-md-8" data-aos="fade-left">
-          <div className="card ">
+          <div className="card h-100 ">
             <div className="card-body ">
               <div className="tab-content">
                 <div className="tab-pane show active" id="solid-tab1">
@@ -196,7 +196,7 @@ the card's content.
 
       </div> 
     </div>
-
+  
   );
 }
 

@@ -3,15 +3,13 @@ import React from 'react'
 const Help = () => {
     return (
 
-        <div className="page-wrapper">
             <div className="content container-fluid">
-                <div className="row">
-                    <div className="col-md-12">
-                        <div className="card bg-white">
-                            <div className="card-header head-card">
-                                <h5 className="card-title tittle">Help Center</h5>
-                            </div>
-                            <div className="card-body">
+                  <div class="page-header">
+        <div class="content-page-header">
+          <h5>Help Center</h5>
+        </div>
+      </div>
+                
                                 <div className="row">
                                     <div className="col-xl-3 col-md-4">
                                         <div className="card">
@@ -54,14 +52,17 @@ const Help = () => {
                                         </div>
                                     </div>
                                     <div className="col-xl-9 col-md-8">
-                                        <div className="card bg-white">
-                                            <div className="card-body bodycard">
-                                                <div className="tab-content">
-                                                    <div className="tab-pane show active" id="solid-tab1">
-                                                        <h5>Contact us</h5>
-                                                        <div className="card-body w-100">
+                                    <div className="card flex-fill bg-white">
 
-                                                            <form action="#">
+<div className="card-header"><h5 className="card-title">Special title treatment</h5></div>
+
+<div className="card-body card-buttons">
+
+
+
+<p className="card-text">
+
+<form action="#">
                                                                 <div className="row">
                                                                     <div className="col-lg-12 col-sm-12">
                                                                         <div className="input-block mb-3">
@@ -130,20 +131,20 @@ const Help = () => {
                                                                     </div>
                                                                 </div>
                                                             </form>
-                                                        </div>
-                                                    </div>
 
-                                                </div>
-                                            </div>
-                                        </div>
+</p>
+
+</div>
+
+
+
+</div>
+                                       
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                        
+      
 
     )
 }

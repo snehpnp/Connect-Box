@@ -9,6 +9,8 @@ import System1 from '../Layouts/Admin/System/System1';
 
 import Help from '../Layouts/Admin/Help/Help';
 import Faqs from '../Layouts/Admin/Help/Faqs';
+import Payment from '../Layouts/Admin/Payment/Payment';
+
 
 import MessageBrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast';
 
@@ -26,25 +28,22 @@ const Admin_Routing = () => {
         <>
             <MainHeader />
             <Header />
-            <Routes>
-                <Route exact path="/subadmin/add" element={<AddSubadmin />} />
-                <Route exact path="/subadmin/edit" element={<EditSubadmin />} />
-                <Route exact path="/allsubadmin" element={<AllSubadmin />} />
-                <Route exact path="/help" element={<Help />} />
-                <Route exact path="/faqs" element={<Faqs />} />
+            <div className="page-wrapper">
+                <Routes>
+                    <Route exact path="/subadmin/add" element={<AddSubadmin />} />
+                    <Route exact path="/subadmin/edit" element={<EditSubadmin />} />
+                    <Route exact path="/allsubadmin" element={<AllSubadmin />} />
+                    <Route exact path="/help" element={<Help />} />
+                    <Route exact path="/faqs" element={<Faqs />} />
+                    <Route exact path="/message-broadcast" element={<MessageBrodcast />} />
+                    <Route exact path="/lodding" element={<Lodding />} />
+                    <Route exact path="/dashboard" element={<Overview />} />
+                    <Route exact path="/system" element={<System />} />
+                    <Route exact path="/system1" element={<System1 />} />
+                    <Route exact path="/payment" element={<Payment />} />
 
-                <Route exact path="/message-broadcast" element={<MessageBrodcast />} />
-                <Route exact path="/lodding" element={<Lodding />} />
-
-                <Route exact path="/dashboard" element={<Overview />} />
-                <Route exact path="/system" element={<System />} />
-                <Route exact path="/system1" element={<System1 />} />
-
-
-
-
-            </Routes>
-
+                </Routes>
+            </div>
         </>
     )
 }

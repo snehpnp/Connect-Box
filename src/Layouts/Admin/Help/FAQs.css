@@ -60,7 +60,7 @@
     max-height: 200px; /* Adjust the maximum height as needed */
   }
   
-  .snake {
+.snake {
     position: absolute;
     width: 50px; /* Adjust the size as needed */
     height: auto;
