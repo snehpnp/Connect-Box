@@ -26,25 +26,25 @@ const Admin_Routing = () => {
         <>
             <MainHeader />
             <Header />
-            <div className='page-wrapper'>
-                <Routes>
-                    <Route exact path="/dashboard" element={<Overview />} />
-                    <Route exact path="/system" element={<System />} />
-                    <Route exact path="/system1" element={<System1 />} />
+            <Routes>
+                <Route exact path="/subadmin/add" element={<AddSubadmin />} />
+                <Route exact path="/subadmin/edit" element={<EditSubadmin />} />
+                <Route exact path="/allsubadmin" element={<AllSubadmin />} />
+                <Route exact path="/help" element={<Help />} />
+                <Route exact path="/faqs" element={<Faqs />} />
 
-                    <Route exact path="/subadmin/add" element={<AddSubadmin />} />
-                    <Route exact path="/subadmin/edit" element={<EditSubadmin />} />
-                    <Route exact path="/allsubadmin" element={<AllSubadmin />} />
-                    <Route exact path="/help" element={<Help />} />
-                    <Route exact path="/faqs" element={<Faqs />} />
+                <Route exact path="/message-broadcast" element={<MessageBrodcast />} />
+                <Route exact path="/lodding" element={<Lodding />} />
 
-                    <Route exact path="/message-broadcast" element={<MessageBrodcast />} />
-                    <Route exact path="/lodding" element={<Lodding />} />
+                <Route exact path="/dashboard" element={<Overview />} />
+                <Route exact path="/system" element={<System />} />
+                <Route exact path="/system1" element={<System1 />} />
 
-                     
 
-                </Routes>
-            </div>
+
+
+            </Routes>
+
         </>
     )
 }
