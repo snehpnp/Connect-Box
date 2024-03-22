@@ -1,9 +1,48 @@
-import React, { useState } from 'react';
-import DrapDown from './DrapDown'
+import React, { useEffect } from 'react';
+import DrapDown from './DrapDown';
 
 const Main_Header = () => {
+  // Define toggleTheme function
+  const toggleTheme = () => {
+    const htmlElement = document.querySelector('html');
+    const currentSidebar = htmlElement.getAttribute('data-sidebar');
+    const currentLayoutMode = htmlElement.getAttribute('data-layout-mode');
+    const currentTopBarMode = htmlElement.getAttribute('data-topbar');
 
-  
+    // Toggle data-sidebar attribute
+    if (currentSidebar === 'light') {
+      htmlElement.setAttribute('data-sidebar', 'dark');
+    } else {
+      htmlElement.setAttribute('data-sidebar', 'light');
+    }
+
+    // Toggle data-layout-mode attribute
+    if (currentLayoutMode === 'light') {
+      htmlElement.setAttribute('data-layout-mode', 'dark');
+    } else {
+      htmlElement.setAttribute('data-layout-mode', 'light');
+    }
+
+    // Toggle data-topbar attribute
+    if (currentTopBarMode === 'light') {
+      htmlElement.setAttribute('data-topbar', 'dark');
+    } else {
+      htmlElement.setAttribute('data-topbar', 'light');
+    }
+
+    // Update localStorage value
+    localStorage.setItem('theme_mode', htmlElement.getAttribute('data-sidebar'));
+  };
+
+  // Apply theme based on localStorage value on page load
+  useEffect(() => {
+    const themeMode = localStorage.getItem('theme_mode');
+    const htmlElement = document.querySelector('html');
+    htmlElement.setAttribute('data-sidebar', themeMode);
+    htmlElement.setAttribute('data-layout-mode', themeMode);
+    htmlElement.setAttribute('data-topbar', themeMode);
+  }, []); 
+
   return (
     <div>
       {/* MAIN TOP HEADER */}
@@ -53,8 +92,6 @@ const Main_Header = () => {
           </div>
         </div>
        
-  
-
         <div className="top-nav-search">
           <form>
             <input
@@ -72,23 +109,16 @@ const Main_Header = () => {
           <i className="fas fa-bars" />
         </a>
 
+        {/* Button for theme toggle */}
+        <button className="btn" onClick={toggleTheme}>
+          Toggle Theme
+        </button>
+
         {/* Drop Down Btn */}
-        <DrapDown/>
+        <DrapDown />
       </div>
-
-  
-      
     </div>
-  )
-}
+  );
+};
 
-export default Main_Header
-
-
-
-
-
-
-
-
-
+export default Main_Header;
