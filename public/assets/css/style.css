@@ -32258,17 +32258,15 @@ td .invoice-detail i {
     }
 }
 
-
 .theme-switch {
     position: fixed;
     display: inline-block;
     width: 60px;
     height: 34px;
-    top: 0;
-    right: 0;
+    top: 25px;
+    right: 205px;
     z-index: 999;
 }
-
   .theme-switch input { 
     opacity: 0;
     width: 0;
@@ -32363,4 +32361,18 @@ td .invoice-detail i {
 [data-layout-mode=light] body .card .card-header {
     border-color: #f0f1f5;
     background-color: #f1ebff;
+}
+
+
+
+.bg-before::before {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 50%;
+    /* left: 0; */
+    right: 0;
+    top: 0;
+    background: #f1ebff;
+    border-radius: 0 50%;
 }
