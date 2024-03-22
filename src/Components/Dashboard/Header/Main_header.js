@@ -109,11 +109,12 @@ const Main_Header = () => {
           <i className="fas fa-bars" />
         </a>
 
-        {/* Button for theme toggle */}
-        <button className="btn" onClick={toggleTheme}>
-          Toggle Theme
-        </button>
+     
 
+        <label class="theme-switch">
+    <input type="checkbox" onClick={toggleTheme} />
+    <span class="slider"></span>
+  </label>
         {/* Drop Down Btn */}
         <DrapDown />
       </div>

@@ -1,58 +1,50 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
+import * as React from 'react';
+import { DataGrid } from '@mui/x-data-grid';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import CardActions from '@mui/material/CardActions';
+import Button from '@mui/material/Button';
+import { CardActionArea } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import Switch from '@mui/material/Switch';
 
-import BootstrapTable from 'react-bootstrap-table-next';
-import paginationFactory from 'react-bootstrap-table2-paginator';
-import MyPaginationComponent from '../MyPaginationComponent'
 
-
-
-const FullDataTable = ({ tableData, TableColumns, tableoptions, selectRow, keyField, pagination1, rowStyle }) => {
+const FullDataTable = ({ styles, label, columns, rows, keyField, pagination1, rowStyle }) => {
 
     // //  No Data Image
-    const NoDataIndication = () => (
-        <>
-            <img src='../../../../assets/images/norecordfound.png' alt="sss"
-                className='mx-auto d-flex'
-            />
-        </>
-    );
+ 
 
 
-    const options = {
-        sizePerPage: 10,
-        hidePageListOnlyOnePage: true,
-        ...tableoptions
+    const handleEdit = (row) => {
+        // Handle edit action
+        console.log('Edit row:', row);
+    };
+
+    const handleDelete = (row) => {
+        // Handle delete action
+        console.log('Delete row:', row);
     };
 
 
 
 
-
-    return <>
-        <BootstrapTable
-            keyField={keyField ? keyField : "id"}
-            data={tableData}
-            columns={TableColumns}
-            pagination={!pagination1 ? paginationFactory(options) : ""}
-            selectRow={selectRow}
-            noDataIndication={() => <NoDataIndication />}
-            headerClasses="text-center  "
-            rowClasses={`text-center`}
-            headerStyle={{ color: 'red' }}
-            rowStyle={rowStyle}
-            wrapperClasses="table-responsive"
-            defaultSorted={[{ dataField: 'columnName', order: 'asc' }]}  
-            sort={{
-                sortFunc: (a, b, order, dataField) => {  
-                    if (order === 'asc') {
-                        return a[dataField].localeCompare(b[dataField]);
-                    }
-                    return b[dataField].localeCompare(a[dataField]);
-                }
-            }}
-        />
-    </>
+    return (
+        <>
+            <div style={{ height: '100%', width: '100%' }}>
+                <DataGrid
+                    rows={rows}
+                    columns={columns}
+                    pageSize={5}
+                    rowsPerPageOptions={[5, 10, 20]}
+                    checkboxSelection
+                />
+            </div>
+        </>
+    );
 }
 
 

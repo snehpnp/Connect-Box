@@ -1,7 +1,44 @@
-import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState,useEffect } from "react";
+import { GetCompany_info } from "../../../ReduxStore/Slice/Admin/System";
+import { useDispatch } from "react-redux";
+import toast, { Toaster } from "react-hot-toast";
+import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
+
 
 function System() {
+
+
+  const dispatch = useDispatch();
+
+  const [getCompnayData, SetCompnayData] = useState();
+
+
+  const GetCompnayData = async () => {
+
+
+    await dispatch(GetCompany_info())
+      .unwrap()
+      .then(async (response) => {
+        console.log("response", response.data)
+
+        if (response.status) {
+          SetCompnayData( response.data)
+        } else {
+          toast.error(response.msg);
+        }
+
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
+
+  useEffect(() => {
+    GetCompnayData()
+  }, [])
+
+
   return (
 
     <div className="content container-fluid ">
