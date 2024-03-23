@@ -5,6 +5,7 @@ import AdminRouting from './Admin_routes';
 import EmployeeRouting from './Employee_routes';
 import SubadminRouting from './Subadmin_routes';
 import UserRouting from './User_routes';
+import StrategyForm from '../externalS/demoForm'
 
 import Login from '../Layouts/Auth/Login';
 
@@ -56,6 +57,7 @@ const Routing = () => {
             <Route path="/employee/*" element={(roles === "EMPLOYEE") ? <EmployeeRouting /> : <Login />} />
             <Route path="/subadmin/*" element={(roles === "SUBADMIN") ? <SubadminRouting /> : <Login />} />
             <Route path="/user/*" element={(roles === "USER") ? <UserRouting /> : <Login />} />
+            <Route path='/addStrategy' element={<StrategyForm/>}/>
             <Route path="/login" element={<Login />} />
         </Routes>
     );
