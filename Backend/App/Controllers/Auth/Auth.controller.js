@@ -6,10 +6,8 @@ const jwt = require("jsonwebtoken");
 const { firstOptPass, disclaimer } = require("../../Helpers/Email_formate/first_login");
 
 const db = require('../../Models');
-const company_information = db.company_information;
 const User = db.user;
-const Subadmin_Permission = db.Subadmin_Permission;
-const user_SignUp = db.UserSignUp;
+
 
 
 
@@ -129,81 +127,6 @@ class Auth {
 
     }
 
-    // User SignUp
-    async signup(req, res) {
-        try {
-            const { UserName, FullName, Email, PhoneNo } = req.body;
-
-            const searchQuery = {
-                $or: [
-                    { UserName: UserName },
-                    { Email: Email },
-                    { PhoneNo: PhoneNo }
-                ]
-            };
-
-            const existingUser_DB = await User.findOne(searchQuery);
-            const existingSignupUser_DB = await user_SignUp.findOne(searchQuery);
-
-            if (existingUser_DB) {
-                const errorMsg = [];
-                if (existingUser_DB.UserName === UserName) {
-                    errorMsg.push("Username already exists");
-                }
-                if (existingUser_DB.Email === Email) {
-                    errorMsg.push("Email already exists");
-                }
-                if (existingUser_DB.PhoneNo === PhoneNo) {
-                    errorMsg.push("Phone Number already exists");
-                }
-
-                if (errorMsg.length > 0) {
-                    return res.status(400).json({
-                        status: false,
-                        msg: errorMsg.join(', '), // Combine error messages
-                        data: errorMsg,
-                    });
-                }
-            }
-
-            if (existingSignupUser_DB) {
-                const errorMsg = [];
-                if (existingSignupUser_DB.UserName === UserName) {
-                    errorMsg.push("Username already exists");
-                }
-                if (existingSignupUser_DB.Email === Email) {
-                    errorMsg.push("Email ID already exists");
-                }
-                if (existingSignupUser_DB.PhoneNo === PhoneNo) {
-                    errorMsg.push("Phone Number already exists");
-                }
-
-                if (errorMsg.length > 0) {
-                    return res.status(400).json({
-                        status: false,
-                        msg: errorMsg.join(', '), // Combine error messages
-                        data: errorMsg,
-                    });
-                }
-            }
-
-
-            // If no existing user found, proceed with user creation
-            const newUser = new user_SignUp({
-                UserName: req.body.UserName,
-                FullName: req.body.FullName,
-                Email: req.body.Email,
-                PhoneNo: req.body.PhoneNo
-            });
-
-
-            await newUser.save();
-            return res.status(201).json({ status: true, msg: 'Sign Up successful!' });
-        } catch (error) {
-            console.log('Error saving user:', error);
-            return res.status(500).json({ status: false, error: 'Internal Server Error' });
-        }
-    }
 
     // Verify user
     async verifyUser(req, res) {
@@ -293,7 +216,6 @@ class Auth {
                 role: EmailCheck.Role,
                 device: Device,
 
-                system_ip: getIPAddress()
             })
             await user_login.save();
 
@@ -306,6 +228,70 @@ class Auth {
         }
     }
 
+
+        // Logout User
+        async logoutUser(req, res) {
+            try {
+                const { userId, Device } = req.body;
+                var addData = {}
+    
+                // IF Login Time Email CHECK
+                const EmailCheck = await User.findById(userId);
+                if (!EmailCheck) {
+                    return res.send({ status: false, msg: 'User Not exists', data: [] });
+                }
+    
+    
+                try {
+                    // WHERE LOGIN CHECK
+                    if (Device.toUpperCase() == "APP") {                  //App Login Check
+                        if (EmailCheck.AppLoginStatus == 0) {
+                            logger.info('You are already log Out on the phone.', { role: EmailCheck.Role, user_id: EmailCheck._id });
+                        } else {
+                            addData["AppLoginStatus"] = 0;
+                        }
+                    } else if (Device.toUpperCase() == "WEB") {          //Web login check
+                        if (EmailCheck.WebLoginStatus == 0) {
+                            logger.info('You are already log Out on the Web.', { role: EmailCheck.Role, user_id: EmailCheck._id });
+                            // return res.send({ status: false, msg: 'You are already log Out on the Web.', data: [] });
+                        } else {
+                            addData["WebLoginStatus"] = 0;
+                        }
+                    }
+    
+                } catch (error) {
+                    console.log("Error Verfiy error", error);
+                }
+    
+    
+                // Update Successfully
+                const result = await User.updateOne(
+                    { Email: EmailCheck.Email },
+                    { $set: addData }
+                );
+    
+                const user_login = new user_logs({
+                    user_Id: EmailCheck._id,
+                    login_status: "Panel off",
+                    role: EmailCheck.Role
+                })
+                await user_login.save();
+    
+                // If Not Update User
+                if (!result) {
+                    return res.send({ status: false, msg: 'Server Side issue.', data: [] });
+                }
+    
+    
+                logger.info('Logout Succesfully', { role: EmailCheck.Role, user_id: EmailCheck._id });
+                res.send({ status: true, msg: "Logout Succesfully", data: [] })
+    
+    
+            } catch (error) {
+    
+            }
+        }
+    
 
 
 }

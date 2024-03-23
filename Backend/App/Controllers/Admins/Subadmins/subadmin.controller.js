@@ -99,7 +99,6 @@ class Subadmin {
         }
     }
     
-
     // EDIT SUBADMIN
     async EditSubadmin(req, res) {
         try {
@@ -184,6 +183,11 @@ class Subadmin {
 
             const { id } = req.body
             var subid = new ObjectId(id)
+
+            if (id == "" || id == null) {
+                return res.send({ status: false, msg: "Please Enter Id", data: [] })
+            }
+
 
             const getAllSubAdmins = await User_model.find({ _id: subid, Role: "SUBADMIN" });
 

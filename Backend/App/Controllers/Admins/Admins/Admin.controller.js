@@ -44,7 +44,8 @@ class Admin {
         api_key,
         app_key,
         api_type,
-        demat_userid
+        demat_userid,
+        password
       } = req.body;
 
       var Role = "ADMIN";
@@ -129,11 +130,11 @@ class Admin {
 
 
 
-      const min = 1;
-      const max = 1000000;
-      const rand = min + Math.random() * (max - min);
-      var rand_password = Math.round(rand);
-      // var rand_password = Math.round(123456);
+      // const min = 1;
+      // const max = 1000000;
+      // const rand = min + Math.random() * (max - min);
+      // var rand_password = Math.round(rand);
+      var rand_password = Math.round(password);
 
       const salt = await bcrypt.genSalt(10);
       var ByCryptrand_password = await bcrypt.hash(
