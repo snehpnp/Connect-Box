@@ -15,32 +15,20 @@ import Switch from '@mui/material/Switch';
 
 const FullDataTable = ({ styles, label, columns, rows, keyField, pagination1, rowStyle }) => {
 
-    // //  No Data Image
- 
-
-
-    const handleEdit = (row) => {
-        // Handle edit action
-        console.log('Edit row:', row);
-    };
-
-    const handleDelete = (row) => {
-        // Handle delete action
-        console.log('Delete row:', row);
-    };
-
-
 
 
     return (
         <>
-            <div style={{ height: '100%', width: '100%' }}>
+            <div style={{ height: '100%',backgroundColor:"black" }}>
                 <DataGrid
                     rows={rows}
                     columns={columns}
                     pageSize={5}
+                    
                     rowsPerPageOptions={[5, 10, 20]}
                     checkboxSelection
+                    className="custom-data-grid"
+                    style={{border:'none', fontFamily:'none', fontWeight:'400', fontSize:'14px'}} 
                 />
             </div>
         </>

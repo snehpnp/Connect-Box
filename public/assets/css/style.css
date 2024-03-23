@@ -32445,3 +32445,9 @@ td .invoice-detail i {
 .card{
     height:100%;
 }
+
+.custom-data-grid .MuiDataGrid-withBorderColor {
+   border-color: rgb(235 215 215 / 27%) !important;
+}
+
+ 

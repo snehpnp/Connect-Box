@@ -41,22 +41,13 @@ const Main_Header = () => {
     htmlElement.setAttribute('data-sidebar', themeMode);
     htmlElement.setAttribute('data-layout-mode', themeMode);
     htmlElement.setAttribute('data-topbar', themeMode);
-  }, []); 
+  }, []);
 
   return (
     <div>
       {/* MAIN TOP HEADER */}
       <div className="header header-one">
-        <a
-          href="index.html"
-          className="d-inline-flex d-sm-inline-flex align-items-center d-md-inline-flex d-lg-none align-items-center device-logo"
-        >
-          <img
-            src="assets/img/logo.png"
-            className="img-fluid logo2"
-            alt="Logo"
-          />
-        </a>
+
         <div className="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">
           <div className="logo-white">
             <a href="index.html">
@@ -91,7 +82,7 @@ const Main_Header = () => {
             </a>
           </div>
         </div>
-       
+
         <div className="top-nav-search">
           <form>
             <input
@@ -104,19 +95,15 @@ const Main_Header = () => {
             </button>
           </form>
         </div>
-      
-        <a className="mobile_btn" id="mobile_btn">
-          <i className="fas fa-bars" />
-        </a>
-
-     
 
         <label class="theme-switch">
-    <input type="checkbox" onClick={toggleTheme} />
-    <span class="slider"></span>
-  </label>
+          <input type="checkbox" onClick={toggleTheme} />
+          <span class="slider"></span>
+        </label>
+
         {/* Drop Down Btn */}
         <DrapDown />
+        
       </div>
     </div>
   );

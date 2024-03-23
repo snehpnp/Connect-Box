@@ -102,7 +102,7 @@ export default function Help() {
     <>
       <Content
 
-        Page_title="All Subadmins"
+        // Page_title="All Subadmins"
         Card_title="All Subadmins"
         button_title="Add"
         Card_title_icon='fas fa-user pe-3'
@@ -114,8 +114,6 @@ export default function Help() {
             label={label}
             columns={columns}
             rows={rows}
-           
-
           />}
 
 

@@ -10,11 +10,11 @@ const Content = ({ Page_title, button_title, Card_title, Card_title_icon, Conten
   return (
 
     <div className="content container-fluid ">
-      <div class="page-header">
+    {Page_title ?<div class="page-header">
         <div class="content-page-header">
           <h5>{Page_title}</h5>
         </div>
-      </div>
+      </div> : ""}  
       <div className="card flex-fill bg-white">
 
         <div class="card-header d-flex justify-content-between align-items-center border-bottom">

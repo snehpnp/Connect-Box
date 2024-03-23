@@ -9,17 +9,17 @@ const Lodding = () => {
   if (User.Role == "ADMIN") {
     setTimeout(() => {
       navigate("/admin/dashboard");
-    }, 20000);
+    }, 3000);
   }
   else if (User.Role == "SUBADMIN") {
     setTimeout(() => {
       navigate("/subadmin/dashboard");
-    }, 20000);
+    }, 3000);
   }
   else {
     setTimeout(() => {
       navigate("/admin/dashboard");
-    }, 4000);
+    }, 3000);
   }
 
 
