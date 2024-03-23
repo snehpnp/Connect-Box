@@ -82,7 +82,7 @@ const CompanySchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    licenses: {
+    Balance: {
         type: Number
     },
     createdAt: {

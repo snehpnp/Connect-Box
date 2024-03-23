@@ -8,7 +8,11 @@ const Role = require('./role.model')
 
 // Employee Financial Information Collection
 const userModel = Schema({
-
+    profile_img: {
+        type: String,
+        trim: true,
+        default: null
+    },
     FullName: {
         type: String,
         required: true,
@@ -50,16 +54,16 @@ const userModel = Schema({
         trim: true,
         default: null
     },
-    CreateDate: {
+    Create_Date: {
         type: Date,
         default: Date.now
     },
-    StartDate: {
+    Start_Date: {
         type: Date,
         // required: true,
         default: null
     },
-    EndDate: {
+    End_Date: {
         type: Date,
         // required: true,
         default: null
@@ -89,7 +93,7 @@ const userModel = Schema({
         enum: ['0', '1', '2'],  // 0 = 2 days 1= Demo 2 =Live
         default: '0'
     },
-    licence: {
+    Balance: {
         type: String,
         default: null
     },
@@ -108,6 +112,12 @@ const userModel = Schema({
         type: String,
         enum: ['off', 'on'],
         default: 'off'
+    },
+    prifix_key: {
+        type: String,
+        required: true,
+        trim: true,
+        default: null
     },
     client_key: {
         type: String,
@@ -185,22 +195,31 @@ const userModel = Schema({
         enum: ['1', '2'], // 1 = Admin panel status , 2 = Tradinview status
         default: '1'
     },
-    // qty_type: {
-    //     type: String,
-    //     enum: ['1', '2'], // 1 = Admin panel status , 2 = Tradinview status
-    //     default: '1'
-    // },
+    
     signals_execution_type: {
         type: String,
         enum: ['1', '2'], // 1 = Admin panel status , 2 = Tradinview status
         default: '1'
     },
-    multiple_strategy_select: {
+    count_strategy_select: {
         type: String,
         required: true,
-        trim: true,
         default: '0'
     },
+    subadmin_service_type: {
+        type: String,
+        enum: ['1', '2'], // 1 = Strategy wise , 2 = Per Trade Wise
+        default: '1'
+    },
+    strategy_Percentage: {
+        type: Number,
+        default: '0'
+    },
+    Per_trade: {
+        type: Number,
+        default: '0'
+    }
+
 },
     {
         timestamps: true

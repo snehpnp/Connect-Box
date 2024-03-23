@@ -86,10 +86,10 @@ cron.schedule('10 1 * * *', () => {
 });
 
 
-cron.schedule('*/30 * * * *', () => {
-    //console.log("okk")
-    GetStrickPriceFromSheet();
-});
+// cron.schedule('*/30 * * * *', () => {
+//     //console.log("okk")
+//     GetStrickPriceFromSheet();
+// });
 
 
 cron.schedule('5 23 * * *', () => {

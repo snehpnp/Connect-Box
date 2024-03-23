@@ -1,7 +1,11 @@
 
 module.exports = function (app) {
     // Auth Route
-    app.use(require("./Auth/Auth.route"));
+    app.use(require("./Auth/Auth.routes"));
+    app.use(require("./Admin/Subadmin.routes"));
+    app.use(require("./Admin/Admin.routes"));
+
+
  
 
 };

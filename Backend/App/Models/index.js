@@ -5,6 +5,6 @@ module.exports = {
     role: require("./role.model"),
     services: require("./services.model"),
     user: require("./user.model"),
-
+    count_licenses: require("./count_licens.model"),
 
 };
