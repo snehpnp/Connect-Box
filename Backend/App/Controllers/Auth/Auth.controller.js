@@ -7,11 +7,7 @@ const { firstOptPass, disclaimer } = require("../../Helpers/Email_formate/first_
 
 const db = require('../../Models');
 const User = db.user;
-
-
-
-
- 
+const company_information = db.company_information;
 
 
 
@@ -24,7 +20,7 @@ class Auth {
             const { Email, Password, device } = req.body;
             // IF Login Time Email CHECK
 
-        
+
 
             const EmailCheck = await User.findOne({ Email: Email });
             if (!EmailCheck) {
@@ -35,7 +31,7 @@ class Auth {
                 // WHERE LOGIN CHECKgetIPAddress
                 if (device == "APP") {                  //App Login Check
                     if (EmailCheck.AppLoginStatus == 1) {
-                        return res.json({ status: false, msg: 'You are already logged in on the phone.', data: [] });
+                        return res.send({ status: false, msg: 'You are already logged in on the phone.', data: [] });
                     }
                 } else if (device == "WEB") {          //Web login check
                     if (EmailCheck.WebLoginStatus == 1) {
@@ -114,8 +110,7 @@ class Auth {
 
 
             try {
-                logger.info('Login Succesfully', { Email: EmailCheck.Email, role: EmailCheck.Role, user_id: EmailCheck._id });
-                res.send({ status: true, msg: "Login Succesfully", data: msg })
+            return  res.send({ status: true, msg: "Login Succesfully", data: msg })
             } catch (error) {
                 console.log("Error Some Error in a login", error);
             }
@@ -151,15 +146,13 @@ class Auth {
                     // WHERE LOGIN CHECK
                     if (Device.toUpperCase() == "APP") {                  //App Login Check
                         if (EmailCheck.AppLoginStatus == 1) {
-                            logger.info('You are already logged in on the phone.', { role: EmailCheck.Role, user_id: EmailCheck._id });
-                            return res.send({ status: false, msg: 'You are already logged in on the phone.', data: [] });
+                           return res.send({ status: false, msg: 'You are already logged in on the phone.', data: [] });
                         } else {
                             addData["AppLoginStatus"] = 1;
                         }
                     } else if (Device.toUpperCase() == "WEB") {          //Web login check
                         if (EmailCheck.WebLoginStatus == 1) {
-                            logger.info('You are already logged in on the Web.', { role: EmailCheck.Role, user_id: EmailCheck._id });
-                            return res.send({ status: false, msg: 'You are already logged in on the Web.', data: [] });
+                           return res.send({ status: false, msg: 'You are already logged in on the Web.', data: [] });
                         } else {
                             addData["WebLoginStatus"] = 1;
                         }
@@ -219,8 +212,7 @@ class Auth {
             })
             await user_login.save();
 
-            logger.info('Very Succesfully', { role: EmailCheck.Role, user_id: EmailCheck._id });
-            res.send({ status: true, msg: "Login Successfully", data: [], firstlogin: EmailCheck.Is_First_login })
+          return res.send({ status: true, msg: "Login Successfully", data: [], firstlogin: EmailCheck.Is_First_login })
 
 
         } catch (error) {
@@ -229,69 +221,178 @@ class Auth {
     }
 
 
-        // Logout User
-        async logoutUser(req, res) {
-            try {
-                const { userId, Device } = req.body;
-                var addData = {}
-    
-                // IF Login Time Email CHECK
-                const EmailCheck = await User.findById(userId);
-                if (!EmailCheck) {
-                    return res.send({ status: false, msg: 'User Not exists', data: [] });
-                }
-    
-    
-                try {
-                    // WHERE LOGIN CHECK
-                    if (Device.toUpperCase() == "APP") {                  //App Login Check
-                        if (EmailCheck.AppLoginStatus == 0) {
-                            logger.info('You are already log Out on the phone.', { role: EmailCheck.Role, user_id: EmailCheck._id });
-                        } else {
-                            addData["AppLoginStatus"] = 0;
-                        }
-                    } else if (Device.toUpperCase() == "WEB") {          //Web login check
-                        if (EmailCheck.WebLoginStatus == 0) {
-                            logger.info('You are already log Out on the Web.', { role: EmailCheck.Role, user_id: EmailCheck._id });
-                            // return res.send({ status: false, msg: 'You are already log Out on the Web.', data: [] });
-                        } else {
-                            addData["WebLoginStatus"] = 0;
-                        }
-                    }
-    
-                } catch (error) {
-                    console.log("Error Verfiy error", error);
-                }
-    
-    
-                // Update Successfully
-                const result = await User.updateOne(
-                    { Email: EmailCheck.Email },
-                    { $set: addData }
-                );
-    
-                const user_login = new user_logs({
-                    user_Id: EmailCheck._id,
-                    login_status: "Panel off",
-                    role: EmailCheck.Role
-                })
-                await user_login.save();
-    
-                // If Not Update User
-                if (!result) {
-                    return res.send({ status: false, msg: 'Server Side issue.', data: [] });
-                }
-    
-    
-                logger.info('Logout Succesfully', { role: EmailCheck.Role, user_id: EmailCheck._id });
-                res.send({ status: true, msg: "Logout Succesfully", data: [] })
-    
-    
-            } catch (error) {
-    
+    // Logout User
+    async logoutUser(req, res) {
+        try {
+            const { userId, Device } = req.body;
+            var addData = {}
+
+            // IF Login Time Email CHECK
+            const EmailCheck = await User.findById(userId);
+            if (!EmailCheck) {
+                return res.send({ status: false, msg: 'User Not exists', data: [] });
             }
+
+
+            try {
+                // WHERE LOGIN CHECK
+                if (Device.toUpperCase() == "APP") {                  //App Login Check
+                    if (EmailCheck.AppLoginStatus == 0) {
+                    } else {
+                        addData["AppLoginStatus"] = 0;
+                    }
+                } else if (Device.toUpperCase() == "WEB") {          //Web login check
+                    if (EmailCheck.WebLoginStatus == 0) {
+                      // return res.send({ status: false, msg: 'You are already log Out on the Web.', data: [] });
+                    } else {
+                        addData["WebLoginStatus"] = 0;
+                    }
+                }
+
+            } catch (error) {
+                console.log("Error Verfiy error", error);
+            }
+
+
+            // Update Successfully
+            const result = await User.updateOne(
+                { Email: EmailCheck.Email },
+                { $set: addData }
+            );
+
+            const user_login = new user_logs({
+                user_Id: EmailCheck._id,
+                login_status: "Panel off",
+                role: EmailCheck.Role
+            })
+            await user_login.save();
+
+            // If Not Update User
+            if (!result) {
+                return res.send({ status: false, msg: 'Server Side issue.', data: [] });
+            }
+
+
+          return res.send({ status: true, msg: "Logout Succesfully", data: [] })
+
+
+        } catch (error) {
+
         }
-    
+    }
+
+
+    async ForgetPassword(req, res) {
+        try {
+
+            const { Email, Device } = req.body;
+
+            // // IF Login Time Email CHECK
+            var EmailCheck = await User.findOne({ Email: Email })
+            var CompanyInformation = await company_information.findOne()
+
+            if (!EmailCheck) {
+                return res.send({ status: false, msg: 'User Not exists', data: [] });
+            }
+
+
+            var userid = Buffer.from(JSON.stringify(EmailCheck._id)).toString('base64');
+            var redirectUrl = `https://${CompanyInformation.domain_url}/#/update/${userid}`
+
+            var toEmail = Email;
+            var subjectEmail = "Forget Password";
+            var htmlEmail = "URL - " + redirectUrl;
+            CommonEmail(toEmail, subjectEmail, htmlEmail)
+
+
+        } catch (error) {
+
+        }
+
+      return res.send({ status: true, msg: "Mail send successfully", data: redirectUrl })
+    }
+
+
+    // Update Password
+    async UpdatePassword(req, res) {
+        try {
+            const { userid, newpassword, confirmpassword } = req.body;
+
+
+            // // IF Login Time Email CHECK
+            const EmailCheck = await User.findById(userid);
+
+            if (!EmailCheck) {
+                return res.send({ status: false, msg: 'User Not exists', data: [] });
+            }
+
+            if (newpassword !== confirmpassword) {
+                return res.send({ status: false, msg: 'New Password and Confirm Password Not Match', data: [] });
+            }
+
+            const hashedPassword = await bcrypt.hash(newpassword, 8);
+            let result = await User.findByIdAndUpdate(
+                EmailCheck._id,
+                {
+                    Password: hashedPassword,
+                    Otp: newpassword
+                },
+                { new: true }
+            )
+
+            // If Not Update User
+            if (!result) {
+                return res.send({ status: false, msg: 'Server Side issue.', data: [] });
+            }
+
+
+          return res.send({ status: true, msg: "Password Update Successfully" });
+        } catch (error) {
+
+        }
+    }
+
+    // Reset Password
+    async ResetPassword(req, res) {
+        try {
+            const { userid, newpassword, oldpassword } = req.body;
+            // // IF Login Time Email CHECK
+            const EmailCheck = await User.findById(userid);
+
+            // return
+            if (!EmailCheck) {
+                return res.send({ status: false, msg: 'User Not exists', data: [] });
+            }
+
+            const validPassword = await bcrypt.compare(oldpassword.toString(), EmailCheck.Password.toString());
+
+            // return
+            if (!validPassword) {
+                res.status(409).send({ success: 'false', message: 'old Password Not Match' });
+                return
+            } else {
+                const hashedPassword = await bcrypt.hash(newpassword, 8);
+                await User.findByIdAndUpdate(
+                    EmailCheck._id,
+                    {
+                        Password: hashedPassword,
+                        Otp: newpassword
+                    },
+                    { new: true }
+                );
+
+            }
+
+
+            res.send({ status: true, message: "Password Update Successfully" });
+
+            logger.info('Password Update Successfully', { role: EmailCheck.Role, user_id: EmailCheck._id });
+            // res.send({ status: true, message: "Password Update Successfully" });
+        } catch (error) {
+
+        }
+    }
+
 
 
 }
