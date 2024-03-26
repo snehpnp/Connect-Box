@@ -24,7 +24,7 @@ export const admin_header = [
                 Icon: "fe fe-user-plus",
                 route: "/admin/subadmin/add",
             },
-          
+
             {
                 id: 32,
                 name: 'All Subadmin',
@@ -35,7 +35,7 @@ export const admin_header = [
     },
     {
         id: 4,
-        name: 'Trade', 
+        name: 'Trade',
         Icon: "fe fe-shopping-cart",
         Data: [
             {
@@ -72,6 +72,20 @@ export const admin_header = [
         id: 7,
         name: 'Help',
         route: "/admin/help",
+        Icon: "fe fe-help-circle",
+        Data: []
+    },
+    {
+        id: 8,
+        name: 'Sub',
+        route: "/admin/sub",
+        Icon: "fe fe-help-circle",
+        Data: []
+    },
+    {
+        id: 9,
+        name: 'Profile',
+        route: "/admin/Profile",
         Icon: "fe fe-help-circle",
         Data: []
     }
