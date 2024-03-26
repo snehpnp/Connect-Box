@@ -96,6 +96,14 @@ export const admin_header = [
         Icon: "fe fe-help-circle",
         Data: []
     }
+    ,
+    {
+        id: 11,
+        name: 'tabe',
+        route: "/admin/tabe",
+        Icon: "fe fe-help-circle",
+        Data: []
+    }
 ];
 
 
