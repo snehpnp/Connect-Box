@@ -32,6 +32,9 @@ const Main_Header = () => {
 
     // Update localStorage value
     localStorage.setItem('theme_mode', htmlElement.getAttribute('data-sidebar'));
+
+window.location.reload()
+
   };
 
   // Apply theme based on localStorage value on page load
