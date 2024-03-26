@@ -7,6 +7,8 @@ module.exports = {
     user: require("./user.model"),
     count_licenses: require("./count_licens.model"),
     Strategies: require("./strategy.model"),
+    strategy_client: require("./strategy_client.model"),
+
 
 
 
