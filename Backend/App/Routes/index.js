@@ -10,6 +10,9 @@ module.exports = function (app) {
 
 
 
+    app.use(require("./SubAdmins/Strategy.routes"));
+    app.use(require("./Admin/message.routes"))
+
 
 
 };
