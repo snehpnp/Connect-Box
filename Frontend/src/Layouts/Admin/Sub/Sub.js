@@ -5,7 +5,7 @@ const Sub = () => {
         <div>
             <div className="content container-fluid">
 
-{/* PAGE HEADER */}
+                {/* PAGE HEADER */}
                 <div className="page-header">
                     <div className="content-page-header">
                         <h5>Subscriber List</h5>
@@ -102,7 +102,7 @@ const Sub = () => {
                     </div>
                 </div>
 
-
+                {/* CARD BOX */}
                 <div className="super-admin-list-head">
                     <div className="row">
                         <div className="col-xl-3 col-md-6 d-flex">
@@ -168,7 +168,7 @@ const Sub = () => {
                     </div>
                 </div>
 
-
+                {/* TABEL */}
                 <div className="row">
                     <div className="col-sm-12">
                         <div className="card-table">
