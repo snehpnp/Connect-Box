@@ -1,12 +1,104 @@
-import React from 'react'
+import React from 'react';
 
 const Sub = () => {
+    // Column aur data ko store karne ke liye arrays
+    const columns = [
+        { name: '#', key: 'id' },
+        { name: 'Subscriber', key: 'subscriber' },
+        { name: 'Plan', key: 'plan' },
+        { name: 'Billing Cycle', key: 'billingCycle' },
+        { name: 'Payment Gateway', key: 'paymentGateway' },
+        { name: 'Amount', key: 'amount' },
+        { name: 'Registered On', key: 'registeredOn' },
+        { name: 'Expiring On', key: 'expiringOn' },
+        { name: 'Status', key: 'status' },
+        { name: 'Invoice', key: 'invoice' },
+        { name: 'Action', key: 'action', noSort: true }
+    ];
+
+    const data = [
+        {
+            id: 1,
+            subscriber: 'Hermann Groups',
+            plan: 'Advanced (Monthly)',
+            billingCycle: '30 Days',
+            paymentGateway: 'Paypal',
+            amount: '$19.99',
+            registeredOn: '15 Jan 2024',
+            expiringOn: '15 Feb 2024',
+            status: 'Paid', // Changed to text
+            invoice: <a href="invoice-subscription.html" className="invoice-detail"><i className="fe fe-file-text" /></a> // Changed to static icon
+        },
+        {
+            id: 1,
+            subscriber: 'Hermann Groups',
+            plan: 'Advanced (Monthly)',
+            billingCycle: '30 Days',
+            paymentGateway: 'Paypal',
+            amount: '$19.99',
+            registeredOn: '15 Jan 2024',
+            expiringOn: '15 Feb 2024',
+            status: 'Paid', // Changed to text
+            invoice: <a href="invoice-subscription.html" className="invoice-detail"><i className="fe fe-file-text" /></a> // Changed to static icon
+        },   {
+            id: 1,
+            subscriber: 'Hermann Groups',
+            plan: 'Advanced (Monthly)',
+            billingCycle: '30 Days',
+            paymentGateway: 'Paypal',
+            amount: '$19.99',
+            registeredOn: '15 Jan 2024',
+            expiringOn: '15 Feb 2024',
+            status: 'UnPaid', // Changed to text
+            invoice: <a href="invoice-subscription.html" className="invoice-detail"><i className="fe fe-file-text" /></a> // Changed to static icon
+        },
+        {
+            id: 1,
+            subscriber: 'Hermann Groups',
+            plan: 'Advanced (Monthly)',
+            billingCycle: '30 Days',
+            paymentGateway: 'Paypal',
+            amount: '$19.99',
+            registeredOn: '15 Jan 2024',
+            expiringOn: '15 Feb 2024',
+            status: 'Paid', // Changed to text
+            invoice: <a href="invoice-subscription.html" className="invoice-detail"><i className="fe fe-file-text" /></a> // Changed to static icon
+        },
+    ];
+
+    // Static Action button
+    const actionButton = (
+        <div className="dropdown dropdown-action">
+            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false">
+                <i className="fas fa-ellipsis-v" />
+            </a>
+            <div className="dropdown-menu dropdown-menu-end">
+                <ul className="dropdown-ul">
+                    <li>
+                        <a className="dropdown-item" href="javascript:void(0);">
+                            <i className="fe fe-download me-2" />
+                            Download
+                        </a>
+                    </li>
+                    <li className="delete-alt">
+                        <div>
+                            <a className="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_modal">
+                                <i className="fe fe-trash-2 me-2" />
+                                Delete
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    );
+
     return (
         <div>
             <div className="content container-fluid">
 
-                {/* PAGE HEADER */}
-                <div className="page-header">
+   {/* PAGE HEADER */}
+   <div className="page-header">
                     <div className="content-page-header">
                         <h5>Subscriber List</h5>
                         <div className="page-content">
@@ -168,6 +260,7 @@ const Sub = () => {
                     </div>
                 </div>
 
+
                 {/* TABEL */}
                 <div className="row">
                     <div className="col-sm-12">
@@ -178,97 +271,26 @@ const Sub = () => {
                                         <table className="table table-center table-hover datatable">
                                             <thead className="thead-light">
                                                 <tr>
-                                                    <th className="no-sort">#</th>
-                                                    <th>Subscriber</th>
-                                                    <th>Plan</th>
-                                                    <th>Billing Cycle</th>
-                                                    <th>Payment Gateway</th>
-                                                    <th>Amount</th>
-                                                    <th>Registered On</th>
-                                                    <th>Expiring On</th>
-                                                    <th>Status</th>
-                                                    <th>Invoice </th>
-                                                    <th className="no-sort">Action</th>
+                                                    {/* Dynamically render columns */}
+                                                    {columns.map(column => (
+                                                        <th key={column.key} className={column.noSort ? 'no-sort' : ''}>{column.name}</th>
+                                                    ))}
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>
-                                                        <h2 className="table-avatar">
-                                                            <a
-                                                                href="profile.html"
-                                                                className="company-avatar avatar-md me-2 companies company-icon"
-                                                            >
-                                                                <img
-                                                                    className="avatar-img rounded-circle company"
-                                                                    src="assets/img/companies/company-01.svg"
-                                                                    alt="Company Image"
-                                                                />
-                                                            </a>
-                                                            <a href="#">Hermann Groups</a>
-                                                        </h2>
-                                                    </td>
-                                                    <td>Advanced (Monthly)</td>
-                                                    <td>30 Days</td>
-                                                    <td>Paypal</td>
-                                                    <td>$19.99</td>
-                                                    <td>15 Jan 2024</td>
-                                                    <td>15 Feb 2024</td>
-                                                    <td>
-                                                        <span className="badge bg-success-light d-inline-flex align-items-center">
-                                                            <i className="fe fe-check me-1" />
-                                                            Paid
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <a
-                                                            href="invoice-subscription.html"
-                                                            className="invoice-detail"
-                                                        >
-                                                            <i className="fe fe-file-text" />
-                                                        </a>
-                                                    </td>
-                                                    <td className="d-flex align-items-center">
-                                                        <div className="dropdown dropdown-action">
-                                                            <a
-                                                                href="#"
-                                                                className=" btn-action-icon "
-                                                                data-bs-toggle="dropdown"
-                                                                aria-expanded="false"
-                                                            >
-                                                                <i className="fas fa-ellipsis-v" />
-                                                            </a>
-                                                            <div className="dropdown-menu dropdown-menu-end">
-                                                                <ul className="dropdown-ul">
-                                                                    <li>
-                                                                        <a
-                                                                            className="dropdown-item"
-                                                                            href="javascript:void(0);"
-                                                                        >
-                                                                            <i className="fe fe-download me-2" />
-                                                                            Download
-                                                                        </a>
-                                                                    </li>
-                                                                    <li className="delete-alt">
-                                                                        <div>
-                                                                            <a
-                                                                                className="dropdown-item"
-                                                                                href="javascript:void(0);"
-                                                                                data-bs-toggle="modal"
-                                                                                data-bs-target="#delete_modal"
-                                                                            >
-                                                                                <i className="fe fe-trash-2 me-2" />
-                                                                                Delete
-                                                                            </a>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-
+                                                {/* Dynamically render data rows */}
+                                                {data.map((row,index) => (
+                                                    <tr key={row.id}>
+                                                        {columns.map(column => (
+                                                            <td key={column.key}>
+                                                                {column.key === 'action' ? actionButton :
+                                                                    column.key === 'status' ? <span className={`badge ${row[column.key] === 'Paid' ? 'bg-success' : 'bg-danger'} d-inline-flex align-items-center`}>{row[column.key]}</span> : 
+                                                                        column.key === 'invoice' ? row[column.key] : 
+                                                                            row[column.key]} 
+                                                            </td>
+                                                        ))}
+                                                    </tr>
+                                                ))}
                                             </tbody>
                                         </table>
                                     </div>
@@ -277,11 +299,9 @@ const Sub = () => {
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
-    )
-}
+    );
+};
 
-export default Sub
+export default Sub;
