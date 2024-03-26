@@ -14,6 +14,10 @@ const serviceGroupName = Schema({
         trim: true,
         default: null
     },
+    maker_id: {
+        type: Schema.Types.ObjectId,
+        ref: "USER"
+    },
    
   
 },

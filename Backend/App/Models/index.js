@@ -10,6 +10,9 @@ module.exports = {
     strategy_client: require("./strategy_client.model"),
     Alice_token: require("./Alice_token.model"),
 
+    serviceGroupName: require('./serviceGroupName.model'),
+    serviceGroup_services_id: require('./serviceGroup_services_id.model'),
+
 
 
     api_create_info: require('./api_create_info.model'),
