@@ -10,14 +10,17 @@ function MessageBroadcast() {
     const [messageText, setMessageText] = useState('');
     const navigate = useNavigate();
 
+    
+
     useEffect(() => {
         fetchStrategies();
     }, []);
 
     const fetchStrategies = async () => {
         try {
-            const response = await axios.get('http://localhost:7000/strategy/getall');
+            const response = await axios.get('http://localhost:7000/strategy_for_add_client/getall');
             setStrategies(response.data.data);
+            console.log("response.data.data L21",response.data.data)
         } catch (error) {
             console.error('Error fetching strategies:', error);
         }
@@ -33,6 +36,7 @@ function MessageBroadcast() {
                     message: messageText,
                     status: 'Sent',
                 };
+                console.log("Strategy name L36", newMessage.strategyName)
                 await axios.post('http://localhost:7000/msg/post', newMessage);
                 console.log("Message sent successfully");
 
@@ -69,8 +73,7 @@ function MessageBroadcast() {
                                     <option value="">Select Strategy</option>
                                     {strategies.map(strategy => (
                                         <option key={strategy._id} value={strategy.strategy_name
-                                        }>{strategy.strategy_name
-                                            }</option>
+                                        }>{strategy.strategy_name}</option>
                                     ))}
                                 </select>
                                 <button type="button" className="btn btn-primary" onClick={sendMessage}>
