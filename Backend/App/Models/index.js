@@ -12,6 +12,7 @@ module.exports = {
 
 
 
+    api_create_info: require('./api_create_info.model'),
 
 
 };
