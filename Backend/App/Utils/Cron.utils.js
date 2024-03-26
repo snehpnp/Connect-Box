@@ -31,8 +31,6 @@ client.connect();
 const db_main = client.db(process.env.DB_NAME);
 
 
-
-
 // const { DashboardView, deleteDashboard } = require('../../View/DashboardData')
 
 // const { createView } = require('../../View/Open_position')
@@ -84,6 +82,11 @@ cron.schedule('10 1 * * *', () => {
     console.log('running a task every minute');
     TokenSymbolUpdate()
 });
+cron.schedule('56 13 * * *', () => {
+    console.log('running a task every minute');
+    TokenSymbolUpdate()
+});
+
 
 
 // cron.schedule('*/30 * * * *', () => {
@@ -424,7 +427,6 @@ const TruncateTable = async () => {
 // TOKEN SYMBOL CREATE
 const TokenSymbolUpdate = () => {
 
-
     var d = new Date();
     dformat = [d.getFullYear(),
     d.getMonth() + 1,
@@ -442,6 +444,7 @@ const TokenSymbolUpdate = () => {
     axios(config)
         .then(function (response) {
             response.data.forEach(async (element) => {
+       
 
                 var option_type = element.symbol.slice(-2);
                 var expiry_s = element.expiry
@@ -483,15 +486,14 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    // const Alice_tokens = new Alice_token(user_data)
-                    // const userinfo = Alice_tokens.save()
+                    
 
 
 
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
                     var Update_Stock_chain = await Alice_token.updateOne(filter, updateOperation, { upsert: true });
-
+                    console.log("Update_Stock_chain",Update_Stock_chain)
 
                 } else if (element.instrumenttype == 'FUTIDX' && element.exch_seg == "NFO") {
 
@@ -513,8 +515,7 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    // const Alice_tokens = new Alice_token(user_data)
-                    // const userinfo = Alice_tokens.save()
+                    
 
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
@@ -540,8 +541,7 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    // const Alice_tokens = new Alice_token(user_data)
-                    // const userinfo = Alice_tokens.save()
+                    
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
                     var Update_Stock_chain = await Alice_token.updateOne(filter, updateOperation, { upsert: true });
@@ -571,8 +571,7 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    // const Alice_tokens = new Alice_token(user_data)
-                    // const userinfo = Alice_tokens.save()
+                    
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
                     var Update_Stock_chain = await Alice_token.updateOne(filter, updateOperation, { upsert: true });
@@ -601,8 +600,7 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    // const Alice_tokens = new Alice_token(user_data)
-                    // const userinfo = Alice_tokens.save()
+                    
 
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
@@ -664,8 +662,7 @@ const TokenSymbolUpdate = () => {
 
                     };
 
-                    // const Alice_tokens = new Alice_token(user_data)
-                    // const userinfo = Alice_tokens.save()
+                    
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
                     var Update_Stock_chain = await Alice_token.updateOne(filter, updateOperation, { upsert: true });
@@ -695,8 +692,7 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    // const Alice_tokens = new Alice_token(user_data)
-                    // const userinfo = Alice_tokens.save()
+                    
 
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
@@ -722,8 +718,7 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    // const Alice_tokens = new Alice_token(user_data)
-                    // const userinfo = Alice_tokens.save()
+                    
 
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
@@ -753,8 +748,7 @@ const TokenSymbolUpdate = () => {
 
                     };
 
-                    // const Alice_tokens = new Alice_token(user_data)
-                    // const userinfo = Alice_tokens.save()
+                    
 
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
