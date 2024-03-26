@@ -3,11 +3,17 @@ import DynamicForm from '../../../Components/ExtraComponents/forms/FormField';
 
 import { useFormik } from 'formik';
 
-const user_token = JSON.parse(localStorage.getItem("user_details")).token
-const Role = JSON.parse(localStorage.getItem("user_details")).Role
-const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
-
 const AddClient = () => {
+  
+const userDetails = JSON.parse(localStorage.getItem("user_details"));
+// Check if userDetails exists and has Role property
+const Role = userDetails?.Role;
+const user_id = userDetails?.user_id;
+const user_token = userDetails?.token;
+
+console.log("roles 11:-", Role);
+
+
   const fields = [
     { name: 'fullName', label: 'FullName', type: 'text', label_size: 6, col_size: 6, disable: false },
     { name: 'username', label: 'Username', type: 'text', label_size: 12, col_size: 6, disable: false },
@@ -110,12 +116,6 @@ const AddClient = () => {
       // })
     }
   });
-
-
-
-
-
-
 
 
 

@@ -103,7 +103,6 @@ export const subamdin_header = [
     {
         id: 3,
         name: 'Employees',
-        route: "/employee/add",
         Icon: "fe fe-users",
         Data: [
             {
@@ -123,7 +122,6 @@ export const subamdin_header = [
     {
         id: 4,
         name: 'Users',
-        route: "/subadmin/user",
         Icon: "fe fe-user-plus",
         Data: [
             {
@@ -143,7 +141,6 @@ export const subamdin_header = [
     {
         id: 5,
         name: 'Strategy',
-        route: "/subadmin/strategy",
         Icon: "fe fe-target",
         Data: [
             {
@@ -163,7 +160,6 @@ export const subamdin_header = [
     {
         id: 6,
         name: 'Trade',
-        route: "/subadmin/trade",
         Icon: "fe fe-shopping-cart",
         Data: [
             {
@@ -199,7 +195,6 @@ export const subamdin_header = [
     {
         id: 9,
         name: 'Trades',
-        route: "/subadmin/trades",
         Icon: "fe fe-layers",
         Data: [
             {

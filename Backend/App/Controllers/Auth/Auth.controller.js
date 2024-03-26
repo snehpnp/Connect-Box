@@ -67,31 +67,16 @@ class Auth {
                 expiresIn: 36000 // 10 hours
             });
 
-            if (EmailCheck.Role == "SUBADMIN") {
 
-                var SubadminPermision = await Subadmin_Permission.find({ user_id: EmailCheck._id })
-                var msg = {
-                    'Email': EmailCheck.Email,
-                    'user_id': EmailCheck._id,
-                    'token': token,
-                    'mobile': EmailCheck.PhoneNo, Role: EmailCheck.Role,
-                    'Subadmin_permision': SubadminPermision,
-                    "broker": EmailCheck.broker,
-                    "UserName": EmailCheck.UserName
-                };
-            } else {
-                var msg = {
-                    'Email': EmailCheck.Email,
-                    'user_id': EmailCheck._id,
-                    'token': token,
-                    'mobile': EmailCheck.PhoneNo, Role: EmailCheck.Role,
-                    "broker": EmailCheck.broker,
-                    "type": EmailCheck.license_type,
-                    "UserName": EmailCheck.UserName
-
-
-                };
-            }
+            var msg = {
+                'Email': EmailCheck.Email,
+                'user_id': EmailCheck._id,
+                'token': token,
+                'mobile': EmailCheck.PhoneNo, Role: EmailCheck.Role,
+                "broker": EmailCheck.broker,
+                "type": EmailCheck.license_type,
+                "UserName": EmailCheck.UserName
+            };
 
 
             var token_query
@@ -110,7 +95,7 @@ class Auth {
 
 
             try {
-            return  res.send({ status: true, msg: "Login Succesfully", data: msg })
+                return res.send({ status: true, msg: "Login Succesfully", data: msg })
             } catch (error) {
                 console.log("Error Some Error in a login", error);
             }
@@ -146,13 +131,13 @@ class Auth {
                     // WHERE LOGIN CHECK
                     if (Device.toUpperCase() == "APP") {                  //App Login Check
                         if (EmailCheck.AppLoginStatus == 1) {
-                           return res.send({ status: false, msg: 'You are already logged in on the phone.', data: [] });
+                            return res.send({ status: false, msg: 'You are already logged in on the phone.', data: [] });
                         } else {
                             addData["AppLoginStatus"] = 1;
                         }
                     } else if (Device.toUpperCase() == "WEB") {          //Web login check
                         if (EmailCheck.WebLoginStatus == 1) {
-                           return res.send({ status: false, msg: 'You are already logged in on the Web.', data: [] });
+                            return res.send({ status: false, msg: 'You are already logged in on the Web.', data: [] });
                         } else {
                             addData["WebLoginStatus"] = 1;
                         }
@@ -212,7 +197,7 @@ class Auth {
             })
             await user_login.save();
 
-          return res.send({ status: true, msg: "Login Successfully", data: [], firstlogin: EmailCheck.Is_First_login })
+            return res.send({ status: true, msg: "Login Successfully", data: [], firstlogin: EmailCheck.Is_First_login })
 
 
         } catch (error) {
@@ -243,7 +228,7 @@ class Auth {
                     }
                 } else if (Device.toUpperCase() == "WEB") {          //Web login check
                     if (EmailCheck.WebLoginStatus == 0) {
-                      // return res.send({ status: false, msg: 'You are already log Out on the Web.', data: [] });
+                        // return res.send({ status: false, msg: 'You are already log Out on the Web.', data: [] });
                     } else {
                         addData["WebLoginStatus"] = 0;
                     }
@@ -273,7 +258,7 @@ class Auth {
             }
 
 
-          return res.send({ status: true, msg: "Logout Succesfully", data: [] })
+            return res.send({ status: true, msg: "Logout Succesfully", data: [] })
 
 
         } catch (error) {
@@ -309,7 +294,7 @@ class Auth {
 
         }
 
-      return res.send({ status: true, msg: "Mail send successfully", data: redirectUrl })
+        return res.send({ status: true, msg: "Mail send successfully", data: redirectUrl })
     }
 
 
@@ -346,7 +331,7 @@ class Auth {
             }
 
 
-          return res.send({ status: true, msg: "Password Update Successfully" });
+            return res.send({ status: true, msg: "Password Update Successfully" });
         } catch (error) {
 
         }

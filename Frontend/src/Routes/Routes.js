@@ -11,8 +11,10 @@ import Login from '../Layouts/Auth/Login';
 const Routing = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const user_details = JSON.parse(localStorage.getItem("user_details"));
     const roles = JSON.parse(localStorage.getItem('user_role'));
+    const user_details = JSON.parse(localStorage.getItem("user_details"));
+
+    console.log("roles:-",roles)
 
     useEffect(() => {
 

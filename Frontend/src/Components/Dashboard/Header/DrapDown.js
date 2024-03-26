@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-
 const DropDown = () => {
-
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -16,11 +14,11 @@ const DropDown = () => {
         }
     };
 
-    const LogoutUser = ()=>{
-        console.log("RUNNNNNNNNNNN")
-     localStorage.clear() 
-     window.location.reload()  
-    }
+    const LogoutUser = () => {
+        console.log("RUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN")
+        localStorage.clear();
+        window.location.reload();
+    };
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
@@ -34,7 +32,6 @@ const DropDown = () => {
             <ul className="nav nav-tabs user-menu">
                 <li className="nav-item dropdown">
                     <a
-
                         className="user-a nav-a"
                         onClick={toggleDropdown}
                         ref={dropdownRef}
@@ -63,21 +60,26 @@ const DropDown = () => {
                                         </a>
                                     </li>
                                     <li>
-                                        <a className="dropdown-item" href="settings.html">
+                                        <a className="dropdown-item" >
                                             Settings
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a className="dropdown-item"  onClick={LogoutUser}>
+                                        Log out
                                         </a>
                                     </li>
                                 </ul>
                             </div>
-                            <div className="subscription-logout">
+                            {/* <div className="subscription-logout">
                                 <ul>
                                     <li className="pb-0">
-                                        <button className="btn btn-primary  w-100" onClick={ LogoutUser}>
-                                            Log out
+                                        <button className="btn btn-primary  w-100" onClick={LogoutUser}>
+                                            Log out 1
                                         </button>
                                     </li>
                                 </ul>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </li>
@@ -87,5 +89,3 @@ const DropDown = () => {
 }
 
 export default DropDown;
-
-
