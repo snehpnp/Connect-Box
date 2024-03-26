@@ -16,25 +16,29 @@ function MessageBroadcast() {
 
     const fetchStrategies = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/getStrategy');
+            const response = await axios.get('http://localhost:7000/strategy/getall');
             setStrategies(response.data.data);
         } catch (error) {
             console.error('Error fetching strategies:', error);
         }
     };
 
-    const sendMessage = () => {
-        const selectedStrategyObject = strategies.find(strategy => strategy.strategyname === selectedStrategy);
-        if (selectedStrategyObject) {
-            const newMessage = {
-                id: messages.length + 1,
-                subAdminName: selectedStrategyObject.name,
-                strategy: selectedStrategy,
-                message: messageText,
-                status: "Sent"
-            };
-            setMessages([...messages, newMessage]);
-            console.log("subAdminName", newMessage.subAdminName);
+    const sendMessage = async () => {
+        try {
+            const selectedStrategyObject = strategies.find(strategy => strategy.strategyname === selectedStrategy);
+            if (selectedStrategyObject) {
+                const newMessage = {
+                    strategyName: selectedStrategyObject.strategyname,
+                    brokerName: '',
+                    message: messageText,
+                    status: 'Sent',
+                };
+                await axios.post('http://localhost:7000/msg/post', newMessage);
+                console.log("Message sent successfully");
+
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
         }
     };
 
@@ -64,7 +68,9 @@ function MessageBroadcast() {
                                 >
                                     <option value="">Select Strategy</option>
                                     {strategies.map(strategy => (
-                                        <option key={strategy._id} value={strategy.strategyname}>{strategy.strategyname}</option>
+                                        <option key={strategy._id} value={strategy.strategy_name
+                                        }>{strategy.strategy_name
+                                            }</option>
                                     ))}
                                 </select>
                                 <button type="button" className="btn btn-primary" onClick={sendMessage}>

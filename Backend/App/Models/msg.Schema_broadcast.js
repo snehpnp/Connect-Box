@@ -1,19 +1,25 @@
 const mongoose = require('mongoose');
 
-const strategySchema = new mongoose.Schema({
-    name: {
+const msgSchema = new mongoose.Schema({
+    strategyName: {
+        type: String,
+        required: true,
+        unique: true
+    },
+     brokerName: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    message: {
         type: String,
         required: true
     },
-    strategyname: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    }
 });
 
-const strategy=new mongoose.model("strategy",strategySchema);
-module.exports=strategy;
+const Message = mongoose.model('Message', msgSchema);
+module.exports = Message;

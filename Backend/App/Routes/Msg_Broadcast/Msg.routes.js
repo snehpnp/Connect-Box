@@ -1,8 +1,7 @@
-const {StrategyPost,getStrategyData}=require("../../Controllers/Msg_Broadcast/Message-Broadcast")
 const router = require("express").Router()
+const {initMsg}=require("../../Controllers/Msg_Broadcast/Message-Broadcast")
 
+router.post("/msg/post",initMsg)
 
-router.post("/strategy",StrategyPost);
-router.get("/getStrategy",getStrategyData)
 
 module.exports=router
