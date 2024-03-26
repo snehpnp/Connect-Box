@@ -32,33 +32,34 @@ class strategy {
                 return res.send({ status: false, msg: 'Strategy already exists', data: [] });
             }
 
-            console.log("strategy_name.length", strategy_name.length)
             function checkStringValidity(strategy_name) {
                 // Check if the length of the string is at least 5 characters (to have 4th index)
-                if (strategy_name.length < 4) {
-                    return false;
+                if (strategy_name.length < 5) {
+                    return res.send({ status: false, msg: 'Please Enter Strategy name long', data: [] });
                 }
 
                 // Check if the first three letters are capitalized
                 if (strategy_name.substring(0, 3) !== strategy_name.substring(0, 3).toUpperCase()) {
-                    return false;
+                    return res.send({ status: false, msg: 'Please Enter Strategy starting 3 letter Capital', data: [] });
+
                 }
 
                 // Check if there is an underscore (_) at the fourth index
                 if (strategy_name.charAt(3) !== '_') {
-                    return false;
+                    return res.send({ status: false, msg: 'Please Enter Strategy name _ is mandatory', data: [] });
                 }
+                if (maker_id_find.prifix_key != strategy_name.substring(0, 3).toUpperCase()) {
+                    return res.send({ status: false, msg: 'Please Enter Strategy starting 3 leter is your prifix letter', data: [] });
 
-                // If all conditions pass, return true
+                }
                 return true;
             }
 
-            console.log(checkStringValidity(strategy_name));
+            if (!checkStringValidity(strategy_name)) {
+                return res.send({ status: false, msg: 'Some Issue in strategy', data: [] });
+            }
 
 
-
-
-            return
             var strategy_Data = new strategy_model({
                 strategy_name: strategy_name,
                 strategy_description: strategy_description,
@@ -98,12 +99,57 @@ class strategy {
     // EDIT STRATEGY IN A COLLECTION
     async EditStragegy(req, res) {
         try {
-            const { _id, strategy_name, strategy_description, strategy_category, strategy_segment, strategy_indicator, strategy_tester, strategy_amount, strategy_image, strategy_amount_month, strategy_amount_quarterly, strategy_amount_half_early, strategy_amount_early, plans } = req.body;
+            const { _id, strategy_name, strategy_description, strategy_category, strategy_segment, strategy_indicator, strategy_tester, strategy_amount, strategy_image, strategy_amount_month, strategy_amount_quarterly, strategy_amount_half_early, strategy_amount_early ,maker_id} = req.body;
 
             const strategy_check = await strategy_model.findOne({ _id: _id });
             if (!strategy_check) {
                 return res.send({ status: false, msg: 'Strategy Not exist', data: [] });
             }
+
+
+
+            if (!maker_id || maker_id == "" || maker_id == null) {
+                return res.send({ status: false, msg: 'Please Enter Maker Id', data: [] });
+            }
+
+
+            const maker_id_find = await User.findOne({ _id: maker_id });
+            if (!maker_id_find) {
+                return res.send({ status: false, msg: 'Maker Id Is Wrong', data: [] });
+            }
+
+
+
+
+            function checkStringValidity(strategy_name) {
+                // Check if the length of the string is at least 5 characters (to have 4th index)
+                if (strategy_name.length < 5) {
+                    return res.send({ status: false, msg: 'Please Enter Strategy name long', data: [] });
+                }
+
+                // Check if the first three letters are capitalized
+                if (strategy_name.substring(0, 3) !== strategy_name.substring(0, 3).toUpperCase()) {
+                    return res.send({ status: false, msg: 'Please Enter Strategy starting 3 letter Capital', data: [] });
+
+                }
+
+                // Check if there is an underscore (_) at the fourth index
+                if (strategy_name.charAt(3) !== '_') {
+                    return res.send({ status: false, msg: 'Please Enter Strategy name _ is mandatory', data: [] });
+                }
+                if (maker_id_find.prifix_key != strategy_name.substring(0, 3).toUpperCase()) {
+                    return res.send({ status: false, msg: 'Please Enter Strategy starting 3 leter is your prifix letter', data: [] });
+
+                }
+                return true;
+            }
+
+            if (!checkStringValidity(strategy_name)) {
+                return res.send({ status: false, msg: 'Some Issue in strategy', data: [] });
+            }
+
+
+
 
             try {
                 // CHECK IF SAME STRATEGY AONOTHER STRATEG NAME TO SIMLER MATCH
@@ -140,7 +186,8 @@ class strategy {
                     "strategy_amount_quarterly": strategy_amount_quarterly,
                     "strategy_amount_half_early": strategy_amount_half_early,
                     "strategy_amount_early": strategy_amount_early,
-                    "plans": JSON.stringify(plans)
+                    maker_id: maker_id_find._id
+
 
 
                 }
@@ -157,7 +204,7 @@ class strategy {
 
 
         } catch (error) {
-            console.log("Error Strategy Edit error -", error.keyValue);
+            console.log("Error Strategy Edit error -", error);
         }
     }
 
@@ -369,9 +416,6 @@ class strategy {
 
 
 
-            //console.log("duplicateids ",duplicateids)
-
-
 
             const pipeline = [
                 {
@@ -410,7 +454,6 @@ class strategy {
 
             const GetAllClientStrategy = await strategy_client_model.aggregate(pipeline)
 
-            //   console.log("GetAllClientStrategy",GetAllClientStrategy)
 
             const pipeline1 = [
                 {

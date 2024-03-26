@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Profiler } from 'react';
 import { Route, Routes } from "react-router-dom";
 
 import Overview from '../Layouts/Admin/Dashboard/Overview';
@@ -19,7 +19,8 @@ import AddSubadmin from "../Layouts/Admin/Subadmin/AddSubAdmin"
 import EditSubadmin from "../Layouts/Admin/Subadmin/EditSubAdmin"
 import AllSubadmin from "../Layouts/Admin/Subadmin/AllSubAdmin"
 import Lodding from '../Components/ExtraComponents/Lodding';
-
+import Sub from '../Layouts/Admin/Sub/Sub';
+import Profile from '../Layouts/Admin/Profile/Profile';
 
 
 const Admin_Routing = () => {
@@ -36,6 +37,11 @@ const Admin_Routing = () => {
                     <Route exact path="/faqs" element={<Faqs />} />
                     <Route exact path="/message-broadcast" element={<MessageBrodcast />} />
                     <Route exact path="/lodding" element={<Lodding />} />
+                    <Route exact path="/sub" element={<Sub />} />
+                    <Route exact path="/profile" element={<Profile />} />
+
+
+
                     <Route exact path="/dashboard" element={<Overview />} />
                     <Route exact path="/system" element={<System />} />
                     <Route exact path="/payment" element={<Payment />} />

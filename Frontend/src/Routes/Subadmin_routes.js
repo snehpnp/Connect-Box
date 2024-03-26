@@ -9,6 +9,7 @@ import System from '../Layouts/Admin/System/System';
 
 
 
+
 // strategydesc
 
 const SubAdmin_Routing = () => {
@@ -23,6 +24,7 @@ const SubAdmin_Routing = () => {
             <Routes>
                 <Route exact path="/dashboard" element={<Overview />} />
                 <Route exact path="/system" element={<System />} />
+
 
             </Routes>
 

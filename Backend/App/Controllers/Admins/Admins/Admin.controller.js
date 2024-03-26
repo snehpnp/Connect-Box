@@ -229,15 +229,6 @@ class Admin {
   }
 
 
-// Update Admin Profile 
-
-
-
-
-
-
-
-
 }
 
 module.exports = new Admin();

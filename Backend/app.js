@@ -43,7 +43,13 @@ require("./App/Routes")(app)
 
 
 
+const {TokenSymbolUpdate} = require("./App/Utils/Cron.utils")
 
+
+app.get('/tokenget',(req,res)=>{
+  console.log("RUNNNNNN")
+  TokenSymbolUpdate()
+})
 
 
 // Server start
