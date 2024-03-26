@@ -35,30 +35,32 @@ class strategy {
             console.log("strategy_name.length", strategy_name.length)
             function checkStringValidity(strategy_name) {
                 // Check if the length of the string is at least 5 characters (to have 4th index)
-                if (strategy_name.length < 4) {
-                    return false;
+                if (strategy_name.length < 5) {
+                    return res.send({ status: false, msg: 'Please Enter Strategy name long', data: [] });
                 }
 
                 // Check if the first three letters are capitalized
                 if (strategy_name.substring(0, 3) !== strategy_name.substring(0, 3).toUpperCase()) {
-                    return false;
+                    return res.send({ status: false, msg: 'Please Enter Strategy starting 3 letter Capital', data: [] });
+
                 }
 
                 // Check if there is an underscore (_) at the fourth index
                 if (strategy_name.charAt(3) !== '_') {
-                    return false;
+                    return res.send({ status: false, msg: 'Please Enter Strategy name _ is mandatory', data: [] });
                 }
+                if (maker_id_find.prifix_key != strategy_name.substring(0, 3).toUpperCase()) {
+                    return res.send({ status: false, msg: 'Please Enter Strategy starting 3 leter is your prifix letter', data: [] });
 
-                // If all conditions pass, return true
+                }
                 return true;
             }
 
-            console.log(checkStringValidity(strategy_name));
+            if (!checkStringValidity(strategy_name)) {
+                return res.send({ status: false, msg: 'Some Issue in strategy', data: [] });
+            }
 
 
-
-
-            return
             var strategy_Data = new strategy_model({
                 strategy_name: strategy_name,
                 strategy_description: strategy_description,
