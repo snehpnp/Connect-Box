@@ -6,6 +6,9 @@ module.exports = function (app) {
     app.use(require("./Admin/Admin.routes"));
 
 
- 
+    //msg broadcast 
+    app.use(require("./Msg_Broadcast/Msg.routes"));
+
+
 
 };

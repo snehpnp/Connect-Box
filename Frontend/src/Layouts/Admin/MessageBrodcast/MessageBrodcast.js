@@ -1,65 +1,135 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import Content from '../../../Components/Dashboard/Content/Content';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-function MessageBrodcast() {
+function MessageBroadcast() {
+    const [messages, setMessages] = useState([]);
+    const [strategies, setStrategies] = useState([]);
+    const [selectedStrategy, setSelectedStrategy] = useState('');
+    const [messageText, setMessageText] = useState('');
+    const navigate = useNavigate();
 
-    const columns = [
-        { label: 'Invoice No', field: 'invoiceNo' },
-        { label: 'Category', field: 'category' },
-        { label: 'Created On', field: 'createdOn' },
-        { label: 'Total Amount', field: 'totalAmount' },
-        { label: 'Paid Amount', field: 'paidAmount' },
-        { label: 'Payment Mode', field: 'paymentMode' },
-        { label: 'Balance', field: 'balance' },
-        { label: 'Due Date', field: 'dueDate' },
-        { label: 'Status', field: 'status' }
-    ];
+    useEffect(() => {
+        fetchStrategies();
+    }, []);
 
-    const rows = [
-        { invoiceNo: '#4987', category: 'Food', createdOn: '23 Mar 2023', totalAmount: '$1,54,220', paidAmount: '$1,50,000', paymentMode: 'Cash', balance: '$2,54,00', dueDate: '25 Mar 2023', status: <span className="badge bg-success-light">Paid</span> },
-        { invoiceNo: '#4987', category: 'Food', createdOn: '23 Mar 2023', totalAmount: '$1,54,220', paidAmount: '$1,50,000', paymentMode: 'Cash', balance: '$2,54,00', dueDate: '25 Mar 2023', status: <span className="badge bg-success-light">Paid</span> },
-        { invoiceNo: '#4987', category: 'Food', createdOn: '23 Mar 2023', totalAmount: '$1,54,220', paidAmount: '$1,50,000', paymentMode: 'Cash', balance: '$2,54,00', dueDate: '25 Mar 2023', status: <span className="badge bg-success-light">Paid</span> },
-        { invoiceNo: '#4987', category: 'Food', createdOn: '23 Mar 2023', totalAmount: '$1,54,220', paidAmount: '$1,50,000', paymentMode: 'Cash', balance: '$2,54,00', dueDate: '25 Mar 2023', status: <span className="badge bg-success-light">Paid</span> },
-        { invoiceNo: '#4987', category: 'Food', createdOn: '23 Mar 2023', totalAmount: '$1,54,220', paidAmount: '$1,50,000', paymentMode: 'Cash', balance: '$2,54,00', dueDate: '25 Mar 2023', status: <span className="badge bg-success-light">Paid</span> },
-        { invoiceNo: '#4987', category: 'Food', createdOn: '23 Mar 2023', totalAmount: '$1,54,220', paidAmount: '$1,50,000', paymentMode: 'Cash', balance: '$2,54,00', dueDate: '25 Mar 2023', status: <span className="badge bg-success-light">Paid</span> }
+    const fetchStrategies = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/getStrategy');
+            setStrategies(response.data.data);
+        } catch (error) {
+            console.error('Error fetching strategies:', error);
+        }
+    };
 
-    ];
+    const sendMessage = () => {
+        const selectedStrategyObject = strategies.find(strategy => strategy.strategyname === selectedStrategy);
+        if (selectedStrategyObject) {
+            const newMessage = {
+                id: messages.length + 1,
+                subAdminName: selectedStrategyObject.name,
+                strategy: selectedStrategy,
+                message: messageText,
+                status: "Sent"
+            };
+            setMessages([...messages, newMessage]);
+            console.log("subAdminName", newMessage.subAdminName);
+        }
+    };
+
+    const handleStrategyChange = (e) => {
+        setSelectedStrategy(e.target.value);
+    };
+
+    const handleMessageChange = (e) => {
+        setMessageText(e.target.value);
+    };
 
     return (
         <>
-            <div className="table-responsive">
-                <table className="table table-stripped table-hover datatable">
-                    <thead className="thead-light">
-                        <tr>
-                            {columns.map((column, index) => (
-                                <th key={index}>
-                                    <label className="custom_check">
-                                        <input type="checkbox" name="invoice" />
-                                        <span className="checkmark" />
-                                    </label>
-                                    {column.label}
-                                </th>
-                            ))}
-                            <th className="text-end">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rows.map((row, rowIndex) => (
-                            <tr key={rowIndex}>
-                                {columns.map((column, colIndex) => (
-                                    <td key={colIndex}>
-                                        {row[column.field]}
-                                    </td>
-                                ))}
-                                <td>
-                                    {/* Dropdown actions here */}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            <Content
+                Page_title="All Subadmins"
+                Card_title="All Subadmins"
+                Card_title_icon='fas fa-user pe-3'
+                Content={
+                    <>
+                        <div className="mt-3">
+                            <label className="form-label" htmlFor="search-focus form1">Strategy</label>
+                            <div className="input-group">
+                                <select
+                                    className="form-control"
+                                    value={selectedStrategy}
+                                    onChange={handleStrategyChange}
+                                >
+                                    <option value="">Select Strategy</option>
+                                    {strategies.map(strategy => (
+                                        <option key={strategy._id} value={strategy.strategyname}>{strategy.strategyname}</option>
+                                    ))}
+                                </select>
+                                <button type="button" className="btn btn-primary" onClick={sendMessage}>
+                                    <i className="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="mt-3">
+                            <label className="form-label" htmlFor="search-focus form1">Broker</label>
+                            <div className="input-group">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="search-focus form1"
+                                />
+                                <button type="button" className="btn btn-primary">
+                                    <i className="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+
+
+                        <div className="mt-3">
+                            <label className="form-label" htmlFor="message">Message</label>
+                            <textarea
+                                id="message"
+                                className="form-control"
+                                rows="4"
+                                value={messageText}
+                                onChange={handleMessageChange}
+                            ></textarea>
+                        </div>
+                        <button type="button" className="btn btn-primary mt-3" onClick={sendMessage}>Send</button>
+
+                        <div className="mt-3">
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">S.No</th>
+                                        <th scope="col">Sub-Admin Name</th>
+                                        <th scope="col">Strategy</th>
+                                        <th scope='col'>Broker</th>
+                                        <th scope="col">Message</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {messages && messages.map((message, index) => (
+                                        <tr key={message.id}>
+                                            <th scope="row">{index + 1}</th>
+                                            <td>{message.subAdminName}</td>
+                                            <td>{message.strategy}</td>
+                                            <td>{message.message}</td>
+                                            <td>{message.status}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </>
+                }
+            />
         </>
     );
 }
 
-export default MessageBrodcast;
+export default MessageBroadcast;
