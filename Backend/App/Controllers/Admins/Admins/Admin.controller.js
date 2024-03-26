@@ -4,18 +4,9 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const db = require("../../../Models");
 const User_model = db.user;
-const user_logs = db.user_logs;
-const Role_model = db.role;
 const Company_info = db.company_information;
-const strategy_client = db.strategy_client;
-const groupService_User = db.groupService_User;
-const client_services = db.client_services;
-const serviceGroup_services_id = db.serviceGroup_services_id;
-const count_licenses = db.count_licenses;
-const user_activity_logs = db.user_activity_logs;
-const strategy = db.strategy;
-const serviceGroupName = db.serviceGroupName;
-const Subadmin_Permission = db.Subadmin_Permission;
+
+const ApiCreateInfo = db.api_create_info;
 
 const { firstOptPass } = require("../../../Helpers/Email_formate/first_login");
 
@@ -227,6 +218,35 @@ class Admin {
       res.send({ msg: "Error=>", error });
     }
   }
+
+
+
+  async GetAll_Broker_details(req, res) {
+    try {
+        // THEME LIST DATA
+        console.log("RUNNNN")
+        const getAllpanel = await ApiCreateInfo
+            .find({}).select("title  broker_id _id ")
+
+
+        // IF DATA NOT EXIST
+        if (getAllpanel.length == 0) {
+            res.send({ status: false, msg: "Empty data", data: getAllpanel })
+        }
+
+        // DATA GET SUCCESSFULLY
+        res.send({
+            status: true,
+            msg: "Get All Api Info",
+            data: getAllpanel,
+        })
+
+
+    } catch (error) {
+        console.log("Error Get all Info error-", error);
+    }
+}
+
 
 
 }
