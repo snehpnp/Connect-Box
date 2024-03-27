@@ -22,6 +22,7 @@ import Lodding from '../Components/ExtraComponents/Lodding';
 import Sub from '../Layouts/Admin/Sub/Sub';
 import Profile from '../Layouts/Admin/Profile/Profile';
 import Tabe from '../Layouts/Admin/Tabe/Tabe';
+import Tabes from '../Layouts/Admin/Tabes/Tabes';
 
 
 const Admin_Routing = () => {
@@ -40,7 +41,9 @@ const Admin_Routing = () => {
                     <Route exact path="/lodding" element={<Lodding />} />
                     <Route exact path="/sub" element={<Sub />} />
                      <Route exact path="/profile" element={<Profile />} />
-                    <Route exact path="/tabe" element={<Tabe />} />                  
+                    <Route exact path="/tabe" element={<Tabe />} /> 
+                    <Route exact path="/tabes" element={<Tabes />} />    
+
  
  
                     <Route exact path="/dashboard" element={<Overview />} />

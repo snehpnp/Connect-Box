@@ -19,14 +19,16 @@
     padding: 0;
     margin: 0
 }
-a
-{
-    text-decoration:none !important;
-}
-ul{
 
-    padding-left:0px !important;
+a {
+    text-decoration: none !important;
 }
+
+ul {
+
+    padding-left: 0px !important;
+}
+
 .css-equal-content {
     color: red;
     float: left
@@ -741,10 +743,10 @@ body {
     font-size: 14px !important;
     color: #878a99 !important;
     line-height: 1.5;
-   
+
 }
-[data-layout-mode=light] body 
-{
+
+[data-layout-mode=light] body {
     background-color: #f7f8f9 !important;
 }
 
@@ -1623,7 +1625,7 @@ div#global-loader,
 .btn-outline-primary:hover {
     background-color: #7539ff !important;
     border-color: #7539ff !important;
-    color:#fff !important;
+    color: #fff !important;
 }
 
 .btn-check:focus+.btn-primary,
@@ -3774,6 +3776,11 @@ div.dataTables_wrapper div.dataTables_filter label i {
     font-size: 14px
 }
 
+.user-menu .dropdown-menu .dev {
+    padding: 2px 15px;
+    font-size: 14px;
+}
+
 .user-menu .dropdown-menu .dropdown-item:hover {
     color: #fff;
     text-decoration: none;
@@ -5305,13 +5312,14 @@ span.select2-container.select2-container--default.select2-container--open {
     border-radius: 4px
 }
 
- .nav-link {
+.nav-link {
     color: #888 !important;
     font-size: 16px !important;
     padding: 15px 20px !important;
     border: 1px solid #e7e3e3 !important;
     border-radius: 0;
 }
+
 .card-buttons p {
     margin-bottom: 20px
 }
@@ -8006,11 +8014,12 @@ table .badge {
 [data-layout-mode=dark] body #add_package .modal-body ul li h6.active,
 [data-layout-mode=dark] body .file-link .print-link:hover,
 [data-layout-mode=dark] body .file-link .download-link:hover,
-[data-layout-mode=dark] body .MuiButton-sizeMedium  {
+[data-layout-mode=dark] body .MuiButton-sizeMedium {
     border-color: rgba(117, 57, 255, .3);
     background: rgba(117, 57, 255, .3);
     color: #7539ff;
 }
+
 [data-layout-mode=light] body .btn-primary,
 [data-layout-mode=light] body .pagination li.active a.page-link,
 [data-layout-mode=light] body .nav-pills .nav-link.active,
@@ -8025,6 +8034,7 @@ table .badge {
     box-shadow: inset 0 0 0 0 #fff;
     border-radius: 4px;
 }
+
 [data-layout-mode=dark] body .btn-primary:hover,
 [data-layout-mode=dark] body .pagination li.active a.page-link:hover,
 [data-layout-mode=dark] body .nav-pills .nav-link.active:hover,
@@ -31450,14 +31460,14 @@ td .invoice-detail i {
     transition: .5s all
 }
 
- .super-admin-dashboard .dash-user-card {
+.super-admin-dashboard .dash-user-card {
     background: #7539ff;
     padding: 24px;
     border-radius: 10px;
     position: relative;
     z-index: 1;
     margin-bottom: 24px;
-    text-align:left;
+    text-align: left;
 }
 
 .super-admin-dashboard .dash-user-card h4 {
@@ -32267,13 +32277,14 @@ td .invoice-detail i {
     right: 205px;
     z-index: 999;
 }
-  .theme-switch input { 
+
+.theme-switch input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
+}
 
-  .theme-switch .slider {
+.theme-switch .slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -32284,8 +32295,9 @@ td .invoice-detail i {
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 34px;
-  }
-  .theme-switch .slider:before {
+}
+
+.theme-switch .slider:before {
     position: absolute;
     content: '';
     height: 26px;
@@ -32298,7 +32310,7 @@ td .invoice-detail i {
     transition: .4s;
     border-radius: 50%;
     font-family: "Font Awesome 5 Free";
-   
+
     content: "\f185";
     background-color: #222;
     color: #fff;
@@ -32308,7 +32320,7 @@ td .invoice-detail i {
     justify-content: center;
 }
 
-.theme-switch input:checked + .slider:before {
+.theme-switch input:checked+.slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
@@ -32321,39 +32333,41 @@ td .invoice-detail i {
     text-align: center;
 }
 
-  .theme-switch input:checked + .slider {
-    background-color: #383838; /* Background color for light theme */
-  }
-  [data-layout-mode=light] body .table thead {
-    background: linear-gradient(320deg,#DDCEFF 0%,#DBECFF 100%);
+.theme-switch input:checked+.slider {
+    background-color: #383838;
+    /* Background color for light theme */
+}
+
+[data-layout-mode=light] body .table thead {
+    background: linear-gradient(320deg, #DDCEFF 0%, #DBECFF 100%);
     border-bottom: 0;
     vertical-align: middle;
     white-space: nowrap;
-    width: 100%!important;
-    --bs-table-bg:linear-gradient(320deg,#DDCEFF 0%,#DBECFF 100%) !important; 
+    width: 100% !important;
+    --bs-table-bg: linear-gradient(320deg, #DDCEFF 0%, #DBECFF 100%) !important;
 }
 
 [data-layout-mode=light] body .nav-tabs .nav-link.active {
     color: #495057 !important;
-    background:linear-gradient(320deg,#DDCEFF 0%,#DBECFF 100%) !important;
+    background: linear-gradient(320deg, #DDCEFF 0%, #DBECFF 100%) !important;
     /* border-color: #dee2e6 #dee2e6 #fff; */
 }
 
-[data-layout-mode=dark] body .css-ysrc8t-MuiPaper-root-MuiCard-root
-{
+[data-layout-mode=dark] body .css-ysrc8t-MuiPaper-root-MuiCard-root {
     background-color: #16191c !important;
     border: 1px solid #2e3840;
     --bs-table-bg: #16191c !important;
 }
-[data-layout-mode=dark] body .MuiDataGrid-columnHeaderTitle, 
+
+[data-layout-mode=dark] body .MuiDataGrid-columnHeaderTitle,
 [data-layout-mode=dark] body .MuiDataGrid-cellContent,
 [data-layout-mode=dark] body .MuiDataGrid-columnHeaderTitleContainer,
 [data-layout-mode=dark] body .MuiDataGrid-checkboxInput,
 [data-layout-mode=dark] body .MuiIconButton-root {
     color: #aaa;
 }
-.gif-div iframe
-{
+
+.gif-div iframe {
     width: 100%;
     height: 100%;
 }
@@ -32375,59 +32389,61 @@ td .invoice-detail i {
     top: 0;
     background: #f1ebff;
     border-radius: 0 50%;
-.center {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #000;
+
+    .center {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #000;
+    }
+
+    .wave {
+        width: 5px;
+        height: 100px;
+        background: linear-gradient(45deg, cyan, #fff);
+        margin: 10px;
+        animation: wave 1s linear infinite;
+        border-radius: 20px;
+    }
+
+    .wave:nth-child(2) {
+        animation-delay: 0.1s;
+    }
+
+    .wave:nth-child(3) {
+        animation-delay: 0.2s;
+    }
+
+    .wave:nth-child(4) {
+        animation-delay: 0.3s;
+    }
+
+    .wave:nth-child(5) {
+        animation-delay: 0.4s;
+    }
+
+    .wave:nth-child(6) {
+        animation-delay: 0.5s;
+    }
+
+    .wave:nth-child(7) {
+        animation-delay: 0.6s;
+    }
+
+    .wave:nth-child(8) {
+        animation-delay: 0.7s;
+    }
+
+    .wave:nth-child(9) {
+        animation-delay: 0.8s;
+    }
+
+    .wave:nth-child(10) {
+        animation-delay: 0.9s;
+    }
 }
 
-.wave {
-    width: 5px;
-    height: 100px;
-    background: linear-gradient(45deg, cyan, #fff);
-    margin: 10px;
-    animation: wave 1s linear infinite;
-    border-radius: 20px;
-}
-
-.wave:nth-child(2) {
-    animation-delay: 0.1s;
-}
-
-.wave:nth-child(3) {
-    animation-delay: 0.2s;
-}
-
-.wave:nth-child(4) {
-    animation-delay: 0.3s;
-}
-
-.wave:nth-child(5) {
-    animation-delay: 0.4s;
-}
-
-.wave:nth-child(6) {
-    animation-delay: 0.5s;
-}
-
-.wave:nth-child(7) {
-    animation-delay: 0.6s;
-}
-
-.wave:nth-child(8) {
-    animation-delay: 0.7s;
-}
-
-.wave:nth-child(9) {
-    animation-delay: 0.8s;
-}
-
-.wave:nth-child(10) {
-    animation-delay: 0.9s;
-}
-}
 @keyframes wave {
     0% {
         transform: scale(0);
@@ -32442,12 +32458,26 @@ td .invoice-detail i {
     }
 }
 
-.card{
-    height:100%;
+.card {
+    height: 100%;
 }
 
 .custom-data-grid .MuiDataGrid-withBorderColor {
-   border-color: rgb(235 215 215 / 27%) !important;
+    border-color: rgb(235 215 215 / 27%) !important;
 }
 
- 
+
+.modal-dialog {
+    position: absolute;
+    /* Modal ke parent element ko absolute position de den */
+    z-index: 9999;
+    /* Modal ko table se oopar laane ke liye higher z-index de den */
+    top: 0;
+    /* Modal ko table ke top se set karen */
+    left: 0;
+    /* Modal ko table ke left se set karen */
+    margin-top: 20px;
+    /* Modal ko table se thoda aage set karne ke liye margin ka use karen */
+    margin-left: 20px;
+    /* Modal ko table se thoda aage set karne ke liye margin ka use karen */
+}

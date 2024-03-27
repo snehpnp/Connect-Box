@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const DropDown = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -14,18 +15,19 @@ const DropDown = () => {
         }
     };
 
-    const LogoutUser = () => {
-        console.log("RUNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN")
+    const LogoutUser = (e) => {
+        e.stopPropagation(); // Stop event propagation
+        console.log("LogoutUser function is called");
         localStorage.clear();
         window.location.reload();
     };
 
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
+    // useEffect(() => {
+    //     document.addEventListener('mousedown', handleClickOutside);
+    //     return () => {
+    //         document.removeEventListener('mousedown', handleClickOutside);
+    //     };
+    // }, []);  
 
     return (
         <div className="mb-0 dropdown custom-dropdown">
@@ -50,36 +52,28 @@ const DropDown = () => {
                             <span className="user-name">Chandra Prakash</span>
                         </span>
                     </a>
-                    <div className={`dropdown-menu menu-drop-user ${isDropdownOpen ? 'show' : ''}`}>
+                    <div style={{ height: "144px" }} className={`dropdown-menu menu-drop-user ${isDropdownOpen ? 'show' : ''}`}>
                         <div className="profilemenu table table-hover">
                             <div className="subscription-menu">
                                 <ul>
                                     <li>
-                                        <a className="dropdown-item" href="profile.html">
+                                        <Link className="dropdown-item dev" to="/Admin/profile">
                                             Profile
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li>
-                                        <a className="dropdown-item" >
+                                        <Link className="dropdown-item dev" to="/settings">
                                             Settings
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li>
-                                        <a className="dropdown-item"  onClick={LogoutUser}>
-                                        Log out
+                                        <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
+                                            Log out
                                         </a>
+
                                     </li>
                                 </ul>
                             </div>
-                            {/* <div className="subscription-logout">
-                                <ul>
-                                    <li className="pb-0">
-                                        <button className="btn btn-primary  w-100" onClick={LogoutUser}>
-                                            Log out 1
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div> */}
                         </div>
                     </div>
                 </li>
