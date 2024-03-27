@@ -1,4 +1,4 @@
-import React, { Profiler } from 'react';
+import React from 'react';
 import { Route, Routes } from "react-router-dom";
 
 import Overview from '../Layouts/Admin/Dashboard/Overview';
