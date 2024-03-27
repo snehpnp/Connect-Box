@@ -24,6 +24,10 @@ import Profile from '../Layouts/Admin/Profile/Profile';
 import Tabe from '../Layouts/Admin/Tabe/Tabe';
 
 
+import SubAdCompanyInfo from '../Layouts/Admin/SubAdminCompany/SubAdCompanyInfo';
+
+
+
 const Admin_Routing = () => {
     return (
         <>
@@ -39,6 +43,10 @@ const Admin_Routing = () => {
                     <Route exact path="/message-broadcast" element={<MessageBrodcast />} />
                     <Route exact path="/lodding" element={<Lodding />} />
                     <Route exact path="/sub" element={<Sub />} />
+
+                    <Route exact path="/subadmin/company" element={<SubAdCompanyInfo />} />
+
+
                      <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/tabe" element={<Tabe />} />                  
  
