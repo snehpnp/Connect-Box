@@ -8,6 +8,10 @@ const { AddAdmin,GetAll_Broker_details } = require('../../Controllers/Admins/Adm
 
 const { EditCompany, GetCompanyInfo, GetCompany_logo, EditEmailInfo } = require('../../Controllers/Admins/Admins/company.controller')
 
+
+const { EditSubAdminCompany, GetAllCompanyInfo,GetCompanyInfoById} = require('../../Controllers/Admins/Admins/SubadminCompany.controller')
+
+
 // USER ADD EDIT
 router.post('/admin/add', AddAdmin);
 
@@ -21,6 +25,13 @@ router.post('/company/edit', EditCompany);
 
 
 router.get('/broker/get', GetAll_Broker_details);
+
+router.post('/subadmin/company/edit', EditSubAdminCompany);
+router.post('/subadmin/company/getall', GetAllCompanyInfo);
+router.post('/subadmin/company/getone', GetCompanyInfoById);
+
+
+
 
 
 

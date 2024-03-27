@@ -5,6 +5,7 @@ const company_information = db.company_information
 
 class Company {
 
+    
     // EDIT COMPANY INFORMATION
     async EditCompany(req, res) {
         try {
@@ -91,6 +92,12 @@ class Company {
             console.log("Error Edit Email Information-", error);
         }
     }
+
+
+
+
+
+
 
 }
 

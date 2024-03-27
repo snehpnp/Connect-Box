@@ -15,17 +15,24 @@ const FAQs = () => {
     };
 
     return (
-        <div className="faq-container" onMouseMove={handleMouseMove}>
+        <div className="" onMouseMove={handleMouseMove}>
 
 
-            <div class="container">
-                <h1 className="faq-heading">Frequently Asked Questions</h1>
+            <div class="content container-fluid">
+               
+<div className='card flex-fill bg-white'>
+<div class="card-header d-flex justify-content-between align-items-center border-bottom"><h5 class="card-title mb-0 w-auto"> <i class="fas fa-image pe-2"></i>Frequently Asked Questions</h5>
 
+    
+   </div> 
+    <div className='card-body'>
+
+    
                 <div class="row">
 
                     <div class="col">
 
-                        <img src="/assets/img/gif/FAQs-bro.png" />
+                        <img src="/assets/img/gif/FAQ.png" />
 
                     </div>
 
@@ -52,7 +59,8 @@ const FAQs = () => {
 
             </div>
 
-
+            </div>
+</div>
 
         </div>
     );

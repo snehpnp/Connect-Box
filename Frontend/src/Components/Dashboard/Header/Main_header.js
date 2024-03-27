@@ -33,7 +33,7 @@ const Main_Header = () => {
     // Update localStorage value
     localStorage.setItem('theme_mode', htmlElement.getAttribute('data-sidebar'));
 
-window.location.reload()
+    window.location.reload()
 
   };
 
@@ -55,14 +55,14 @@ window.location.reload()
           <div className="logo-white">
             <a href="index.html">
               <img
-                src="assets/img/logo-full-white.png"
+                src="https://www.pnpuniverse.com/images/logo/pnp.png"
                 className="img-fluid logo-blue"
                 alt="Logo"
               />
             </a>
             <a href="index.html">
               <img
-                src="assets/img/logo-small-white.png"
+                src="https://www.pnpuniverse.com/images/logo/pnp.png"
                 className="img-fluid logo-small"
                 alt="Logo"
               />
@@ -71,14 +71,14 @@ window.location.reload()
           <div className="logo-color">
             <a href="index.html">
               <img
-                src="assets/img/logo.png"
+                src="https://www.pnpuniverse.com/images/logo/pnp.png"
                 className="img-fluid logo-blue"
                 alt="Logo"
               />
             </a>
             <a href="index.html">
               <img
-                src="assets/img/logo-small.png"
+                src="https://www.pnpuniverse.com/images/logo/pnp.png"
                 className="img-fluid logo-small"
                 alt="Logo"
               />
@@ -106,7 +106,7 @@ window.location.reload()
 
         {/* Drop Down Btn */}
         <DrapDown />
-        
+
       </div>
     </div>
   );
