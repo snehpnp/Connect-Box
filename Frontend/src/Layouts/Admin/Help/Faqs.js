@@ -37,7 +37,7 @@ const FAQs = () => {
                                     <span className="question-text">{faq.question}</span>
                                     <span className="icon">{activeIndex === index ? '-' : '+'}</span>
                                 </div>
-                                <div className={`answer ${activeIndex === index ? 'show' : ''}`}>
+                                <div className={`answer ${activeIndex === index ? 'shown' : ''}`}>
                                     <p><b>{faq.answer}</b></p>
                                     <a href={faq.link}>Learn More</a>
                                 </div>

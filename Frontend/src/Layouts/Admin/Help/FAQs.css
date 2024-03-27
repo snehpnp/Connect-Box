@@ -56,8 +56,8 @@
   transition: max-height 0.3s ease;
 }
 
-.show {
-  /* max-height: 200px; */
+.shown {
+  max-height: 200px;
 }
 
 .snake {
