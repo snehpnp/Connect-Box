@@ -1,18 +1,25 @@
-import React from 'react';
-import DynamicForm from '../../../Components/ExtraComponents/forms/FormField';
 
+import DynamicForm from '../../../Components/ExtraComponents/forms/FormField';
 import { useFormik } from 'formik';
+import axios from 'axios'; // Ensure Axios is imported
+import * as Yup from 'yup';
 
 const AddClient = () => {
-  
-const userDetails = JSON.parse(localStorage.getItem("user_details"));
-// Check if userDetails exists and has Role property
-const Role = userDetails?.Role;
-const user_id = userDetails?.user_id;
-const user_token = userDetails?.token;
+  const userDetails = JSON.parse(localStorage.getItem("user_details"));
+  const Role = userDetails?.Role;
+  const user_id = userDetails?.user_id;
+  const user_token = userDetails?.token;
 
-console.log("roles 11:-", Role);
-
+  const validationSchema = Yup.object().shape({
+    fullName: Yup.string().required('Full Name is required'),
+    username: Yup.string().required('Username is required'),
+    email: Yup.string().email('Invalid email').required('Email is required'),
+    phone: Yup.string().required('Phone No is required'),
+    balance: Yup.string().required('Balance is required'),
+    password: Yup.string().required('Password is required'),
+    prifix_key: Yup.string().required('Prefix Key is required'),
+    subadmin_servic_type: Yup.string().required('Subadmin Service Type is required'),
+  });
 
   const fields = [
     { name: 'fullName', label: 'FullName', type: 'text', label_size: 6, col_size: 6, disable: false },
@@ -35,16 +42,15 @@ console.log("roles 11:-", Role);
 
   const ProfileShow = 1;
 
-
   const formik = useFormik({
     initialValues: {
-      fullName: null,
-      username: null,
-      email: null,
-      phone: null,
-      balance: null,
-      password: null,
-      prifix_key: null,
+      fullName: '',
+      username: '',
+      email: '',
+      phone: '',
+      balance: '',
+      password: '',
+      prifix_key: '',
       subadmin_servic_type: '0',
       strategy_Percentage: '0',
       Per_trade: '0',
@@ -52,88 +58,56 @@ console.log("roles 11:-", Role);
       parent_role: null,
 
     },
-    validate: (values) => {
-
-      const errors = {};
-      // if (!values.username && formik.touched.username) {
-      //   errors.username = valid_err.USERNAME_ERROR;
-      // }
-      // if (!values.fullName && formik.touched.fullName) {
-      //   errors.fullName = valid_err.FULLNAME_ERROR;
-      // }
-      // else if (!isValidName(values.fullName) && formik.touched.fullName) {
-      //   errors.fullName = valid_err.INVALID_ERROR;
-      // }
-      // if (!values.mobile && formik.touched.mobile) {
-      //   errors.mobile = valid_err.CONTACT_ERROR;
-      // } else if (!isValidContact(values.mobile) && formik.touched.mobile) {
-      //   errors.mobile = valid_err.INVALID_CONTACT_ERROR;
-      // }
-      // if (!values.email && formik.touched.email) {
-      //   errors.email = valid_err.EMPTY_EMAIL_ERROR;
-      // } else if (!isValidEmail(values.email) && formik.touched.email) {
-      //   errors.email = valid_err.INVALID_EMAIL_ERROR;
-      // }
-
-
-
-
+    validate: () => {
+      const errors = {
+      };
       return errors;
     },
-    onSubmit: async (values) => {
-      const req = {
-        "FullName": values.fullName,
-        "UserName": values.username,
-        "Email": values.email,
-        "PhoneNo": values.mobile,
-        "prifix_key": values.prifix_key,
-        "password": values.password,
-        "balance": values.balance,
-        "subadmin_servic_type": values.subadmin_servic_type,
-        "strategy_Percentage": values.strategy_Percentage,
-        "Per_trade": values.Per_trade,
-        "parent_id": values.parent_id == null || values.parent_id === "" ? user_id : values.parent_id,
-        "parent_role": values.parent_id == null || values.parent_id === "" ? "ADMIN" : "SUBADMIN",
-  
+    validationSchema:validationSchema,
+    onSubmit: async (values, { setSubmitting }) => {
+      // console.log("Submitting form data:", values);
+      const payload = {
+        ProfileImg: '',
+        FullName: values.fullName,
+        UserName: values.username,
+        Email: values.email,
+        PhoneNo: values.phone,
+        Balance: values.balance,
+        subadmin_service_type: values.subadmin_servic_type,
+        strategy_Percentage: values.strategy_Percentage,
+        Per_trade: values.Per_trade,
+        prifix_key: values.prifix_key,
+        password: values.password,
+        parent_id: user_id || "65feb434ce02a722ac3b997d",
+        parent_role: Role || "ADMIN",
+      };
+      console.log("PAYLOAD",payload)
+      setSubmitting(false);
+      try {
+        const response = await axios.post('http://localhost:7000/subadmin/add', payload, {
+          headers: { 'Content-Type': 'application/json' }
+        });
+        console.log("Response from AddSubAdmin:", response.data);
+      } catch (error) {
+        console.error("Error adding subadmin:", error);
+      } finally {
+        setSubmitting(false); // Reset the form submission state
       }
-
-      console.log("req",req)
-
-
-      // await dispatch(Add_User({ req: req, token: user_token })).unwrap().then((response) => {
-      //   if (response.status === 409) {
-      //     toast.error(response.data.msg);
-      //   }
-      //   else if (response.status) {
-      //     toast.success(response.msg);
-      //     setTimeout(() => {
-      //       navigate("/admin/allclients")
-      //     }, 1000);
-      //   }
-      //   else if (!response.status) {
-      //     toast.error(response.msg);
-      //   }
-      // })
     }
   });
 
-
+  console.log("Formik values:", formik.values); 
+  console.log("Formik errors:", formik.errors); 
 
   return (
-    <>
-
-      <DynamicForm
-        ProfileShow={ProfileShow}
-        fields={fields}
-        page_title="Add Subadmin"
-        btn_name="Add Subadmin"
-        btn_name1="Cancel"
-        formik={formik}
-
-      />
-    </>
-
+    <DynamicForm
+      ProfileShow={ProfileShow}
+      fields={fields}
+      page_title="Add Subadmin"
+      btn_name="Add Subadmin"
+      btn_name1="Cancel"
+      formik={formik}
+    />
   );
 };
-
 export default AddClient;
