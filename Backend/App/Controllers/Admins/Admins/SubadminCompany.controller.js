@@ -52,6 +52,30 @@ class SubAdminCompany {
             return res.status(500).json({ status: false, msg: 'Internal Server Error', data: [] });
         }
     }
+
+
+    // GET COMPANY DETAILS BY ID
+    async GetCompanyInfoById(req, res) {
+        try {
+            const {id} = req.body; // Assuming the ID is passed as a route parameter
+
+            if (!id) {
+                return res.status(400).json({ status: false, msg: 'Please provide an ID.', data: [] });
+            }
+
+            const companyInfo = await SubAdminCompanyInfo.findById(id);
+
+            if (!companyInfo) {
+                return res.status(404).json({ status: false, msg: 'Company information not found for the provided ID.', data: [] });
+            }
+
+            return res.json({ status: true, msg: 'Company information retrieved successfully.', data: companyInfo });
+        } catch (error) {
+            console.error("Error fetching company information:", error);
+            return res.status(500).json({ status: false, msg: 'Internal Server Error', data: [] });
+        }
+    }
+
 }
 
 module.exports = new SubAdminCompany();
