@@ -73,15 +73,7 @@ const CompanySchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    theme_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'theme_list',
-        default: null
-    },
-    theme_name: {
-        type: String,
-        required: true
-    },
+
     Balance: {
         type: Number
     },

@@ -49,7 +49,7 @@ const Sub = () => {
             amount: '$19.99',
             registeredOn: '15 Jan 2024',
             expiringOn: '15 Feb 2024',
-            status: 'UnPaid', // Changed to text
+            status: 'Overdue', // Changed to text
             invoice: <a href="invoice-subscription.html" className="invoice-detail"><i className="fe fe-file-text" /></a> // Changed to static icon
         },
         {
