@@ -32450,4 +32450,42 @@ td .invoice-detail i {
    border-color: rgb(235 215 215 / 27%) !important;
 }
 
- 
+.css-t89xny-MuiDataGrid-columnHeaderTitle {
+
+  
+    font-family:'Inter';
+    font-size: 16px;
+    font-weight: 500;
+}
+[data-layout-mode=dark] body .css-t89xny-MuiDataGrid-columnHeaderTitle {
+    color: #fff !important;
+}
+[data-layout-mode=dark] body .css-204u17-MuiDataGrid-main {
+    border: 1px solid #aaa;
+}
+ .css-204u17-MuiDataGrid-main {
+    border: 1px solid #aaa;
+}
+
+.MuiDataGrid-cellContent {
+   
+    font-family: 'Inter';
+    font-size: 16px;
+}
+span.badge.bg-success-light {
+    font-size: 14px;
+    font-family: 'Inter';
+}
+[data-layout-mode=dark] body .css-qvtrhg-MuiDataGrid-virtualScroller {
+    background: #16191c;
+}
+[data-layout-mode=light] body .MuiDataGrid-columnHeaders {
+    background: linear-gradient(320deg, #DDCEFF 0%, #DBECFF 100%);
+}
+button.btn.btn-primary a{
+color:#fff;
+}
+.answer.show{
+    max-height: 200px;
+    padding: 20px 80px 20px 20px;
+}
