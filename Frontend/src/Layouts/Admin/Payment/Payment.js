@@ -3,11 +3,16 @@ import { fetchSubadminCompanyInfo } from "../../../ReduxStore/Slice/Admin/SubAdm
 import { useDispatch } from "react-redux";
 import Content from '../../../Components/Dashboard/Content/Content';
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
+import Loader from '../../../Utils/Loader';
+
 
 
 function Payment() {
   const dispatch = useDispatch();
-  const [companyData, setCompanyData] = useState([]);
+  const [companyData, setCompanyData] = useState({
+    loading: false,
+    data: [],
+  });
 
   const styles = {
     container: {
@@ -107,16 +112,23 @@ function Payment() {
   const getCompanyData = async () => {
     try {
       const response = await dispatch(fetchSubadminCompanyInfo()).unwrap();
-      console.log("response", response.data)
+
       if (response.status) {
         const formattedData = response.data.map((row, index) => ({
           ...row,
           id: index + 1,
         }));
-        setCompanyData(formattedData);
+        setCompanyData({
+          loading: true,
+          data: formattedData,
+        });
       }
     } catch (error) {
       console.log("Error", error);
+      setCompanyData({
+        loading: false,
+        data: [],
+      });
     }
   };
 
@@ -127,18 +139,23 @@ function Payment() {
 
   return (
     <>
-      <Content
-        Card_title="Payment Details"
-        button_title="Add"
-        Card_title_icon='fas fa-image pe-2'
-        Content={
-          <FullDataTable
-            styles={styles}
-            columns={columns}
-            rows={companyData}
-          />
-        }
-      />
+      {companyData.loading ? (
+        <Content
+          Card_title="Payment Details"
+
+          Card_title_icon='fas fa-image pe-2'
+          Content={
+            <FullDataTable
+              styles={styles}
+              columns={columns}
+              rows={companyData.data}
+            />
+          }
+        />
+      ) : (
+        <Loader />
+      )}
+
     </>
   );
 }
