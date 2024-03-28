@@ -188,18 +188,19 @@ const DynamicForm = ({
                         {inputPerStrategy && (
                           <div className="col-lg-6">
                             <div className="input-block row">
-                              <label className="col-lg-7 col-form-label" htmlFor="inputField1">
-                                Input 1<span className="text-danger">*</span>
+                              <label className="col-lg-7 col-form-label" htmlFor="prifix_key">
+                                Strategies %<span className="text-danger">*</span>
                               </label>
                               <div className="col-lg-12">
                                 <input
                                   type="number"
                                   className="form-control"
-                                  id="inputField1"
-                                  name="inputField1"
-                                  placeholder="Enter Value"
+                                  id="strategy"
+                                  name="strategy"
+                                  placeholder="Please enter % between 1 to 100"
                                   defaultValue="0"
-                                  {...formik.getFieldProps("inputField1")}
+                                  // value={formik.values.strategy === '' ? '0' : formik.values.strategy==}
+                                  {...formik.getFieldProps("prifix_key")}
                                 />
                               </div>
                             </div>
@@ -209,15 +210,15 @@ const DynamicForm = ({
                           <div className="col-lg-6">
                             <div className="input-block row">
                               <label className="col-lg-7 col-form-label" htmlFor="inputField2">
-                                Input 2<span className="text-danger">*</span>
+                                Trade Value<span className="text-danger">*</span>
                               </label>
                               <div className="col-lg-12">
                                 <input
                                   type="number"
                                   className="form-control"
-                                  id="inputField2"
-                                  name="inputField2"
-                                  placeholder="Enter Value"
+                                  id="tradeValue"
+                                  name="tradeValue"
+                                  placeholder="Please Enter Trade Value "
                                   defaultValue="0"
                                   {...formik.getFieldProps("inputField2")}
                                 />

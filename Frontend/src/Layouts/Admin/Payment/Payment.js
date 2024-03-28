@@ -12,6 +12,8 @@ function Payment() {
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+  const [selectedRow, setSelectedRow] = useState(null);
+
 
 console.log("isModalOpen",isModalOpen)
   const [companyData, setCompanyData] = useState({
@@ -21,8 +23,9 @@ console.log("isModalOpen",isModalOpen)
 
 
 
-  const handleOpenModal = () => {
-    console.log("runn")
+  const handleOpenModal = (rowData) => {
+    console.log("runn",rowData.makerInfo.FullName)
+    setSelectedRow(rowData)
     setIsModalOpen(true);
   };
 
@@ -61,7 +64,6 @@ console.log("isModalOpen",isModalOpen)
         </div>
       )
     },
-
     {
       field: 'makerInfo',
       headerName: 'Subadmin Name',
@@ -73,7 +75,6 @@ console.log("isModalOpen",isModalOpen)
         </div>
       )
     },
-
     {
       field: 'razorpay_key',
       headerName: 'razorpay_key',
@@ -85,7 +86,6 @@ console.log("isModalOpen",isModalOpen)
         </div>
       )
     },
-
     {
       field: 'email',
       headerName: 'email',
@@ -98,15 +98,15 @@ console.log("isModalOpen",isModalOpen)
       )
     },
     {
-      field: 'change',
-      headerName: 'change',
+      field: "change",
+      headerName: "Change",
       width: 150,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div onClick={handleOpenModal}>
+        <div onClick={() => handleOpenModal(params.row)}>
           <span className="badge bg-purple">Change</span>
         </div>
-      )
+      ),
     },
     {
       field: 'Status',
@@ -132,7 +132,6 @@ console.log("isModalOpen",isModalOpen)
         }
       }
     },
-
     {
       field: 'createdAt', headerName: 'createdAt', width: 250, headerClassName: styles.boldHeader,
       renderCell: (params) => (
@@ -174,31 +173,36 @@ console.log("isModalOpen",isModalOpen)
     getCompanyData();
   }, []);
 
+
+  console.log("selectedRow",selectedRow._id)
+
   return (
     <>
-      {companyData.loading ? (
-        <Content
-          Card_title="Payment Details"
-
-          Card_title_icon='fas fa-image pe-2'
-          Content={
-            <FullDataTable
-              styles={styles}
-              columns={columns}
-              rows={companyData.data}
-              checkboxSelection={false}
-            />
-          }
-        />
-      ) : (
-        <Loader />
-      )}
-
-
-      {isModalOpen && isModalOpen ? <CompanyChange onClose={() => setIsModalOpen(false)} /> :""}
-
-
-    </>
+    {companyData.loading ? (
+      <Content
+        Card_title="Payment Details"
+        Card_title_icon="fas fa-image pe-2"
+        Content={
+          <FullDataTable
+            styles={styles}
+            columns={columns}
+            rows={companyData.data}
+            checkboxSelection={false}
+            
+          />
+        }
+      />
+    ) : (
+      <Loader />
+    )}
+    {isModalOpen && selectedRow && (
+      <CompanyChange
+        rowData={selectedRow}
+        onClose={() => setIsModalOpen(false)}
+        
+      />
+    )}
+  </>
   );
 }
 
