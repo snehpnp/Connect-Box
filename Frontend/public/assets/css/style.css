@@ -14719,12 +14719,12 @@ body[data-layout-mode=dark] .alertify .ajs-header {
 }
 
 .btn-close {
-    background-color: #f3f3f9;
+    background-color: #f3f3f9 !important;
     color: #1b2559;
-    border-radius: 50px;
-    font-size: 10px;
-    width: 30px;
-    height: 30px;
+    border-radius: 50px !important;
+    font-size: 10px !important;
+    width: 30px !important;
+    height: 30px !important;
     line-height: 30px;
     padding: 0 !important;
     transition: all .4s ease;
@@ -30083,7 +30083,12 @@ table tr td .status-toggle .checktoggle {
 }
 
 span.bg-purple {
-    background: #592ac6
+    background: #eaddff;
+    border: 1px solid #eaddff;
+    box-shadow: inset 0 0 0 0 #3f4254;
+   
+    border-radius: 6px;
+    color: #7539ff;
 }
 
 .company-avatar.company-icon {
@@ -32477,22 +32482,26 @@ td .invoice-detail i {
     color: #fff !important;
 }
 [data-layout-mode=dark] body .css-204u17-MuiDataGrid-main {
-    border: 1px solid #aaa;
+    border: 1px solid #2e3840;
 }
  .css-204u17-MuiDataGrid-main {
     border: 1px solid #aaa;
 }
 
-.MuiDataGrid-cellContent {
+.MuiDataGrid-cellContent,.MuiDataGrid-cellContent div, .MuiDataGrid-cell , .MuiDataGrid-selectedRowCount{
    
-    font-family: 'Inter';
-    font-size: 16px;
+    font-family: 'Inter' !important;
+    font-size: 16px !important;
 }
 span.badge.bg-success-light {
     font-size: 14px;
     font-family: 'Inter';
 }
-[data-layout-mode=dark] body .css-qvtrhg-MuiDataGrid-virtualScroller {
+[data-layout-mode=dark] body .css-qvtrhg-MuiDataGrid-virtualScroller, [data-layout-mode=dark] body .css-yrdy0g-MuiDataGrid-columnHeaderRow {
+    background: #1e1f25;
+}
+[data-layout-mode=dark] body .css-s1v7zr-MuiDataGrid-virtualScrollerRenderZone
+{
     background: #16191c;
 }
 [data-layout-mode=light] body .MuiDataGrid-columnHeaders {
@@ -32504,25 +32513,32 @@ color:#fff;
 .answer.show{
     max-height: 200px;
     padding: 20px 80px 20px 20px;
-
-
+}
+.modal-dialog {
+    /* position: absolute; */
+    /* Modal ke parent element ko absolute position de den */
+    /* z-index: 9999; */
+    /* Modal ko table se oopar laane ke liye higher z-index de den */
+    /* top: 0; */
+    /* Modal ko table ke top se set karen */
+    /* left: 0; */
+    /* Modal ko table ke left se set karen */
+    /* margin-top: 20px; */
+    /* Modal ko table se thoda aage set karne ke liye margin ka use karen */
+    /* margin-left: 20px; */
+    /* Modal ko table se thoda aage set karne ke liye margin ka use karen */
 }
 
-
-/* HTML: <div class="loader"></div> */
-.loader {
-    width: fit-content;
-    font-weight: bold;
-    font-family: monospace;
-    font-size: 30px;
-    color: #0000;
-    background: linear-gradient(90deg,#C02942 calc(50% + 0.5ch),#000 0) right/calc(200% + 1ch) 100%;
-    -webkit-background-clip: text;
-            background-clip: text;
-    animation: l7 2s infinite steps(11);
-  }
-  .loader:before {
-    content:"Loading..."
-  }
-  @keyframes l7 {to{background-position: left}}
-
+.custom-modal 
+{
+    --bs-backdrop-zindex: 1050;
+    --bs-backdrop-bg: #0000009c;
+    --bs-backdrop-opacity: 0.5;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--bs-backdrop-zindex);
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bs-backdrop-bg);
+}
