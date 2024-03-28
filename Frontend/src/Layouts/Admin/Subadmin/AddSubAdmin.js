@@ -55,7 +55,9 @@ const AddClient = () => {
         errors.password = "Password is required";
       }
       if (!values.prifix_key) {
-        errors.prifix_key = "prifix key is required";
+        errors.prifix_key = "Prefix key is required";
+      } else if (values.prifix_key.length !== 3) {
+        errors.prifix_key = "Key should be exactly 3 characters/number/both";
       }
       return errors;
     },
@@ -93,7 +95,6 @@ const AddClient = () => {
       }
     },
   });
-
   const fields = [
     {
       name: "fullName",
