@@ -44,7 +44,7 @@ function System() {
 
       <div className="row mb-2">
         <div className="col-lg-4 col-md-4" data-aos="fade-left">
-          <div className="page-header card">
+          <div className="page-header">
             <div className="content-page-header">
               <h5>System Information</h5>
             </div>
@@ -54,63 +54,39 @@ function System() {
 
         <div className="col-lg-8 col-md-8" data-aos="fade-right">
 
-          <div className="row">
-            <div className="col-lg-4" >
+          <ul className="nav nav-tabs nav-tabs-solid d-flex justify-content-center">
+            <li className="nav-item">
+              <a
+                className="nav-link active"
+                href="#solid-tab1"
+                data-bs-toggle="tab"
+              >
+                <i className="fa-solid fa-landmark pe-2"></i>
+                Company Information
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="#solid-tab2"
+                data-bs-toggle="tab"
+              >
+                <i className="fa-solid fa-envelope pe-2"></i>
+                Email Information
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="#solid-tab3"
+                data-bs-toggle="tab"
+              >
+                <i class="fa-regular fa-image pe-2"></i>
+                Background Images
+              </a>
+            </li>
+          </ul>
 
-
-              <div className="nav nav-tabs nav-tabs-solid flex-column border bg-light">
-                <div className="nav-item">
-                  <a
-                    className="nav-link active"
-                    href="#solid-tab1"
-                    data-bs-toggle="tab"
-                  >
-                    <i className="fa-solid fa-landmark pe-2"></i>
-                    Company Information
-
-                  </a>
-                </div>
-              </div>
-
-
-
-            </div>
-            <div className="col-lg-4">
-
-
-              <div className="nav nav-tabs nav-tabs-solid flex-column border bg-light">
-                <div className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="#solid-tab2"
-                    data-bs-toggle="tab"
-                  >
-
-                    <i className="fa-solid fa-envelope pe-2"></i>
-                    Email Information
-                  </a>
-                </div>
-              </div>
-
-
-            </div>
-            <div className="col-lg-4 ">
-              <div className="nav nav-tabs nav-tabs-solid flex-column border bg-light">
-                <div className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="#solid-tab3"
-                    data-bs-toggle="tab"
-                  >
-                    <i class="fa-regular fa-image pe-2"></i>
-                    Background Images
-                  </a>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
         </div>
 
       </div>
@@ -130,19 +106,21 @@ function System() {
 
         </div>
         <div className="col-lg-8 col-md-8" data-aos="fade-left">
-          <div className="card h-100 ">
-            <div className="card-body ">
+          <div className="card h-100">
+            <div className="card-body">
               <div className="tab-content">
                 <div className="tab-pane show active" id="solid-tab1">
 
                   <div class="card-header d-flex justify-content-between align-items-center border-bottom">
                     <h5 class="card-title mb-0 w-auto"> <i className="fa-solid fa-landmark pe-2"></i> Company Information</h5>
                     <div className="pay-btn text-end w-auto">
-                      <button className="btn btn-primary ">
+                      <button className="btn btn-primary " data-bs-toggle="modal"
+                        data-bs-target="#company">
                         Edit Customer Information
                       </button>
                     </div>
                   </div>
+
 
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
@@ -170,9 +148,10 @@ function System() {
                 </div>
                 <div className="tab-pane" id="solid-tab2">
                   <div class="card-header d-flex justify-content-between align-items-center border-bottom">
-                    <h5 class="card-title mb-0 w-auto"> <i className="fa-solid fa-envelope pe-2"></i> Company Information</h5>
+                    <h5 class="card-title mb-0 w-auto"> <i className="fa-solid fa-envelope pe-2"></i> Email Information</h5>
                     <div className="pay-btn text-end w-auto">
-                      <button className="btn btn-primary ">
+                      <button className="btn btn-primary " data-bs-toggle="modal"
+                        data-bs-target="#email">
                         Edit Email Information
                       </button>
                     </div>
@@ -207,7 +186,8 @@ function System() {
                   <div class="card-header d-flex justify-content-between align-items-center border-bottom">
                     <h5 class="card-title mb-0 w-auto">  <i class="fa-regular fa-image pe-2"></i> Background Images</h5>
                     <div className="pay-btn text-end w-auto">
-                      <button className="btn btn-primary ">
+                      <button className="btn btn-primary " data-bs-toggle="modal"
+                        data-bs-target="#back">
                         Update Images
                       </button>
                     </div>
