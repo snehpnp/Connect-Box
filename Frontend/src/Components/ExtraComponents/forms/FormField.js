@@ -21,6 +21,9 @@ const DynamicForm = ({
 }) => {
   const location = useLocation();
 
+  const [inputPerTrade, setInputPerTrade] = useState("");
+  const [inputPerStrategy, setInputPerStrategy] = useState("");
+
   const [previews, setPreviews] = useState([]);
   const [passwordVisible, setPasswordVisible] = useState({});
 
@@ -148,56 +151,81 @@ const DynamicForm = ({
                         </>
                       ) : field.type === "select" ? (
                         <>
-                          <div
-                            className={`col-lg-${
-                              title === "update_theme" ? 12 : 6
-                            }`}
-                          >
-                            <div className="input-block row">
-                              <label
-                                className={`col-lg-${
-                                  title === "forlogin"
-                                    ? 3
-                                    : title === "update_theme"
-                                    ? 12
-                                    : 7
-                                }  col-form-label`}
-                                htmlFor={field.name}
-                              >
-                                {field.label}
-                                <span className="text-danger">*</span>
-                              </label>
-                              <div
-                                className={`col-lg-${
-                                  title === "addgroup" ? 12 : 12
-                                }`}
-                              >
-                                <select
-                                  className="default-select wide form-control"
-                                  id={field.name}
-                                >
-                                  <option
-                                    value=""
-                                    selected
-                                    disable={field.disable}
-                                  >
-                                    Please Select {field.label}
-                                  </option>
-                                  {field.options.map((option) => (
-                                    <option
-                                      key={option.value}
-                                      value={option.value}
-                                  {...formik.getFieldProps(field.name)}
+                        <div className={`col-lg-${title === "update_theme" ? 12 : 6}`}>
+                          <div className="input-block row">
+                            <label
+                              className={`col-lg-${title === "forlogin" ? 3 : title === "update_theme" ? 12 : 7}  col-form-label`}
+                              htmlFor={field.name}
+                            >
+                              {field.label}
+                              <span className="text-danger">*</span>
+                            </label>
+                            <div className={`col-lg-${title === "addgroup" ? 12 : 12}`}>
+                              <select
+                                className="default-select wide form-control"
+                                id={field.name}
+                                {...formik.getFieldProps(field.name)}
+                                onChange={(e) => {
+                                  const selectedValue = e.target.value;
+                                  setInputPerTrade(selectedValue === "1");
+                                  setInputPerStrategy(selectedValue === "2");
+                                  console.log("selected value",selectedValue)
 
-                                    >
-                                      {option.label}
-                                    </option>
-                                  ))}
-                                </select>
+                                }}
+                              >
+                                <option value=""  selected disable={true}>
+                                  Please Select {field.label}
+                                </option>
+                                {field.options.map((option) => (
+                                  <option key={option.value} value={option.value}>
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        {inputPerStrategy && (
+                          <div className="col-lg-6">
+                            <div className="input-block row">
+                              <label className="col-lg-7 col-form-label" htmlFor="inputField1">
+                                Input 1<span className="text-danger">*</span>
+                              </label>
+                              <div className="col-lg-12">
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  id="inputField1"
+                                  name="inputField1"
+                                  placeholder="Enter Value"
+                                  defaultValue="0"
+                                  {...formik.getFieldProps("inputField1")}
+                                />
                               </div>
                             </div>
                           </div>
-                        </>
+                        )}
+                        {inputPerTrade && (
+                          <div className="col-lg-6">
+                            <div className="input-block row">
+                              <label className="col-lg-7 col-form-label" htmlFor="inputField2">
+                                Input 2<span className="text-danger">*</span>
+                              </label>
+                              <div className="col-lg-12">
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  id="inputField2"
+                                  name="inputField2"
+                                  placeholder="Enter Value"
+                                  defaultValue="0"
+                                  {...formik.getFieldProps("inputField2")}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </>
                       ) : field.type === "checkbox" ? (
                         <>
                           {field.options && field.options.length > 0 ? (
