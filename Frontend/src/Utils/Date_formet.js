@@ -133,8 +133,7 @@ export const GetMarketOpenDays = (userCountry, userLocalTime) => {
   const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const weekday = weekdays[currentDate.getDay()];
   const holidays = new Holidays();
-  const currentDateIST = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
- // console.log("holidays.isHoliday(currentDate)", holidays.isHoliday(currentDate))
+ 
 
   return !holidays.isHoliday(currentDate) && weekday !== 'Sunday' && weekday !== 'Saturday'
 }

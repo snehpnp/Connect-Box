@@ -2,8 +2,10 @@ import React from 'react';
 
 const StockOutModal = ({ onClose }) => {
 
-    console.log("Dsdsuhbhj")
+    console.log("neha 1")
+
     return (
+
         <div className=" modal custom-modal d-block" >
             <div className="modal-dialog modal-dialog-centered modal-md">
                 <div className="modal-content">
@@ -90,6 +92,8 @@ const StockOutModal = ({ onClose }) => {
                 </div>
             </div>
         </div>
+
+      
     );
 };
 

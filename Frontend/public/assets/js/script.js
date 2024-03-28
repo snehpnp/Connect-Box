@@ -592,7 +592,7 @@ Version      : 1.0
     $(document).on("click",".add-links",function () {
 		var experiencecontent = '<div class="links-cont">' +
 			'<div class="service-amount">' +
-				'<a href="#" class="service-trash"><i class="fe fe-minus-circle me-1"></i>Service Charge</a> <span>$4</span' +
+				'<a href="/" class="service-trash"><i class="fe fe-minus-circle me-1"></i>Service Charge</a> <span>$4</span' +
 			'</div>' +
 		'</div>';
 		
@@ -608,7 +608,7 @@ Version      : 1.0
     $(document).on("click",".add-links-one",function () {
 		var experiencecontent = '<div class="links-cont-discount">' +
 			'<div class="service-amount">' +
-				'<a href="#" class="service-trash-one"><i class="fe fe-minus-circle me-1"></i>Offer new</a> <span>$4 %</span' +
+				'<a href="/" class="service-trash-one"><i class="fe fe-minus-circle me-1"></i>Offer new</a> <span>$4 %</span' +
 			'</div>' +
 		'</div>';
 		
@@ -645,7 +645,7 @@ Version      : 1.0
 			'</td>' +
 			'<td class="add-remove text-end">' +
 				'<a href="javascript:void(0);" class="add-btn me-2"><i class="fas fa-plus-circle"></i></a> ' +
-				'<a href="#" class="copy-btn me-2"><i class="fe fe-copy"></i></a>' +
+				'<a href="/" class="copy-btn me-2"><i class="fe fe-copy"></i></a>' +
 				'<a href="javascript:void(0);" class="remove-btn"><i class="fe fe-trash-2"></i></a>' +
 			'</td>' +
 		'</tr>';

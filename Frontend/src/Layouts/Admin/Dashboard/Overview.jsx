@@ -7,7 +7,8 @@ const Overview = () => {
           <div className="content container-fluid">
 
             <div className='row'>
-              <div className='col-md-3'>
+
+              {/* <div className='col-md-3'>
                 <div className='card'>
                 <div className="col card-header">
                         <h5 className="card-title">Admin Dashboard</h5>
@@ -16,8 +17,9 @@ const Overview = () => {
             <iframe  src="https://lottie.host/embed/1bc48686-c5b0-401d-ae40-9b241c697e31/qa4LRQq6FD.json"></iframe>
             </div>
                 </div>
-              </div>
-              <div className='col-md-9'>
+              </div> */}
+
+              <div className='col'>
               <div className="row " data-aos="fade-down">
               <div className="col-xl-3 col-sm-6 col-12">
                 <div className="card">
@@ -295,9 +297,10 @@ const Overview = () => {
               </div>
             </div>
               </div>
+
             </div>
             
-            <div className="row" data-aos="fade-left">
+            {/* <div className="row" data-aos="fade-left">
               <div className="col-xl-7 d-flex">
               <div className="card mb-0">
                   <div className="card-header">
@@ -403,7 +406,7 @@ const Overview = () => {
                             <td className="text-end">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className="action-icon dropdown-toggle"
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -480,7 +483,7 @@ const Overview = () => {
                             <td className="text-end">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className="action-icon dropdown-toggle"
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -557,7 +560,7 @@ const Overview = () => {
                             <td className="text-end">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className="action-icon dropdown-toggle"
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -634,7 +637,7 @@ const Overview = () => {
                             <td className="text-end">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className="action-icon dropdown-toggle"
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -711,7 +714,7 @@ const Overview = () => {
                             <td className="text-end">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className="action-icon dropdown-toggle"
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -858,7 +861,7 @@ const Overview = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
        
           </div>
         </div>
