@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
 import Content from '../../../Components/Dashboard/Content/Content';
 
@@ -12,6 +14,7 @@ import { GetAllSubAdmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
 
 import { fDateTime } from '../../../Utils/Date_formet';
 
+import axios from 'axios'; 
 
 export default function Help() {
 
@@ -41,6 +44,26 @@ export default function Help() {
       marginRight: 8,
     },
   };
+
+  const [rows, setRows] = useState([]); 
+
+   
+
+  useEffect(() => {
+    axios.post('http://localhost:7000/subadmin/getall')
+      .then(response => {
+        const formattedRows =response.data.data && response.data.data.map((row, index) => ({
+          ...row,
+          id: index + 1 
+        }));
+        console.log("Data From Set Row",formattedRows)
+        setRows(formattedRows);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
   const columns = [
     { field: 'id', headerName: 'ID', width: 70, headerClassName: styles.boldHeader },
@@ -65,7 +88,6 @@ export default function Help() {
         </div>
       )
     },
-
     {
       field: 'actions',
       headerName: 'Actions',
@@ -101,12 +123,12 @@ export default function Help() {
 
   const handleEdit = (row) => {
     // Handle edit action
-    console.log('Edit row SNEH:', row);
+    console.log('Edit row:', row);
   };
 
   const handleDelete = (row) => {
     // Handle delete action
-    console.log('Delete row SNEH:', row);
+    console.log('Delete row:', row);
   };
 
 
@@ -158,13 +180,10 @@ export default function Help() {
   return (
     <>
       <Content
-
-        // Page_title="All Subadmins"
         Card_title="All Subadmins"
         button_title="Add"
         Card_title_icon='fas fa-user pe-3'
         route={"/admin/subadmin/add"}
-
         Content={
           <FullDataTable
             styles={styles}
@@ -175,7 +194,6 @@ export default function Help() {
 
 
       />
-
     </>
   );
 }

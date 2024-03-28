@@ -1,4 +1,7 @@
-const MessageData = require("../../../Models/message_broadcast");
+const db = require('../../../Models');
+const User = db.user;
+const Strategies = db.Strategies;
+const api_create_info = db.api_create_info;
 
 
 
@@ -11,22 +14,29 @@ class MessageController {
                 return res.status(400).send("strategyId and brokerId are required");
             }
 
+            if (!ownerId) {
+                return res.status(400).send("strategyId and brokerId are required");
+            }
+
             const msg = new MessageData({
                 ownerId, strategyId, brokerId, messageTitle
             });
 
-            // const ownerObj=await USER.findOne({ name: USER });
-            // const strategyObj=await Strategy.findOne({ name: stratigey._id });
-            // const brokerObj=await Broker.findOne({ name: broker._id });
+            const userData = await User.findOne({ _id: ownerId });
+            
+            console.log("userData", userData)
+            
+            const strategyObj = await Strategies.findOne({ name: strategyId });
+            const brokerObj = await api_create_info.findOne({ name: brokerId });
+            console.log("strategyObj", strategyObj);
 
+            const details = new detailsOfMsgSender({
+                userId: ownerObj._id,
+                strategyId: strategyObj._id,
+                brokerId: brokerObj._id,
+            });
 
-            // const details = new detailsOfMsgSender({
-            //     userId: ownerObj._id,
-            //     brokerId: strategyObj._id,
-            //     strategyId: strategyObj._id,
-            //   });
-
-            //   const result0=await details.save();
+            const result0 = await details.save();
 
             const result = await msg.save();
 

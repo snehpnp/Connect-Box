@@ -31,7 +31,7 @@ class Subadmin {
             }
 
             // Check if username, email, phone number, and prefix key already exist
-            const existingUsername = await User_model.findOne({ UserName: FullName + PhoneNo.slice(-4), prifix_key });
+            const existingUsername = await User_model.findOne({ UserName: FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ''), prifix_key });
             if (existingUsername) {
                 return res.status(400).send({ status: false, msg: 'Username already exists' });
             }
@@ -51,9 +51,12 @@ class Subadmin {
                 return res.status(400).send({ status: false, msg: 'Prefix key already exists' });
             }
 
-            // Generate hashed password
             const salt = await bcrypt.genSalt(10);
-            const hashedPassword = await bcrypt.hash(password.toString(), salt);
+            let hashedPassword;
+        if (password) {
+            const salt = await bcrypt.genSalt(10);
+            hashedPassword = await bcrypt.hash(password.toString(), salt);
+        }
 
             // Generate client key
             const mins = 1;
@@ -66,14 +69,14 @@ class Subadmin {
             // Create new user instance
             const newUser = new User_model({
                 profile_img: profile_img || "",
-                FullName: FullName + PhoneNo.slice(-4),
+                FullName: FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ''),
                 UserName: FullName,
                 Email,
                 PhoneNo,
                 Password: hashedPassword,
                 Otp: password,
-                Role: Role.toUpperCase(),
-                prifix_key: prifix_key.toUpperCase(),
+                Role: Role && Role.toUpperCase(),
+                prifix_key: prifix_key && prifix_key.toUpperCase(),
                 client_key,
                 parent_role,
                 parent_id,
@@ -83,6 +86,7 @@ class Subadmin {
                 Per_trade,
                 Balance
             });
+            
 
             // Save new user and count licenses
             const savedUser = await newUser.save();
@@ -106,7 +110,6 @@ class Subadmin {
             return res.status(500).send({ msg: "Internal server error", error });
         }
     }
-
 
     // EDIT SUBADMIN
     async EditSubadmin(req, res) {
