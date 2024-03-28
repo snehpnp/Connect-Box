@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
-const FullDataTable = ({ styles, label, columns, rows, keyField, pagination1, rowStyle }) => {
+const FullDataTable = ({ styles, label, columns, rows, keyField, pagination1, rowStyle,checkboxSelection }) => {
     var themeMode = localStorage.getItem('theme_mode');
 
-    const backgroundColor = themeMode === 'light' ? 'white' : 'black';
+    const backgroundColor = themeMode === 'light' ? 'white' : "#16191c";
     const Color = themeMode === 'light' ? 'black' : 'white';
 
     return (
@@ -15,7 +15,7 @@ const FullDataTable = ({ styles, label, columns, rows, keyField, pagination1, ro
                     columns={columns}
                     pageSize={5}
                     rowsPerPageOptions={[5, 10, 20]}
-                    checkboxSelection
+                    checkboxSelection={checkboxSelection}
                     className="custom-data-grid"
                     style={{ border: 'none', fontFamily: 'none', fontWeight: '400', fontSize: '14px', color: Color }}
                 />

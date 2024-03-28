@@ -45,7 +45,7 @@ const Tabes = () => {
                         title="Download"
                       >
                         <a
-                          href="#"
+                          href="/"
                           className="btn btn-filters"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
@@ -98,7 +98,7 @@ const Tabes = () => {
                     <li>
                       <a
                         className="btn btn-primary"
-                        href="#"
+                        href="/"
                         data-bs-toggle="modal"
                         data-bs-target="#add_companies"
                       >
@@ -234,7 +234,7 @@ const Tabes = () => {
                                     alt="Company Image"
                                   />
                                 </a>
-                                <a href="#">Hermann Groups</a>
+                                <a href="/">Hermann Groups</a>
                               </h2>
                             </td>
                             <td>
@@ -250,7 +250,7 @@ const Tabes = () => {
                             <td>Advanced (Monthly)</td>
                             <td>
                               <a
-                                href="#"
+                                href="/"
                                 data-bs-toggle="modal"
                                 data-bs-target="#change_pane"
                               >
@@ -267,7 +267,7 @@ const Tabes = () => {
                             <td className="d-flex align-items-center">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className=" btn-action-icon "
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -348,7 +348,7 @@ const Tabes = () => {
                                     alt="Company Image"
                                   />
                                 </a>
-                                <a href="#">Skiles LLC</a>
+                                <a href="/">Skiles LLC</a>
                               </h2>
                             </td>
                             <td>
@@ -364,7 +364,7 @@ const Tabes = () => {
                             <td>Basic (Yearly)</td>
                             <td>
                               <a
-                                href="#"
+                                href="/"
                                 data-bs-toggle="modal"
                                 data-bs-target="#change_pane"
                               >
@@ -381,7 +381,7 @@ const Tabes = () => {
                             <td className="d-flex align-items-center">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className=" btn-action-icon "
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -462,7 +462,7 @@ const Tabes = () => {
                                     alt="Company Image"
                                   />
                                 </a>
-                                <a href="#">Kerluke Group</a>
+                                <a href="/">Kerluke Group</a>
                               </h2>
                             </td>
                             <td>
@@ -478,7 +478,7 @@ const Tabes = () => {
                             <td>Enterprise (Monthly)</td>
                             <td>
                               <a
-                                href="#"
+                                href="/"
                                 data-bs-toggle="modal"
                                 data-bs-target="#change_pane"
                               >
@@ -495,7 +495,7 @@ const Tabes = () => {
                             <td className="d-flex align-items-center">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className=" btn-action-icon "
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -576,7 +576,7 @@ const Tabes = () => {
                                     alt="Company Image"
                                   />
                                 </a>
-                                <a href="#">Schowalter Group</a>
+                                <a href="/">Schowalter Group</a>
                               </h2>
                             </td>
                             <td>
@@ -592,7 +592,7 @@ const Tabes = () => {
                             <td>Advanced (Monthly)</td>
                             <td>
                               <a
-                                href="#"
+                                href="/"
                                 data-bs-toggle="modal"
                                 data-bs-target="#change_pane"
                               >
@@ -609,7 +609,7 @@ const Tabes = () => {
                             <td className="d-flex align-items-center">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className=" btn-action-icon "
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -690,7 +690,7 @@ const Tabes = () => {
                                     alt="Company Image"
                                   />
                                 </a>
-                                <a href="#">Accentric Global</a>
+                                <a href="/">Accentric Global</a>
                               </h2>
                             </td>
                             <td>
@@ -706,7 +706,7 @@ const Tabes = () => {
                             <td>Advanced (Monthly)</td>
                             <td>
                               <a
-                                href="#"
+                                href="/"
                                 data-bs-toggle="modal"
                                 data-bs-target="#change_pane"
                               >
@@ -723,7 +723,7 @@ const Tabes = () => {
                             <td className="d-flex align-items-center">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className=" btn-action-icon "
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -804,7 +804,7 @@ const Tabes = () => {
                                     alt="Company Image"
                                   />
                                 </a>
-                                <a href="#">Dexter Matrix</a>
+                                <a href="/">Dexter Matrix</a>
                               </h2>
                             </td>
                             <td>
@@ -820,7 +820,7 @@ const Tabes = () => {
                             <td>Premium (Yearly)</td>
                             <td>
                               <a
-                                href="#"
+                                href="/"
                                 data-bs-toggle="modal"
                                 data-bs-target="#change_pane"
                               >
@@ -837,7 +837,7 @@ const Tabes = () => {
                             <td className="d-flex align-items-center">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className=" btn-action-icon "
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -918,7 +918,7 @@ const Tabes = () => {
                                     alt="Company Image"
                                   />
                                 </a>
-                                <a href="#">Emporis Technologies</a>
+                                <a href="/">Emporis Technologies</a>
                               </h2>
                             </td>
                             <td>
@@ -934,7 +934,7 @@ const Tabes = () => {
                             <td>Free (Monthly)</td>
                             <td>
                               <a
-                                href="#"
+                                href="/"
                                 data-bs-toggle="modal"
                                 data-bs-target="#change_pane"
                               >
@@ -951,7 +951,7 @@ const Tabes = () => {
                             <td className="d-flex align-items-center">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className=" btn-action-icon "
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -1032,7 +1032,7 @@ const Tabes = () => {
                                     alt="Company Image"
                                   />
                                 </a>
-                                <a href="#">Beacon Softwares</a>
+                                <a href="/">Beacon Softwares</a>
                               </h2>
                             </td>
                             <td>
@@ -1048,7 +1048,7 @@ const Tabes = () => {
                             <td>Enterprise (Monthly)</td>
                             <td>
                               <a
-                                href="#"
+                                href="/"
                                 data-bs-toggle="modal"
                                 data-bs-target="#change_pane"
                               >
@@ -1065,7 +1065,7 @@ const Tabes = () => {
                             <td className="d-flex align-items-center">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className=" btn-action-icon "
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -1146,7 +1146,7 @@ const Tabes = () => {
                                     alt="Company Image"
                                   />
                                 </a>
-                                <a href="#">Global tech</a>
+                                <a href="/">Global tech</a>
                               </h2>
                             </td>
                             <td>
@@ -1162,7 +1162,7 @@ const Tabes = () => {
                             <td>Free (Monthly)</td>
                             <td>
                               <a
-                                href="#"
+                                href="/"
                                 data-bs-toggle="modal"
                                 data-bs-target="#change_pane"
                               >
@@ -1179,7 +1179,7 @@ const Tabes = () => {
                             <td className="d-flex align-items-center">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className=" btn-action-icon "
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -1260,7 +1260,7 @@ const Tabes = () => {
                                     alt="Company Image"
                                   />
                                 </a>
-                                <a href="#">High Tech Lead</a>
+                                <a href="/">High Tech Lead</a>
                               </h2>
                             </td>
                             <td>
@@ -1276,7 +1276,7 @@ const Tabes = () => {
                             <td>Enterprise (Monthly)</td>
                             <td>
                               <a
-                                href="#"
+                                href="/"
                                 data-bs-toggle="modal"
                                 data-bs-target="#change_pane"
                               >
@@ -1293,7 +1293,7 @@ const Tabes = () => {
                             <td className="d-flex align-items-center">
                               <div className="dropdown dropdown-action">
                                 <a
-                                  href="#"
+                                  href="/"
                                   className=" btn-action-icon "
                                   data-bs-toggle="dropdown"
                                   aria-expanded="false"
@@ -1373,7 +1373,7 @@ const Tabes = () => {
           <div className="sidebar-layout-filter">
             <div className="sidebar-header">
               <h5>Filter</h5>
-              <a href="#" className="sidebar-closes">
+              <a href="/" className="sidebar-closes">
                 <i className="fa-regular fa-circle-xmark" />
               </a>
             </div>
@@ -2157,7 +2157,7 @@ const Tabes = () => {
                 </div>
                 <div className="d-flex details-edit-link">
                   <a
-                    href="#"
+                    href="/"
                     className="modal-edit-link d-flex align-items-center"
                     data-bs-toggle="modal"
                     data-bs-target="#edit_companies"

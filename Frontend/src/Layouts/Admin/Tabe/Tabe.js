@@ -32,7 +32,7 @@ const Tabe = () => {
                                             data-bs-original-title="download"
                                         >
                                             <a
-                                                href="#"
+                                                href="/"
                                                 className="btn-filters"
                                                 data-bs-toggle="dropdown"
                                                 aria-expanded="false"
@@ -114,7 +114,7 @@ const Tabe = () => {
                                                         <td>$1350.00</td>
                                                         <td className="d-flex align-items-center">
                                                             <a
-                                                                href="#"
+                                                                href="/"
                                                                 className="btn btn-greys bg-success-light me-2"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#stock_in"
@@ -122,7 +122,7 @@ const Tabe = () => {
                                                                 <i className="fa fa-plus-circle me-1" /> Stock in
                                                             </a>
                                                             <a
-                                                                href="#"
+                                                                href="/"
                                                                 className="btn btn-greys bg-danger-light me-2"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#stock_out"
@@ -131,7 +131,7 @@ const Tabe = () => {
                                                             </a>
                                                             <div className="dropdown dropdown-action">
                                                                 <a
-                                                                    href="#"
+                                                                    href="/"
                                                                     className=" btn-action-icon "
                                                                     data-bs-toggle="dropdown"
                                                                     aria-expanded="false"
@@ -141,7 +141,7 @@ const Tabe = () => {
                                                                 <div className="dropdown-menu dropdown-menu-right">
                                                                     <ul>
                                                                         <li>
-                                                                            <a className="dropdown-item" href="#">
+                                                                            <a className="dropdown-item" href="/">
                                                                                 <i className="far fa-edit me-2" />
                                                                                 Edit
                                                                             </a>
@@ -149,7 +149,7 @@ const Tabe = () => {
                                                                         <li>
                                                                             <a
                                                                                 className="dropdown-item"
-                                                                                href="#"
+                                                                                href="/"
                                                                                 data-bs-toggle="modal"
                                                                                 data-bs-target="#delete_stock"
                                                                             >
@@ -172,7 +172,7 @@ const Tabe = () => {
                                                         <td>$150.00</td>
                                                         <td className="d-flex align-items-center">
                                                             <a
-                                                                href="#"
+                                                                href="/"
                                                                 className="btn btn-greys bg-success-light me-2"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#stock_in"
@@ -180,7 +180,7 @@ const Tabe = () => {
                                                                 <i className="fa fa-plus-circle me-1" /> Stock in
                                                             </a>
                                                             <a
-                                                                href="#"
+                                                                href="/"
                                                                 className="btn btn-greys bg-danger-light me-2"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#stock_out"
@@ -189,7 +189,7 @@ const Tabe = () => {
                                                             </a>
                                                             <div className="dropdown dropdown-action">
                                                                 <a
-                                                                    href="#"
+                                                                    href="/"
                                                                     className=" btn-action-icon "
                                                                     data-bs-toggle="dropdown"
                                                                     aria-expanded="false"
@@ -199,7 +199,7 @@ const Tabe = () => {
                                                                 <div className="dropdown-menu dropdown-menu-right">
                                                                     <ul>
                                                                         <li>
-                                                                            <a className="dropdown-item" href="#">
+                                                                            <a className="dropdown-item" href="/">
                                                                                 <i className="far fa-edit me-2" />
                                                                                 Edit
                                                                             </a>
@@ -207,7 +207,7 @@ const Tabe = () => {
                                                                         <li>
                                                                             <a
                                                                                 className="dropdown-item"
-                                                                                href="#"
+                                                                                href="/"
                                                                                 data-bs-toggle="modal"
                                                                                 data-bs-target="#delete_stock"
                                                                             >
@@ -230,7 +230,7 @@ const Tabe = () => {
                                                         <td>$750.00</td>
                                                         <td className="d-flex align-items-center">
                                                             <a
-                                                                href="#"
+                                                                href="/"
                                                                 className="btn btn-greys bg-success-light me-2"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#stock_in"
@@ -238,7 +238,7 @@ const Tabe = () => {
                                                                 <i className="fa fa-plus-circle me-1" /> Stock in
                                                             </a>
                                                             <a
-                                                                href="#"
+                                                                href="/"
                                                                 className="btn btn-greys bg-danger-light me-2"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#stock_out"
@@ -247,7 +247,7 @@ const Tabe = () => {
                                                             </a>
                                                             <div className="dropdown dropdown-action">
                                                                 <a
-                                                                    href="#"
+                                                                    href="/"
                                                                     className=" btn-action-icon "
                                                                     data-bs-toggle="dropdown"
                                                                     aria-expanded="false"
@@ -257,7 +257,7 @@ const Tabe = () => {
                                                                 <div className="dropdown-menu dropdown-menu-right">
                                                                     <ul>
                                                                         <li>
-                                                                            <a className="dropdown-item" href="#">
+                                                                            <a className="dropdown-item" href="/">
                                                                                 <i className="far fa-edit me-2" />
                                                                                 Edit
                                                                             </a>
@@ -265,7 +265,7 @@ const Tabe = () => {
                                                                         <li>
                                                                             <a
                                                                                 className="dropdown-item"
-                                                                                href="#"
+                                                                                href="/"
                                                                                 data-bs-toggle="modal"
                                                                                 data-bs-target="#delete_stock"
                                                                             >
@@ -288,7 +288,7 @@ const Tabe = () => {
                                                         <td>$250.00</td>
                                                         <td className="d-flex align-items-center">
                                                             <a
-                                                                href="#"
+                                                                href="/"
                                                                 className="btn btn-greys bg-success-light me-2"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#stock_in"
@@ -296,7 +296,7 @@ const Tabe = () => {
                                                                 <i className="fa fa-plus-circle me-1" /> Stock in
                                                             </a>
                                                             <a
-                                                                href="#"
+                                                                href="/"
                                                                 className="btn btn-greys bg-danger-light me-2"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#stock_out"
@@ -305,7 +305,7 @@ const Tabe = () => {
                                                             </a>
                                                             <div className="dropdown dropdown-action">
                                                                 <a
-                                                                    href="#"
+                                                                    href="/"
                                                                     className=" btn-action-icon "
                                                                     data-bs-toggle="dropdown"
                                                                     aria-expanded="false"
@@ -315,7 +315,7 @@ const Tabe = () => {
                                                                 <div className="dropdown-menu dropdown-menu-right">
                                                                     <ul>
                                                                         <li>
-                                                                            <a className="dropdown-item" href="#">
+                                                                            <a className="dropdown-item" href="/">
                                                                                 <i className="far fa-edit me-2" />
                                                                                 Edit
                                                                             </a>
@@ -323,7 +323,7 @@ const Tabe = () => {
                                                                         <li>
                                                                             <a
                                                                                 className="dropdown-item"
-                                                                                href="#"
+                                                                                href="/"
                                                                                 data-bs-toggle="modal"
                                                                                 data-bs-target="#delete_stock"
                                                                             >
@@ -346,7 +346,7 @@ const Tabe = () => {
                                                         <td>$1050.00</td>
                                                         <td className="d-flex align-items-center">
                                                             <a
-                                                                href="#"
+                                                                href="/"
                                                                 className="btn btn-greys bg-success-light me-2"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#stock_in"
@@ -354,7 +354,7 @@ const Tabe = () => {
                                                                 <i className="fa fa-plus-circle me-1" /> Stock in
                                                             </a>
                                                             <a
-                                                                href="#"
+                                                                href="/"
                                                                 className="btn btn-greys bg-danger-light me-2"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#stock_out"
@@ -363,7 +363,7 @@ const Tabe = () => {
                                                             </a>
                                                             <div className="dropdown dropdown-action">
                                                                 <a
-                                                                    href="#"
+                                                                    href="/"
                                                                     className=" btn-action-icon "
                                                                     data-bs-toggle="dropdown"
                                                                     aria-expanded="false"
@@ -373,7 +373,7 @@ const Tabe = () => {
                                                                 <div className="dropdown-menu dropdown-menu-right">
                                                                     <ul>
                                                                         <li>
-                                                                            <a className="dropdown-item" href="#">
+                                                                            <a className="dropdown-item" href="/">
                                                                                 <i className="far fa-edit me-2" />
                                                                                 Edit
                                                                             </a>
@@ -381,7 +381,7 @@ const Tabe = () => {
                                                                         <li>
                                                                             <a
                                                                                 className="dropdown-item"
-                                                                                href="#"
+                                                                                href="/"
                                                                                 data-bs-toggle="modal"
                                                                                 data-bs-target="#delete_stock"
                                                                             >
@@ -404,7 +404,7 @@ const Tabe = () => {
                                                         <td>$140.00</td>
                                                         <td className="d-flex align-items-center">
                                                             <a
-                                                                href="#"
+                                                                href="/"
                                                                 className="btn btn-greys bg-success-light me-2"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#stock_in"
@@ -412,7 +412,7 @@ const Tabe = () => {
                                                                 <i className="fa fa-plus-circle me-1" /> Stock in
                                                             </a>
                                                             <a
-                                                                href="#"
+                                                                href="/"
                                                                 className="btn btn-greys bg-danger-light me-2"
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#stock_out"
@@ -421,7 +421,7 @@ const Tabe = () => {
                                                             </a>
                                                             <div className="dropdown dropdown-action">
                                                                 <a
-                                                                    href="#"
+                                                                    href="/"
                                                                     className=" btn-action-icon "
                                                                     data-bs-toggle="dropdown"
                                                                     aria-expanded="false"
@@ -431,7 +431,7 @@ const Tabe = () => {
                                                                 <div className="dropdown-menu dropdown-menu-right">
                                                                     <ul>
                                                                         <li>
-                                                                            <a className="dropdown-item" href="#">
+                                                                            <a className="dropdown-item" href="/">
                                                                                 <i className="far fa-edit me-2" />
                                                                                 Edit
                                                                             </a>
@@ -466,7 +466,7 @@ const Tabe = () => {
                     <div className="sidebar-layout-filter">
                         <div className="sidebar-header">
                             <h5>Filter</h5>
-                            <a href="#" className="sidebar-closes">
+                            <a href="/" className="sidebar-closes">
                                 <i className="fa-regular fa-circle-xmark" />
                             </a>
                         </div>
@@ -797,7 +797,7 @@ const Tabe = () => {
                         </div>
                     </div>
                 </div>
-                <div className="modal custom-modal fade" id="stock_out" role="dialog">
+                <div className="modal custom-modal fade" id="stock_out" role="dialog" >
                     <div className="modal-dialog modal-dialog-centered modal-md">
                         <div className="modal-content">
                             <div className="modal-header border-0 pb-0">
@@ -1000,13 +1000,13 @@ const Tabe = () => {
                                 <div className="modal-btn delete-action">
                                     <div className="row">
                                         <div className="col-6">
-                                            <a href="#" className="btn btn-primary paid-continue-btn">
+                                            <a href="/" className="btn btn-primary paid-continue-btn">
                                                 Delete
                                             </a>
                                         </div>
                                         <div className="col-6">
                                             <a
-                                                href="#"
+                                                href="/"
                                                 data-bs-dismiss="modal"
                                                 className="btn btn-primary paid-cancel-btn"
                                             >

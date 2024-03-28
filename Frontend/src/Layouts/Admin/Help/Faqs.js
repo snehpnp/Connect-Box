@@ -15,44 +15,47 @@ const FAQs = () => {
     };
 
     return (
-        <div className="faq-container" onMouseMove={handleMouseMove}>
+        <div className="" onMouseMove={handleMouseMove}>
 
 
-            <div class="container">
-                <h1 className="faq-heading">Frequently Asked Questions</h1>
+            <div class="content container-fluid">
 
-                <div class="row">
 
-                    <div class="col">
+                <div className='card-body'>
 
-                        <img src="/assets/img/gif/FAQs-bro.png" />
+
+                    <div class="row">
+
+                        <div class="col">
+
+                            <img src="/assets/img/gif/FAQ.png" />
+
+                        </div>
+
+                        <div class="col">
+
+                            {faqData.map((faq, index) => (
+                                <div className="faq-item" key={index}>
+                                    <div className={`question ${activeIndex === index ? 'active' : ''}`} onClick={() => toggleAccordion(index)}>
+                                        <span className="question-text">{faq.question}</span>
+                                        <span className="icon">{activeIndex === index ? '-' : '+'}</span>
+                                    </div>
+                                    <div className={`answer ${activeIndex === index ? 'show' : ''}`}>
+                                        <p><b>{faq.answer}</b></p>
+                                        <a href={faq.link}>Learn More</a>
+                                    </div>
+                                </div>
+                            ))}
+
+                        </div>
+
+
 
                     </div>
-
-                    <div class="col">
-
-                        {faqData.map((faq, index) => (
-                            <div className="faq-item" key={index}>
-                                <div className={`question ${activeIndex === index ? 'active' : ''}`} onClick={() => toggleAccordion(index)}>
-                                    <span className="question-text">{faq.question}</span>
-                                    <span className="icon">{activeIndex === index ? '-' : '+'}</span>
-                                </div>
-                                <div className={`answer ${activeIndex === index ? 'shown' : ''}`}>
-                                    <p><b>{faq.answer}</b></p>
-                                    <a href={faq.link}>Learn More</a>
-                                </div>
-                            </div>
-                        ))}
-
-                    </div>
-
-
 
                 </div>
 
             </div>
-
-
 
         </div>
     );

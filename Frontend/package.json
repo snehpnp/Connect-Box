@@ -37,6 +37,7 @@
     "react-scripts": "5.0.1",
     "styled-components": "^6.1.8",
     "web-vitals": "^2.1.4",
+    "yup": "^1.4.0",
     "zero-styled": "^0.2.2"
   },
   "scripts": {

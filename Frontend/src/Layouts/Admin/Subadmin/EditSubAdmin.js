@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Formikform from "../../../Components/ExtraComponents/forms/Formik_form"
+import EditForm from "../../../Components/ExtraComponents/forms/EditForm"
 import { useFormik } from 'formik';
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast'
 
@@ -199,7 +199,7 @@ const EditClient = () => {
     <>
       <div>
         <Content Page_title="Edit Subadmin" button_title='Back' route="/admin/allsubadmin">
-          <Formikform fieldtype={fields.filter(field => !field.showWhen || field.showWhen(formik.values))} formik={formik} btn_name="Add Client"
+          <EditForm fieldtype={fields.filter(field => !field.showWhen || field.showWhen(formik.values))} formik={formik} btn_name="Add Client"
             fromDate={formik.values.fromDate}
             toDate={formik.values.todate}
 

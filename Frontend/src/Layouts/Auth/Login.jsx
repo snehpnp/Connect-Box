@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
 import Modal from '../../Components/Dashboard/Models/Model'
 import OtpInput from "react-otp-input";
-import Lodding from '../../Components/ExtraComponents/Lodding';
+import Lodding from '../../Utils/Loader';
 
 
 
@@ -16,7 +16,6 @@ function Login() {
     const [typeOtp, setTypeOtp] = useState("");
 
     const [getData, SetData] = useState([]);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [showModal, setShowModal] = useState(false);
 
@@ -32,12 +31,12 @@ function Login() {
         console.log("getData :", getData)
 
 
-        if (typeOtp.length != 4) {
+        if (typeOtp.length !== 4) {
             toast.error('Please Fill Otp');
-        } else if (Otp != typeOtp) {
+        } else if (Otp !== typeOtp) {
             toast.error('Otp Is Incorect');
         } else {
-            if (getData.Role == "ADMIN") {
+            if (getData.Role === "ADMIN") {
                 toast.success('login Successful');
                 localStorage.setItem(
                     "user_details",
@@ -134,7 +133,7 @@ function Login() {
     return (
 
         <>
-            {isLoading ? <Lodding /> :
+            
                 <>
                     <div className="main-wrapper login-body">
                         <div className="login-wrapper">
@@ -186,7 +185,7 @@ function Login() {
                                                     <a href="/" className="facebook">
                                                         <i className="fab fa-facebook-f" />
                                                     </a>
-                                                    <a href="#" className="google">
+                                                    <a href="/" className="google">
                                                         <i className="fab fa-google" />
                                                     </a>
                                                 </div>
@@ -250,7 +249,7 @@ function Login() {
                     )}
 
                 </>
-            }
+       
         </>
     );
 }

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 const Content = ({ Page_title, button_title, Card_title, Card_title_icon, Content, route, ...rest }) => {
 
 
-  console.log("Page_title", route)
+  // console.log("Page_title", route)
 
   return (
 
