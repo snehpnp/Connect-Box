@@ -2,8 +2,7 @@ import React from 'react';
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
 
 import { useFormik } from 'formik';
-import DynamicForm from "../../../Components/ExtraComponents/forms/FormField";
-import { useFormik } from "formik";
+
 import axios from "axios";
 
 const AddClient = () => {
