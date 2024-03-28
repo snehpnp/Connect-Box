@@ -55,63 +55,39 @@ function System() {
 
         <div className="col-lg-8 col-md-8" data-aos="fade-right">
 
-          <div className="row">
-            <div className="col-lg-4" >
+          <ul className="nav nav-tabs nav-tabs-solid d-flex justify-content-center">
+            <li className="nav-item">
+              <a
+                className="nav-link active"
+                href="#solid-tab1"
+                data-bs-toggle="tab"
+              >
+                <i className="fa-solid fa-landmark pe-2"></i>
+                Company Information
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="#solid-tab2"
+                data-bs-toggle="tab"
+              >
+                <i className="fa-solid fa-envelope pe-2"></i>
+                Email Information
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="#solid-tab3"
+                data-bs-toggle="tab"
+              >
+                <i class="fa-regular fa-image pe-2"></i>
+                Background Images
+              </a>
+            </li>
+          </ul>
 
-
-              <div className="nav nav-tabs nav-tabs-solid flex-column border bg-light">
-                <div className="nav-item">
-                  <a
-                    className="nav-link active"
-                    href="#solid-tab1"
-                    data-bs-toggle="tab"
-                  >
-                    <i className="fa-solid fa-landmark pe-2"></i>
-                    Company Information
-
-                  </a>
-                </div>
-              </div>
-
-
-
-            </div>
-            <div className="col-lg-4">
-
-
-              <div className="nav nav-tabs nav-tabs-solid flex-column border bg-light">
-                <div className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="#solid-tab2"
-                    data-bs-toggle="tab"
-                  >
-
-                    <i className="fa-solid fa-envelope pe-2"></i>
-                    Email Information
-                  </a>
-                </div>
-              </div>
-
-
-            </div>
-            <div className="col-lg-4 ">
-              <div className="nav nav-tabs nav-tabs-solid flex-column border bg-light">
-                <div className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="#solid-tab3"
-                    data-bs-toggle="tab"
-                  >
-                    <i class="fa-regular fa-image pe-2"></i>
-                    Background Images
-                  </a>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
         </div>
 
       </div>
@@ -204,7 +180,7 @@ function System() {
                 </div>
                 <div className="tab-pane" id="solid-tab2">
                   <div class="card-header d-flex justify-content-between align-items-center border-bottom">
-                    <h5 class="card-title mb-0 w-auto"> <i className="fa-solid fa-envelope pe-2"></i> Company Information</h5>
+                    <h5 class="card-title mb-0 w-auto"> <i className="fa-solid fa-envelope pe-2"></i> Email Information</h5>
                     <div className="pay-btn text-end w-auto">
                       <button className="btn btn-primary ">
                         Edit Email Information
