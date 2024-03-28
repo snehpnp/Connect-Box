@@ -21,6 +21,7 @@ import AllSubadmin from "../Layouts/Admin/Subadmin/AllSubAdmin"
 import Sub from '../Layouts/Admin/Sub/Sub';
 import Profile from '../Layouts/Admin/Profile/Profile';
 import Tabe from '../Layouts/Admin/Tabe/Tabe';
+import Tabes from '../Layouts/Admin/Tabes/Tabes';
 
 
 import SubAdCompanyInfo from '../Layouts/Admin/SubAdminCompany/SubAdCompanyInfo';
@@ -46,7 +47,9 @@ const Admin_Routing = () => {
 
 
                      <Route exact path="/profile" element={<Profile />} />
-                    <Route exact path="/tabe" element={<Tabe />} />                  
+                    <Route exact path="/tabe" element={<Tabe />} /> 
+                    <Route exact path="/tabes" element={<Tabes />} />    
+
  
  
                     <Route exact path="/dashboard" element={<Overview />} />
