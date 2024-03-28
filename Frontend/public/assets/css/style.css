@@ -32545,3 +32545,22 @@ color:#fff;
     content:"Loading..."
   }
   @keyframes l7 {to{background-position: left}}
+
+
+
+  .custom-data-grid .MuiDataGrid-cell:focus {
+  outline: none; /* Remove the outline when the cell is focused */
+}
+
+.custom-data-grid .cell:focus {
+    outline: none;
+  }
+
+
+  .MuiDataGrid-row.Mui-selected {
+    outline: none;
+  }
+
+  .MuiOutlinedInput-notchedOutline {
+    border: none ! important ;
+  }

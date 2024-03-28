@@ -59,10 +59,18 @@ export default function Help() {
     { field: 'prifix_key', headerName: 'prifixkey', width: 120, headerClassName: styles.boldHeader },
 
     {
-      field: 'subadmin_service_type', headerName: 'Service-Type', width: 250, headerClassName: styles.boldHeader,
+      field: 'subadmin_service_type', headerName: 'Service-Type', width: 200, headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           {params.value == 1 ? "PER STRATEGY" : "PER TRADE"}
+        </div>
+      )
+    },
+    {
+      field: 'Balance', headerName: 'Balance', width: 120, headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          {params.value }
         </div>
       )
     },
@@ -74,7 +82,7 @@ export default function Help() {
       renderCell: (params) => (
         <div>
           <Switch
-            checked={params.value == 1} 
+            defaultChecked={params.value == 1} 
             onChange={(event) => handleChange(event, params.row.id)} 
             {...label}
           />
@@ -176,6 +184,7 @@ export default function Help() {
       {getAllSubadmins.loading ? (
         <>
           <div className="content container-fluid">
+         
             <div className="page-header">
               <div className="content-page-header">
                 <h5>Subadmins</h5>
@@ -295,6 +304,7 @@ export default function Help() {
                 </div>
               </div>
             </div>
+
             <div className="super-admin-list-head">
               <div className="row">
                 {getAllSubadmins && getAllSubadmins.data1.map((data, index) => (
