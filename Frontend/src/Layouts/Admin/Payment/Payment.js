@@ -21,10 +21,7 @@ console.log("isModalOpen",isModalOpen)
     data: [],
   });
 
-
-
   const handleOpenModal = (rowData) => {
-    console.log("runn",rowData.makerInfo.FullName)
     setSelectedRow(rowData)
     setIsModalOpen(true);
   };
@@ -143,8 +140,6 @@ console.log("isModalOpen",isModalOpen)
   ];
 
 
-
-
   const getCompanyData = async () => {
     try {
       const response = await dispatch(fetchSubadminCompanyInfo()).unwrap();
@@ -172,7 +167,6 @@ console.log("isModalOpen",isModalOpen)
   useEffect(() => {
     getCompanyData();
   }, []);
-
 
 
   return (
