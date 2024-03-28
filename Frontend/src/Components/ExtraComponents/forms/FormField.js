@@ -21,7 +21,7 @@ const DynamicForm = ({
 }) => {
   const location = useLocation();
 
-  const [previews, setPreviews] = useState([]); 
+  const [previews, setPreviews] = useState([]);
   const [passwordVisible, setPasswordVisible] = useState({});
 
   const handleFileChange = (event, index, name) => {
@@ -32,9 +32,9 @@ const DynamicForm = ({
     } else {
       const file = event.target.files[0];
       const newPreviews = [...previews];
-      newPreviews[index] = URL.createObjectURL(file); 
+      newPreviews[index] = URL.createObjectURL(file);
       console.log("newPreviews[index]", newPreviews[index]);
-      setPreviews(newPreviews); 
+      setPreviews(newPreviews);
       const reader = new FileReader();
       reader.onload = () => {
         formik.setFieldValue(name, reader.result);
@@ -113,6 +113,12 @@ const DynamicForm = ({
                                 name={field.name}
                                 {...formik.getFieldProps(field.name)}
                               />
+                              {formik.touched[field.name] &&
+                              formik.errors[field.name] ? (
+                                <div style={{ color: "red" }}>
+                                  {formik.errors[field.name]}
+                                </div>
+                              ) : null}
                             </div>
                           </div>
                         </>
@@ -170,10 +176,19 @@ const DynamicForm = ({
                                   className="default-select wide form-control"
                                   id={field.name}
                                 >
+                                  <option
+                                    value=""
+                                    selected
+                                    disable={field.disable}
+                                  >
+                                    Please Select {field.label}
+                                  </option>
                                   {field.options.map((option) => (
                                     <option
                                       key={option.value}
                                       value={option.value}
+                                  {...formik.getFieldProps(field.name)}
+
                                     >
                                       {option.label}
                                     </option>
@@ -352,11 +367,12 @@ const DynamicForm = ({
                                     }))
                                   }
                                 ></i>
-                                {formik.errors[field.name] && (
+                                {formik.touched[field.name] &&
+                                formik.errors[field.name] ? (
                                   <div style={{ color: "red" }}>
                                     {formik.errors[field.name]}
                                   </div>
-                                )}
+                                ) : null}
                               </div>
                             </div>
                           </div>
@@ -459,6 +475,12 @@ const DynamicForm = ({
                                     id={field.name}
                                     {...formik.getFieldProps(field.name)}
                                   />
+                                  {formik.touched[field.name] &&
+                                  formik.errors[field.name] ? (
+                                    <div style={{ color: "red" }}>
+                                      {formik.errors[field.name]}
+                                    </div>
+                                  ) : null}
                                 </div>
                               </div>
                             </div>
@@ -479,6 +501,12 @@ const DynamicForm = ({
                                 name={field.name}
                                 required=""
                               />
+                              {formik.touched[field.name] &&
+                              formik.errors[field.name] ? (
+                                <div style={{ color: "red" }}>
+                                  {formik.errors[field.name]}
+                                </div>
+                              ) : null}
                             </div>
                           </div>
                         </>
