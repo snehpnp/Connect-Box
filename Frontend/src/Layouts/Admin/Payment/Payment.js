@@ -156,7 +156,7 @@ console.log("isModalOpen",isModalOpen)
           id: index + 1,
         }));
         setCompanyData({
-          loading: false,
+          loading: true,
           data: formattedData,
         });
       }
