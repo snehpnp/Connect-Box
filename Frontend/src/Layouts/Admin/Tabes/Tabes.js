@@ -175,6 +175,8 @@ const Tabes = () => {
               </div>
             </div>
           </div>
+
+          
           <div id="filter_inputs" className="card filter-card">
             <div className="card-body pb-0">
               <div className="row">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState ,useEffect} from 'react';
 
 import { SignIn } from "../../ReduxStore/Slice/Auth/AuthSlice";
 import { useDispatch } from "react-redux";
@@ -26,11 +26,7 @@ function Login() {
     const verifyOTP = () => {
 
         var Otp = getData && getData.mobile.slice(-4)
-        console.log("Otp :", Otp)
-        console.log("typeOtp :", typeOtp)
-        console.log("getData :", getData)
-
-
+        
         if (typeOtp.length !== 4) {
             toast.error('Please Fill Otp');
         } else if (Otp !== typeOtp) {
@@ -104,10 +100,6 @@ function Login() {
 
                     SetData(response.data)
                     setShowModal(true)
-
-
-
-
                 } else {
                     toast.error(response.msg);
                 }
@@ -121,12 +113,9 @@ function Login() {
 
 
     const handleChange = (value) => {
-        // Filter out non-numeric characters
         const numericValue = value.replace(/\D/g, '');
         setTypeOtp(numericValue);
     };
-
-
 
 
 

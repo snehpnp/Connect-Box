@@ -32514,20 +32514,7 @@ color:#fff;
     max-height: 200px;
     padding: 20px 80px 20px 20px;
 }
-.modal-dialog {
-    /* position: absolute; */
-    /* Modal ke parent element ko absolute position de den */
-    /* z-index: 9999; */
-    /* Modal ko table se oopar laane ke liye higher z-index de den */
-    /* top: 0; */
-    /* Modal ko table ke top se set karen */
-    /* left: 0; */
-    /* Modal ko table ke left se set karen */
-    /* margin-top: 20px; */
-    /* Modal ko table se thoda aage set karne ke liye margin ka use karen */
-    /* margin-left: 20px; */
-    /* Modal ko table se thoda aage set karne ke liye margin ka use karen */
-}
+
 
 .custom-modal 
 {
@@ -32542,3 +32529,19 @@ color:#fff;
     height: 100vh;
     background-color: var(--bs-backdrop-bg);
 }
+/* HTML: <div class="loader"></div> */
+.loader {
+    width: fit-content;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 30px;
+    color: #0000;
+    background: linear-gradient(90deg,#C02942 calc(50% + 0.5ch),#000 0) right/calc(200% + 1ch) 100%;
+    -webkit-background-clip: text;
+            background-clip: text;
+    animation: l7 2s infinite steps(11);
+  }
+  .loader:before {
+    content:"Loading..."
+  }
+  @keyframes l7 {to{background-position: left}}

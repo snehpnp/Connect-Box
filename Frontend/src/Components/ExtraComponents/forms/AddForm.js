@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { Link } from 'react-router-dom';
+
 
 const DynamicForm = ({
   fields,
   ProfileShow,
   page_title,
   btn_name1,
+  btn_name1_route,
   initialValues,
   validationSchema,
   onSubmit,
@@ -544,7 +547,7 @@ const DynamicForm = ({
 
                   <div className="add-customer-btns text-end mt-3">
                     {btn_name1 ? (
-                      <a className="btn customer-btn-cancel">{btn_name1}</a>
+                      <Link to={btn_name1_route} className="btn customer-btn-cancel">{btn_name1}</Link>
                     ) : (
                       ""
                     )}

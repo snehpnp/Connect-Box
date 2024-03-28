@@ -24,6 +24,12 @@ class Subadmin {
 
             const Role = "SUBADMIN";
 
+
+            if (prifix_key.length > 3) {
+                return res.status(400).send({ status: false, msg: 'prifix_key Omly 3 Digits' });
+            }
+
+
             // Check if role exists
             const roleCheck = await Role_model.findOne({ name: Role.toUpperCase() });
             if (!roleCheck) {
@@ -170,8 +176,16 @@ class Subadmin {
             // GET LOGIN CLIENTS
             const getAllSubAdmins = await User_model.find({
                 Role: "SUBADMIN"
-            });
+            }).select('profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key subadmin_service_type strategy_Percentage Per_trade Create_Date')
+
             const totalCount = getAllSubAdmins.length;
+            const ActiveCount = getAllSubAdmins.filter(subadmin => subadmin.ActiveStatus === '1').length;
+            
+            const ActiveUseBalance = getAllSubAdmins.reduce((totalBalance, subadmin) => {
+                return totalBalance + parseFloat(subadmin.Balance || 0);
+            }, 0);
+            
+
 
             // IF DATA NOT EXIST
             if (getAllSubAdmins.length == 0) {
@@ -184,6 +198,9 @@ class Subadmin {
                 msg: "Get All Subadmins",
                 data: getAllSubAdmins,
                 totalCount: totalCount,
+                ActiveCount:ActiveCount,
+                InActiveCount:Number(totalCount) - Number(ActiveCount),
+                ActiveUseBalance:ActiveUseBalance
             })
         } catch (error) {
             console.log("Error getallSubadmin error -", error);

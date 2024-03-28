@@ -178,6 +178,7 @@ const AddClient = () => {
         btn_name="Add Subadmin"
         btn_name1="Cancel"
         formik={formik}
+        btn_name1_route={'/admin/allsubadmin'}
 
       />
     </>

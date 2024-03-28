@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
-import Content from '../../../Components/Dashboard/Content/Content';
+
+import { Link } from 'react-router-dom';
 
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
@@ -13,18 +14,21 @@ import { GetAllSubAdmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
 
 import { fDateTime } from '../../../Utils/Date_formet';
 
-import axios from 'axios'; 
+import Loader from '../../../Utils/Loader';
+
+
 
 export default function Help() {
-
-
 
   const dispatch = useDispatch();
 
   const [getAllSubadmins, setAllSubadmins] = useState({
     loading: false,
     data: [],
+    data1: [],
+
   });
+
 
   const styles = {
     container: {
@@ -44,24 +48,7 @@ export default function Help() {
     },
   };
 
-  const [rows, setRows] = useState([]); 
 
-   
-
-  useEffect(() => {
-    axios.post('http://localhost:7000/subadmin/getall')
-      .then(response => {
-        const formattedRows =response.data.data && response.data.data.map((row, index) => ({
-          ...row,
-          id: index + 1 
-        }));
-        console.log("Data From Set Row",formattedRows)
-        setRows(formattedRows);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
 
   const label = { inputProps: { 'aria-label': 'Switch demo' } };
   const columns = [
@@ -75,15 +62,22 @@ export default function Help() {
       field: 'subadmin_service_type', headerName: 'Service-Type', width: 250, headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {params.value == 1? "PER STRATEGY" : "PER TRADE"}
+          {params.value == 1 ? "PER STRATEGY" : "PER TRADE"}
         </div>
       )
     },
     {
-      field: 'activeState', headerName: 'Active State', width: 120, headerClassName: styles.boldHeader,
+      field: 'ActiveStatus', 
+      headerName: 'Active State', 
+      width: 120, 
+      headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          <Switch {...label} defaultChecked />
+          <Switch
+            checked={params.value == 1} 
+            onChange={(event) => handleChange(event, params.row.id)} 
+            {...label}
+          />
         </div>
       )
     },
@@ -115,11 +109,6 @@ export default function Help() {
   ];
 
 
-
-
-
-
-
   const handleEdit = (row) => {
     // Handle edit action
     console.log('Edit row:', row);
@@ -131,6 +120,10 @@ export default function Help() {
   };
 
 
+  const handleChange = (event,id) => {
+    // Handle delete action
+    console.log('Delete row:', event,id);
+  };
 
 
 
@@ -140,22 +133,24 @@ export default function Help() {
     await dispatch(GetAllSubAdmin())
       .unwrap()
       .then(async (response) => {
-        console.log("response", response.data)
 
         if (response.status) {
-
           const formattedData = response.data.map((row, index) => ({
             ...row,
             id: index + 1,
           }));
           setAllSubadmins({
-            loading: false,
+            loading: true,
             data: formattedData,
+            data1: [{ name:"Total Subadmins",count: response.totalCount || 0 }, { name:"Active Subadmins",count: response.ActiveCount|| 0 }, { name:"InActive Subadmins",count: response.InActiveCount || 0 }, {name:"Total Used Balance", count: response.ActiveUseBalance || 0 }]
+
           });
         } else {
           setAllSubadmins({
             loading: false,
             data: [],
+            data1: [],
+
           });
         }
 
@@ -178,21 +173,168 @@ export default function Help() {
 
   return (
     <>
-      <Content
-        Card_title="All Subadmins"
-        button_title="Add"
-        Card_title_icon='fas fa-user pe-3'
-        route={"/admin/subadmin/add"}
-        Content={
-          <FullDataTable
-            styles={styles}
-            label={label}
-            columns={columns}
-            rows={getAllSubadmins.data}
-          />}
+      {getAllSubadmins.loading ? (
+        <>
+          <div className="content container-fluid">
+            <div className="page-header">
+              <div className="content-page-header">
+                <h5>Subadmins</h5>
+                <div className="page-content">
+                  <div className="list-btn">
+                    <ul className="filter-list">
+                      <li>
+                        <a
+                          className="btn-filters"
+                          href="javascript:void(0);"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="bottom"
+                          title="Refresh"
+                        >
+                          <span>
+                            <i className="fe fe-refresh-ccw" />
+                          </span>
+                        </a>
+                      </li>
+                      <li>
+                        <div className="input-group">
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search..."
+                            aria-label="Search"
+                            aria-describedby="search-addon"
+                          />
+
+                        </div>
+                      </li>
+
+                      <li>
+                        <a
+                          className="btn btn-filters w-auto popup-toggle"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="bottom"
+                          title="Filter"
+                        >
+                          <span className="me-2">
+                            <img src="assets/img/icons/filter-icon.svg" alt="filter" />
+                          </span>
+                          Filter
+                        </a>
+                      </li>
+
+                      <li>
+                        <div
+                          className="dropdown dropdown-action"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="bottom"
+                          title="Download"
+                        >
+                          <a
+                            href="/"
+                            className="btn btn-filters"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            <span className="me-2">
+                              <i className="fe fe-download" />
+                            </span>
+                            Export
+                          </a>
+                          <div className="dropdown-menu dropdown-menu-end">
+                            <ul className="d-block">
+                              <li>
+                                <a
+                                  className="d-flex align-items-center download-item"
+                                  href="javascript:void(0);"
+                                  download=""
+                                >
+                                  <i className="far fa-file-pdf me-2" />
+                                  Export as PDF
+                                </a>
+                              </li>
+                              <li>
+                                <a
+                                  className="d-flex align-items-center download-item"
+                                  href="javascript:void(0);"
+                                  download=""
+                                >
+                                  <i className="far fa-file-text me-2" />
+                                  Export as Excel
+                                </a>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
+                      <li>
+                        <a
+                          className="btn btn-filters"
+                          href="javascript:void(0);"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="bottom"
+                          title="Print"
+                        >
+                          <span className="me-2">
+                            <i className="fe fe-printer" />
+                          </span>{" "}
+                          Print
+                        </a>
+                      </li>
+                      <li>
+                        <Link to={'/admin/subadmin/add'}
+                          className="btn btn-primary"
 
 
-      />
+                        >
+                          <i className="fa fa-plus-circle me-2" aria-hidden="true" />
+                          Add Subadmins
+                        </Link>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="super-admin-list-head">
+              <div className="row">
+                {getAllSubadmins && getAllSubadmins.data1.map((data, index) => (
+                  <div className="col-xl-3 col-md-6 d-flex" key={index}>
+                    <div className="card w-100">
+                      <div className="card-body">
+                        <div className="grid-info-item total-items">
+                          <div className="grid-info">
+                            <span>{data.name}</span>
+                            <h4>{data.count}</h4>
+                          </div>
+                          <div className="grid-head-icon">
+                            <i className="fe fe-life-buoy" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+
+
+
+
+
+            <FullDataTable
+              styles={styles}
+              label={label}
+              columns={columns}
+              rows={getAllSubadmins.data}
+            />
+
+          </div>
+
+        </>
+      ) : (
+        <Loader />
+      )}
     </>
   );
 }
