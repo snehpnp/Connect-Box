@@ -69,7 +69,7 @@ const Sub = () => {
     // Static Action button
     const actionButton = (
         <div className="dropdown dropdown-action">
-            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false">
+            <a href="/" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false">
                 <i className="fas fa-ellipsis-v" />
             </a>
             <div className="dropdown-menu dropdown-menu-end">
@@ -134,7 +134,7 @@ const HeaderAndFilter = (
                             title="Download"
                         >
                             <a
-                                href="#"
+                                href="/"
                                 className="btn btn-filters"
                                 data-bs-toggle="dropdown"
                                 aria-expanded="false"
@@ -236,7 +236,7 @@ const HeaderAndFilter = (
                                             title="Download"
                                         >
                                             <a
-                                                href="#"
+                                                href="/"
                                                 className="btn btn-filters"
                                                 data-bs-toggle="dropdown"
                                                 aria-expanded="false"

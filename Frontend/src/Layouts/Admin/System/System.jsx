@@ -2,8 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react";
 import { GetCompany_info } from "../../../ReduxStore/Slice/Admin/System";
 import { useDispatch } from "react-redux";
-import toast, { Toaster } from "react-hot-toast";
-import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
+import toast from "react-hot-toast";
 
 
 function System() {
@@ -121,40 +120,7 @@ function System() {
         <div className="col-lg-4 col-md-4" data-aos="fade-right">
           <div className="card">
             <div className="card-body" >
-              {/* <ul className="nav nav-tabs nav-tabs-solid flex-column border bg-light">
-                <li className="nav-item">
-                  <a
-                    className="nav-link active"
-                    href="#solid-tab1"
-                    data-bs-toggle="tab"
-                  >
-                    <i className="fa-solid fa-landmark pe-2"></i>
-                    Company Information
-
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="#solid-tab2"
-                    data-bs-toggle="tab"
-                  >
-
-                    <i className="fa-solid fa-envelope pe-2"></i>
-                    Email Information
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a
-                    className="nav-link"
-                    href="#solid-tab3"
-                    data-bs-toggle="tab"
-                  >
-                    <i class="fa-regular fa-image pe-2"></i>
-                    Background Images
-                  </a>
-                </li>
-              </ul> */}
+             
               <div data-aos="fade-down" className="gif-div h-100 " >
                 {/* <iframe src="https://lottie.host/embed/f3fed07f-0f56-45f1-ae1f-8e87bad0c51b/q3MDJRT4iV.json"></iframe> */}
                 <img src="/assets/img/gif/Investment-data.gif" />
@@ -276,29 +242,7 @@ function System() {
         </div>
 
 
-        {/* Card design */}
-
-        <div className="card flex-fill bg-white">
-
-          <div className="card-header"><h5 className="card-title">Special title treatment</h5></div>
-
-          <div className="card-body card-buttons">
-
-
-
-            <p className="card-text">
-
-              Some quick example text to build on the card title and make up the bulk of
-
-              the card's content.
-
-            </p>
-
-          </div>
-
-          <div className="card-footer text-muted">This is my footer</div>
-
-        </div>
+  
 
       </div>
     </div>

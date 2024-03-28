@@ -81,20 +81,6 @@ export const admin_header = [
         route: "/admin/faqs",
         Icon: "fe fe-help-circle",
         Data: []
-    },
-    {
-        id: 9,
-        name: 'Sub',
-        route: "/admin/sub",
-        Icon: "fe fe-help-circle",
-        Data: []
-    },
-     {
-        id: 10,
-        name: 'tabe',
-        route: "/admin/tabe",
-        Icon: "fe fe-help-circle",
-        Data: []
     }
 ];
 

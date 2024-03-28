@@ -104,7 +104,7 @@
         b &&
             ("twocolumn" == d || "twocolumn" == b["data-layout"]) &&
             ((document.querySelector(".sidebar").innerHTML = z),
-                ((c = document.createElement("ul")).innerHTML = '<a href="#" class="logo"><img src="assets/img/logo.png" alt="User Image" height="22"></a>'),
+                ((c = document.createElement("ul")).innerHTML = '<a href="/" class="logo"><img src="assets/img/logo.png" alt="User Image" height="22"></a>'),
                 Array.from(document.getElementById("navbar-nav").querySelectorAll(".menu-link")).forEach(function (b) {
                     c.className = "twocolumn-iconview";
                     var d = document.createElement("li"),
