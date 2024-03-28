@@ -18,7 +18,6 @@ import MessageBrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast';
 import AddSubadmin from "../Layouts/Admin/Subadmin/AddSubAdmin"
 import EditSubadmin from "../Layouts/Admin/Subadmin/EditSubAdmin"
 import AllSubadmin from "../Layouts/Admin/Subadmin/AllSubAdmin"
-import Lodding from '../Components/ExtraComponents/Lodding';
 import Sub from '../Layouts/Admin/Sub/Sub';
 import Profile from '../Layouts/Admin/Profile/Profile';
 import Tabe from '../Layouts/Admin/Tabe/Tabe';
@@ -41,7 +40,6 @@ const Admin_Routing = () => {
                     <Route exact path="/help" element={<Help />} />
                     <Route exact path="/faqs" element={<Faqs />} />
                     <Route exact path="/message-broadcast" element={<MessageBrodcast />} />
-                    <Route exact path="/lodding" element={<Lodding />} />
                     <Route exact path="/sub" element={<Sub />} />
 
                     <Route exact path="/subadmin/company" element={<SubAdCompanyInfo />} />

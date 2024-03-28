@@ -797,7 +797,7 @@ const Tabe = () => {
                         </div>
                     </div>
                 </div>
-                <div className="modal custom-modal fade" id="stock_out" role="dialog">
+                <div className="modal custom-modal fade" id="stock_out" role="dialog" style={{maxHeight:"inherit"}}>
                     <div className="modal-dialog modal-dialog-centered modal-md">
                         <div className="modal-content">
                             <div className="modal-header border-0 pb-0">

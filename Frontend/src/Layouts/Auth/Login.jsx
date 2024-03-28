@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
 import Modal from '../../Components/Dashboard/Models/Model'
 import OtpInput from "react-otp-input";
-import Lodding from '../../Components/ExtraComponents/Lodding';
+import Lodding from '../../Utils/Loader';
 
 
 

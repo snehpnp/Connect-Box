@@ -4,15 +4,28 @@ import { useDispatch } from "react-redux";
 import Content from '../../../Components/Dashboard/Content/Content';
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
 import Loader from '../../../Utils/Loader';
-
+import { fDateTime } from '../../../Utils/Date_formet';
+import CompanyChange from '../../../Components/ExtraComponents/Models/CompanyChange';
 
 
 function Payment() {
   const dispatch = useDispatch();
+
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+
+console.log("isModalOpen",isModalOpen)
   const [companyData, setCompanyData] = useState({
     loading: false,
     data: [],
   });
+
+
+
+  const handleOpenModal = () => {
+    console.log("runn")
+    setIsModalOpen(true);
+  };
+
 
   const styles = {
     container: {
@@ -36,7 +49,10 @@ function Payment() {
   const columns = [
     { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
     {
-      field: 'profile', headerName: 'Profile', width: 120, headerClassName: styles.boldHeader,
+      field: 'profile',
+      headerName: 'Profile',
+      width: 120,
+      headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           <a href="profile.html" className="company-avatar avatar-md me-2 companies company-icon">
@@ -58,7 +74,6 @@ function Payment() {
       )
     },
 
-
     {
       field: 'razorpay_key',
       headerName: 'razorpay_key',
@@ -72,7 +87,10 @@ function Payment() {
     },
 
     {
-      field: 'email', headerName: 'email', width: 250, headerClassName: styles.boldHeader,
+      field: 'email',
+      headerName: 'email',
+      width: 250,
+      headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           {params.value || '-'}
@@ -80,34 +98,53 @@ function Payment() {
       )
     },
     {
-      field: 'change', headerName: 'change', width: 150, headerClassName: styles.boldHeader,
+      field: 'change',
+      headerName: 'change',
+      width: 150,
+      headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>
-          <a href="/"><span className="badge bg-purple">Change</span></a>
+        <div onClick={handleOpenModal}>
+          <span className="badge bg-purple">Change</span>
         </div>
       )
     },
     {
-      field: 'Status', headerName: 'Status', width: 120, headerClassName: styles.boldHeader,
+      field: 'Status',
+      headerName: 'Status',
+      width: 120,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => {
+        if (params.row.razorpay_key !== '') {
+          return (
+            <div>
+              <span className={`badge bg-success-light d-inline-flex align-items-center`}>
+                <i className={'fe fe-check me-1'} />Active
+              </span>
+            </div>
+          );
+        } else {
+          return (
+            <div>
+              <span className={`badge bg-danger-light d-inline-flex align-items-center`}>
+                <i className={`fe fe-x me-1`}></i>InActive</span>
+            </div>
+          );
+        }
+      }
+    },
+
+    {
+      field: 'createdAt', headerName: 'createdAt', width: 250, headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          <span className={`badge bg-success-light d-inline-flex align-items-center`}>
-            <i className={'fe fe-check me-1'} />Active
-          </span>
+          {fDateTime(params.value)}
         </div>
       )
     },
-    { field: 'createdAt', headerName: 'createdAt', width: 250, headerClassName: styles.boldHeader },
-
   ];
 
-  const handleEdit = (row) => {
-    console.log('Edit row:', row);
-  };
 
-  const handleDelete = (row) => {
-    console.log('Delete row:', row);
-  };
+
 
   const getCompanyData = async () => {
     try {
@@ -149,12 +186,17 @@ function Payment() {
               styles={styles}
               columns={columns}
               rows={companyData.data}
+              checkboxSelection={false}
             />
           }
         />
       ) : (
         <Loader />
       )}
+
+
+      {isModalOpen && isModalOpen ? <CompanyChange onClose={() => setIsModalOpen(false)} /> :""}
+
 
     </>
   );

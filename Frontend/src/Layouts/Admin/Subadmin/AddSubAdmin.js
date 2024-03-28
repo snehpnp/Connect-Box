@@ -1,5 +1,5 @@
 import React from 'react';
-import DynamicForm from '../../../Components/ExtraComponents/forms/FormField';
+import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
 
 import { useFormik } from 'formik';
 
@@ -122,7 +122,7 @@ console.log("roles 11:-", Role);
   return (
     <>
 
-      <DynamicForm
+      <AddForm
         ProfileShow={ProfileShow}
         fields={fields}
         page_title="Add Subadmin"
