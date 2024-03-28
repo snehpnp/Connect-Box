@@ -4,7 +4,7 @@ const StockOutModal = ({ onClose }) => {
 
     console.log("Dsdsuhbhj")
     return (
-        <div className="page-wrapper modal custom-modal fade" >
+        <div className=" modal custom-modal d-block" >
             <div className="modal-dialog modal-dialog-centered modal-md">
                 <div className="modal-content">
                     <div className="modal-header border-0 pb-0">
@@ -45,7 +45,7 @@ const StockOutModal = ({ onClose }) => {
                                 <div className="col-lg-6 col-md-12">
                                     <div className="input-block mb-0">
                                         <label>Units</label>
-                                        <select className="select">
+                                        <select className="select form-select">
                                             <option>Pieces</option>
                                             <option>Inches</option>
                                             <option>Kilograms</option>
