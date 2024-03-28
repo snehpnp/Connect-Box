@@ -3,12 +3,12 @@ import React from 'react'
 const Overview = () => {
   return (
     <div className="main-wrapper">
-         <div >
-          <div className="content container-fluid">
+      <div >
+        <div className="content container-fluid">
 
-            <div className='row'>
+          <div className='row'>
 
-              {/* <div className='col-md-3'>
+            {/* <div className='col-md-3'>
                 <div className='card'>
                 <div className="col card-header">
                         <h5 className="card-title">Admin Dashboard</h5>
@@ -19,288 +19,429 @@ const Overview = () => {
                 </div>
               </div> */}
 
-              <div className='col'>
+            <div className='col'>
+
               <div className="row " data-aos="fade-down">
-              <div className="col-xl-3 col-sm-6 col-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dash-widget-header">
-                      <span className="dash-widget-icon bg-1">
-                        <i className="fas fa-dollar-sign" />
-                      </span>
-                      <div className="dash-count">
-                        <div className="dash-title">Amount Due</div>
-                        <div className="dash-counts">
-                          <p>1,642</p>
+                <div className="col-xl-3 col-sm-6 col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dash-widget-header">
+                        <span className="dash-widget-icon bg-1">
+                          <i className="fas fa-dollar-sign" />
+                        </span>
+                        <div className="dash-count">
+                          <div className="dash-title">Amount Due</div>
+                          <div className="dash-counts">
+                            <p>1,642</p>
+                          </div>
                         </div>
                       </div>
+                      <div className="progress progress-sm mt-3">
+                        <div
+                          className="progress-bar bg-5"
+                          role="progressbar"
+                          style={{ width: "75%" }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                      <p className="text-muted mt-3 mb-0">
+                        <span className="text-danger me-1">
+                          <i className="fas fa-arrow-down me-1" />
+                          1.15%
+                        </span>{" "}
+                        since last week
+                      </p>
                     </div>
-                    <div className="progress progress-sm mt-3">
-                      <div
-                        className="progress-bar bg-5"
-                        role="progressbar"
-                        style={{ width: "75%" }}
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
+                  </div>
+                </div>
+                <div className="col-xl-3 col-sm-6 col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dash-widget-header">
+                        <span className="dash-widget-icon bg-2">
+                          <i className="fas fa-users" />
+                        </span>
+                        <div className="dash-count">
+                          <div className="dash-title">Customers</div>
+                          <div className="dash-counts">
+                            <p>3,642</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="progress progress-sm mt-3">
+                        <div
+                          className="progress-bar bg-6"
+                          role="progressbar"
+                          style={{ width: "65%" }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                      <p className="text-muted mt-3 mb-0">
+                        <span className="text-success me-1">
+                          <i className="fas fa-arrow-up me-1" />
+                          2.37%
+                        </span>{" "}
+                        since last week
+                      </p>
                     </div>
-                    <p className="text-muted mt-3 mb-0">
-                      <span className="text-danger me-1">
-                        <i className="fas fa-arrow-down me-1" />
-                        1.15%
-                      </span>{" "}
-                      since last week
-                    </p>
+                  </div>
+                </div>
+                <div className="col-xl-3 col-sm-6 col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dash-widget-header">
+                        <span className="dash-widget-icon bg-3">
+                          <i className="fas fa-file-alt" />
+                        </span>
+                        <div className="dash-count">
+                          <div className="dash-title">Invoices</div>
+                          <div className="dash-counts">
+                            <p>1,041</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="progress progress-sm mt-3">
+                        <div
+                          className="progress-bar bg-7"
+                          role="progressbar"
+                          style={{ width: "85%" }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                      <p className="text-muted mt-3 mb-0">
+                        <span className="text-success me-1">
+                          <i className="fas fa-arrow-up me-1" />
+                          3.77%
+                        </span>{" "}
+                        since last week
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-xl-3 col-sm-6 col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dash-widget-header">
+                        <span className="dash-widget-icon bg-4">
+                          <i className="far fa-file" />
+                        </span>
+                        <div className="dash-count">
+                          <div className="dash-title">Estimates</div>
+                          <div className="dash-counts">
+                            <p>2,150</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="progress progress-sm mt-3">
+                        <div
+                          className="progress-bar bg-8"
+                          role="progressbar"
+                          style={{ width: "45%" }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                      <p className="text-muted mt-3 mb-0">
+                        <span className="text-danger me-1">
+                          <i className="fas fa-arrow-down me-1" />
+                          8.68%
+                        </span>{" "}
+                        since last week
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="col-xl-3 col-sm-6 col-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dash-widget-header">
-                      <span className="dash-widget-icon bg-2">
-                        <i className="fas fa-users" />
-                      </span>
-                      <div className="dash-count">
-                        <div className="dash-title">Customers</div>
-                        <div className="dash-counts">
-                          <p>3,642</p>
+              
+              <div className="row" data-aos="fade-down">
+                <div className="col-xl-3 col-sm-6 col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dash-widget-header">
+                        <span className="dash-widget-icon bg-1">
+                          <i className="fas fa-dollar-sign" />
+                        </span>
+                        <div className="dash-count">
+                          <div className="dash-title">Amount Due</div>
+                          <div className="dash-counts">
+                            <p>1,642</p>
+                          </div>
                         </div>
                       </div>
+                      <div className="progress progress-sm mt-3">
+                        <div
+                          className="progress-bar bg-5"
+                          role="progressbar"
+                          style={{ width: "75%" }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                      <p className="text-muted mt-3 mb-0">
+                        <span className="text-danger me-1">
+                          <i className="fas fa-arrow-down me-1" />
+                          1.15%
+                        </span>{" "}
+                        since last week
+                      </p>
                     </div>
-                    <div className="progress progress-sm mt-3">
-                      <div
-                        className="progress-bar bg-6"
-                        role="progressbar"
-                        style={{ width: "65%" }}
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                    <p className="text-muted mt-3 mb-0">
-                      <span className="text-success me-1">
-                        <i className="fas fa-arrow-up me-1" />
-                        2.37%
-                      </span>{" "}
-                      since last week
-                    </p>
                   </div>
                 </div>
-              </div>
-              <div className="col-xl-3 col-sm-6 col-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dash-widget-header">
-                      <span className="dash-widget-icon bg-3">
-                        <i className="fas fa-file-alt" />
-                      </span>
-                      <div className="dash-count">
-                        <div className="dash-title">Invoices</div>
-                        <div className="dash-counts">
-                          <p>1,041</p>
+                <div className="col-xl-3 col-sm-6 col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dash-widget-header">
+                        <span className="dash-widget-icon bg-2">
+                          <i className="fas fa-users" />
+                        </span>
+                        <div className="dash-count">
+                          <div className="dash-title">Customers</div>
+                          <div className="dash-counts">
+                            <p>3,642</p>
+                          </div>
                         </div>
                       </div>
+                      <div className="progress progress-sm mt-3">
+                        <div
+                          className="progress-bar bg-6"
+                          role="progressbar"
+                          style={{ width: "65%" }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                      <p className="text-muted mt-3 mb-0">
+                        <span className="text-success me-1">
+                          <i className="fas fa-arrow-up me-1" />
+                          2.37%
+                        </span>{" "}
+                        since last week
+                      </p>
                     </div>
-                    <div className="progress progress-sm mt-3">
-                      <div
-                        className="progress-bar bg-7"
-                        role="progressbar"
-                        style={{ width: "85%" }}
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                    <p className="text-muted mt-3 mb-0">
-                      <span className="text-success me-1">
-                        <i className="fas fa-arrow-up me-1" />
-                        3.77%
-                      </span>{" "}
-                      since last week
-                    </p>
                   </div>
                 </div>
-              </div>
-              <div className="col-xl-3 col-sm-6 col-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dash-widget-header">
-                      <span className="dash-widget-icon bg-4">
-                        <i className="far fa-file" />
-                      </span>
-                      <div className="dash-count">
-                        <div className="dash-title">Estimates</div>
-                        <div className="dash-counts">
-                          <p>2,150</p>
+                <div className="col-xl-3 col-sm-6 col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dash-widget-header">
+                        <span className="dash-widget-icon bg-3">
+                          <i className="fas fa-file-alt" />
+                        </span>
+                        <div className="dash-count">
+                          <div className="dash-title">Invoices</div>
+                          <div className="dash-counts">
+                            <p>1,041</p>
+                          </div>
                         </div>
                       </div>
+                      <div className="progress progress-sm mt-3">
+                        <div
+                          className="progress-bar bg-7"
+                          role="progressbar"
+                          style={{ width: "85%" }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                      <p className="text-muted mt-3 mb-0">
+                        <span className="text-success me-1">
+                          <i className="fas fa-arrow-up me-1" />
+                          3.77%
+                        </span>{" "}
+                        since last week
+                      </p>
                     </div>
-                    <div className="progress progress-sm mt-3">
-                      <div
-                        className="progress-bar bg-8"
-                        role="progressbar"
-                        style={{ width: "45%" }}
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                    <p className="text-muted mt-3 mb-0">
-                      <span className="text-danger me-1">
-                        <i className="fas fa-arrow-down me-1" />
-                        8.68%
-                      </span>{" "}
-                      since last week
-                    </p>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div className="row" data-aos="fade-down">
-              <div className="col-xl-3 col-sm-6 col-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dash-widget-header">
-                      <span className="dash-widget-icon bg-1">
-                        <i className="fas fa-dollar-sign" />
-                      </span>
-                      <div className="dash-count">
-                        <div className="dash-title">Amount Due</div>
-                        <div className="dash-counts">
-                          <p>1,642</p>
+                <div className="col-xl-3 col-sm-6 col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dash-widget-header">
+                        <span className="dash-widget-icon bg-4">
+                          <i className="far fa-file" />
+                        </span>
+                        <div className="dash-count">
+                          <div className="dash-title">Estimates</div>
+                          <div className="dash-counts">
+                            <p>2,150</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="progress progress-sm mt-3">
-                      <div
-                        className="progress-bar bg-5"
-                        role="progressbar"
-                        style={{ width: "75%" }}
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                    <p className="text-muted mt-3 mb-0">
-                      <span className="text-danger me-1">
-                        <i className="fas fa-arrow-down me-1" />
-                        1.15%
-                      </span>{" "}
-                      since last week
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-3 col-sm-6 col-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dash-widget-header">
-                      <span className="dash-widget-icon bg-2">
-                        <i className="fas fa-users" />
-                      </span>
-                      <div className="dash-count">
-                        <div className="dash-title">Customers</div>
-                        <div className="dash-counts">
-                          <p>3,642</p>
-                        </div>
+                      <div className="progress progress-sm mt-3">
+                        <div
+                          className="progress-bar bg-8"
+                          role="progressbar"
+                          style={{ width: "45%" }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
                       </div>
+                      <p className="text-muted mt-3 mb-0">
+                        <span className="text-danger me-1">
+                          <i className="fas fa-arrow-down me-1" />
+                          8.68%
+                        </span>{" "}
+                        since last week
+                      </p>
                     </div>
-                    <div className="progress progress-sm mt-3">
-                      <div
-                        className="progress-bar bg-6"
-                        role="progressbar"
-                        style={{ width: "65%" }}
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                    <p className="text-muted mt-3 mb-0">
-                      <span className="text-success me-1">
-                        <i className="fas fa-arrow-up me-1" />
-                        2.37%
-                      </span>{" "}
-                      since last week
-                    </p>
                   </div>
                 </div>
-              </div>
-              <div className="col-xl-3 col-sm-6 col-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dash-widget-header">
-                      <span className="dash-widget-icon bg-3">
-                        <i className="fas fa-file-alt" />
-                      </span>
-                      <div className="dash-count">
-                        <div className="dash-title">Invoices</div>
-                        <div className="dash-counts">
-                          <p>1,041</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="progress progress-sm mt-3">
-                      <div
-                        className="progress-bar bg-7"
-                        role="progressbar"
-                        style={{ width: "85%" }}
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                    <p className="text-muted mt-3 mb-0">
-                      <span className="text-success me-1">
-                        <i className="fas fa-arrow-up me-1" />
-                        3.77%
-                      </span>{" "}
-                      since last week
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-3 col-sm-6 col-12">
-                <div className="card">
-                  <div className="card-body">
-                    <div className="dash-widget-header">
-                      <span className="dash-widget-icon bg-4">
-                        <i className="far fa-file" />
-                      </span>
-                      <div className="dash-count">
-                        <div className="dash-title">Estimates</div>
-                        <div className="dash-counts">
-                          <p>2,150</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="progress progress-sm mt-3">
-                      <div
-                        className="progress-bar bg-8"
-                        role="progressbar"
-                        style={{ width: "45%" }}
-                        aria-valuenow={75}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                    <p className="text-muted mt-3 mb-0">
-                      <span className="text-danger me-1">
-                        <i className="fas fa-arrow-down me-1" />
-                        8.68%
-                      </span>{" "}
-                      since last week
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
               </div>
 
+              <div className="row" data-aos="fade-down">
+                <div className="col-xl-3 col-sm-6 col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dash-widget-header">
+                        <span className="dash-widget-icon bg-1">
+                          <i className="fas fa-dollar-sign" />
+                        </span>
+                        <div className="dash-count">
+                          <div className="dash-title">Amount Due</div>
+                          <div className="dash-counts">
+                            <p>1,642</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="progress progress-sm mt-3">
+                        <div
+                          className="progress-bar bg-5"
+                          role="progressbar"
+                          style={{ width: "75%" }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                      <p className="text-muted mt-3 mb-0">
+                        <span className="text-danger me-1">
+                          <i className="fas fa-arrow-down me-1" />
+                          1.15%
+                        </span>{" "}
+                        since last week
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-xl-3 col-sm-6 col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dash-widget-header">
+                        <span className="dash-widget-icon bg-2">
+                          <i className="fas fa-users" />
+                        </span>
+                        <div className="dash-count">
+                          <div className="dash-title">Customers</div>
+                          <div className="dash-counts">
+                            <p>3,642</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="progress progress-sm mt-3">
+                        <div
+                          className="progress-bar bg-6"
+                          role="progressbar"
+                          style={{ width: "65%" }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                      <p className="text-muted mt-3 mb-0">
+                        <span className="text-success me-1">
+                          <i className="fas fa-arrow-up me-1" />
+                          2.37%
+                        </span>{" "}
+                        since last week
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-xl-3 col-sm-6 col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dash-widget-header">
+                        <span className="dash-widget-icon bg-3">
+                          <i className="fas fa-file-alt" />
+                        </span>
+                        <div className="dash-count">
+                          <div className="dash-title">Invoices</div>
+                          <div className="dash-counts">
+                            <p>1,041</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="progress progress-sm mt-3">
+                        <div
+                          className="progress-bar bg-7"
+                          role="progressbar"
+                          style={{ width: "85%" }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                      <p className="text-muted mt-3 mb-0">
+                        <span className="text-success me-1">
+                          <i className="fas fa-arrow-up me-1" />
+                          3.77%
+                        </span>{" "}
+                        since last week
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-xl-3 col-sm-6 col-12">
+                  <div className="card">
+                    <div className="card-body">
+                      <div className="dash-widget-header">
+                        <span className="dash-widget-icon bg-4">
+                          <i className="far fa-file" />
+                        </span>
+                        <div className="dash-count">
+                          <div className="dash-title">Estimates</div>
+                          <div className="dash-counts">
+                            <p>2,150</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="progress progress-sm mt-3">
+                        <div
+                          className="progress-bar bg-8"
+                          role="progressbar"
+                          style={{ width: "45%" }}
+                          aria-valuenow={75}
+                          aria-valuemin={0}
+                          aria-valuemax={100}
+                        />
+                      </div>
+                      <p className="text-muted mt-3 mb-0">
+                        <span className="text-danger me-1">
+                          <i className="fas fa-arrow-down me-1" />
+                          8.68%
+                        </span>{" "}
+                        since last week
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            
-            {/* <div className="row" data-aos="fade-left">
+
+          </div>
+
+          {/* <div className="row" data-aos="fade-left">
               <div className="col-xl-7 d-flex">
               <div className="card mb-0">
                   <div className="card-header">
@@ -862,10 +1003,10 @@ const Overview = () => {
                 </div>
               </div>
             </div> */}
-       
-          </div>
+
         </div>
-      
+      </div>
+
     </div>
   )
 }
