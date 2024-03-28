@@ -223,6 +223,7 @@ function System() {
 
 
 
+
         {/* Card design */}
 
         <div className="card flex-fill bg-white">
@@ -546,6 +547,7 @@ function System() {
           <div className="card-footer text-muted">This is my footer</div>
 
         </div>
+
 
 
       </div>

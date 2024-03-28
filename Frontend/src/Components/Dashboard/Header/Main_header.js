@@ -86,7 +86,7 @@ const Main_Header = () => {
           </div>
         </div>
 
-        <div className="top-nav-search">
+        {/* <div className="top-nav-search">
           <form>
             <input
               type="text"
@@ -97,7 +97,7 @@ const Main_Header = () => {
               <img src="assets/img/icons/search.svg" alt="img" />
             </button>
           </form>
-        </div>
+        </div> */}
 
         <label class="theme-switch">
           <input type="checkbox" onClick={toggleTheme} />

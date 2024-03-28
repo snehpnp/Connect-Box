@@ -8,22 +8,12 @@ function Loader() {
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundColor: 'rgba(255, 255, 255, 0.8)',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             zIndex: 9999
         }}>
-            <div className="loader__image">
-                <div className="loader__coin" style={{
-                    animation: 'moveUpDown 2s ease-in-out infinite' // Apply the movement animation
-                }}>
-                    <img src="https://www.dropbox.com/s/fzc3fidyxqbqhnj/loader-coin.png?raw=1" alt="" />
-                </div>
-                <div className="loader__hand">
-                    <img src="https://www.dropbox.com/s/y8uqvjn811z6npu/loader-hand.png?raw=1" alt="" />
-                </div>
-            </div>
+           
         </div>
     );
 }
