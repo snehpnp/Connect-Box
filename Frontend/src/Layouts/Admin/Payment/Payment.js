@@ -174,7 +174,6 @@ console.log("isModalOpen",isModalOpen)
   }, []);
 
 
-  console.log("selectedRow",selectedRow._id)
 
   return (
     <>
