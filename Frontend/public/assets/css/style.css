@@ -32587,3 +32587,6 @@ button.btn.btn-primary a {
 .MuiDataGrid-cell {
     outline: none !important;
 }
+.MuiDataGrid-columnHeader{
+    outline: none !important;
+}
