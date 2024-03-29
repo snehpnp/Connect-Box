@@ -22,7 +22,7 @@ import MessageBrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast';
 import AddSubadmin from "../Layouts/Admin/Subadmin/AddSubAdmin"
 import EditSubadmin from "../Layouts/Admin/Subadmin/EditSubAdmin"
 import AllSubadmin from "../Layouts/Admin/Subadmin/AllSubAdmin"
-import Profile from '../Layouts/Admin/Profile/Profile';
+
 
 
 import Sub from '../Layouts/Admin/Tabe/Sub';
@@ -54,7 +54,6 @@ const Admin_Routing = () => {
                     <Route exact path="/position" element={<Positions />} />
 
 
-                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/tabe" element={<Tabe />} /> 
                     <Route exact path="/tabes" element={<Tabes />} />    
 
