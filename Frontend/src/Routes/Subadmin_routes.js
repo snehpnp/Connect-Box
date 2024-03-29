@@ -4,7 +4,14 @@ import { Route, Routes } from "react-router-dom";
 import Overview from '../Layouts/Admin/Dashboard/Overview';
 import Header from '../Components/Dashboard/Header/Header';
 import MainHeader from '../Components/Dashboard/Header/Main_header';
-import System from '../Layouts/Admin/System/System';
+import System from '../Layouts/Subadmin/System/System';
+
+
+
+import AddUser from '../Layouts/Subadmin/Users/AddUser';
+import ALLUSER from '../Layouts/Subadmin/Users/AllUsers';
+
+
 
 
 
@@ -24,6 +31,12 @@ const SubAdmin_Routing = () => {
             <Routes>
                 <Route exact path="/dashboard" element={<Overview />} />
                 <Route exact path="/system" element={<System />} />
+
+                <Route exact path="/User/add" element={<AddUser />} />
+                <Route exact path="/users" element={<ALLUSER />} />
+
+
+
 
 
             </Routes>
