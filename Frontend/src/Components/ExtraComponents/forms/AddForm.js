@@ -7,6 +7,7 @@ const DynamicForm = ({
   fields,
   ProfileShow,
   page_title,
+  formData,
   btn_name1,
   btn_name1_route,
   initialValues,
@@ -51,6 +52,17 @@ const DynamicForm = ({
 
   console.log("formik", formik.handleSubmit);
 
+
+
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  // Function to handle image selection
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    // Update selectedImage state with the selected file
+    setSelectedImage(file);
+  };
+
   return (
     <div className="content container-fluid">
       <div className="card mb-0">
@@ -63,35 +75,37 @@ const DynamicForm = ({
             </div>
 
             {ProfileShow && ProfileShow ? (
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="form-group-item">
-                    <h5 className="form-title">Basic Details</h5>
-                    <div className="profile-picture">
-                      <div className="upload-profile">
-                        <div className="profile-img">
-                          <img
-                            id="blah"
-                            className="avatar"
-                            src="assets/img/profiles/avatar-14.jpg"
-                            alt="profile-img"
-                          />
-                        </div>
-                        <div className="add-profile">
-                          <h5>Upload a New Photo</h5>
-                          <span>Profile-pic.jpg</span>
-                        </div>
-                      </div>
-                      <div className="img-upload">
-                        <label className="btn btn-upload">
-                          Upload <input type="file" />
-                        </label>
-                        <a className="btn btn-remove">Remove</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+             <div className="row">
+             <div className="col-md-12">
+               <div className="form-group-item">
+                 <h5 className="form-title">Basic Details</h5>
+                 <div className="profile-picture">
+                   <div className="upload-profile">
+                     <div className="profile-img">
+                       <img
+                         id="blah"
+                         className="avatar"
+                         src={selectedImage ? URL.createObjectURL(selectedImage) : "assets/img/profiles/avatar-14.jpg"}
+                         alt="profile-img"
+                       />
+                     </div>
+                     <div className="add-profile">
+                       <h5>Upload a New Photo</h5>
+                       <span>{selectedImage ? selectedImage.name : "Profile-pic.jpg"}</span>
+                     </div>
+                   </div>
+                   <div className="img-upload">
+                     {/* Input field for selecting an image */}
+                     <label className="btn btn-upload">
+                       Upload <input type="file" onChange={handleImageChange} />
+                     </label>
+                     {/* Button to remove the selected image */}
+                     <button className="btn btn-remove" onClick={() => setSelectedImage(null)}>Remove</button>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
             ) : (
               ""
             )}

@@ -18,8 +18,50 @@ class GroupService {
   // ADD GROUP SERVICES
   async Addgroupservice(req, res) {
     try {
-      const groupdetails = req.body.groupdetails;
-      const services_id = req.body.services_id;
+      const { maker_id, groupdetails, services_id } = req.body
+
+
+
+
+      if (!maker_id || maker_id == "" || maker_id == null) {
+        return res.send({ status: false, msg: 'Please Enter Maker Id', data: [] });
+      }
+
+
+      const maker_id_find = await User.findOne({ _id: maker_id, Role: "SUBADMIN" });
+      if (!maker_id_find) {
+        return res.send({ status: false, msg: 'Maker Id Is Wrong', data: [] });
+      }
+
+
+
+      function checkStringValidity(grpService) {
+        // Check if the length of the string is at least 5 characters (to have 4th index)
+        if (grpService.length < 5) {
+          return res.send({ status: false, msg: 'Please Enter Group name long', data: [] });
+        }
+
+        // Check if the first three letters are capitalized
+        if (grpService.substring(0, 3) !== grpService.substring(0, 3).toUpperCase()) {
+          return res.send({ status: false, msg: 'Please Enter Group Name starting 3 letter Capital', data: [] });
+
+        }
+
+        // Check if there is an underscore (_) at the fourth index
+        if (grpService.charAt(3) !== '_') {
+          return res.send({ status: false, msg: 'Please Enter Group  name _ is mandatory', data: [] });
+        }
+        if (maker_id_find.prifix_key != grpService.substring(0, 3).toUpperCase()) {
+          return res.send({ status: false, msg: 'Please Enter Group starting 3 leter is your prifix letter', data: [] });
+
+        }
+        return true;
+      }
+
+      if (!checkStringValidity(groupdetails.name)) {
+        return res.send({ status: false, msg: 'Some Issue in Group Service', data: [] });
+      }
+
 
       var groupServices = await serviceGroupName.find({ name: groupdetails.name })
 
@@ -185,12 +227,12 @@ class GroupService {
           const updateOperation = { $set: { group_qty: data.group_qty } };
           var deleteGroupServices = await serviceGroup_services_id.updateOne(filter, updateOperation)
 
-         
+
 
         })
       }
 
-     
+
 
 
       // Client Services Update
@@ -207,7 +249,7 @@ class GroupService {
         add_Group_services.forEach(async (data) => {
           var stgId = new ObjectId(data)
           var Qty_find = services_id.filter((data1) => data1.service_id == data)
-         
+
           var find_user_service = await groupServices_client1.find({ groupService_id: GroupServices_Id })
 
 
@@ -226,7 +268,7 @@ class GroupService {
                 lot_size: 1
 
               })
-        
+
 
               User_client_services.save()
 
@@ -360,8 +402,8 @@ class GroupService {
 
   async getServiceByCatagory(req, res) {
     let pipeline;
-    if(req.body.segment == '' || req.body.segment == null){
- 
+    if (req.body.segment == '' || req.body.segment == null) {
+
       return res.send({ status: false, msg: "Please Enter Segment", data: [] })
 
     }
@@ -436,7 +478,7 @@ class GroupService {
     const result = await services.aggregate(pipeline);
 
     if (result.length > 0) {
-    
+
       return res.send({ status: true, msg: "Get Succefully", data: result })
 
 
@@ -444,7 +486,7 @@ class GroupService {
 
       return res.send({ status: false, msg: "Some Error in get", data: result })
 
-      
+
 
     }
 
@@ -527,7 +569,7 @@ class GroupService {
     try {
       const { data } = req.body
       var ServicesArr = []
-      if(!data || data.length == 0 || data == ''){
+      if (!data || data.length == 0 || data == '') {
         return res.send({ status: false, msg: 'Please Insert Coreect Data ', data: ServicesArr });
 
       }
@@ -621,7 +663,7 @@ class GroupService {
     try {
 
       const { _id } = req.body
-    
+
       if (_id != "yyyyyyyYYYYYY") {
         const objectId = new ObjectId(_id);
 
