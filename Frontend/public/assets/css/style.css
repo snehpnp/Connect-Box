@@ -30086,7 +30086,7 @@ span.bg-purple {
     background: #eaddff;
     border: 1px solid #eaddff;
     box-shadow: inset 0 0 0 0 #3f4254;
-   
+
     border-radius: 6px;
     color: #7539ff;
 }
@@ -32473,51 +32473,62 @@ td .invoice-detail i {
 
 .css-t89xny-MuiDataGrid-columnHeaderTitle {
 
-  
-    font-family:'Inter';
+
+    font-family: 'Inter';
     font-size: 16px;
     font-weight: 500;
 }
+
 [data-layout-mode=dark] body .css-t89xny-MuiDataGrid-columnHeaderTitle {
     color: #fff !important;
 }
+
 [data-layout-mode=dark] body .css-204u17-MuiDataGrid-main {
     border: 1px solid #2e3840;
 }
- .css-204u17-MuiDataGrid-main {
+
+.css-204u17-MuiDataGrid-main {
     border: 1px solid #aaa;
 }
 
-.MuiDataGrid-cellContent,.MuiDataGrid-cellContent div, .MuiDataGrid-cell , .MuiDataGrid-selectedRowCount{
-   
+.MuiDataGrid-cellContent,
+.MuiDataGrid-cellContent div,
+.MuiDataGrid-cell,
+.MuiDataGrid-selectedRowCount {
+
     font-family: 'Inter' !important;
     font-size: 16px !important;
 }
+
 span.badge.bg-success-light {
     font-size: 14px;
     font-family: 'Inter';
 }
-[data-layout-mode=dark] body .css-qvtrhg-MuiDataGrid-virtualScroller, [data-layout-mode=dark] body .css-yrdy0g-MuiDataGrid-columnHeaderRow {
+
+[data-layout-mode=dark] body .css-qvtrhg-MuiDataGrid-virtualScroller,
+[data-layout-mode=dark] body .css-yrdy0g-MuiDataGrid-columnHeaderRow {
     background: #1e1f25;
 }
-[data-layout-mode=dark] body .css-s1v7zr-MuiDataGrid-virtualScrollerRenderZone
-{
+
+[data-layout-mode=dark] body .css-s1v7zr-MuiDataGrid-virtualScrollerRenderZone {
     background: #16191c;
 }
+
 [data-layout-mode=light] body .MuiDataGrid-columnHeaders {
     background: linear-gradient(320deg, #DDCEFF 0%, #DBECFF 100%);
 }
-button.btn.btn-primary a{
-color:#fff;
+
+button.btn.btn-primary a {
+    color: #fff;
 }
-.answer.show{
+
+.answer.show {
     max-height: 200px;
     padding: 20px 80px 20px 20px;
 }
 
 
-.custom-modal 
-{
+.custom-modal {
     --bs-backdrop-zindex: 1050;
     --bs-backdrop-bg: #0000009c;
     --bs-backdrop-opacity: 0.5;
@@ -32529,6 +32540,7 @@ color:#fff;
     height: 100vh;
     background-color: var(--bs-backdrop-bg);
 }
+
 /* HTML: <div class="loader"></div> */
 .loader {
     width: fit-content;
@@ -32536,31 +32548,42 @@ color:#fff;
     font-family: monospace;
     font-size: 30px;
     color: #0000;
-    background: linear-gradient(90deg,#C02942 calc(50% + 0.5ch),#000 0) right/calc(200% + 1ch) 100%;
+    background: linear-gradient(90deg, #C02942 calc(50% + 0.5ch), #000 0) right/calc(200% + 1ch) 100%;
     -webkit-background-clip: text;
-            background-clip: text;
+    background-clip: text;
     animation: l7 2s infinite steps(11);
-  }
-  .loader:before {
-    content:"Loading..."
-  }
-  @keyframes l7 {to{background-position: left}}
+}
+
+.loader:before {
+    content: "Loading..."
+}
+
+@keyframes l7 {
+    to {
+        background-position: left
+    }
+}
 
 
 
-  .custom-data-grid .MuiDataGrid-cell:focus {
-  outline: none; /* Remove the outline when the cell is focused */
+.custom-data-grid .MuiDataGrid-cell:focus {
+    outline: none;
+    /* Remove the outline when the cell is focused */
 }
 
 .custom-data-grid .cell:focus {
     outline: none;
-  }
+}
 
 
-  .MuiDataGrid-row.Mui-selected {
-    outline: none;
-  }
+.MuiDataGrid-row.Mui-selected {
+    outline: none ;
+}
 
-  .MuiOutlinedInput-notchedOutline {
-    border: none ! important ;
-  }
+.MuiOutlinedInput-notchedOutline {
+    border: none ! important;
+}
+
+.MuiDataGrid-cell {
+    outline: none !important;
+}

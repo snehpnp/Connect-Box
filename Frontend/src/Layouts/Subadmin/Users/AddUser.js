@@ -146,7 +146,7 @@ const AddClient = () => {
       return errors;
     },
     onSubmit: async (values, { setSubmitting }) => {
-  
+
       const data = {
         ProfileImg: "",
         FullName: values.fullName,
@@ -167,24 +167,24 @@ const AddClient = () => {
 
 
       await dispatch(AddSubadmin(data))
-      .unwrap()
-      .then(async (response) => {
+        .unwrap()
+        .then(async (response) => {
 
 
-        if (response.status) {
-          toast.success(response.msg);
-          setTimeout(() => {
-            navigate("/admin/allsubadmin")
-          }, 1000);
-      
-        } else {
-          toast.error(response.msg);
-        }
+          if (response.status) {
+            toast.success(response.msg);
+            setTimeout(() => {
+              navigate("/admin/allsubadmin")
+            }, 1000);
 
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
+          } else {
+            toast.error(response.msg);
+          }
+
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
 
     },
   });
