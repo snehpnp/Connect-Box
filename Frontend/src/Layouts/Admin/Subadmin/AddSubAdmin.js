@@ -1,5 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import { AddSubadmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
+import { useNavigate, useLocation } from "react-router-dom";
+
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
+import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
+
 
 
 
@@ -8,93 +15,16 @@ import { useFormik } from 'formik';
 import axios from "axios";
 
 const AddClient = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+
   const userDetails = JSON.parse(localStorage.getItem("user_details"));
   const Role = userDetails?.Role;
   const user_id = userDetails?.user_id;
   const user_token = userDetails?.token;
   const ProfileShow = 1;
 
-  const formik = useFormik({
-    initialValues: {
-      fullName: "",
-      username: "",
-      email: "",
-      phone: "",
-      balance: "",
-      password: "",
-      prifix_key: "",
-      subadmin_servic_type: "0",
-      strategy_Percentage: "0",
-      Per_trade: "0",
-      parent_id: null,
-      parent_role: null,
-    },
-    validate: (values) => {
-      let errors = {};
-      if (!values.fullName) {
-        errors.fullName = "Full Name is required";
-      }
-      if (!values.username) {
-        errors.username = "Username is required";
-      }
-      if (!values.email) {
-        errors.email = "Please enter your email address.";
-      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
-        errors.email = "Please enter a valid email address.";
-      }
 
-      if (!values.phone) {
-        errors.phone = "Please enter your phone number.";
-      } else if (!/^\d{10}$/.test(values.phone)) {
-        errors.phone = "Please enter a valid 10-digit phone number.";
-      }
-      if (!values.balance) {
-        errors.balance = "Balance is required";
-      }
-      if (!values.password) {
-        errors.password = "Password is required";
-      }
-      if (!values.prifix_key) {
-        errors.prifix_key = "Prefix key is required";
-      } else if (values.prifix_key.length !== 3) {
-        errors.prifix_key = "Key should be exactly 3 characters/number/both";
-      }
-      return errors;
-    },
-    onSubmit: async (values, { setSubmitting }) => {
-      const payload = {
-        ProfileImg: "",
-        FullName: values.fullName,
-        UserName: values.username,
-        Email: values.email,
-        PhoneNo: values.phone,
-        Balance: values.balance,
-        subadmin_service_type: values.subadmin_servic_type,
-        strategy_Percentage: values.strategy_Percentage,
-        Per_trade: values.Per_trade,
-        prifix_key: values.prifix_key,
-        password: values.password,
-        parent_id: user_id || "65feb434ce02a722ac3b997d",
-        parent_role: Role || "ADMIN",
-      };
-      console.log("PAYLOAD", payload);
-      setSubmitting(false);
-      try {
-        const response = await axios.post(
-          "http://localhost:7000/subadmin/add",
-          payload,
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        console.log("Response from AddSubAdmin:", response.data);
-      } catch (error) {
-        console.error("Error adding subadmin:", error);
-      } finally {
-        setSubmitting(false);
-      }
-    },
-  });
   const fields = [
     {
       name: "fullName",
@@ -166,6 +96,100 @@ const AddClient = () => {
     },
   ];
 
+
+
+  const formik = useFormik({
+    initialValues: {
+      fullName: "",
+      username: "",
+      email: "",
+      phone: "",
+      balance: "",
+      password: "",
+      prifix_key: "",
+      subadmin_servic_type: "0",
+      strategy_Percentage: "0",
+      Per_trade: "0",
+      parent_id: null,
+      parent_role: null,
+    },
+    validate: (values) => {
+      let errors = {};
+      if (!values.fullName) {
+        errors.fullName = "Full Name is required";
+      }
+      if (!values.username) {
+        errors.username = "Username is required";
+      }
+      if (!values.email) {
+        errors.email = "Please enter your email address.";
+      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
+        errors.email = "Please enter a valid email address.";
+      }
+
+      if (!values.phone) {
+        errors.phone = "Please enter your phone number.";
+      } else if (!/^\d{10}$/.test(values.phone)) {
+        errors.phone = "Please enter a valid 10-digit phone number.";
+      }
+      if (!values.balance) {
+        errors.balance = "Balance is required";
+      }
+      if (!values.password) {
+        errors.password = "Password is required";
+      }
+      if (!values.prifix_key) {
+        errors.prifix_key = "Prefix key is required";
+      } else if (values.prifix_key.length !== 3) {
+        errors.prifix_key = "Key should be exactly 3 characters/number/both";
+      }
+      return errors;
+    },
+    onSubmit: async (values, { setSubmitting }) => {
+  
+      const data = {
+        ProfileImg: "",
+        FullName: values.fullName,
+        UserName: values.username,
+        Email: values.email,
+        PhoneNo: values.phone,
+        Balance: values.balance,
+        subadmin_service_type: values.subadmin_servic_type,
+        strategy_Percentage: values.strategy_Percentage,
+        Per_trade: values.Per_trade,
+        prifix_key: values.prifix_key,
+        password: values.password,
+        parent_id: user_id || "65feb434ce02a722ac3b997d",
+        parent_role: Role || "ADMIN",
+      };
+
+      setSubmitting(false);
+
+
+      await dispatch(AddSubadmin(data))
+      .unwrap()
+      .then(async (response) => {
+
+
+        if (response.status) {
+          toast.success(response.msg);
+          setTimeout(() => {
+            navigate("/admin/allsubadmin")
+          }, 1000);
+      
+        } else {
+          toast.error(response.msg);
+        }
+
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+
+    },
+  });
+
+
   console.log("Formik values:", formik.values);
   console.log("Formik errors:", formik.errors);
 
@@ -182,6 +206,7 @@ const AddClient = () => {
         btn_name1_route={'/admin/allsubadmin'}
 
       />
+      <ToastButton />
     </>
 
   );

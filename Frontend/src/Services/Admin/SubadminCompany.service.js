@@ -18,3 +18,18 @@ export async function GetSubadmminCompanyInfo(data, token) {
     }
 
 }
+
+
+export async function RechargeDetailsGet(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}recharge/get`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}

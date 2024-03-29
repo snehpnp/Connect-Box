@@ -5,7 +5,8 @@ const { Schema, model } = require('mongoose');
 const SubCompanySchema = new mongoose.Schema({
     panel_name: {
         type: String,
-        unique: true
+        default: ""
+
     },
 
     email: {

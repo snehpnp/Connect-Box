@@ -26,35 +26,35 @@ class Subadmin {
 
 
             if (prifix_key.length > 3) {
-                return res.status(400).send({ status: false, msg: 'prifix_key Omly 3 Digits' });
+                return res.send({ status: false, msg: 'prifix_key Omly 3 Digits' });
             }
 
 
             // Check if role exists
             const roleCheck = await Role_model.findOne({ name: Role.toUpperCase() });
             if (!roleCheck) {
-                return res.status(400).send({ status: false, msg: 'Role does not exist' });
+                return res.send({ status: false, msg: 'Role does not exist' });
             }
 
             // Check if username, email, phone number, and prefix key already exist
             const existingUsername = await User_model.findOne({ UserName: FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ''), prifix_key });
             if (existingUsername) {
-                return res.status(400).send({ status: false, msg: 'Username already exists' });
+                return res.send({ status: false, msg: 'Username already exists' });
             }
 
             const existingEmail = await User_model.findOne({ Email, prifix_key });
             if (existingEmail) {
-                return res.status(400).send({ status: false, msg: 'Email already exists' });
+                return res.send({ status: false, msg: 'Email already exists' });
             }
 
             const existingPhone = await User_model.findOne({ PhoneNo, prifix_key });
             if (existingPhone) {
-                return res.status(400).send({ status: false, msg: 'Phone number already exists' });
+                return res.send({ status: false, msg: 'Phone number already exists' });
             }
 
             const existingPrefix = await User_model.findOne({ Role: "SUBADMIN", prifix_key });
             if (existingPrefix) {
-                return res.status(400).send({ status: false, msg: 'Prefix key already exists' });
+                return res.send({ status: false, msg: 'Prefix key already exists' });
             }
 
             const salt = await bcrypt.genSalt(10);
@@ -113,7 +113,7 @@ class Subadmin {
             return res.status(200).send({ status: true, msg: "Successfully added!", data: { UserId: savedUser.user_id } });
         } catch (error) {
             console.error("Error:", error);
-            return res.status(500).send({ msg: "Internal server error", error });
+            return res.send({ msg: "Internal server error", error });
         }
     }
 
@@ -273,7 +273,7 @@ class Subadmin {
             const { Role } = req.body;
 
             if (!Role) {
-                return res.status(400).send({ status: false, msg: "Role is required in the request body" });
+                return res.send({ status: false, msg: "Role is required in the request body" });
             }
 
             const rechargeDetails = await count_licenses.aggregate([
@@ -308,7 +308,7 @@ class Subadmin {
             res.send({ status: true, msg: "Recharge details fetched successfully", data: rechargeDetails });
         } catch (error) {
             console.error("Error while fetching recharge details:", error);
-            res.status(500).send({ status: false, msg: "Internal Server Error" });
+            res.send({ status: false, msg: "Internal Server Error" });
         }
     }
 

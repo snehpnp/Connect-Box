@@ -15,7 +15,6 @@ function Payment() {
   const [selectedRow, setSelectedRow] = useState(null);
 
 
-console.log("isModalOpen",isModalOpen)
   const [companyData, setCompanyData] = useState({
     loading: false,
     data: [],
@@ -24,7 +23,6 @@ console.log("isModalOpen",isModalOpen)
 
 
   const handleOpenModal = (rowData) => {
-    console.log("runn",rowData.makerInfo.FullName)
     setSelectedRow(rowData)
     setIsModalOpen(true);
   };
@@ -160,7 +158,6 @@ console.log("isModalOpen",isModalOpen)
         });
       }
     } catch (error) {
-      console.log("Error", error);
       setCompanyData({
         loading: false,
         data: [],
