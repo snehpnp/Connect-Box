@@ -1,4 +1,6 @@
 import React from 'react'
+import ProfileAPI from '../ProfileApi/ProfileApi'
+import ProfileApi from '../ProfileApi/ProfileApi'
 
 const Profile = () => {
     return (
@@ -215,7 +217,7 @@ const Profile = () => {
                 </div>
             </div>
 
-
+              <ProfileApi/>
         </div>
     )
 }
