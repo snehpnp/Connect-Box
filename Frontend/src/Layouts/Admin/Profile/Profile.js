@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ProfileApi from '../ProfileApi/ProfileApi'
 
 const Profile = () => {
     const [profileData, setProfileData] = useState([]);
