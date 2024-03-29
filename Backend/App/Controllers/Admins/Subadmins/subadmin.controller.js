@@ -218,7 +218,7 @@ class Subadmin {
             }
 
 
-            const getAllSubAdmins = await User_model.find({ _id: subid, Role: "SUBADMIN" });
+            const getAllSubAdmins = await User_model.find({ _id: subid });
 
 
             // IF DATA NOT EXIST

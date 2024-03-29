@@ -12,7 +12,7 @@ import AddUser from '../Layouts/Subadmin/Users/AddUser';
 import ALLUSER from '../Layouts/Subadmin/Users/AllUsers';
 
 
-import Strategy from '../Layouts/SubAdmin/Strategy/Strategy';
+import Strategy from '../Layouts/Subadmin/Strategys/Strategy';
 
 
 
@@ -22,28 +22,27 @@ import Strategy from '../Layouts/SubAdmin/Strategy/Strategy';
 
 const SubAdmin_Routing = () => {
 
-
     return (
         <>
             <MainHeader />
             <Header />
             <div className='page-wrapper' >
 
-            <Routes>
-                <Route exact path="/dashboard" element={<Overview />} />
-                <Route exact path="/system" element={<System />} />
+                <Routes>
+                    <Route exact path="/dashboard" element={<Overview />} />
+                    <Route exact path="/system" element={<System />} />
                     <Route exact path="/strategys" element={<Strategy />} />
 
-                <Route exact path="/User/add" element={<AddUser />} />
-                <Route exact path="/users" element={<ALLUSER />} />
+                    <Route exact path="/User/add" element={<AddUser />} />
+                    <Route exact path="/users" element={<ALLUSER />} />
 
 
 
 
 
-            </Routes>
+                </Routes>
 
-</div>
+            </div>
         </>
     )
 }

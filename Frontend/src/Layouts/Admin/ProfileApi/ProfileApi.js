@@ -46,7 +46,7 @@ const ProfileApi = () => {
 
     return (
         <div>
-            {profileData && <Profile profileData={profileData} />}
+            {/* {profileData && <Profile profileData={profileData} />} */}
         </div>
     );
 };
