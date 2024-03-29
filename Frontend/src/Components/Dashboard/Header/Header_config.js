@@ -147,15 +147,10 @@ export const subamdin_header = [
     },
     {
         id: 5,
-        name: 'Strategy',
+        name: 'Services',
         Icon: "fe fe-target",
         Data: [
-            {
-                id: 51,
-                name: 'Add Strategy',
-                Icon: "fe fe-plus",
-                route: "/subadmin/strategy/add",
-            },
+           
             {
                 id: 52,
                 name: 'All Strategy',

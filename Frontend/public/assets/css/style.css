@@ -32541,23 +32541,18 @@ button.btn.btn-primary a {
     background-color: var(--bs-backdrop-bg);
 }
 
+
+/* HTML: <div class="loader"></div> */
 .loader {
     font-weight: bold;
     font-family: sans-serif;
     font-size: 30px;
     animation: l1 1s linear infinite alternate;
-}
-
-.loader:before {
-    content: "Loading..."
-}
-
-@keyframes l1 {
-    to {
-        opacity: 0
-    }
-}
-
+  }
+  .loader:before {
+    content:"Loading..."
+  }
+  @keyframes l1 {to{opacity: 0}}
 
 
 .custom-data-grid .MuiDataGrid-cell:focus {

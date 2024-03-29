@@ -1,50 +1,36 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import DrapDown from './DrapDown';
 
 const Main_Header = () => {
+  // State to manage theme mode
+  const [themeMode, setThemeMode] = useState('light');
+
   // Define toggleTheme function
   const toggleTheme = () => {
-    const htmlElement = document.querySelector('html');
-    const currentSidebar = htmlElement.getAttribute('data-sidebar');
-    const currentLayoutMode = htmlElement.getAttribute('data-layout-mode');
-    const currentTopBarMode = htmlElement.getAttribute('data-topbar');
+    // Toggle theme mode
+    const newThemeMode = themeMode === 'light' ? 'dark' : 'light';
+    setThemeMode(newThemeMode);
 
-    // Toggle data-sidebar attribute
-    if (currentSidebar === 'light') {
-      htmlElement.setAttribute('data-sidebar', 'dark');
-    } else {
-      htmlElement.setAttribute('data-sidebar', 'light');
-    }
-
-    // Toggle data-layout-mode attribute
-    if (currentLayoutMode === 'light') {
-      htmlElement.setAttribute('data-layout-mode', 'dark');
-    } else {
-      htmlElement.setAttribute('data-layout-mode', 'light');
-    }
-
-    // Toggle data-topbar attribute
-    if (currentTopBarMode === 'light') {
-      htmlElement.setAttribute('data-topbar', 'dark');
-    } else {
-      htmlElement.setAttribute('data-topbar', 'light');
-    }
-
-    // Update localStorage value
-    localStorage.setItem('theme_mode', htmlElement.getAttribute('data-sidebar'));
-
+    // Update localStorage
+    localStorage.setItem('theme_mode', newThemeMode);
     window.location.reload()
-
   };
 
   // Apply theme based on localStorage value on page load
   useEffect(() => {
-    const themeMode = localStorage.getItem('theme_mode');
+    const storedThemeMode = localStorage.getItem('theme_mode');
+    if (storedThemeMode) {
+      setThemeMode(storedThemeMode);
+    }
+  }, []);
+
+  // Update theme-related attributes on HTML element
+  useEffect(() => {
     const htmlElement = document.querySelector('html');
     htmlElement.setAttribute('data-sidebar', themeMode);
     htmlElement.setAttribute('data-layout-mode', themeMode);
     htmlElement.setAttribute('data-topbar', themeMode);
-  }, []);
+  }, [themeMode]);
 
   return (
     <div>
@@ -86,25 +72,12 @@ const Main_Header = () => {
           </div>
         </div>
 
-        {/* <div className="top-nav-search">
-          <form>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search here"
-            />
-            <button className="btn" type="submit">
-              <img src="assets/img/icons/search.svg" alt="img" />
-            </button>
-          </form>
-        </div> */}
-
-        <label class="theme-switch">
-          <input type="checkbox" onClick={toggleTheme} />
-          <span class="slider"></span>
+        {/* Toggle theme switch */}
+        <label className="theme-switch">
+          <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
+          <span className="slider"></span>
         </label>
 
-        {/* Drop Down Btn */}
         <DrapDown />
 
       </div>
