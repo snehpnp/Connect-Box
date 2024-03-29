@@ -284,7 +284,7 @@ function Strategy() {
                                                                                 data-bs-target="#view_companies"
                                                                             >
                                                                                 <i className="far fa-eye me-2" />
-                                                                                View Company
+                                                                                View Strategy
                                                                             </a>
                                                                         </li>
                                                                         <li>
@@ -396,10 +396,10 @@ function Strategy() {
                                                                                 className="dropdown-item"
                                                                                 href="javascript:void(0);"
                                                                                 data-bs-toggle="modal"
-                                                                                data-bs-target="#view_companies"
+                                                                                data-bs-target="#   _companies"
                                                                             >
                                                                                 <i className="far fa-eye me-2" />
-                                                                                View Company
+                                                                                View Strategy
                                                                             </a>
                                                                         </li>
                                                                         <li>
@@ -513,7 +513,7 @@ function Strategy() {
                                                                                 data-bs-target="#view_companies"
                                                                             >
                                                                                 <i className="far fa-eye me-2" />
-                                                                                View Company
+                                                                                View Strategy
                                                                             </a>
                                                                         </li>
                                                                         <li>
@@ -627,7 +627,7 @@ function Strategy() {
                                                                                 data-bs-target="#view_companies"
                                                                             >
                                                                                 <i className="far fa-eye me-2" />
-                                                                                View Company
+                                                                                View Strategy
                                                                             </a>
                                                                         </li>
                                                                         <li>
@@ -741,7 +741,7 @@ function Strategy() {
                                                                                 data-bs-target="#view_companies"
                                                                             >
                                                                                 <i className="far fa-eye me-2" />
-                                                                                View Company
+                                                                                View Strategy
                                                                             </a>
                                                                         </li>
                                                                         <li>
@@ -855,7 +855,7 @@ function Strategy() {
                                                                                 data-bs-target="#view_companies"
                                                                             >
                                                                                 <i className="far fa-eye me-2" />
-                                                                                View Company
+                                                                                View Strategy
                                                                             </a>
                                                                         </li>
                                                                         <li>
@@ -969,7 +969,7 @@ function Strategy() {
                                                                                 data-bs-target="#view_companies"
                                                                             >
                                                                                 <i className="far fa-eye me-2" />
-                                                                                View Company
+                                                                                View Strategy
                                                                             </a>
                                                                         </li>
                                                                         <li>
@@ -1083,7 +1083,7 @@ function Strategy() {
                                                                                 data-bs-target="#view_companies"
                                                                             >
                                                                                 <i className="far fa-eye me-2" />
-                                                                                View Company
+                                                                                View Strategy
                                                                             </a>
                                                                         </li>
                                                                         <li>
@@ -1197,7 +1197,7 @@ function Strategy() {
                                                                                 data-bs-target="#view_companies"
                                                                             >
                                                                                 <i className="far fa-eye me-2" />
-                                                                                View Company
+                                                                                View Strategy
                                                                             </a>
                                                                         </li>
                                                                         <li>
@@ -1311,7 +1311,7 @@ function Strategy() {
                                                                                 data-bs-target="#view_companies"
                                                                             >
                                                                                 <i className="far fa-eye me-2" />
-                                                                                View Company
+                                                                                View Strategy
                                                                             </a>
                                                                         </li>
                                                                         <li>
@@ -1691,7 +1691,7 @@ function Strategy() {
                         <div className="modal-content">
                             <div className="modal-header border-0">
                                 <div className="form-header modal-header-title text-start mb-0">
-                                    <h4 className="mb-0">Add New Company</h4>
+                                    <h4 className="mb-0">Add Strategy</h4>
                                 </div>
                                 <button
                                     type="button"
@@ -1703,209 +1703,146 @@ function Strategy() {
                             <form action="https://kanakku.dreamstechnologies.com/html/template/companies.html">
                                 <div className="modal-body">
                                     <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="form-field-item">
-                                                <h5 className="form-title">Company Profile</h5>
-                                                <div className="profile-picture">
-                                                    <div className="upload-profile">
-                                                        <div className="profile-img company-profile-img">
-                                                            <img
-                                                                id="company-img"
-                                                                className="img-fluid me-0"
-                                                                src="assets/img/companies/company-add-img.svg"
-                                                                alt="profile-img"
-                                                            />
-                                                        </div>
-                                                        <div className="add-profile">
-                                                            <h5>Upload a New Photo</h5>
-                                                            <span>Profile-pic.jpg</span>
-                                                        </div>
-                                                    </div>
-                                                    <div className="img-upload">
-                                                        <label className="btn btn-upload">
-                                                            Upload <input type="file" />
-                                                        </label>
-                                                        <a className="btn btn-remove">Remove</a>
-                                                    </div>
+
+                                        <div className="col-md-6">
+                                            <div className="input-block mb-3">
+                                                <label className="form-label">Strategy Name*</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Enter Strategy Name"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="input-block mb-3">
+                                                <label className="form-label">Per Lot Amount*</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Enter Per Lot Amount"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="input-block mb-3">
+                                                <label className="form-label">catagory*</label>
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Enter catagory*" />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="input-block mb-3">
+                                                <label className="form-label">Select Segment*</label>
+
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Please Select Segment"
+                                                />
+
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="input-block mb-3">
+                                                <label className="mb-2">Indicator*</label>
+                                                <input
+                                                    className="form-control"
+
+                                                    type="file"
+                                                    placeholder="No file Choosen    "
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="input-block mb-3">
+                                                <label className="form-label">Strategy Tester*</label>
+                                                <input
+                                                    type="file"
+                                                    className="form-control"
+                                                    placeholder="No file Choosen"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6">
+                                            <div className="input-block mb-3">
+                                                <label className="form-control-label">Strategy Logo*</label>
+                                                <div className="pass-group modal-password-field">
+                                                    <input
+                                                        type="file"
+                                                        className="form-control pass-input"
+                                                        placeholder="No file Choosen"
+                                                    />
+
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-md-12">
-                                            <div className="input-block mb-3">
-                                                <label className="form-label">Name </label>
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Enter Company Name"
-                                                />
-                                            </div>
-                                        </div>
                                         <div className="col-md-6">
                                             <div className="input-block mb-3">
-                                                <label className="form-label">Email Address </label>
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Enter Company Email"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="input-block mb-3">
-                                                <label className="form-label">Account Url </label>
-                                                <div className="url-text-box">
+                                                <label className="form-control-label">Strategy description</label>
+                                                <div className="pass-group modal-password-field">
                                                     <input
                                                         type="text"
-                                                        className="form-control"
-                                                        placeholder="Account URL"
-                                                    />
-                                                    <span className="url-text">kanakku.com</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="input-block mb-3">
-                                                <label className="mb-2">Phone Number</label>
-                                                <input
-                                                    className="form-control"
-                                                    id="phone"
-                                                    name="phone"
-                                                    type="text"
-                                                    placeholder="Phone Number"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="input-block mb-3">
-                                                <label className="form-label">Website </label>
-                                                <input
-                                                    type="text"
-                                                    className="form-control"
-                                                    placeholder="Enter Website"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="input-block mb-3">
-                                                <label className="form-control-label">Password</label>
-                                                <div className="pass-group modal-password-field">
-                                                    <input
-                                                        type="password"
-                                                        className="form-control pass-input"
-                                                        placeholder="Password"
-                                                    />
-                                                    <span className="fas toggle-password fa-eye-slash" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <div className="input-block mb-3">
-                                                <label className="form-control-label">Confirm Password</label>
-                                                <div className="pass-group modal-password-field">
-                                                    <input
-                                                        type="password"
                                                         className="form-control pass-input-two"
-                                                        placeholder="Confirm Password"
+                                                        placeholder="Strategy description"
                                                     />
-                                                    <span className="fas toggle-password-two fa-eye-slash" />
+
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col-md-12">
+                                        <div className="col-md-3">
                                             <div className="input-block mb-3">
-                                                <label className="form-label">Company Address </label>
+                                                <label className="form-label">Monthly</label>
                                                 <textarea
                                                     type="text"
                                                     className="form-control"
-                                                    rows={3}
-                                                    defaultValue={""}
+                                                    placeholder='Enter Monthly'
                                                 />
                                             </div>
                                         </div>
-                                        <div className="col-md-6">
+                                        <div className="col-md-3">
                                             <div className="input-block mb-3">
-                                                <label>Plan Name</label>
-                                                <select className="select">
-                                                    <option>Select Plan</option>
-                                                    <option>All Plans</option>
-                                                    <option>Advanced</option>
-                                                    <option>Basic</option>
-                                                    <option>Enterprise</option>
-                                                    <option>Premium</option>
-                                                    <option>Free</option>
-                                                </select>
+                                                <label className="form-label">Quaterly</label>
+                                                <textarea
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder='Enter Quaterly'
+                                                />
                                             </div>
                                         </div>
-                                        <div className="col-md-6">
+                                        <div className="col-md-3">
                                             <div className="input-block mb-3">
-                                                <label>Plan Type</label>
-                                                <select className="select">
-                                                    <option>Select Plan Type</option>
-                                                    <option>Monthly</option>
-                                                    <option>Yearly</option>
-                                                    <option>Lifetime</option>
-                                                </select>
+                                                <label className="form-label">Half Yearly</label>
+                                                <textarea
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder='Enter Half Yearly'
+                                                />
                                             </div>
                                         </div>
-                                        <div className="col-md-6">
+                                        <div className="col-md-3">
                                             <div className="input-block mb-3">
-                                                <label>Select Currency</label>
-                                                <select className="select">
-                                                    <option>Select Currency</option>
-                                                    <option>₹</option>
-                                                    <option>$</option>
-                                                    <option>£</option>
-                                                    <option>€</option>
-                                                </select>
+                                                <label className="form-label">Yearly</label>
+                                                <textarea
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder='Enter Yearly'
+                                                />
                                             </div>
                                         </div>
-                                        <div className="col-md-6">
-                                            <div className="input-block mb-3">
-                                                <label>Select Language</label>
-                                                <select className="select">
-                                                    <option>Select language</option>
-                                                    <option>English</option>
-                                                    <option>French</option>
-                                                    <option>Spanish</option>
-                                                    <option>German</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                            <div className="d-flex align-items-center mb-3">
-                                                <h6 className="mb-0">Status</h6>
-                                                <div className="status-toggle">
-                                                    <input
-                                                        id="access-trail"
-                                                        className="check"
-                                                        type="checkbox"
-                                                        defaultChecked=""
-                                                    />
-                                                    <label
-                                                        htmlFor="access-trail"
-                                                        className="checktoggle checkbox-bg"
-                                                    >
-                                                        checkbox
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </div>
                                 <div className="modal-footer">
-                                    <button
-                                        type="button"
-                                        data-bs-dismiss="modal"
-                                        className="btn btn-back cancel-btn me-2"
-                                    >
-                                        Cancel
-                                    </button>
+
                                     <button
                                         type="submit"
                                         data-bs-dismiss="modal"
-                                        className="btn btn-primary paid-continue-btn"
+                                        className="btn btn-primary paid-continue-btn mt-2"
                                     >
-                                        Add New
+                                        Add Strategy
                                     </button>
                                 </div>
                             </form>
@@ -2305,7 +2242,7 @@ function Strategy() {
                         <div className="modal-content">
                             <div className="modal-header border-0">
                                 <div className="form-header modal-header-title text-start mb-0">
-                                    <h4 className="mb-0">Update Package</h4>
+                                    <h4 className="mb-0">Update Strategy</h4>
                                 </div>
                                 <button
                                     type="button"
@@ -2319,7 +2256,7 @@ function Strategy() {
                                     <div className="row">
                                         <div className="col-md-12">
                                             <div className="plane-basic-info plane-detail">
-                                                <h5>Current Plan Details</h5>
+                                                <h5>Current Plan Strategy</h5>
                                                 <div className="row">
                                                     <div className="col-md-4 col-sm-6">
                                                         <div className="basic-info-detail">
@@ -2362,7 +2299,7 @@ function Strategy() {
                                         </div>
                                         <div className="col-md-12">
                                             <div className="plane-basic-info plane-detail">
-                                                <h5>Change Company Plan</h5>
+                                                <h5>Change Strategy Plan</h5>
                                                 <div className="row">
                                                     <div className="col-md-6">
                                                         <div className="input-block mb-3">
@@ -2452,7 +2389,7 @@ function Strategy() {
                                         data-bs-dismiss="modal"
                                         className="btn btn-primary paid-continue-btn"
                                     >
-                                        Save Changes
+                                        Add New
                                     </button>
                                 </div>
                             </form>
