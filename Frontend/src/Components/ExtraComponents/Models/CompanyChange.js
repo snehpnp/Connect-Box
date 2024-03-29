@@ -1,15 +1,221 @@
-import React from "react";
+// import React,{useState} from "react";
+// import axios from "axios"
+// const StockOutModal = ({ rowData, onClose }) => {
+//   console.log("neha 1", rowData);
+//   const [formData, setFormData] = useState({
+//     email: rowData.email,
+//     cc_mail: rowData.cc_mail,
+//     bcc_mail: rowData.bcc_mail,
+//     razorpay_key: rowData.razorpay_key,
+//     smtphost: rowData.smtphost,
+//     smtpport: rowData.smtpport,
+//   });
+
+//   const handleInputChange = (e) => {
+//     const { name, value } = e.target;
+//     setFormData({
+//       ...formData,
+//       [name]: value,
+//     });
+//   };
+
+//   const handleUpdate = (e) => {
+//     e.preventDefault();
+//     const updatedData = {
+//       ...rowData,
+//       ...formData,
+//     };
+
+//     axios
+//       .post("http://localhost:7000/subadmin/company/edit", updatedData)
+//       .then((response) => {
+//         console.log("Update successful:", response.data);
+//         onClose();
+//       })
+//       .catch((error) => {
+//         console.error("Update failed:", error);
+//       });
+//   };
+
+//   return (
+//     <div className=" modal custom-modal d-block">
+//       <div className="modal-dialog modal-dialog-centered modal-md">
+//         <div className="modal-content">
+//           <div className="modal-header border-0 pb-0">
+//             <div className="form-header modal-header-title text-start mb-0">
+//               <h4 className="mb-0">Remove Stock</h4>
+//             </div>
+//             <button
+//               type="button"
+//               className="btn-close"
+//               data-bs-dismiss="modal"
+//               aria-label="Close"
+//               onClick={onClose} // Added onClick handler to close the modal
+//             ></button>
+//           </div>
+//           <form action="#">
+//             <div className="modal-body">
+//               <div className="row">
+//                 <div className="col-lg-6 col-md-12">
+//                   <div className="input-block mb-3">
+//                     <label> Subadmin Name</label>
+//                     <input
+//                       type="text"
+//                       className="form-control"
+//                       defaultValue={rowData.makerInfo.FullName}
+//                       disabled
+//                     />
+//                   </div>
+//                 </div>
+
+//                 <div className="col-lg-6 col-md-12">
+//                   <div className="input-block mb-3">
+//                     <label>EMAIL</label>
+//                     <input
+//                       type="email"
+//                       className="form-control"
+//                       placeholder="Enter Email"
+//                       defaultValue={rowData.email}
+//                       value={formData.email}
+//                       onChange={handleInputChange}
+//                     />
+//                   </div>
+//                 </div>
+
+//                 <div className="col-lg-6 col-md-12">
+//                   <div className="input-block mb-3">
+//                     <label>CC*</label>
+//                     <input
+//                       type="email"
+//                       className="form-control"
+//                       defaultValue={rowData.cc_mail}
+//                       value={formData.cc_mail}
+//                       onChange={handleInputChange}
+//                     />
+//                   </div>
+//                 </div>
+
+//                 <div className="col-lg-6 col-md-12">
+//                   <div className="input-block mb-3">
+//                     <label>BCC*</label>
+//                     <input
+//                       type="email"
+//                       className="form-control"
+//                       defaultValue={rowData.bcc_mail}
+//                       value={formData.bcc_mail}
+//                       onChange={handleInputChange}
+//                     />
+//                   </div>
+//                 </div>
+
+//                 <div className="col-lg-6 col-md-12">
+//                   <div className="input-block mb-3">
+//                     <label>razorpay key*</label>
+//                     <input
+//                       type="password"
+//                       className="form-control"
+//                       placeholder="password"
+//                       defaultValue={rowData.razorpay_key}
+//                     />
+//                   </div>
+//                 </div>
+
+//                 <div className="col-lg-6 col-md-12">
+//                   <div className="input-block mb-3">
+//                     <label>HOST*</label>
+//                     <input
+//                       type="text"
+//                       className="form-control"
+//                       placeholder="Host"
+//                       defaultValue={rowData.smtphost}
+//                       value={formData.smtphost}
+//                       onChange={handleInputChange}
+//                     />
+//                   </div>
+//                 </div>
+
+//                 <div className="col-lg-6 col-md-12">
+//                   <div className="input-block mb-3">
+//                     <label>PORT*</label>
+//                     <input
+//                       type="number"
+//                       className="form-control"
+//                       placeholder="Enter Port"
+//                       defaultValue={rowData.smtpport}
+//                       value={formData.smtpport}
+//                       onChange={handleInputChange}
+//                     />
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//             <div className="modal-footer">
+//               <button
+//                 type="button"
+//                 data-bs-dismiss="modal"
+//                 className="btn btn-back cancel-btn me-2"
+//                 onClick={onClose}
+//               >
+//                 Cancel
+//               </button>
+//               <button
+//                 type="submit"
+//                 data-bs-dismiss="modal"
+//                 className="btn btn-primary paid-continue-btn"
+//                 onClick={handleUpdate}
+//               >
+//                 Update
+//               </button>
+//             </div>
+//           </form>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default StockOutModal;
+
+
+
+import React, { useState } from "react";
+import axios from "axios";
 
 const StockOutModal = ({ rowData, onClose }) => {
-  console.log("neha 1", rowData);
-
-  const handleUpdate=()=>{
-    console.log("Updting")
-  }
- 
+    const initialFormData = rowData?.companydata || {}; // Initialize with companydata or empty object
+    const [formData, setFormData] = useState(initialFormData);
+  
+    const handleInputChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    };
+  
+    const handleUpdate = (e) => {
+      e.preventDefault();
+      const updatedData = {
+        ...rowData,
+        data: {
+          ...rowData.data,
+          ...formData,
+        },
+      };
+  
+      axios
+        .post("http://localhost:7000/subadmin/company/edit", updatedData)
+        .then((response) => {
+          console.log("Update successful:", response.data);
+          onClose();
+        })
+        .catch((error) => {
+          console.error("Update failed:", error);
+        });
+    };
 
   return (
-    <div className=" modal custom-modal d-block">
+    <div className="modal custom-modal d-block">
       <div className="modal-dialog modal-dialog-centered modal-md">
         <div className="modal-content">
           <div className="modal-header border-0 pb-0">
@@ -24,14 +230,18 @@ const StockOutModal = ({ rowData, onClose }) => {
               onClick={onClose} // Added onClick handler to close the modal
             ></button>
           </div>
-          <form action="#">
+          <form onSubmit={handleUpdate}>
             <div className="modal-body">
               <div className="row">
-
                 <div className="col-lg-6 col-md-12">
                   <div className="input-block mb-3">
                     <label> Subadmin Name</label>
-                    <input type="text" className="form-control" defaultValue={rowData.makerInfo.FullName}/>
+                    <input
+                      type="text"
+                      className="form-control"
+                      defaultValue={rowData.makerInfo.FullName}
+                      disabled
+                    />
                   </div>
                 </div>
 
@@ -41,8 +251,10 @@ const StockOutModal = ({ rowData, onClose }) => {
                     <input
                       type="email"
                       className="form-control"
+                      name="email"
                       placeholder="Enter Email"
-                      defaultValue={rowData.email}
+                      value={formData.email || ''}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -50,14 +262,26 @@ const StockOutModal = ({ rowData, onClose }) => {
                 <div className="col-lg-6 col-md-12">
                   <div className="input-block mb-3">
                     <label>CC*</label>
-                    <input type="email" className="form-control" defaultValue={rowData.cc_mail}/>
+                    <input
+                      type="email"
+                      className="form-control"
+                      name="cc_mail"
+                      value={formData.cc_mail || ''}
+                      onChange={handleInputChange}
+                    />
                   </div>
                 </div>
 
                 <div className="col-lg-6 col-md-12">
                   <div className="input-block mb-3">
                     <label>BCC*</label>
-                    <input type="email" className="form-control" defaultValue={rowData.bcc_mail} />
+                    <input
+                      type="email"
+                      className="form-control"
+                      name="bcc_mail"
+                      value={formData.bcc_mail || ''}
+                      onChange={handleInputChange}
+                    />
                   </div>
                 </div>
 
@@ -69,6 +293,7 @@ const StockOutModal = ({ rowData, onClose }) => {
                       className="form-control"
                       placeholder="password"
                       defaultValue={rowData.razorpay_key}
+                      disabled // As it's not editable
                     />
                   </div>
                 </div>
@@ -79,20 +304,24 @@ const StockOutModal = ({ rowData, onClose }) => {
                     <input
                       type="text"
                       className="form-control"
+                      name="smtphost"
                       placeholder="Host"
-                      defaultValue={rowData.smtphost}
+                      value={formData.smtphost || ''}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
-                
+
                 <div className="col-lg-6 col-md-12">
                   <div className="input-block mb-3">
                     <label>PORT*</label>
                     <input
                       type="number"
                       className="form-control"
+                      name="smtpport"
                       placeholder="Enter Port"
-                      defaultValue={rowData.smtpport}
+                      value={formData.smtpport || ''}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -103,15 +332,13 @@ const StockOutModal = ({ rowData, onClose }) => {
                 type="button"
                 data-bs-dismiss="modal"
                 className="btn btn-back cancel-btn me-2"
-                onClick={onClose} 
+                onClick={onClose}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                data-bs-dismiss="modal"
                 className="btn btn-primary paid-continue-btn"
-                onClick={handleUpdate} 
               >
                 Update
               </button>
