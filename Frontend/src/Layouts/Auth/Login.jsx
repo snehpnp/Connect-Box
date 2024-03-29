@@ -45,7 +45,7 @@ function Login() {
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
-                localStorage.setItem("theme_mode", "light");
+                localStorage.setItem("theme_mode", "dark");
                 setIsLoading(true)
                 setShowModal(false)
                 setTimeout(() => {
@@ -58,13 +58,13 @@ function Login() {
                     "user_details",
                     JSON.stringify(getData)
                 );
-                localStorage.setItem("theme_mode", "light");
+                localStorage.setItem("theme_mode", "dark");
 
                 localStorage.setItem(
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
-                localStorage.setItem("theme_mode", "light");
+                localStorage.setItem("theme_mode", "dark");
 
                 setIsLoading(true)
                 setShowModal(false)
@@ -83,7 +83,7 @@ function Login() {
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
-                localStorage.setItem("theme_mode", "light");
+                localStorage.setItem("theme_mode", "dark");
 
                 setIsLoading(true)
                 setShowModal(false)
@@ -102,7 +102,7 @@ function Login() {
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
-                localStorage.setItem("theme_mode", "light");
+                localStorage.setItem("theme_mode", "dark");
 
                 setIsLoading(true)
                 setShowModal(false)
@@ -171,7 +171,7 @@ function Login() {
                                 alt="Logo"
                             />
                             <img
-                                className="img-fluid logo-light mb-2"
+                                className="img-fluid logo-dark mb-2"
                                 src="assets/img/logo2-white.png"
                                 alt="Logo"
                             />

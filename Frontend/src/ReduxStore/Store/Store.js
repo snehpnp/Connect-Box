@@ -6,6 +6,10 @@ import SystemSlice from "../Slice/Admin/System";
 import SubAdminSystemSlice from "../Slice/Admin/SubAdminCompanyInfo";
 
 
+import StrategySlice from "../Slice/Subadmin/Strategy";
+
+
+
 
 
 
@@ -13,7 +17,9 @@ const store = configureStore({
   reducer: {
     AuthSlice: AuthSlice.reducer,
     SystemSlice: SystemSlice.reducer,
-    SubAdminSystemSlice: SubAdminSystemSlice.reducer
+    SubAdminSystemSlice: SubAdminSystemSlice.reducer,
+    StrategySlice: StrategySlice.reducer
+
   },
 });
 

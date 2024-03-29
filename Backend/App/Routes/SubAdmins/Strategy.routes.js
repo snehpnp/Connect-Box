@@ -3,7 +3,7 @@
 const router = require("express").Router()
 const { verifyToken } = require('../../Middlewares/autt.middleware')
 
-const { AddStragegy, GetOneStragegy, EditStragegy, GetAllStrategy, DeleteStragegy, GetAllStrategyForClient, ClientsAccordingToStrategy, GetAddRemoveStrategy, UpdateAddRemoveStrategy } = require('../../Controllers/SubAdmins/strategys/strategy.controller')
+const { AddStragegy, GetOneStragegy, EditStragegy, GetAllStrategy, DeleteStragegy, GetAllStrategyForClient, ClientsAccordingToStrategy, GetAddRemoveStrategy, UpdateAddRemoveStrategy,GetAllSubadminStrategy } = require('../../Controllers/SubAdmins/strategys/strategy.controller')
 
 
 
@@ -16,6 +16,9 @@ router.post('/strategy/getall', GetAllStrategy);
 router.get('/strategy_for_add_client/getall', GetAllStrategyForClient);
 router.post('/strategy/delete', DeleteStragegy);
 router.post('/strategy/client/get', ClientsAccordingToStrategy);
+
+router.post('/sub/strategy/getall', GetAllSubadminStrategy);
+
 
 
 

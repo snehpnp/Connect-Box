@@ -60,11 +60,7 @@ const Profile = () => {
                 <div className="content container-fluid pb-0">
                     <div className="row justify-content-lg-center">
                         <div className="col-lg-10">
-                            <div className="page-header">
-                                <div className="content-page-header">
-                                    <h5>Profile</h5>
-                                </div>
-                            </div>
+                            
                             <div className="profile-cover">
                                 <div className="profile-cover-wrap">
                                     <img

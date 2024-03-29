@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { RechargeDetailsGets } from "../../../ReduxStore/Slice/Admin/SubAdminCompanyInfo";
 import { useDispatch } from "react-redux";
-import Content from '../../../Components/Dashboard/Content/Content';
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
+import Content from '../../../Components/Dashboard/Content/Content';
 import Loader from '../../../Utils/Loader';
 import { fDateTime } from '../../../Utils/Date_formet';
 import CompanyChange from '../../../Components/ExtraComponents/Models/CompanyChange';
