@@ -150,7 +150,7 @@ export default function Help() {
           setAllSubadmins({
             loading: true,
             data: formattedData,
-            data1: [{ name:"Total Subadmins",count: response.totalCount || 0 }, { name:"Active Subadmins",count: response.ActiveCount|| 0 }, { name:"InActive Subadmins",count: response.InActiveCount || 0 }, {name:"Total Used Balance", count: response.ActiveUseBalance || 0 }]
+            data1: [{ name:"Total Trade",count: response.totalCount || 0 }, { name:"Open Positions",count: response.ActiveCount|| 0 }, { name:"Close Positions",count: response.InActiveCount || 0 }, {name:"Total Used Balance", count: response.ActiveUseBalance || 0 }]
 
           });
         } else {
@@ -187,7 +187,7 @@ export default function Help() {
          
             <div className="page-header">
               <div className="content-page-header">
-                <h5>Subadmins</h5>
+                <h5>Positions</h5>
                 <div className="page-content">
                   <div className="list-btn">
                     <ul className="filter-list">
@@ -289,16 +289,7 @@ export default function Help() {
                           Print
                         </a>
                       </li>
-                      <li>
-                        <Link to={'/admin/subadmin/add'}
-                          className="btn btn-primary"
-
-
-                        >
-                          <i className="fa fa-plus-circle me-2" aria-hidden="true" />
-                          Add Subadmins
-                        </Link>
-                      </li>
+                
                     </ul>
                   </div>
                 </div>

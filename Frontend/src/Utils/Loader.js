@@ -20,23 +20,4 @@ function Loader() {
 
 export default Loader;
 
-// CSS styles
-const styles = `
-@keyframes moveUpDown {
-    0%, 100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-20px);
-    }
-}
 
-.loader__coin {
-    animation: moveUpDown 2s ease-in-out infinite;
-}
-`;
-
-// Create a <style> element and append it to the <head> of the document
-const styleElement = document.createElement('style');
-styleElement.innerHTML = styles;
-document.head.appendChild(styleElement);

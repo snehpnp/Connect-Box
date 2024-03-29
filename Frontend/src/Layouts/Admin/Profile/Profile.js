@@ -1,8 +1,45 @@
-import React from 'react'
-import ProfileAPI from '../ProfileApi/ProfileApi'
-import ProfileApi from '../ProfileApi/ProfileApi'
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Profile = () => {
+    const [profileData, setProfileData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+  
+
+    const fetchData = async () => {
+
+        try {
+            let data = JSON.stringify({
+                "id": user_id
+            });
+
+            let config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'http://localhost:7000/subadmin/get',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                data: data
+            };
+
+            const response = await axios.request(config);
+            setProfileData(response.data);
+            setLoading(false);
+        } catch (error) {
+            setError(error.message);
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+
     return (
         <div>
             <div className="content container-fluid pb-0">
@@ -58,7 +95,7 @@ const Profile = () => {
                                 </span>
                             </label>
                             <h2>
-                                Elon Musk{" "}
+                                {profileData && profileData.data[0].UserName}
                                 <i
                                     className="fas fa-certificate text-primary small"
                                     data-bs-toggle="tooltip"
@@ -216,8 +253,6 @@ const Profile = () => {
                     </div>
                 </div>
             </div>
-
-             
         </div>
     )
 }

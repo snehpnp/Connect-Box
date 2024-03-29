@@ -10,23 +10,27 @@ const strategySchema = Schema({
         type: String,
         default: null
     },
-    strategy_amount_month: {
+    strategy_demo_days: {       //ID :0
+        type: String,
+        default: 0
+    },
+    strategy_amount_month: {     //ID :1
         type: String,
         default: null
     },
-    strategy_amount_quarterly: {
+    strategy_amount_quarterly: {       //ID :2
         type: String,
         default: null
     },
-    strategy_amount_half_early: {
+    strategy_amount_half_early: {       //ID :3
         type: String,
         default: null
     },
-    strategy_amount_early: {
+    strategy_amount_early: {   //ID :4
         type: String,
         default: null
     },
-   
+
     strategy_category: {
         type: String,
         default: null
@@ -53,7 +57,7 @@ const strategySchema = Schema({
     maker_id: {
         type: Schema.Types.ObjectId,
         ref: "USER",
-        default: null 
+        default: null
     },
     createdAt: {
         type: Date,

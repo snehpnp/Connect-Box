@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 
-const FullDataTable = ({ styles, label, columns, rows, keyField, pagination1, rowStyle,checkboxSelection }) => {
+const FullDataTable = ({ styles, label, columns, rows, keyField, rowStyle, checkboxSelection }) => {
     var themeMode = localStorage.getItem('theme_mode');
 
     const backgroundColor = themeMode === 'light' ? 'white' : "#16191c";
@@ -13,9 +13,13 @@ const FullDataTable = ({ styles, label, columns, rows, keyField, pagination1, ro
                 <DataGrid
                     rows={rows}
                     columns={columns}
-                    pageSize={5}
-                    rowsPerPageOptions={[5, 10, 20]}
+                    pageSize={10}
+                    rowsPerPageOptions={[5, 10, 20]} 
+                    pagination={true}
+                    disableSelectionOnClick 
                     checkboxSelection={checkboxSelection}
+                    disableColumnFilter={true} 
+                    disableColumnMenu={true}
                     className="custom-data-grid"
                     style={{ border: 'none', fontFamily: 'none', fontWeight: '400', fontSize: '14px', color: Color }}
                 />

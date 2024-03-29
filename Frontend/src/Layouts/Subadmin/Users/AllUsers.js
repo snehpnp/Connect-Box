@@ -187,7 +187,7 @@ export default function Help() {
          
             <div className="page-header">
               <div className="content-page-header">
-                <h5>Subadmins</h5>
+                <h5>All Users</h5>
                 <div className="page-content">
                   <div className="list-btn">
                     <ul className="filter-list">

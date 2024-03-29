@@ -187,7 +187,7 @@ export default function Help() {
          
             <div className="page-header">
               <div className="content-page-header">
-                <h5>Subadmins</h5>
+                <h5>Orders</h5>
                 <div className="page-content">
                   <div className="list-btn">
                     <ul className="filter-list">
@@ -289,16 +289,7 @@ export default function Help() {
                           Print
                         </a>
                       </li>
-                      <li>
-                        <Link to={'/admin/subadmin/add'}
-                          className="btn btn-primary"
-
-
-                        >
-                          <i className="fa fa-plus-circle me-2" aria-hidden="true" />
-                          Add Subadmins
-                        </Link>
-                      </li>
+                
                     </ul>
                   </div>
                 </div>

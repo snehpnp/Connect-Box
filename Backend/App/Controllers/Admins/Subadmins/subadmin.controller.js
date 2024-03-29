@@ -24,39 +24,45 @@ class Subadmin {
 
             const Role = "SUBADMIN";
 
+
+            if (prifix_key.length > 3) {
+                return res.send({ status: false, msg: 'prifix_key Omly 3 Digits' });
+            }
+
+
             // Check if role exists
             const roleCheck = await Role_model.findOne({ name: Role.toUpperCase() });
             if (!roleCheck) {
-                return res.status(400).send({ status: false, msg: 'Role does not exist' });
+                return res.send({ status: false, msg: 'Role does not exist' });
             }
 
             // Check if username, email, phone number, and prefix key already exist
             const existingUsername = await User_model.findOne({ UserName: FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ''), prifix_key });
             if (existingUsername) {
-                return res.status(400).send({ status: false, msg: 'Username already exists' });
+                return res.send({ status: false, msg: 'Username already exists' });
             }
 
             const existingEmail = await User_model.findOne({ Email, prifix_key });
             if (existingEmail) {
-                return res.status(400).send({ status: false, msg: 'Email already exists' });
+                return res.send({ status: false, msg: 'Email already exists' });
             }
 
             const existingPhone = await User_model.findOne({ PhoneNo, prifix_key });
             if (existingPhone) {
-                return res.status(400).send({ status: false, msg: 'Phone number already exists' });
+                return res.send({ status: false, msg: 'Phone number already exists' });
             }
 
             const existingPrefix = await User_model.findOne({ Role: "SUBADMIN", prifix_key });
             if (existingPrefix) {
-                return res.status(400).send({ status: false, msg: 'Prefix key already exists' });
+                return res.send({ status: false, msg: 'Prefix key already exists' });
             }
 
             const salt = await bcrypt.genSalt(10);
             let hashedPassword;
-        if (password) {
-            const salt = await bcrypt.genSalt(10);
-            hashedPassword = await bcrypt.hash(password.toString(), salt);
-        }
+            if (password) {
+                const salt = await bcrypt.genSalt(10);
+                hashedPassword = await bcrypt.hash(password.toString(), salt);
+            }
 
             // Generate client key
             const mins = 1;
@@ -86,12 +92,12 @@ class Subadmin {
                 Per_trade,
                 Balance
             });
-            
+
 
             // Save new user and count licenses
             const savedUser = await newUser.save();
             const count_licenses_add = new count_licenses({
-                user_id: savedUser.user_id,
+                user_id: savedUser._id,
                 Role: "SUBADMIN",
                 admin_id: parent_id,
                 Balance
@@ -107,7 +113,7 @@ class Subadmin {
             return res.status(200).send({ status: true, msg: "Successfully added!", data: { UserId: savedUser.user_id } });
         } catch (error) {
             console.error("Error:", error);
-            return res.status(500).send({ msg: "Internal server error", error });
+            return res.send({ msg: "Internal server error", error });
         }
     }
 
@@ -170,8 +176,16 @@ class Subadmin {
             // GET LOGIN CLIENTS
             const getAllSubAdmins = await User_model.find({
                 Role: "SUBADMIN"
-            });
+            }).select('profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key subadmin_service_type strategy_Percentage Per_trade Create_Date')
+
             const totalCount = getAllSubAdmins.length;
+            const ActiveCount = getAllSubAdmins.filter(subadmin => subadmin.ActiveStatus === '1').length;
+
+            const ActiveUseBalance = getAllSubAdmins.reduce((totalBalance, subadmin) => {
+                return totalBalance + parseFloat(subadmin.Balance || 0);
+            }, 0);
+
+
 
             // IF DATA NOT EXIST
             if (getAllSubAdmins.length == 0) {
@@ -184,6 +198,9 @@ class Subadmin {
                 msg: "Get All Subadmins",
                 data: getAllSubAdmins,
                 totalCount: totalCount,
+                ActiveCount: ActiveCount,
+                InActiveCount: Number(totalCount) - Number(ActiveCount),
+                ActiveUseBalance: ActiveUseBalance
             })
         } catch (error) {
             console.log("Error getallSubadmin error -", error);
@@ -201,7 +218,7 @@ class Subadmin {
             }
 
 
-            const getAllSubAdmins = await User_model.find({ _id: subid, Role: "SUBADMIN" });
+            const getAllSubAdmins = await User_model.find({ _id: subid });
 
 
             // IF DATA NOT EXIST
@@ -249,6 +266,49 @@ class Subadmin {
 
         } catch (error) {
             console.log("Error getallSubadmin error -", error);
+        }
+    }
+    async GetAllRechargeDetails(req, res) {
+        try {
+            const { Role } = req.body;
+
+            if (!Role) {
+                return res.send({ status: false, msg: "Role is required in the request body" });
+            }
+
+            const rechargeDetails = await count_licenses.aggregate([
+                {
+                    $match: { Role }
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "user_id",
+                        foreignField: "_id",
+                        as: "user"
+                    }
+                },
+                {
+                    $unwind: "$user"
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        Balance: 1,
+                        Role: 1,
+
+                        createdAt: 1,
+
+
+                        username: "$user.UserName"
+                    }
+                }
+            ]);
+
+            res.send({ status: true, msg: "Recharge details fetched successfully", data: rechargeDetails });
+        } catch (error) {
+            console.error("Error while fetching recharge details:", error);
+            res.send({ status: false, msg: "Internal Server Error" });
         }
     }
 

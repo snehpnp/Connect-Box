@@ -190,20 +190,17 @@ const AddClient = () => {
   });
 
 
-  console.log("Formik values:", formik.values);
-  console.log("Formik errors:", formik.errors);
-
   return (
     <>
 
       <AddForm
         ProfileShow={ProfileShow}
         fields={fields}
-        page_title="Add Subadmin"
-        btn_name="Add Subadmin"
+        page_title="Add User"
+        btn_name="Add User"
         btn_name1="Cancel"
         formik={formik}
-        btn_name1_route={'/admin/allsubadmin'}
+        btn_name1_route={'/subadmin/users'}
 
       />
       <ToastButton />

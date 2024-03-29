@@ -15,7 +15,7 @@ export const admin_header = [
     },
     {
         id: 3,
-        name: 'Research Analyst',
+        name: 'Research Analysts',
         Icon: "fe fe-users",
         Data: [
             {
@@ -27,8 +27,8 @@ export const admin_header = [
 
             {
                 id: 32,
-                name: 'All Subadmin',
-                Icon: "fe fe-user",
+                name: 'All Subadmins',
+                Icon: "fe fe-users",
                 route: "/admin/allsubadmin",
             },
         ]
@@ -42,13 +42,13 @@ export const admin_header = [
                 id: 41,
                 name: 'Orders',
                 route: "/admin/orders",
-                Icon: "fe fe-list",
+                Icon: "fe fe-shopping-bag",
                 Data: []
             },
             {
                 id: 42,
-                name: 'Position',
-                route: "/admin/position",
+                name: 'Positions',
+                route: "/admin/positions",
                 Icon: "fe fe-map-pin",
                 Data: []
             }
@@ -56,7 +56,14 @@ export const admin_header = [
     },
     {
         id: 5,
-        name: 'Payment',
+        name: 'Subadmin Details',
+        route: "/admin/subadmin/company",
+        Icon: "fe fe-credit-card",
+        Data: []
+    },
+    {
+        id: 5,
+        name: 'Recharge Details',
         route: "/admin/payment",
         Icon: "fe fe-credit-card",
         Data: []
@@ -77,7 +84,7 @@ export const admin_header = [
     },
     {
         id: 8,
-        name: 'Faqs',
+        name: 'FAQs',
         route: "/admin/faqs",
         Icon: "fe fe-help-circle",
         Data: []

@@ -12,7 +12,7 @@ class strategy {
     // ADD STRATEGY IN A COLLECTION
     async AddStragegy(req, res) {
         try {
-            const { strategy_name, strategy_description, strategy_category, strategy_segment, strategy_indicator, strategy_tester, strategy_amount, strategy_image, strategy_amount_month, strategy_amount_quarterly, strategy_amount_half_early, strategy_amount_early, maker_id } = req.body;
+            const { strategy_name, strategy_description,strategy_demo_days, strategy_category, strategy_segment, strategy_indicator, strategy_tester, strategy_amount, strategy_image, strategy_amount_month, strategy_amount_quarterly, strategy_amount_half_early, strategy_amount_early, maker_id } = req.body;
 
 
             if (!maker_id || maker_id == "" || maker_id == null) {
@@ -20,7 +20,7 @@ class strategy {
             }
 
 
-            const maker_id_find = await User.findOne({ _id: maker_id });
+            const maker_id_find = await User.findOne({ _id: maker_id,Role:"SUBADMIN" });
             if (!maker_id_find) {
                 return res.send({ status: false, msg: 'Maker Id Is Wrong', data: [] });
             }
@@ -63,6 +63,7 @@ class strategy {
             var strategy_Data = new strategy_model({
                 strategy_name: strategy_name,
                 strategy_description: strategy_description,
+                strategy_demo_days:strategy_demo_days,
                 strategy_category: strategy_category,
                 strategy_segment: strategy_segment,
                 strategy_indicator: strategy_indicator,
@@ -99,7 +100,13 @@ class strategy {
     // EDIT STRATEGY IN A COLLECTION
     async EditStragegy(req, res) {
         try {
-            const { _id, strategy_name, strategy_description, strategy_category, strategy_segment, strategy_indicator, strategy_tester, strategy_amount, strategy_image, strategy_amount_month, strategy_amount_quarterly, strategy_amount_half_early, strategy_amount_early ,maker_id} = req.body;
+            const { _id, strategy_name, strategy_description,strategy_demo_days, strategy_category, strategy_segment, strategy_indicator, strategy_tester, strategy_amount, strategy_image, strategy_amount_month, strategy_amount_quarterly, strategy_amount_half_early, strategy_amount_early ,maker_id} = req.body;
+
+
+
+            if (!_id || _id == "" || _id == null) {
+                return res.send({ status: false, msg: 'Please Enter Id', data: [] });
+            }
 
             const strategy_check = await strategy_model.findOne({ _id: _id });
             if (!strategy_check) {
@@ -113,7 +120,7 @@ class strategy {
             }
 
 
-            const maker_id_find = await User.findOne({ _id: maker_id });
+            const maker_id_find = await User.findOne({ _id: maker_id,Role:"SUBADMIN" });
             if (!maker_id_find) {
                 return res.send({ status: false, msg: 'Maker Id Is Wrong', data: [] });
             }
@@ -176,6 +183,7 @@ class strategy {
                 $set: {
                     "strategy_name": strategy_name,
                     "strategy_description": strategy_description,
+                    "strategy_demo_days":strategy_demo_days,
                     "strategy_category": strategy_category,
                     "strategy_segment": strategy_segment,
                     "strategy_indicator": strategy_indicator,

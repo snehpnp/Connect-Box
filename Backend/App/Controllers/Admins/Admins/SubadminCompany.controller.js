@@ -4,18 +4,21 @@ const db = require('../../../Models');
 const SubAdminCompanyInfo = db.SubAdminCompanyInfo;
 const mongoose = require('mongoose');
 
+const ObjectId = mongoose.Types.ObjectId;
+
 class SubAdminCompany {
 
     // EDIT COMPANY INFORMATION
     async EditSubAdminCompany(req, res) {
         try {
-            const { id, data: companydata } = req.body;
+            const { id,  companydata } = req.body;
 
             if (!id) {
                 return res.status(400).json({ status: false, msg: 'Please provide an ID.', data: [] });
             }
+            console.log("id",companydata)
 
-            const objectId = mongoose.Types.ObjectId(id);
+            const objectId =  new ObjectId(id)
             if (!companydata) {
                 return res.status(400).json({ status: false, msg: 'Company data is missing.', data: [] });
             }
