@@ -3,11 +3,32 @@ import { fetchSubadminCompanyInfo } from "../../../ReduxStore/Slice/Admin/SubAdm
 import { useDispatch } from "react-redux";
 import Content from '../../../Components/Dashboard/Content/Content';
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
+import Loader from '../../../Utils/Loader';
+import { fDateTime } from '../../../Utils/Date_formet';
+import CompanyChange from '../../../Components/ExtraComponents/Models/CompanyChange';
 
 
 function Payment() {
   const dispatch = useDispatch();
-  const [companyData, setCompanyData] = useState([]);
+
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+  const [selectedRow, setSelectedRow] = useState(null);
+
+
+console.log("isModalOpen",isModalOpen)
+  const [companyData, setCompanyData] = useState({
+    loading: false,
+    data: [],
+  });
+
+
+
+  const handleOpenModal = (rowData) => {
+    console.log("runn",rowData.makerInfo.FullName)
+    setSelectedRow(rowData)
+    setIsModalOpen(true);
+  };
+
 
   const styles = {
     container: {
@@ -31,7 +52,10 @@ function Payment() {
   const columns = [
     { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
     {
-      field: 'profile', headerName: 'Profile', width: 120, headerClassName: styles.boldHeader,
+      field: 'profile',
+      headerName: 'Profile',
+      width: 120,
+      headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           <a href="profile.html" className="company-avatar avatar-md me-2 companies company-icon">
@@ -40,7 +64,6 @@ function Payment() {
         </div>
       )
     },
-
     {
       field: 'makerInfo',
       headerName: 'Subadmin Name',
@@ -52,8 +75,6 @@ function Payment() {
         </div>
       )
     },
-
-
     {
       field: 'razorpay_key',
       headerName: 'razorpay_key',
@@ -65,9 +86,11 @@ function Payment() {
         </div>
       )
     },
-
     {
-      field: 'email', headerName: 'email', width: 250, headerClassName: styles.boldHeader,
+      field: 'email',
+      headerName: 'email',
+      width: 250,
+      headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           {params.value || '-'}
@@ -75,48 +98,73 @@ function Payment() {
       )
     },
     {
-      field: 'change', headerName: 'change', width: 150, headerClassName: styles.boldHeader,
+      field: "change",
+      headerName: "Change",
+      width: 150,
+      headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>
-          <a href="/"><span className="badge bg-purple">Change</span></a>
+        <div onClick={() => handleOpenModal(params.row)}>
+          <span className="badge bg-purple">Change</span>
         </div>
-      )
+      ),
     },
     {
-      field: 'Status', headerName: 'Status', width: 120, headerClassName: styles.boldHeader,
+      field: 'Status',
+      headerName: 'Status',
+      width: 120,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => {
+        if (params.row.razorpay_key !== '') {
+          return (
+            <div>
+              <span className={`badge bg-success-light d-inline-flex align-items-center`}>
+                <i className={'fe fe-check me-1'} />Active
+              </span>
+            </div>
+          );
+        } else {
+          return (
+            <div>
+              <span className={`badge bg-danger-light d-inline-flex align-items-center`}>
+                <i className={`fe fe-x me-1`}></i>InActive</span>
+            </div>
+          );
+        }
+      }
+    },
+    {
+      field: 'createdAt', headerName: 'createdAt', width: 250, headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          <span className={`badge bg-success-light d-inline-flex align-items-center`}>
-            <i className={'fe fe-check me-1'} />Active
-          </span>
+          {fDateTime(params.value)}
         </div>
       )
     },
-    { field: 'createdAt', headerName: 'createdAt', width: 250, headerClassName: styles.boldHeader },
-
   ];
 
-  const handleEdit = (row) => {
-    console.log('Edit row:', row);
-  };
 
-  const handleDelete = (row) => {
-    console.log('Delete row:', row);
-  };
+
 
   const getCompanyData = async () => {
     try {
       const response = await dispatch(fetchSubadminCompanyInfo()).unwrap();
-      console.log("response", response.data)
+
       if (response.status) {
         const formattedData = response.data.map((row, index) => ({
           ...row,
           id: index + 1,
         }));
-        setCompanyData(formattedData);
+        setCompanyData({
+          loading: true,
+          data: formattedData,
+        });
       }
     } catch (error) {
       console.log("Error", error);
+      setCompanyData({
+        loading: false,
+        data: [],
+      });
     }
   };
 
@@ -125,21 +173,35 @@ function Payment() {
     getCompanyData();
   }, []);
 
+
+
   return (
     <>
+    {companyData.loading ? (
       <Content
-        Card_title="Payment Details"
-      
-        Card_title_icon='fas fa-image pe-2'
+        Card_title="Subadmin Details"
+        Card_title_icon="fa-solid fa-users-gear pe-2"
         Content={
           <FullDataTable
             styles={styles}
             columns={columns}
-            rows={companyData}
+            rows={companyData.data}
+            checkboxSelection={false}
+            
           />
         }
       />
-    </>
+    ) : (
+      <Loader />
+    )}
+    {isModalOpen && selectedRow && (
+      <CompanyChange
+        rowData={selectedRow}
+        onClose={() => setIsModalOpen(false)}
+        
+      />
+    )}
+  </>
   );
 }
 

@@ -62,8 +62,8 @@ function MessageBroadcast() {
 
     return (
         <Content
-            Page_title="All Subadmins"
-            Card_title="All Subadmins"
+            Page_title="Message Brodcast"
+            Card_title="Message Brodcast"
             Card_title_icon='fas fa-user pe-3'
             Content={
                 <>

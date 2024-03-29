@@ -59,10 +59,10 @@ class Subadmin {
 
             const salt = await bcrypt.genSalt(10);
             let hashedPassword;
-        if (password) {
-            const salt = await bcrypt.genSalt(10);
-            hashedPassword = await bcrypt.hash(password.toString(), salt);
-        }
+            if (password) {
+                const salt = await bcrypt.genSalt(10);
+                hashedPassword = await bcrypt.hash(password.toString(), salt);
+            }
 
             // Generate client key
             const mins = 1;
@@ -92,12 +92,12 @@ class Subadmin {
                 Per_trade,
                 Balance
             });
-            
+
 
             // Save new user and count licenses
             const savedUser = await newUser.save();
             const count_licenses_add = new count_licenses({
-                user_id: savedUser.user_id,
+                user_id: savedUser._id,
                 Role: "SUBADMIN",
                 admin_id: parent_id,
                 Balance
@@ -180,11 +180,11 @@ class Subadmin {
 
             const totalCount = getAllSubAdmins.length;
             const ActiveCount = getAllSubAdmins.filter(subadmin => subadmin.ActiveStatus === '1').length;
-            
+
             const ActiveUseBalance = getAllSubAdmins.reduce((totalBalance, subadmin) => {
                 return totalBalance + parseFloat(subadmin.Balance || 0);
             }, 0);
-            
+
 
 
             // IF DATA NOT EXIST
@@ -198,9 +198,9 @@ class Subadmin {
                 msg: "Get All Subadmins",
                 data: getAllSubAdmins,
                 totalCount: totalCount,
-                ActiveCount:ActiveCount,
-                InActiveCount:Number(totalCount) - Number(ActiveCount),
-                ActiveUseBalance:ActiveUseBalance
+                ActiveCount: ActiveCount,
+                InActiveCount: Number(totalCount) - Number(ActiveCount),
+                ActiveUseBalance: ActiveUseBalance
             })
         } catch (error) {
             console.log("Error getallSubadmin error -", error);
@@ -266,6 +266,49 @@ class Subadmin {
 
         } catch (error) {
             console.log("Error getallSubadmin error -", error);
+        }
+    }
+    async GetAllRechargeDetails(req, res) {
+        try {
+            const { Role } = req.body;
+
+            if (!Role) {
+                return res.status(400).send({ status: false, msg: "Role is required in the request body" });
+            }
+
+            const rechargeDetails = await count_licenses.aggregate([
+                {
+                    $match: { Role }
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "user_id",
+                        foreignField: "_id",
+                        as: "user"
+                    }
+                },
+                {
+                    $unwind: "$user"
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        Balance: 1,
+                        Role: 1,
+
+                        createdAt: 1,
+
+
+                        username: "$user.UserName"
+                    }
+                }
+            ]);
+
+            res.send({ status: true, msg: "Recharge details fetched successfully", data: rechargeDetails });
+        } catch (error) {
+            console.error("Error while fetching recharge details:", error);
+            res.status(500).send({ status: false, msg: "Internal Server Error" });
         }
     }
 
