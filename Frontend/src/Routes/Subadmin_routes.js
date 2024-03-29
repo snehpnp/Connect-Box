@@ -7,6 +7,7 @@ import System from '../Layouts/SubAdmin/Systems/System.jsx';
 import AddUser from '../Layouts/SubAdmin/Users/Adduser.js';
 import ALLUSER from '../Layouts/SubAdmin/Users/Alluser.js';
 import Strategy from '../Layouts/SubAdmin/Strategys/Strategy.jsx';
+import Grpservices from '../Layouts/SubAdmin/Groupservices/Grpservices.jsx';
 
 import Help from '../Layouts/Admin/Help/Help.js';
 import Msgbrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast.js';
@@ -27,10 +28,11 @@ const SubAdmin_Routing = () => {
                     <Route exact path="/system" element={<System />} />
                     
                     <Route exact path="/help" element={<Help />} />
-                    <Route exact path="/message-broadcast" element={<Help />} />
+                    <Route exact path="/message-broadcast" element={<Msgbrodcast />} />
 
 
                     <Route exact path="/strategys" element={<Strategy />} />
+                    <Route exact path="/group-service" element={<Grpservices />} />
 
                     <Route exact path="/User/add" element={<AddUser />} />
                     <Route exact path="/users" element={<ALLUSER />} />
