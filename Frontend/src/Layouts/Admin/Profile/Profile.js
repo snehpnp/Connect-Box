@@ -217,7 +217,7 @@ const Profile = () => {
                 </div>
             </div>
 
-              <ProfileApi/>
+             
         </div>
     )
 }
