@@ -3770,17 +3770,22 @@ div.dataTables_wrapper div.dataTables_filter label i {
     width: 32px;
     border-radius: 50%
 }
+.user-menu {
 
+    border-bottom: 0 !important;
+}
 .user-menu .dropdown-menu .dropdown-item {
     padding: 10px 15px;
     font-size: 14px
 }
 
 .user-menu .dropdown-menu .dev {
-    padding: 2px 15px;
-    font-size: 14px;
+    padding: 10px 18px;
+    font-size: 14px !important;
 }
-
+.user-menu .dropdown-menu .dev:hover {
+    color:#fff !important;
+}
 .user-menu .dropdown-menu .dropdown-item:hover {
     color: #fff;
     text-decoration: none;
@@ -6027,11 +6032,11 @@ span.select2-container.select2-container--default.select2-container--open {
     height: auto !important
 }
 
-.table .dropdown-item {
+.table .dropdown-item, .dropdown-item {
     font-weight: 500;
-    font-size: 13px;
-    color: #878a99;
-    padding: 10px 20px
+    font-size: 13px !important;
+    color: #878a99 !important;
+    padding: 10px 20px;
 }
 
 .table-inbox {
