@@ -32555,6 +32555,10 @@ button.btn.btn-primary a {
   @keyframes l1 {to{opacity: 0}}
 
 
+
+
+
+
 .custom-data-grid .MuiDataGrid-cell:focus {
     outline: none;
     /* Remove the outline when the cell is focused */
@@ -32567,8 +32571,13 @@ button.btn.btn-primary a {
 
 .MuiDataGrid-row.Mui-selected {
     outline: none;
+    outline: none ;
 }
 
 .MuiOutlinedInput-notchedOutline {
     border: none ! important;
+}
+
+.MuiDataGrid-cell {
+    outline: none !important;
 }
