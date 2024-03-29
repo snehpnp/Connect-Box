@@ -32546,15 +32546,21 @@ button.btn.btn-primary a {
     font-family: sans-serif;
     font-size: 30px;
     color: #0000;
-    background: linear-gradient(90deg,#C02942 calc(50% + 0.5ch),#000 0) right/calc(200% + 1ch) 100%;
+    background: linear-gradient(90deg, #C02942 calc(50% + 0.5ch), #000 0) right/calc(200% + 1ch) 100%;
     -webkit-background-clip: text;
-            background-clip: text;
+    background-clip: text;
     animation: l7 2s infinite steps(11);
-  }
-  .loader:before {
-    content:"Loading..."
-  }
-  @keyframes l7 {to{background-position: left}}
+}
+
+.loader:before {
+    content: "Loading..."
+}
+
+@keyframes l7 {
+    to {
+        background-position: left
+    }
+}
 
 
 
@@ -32568,10 +32574,16 @@ button.btn.btn-primary a {
 }
 
 
-  .MuiDataGrid-row.Mui-selected {
+.MuiDataGrid-row.Mui-selected {
     outline: none;
-  }
+}
 
-  .MuiOutlinedInput-notchedOutline {
-    border: none ! important ;
-  }
+.MuiOutlinedInput-notchedOutline,
+.MuiDataGrid-cell,
+.MuiDataGrid-columnHeader {
+    outline: none ! important;
+}
+
+.MuiDataGrid-columnHeaderTitle {
+    outline: none ! important;
+}

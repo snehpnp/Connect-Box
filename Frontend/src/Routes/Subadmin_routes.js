@@ -7,6 +7,9 @@ import System from '../Layouts/SubAdmin/Systems/System.jsx';
 import AddUser from '../Layouts/SubAdmin/Users/Adduser.js';
 import ALLUSER from '../Layouts/SubAdmin/Users/Alluser.js';
 import Strategy from '../Layouts/SubAdmin/Strategys/Strategy.jsx';
+
+import Chain from '../Layouts/SubAdmin/Option/Chain';
+
 // strategydesc
 const SubAdmin_Routing = () => {
 
@@ -23,6 +26,8 @@ const SubAdmin_Routing = () => {
 
                     <Route exact path="/User/add" element={<AddUser />} />
                     <Route exact path="/users" element={<ALLUSER />} />
+                    <Route exact path="/option-chain" element={<Chain />} />
+
                 </Routes>
 
             </div>

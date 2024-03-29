@@ -31,7 +31,6 @@ import Tabes from '../Layouts/Admin/Tabe/Tabes';
 
 
 import SubAdCompanyInfo from '../Layouts/Admin/SubAdminCompany/SubAdCompanyInfo';
-import Chain from '../Layouts/SubAdmin/Option/Chain';
 
 
 
@@ -42,7 +41,6 @@ const Admin_Routing = () => {
             <Header />
             <div className="page-wrapper">
                 <Routes>
-                    <Route exact path="/chain" element={<Chain />} />
                     <Route exact path="/subadmin/add" element={<AddSubadmin />} />
                     <Route exact path="/subadmin/edit" element={<EditSubadmin />} />
                     <Route exact path="/allsubadmin" element={<AllSubadmin />} />
@@ -56,11 +54,11 @@ const Admin_Routing = () => {
                     <Route exact path="/position" element={<Positions />} />
 
 
-                    <Route exact path="/tabe" element={<Tabe />} /> 
-                    <Route exact path="/tabes" element={<Tabes />} />    
+                    <Route exact path="/tabe" element={<Tabe />} />
+                    <Route exact path="/tabes" element={<Tabes />} />
 
- 
- 
+
+
                     <Route exact path="/dashboard" element={<Overview />} />
                     <Route exact path="/system" element={<System />} />
                     <Route exact path="/payment" element={<Payment />} />
