@@ -32540,7 +32540,7 @@ button.btn.btn-primary a {
     height: 100vh;
     background-color: var(--bs-backdrop-bg);
 }
-/* HTML: <div class="loader"></div> */
+
 .loader {
     font-weight: bold;
     font-family: sans-serif;
