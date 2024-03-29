@@ -1,9 +1,11 @@
-import React, { useState, useEffect ,useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Routing from './Routes/Routes';
 import AOS from "aos";
 import "aos/dist/aos.css";
+import Loader from './Utils/Loader';
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const pageRef = useRef(null);
 
   useEffect(() => {
@@ -12,20 +14,27 @@ function App() {
       duration: 700,
       easing: "ease-out-cubic",
     });
+
+    const loadData = () => {
+      setTimeout(() => {
+        setLoading(false); 
+      }, 2000); 
+    };
+
+    loadData();
   }, []);
+
   return (
     <div id="App">
-      <div ref={pageRef} >
-
-      <Routing />
-      </div>
+      {loading ? (
+        <Loader /> 
+      ) : (
+        <div ref={pageRef}>
+          <Routing />
+        </div>
+      )}
     </div>
   );
 }
-
-
-
-
-
 
 export default App;

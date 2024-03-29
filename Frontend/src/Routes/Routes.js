@@ -7,6 +7,9 @@ import SubadminRouting from './Subadmin_routes';
 import UserRouting from './User_routes';
 import Profile from '../Layouts/Admin/Profile/Profile';
 
+
+import Header from '../Components/Dashboard/Header/Header';
+import MainHeader from '../Components/Dashboard/Header/Main_header';
 import Login from '../Layouts/Auth/Login';
 
 const Routing = () => {
@@ -15,7 +18,7 @@ const Routing = () => {
     const roles = JSON.parse(localStorage.getItem('user_role'));
     const user_details = JSON.parse(localStorage.getItem("user_details"));
 
-    console.log("roles:-",roles)
+    console.log("roles:-", roles)
 
     useEffect(() => {
 
@@ -25,7 +28,7 @@ const Routing = () => {
             return;
         }
 
-        if (location.pathname === "/profile" ) {
+        if (location.pathname === "/profile") {
             navigate("/profile");
         }
 
@@ -64,7 +67,8 @@ const Routing = () => {
             <Route path="/subadmin/*" element={(roles === "SUBADMIN") ? <SubadminRouting /> : <Login />} />
             <Route path="/user/*" element={(roles === "USER") ? <UserRouting /> : <Login />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<>     <MainHeader />
+                <Header />  <div className="page-wrapper"><Profile /></div></>} />
 
         </Routes>
     );
