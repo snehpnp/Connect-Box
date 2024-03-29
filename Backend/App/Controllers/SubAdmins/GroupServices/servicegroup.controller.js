@@ -125,16 +125,15 @@ class GroupService {
       const { maker_id, groupdetails, services_id } = req.body
 
 
-
       if (!groupdetails.id || groupdetails.id == "" || groupdetails.id == null) {
         return res.send({ status: false, msg: 'Please Enter Id', data: [] });
       }
 
       const GroupServices_Id = new ObjectId(groupdetails.id);
 
-      const strategy_check = await strategy_model.findOne({ _id: GroupServices_Id });
+      const strategy_check = await serviceGroupName.findOne({ _id: GroupServices_Id });
       if (!strategy_check) {
-        return res.send({ status: false, msg: 'Strategy Not exist', data: [] });
+        return res.send({ status: false, msg: 'Group  Not exist', data: [] });
       }
 
 
@@ -175,18 +174,20 @@ class GroupService {
         return true;
       }
 
-      if (!checkStringValidity(groupdetails.nam)) {
+      if (!checkStringValidity(groupdetails.name)) {
         return res.send({ status: false, msg: 'Some Issue in Group', data: [] });
       }
 
 
 
+      console.log("runn")
 
       var groupServices = await serviceGroupName.find({ _id: { $ne: GroupServices_Id }, name: groupdetails.name })
 
       if (groupServices.length > 0) {
         return res.send({ status: false, msg: "Name is already Exist", data: groupServices })
       }
+      console.log("runn")
 
       if (services_id.length > 50) {
         return res.send({ status: false, msg: "You are Select Only 50 Services", data: groupServices })
@@ -586,6 +587,47 @@ class GroupService {
       res.status(500).send({ status: false, data: [], msg: 'An error occurred' });
     }
   }
+
+
+  async getAllSubgroupServices(req, res) {
+
+    try {
+      var {id}=req.body
+      const pipeline = [
+        {
+          '$match': {
+            'maker_id': new ObjectId(id) // Assuming id is a string and needs to be converted to ObjectId
+          }
+        },
+        {
+          '$lookup': {
+            'from': 'servicegroup_services_ids',
+            'localField': '_id',
+            'foreignField': 'Servicegroup_id',
+            'as': 'result'
+          }
+        },
+        {
+          '$addFields': {
+            'resultCount': { '$size': '$result' } // Add a field to store the count of 'result' array
+          }
+        }
+      ];
+
+      const result = await serviceGroupName.aggregate(pipeline);
+
+      if (result.length > 0) {
+        res.send({ status: true, data: result, msg: 'Get All successfully' });
+      } else {
+        res.send({ status: false, data: [], msg: 'Empty data' });
+      }
+
+    } catch (error) {
+      console.log("Error Get All Group Services Error - ", error);
+      res.status(500).send({ status: false, data: [], msg: 'An error occurred' });
+    }
+  }
+
 
   // DELETE GROUP SERVICES
   async DELETEGROUPSERVICES(req, res) {
