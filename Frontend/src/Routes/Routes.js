@@ -5,6 +5,7 @@ import AdminRouting from './Admin_routes';
 import EmployeeRouting from './Employee_routes';
 import SubadminRouting from './Subadmin_routes';
 import UserRouting from './User_routes';
+import Profile from '../Layouts/Admin/Profile/Profile';
 
 import Login from '../Layouts/Auth/Login';
 
@@ -22,6 +23,10 @@ const Routing = () => {
         if (!user_details || !roles || user_details === "null" || roles === "null") {
             navigate("/login");
             return;
+        }
+
+        if (location.pathname === "/profile" ) {
+            navigate("/profile");
         }
 
         // Redirect based on user role
@@ -59,6 +64,8 @@ const Routing = () => {
             <Route path="/subadmin/*" element={(roles === "SUBADMIN") ? <SubadminRouting /> : <Login />} />
             <Route path="/user/*" element={(roles === "USER") ? <UserRouting /> : <Login />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/profile" element={<Profile />} />
+
         </Routes>
     );
 }

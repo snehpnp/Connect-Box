@@ -18,3 +18,18 @@ export async function GetCompanyInfo(data, token) {
     }
 
 }
+
+export async function ProfileData(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}subadmin/get`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}
+

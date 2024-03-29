@@ -57,7 +57,7 @@ const DropDown = () => {
                             <div className="subscription-menu">
                                 <ul>
                                     <li>
-                                        <Link className="dropdown-item dev" to="/Admin/profile">
+                                        <Link className="dropdown-item dev" to="/profile">
                                             Profile
                                         </Link>
                                     </li>
