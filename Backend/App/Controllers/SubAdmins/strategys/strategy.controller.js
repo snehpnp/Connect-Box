@@ -45,7 +45,7 @@ class strategy {
                 }
 
                 // Check if there is an underscore (_) at the fourth index
-                if (strategy_name.charAt(3) !== '_') {
+                if (strategy_name.charAt(3) != '_') {
                     return res.send({ status: false, msg: 'Please Enter Strategy name _ is mandatory', data: [] });
                 }
                 if (maker_id_find.prifix_key != strategy_name.substring(0, 3).toUpperCase()) {
@@ -141,7 +141,7 @@ class strategy {
                 }
 
                 // Check if there is an underscore (_) at the fourth index
-                if (strategy_name.charAt(3) !== '_') {
+                if (strategy_name.charAt(3) != '_') {
                     return res.send({ status: false, msg: 'Please Enter Strategy name _ is mandatory', data: [] });
                 }
                 if (maker_id_find.prifix_key != strategy_name.substring(0, 3).toUpperCase()) {

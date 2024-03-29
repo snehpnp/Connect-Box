@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const db = require('../../../Models');
 var dateTime = require('node-datetime');
 const mongoose = require('mongoose');
+
 const ObjectId = mongoose.Types.ObjectId;
 const serviceGroupName = db.serviceGroupName;
 const services = db.services;
@@ -11,6 +12,8 @@ const categorie = db.categorie;
 const groupServices_client1 = db.groupService_User;
 const client_services = db.client_services;
 const strategy_client = db.strategy_client;
+const User = db.user;
+
 
 
 class GroupService {
@@ -33,8 +36,6 @@ class GroupService {
         return res.send({ status: false, msg: 'Maker Id Is Wrong', data: [] });
       }
 
-
-
       function checkStringValidity(grpService) {
         // Check if the length of the string is at least 5 characters (to have 4th index)
         if (grpService.length < 5) {
@@ -46,10 +47,11 @@ class GroupService {
           return res.send({ status: false, msg: 'Please Enter Group Name starting 3 letter Capital', data: [] });
 
         }
+        console.log("grpService.charAt(3)", grpService.charAt(3))
 
         // Check if there is an underscore (_) at the fourth index
-        if (grpService.charAt(3) !== '_') {
-          return res.send({ status: false, msg: 'Please Enter Group  name _ is mandatory', data: [] });
+        if (grpService.charAt(3) != '_') {
+          return res.send({ status: false, msg: 'Please Enter Group  name _ is mandatory Emaple AAA_', data: [] });
         }
         if (maker_id_find.prifix_key != grpService.substring(0, 3).toUpperCase()) {
           return res.send({ status: false, msg: 'Please Enter Group starting 3 leter is your prifix letter', data: [] });
@@ -74,9 +76,11 @@ class GroupService {
       }
 
 
+
       serviceGroupName.create({
         name: groupdetails.name,
-        description: groupdetails.description
+        description: groupdetails.description,
+        maker_id: maker_id
       })
         .then((createdServicesGroupName) => {
           const groupName_id = createdServicesGroupName._id;
@@ -117,10 +121,66 @@ class GroupService {
   // EDIT GROUP SERVICES
   async Editgroupservice(req, res) {
     try {
-      const groupdetails = req.body.groupdetails;
-      const services_id = req.body.services_id;
+
+      const { maker_id, groupdetails, services_id } = req.body
+
+
+
+      if (!groupdetails.id || groupdetails.id == "" || groupdetails.id == null) {
+        return res.send({ status: false, msg: 'Please Enter Id', data: [] });
+      }
 
       const GroupServices_Id = new ObjectId(groupdetails.id);
+
+      const strategy_check = await strategy_model.findOne({ _id: GroupServices_Id });
+      if (!strategy_check) {
+        return res.send({ status: false, msg: 'Strategy Not exist', data: [] });
+      }
+
+
+
+      if (!maker_id || maker_id == "" || maker_id == null) {
+        return res.send({ status: false, msg: 'Please Enter Maker Id', data: [] });
+      }
+
+
+      const maker_id_find = await User.findOne({ _id: maker_id, Role: "SUBADMIN" });
+      if (!maker_id_find) {
+        return res.send({ status: false, msg: 'Maker Id Is Wrong', data: [] });
+      }
+
+
+
+
+      function checkStringValidity(groupdetails) {
+        // Check if the length of the string is at least 5 characters (to have 4th index)
+        if (groupdetails.length < 5) {
+          return res.send({ status: false, msg: 'Please Enter Group name long', data: [] });
+        }
+
+        // Check if the first three letters are capitalized
+        if (groupdetails.substring(0, 3) !== groupdetails.substring(0, 3).toUpperCase()) {
+          return res.send({ status: false, msg: 'Please Enter Group Name starting 3 letter Capital', data: [] });
+
+        }
+
+        // Check if there is an underscore (_) at the fourth index
+        if (groupdetails.charAt(3) != '_') {
+          return res.send({ status: false, msg: 'Please Enter Group name _ is mandatory', data: [] });
+        }
+        if (maker_id_find.prifix_key != groupdetails.substring(0, 3).toUpperCase()) {
+          return res.send({ status: false, msg: 'Please Enter Group starting 3 leter is your prifix letter', data: [] });
+
+        }
+        return true;
+      }
+
+      if (!checkStringValidity(groupdetails.nam)) {
+        return res.send({ status: false, msg: 'Some Issue in Group', data: [] });
+      }
+
+
+
 
       var groupServices = await serviceGroupName.find({ _id: { $ne: GroupServices_Id }, name: groupdetails.name })
 
