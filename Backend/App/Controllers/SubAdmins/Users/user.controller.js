@@ -397,8 +397,8 @@ class Users {
                   user_id: User_id,
                   group_id: group_service,
                   service_id: data.Service_id,
-                  //strategy_id: Strategies[0].id,
-                  strategy_id: Strategies_id_array,
+                  strategy_id: Strategies[0].id,
+                  // strategy_id: Strategies_id_array,
 
                   uniqueUserService: User_id + "_" + data.Service_id,
                   quantity: data.lotsize,
