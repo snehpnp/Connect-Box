@@ -32546,21 +32546,26 @@ button.btn.btn-primary a {
     background-color: var(--bs-backdrop-bg);
 }
 
-
-/* HTML: <div class="loader"></div> */
 .loader {
     font-weight: bold;
     font-family: sans-serif;
     font-size: 30px;
-    animation: l1 1s linear infinite alternate;
-  }
-  .loader:before {
-    content:"Loading..."
-  }
-  @keyframes l1 {to{opacity: 0}}
+    color: #0000;
+    background: linear-gradient(90deg, #C02942 calc(50% + 0.5ch), #000 0) right/calc(200% + 1ch) 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: l7 2s infinite steps(11);
+}
 
+.loader:before {
+    content: "Loading..."
+}
 
-
+@keyframes l7 {
+    to {
+        background-position: left
+    }
+}
 
 
 
@@ -32576,13 +32581,14 @@ button.btn.btn-primary a {
 
 .MuiDataGrid-row.Mui-selected {
     outline: none;
-    outline: none ;
 }
 
-.MuiOutlinedInput-notchedOutline {
-    border: none ! important;
+.MuiOutlinedInput-notchedOutline,
+.MuiDataGrid-cell,
+.MuiDataGrid-columnHeader {
+    outline: none ! important;
 }
 
-.MuiDataGrid-cell {
-    outline: none !important;
+.MuiDataGrid-columnHeaderTitle {
+    outline: none ! important;
 }

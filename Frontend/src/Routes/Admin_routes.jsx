@@ -54,11 +54,11 @@ const Admin_Routing = () => {
                     <Route exact path="/position" element={<Positions />} />
 
 
-                    <Route exact path="/tabe" element={<Tabe />} /> 
-                    <Route exact path="/tabes" element={<Tabes />} />    
+                    <Route exact path="/tabe" element={<Tabe />} />
+                    <Route exact path="/tabes" element={<Tabes />} />
 
- 
- 
+
+
                     <Route exact path="/dashboard" element={<Overview />} />
                     <Route exact path="/system" element={<System />} />
                     <Route exact path="/payment" element={<Payment />} />
