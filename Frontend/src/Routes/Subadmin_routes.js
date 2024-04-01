@@ -8,7 +8,7 @@ import AddUser from '../Layouts/SubAdmin/Users/Adduser.js';
 import ALLUSER from '../Layouts/SubAdmin/Users/Alluser.js';
 import Strategy from '../Layouts/SubAdmin/Strategys/Strategy.jsx';
 
-import Grpservices from '../Layouts/SubAdmin/Groupservices/Grpservices.jsx';
+import Grpservices from '../Layouts/SubAdmin/GroupServices/Grpservices';
 
 import Help from '../Layouts/Admin/Help/Help.js';
 import Msgbrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast.js';
@@ -28,7 +28,7 @@ const SubAdmin_Routing = () => {
                 <Routes>
                     <Route exact path="/dashboard" element={<Overview />} />
                     <Route exact path="/system" element={<System />} />
-                    
+
                     <Route exact path="/help" element={<Help />} />
                     <Route exact path="/message-broadcast" element={<Msgbrodcast />} />
 
