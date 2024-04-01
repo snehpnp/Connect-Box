@@ -88,6 +88,13 @@ export const admin_header = [
         route: "/admin/faqs",
         Icon: "fe fe-help-circle",
         Data: []
+    },
+    {
+        id: 10,
+        name: 'Wallet',
+        route: "/admin/wallet",
+        Icon: "fe fe-credit-card",
+        Data: []
     }
 ];
 
