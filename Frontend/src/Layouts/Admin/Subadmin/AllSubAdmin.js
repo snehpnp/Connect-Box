@@ -62,7 +62,7 @@ export default function Help() {
       field: 'subadmin_service_type', headerName: 'Service-Type', width: 200, headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {params.value == 1 ? "PER STRATEGY" : "PER TRADE"}
+          {params.value == 2 ? "PER STRATEGY" : "PER TRADE"}
         </div>
       )
     },
