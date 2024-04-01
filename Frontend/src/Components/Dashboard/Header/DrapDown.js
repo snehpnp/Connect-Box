@@ -32,11 +32,21 @@ const DropDown = () => {
     return (
         <div className="mb-0 dropdown custom-dropdown">
             <ul className="nav nav-tabs user-menu">
-                <li className="nav-item dropdown">
-                    <a
-                        className="user-a nav-a"
-                        onClick={toggleDropdown}
-                        ref={dropdownRef}
+                <li className="nav-item dropdown mt-3">
+                   
+                    <div
+                                            className="dropdown dropdown-action"
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            data-bs-original-title="download"
+                                        >
+                                           
+
+
+                                            <a
+                        className="user-a nav-a d-flex"
+                        data-bs-toggle="dropdown"
+                                                aria-expanded="false"
                     >
                         <span className="user-img">
                             <img
@@ -52,6 +62,29 @@ const DropDown = () => {
                             <span className="user-name">Chandra Prakash</span>
                         </span>
                     </a>
+                                            <div className="dropdown-menu dropdown-menu-right">
+                                            <div className="subscription-menu">
+                                <ul>
+                                    <li>
+                                        <Link className="dropdown-item dev" to="/Admin/profile">
+                                            Profile
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link className="dropdown-item dev" to="/settings">
+                                            Settings
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
+                                            Log out
+                                        </a>
+
+                                    </li>
+                                </ul>
+                            </div>
+                                            </div>
+</div>
                     <div style={{ height: "144px" }} className={`dropdown-menu menu-drop-user ${isDropdownOpen ? 'show' : ''}`}>
                         <div className="profilemenu table table-hover">
                             <div className="subscription-menu">

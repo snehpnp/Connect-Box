@@ -65,7 +65,7 @@ const Profile = () => {
                                 <div className="profile-cover-wrap">
                                     <img
                                         className="profile-cover-img"
-                                        src="assets/img/profiles/avatar-02.jpg"
+                                        // src="assets/img/profiles/avatar-02.jpg"
                                         alt="Profile Cover"
                                         id="cover-image"
                                     />
@@ -212,24 +212,7 @@ const Profile = () => {
                                                         estimate
                                                     </span>
                                                 </li>
-                                                <li className="feed-item">
-                                                    <div className="feed-date">Oct 24</div>
-                                                    <span className="feed-text">
-                                                        New expenses added
-                                                    </span>
-                                                </li>
-                                                <li className="feed-item">
-                                                    <div className="feed-date">Oct 24</div>
-                                                    <span className="feed-text">
-                                                        New expenses added
-                                                    </span>
-                                                </li>
-                                                <li className="feed-item">
-                                                    <div className="feed-date">Oct 24</div>
-                                                    <span className="feed-text">
-                                                        New expenses added
-                                                    </span>
-                                                </li>
+                                            
                                                 <li className="feed-item">
                                                     <div className="feed-date">Oct 24</div>
                                                     <span className="feed-text">
