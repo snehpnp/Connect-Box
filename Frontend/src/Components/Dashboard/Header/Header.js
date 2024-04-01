@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { admin_header, subamdin_header } from './Header_config'; // Assuming Header_config exports admin_header as AdminHeader
+import { admin_header, subamdin_header,User_header } from './Header_config'; // Assuming Header_config exports admin_header as AdminHeader
 
 const Header = () => {
   const roles = JSON.parse(localStorage.getItem('user_role'))
@@ -16,6 +16,8 @@ const Header = () => {
     HeaderData.push(admin_header)
   } else if (roles === "SUBADMIN") {
     HeaderData.push(subamdin_header)
+  }else if (roles === "USER") {
+    HeaderData.push(User_header)
   }
 
   return (
