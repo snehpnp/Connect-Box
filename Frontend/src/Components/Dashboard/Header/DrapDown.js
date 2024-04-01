@@ -33,40 +33,40 @@ const DropDown = () => {
         <div className="mb-0 dropdown custom-dropdown">
             <ul className="nav nav-tabs user-menu">
                 <li className="nav-item dropdown mt-3">
-                   
+
                     <div
-                                            className="dropdown dropdown-action"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="top"
-                                            data-bs-original-title="download"
-                                        >
-                                           
-
-
-                                            <a
-                        className="user-a nav-a d-flex"
-                        data-bs-toggle="dropdown"
-                                                aria-expanded="false"
+                        className="dropdown dropdown-action"
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="top"
+                        data-bs-original-title="download"
                     >
-                        <span className="user-img">
-                            <img
-                                src="assets/img/profiles/avatar-07.jpg"
-                                alt="img"
-                                className="profilesidebar"
-                            />
-                            <span className="animate-circle" />
-                        </span>
 
-                        <span className="user-content"  >
-                            <span className="user-details">Admin</span>
-                            <span className="user-name">Chandra Prakash</span>
-                        </span>
-                    </a>
-                                            <div className="dropdown-menu dropdown-menu-right">
-                                            <div className="subscription-menu">
+
+
+                        <a
+                            className="user-a nav-a d-flex"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            <span className="user-img">
+                                <img
+                                    src="assets/img/profiles/avatar-07.jpg"
+                                    alt="img"
+                                    className="profilesidebar"
+                                />
+                                <span className="animate-circle" />
+                            </span>
+
+                            <span className="user-content"  >
+                                <span className="user-details">Admin</span>
+                                <span className="user-name">Chandra Prakash</span>
+                            </span>
+                        </a>
+                        <div className="dropdown-menu dropdown-menu-right">
+                            <div className="subscription-menu">
                                 <ul>
                                     <li>
-                                        <Link className="dropdown-item dev" to="/Admin/profile">
+                                        <Link className="dropdown-item dev" to="/profile">
                                             Profile
                                         </Link>
                                     </li>
@@ -83,8 +83,8 @@ const DropDown = () => {
                                     </li>
                                 </ul>
                             </div>
-                                            </div>
-</div>
+                        </div>
+                    </div>
                     <div style={{ height: "144px" }} className={`dropdown-menu menu-drop-user ${isDropdownOpen ? 'show' : ''}`}>
                         <div className="profilemenu table table-hover">
                             <div className="subscription-menu">

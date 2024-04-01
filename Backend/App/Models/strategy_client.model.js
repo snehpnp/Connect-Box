@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const { Schema, model } = require('mongoose');
-const strategy_clientSchema =  Schema({
+const strategy_clientSchema = Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "USER",
@@ -12,7 +12,19 @@ const strategy_clientSchema =  Schema({
         ref: "strategy",
         index: true
     },
-  
+    Start_Date: {
+        type: Date,
+        required: true
+    },
+    End_Date: {
+        type: Date,
+        required: true
+    },
+    ActiveStatus: {
+        type: String,
+        enum: ['0', '1'], // 1 = Strategy wise , 2 = Per Trade Wise
+        default: '1'
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -23,5 +35,5 @@ const strategy_clientSchema =  Schema({
     timestamps: true
 });
 
-const strategy_client =model('strategy_client', strategy_clientSchema);
+const strategy_client = model('strategy_client', strategy_clientSchema);
 module.exports = strategy_client;

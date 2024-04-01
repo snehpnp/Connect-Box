@@ -2,14 +2,18 @@
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
-const db = require("../../Models");
+const db = require("../../../Models");
 const User_model = db.user;
 
 const Role_model = db.role;
-const Company_info = db.company_information;
+const Strategie_modal = db.Strategies;
 const strategy_client = db.strategy_client;
-const groupService_User = db.groupService_User;
-const client_services = db.client_services;
+
+
+
+const Company_info = db.company_information;
+const groupService_User = db.group_services;
+const client_services = db.client_service;
 const serviceGroup_services_id = db.serviceGroup_services_id;
 const count_licenses = db.count_licenses;
 const user_activity_logs = db.user_activity_logs;
@@ -24,32 +28,9 @@ var dt = dateTime.create();
 class Users {
 
   // USER ADD
-  async AddEmployee(req, res) {
+  async AddUser(req, res) {
     try {
-      const {
-        FullName,
-        UserName,
-        Email,
-        PhoneNo,
-        license_type,
-        licence,
-        fromdate,
-        Strategies,
-        todate,
-        service_given_month,
-        broker,
-        parent_id,
-        parent_role,
-        api_secret,
-        app_id,
-        client_code,
-        api_key,
-        app_key,
-        api_type,
-        demat_userid,
-        group_service,
-        multiple_strategy_select
-      } = req.body;
+      const { FullName, UserName, Email, PhoneNo, license_type, licence, fromdate, Strategies, broker, parent_id, api_secret, app_id, client_code, api_key, app_key, api_type, demat_userid, group_service } = req.body;
 
       var Role = "USER";
       var StartDate1 = "";
@@ -61,14 +42,30 @@ class Users {
 
 
 
+      if (!parent_id || parent_id == '' || parent_id == null) {
+        return res.send({
+          status: false,
+          msg: "Please Enter parent || Maker Id.",
+          data: [],
+        });
+      }
+
+
+      const SubadminCheck = await User_model.find({ _id: parent_id });
+
+      if (SubadminCheck.length == 0) {
+        return res.send({ status: false, msg: "Please Enter Correct Maker Id", data: [] });
+      }
+
+
 
 
       // IF ROLE NOT EXIST TO CHECK
-      // const roleCheck = await Role_model.findOne({ name: Role.toUpperCase() });
+      const roleCheck = await Role_model.find({ name: Role.toUpperCase() });
 
-      // if (!roleCheck) {
-      //   return res.send({ status: false, msg: "Role Not exists", data: [] });
-      // }
+      if (!roleCheck) {
+        return res.send({ status: false, msg: "Role Not exists", data: [] });
+      }
 
       // IF USER ALEARDY EXIST
       const existingUser = await User_model.findOne({
@@ -114,6 +111,8 @@ class Users {
       }
 
 
+
+
       // IF CHECK STRATEGY NULL
       if (Strategies.length == 0) {
         return res.send({
@@ -134,61 +133,36 @@ class Users {
 
 
 
-      // USER 2 DAYS LICENSE USE
-      if (license_type == "0") {
-        var currentDate = new Date();
-        var start_date_2days = dateTime.create(currentDate);
-        start_date_2days = start_date_2days.format("Y-m-d H:M:S");
-        var start_date = start_date_2days;
+      const { ObjectId } = require('mongodb');
 
+      try {
+        // Map each strategy ID to its corresponding ObjectId
+        const stgIds = Strategies.map(id => new ObjectId(id));
 
-        StartDate1 = start_date;
+        // Find strategies matching the IDs in the array
+        var matchedStrategies = await Strategie_modal.find({ _id: { $in: stgIds } });
 
-        var UpdateDate = "";
-        var StartDate = new Date(start_date);
-        var GetDay = StartDate.getDay();
-        if (GetDay == 4) {
-          UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
-        } else if (GetDay == 5) {
-          UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
-        } else if (GetDay == 6) {
-          UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
-        } else if (GetDay == 0) {
-          UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
-        } else if (GetDay > 0 && GetDay < 4) {
-          UpdateDate = StartDate.setDate(StartDate.getDate() + 7);
-        }
+        // Create an array of matched strategy IDs
+        var matchedStrategyIds = matchedStrategies.map(strategy => strategy._id.toString());
 
-        var end_date_2days = dateTime.create(UpdateDate);
-        var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
+        // Find IDs that didn't match
+        var unmatchedIds = Strategies.filter(id => !matchedStrategyIds.includes(id));
 
-
-        EndDate1 = end_date_2days;
-      } else if (license_type == "1") {
-        StartDate1 = fromdate;
-        EndDate1 = todate;
-      } else if (license_type == "2") {
-        var currentDate = new Date();
-        var start_date_2days = dateTime.create(currentDate);
-        start_date_2days = start_date_2days.format("Y-m-d H:M:S");
-        var start_date = start_date_2days;
-
-
-        StartDate1 = start_date;
-
-        var UpdateDate = "";
-        var StartDate = new Date(start_date);
-
-        UpdateDate = StartDate.setMonth(
-          StartDate.getMonth() + parseInt(licence)
-        );
-
-        var end_date_2days = dateTime.create(UpdateDate);
-        var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
-
-
-        EndDate1 = end_date_2days;
+      } catch (error) {
+        console.error('Error fetching strategies:', error);
+        throw error;
       }
+
+      if (unmatchedIds.length > 0) {
+        return res.send({
+          status: false,
+          msg: "Strategy id wrong.",
+          data: [],
+        });
+      }
+
+
+
 
 
       const min = 1;
@@ -205,18 +179,13 @@ class Users {
 
 
 
-      // Panel Prifix key Find
-
-      var Panel_key = await Company_info.find({}, { prefix: 1, licenses: 1, _id: 0 }).limit(1);
-      if (Panel_key.length == 0) {
+      if (!SubadminCheck[0].prifix_key || SubadminCheck[0].prifix_key == "" || SubadminCheck[0].prifix_key == null) {
         return res.send({
           status: false,
-          msg: "client prifix not exist.",
+          msg: "prifix Key not exist.",
           data: [],
         });
       }
-
-
 
       const mins = 1;
       const maxs = 1000000;
@@ -225,10 +194,7 @@ class Users {
 
 
       var ccd = dt.format("ymd");
-      var client_key = Panel_key[0].prefix + cli_key + ccd;
-
-
-
+      var client_key = SubadminCheck[0].prifix_key + cli_key + ccd;
 
 
       User_model.insertMany([
@@ -239,14 +205,13 @@ class Users {
           PhoneNo: PhoneNo,
           Password: ByCryptrand_password,
           Otp: rand_password,
-          StartDate: StartDate1,
-          EndDate: EndDate1,
           Role: Role.toUpperCase(),
           license_type: license_type,
           licence: licence,
+          prifix_key: SubadminCheck[0].prifix_key,
           client_key: client_key,
           parent_id: parent_id,
-          parent_role: parent_role,
+          parent_role: SubadminCheck[0].parent_role,
           api_secret: api_secret,
           app_id: app_id,
           client_code: client_code,
@@ -255,16 +220,14 @@ class Users {
           broker: broker == null ? 0 : broker,
           api_type: api_type,
           demat_userid: demat_userid,
-          service_given_month: service_given_month,
-          multiple_strategy_select: multiple_strategy_select,
         },
-        // Add more documents if needed
+
       ])
         .then(async (data) => {
           var User_id = data[0]._id;
 
 
-
+          console.log("User_id", User_id)
 
           // GROUP SERVICE ADD
           const User_group_service = new groupService_User({
@@ -274,23 +237,125 @@ class Users {
           User_group_service.save();
 
 
-          // STRATEGY ADD
-          if (Strategies.length > 0) {
-            Strategies.forEach((data) => {
-              // STRATEGY ADD
-              const User_strategy_client = new strategy_client({
-                strategy_id: data.id,
-                user_id: User_id,
+          console.log("User_group_service", User_group_service)
+
+          // USER 2 DAYS LICENSE USE
+          if (license_type == "0") {
+            var currentDate = new Date();
+            var start_date_2days = dateTime.create(currentDate);
+            start_date_2days = start_date_2days.format("Y-m-d H:M:S");
+            var start_date = start_date_2days;
+
+
+            StartDate1 = start_date;
+
+            var UpdateDate = "";
+            var StartDate = new Date(start_date);
+            var GetDay = StartDate.getDay();
+            if (GetDay == 4) {
+              UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
+            } else if (GetDay == 5) {
+              UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
+            } else if (GetDay == 6) {
+              UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
+            } else if (GetDay == 0) {
+              UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
+            } else if (GetDay > 0 && GetDay < 4) {
+              UpdateDate = StartDate.setDate(StartDate.getDate() + 7);
+            }
+
+            var end_date_2days = dateTime.create(UpdateDate);
+            var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
+
+            EndDate1 = end_date_2days;
+
+
+            if (matchedStrategies.length > 0) {
+              matchedStrategies.forEach((data) => {
+                // STRATEGY ADD
+                const User_strategy_client = new strategy_client({
+                  strategy_id: data.id,
+                  user_id: User_id,
+                  Start_Date: StartDate1,
+                  End_Date: EndDate1
+                });
+                User_strategy_client.save();
               });
-              User_strategy_client.save();
-            });
+            }
+
+
+
+
+          } else if (license_type == "1") {
+
+
+            if (matchedStrategies.length > 0) {
+              matchedStrategies.forEach((data) => {
+
+                var currentDate = new Date();
+                var start_date_2days = dateTime.create(currentDate);
+                start_date_2days = start_date_2days.format("Y-m-d H:M:S");
+                var start_date = start_date_2days;
+
+
+                StartDate1 = start_date;
+
+                var UpdateDate = "";
+                var StartDate = new Date(start_date);
+                var GetDay = StartDate.getDay();
+
+                UpdateDate = StartDate.setDate(StartDate.getDate() + Number(data.strategy_demo_days));
+
+
+                var end_date_2days = dateTime.create(UpdateDate);
+                var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
+
+                EndDate1 = end_date_2days;
+
+
+                // STRATEGY ADD
+                const User_strategy_client = new strategy_client({
+                  strategy_id: data.id,
+                  user_id: User_id,
+                  Start_Date: StartDate1,
+                  End_Date: EndDate1
+                });
+                User_strategy_client.save();
+              });
+            }
+
+
+
+
+          } else if (license_type == "2") {
+            var currentDate = new Date();
+            var start_date_2days = dateTime.create(currentDate);
+            start_date_2days = start_date_2days.format("Y-m-d H:M:S");
+            var start_date = start_date_2days;
+
+
+            StartDate1 = start_date;
+
+            var UpdateDate = "";
+            var StartDate = new Date(start_date);
+
+            UpdateDate = StartDate.setMonth(
+              StartDate.getMonth() + parseInt(licence)
+            );
+
+            var end_date_2days = dateTime.create(UpdateDate);
+            var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
+
+
+            EndDate1 = end_date_2days;
           }
 
 
 
 
-
           const GroupServiceId = new ObjectId(group_service);
+
+          console.log("GroupServiceId", GroupServiceId)
 
           const group_service_find = await serviceGroup_services_id.aggregate([
             {
@@ -318,6 +383,7 @@ class Users {
             }
           ]);
 
+          console.log("group_service_find", group_service_find)
 
           const clientServicesData = [];
 
@@ -343,6 +409,7 @@ class Users {
               });
             }
 
+            console.log("clientServicesData", clientServicesData)
             // Use insertMany to insert the documents in a single database call
             client_services.insertMany(clientServicesData)
               .then((result) => {
@@ -356,7 +423,10 @@ class Users {
             if (license_type == "2") {
               const count_licenses_add = new count_licenses({
                 user_id: User_id,
-                license: licence,
+                Balance: Balance,
+                admin_id: parent_id,
+                Role: "USER"
+
               });
               count_licenses_add.save();
             }
@@ -370,15 +440,6 @@ class Users {
               user_type: license_type == 2 ? "Live Account" : license_type == 0 ? "2 Days Free Live Account" : "Free Demo Account"
             };
 
-            // UPDATE STATUS OF THE USER_SIGNUP COLLECTION WHEN CLICK ON ADD CLIENT
-
-            const existingUser = await user_SignUp.findOne({
-              $or: [
-                { UserName: UserName },
-                { Email: Email },
-                { PhoneNo: PhoneNo },
-              ],
-            });
 
 
 
@@ -390,16 +451,11 @@ class Users {
             }
 
 
-            res.send({ status: true, msg: "successfully Add!", data: data[0] });
+            res.send({ status: true, msg: "successfully Add!", data: data[0]._id });
 
-            var EmailData = await firstOptPass(email_data);
-            CommonEmail(toEmail, subjectEmail, EmailData);
+            // var EmailData = await firstOptPass(email_data);
+            // CommonEmail(toEmail, subjectEmail, EmailData);
 
-            logger1.info("Add User By Admin", {
-              Email: data[0].Email,
-              role: data[0].Role,
-              user_id: data[0]._id,
-            });
 
 
           }
@@ -414,6 +470,10 @@ class Users {
             });
           }
         });
+
+
+
+
     } catch (error) {
       res.send({ msg: "Error=>", error });
     }
@@ -519,13 +579,13 @@ class Users {
         Number(TotalLicense) + Number(new_licence)
       ) {
 
-       // console.log("existingUsername.license_type ",existingUsername.license_type)
+        // console.log("existingUsername.license_type ",existingUsername.license_type)
         // PREVIOS CLIENT IS LIVE
         if (existingUsername.license_type != "2") {
           console.log("ssss ")
           // USER 2 DAYS LICENSE USE
 
-         
+
 
 
           if (req.license_type == "0") {
@@ -533,32 +593,32 @@ class Users {
 
             //console.log("ssss 2")
 
-            if(existingUsername.license_type != "0"){
+            if (existingUsername.license_type != "0") {
               var currentDate = new Date();
-            var start_date_2days = dateTime.create(currentDate);
-            start_date_2days = start_date_2days.format("Y-m-d H:M:S");
-            var start_date = start_date_2days;
+              var start_date_2days = dateTime.create(currentDate);
+              start_date_2days = start_date_2days.format("Y-m-d H:M:S");
+              var start_date = start_date_2days;
 
-            StartDate1 = start_date;
+              StartDate1 = start_date;
 
-            var UpdateDate = "";
-            var StartDate = new Date(start_date);
-            var GetDay = StartDate.getDay();
-            if (GetDay == 4) {
-              UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
-            } else if (GetDay == 5) {
-              UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
-            } else if (GetDay == 6) {
-              UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
-            } else if (GetDay == 0) {
-              UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
-            } else if (GetDay > 0 && GetDay < 4) {
-              UpdateDate = StartDate.setDate(StartDate.getDate() + 7);
-            }
+              var UpdateDate = "";
+              var StartDate = new Date(start_date);
+              var GetDay = StartDate.getDay();
+              if (GetDay == 4) {
+                UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
+              } else if (GetDay == 5) {
+                UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
+              } else if (GetDay == 6) {
+                UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
+              } else if (GetDay == 0) {
+                UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
+              } else if (GetDay > 0 && GetDay < 4) {
+                UpdateDate = StartDate.setDate(StartDate.getDate() + 7);
+              }
 
-            var end_date_2days = dateTime.create(UpdateDate);
-            var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
-            EndDate1 = end_date_2days;
+              var end_date_2days = dateTime.create(UpdateDate);
+              var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
+              EndDate1 = end_date_2days;
             }
 
 
@@ -586,8 +646,8 @@ class Users {
             TotalMonth = new_licence;
 
 
-            
-      
+
+
           }
 
 
@@ -660,7 +720,7 @@ class Users {
 
         // console.log("StartDate1 ",StartDate1)
         // console.log("EndDate1 ",EndDate1)
-       
+
 
         // STARTEGY ADD AND EDIT
         const Strategieclient = await strategy_client.find({
@@ -884,13 +944,13 @@ class Users {
         }
 
 
-      
+
 
         // console.log("StartDate1 --",StartDate1)
         // console.log("EndDate1 -- ",EndDate1)
-       
-    
-        
+
+
+
 
 
         var User_update = {
@@ -899,7 +959,7 @@ class Users {
           licence: TotalMonth,
           StartDate:
             StartDate1 == null || StartDate1 == "" ? existingUsername.StartDate : StartDate1,
-          EndDate: EndDate1 == null || EndDate1==""? existingUsername.EndDate : EndDate1,
+          EndDate: EndDate1 == null || EndDate1 == "" ? existingUsername.EndDate : EndDate1,
           broker: req.broker,
           parent_id: req.parent_id,
           parent_role: existingUsername.Role,
@@ -939,13 +999,13 @@ class Users {
 
 
           if (multy_stgfind.length > 0) {
-            multy_stgfind.forEach(async(data) => {
+            multy_stgfind.forEach(async (data) => {
 
               if (data.strategy_id.length > 1) {
                 console.log("data", data.strategy_id[0])
 
                 const filter = { _id: data._id };
-                const updateOperation = { $set:{ strategy_id: [data.strategy_id[0]]} }
+                const updateOperation = { $set: { strategy_id: [data.strategy_id[0]] } }
 
 
                 const result = await client_services.updateOne(filter, updateOperation);
@@ -995,7 +1055,7 @@ class Users {
       // GET ALL CLIENTS
       var AdminMatch;
 
-      
+
 
 
       if (Find_Role == "ADMIN") {
@@ -1007,8 +1067,8 @@ class Users {
 
 
       const getAllClients = await User_model.find(AdminMatch).sort({ CreateDate: -1 });
-       
-// IF DATA NOT EXIST
+
+      // IF DATA NOT EXIST
       if (getAllClients.length == 0) {
         return res.send({
           status: false,
