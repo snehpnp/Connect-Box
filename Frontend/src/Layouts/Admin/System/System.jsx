@@ -38,6 +38,7 @@ function System() {
   }, [])
 
 
+
   return (
 
     <div className="content container-fluid ">
@@ -96,9 +97,8 @@ function System() {
         <div className="col-lg-4 col-md-4" data-aos="fade-right">
           <div className="card">
             <div className="card-body" >
-             
+
               <div data-aos="fade-down" className="gif-div h-100 " >
-                {/* <iframe src="https://lottie.host/embed/f3fed07f-0f56-45f1-ae1f-8e87bad0c51b/q3MDJRT4iV.json"></iframe> */}
                 <img src="/assets/img/gif/Investment-data.gif" />
               </div>
             </div>
@@ -124,24 +124,21 @@ function System() {
 
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
+
                       <p>
-                        Company ID <span>$120.00</span>
+                        Company Name <span>{getCompnayData && getCompnayData[0].panel_name}</span>
                       </p>
                       <p>
-                        Company Name <span>$13.20</span>
+                        Panel Key <span>{getCompnayData && getCompnayData[0].panel_key}</span>
                       </p>
                       <p>
-                        Panel Key <span>$0.00</span>
+                        Company Short Name <span>{getCompnayData && getCompnayData[0].panel_short_name
+                        }</span>
                       </p>
                       <p>
-                        Company Short Name <span>$0.00</span>
+                        Version <span>{getCompnayData && getCompnayData[0].version}</span>
                       </p>
-                      <p>
-                        Version <span>$0.00</span>
-                      </p>
-                      <p>
-                        Action <span>$0.00</span>
-                      </p>
+
                     </div>
                   </div>
 
@@ -160,23 +157,24 @@ function System() {
 
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
+
                       <p>
-                        Email ID <span>$120.00</span>
+                        Email <span>{getCompnayData && getCompnayData[0].email}</span>
                       </p>
                       <p>
-                        Email <span>$13.20</span>
+                        CC <span>{getCompnayData && getCompnayData[0].cc_mail}</span>
                       </p>
                       <p>
-                        CC <span>$0.00</span>
+                        BCC <span>{getCompnayData && getCompnayData[0].bcc_mail}</span>
                       </p>
                       <p>
-                        BCC <span>$0.00</span>
+                        Password <span>{getCompnayData && getCompnayData[0].smtp_password}</span>
                       </p>
                       <p>
-                        Password <span>$0.00</span>
+                        SMTP Port <span>{getCompnayData && getCompnayData[0].smtpport}</span>
                       </p>
                       <p>
-                        SMTP Port <span>$0.00</span>
+                        SMTP Host <span>{getCompnayData && getCompnayData[0].smtphost}</span>
                       </p>
                     </div>
                   </div>
@@ -196,22 +194,17 @@ function System() {
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
                       <p>
-                        Id <span>$0.00</span>
+                        Favicon <img src={getCompnayData && getCompnayData[0].favicon} alt="Favicon" style={{ height: '80px', width: '80px' }} />
                       </p>
                       <p>
-                        Favicon <span>$120.00</span>
+                        Logo <img src={getCompnayData && getCompnayData[0].logo} alt="Logo" style={{ height: '80px', width: '80px' }} />
                       </p>
                       <p>
-                        Logo <span>$13.20</span>
-                      </p>
-                      <p>
-                        Login Image <span>$0.00</span>
-                      </p>
-                      <p>
-                        Mark <span>$0.00</span>
+                        Login Image <img src={getCompnayData && getCompnayData[0].loginimage} alt="Login Image" style={{ height: '80px', width: '80px' }} />
                       </p>
                     </div>
                   </div>
+
 
 
                 </div>
