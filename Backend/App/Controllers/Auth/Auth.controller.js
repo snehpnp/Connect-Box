@@ -75,7 +75,8 @@ class Auth {
                 'mobile': EmailCheck.PhoneNo, Role: EmailCheck.Role,
                 "broker": EmailCheck.broker,
                 "type": EmailCheck.license_type,
-                "UserName": EmailCheck.UserName
+                "UserName": EmailCheck.UserName,
+                "prifix_key": EmailCheck.prifix_key
             };
 
 

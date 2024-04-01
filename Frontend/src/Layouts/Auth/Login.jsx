@@ -170,11 +170,11 @@ function Login() {
                                 src="assets/img/logo2.png"
                                 alt="Logo"
                             />
-                            <img
+                            {/* <img
                                 className="img-fluid logo-dark mb-2"
                                 src="assets/img/logo2-white.png"
                                 alt="Logo"
-                            />
+                            /> */}
 
                             <div className="loginbox">
                                 <div className="login-right">

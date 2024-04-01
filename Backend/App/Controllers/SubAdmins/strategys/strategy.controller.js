@@ -32,7 +32,6 @@ class strategy {
                 return res.send({ status: false, msg: 'Strategy already exists', data: [] });
             }
 
-            function checkStringValidity(strategy_name) {
                 // Check if the length of the string is at least 5 characters (to have 4th index)
                 if (strategy_name.length < 5) {
                     return res.send({ status: false, msg: 'Please Enter Strategy name long', data: [] });
@@ -52,12 +51,10 @@ class strategy {
                     return res.send({ status: false, msg: 'Please Enter Strategy starting 3 leter is your prifix letter', data: [] });
 
                 }
-                return true;
-            }
-
-            if (!checkStringValidity(strategy_name)) {
-                return res.send({ status: false, msg: 'Some Issue in strategy', data: [] });
-            }
+            
+            // if (!checkStringValidity(strategy_name)) {
+            //     return res.send({ status: false, msg: 'Some Issue in strategy', data: [] });
+            // }
 
 
             var strategy_Data = new strategy_model({

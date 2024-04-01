@@ -17,7 +17,40 @@ export async function GetSubStrategy(data, token) {
 
     }
 
+
 }
+
+export async function ADD_STRATEGY(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}strategy/add`, data, {  
+            data: {},
+        })
+        console.log("res service :", res)
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}
+
+export async function Delete_Strategy(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}strategy/delete`, data, {  
+            data: {},
+        })
+        console.log("res service :", res)
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}
+
+
 
 
 
