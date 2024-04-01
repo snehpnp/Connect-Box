@@ -55,7 +55,7 @@ function System() {
 
         <div className="col-lg-8 col-md-8" data-aos="fade-right">
 
-          <ul className="nav nav-tabs nav-tabs-solid d-flex justify-content-center">
+          <ul className="nav nav-tabs nav-tabs-solid horizontal-tab d-flex justify-content-center ">
             <li className="nav-item">
               <a
                 className="nav-link active"
@@ -66,7 +66,7 @@ function System() {
                 Company Information
               </a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item mx-md-5">
               <a
                 className="nav-link"
                 href="#solid-tab2"
