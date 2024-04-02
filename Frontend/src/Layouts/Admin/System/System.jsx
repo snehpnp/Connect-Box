@@ -23,9 +23,9 @@ function System() {
 
 
   const [selectedImages, setSelectedImages] = useState({
-    image1: null,
-    image2: null,
-    image3: null
+    Favicon: null,
+    logo: null,
+    loginimage: null
   });
 
   const handleImageChange = (event, imageName) => {
@@ -43,13 +43,18 @@ function System() {
   };
 
 
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    console.log("formData", formData)
+
+  }
+
 
 
   const fetchCompanyData = useCallback(async () => {
     try {
       const response = await dispatch(GetCompany_info()).unwrap();
-      console.log("response", response.data);
-
+   
       if (response.status) {
         setCompanyData(response.data);
       } else {
@@ -63,6 +68,10 @@ function System() {
   useEffect(() => {
     fetchCompanyData();
   }, [fetchCompanyData]);
+
+
+
+
 
   return (
     <div className="content container-fluid">
@@ -211,7 +220,7 @@ function System() {
                     onClick={() => setModal(0)}
                   ></button>
                 </div>
-                {modal == 1 ? (<form>
+                {modal == 1 ? (<form onSubmit={handleUpdate}>
                   <div className="modal-body">
                     <div className="row">
                       <div className="col-lg-6 col-md-12">
@@ -222,7 +231,7 @@ function System() {
                             className="form-control"
                             name="email"
                             placeholder="Enter Email"
-                            value={getCompanyData && getCompanyData[0].panel_name || ''}
+                            defaultValue= {getCompanyData && getCompanyData[0].panel_name || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -231,10 +240,10 @@ function System() {
                         <div className="input-block mb-3">
                           <label>Panel Key*</label>
                           <input
-                            type="email"
+                            type="text"
                             className="form-control"
                             name="panel_key"
-                            value={getCompanyData && getCompanyData[0].panel_key || ''}
+                            defaultValue= {getCompanyData && getCompanyData[0].panel_key || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -247,7 +256,7 @@ function System() {
                             className="form-control"
                             name="Version"
                             placeholder="Host"
-                            value={getCompanyData && getCompanyData[0].Version || ''}
+                            defaultValue= {getCompanyData && getCompanyData[0].Version || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -270,7 +279,7 @@ function System() {
                       Update
                     </button>
                   </div>
-                </form>) : modal == 2 ? (<form>
+                </form>) : modal == 2 ? (<form onSubmit={handleUpdate}>
                   <div className="modal-body">
                     <div className="row">
                       <div className="col-lg-6 col-md-12">
@@ -281,7 +290,7 @@ function System() {
                             className="form-control"
                             name="email"
                             placeholder="Enter Email"
-                            value={getCompanyData && getCompanyData[0].email || ''}
+                            defaultValue= {getCompanyData && getCompanyData[0].email || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -296,7 +305,7 @@ function System() {
                             className="form-control"
                             name="email"
                             placeholder="Enter Email"
-                            value={getCompanyData && getCompanyData[0].email || ''}
+                            defaultValue= {getCompanyData && getCompanyData[0].email || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -309,7 +318,7 @@ function System() {
                             type="email"
                             className="form-control"
                             name="cc_mail"
-                            value={getCompanyData && getCompanyData[0].cc_mail || ''}
+                            defaultValue= {getCompanyData && getCompanyData[0].cc_mail || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -322,7 +331,7 @@ function System() {
                             type="email"
                             className="form-control"
                             name="bcc_mail"
-                            value={getCompanyData && getCompanyData[0].bcc_mail || ''}
+                            defaultValue= {getCompanyData && getCompanyData[0].bcc_mail || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -338,7 +347,7 @@ function System() {
                             className="form-control"
                             name="smtphost"
                             placeholder="Host"
-                            value={getCompanyData && getCompanyData[0].smtphost || ''}
+                            defaultValue= {getCompanyData && getCompanyData[0].smtphost || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -352,7 +361,7 @@ function System() {
                             className="form-control"
                             name="smtpport"
                             placeholder="Enter Port"
-                            value={getCompanyData && getCompanyData[0].smtpport || ''}
+                            defaultValue= {getCompanyData && getCompanyData[0].smtpport || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -377,44 +386,44 @@ function System() {
                     </button>
                   </div>
                 </form>) : (
-                  <form>
+                  <form onSubmit={handleUpdate}>
                     <div className="modal-body">
                       <div className="row">
 
 
-                        <div className="input-block mb-3">
-                          <label>Image 1</label>
+                        <div className="col-lg-6 col-md-12">
+                          <label>Favicon</label>
                           <input
                             type="file"
                             className="form-control"
-                            name="image1"
+                            name="Favicon"
                             accept="image/*"
-                            onChange={(event) => handleImageChange(event, "image1")}
+                            onChange={(event) => handleImageChange(event, "Favicon")}
                           />
-                          {selectedImages.image1 && (
+                          {selectedImages.Favicon && (
                             <div className="mt-3">
                               <img
-                                src={selectedImages.image1}
-                                alt="Selected Image 1"
+                                src={selectedImages.Favicon}
+                                alt="Selected Favicon"
                                 className="img-fluid"
                               />
                             </div>
                           )}
                         </div>
 
-                        <div className="input-block mb-3">
-                          <label>Image 2</label>
+                        <div className="col-lg-6 col-md-12">
+                          <label>logo</label>
                           <input
                             type="file"
                             className="form-control"
-                            name="image2"
+                            name="logo"
                             accept="image/*"
-                            onChange={(event) => handleImageChange(event, "image2")}
+                            onChange={(event) => handleImageChange(event, "logo")}
                           />
-                          {selectedImages.image2 && (
+                          {selectedImages.logo && (
                             <div className="mt-3">
                               <img
-                                src={selectedImages.image2}
+                                src={selectedImages.logo}
                                 alt="Selected Image 2"
                                 className="img-fluid"
                               />
@@ -422,19 +431,19 @@ function System() {
                           )}
                         </div>
 
-                        <div className="input-block mb-3">
-                          <label>Image 3</label>
+                        <div className="col-lg-6 col-md-12">
+                          <label>Login Image</label>
                           <input
                             type="file"
                             className="form-control"
-                            name="image3"
+                            name="loginimage"
                             accept="image/*"
-                            onChange={(event) => handleImageChange(event, "image3")}
+                            onChange={(event) => handleImageChange(event, "loginimage")}
                           />
-                          {selectedImages.image3 && (
+                          {selectedImages.loginimage && (
                             <div className="mt-3">
                               <img
-                                src={selectedImages.image3}
+                                src={selectedImages.loginimage}
                                 alt="Selected Image 3"
                                 className="img-fluid"
                               />
