@@ -11,6 +11,8 @@ import Profile from '../Layouts/Admin/Profile/Profile';
 import Header from '../Components/Dashboard/Header/Header';
 import MainHeader from '../Components/Dashboard/Header/Main_header';
 import Login from '../Layouts/Auth/Login';
+import EditSubAdmin from '../Layouts/Admin/Subadmin/EditSubAdmin'
+
 
 const Routing = () => {
     const location = useLocation();
@@ -63,6 +65,7 @@ const Routing = () => {
     return (
         <Routes>
             <Route path="/admin/*" element={(roles === "ADMIN") ? <AdminRouting /> : <Login />} />
+            <Route path='/editSubAdmin' element={<EditSubAdmin/>}/>
             <Route path="/employee/*" element={(roles === "EMPLOYEE") ? <EmployeeRouting /> : <Login />} />
             <Route path="/subadmin/*" element={(roles === "SUBADMIN") ? <SubadminRouting /> : <Login />} />
             <Route path="/user/*" element={(roles === "USER") ? <UserRouting /> : <Login />} />

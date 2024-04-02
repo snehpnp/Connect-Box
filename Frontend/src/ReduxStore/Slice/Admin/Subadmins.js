@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { AddSubadmins, GetAllSubAdmins } from "../../../Services/Admin/Subadmins.service";
+import { AddSubadmins, GetAllSubAdmins,EditSubadmins,GetOneSubAdmins } from "../../../Services/Admin/Subadmins.service";
 
 export const AddSubadmin = createAsyncThunk(
     "subadmin/add",
@@ -7,6 +7,32 @@ export const AddSubadmin = createAsyncThunk(
         console.log("data :", data);
         try {
             const res = await AddSubadmins(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const editSubadmin = createAsyncThunk(
+    "subadmin/add",
+    async (data) => {
+        console.log("data :", data);
+        try {
+            const res = await EditSubadmins(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const getSubAdminById = createAsyncThunk(
+    "subadmin/getall",
+    async (data) => {
+        console.log("data :", data);
+        try {
+            const res = await GetOneSubAdmins(data);
             return res;
         } catch (err) {
             throw err;
@@ -57,6 +83,28 @@ const SubAdminSlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(AddSubadmin.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+            })
+            .addCase(editSubadmin.pending, (state, action) => {
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(editSubadmin.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(editSubadmin.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+            })
+            .addCase(getSubAdminById.pending, (state, action) => {
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(getSubAdminById.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(getSubAdminById.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
             });

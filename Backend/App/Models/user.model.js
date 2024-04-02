@@ -208,7 +208,7 @@ const userModel = Schema({
     },
     subadmin_service_type: {
         type: String,
-        enum: ['0', '1'], // 1 = Strategy wise , 2 = Per Trade Wise
+        enum: ['1', '2'], // 1 = Strategy wise , 2 = Per Trade Wise
         default: '1'
     },
     strategy_Percentage: {
