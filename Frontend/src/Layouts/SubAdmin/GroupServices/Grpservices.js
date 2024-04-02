@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetAll_Group_Servics, AddGrpservices } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
+import { GetAll_Group_Servics, Get_All_Catagory } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { useDispatch } from "react-redux";
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
 import IconButton from '@mui/material/IconButton';
@@ -8,7 +8,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Loader from '../../../Utils/Loader';
 import { useFormik } from 'formik';
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm'
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
+
 
 
 
@@ -17,10 +18,16 @@ function Strategy() {
 
     const [showModal, setShowModal] = useState(false);
     const dispatch = useDispatch();
+    const [GetAllSgments, setGetAllSgments] = useState({
+        loading: true,
+        data: [],
+    });
 
-    const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+    const [isModalOpen, setIsModalOpen] = useState(false);  
     const [selectedRow, setSelectedRow] = useState(null);
-    const [refresh,setrefresh] = useState(false);
+    const [refresh, setrefresh] = useState(false);
+    const [selectedServices, setSelectedServices] = useState([]);
+
 
 
 
@@ -43,10 +50,10 @@ function Strategy() {
         data: [],
     });
 
-    const handleOpenModal = (rowData) => {
-        setSelectedRow(rowData)
-        setIsModalOpen(true);
-    };
+    // const handleOpenModal = (rowData) => {
+    //     setSelectedRow(rowData)
+    //     setIsModalOpen(true);
+    // };
 
 
     const styles = {
@@ -115,7 +122,7 @@ function Strategy() {
                 </div>
             )
         },
-        
+
         {
             field: 'actions',
             headerName: 'Actions',
@@ -148,12 +155,12 @@ function Strategy() {
                     id: index + 1,
                 }));
                 console.log("formattedData :", formattedData)
-                
+
                 setCompanyData({
                     loading: true,
                     data: formattedData,
                 });
-            }else{
+            } else {
                 setCompanyData({
                     loading: true,
                     data: [],
@@ -176,208 +183,95 @@ function Strategy() {
 
 
 
+    const formik = useFormik({
+        initialValues: {
+            groupname: '',
+            segment: false
+        },
+        validate: (values) => {
+            const errors = {};
+            if (!values.groupname) {
+                errors.groupname = "valid_err.EMPTY_GROUP_NAME_ERR";
+            }
+            if (!values.segment) {
+                errors.segment = "valid_err.SEGEMENTSELECT_ERROR";
+            }
+             
+    
+            return errors;
+        },
+        onSubmit: async (values) => {
+            let checkValid = true
+            selectedServices && selectedServices.map((item) => {
+                if (item.lotsize !== 1) {
+                    if ((item.group_qty) % (item.lotsize) !== 0) {
+                        alert(`Please Enter Valid Lot Size Inside ${item.name}`)
+                        checkValid = false
+                        return
+                    }
+                    return
+                }
+                return
+            })
+    
+    
+            // if (checkValid) {
+            //     await dispatch(Add_Group({
+            //         groupdetails: { name: values.groupname },
+            //         services_id: selectedServices
+            //     })).then((response) => {
+    
+            //         if (response.payload.status) {
+            //             toast.success(response.payload.msg);
+            //             setTimeout(() => {
+            //                 navigate("/admin/groupservices")
+            //             }, 1000);
+            //         } else {
+            //             toast.error(response.payload.msg);
+    
+            //         }
+            //     })
+    
+            // }
+        }
+    });
+    
+    
     
     const fields = [
+        { name: 'groupname', label: 'Group Name', type: 'text', label_size: 12, col_size: 6, disable: false },
         {
-            name: "strategy_name",
-            label: "Strategy Name",
-            type: "text",
-            label_size: 6,
-            col_size: 6,
-            disable: false,
-        },
-
-        {
-            name: "strategy_category",
-            label: "Catagory",
-            type: "text",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "strategy_demo_days",
-            label: "Strategy demo days",
-            type: "number",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "strategy_segment",
-            label: "Strategy Segment",
-            type: "number",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "strategy_indicator",
-            label: "Indicator",
-            type: "file",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "strategy_tester",
-            label: "Strategy Tester",
-            type: "file",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "strategy_image",
-            label: "Strategy Logo",
-            type: "file",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "strategy_description",
-            label: "Strategy description",
-            type: "text",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "strategy_amount_month",
-            label: "Monthly",
-            type: "number",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "strategy_amount_quarterly",
-            label: "Quaterly",
-            type: "number",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "strategy_amount_half_early",
-            label: "Half Yearly",
-            type: "number",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "strategy_amount_early",
-            label: "Yearly",
-            type: "number",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
+            name: 'segment',
+            label: 'Segment',
+            type: 'select',
+            options: GetAllSgments.data && GetAllSgments.data.map((item) => ({ label: item.name, value: item.segment })),
+            label_size: 12, col_size: 6, disable: false,
         },
     ];
 
-    const formik = useFormik({
-        initialValues: {
-            group_name: '',
-            group_description:'',
-            strategy_category: '',
-            strategy_segment: '',
-            strategy_tester: '',
-            strategy_indicator: '',
-            strategy_image: '',
-            strategy_description: '',
-            strategy_amount_month: '',
-            strategy_amount_quarterly: '',
-            strategy_amount_half_early: '',
-            strategy_amount_early: '',
-            strategy_demo_days: ''
-        },
-        validate: (values) => {
-            let errors = {};
-            if (!values.group_name) {
-                errors.group_name = "group name is required";
-            }
-            if (!values.group_description) {
-                errors.group_description = "strategy demo day is required";
-            }
-            if (!values.strategy_category) {
-                errors.strategy_category = "strategy category is required";
-            }
-            if (!values.strategy_segment) {
-                errors.strategy_segment = "strategy segment is required";
-            }
-            if (!values.strategy_tester) {
-                errors.strategy_tester = "strategy tester is required";
-            }
-            if (!values.strategy_indicator) {
-                errors.strategy_indicator = "strategy indicator is required";
-            }
-
-            if (!values.strategy_image) {
-                errors.strategy_image = "strategy image is required";
-            }
-            if (!values.strategy_description) {
-                errors.strategy_description = "strategy description is required";
-            }
-            if (!values.strategy_amount_month) {
-                errors.strategy_amount_month = "amount is required";
-            }
-            if (!values.strategy_amount_quarterly) {
-                errors.strategy_amount_quarterly = "amount is required";
-            }
-            if (!values.strategy_amount_half_early) {
-                errors.strategy_amount_half_early = "amount is required";
-            }
-
-            if (!values.strategy_amount_early) {
-                errors.strategy_amount_early = "amount is required";
-            }
-
-            return errors;
 
 
-        },
-        onSubmit: async (values) => {
+//  -------------------For Show Segment List-----------------
 
-            const data = {
-                strategy_name: values.strategy_name,
-                strategy_category: values.strategy_category,
-                strategy_segment: values.strategy_segment,
-                strategy_tester: values.strategy_tester,
-                strategy_demo_days: values.strategy_demo_days,
-                strategy_indicator: values.strategy_indicator,
-                strategy_image: values.strategy_image,
-                strategy_description: values.strategy_description,
-                strategy_amount_month: values.strategy_amount_month,
-                strategy_amount_quarterly: values.strategy_amount_quarterly,
-                strategy_amount_half_early: values.strategy_amount_half_early,
-                strategy_amount_early: values.strategy_amount_early,
-                maker_id: user_id
-            };
-            console.log("req :", data)
-        
 
-            await dispatch(AddGrpservices(data))
-                .unwrap()
-                .then(async (response) => {
-                     if (response.status) {
-                        toast.success(response.msg);
-                        setTimeout(() => {
-                            setShowModal(false)
-                        }, 100);
-                        setrefresh(!refresh)
+const getservice = async () => {
+    await dispatch(Get_All_Catagory())
+        .unwrap()
+        .then((response) => {
 
-                    } else {
-                        toast.error(response.msg);
-                    }
-
-                })
-                .catch((error) => {
-                    console.log("Error", error);
+            if (response.status) {
+                setGetAllSgments({
+                    loading: false,
+                    data: response.data,
                 });
-            },
-    });
+            }
+        });
+};
+useEffect(() => {
+    getservice();
+}, []);
+
+
 
 
 
@@ -396,7 +290,7 @@ function Strategy() {
                                     <li>
                                         <a
                                             className="btn-filters"
-                                             // href="javascript:void(0);"
+                                            href="/"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Refresh"
@@ -425,6 +319,7 @@ function Strategy() {
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Filter"
+                                            href="/"
                                         >
                                             <span className="me-2">
                                                 <img src="assets/img/icons/filter-icon.svg" alt="filter" />
@@ -455,7 +350,7 @@ function Strategy() {
                                                     <li>
                                                         <a
                                                             className="d-flex align-items-center download-item"
-                                                             // href="javascript:void(0);"
+                                                            href="/"
                                                             download=""
                                                         >
                                                             <i className="far fa-file-pdf me-2" />
@@ -465,7 +360,7 @@ function Strategy() {
                                                     <li>
                                                         <a
                                                             className="d-flex align-items-center download-item"
-                                                             // href="javascript:void(0);"
+                                                            href="/"
                                                             download=""
                                                         >
                                                             <i className="far fa-file-text me-2" />
@@ -478,13 +373,13 @@ function Strategy() {
                                     </li>
 
                                     <li>
-                                        <a
+                                        <p
                                             className="btn btn-primary"
-                                            onClick={openModal}
+                                            onClick={openModal} 
                                         >
                                             <i className="fa fa-plus-circle me-2" aria-hidden="true" />
                                             Create Strategy
-                                        </a>
+                                        </p>
                                     </li>
                                 </ul>
                             </div>
@@ -493,13 +388,13 @@ function Strategy() {
                 </div>
                 {
                     companyData.loading ? (
-                    <FullDataTable
-                        styles={styles}
-                        columns={columns}
-                        rows={companyData.data}
-                        checkboxSelection={false}
+                        <FullDataTable
+                            styles={styles}
+                            columns={columns}
+                            rows={companyData.data}
+                            checkboxSelection={false}
 
-                    />) : <Loader />
+                        />) : <Loader />
                 }
 
                 {/* CARD MODAL */}

@@ -31,6 +31,20 @@ export async function ADD_GROUP_SERVICS(data) {
     }
 }
 
+
+export async function GET_ALL_CATAGORY() {
+    try {
+        const res = await axios.post(`${Config.base_url}allCatagory`, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
  
 
 
