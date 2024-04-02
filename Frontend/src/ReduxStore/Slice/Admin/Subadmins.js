@@ -15,7 +15,7 @@ export const AddSubadmin = createAsyncThunk(
 );
 
 export const editSubadmin = createAsyncThunk(
-    "subadmin/add",
+    "subadmin/edit",
     async (data) => {
         console.log("data :", data);
         try {
@@ -59,6 +59,7 @@ const SubAdminSlice = createSlice({
         isLoading: false,
         isError: false,
         subadminsInfo: null,
+        Edit_Subadmin:null,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -92,6 +93,7 @@ const SubAdminSlice = createSlice({
             })
             .addCase(editSubadmin.fulfilled, (state, action) => {
                 state.isLoading = false;
+                state.Edit_Subadmin = action.payload;
             })
             .addCase(editSubadmin.rejected, (state, action) => {
                 state.isLoading = false;

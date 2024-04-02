@@ -141,7 +141,7 @@ export default function Help() {
   const handleEdit = (row) => {
     console.log("Edit row:", row);
     setInitialRowData(row);
-    navigate("/admin/subadmin/edit", { state: { rowData: row } });
+    navigate("/admin/subadmin/edit", { state: { rowData: { ...row, _id: row._id } } });
   };
 
   const handleChange = (event, id) => {

@@ -17,61 +17,36 @@ const EditClient = () => {
   const navigate = useNavigate();
   const location = useLocation();
   // const rowData = location.state?.rowData || {};
-  const [rowData, setRowData] = useState(location.state && location.state.rowData);
-
-
+  const [rowData, setRowData] = useState(
+    location.state && location.state.rowData
+  );
+  const [userId, setUserId] = useState(location.state && location.state.rowData._id);
 
   console.log("RowData", rowData && rowData);
 
   const formik = useFormik({
     initialValues: {
+      _id: userId,
       username: "",
       fullName: "",
       email: "",
       mobile: "",
-      onChange: (e) => handleChange("username", e.target.value),
     },
 
     validate: (values) => {
       let errors = {};
-      if (!values.fullName) {
-        errors.fullName = "Full Name is required";
-      }
-      if (!values.username) {
-        errors.username = "Username is required";
-      }
-      if (!values.email) {
-        errors.email = "Please enter your email address.";
-      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
-        errors.email = "Please enter a valid email address.";
-      }
-
-      if (!values.phone) {
-        errors.phone = "Please enter your phone number.";
-      } else if (!/^\d{10}$/.test(values.phone)) {
-        errors.phone = "Please enter a valid 10-digit phone number.";
-      }
-      if (!values.balance) {
-        errors.balance = "Balance is required";
-      }
-      if (!values.password) {
-        errors.password = "Password is required";
-      }
-      if (!values.prifix_key) {
-        errors.prifix_key = "Prefix key is required";
-      } else if (values.prifix_key.length !== 3) {
-        errors.prifix_key = "Key should be exactly 3 characters/number/both";
-      }
       return errors;
     },
     onSubmit: async (values) => {
       const req = {
+        _id: values._id,
         UserName: values.username,
         FullName: values.fullName,
         Email: values.email,
         PhoneNo: values.mobile,
       };
 
+      console.log("Request is Onn", req);
       await dispatch(editSubadmin(req))
         .unwrap()
         .then(async (response) => {
@@ -188,49 +163,30 @@ const EditClient = () => {
   ];
 
   useEffect(() => {
-    console.log("USERNAME", rowData.UserName);
+    console.log("USERNAME", rowData._id);
     formik.setFieldValue("username", rowData !== undefined && rowData.UserName);
     formik.setFieldValue("fullName", rowData !== undefined && rowData.FullName);
     formik.setFieldValue("email", rowData !== undefined && rowData.Email);
     formik.setFieldValue("mobile", rowData !== undefined && rowData.PhoneNo);
   }, [rowData]);
 
-  const BackOnAll = () => {
-    navigate("/admin/allsubadmin");
-  };
+  console.log("Formic value", formik.values);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    console.log(`${name} has been changed to:`, value);
-    formik.handleChange(e);
-  };
-console.log("Formic value",formik.values)
   return (
     <>
-      <div>
-        <button
-          type="button"
-          className="btn btn-outline-info"
-          onClick={BackOnAll}
-        >
-          Back
-        </button>
-        <div>
-          <EditForm
-            page_title="Update Subadmin Details"
-            formik={formik}
-            btn_name="Update"
-            fromDate={formik.values.fromDate}
-            toDate={formik.values.todate}
-            fields={fields.filter(
-              (field) => !field.showWhen || field.showWhen(formik.values)
-            )}
-            btn_name1="Cancel"
-            btn_name1_route={"/admin/allsubadmin"}
-          />
-          <ToastButton />
-        </div>
-      </div>
+      <EditForm
+        page_title="Update Subadmin Details"
+        formik={formik}
+        btn_name="Update"
+        fromDate={formik.values.fromDate}
+        toDate={formik.values.todate}
+        fields={fields.filter(
+          (field) => !field.showWhen || field.showWhen(formik.values)
+        )}
+        btn_name1="Cancel"
+        btn_name1_route={"/admin/allsubadmin"}
+      />
+      <ToastButton />
     </>
   );
 };
