@@ -35,3 +35,19 @@ export async function RechargeDetailsGet(data, token) {
     
 }
 
+
+export async function SubadminDetails(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}subadmin/company/edit`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+    
+}
+

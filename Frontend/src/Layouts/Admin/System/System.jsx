@@ -1,9 +1,8 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useCallback } from "react";
 import { GetCompany_info } from "../../../ReduxStore/Slice/Admin/System";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-
 
 function System() {
 
@@ -13,29 +12,25 @@ function System() {
   const [getCompnayData, SetCompnayData] = useState();
 
 
-  const GetCompnayData = async () => {
+  const fetchCompnayData = useCallback(async () => {
+    try {
+      const response = await dispatch(GetCompany_info()).unwrap();
+      console.log("response", response.data);
 
-
-    await dispatch(GetCompany_info())
-      .unwrap()
-      .then(async (response) => {
-        console.log("response", response.data)
-
-        if (response.status) {
-          SetCompnayData(response.data)
-        } else {
-          toast.error(response.msg);
-        }
-
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
+      if (response.status) {
+        SetCompnayData(response.data);
+      } else {
+        toast.error(response.msg);
+      }
+    } catch (error) {
+      console.error("Error", error);
+    }
+  }, [dispatch]);
 
   useEffect(() => {
-    GetCompnayData()
-  }, [])
+    fetchCompnayData();
+  }, [fetchCompnayData]);
+
 
 
 
@@ -55,7 +50,7 @@ function System() {
 
         <div className="col-lg-8 col-md-8" data-aos="fade-right">
 
-          <ul className="nav nav-tabs nav-tabs-solid d-flex justify-content-center">
+          <ul className="nav nav-tabs nav-tabs-solid horizontal-tab d-flex justify-content-center ">
             <li className="nav-item">
               <a
                 className="nav-link active"
@@ -66,7 +61,7 @@ function System() {
                 Company Information
               </a>
             </li>
-            <li className="nav-item">
+            <li className="nav-item mx-md-5">
               <a
                 className="nav-link"
                 href="#solid-tab2"
