@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import EditForm from "../../../Components/ExtraComponents/forms/EditForm";
+import EditForm from "../../../Components/ExtraComponents/forms/AddForm";
 import { useFormik } from "formik";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 import {
@@ -17,18 +17,11 @@ const EditClient = () => {
   const navigate = useNavigate();
   const location = useLocation();
   // const rowData = location.state?.rowData || {};
-  const [rowData, setRowData] = useState();
+  const [rowData, setRowData] = useState(location.state && location.state.rowData);
 
-  useEffect(() => {
-    if (location.state && location.state.rowData) {
-      setRowData(location.state.rowData);
-      console.log("API response:", location.state.rowData);
-    } else {
-      console.error("Row data is not available");
-    }
-  }, [location.state]);
 
-  console.log("RowData", rowData);
+
+  console.log("RowData", rowData && rowData);
 
   const formik = useFormik({
     initialValues: {
@@ -106,7 +99,6 @@ const EditClient = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
-     
     },
     {
       name: "fullName",
@@ -115,7 +107,6 @@ const EditClient = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
-     
     },
     {
       name: "email",
@@ -124,7 +115,6 @@ const EditClient = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
-     
     },
     {
       name: "mobile",
@@ -133,7 +123,6 @@ const EditClient = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
-     
     },
     {
       name: "demat_userid",
@@ -215,7 +204,7 @@ const EditClient = () => {
     console.log(`${name} has been changed to:`, value);
     formik.handleChange(e);
   };
-
+console.log("Formic value",formik.values)
   return (
     <>
       <div>
@@ -228,14 +217,16 @@ const EditClient = () => {
         </button>
         <div>
           <EditForm
-            fields={fields.filter(
-              (field) => !field.showWhen || field.showWhen(formik.values)
-            )}
             page_title="Update Subadmin Details"
             formik={formik}
             btn_name="Update"
             fromDate={formik.values.fromDate}
             toDate={formik.values.todate}
+            fields={fields.filter(
+              (field) => !field.showWhen || field.showWhen(formik.values)
+            )}
+            btn_name1="Cancel"
+            btn_name1_route={"/admin/allsubadmin"}
           />
           <ToastButton />
         </div>

@@ -141,7 +141,7 @@ export default function Help() {
   const handleEdit = (row) => {
     console.log("Edit row:", row);
     setInitialRowData(row);
-    navigate("/editSubAdmin", { state: { rowData: row } });
+    navigate("/admin/subadmin/edit", { state: { rowData: row } });
   };
 
   const handleChange = (event, id) => {
@@ -208,7 +208,7 @@ export default function Help() {
                       <li>
                         <a
                           className="btn-filters"
-                          // href="javascript:void(0);"
+                          href="javascript:void(0);"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Refresh"
@@ -270,7 +270,7 @@ export default function Help() {
                               <li>
                                 <a
                                   className="d-flex align-items-center download-item"
-                                  // href="javascript:void(0);"
+                                  href="javascript:void(0);"
                                   download=""
                                 >
                                   <i className="far fa-file-pdf me-2" />
@@ -280,7 +280,7 @@ export default function Help() {
                               <li>
                                 <a
                                   className="d-flex align-items-center download-item"
-                                  // href="javascript:void(0);"
+                                  href="javascript:void(0);"
                                   download=""
                                 >
                                   <i className="far fa-file-text me-2" />
@@ -294,7 +294,7 @@ export default function Help() {
                       <li>
                         <a
                           className="btn btn-filters"
-                          // href="javascript:void(0);"
+                          href="javascript:void(0);"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Print"
