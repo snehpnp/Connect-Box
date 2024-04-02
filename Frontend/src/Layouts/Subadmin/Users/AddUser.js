@@ -8,8 +8,6 @@ import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
 
 
-
-
 import { useFormik } from 'formik';
 
 import axios from "axios";
@@ -83,6 +81,26 @@ const AddClient = () => {
       disable: false,
     },
     {
+      name: "license_type",
+      label: "Lincense Type",
+      type: "select",
+      options: [
+        { label: "Demo", value: "0" },
+        { label: "2 Day Live", value: "1" },
+        { label: "Live", value: "2" },
+      ],
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: 'tomonth',
+      label: 'To Month',
+      type: 'text',
+      showWhen: values => values.licence === '2'
+      , label_size: 12, col_size: 6, disable: false, isSelected: true
+    },
+    {
       name: "subadmin_servic_type",
       label: "Subadmin Servic Type",
       type: "select",
@@ -106,7 +124,9 @@ const AddClient = () => {
       phone: "",
       balance: "",
       password: "",
+      tomonth: null,
       prifix_key: "",
+      licence:null,
       subadmin_servic_type: "0",
       strategy_Percentage: "0",
       Per_trade: "0",
@@ -152,6 +172,7 @@ const AddClient = () => {
         FullName: values.fullName,
         UserName: values.username,
         Email: values.email,
+        licence: values.tomonth,
         PhoneNo: values.phone,
         Balance: values.balance,
         subadmin_service_type: values.subadmin_servic_type,
@@ -195,7 +216,8 @@ const AddClient = () => {
 
       <AddForm
         ProfileShow={ProfileShow}
-        fields={fields}
+        // fields={fields}
+        fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))}
         page_title="Add User"
         btn_name="Add User"
         btn_name1="Cancel"

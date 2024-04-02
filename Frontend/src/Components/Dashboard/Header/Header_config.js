@@ -62,31 +62,38 @@ export const admin_header = [
         Data: []
     },
     {
-        id: 5,
+        id: 6,
         name: 'Recharge Details',
         route: "/admin/payment",
         Icon: "fe fe-credit-card",
         Data: []
     },
     {
-        id: 6,
+        id: 7,
         name: 'Message Broadcast',
         route: "/admin/message-broadcast",
         Icon: "fe fe-message-circle",
         Data: []
     },
     {
-        id: 7,
+        id: 8,
         name: 'Help',
         route: "/admin/help",
         Icon: "fe fe-help-circle",
         Data: []
     },
     {
-        id: 8,
+        id: 9,
         name: 'FAQs',
         route: "/admin/faqs",
         Icon: "fe fe-help-circle",
+        Data: []
+    },
+    {
+        id: 10,
+        name: 'Wallet',
+        route: "/admin/wallet",
+        Icon: "fe fe-credit-card",
         Data: []
     }
 ];
@@ -244,5 +251,79 @@ export const subamdin_header = [
     }
 ];
 
+
+
+export const User_header = [
+    {
+        id: 1,
+        name: 'Stock List',
+        Icon: "fe fe-home",
+        route: "/user/stock",
+        Data: []
+    },
+    {
+        id: 4,
+        name: 'Trade',
+        Icon: "fe fe-shopping-cart",
+        Data: [
+            {
+                id: 41,
+                name: 'Orders',
+                route: "/user/orders",
+                Icon: "fe fe-shopping-bag",
+                Data: []
+            },
+            {
+                id: 42,
+                name: 'Positions',
+                route: "/user/positions",
+                Icon: "fe fe-map-pin",
+                Data: []
+            }
+        ]
+    },
+    {
+        id: 5,
+        name: 'Recharge Details',
+        route: "/user/payment",
+        Icon: "fe fe-credit-card",
+        Data: []
+    },
+    {
+        id: 7,
+        name: 'Help',
+        route: "/user/help",
+        Icon: "fe fe-help-circle",
+        Data: []
+    },
+    {
+        id: 8,
+        name: 'Open Positions',
+        route: "/user/open-positions",
+        Icon: "fe fe-grid",
+        Data: []
+    },
+    {
+        id: 9,
+        name: 'Broker Response',
+        route: "/user/broker-response",
+        Icon: "fe fe-grid",
+        Data: []
+    },
+    {
+        id: 10,
+        name: 'Strategies',
+        route: "/user/strategies",
+        Icon: "fe fe-grid",
+        Data: []
+    },
+    {
+        id: 11,
+        name: 'FAQs',
+        route: "/user/faqs",
+        Icon: "fe fe-help-circle",
+        Data: []
+    }
+];
 
 

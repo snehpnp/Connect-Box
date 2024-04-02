@@ -13,6 +13,7 @@ import Orders from '../Layouts/Admin/Trade/Order';
 import Positions from '../Layouts/Admin/Trade/Position';
 
 
+import Test from '../Layouts/Admin/Dashboard/text';
 
 
 import MessageBrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast';
@@ -53,12 +54,14 @@ const Admin_Routing = () => {
                     <Route exact path="/orders" element={<Orders />} />
                     <Route exact path="/position" element={<Positions />} />
 
+                    <Route exact path="/test" element={<Test />} />
 
-                    <Route exact path="/tabe" element={<Tabe />} /> 
-                    <Route exact path="/tabes" element={<Tabes />} />    
 
- 
- 
+                    <Route exact path="/tabe" element={<Tabe />} />
+                    <Route exact path="/tabes" element={<Tabes />} />
+
+
+
                     <Route exact path="/dashboard" element={<Overview />} />
                     <Route exact path="/system" element={<System />} />
                     <Route exact path="/payment" element={<Payment />} />

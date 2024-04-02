@@ -1,5 +1,3 @@
-
-
 "use strict"
 
 const { Schema, model } = require('mongoose');
@@ -65,7 +63,6 @@ const userModel = Schema({
     },
     End_Date: {
         type: Date,
-        // required: true,
         default: null
     },
     ActiveStatus: {

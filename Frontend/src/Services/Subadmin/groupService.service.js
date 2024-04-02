@@ -5,9 +5,9 @@ import * as Config from "../../Utils/Config";
 
 
 // LOGIN-USER
-export async function GetSubadmminCompanyInfo(data, token) {
+export async function GET_ALL_GROUP_SERVICS(data) {
     try {
-        const res = await axios.post(`${Config.base_url}subadmin/company/getall`, data, {  
+        const res = await axios.post(`${Config.base_url}groupservices/getall`, data, {  
             data: {},
         })
         return await res?.data;
@@ -16,13 +16,11 @@ export async function GetSubadmminCompanyInfo(data, token) {
         return await err;
 
     }
-
 }
 
-
-export async function RechargeDetailsGet(data, token) {
+export async function ADD_GROUP_SERVICS(data) {
     try {
-        const res = await axios.post(`${Config.base_url}recharge/get`, data, {  
+        const res = await axios.post(`${Config.base_url}groupservice/add`, data, {  
             data: {},
         })
         return await res?.data;
@@ -31,14 +29,12 @@ export async function RechargeDetailsGet(data, token) {
         return await err;
 
     }
-
-    
 }
 
 
-export async function SubadminDetails(data, token) {
+export async function GET_ALL_CATAGORY() {
     try {
-        const res = await axios.post(`${Config.base_url}subadmin/company/edit`, data, {  
+        const res = await axios.post(`${Config.base_url}allCatagory`, {  
             data: {},
         })
         return await res?.data;
@@ -47,7 +43,11 @@ export async function SubadminDetails(data, token) {
         return await err;
 
     }
-
-    
 }
+
+ 
+
+
+
+
 

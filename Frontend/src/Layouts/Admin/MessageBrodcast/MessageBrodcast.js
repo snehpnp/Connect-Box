@@ -62,9 +62,9 @@ function MessageBroadcast() {
 
     return (
         <Content
-            Page_title="Message Brodcast"
-            Card_title="Message Brodcast"
-            Card_title_icon='fas fa-user pe-3'
+            Page_title="Message Boardcast"
+            Card_title="Message"
+            Card_title_icon='fas fa-message pe-3'
             Content={
                 <>
                     <div className="mt-3">
