@@ -62,31 +62,38 @@ export const admin_header = [
         Data: []
     },
     {
-        id: 5,
+        id: 6,
         name: 'Recharge Details',
         route: "/admin/payment",
         Icon: "fe fe-credit-card",
         Data: []
     },
     {
-        id: 6,
+        id: 7,
         name: 'Message Broadcast',
         route: "/admin/message-broadcast",
         Icon: "fe fe-message-circle",
         Data: []
     },
     {
-        id: 7,
+        id: 8,
         name: 'Help',
         route: "/admin/help",
         Icon: "fe fe-help-circle",
         Data: []
     },
     {
-        id: 8,
+        id: 9,
         name: 'FAQs',
         route: "/admin/faqs",
         Icon: "fe fe-help-circle",
+        Data: []
+    },
+    {
+        id: 10,
+        name: 'Wallet',
+        route: "/admin/wallet",
+        Icon: "fe fe-credit-card",
         Data: []
     }
 ];

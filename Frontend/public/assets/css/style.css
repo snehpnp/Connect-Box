@@ -3770,10 +3770,12 @@ div.dataTables_wrapper div.dataTables_filter label i {
     width: 32px;
     border-radius: 50%
 }
+
 .user-menu {
 
     border-bottom: 0 !important;
 }
+
 .user-menu .dropdown-menu .dropdown-item {
     padding: 10px 15px;
     font-size: 14px
@@ -3783,9 +3785,11 @@ div.dataTables_wrapper div.dataTables_filter label i {
     padding: 10px 18px;
     font-size: 14px !important;
 }
+
 .user-menu .dropdown-menu .dev:hover {
-    color:#fff !important;
+    color: #fff !important;
 }
+
 .user-menu .dropdown-menu .dropdown-item:hover {
     color: #fff;
     text-decoration: none;
@@ -6032,7 +6036,8 @@ span.select2-container.select2-container--default.select2-container--open {
     height: auto !important
 }
 
-.table .dropdown-item, .dropdown-item {
+.table .dropdown-item,
+.dropdown-item {
     font-weight: 500;
     font-size: 13px !important;
     color: #878a99 !important;
@@ -7858,10 +7863,10 @@ table .badge {
     background-color: #2c3034
 }
 
-[data-layout-mode=dark] body .nav-tabs.nav-tabs-solid {
+/* [data-layout-mode=dark] body .nav-tabs.nav-tabs-solid {
     background-color: #16191c;
     border: 1px solid #2e3840
-}
+} */
 
 [data-layout-mode=dark] body .select2-container--default .select2-selection--single,
 [data-layout-mode=dark] body .signature-invoice .form-group-bank {
@@ -32609,4 +32614,12 @@ button.btn.btn-primary a {
     border: var(--bs-border-width) solid var(--bs-border-color);
     border-radius: var(--bs-border-radius);
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+li.submenu {
+    font-size: 9px;
+}
+
+.horizontal-tab {
+    border-bottom: none !important;
 }
