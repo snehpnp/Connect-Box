@@ -10,48 +10,48 @@ const StockOutModal = ({ rowData, onClose }) => {
   const dispatch = useDispatch();
 
 
-    const initialFormData = rowData? rowData : {}; // Initialize with companydata or empty object
-    const [formData, setFormData] = useState(initialFormData && initialFormData);
-  
-    const handleInputChange = (e) => {
-      const { name, value } = e.target;
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
+  const initialFormData = rowData ? rowData : {}; // Initialize with companydata or empty object
+  const [formData, setFormData] = useState(initialFormData && initialFormData);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    const updatedData = {
+      id: rowData._id,
+      companydata: {
+        email: formData.email || rowData.email,
+        smtp_password: formData.smtp_password || rowData.smtp_password,
+        cc_mail: formData.cc_mail || rowData.cc_mail,
+        bcc_mail: formData.bcc_mail || rowData.bcc_mail,
+        smtphost: formData.smtphost || rowData.smtphost,
+        smtpport: formData.smtpport || rowData.smtpport,
+        razorpay_key: formData.razorpay_key || rowData.razorpay_key,
+        logo: rowData.logo
+      }
     };
 
-  
-    const handleUpdate = async(e) => {
-      e.preventDefault();
+    console.log("updatedData", updatedData);
 
-      const updatedData = {
-        id: rowData._id,
-        companydata: {
-          email: formData.email || rowData.email,
-          smtp_password: formData.smtp_password || rowData.smtp_password,
-          cc_mail: formData.cc_mail || rowData.cc_mail,
-          bcc_mail: formData.bcc_mail || rowData.bcc_mail,
-          smtphost: formData.smtphost || rowData.smtphost,
-          smtpport: formData.smtpport || rowData.smtpport,
-          razorpay_key: formData.razorpay_key || rowData.razorpay_key,
-          logo: rowData.logo 
-        }
-      };
-    
-      console.log("updatedData", updatedData);
 
-  
 
-      
-      await dispatch(SubadminDetail(updatedData))
+
+    await dispatch(SubadminDetail(updatedData))
       .unwrap()
       .then(async (response) => {
 
 
         if (response.status) {
           toast.success(response.msg);
-    
+
           onClose();
         } else {
           toast.error(response.msg);
@@ -61,7 +61,7 @@ const StockOutModal = ({ rowData, onClose }) => {
       .catch((error) => {
         console.log("Error", error);
       });
-    };
+  };
 
   return (
     <div className="modal custom-modal d-block">
@@ -144,8 +144,9 @@ const StockOutModal = ({ rowData, onClose }) => {
                       placeholder="password"
                       defaultValue={rowData.razorpay_key}
                       onChange={handleInputChange}
-              
+                      autoComplete="new-password" // Set autocomplete to "new-password" to prevent autofill
                     />
+
                   </div>
                 </div>
 
