@@ -1,6 +1,24 @@
 import React from 'react'
 
 const Dashboards = () => {
+
+    var Role = JSON.parse(localStorage.getItem("user_details")).Role
+    var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
+
+    const getGreetingMessage = () => {
+        const currentTime = new Date().getHours();
+
+        if (currentTime < 12) {
+            return { greeting: "Good Morning", icon: "fe-sun" };
+        } else if (currentTime < 18) {
+            return { greeting: "Good Afternoon", icon: "fe-sun" };
+        } else {
+            return { greeting: "Good Evening", icon: "fe-moon" };
+        }
+    };
+
+    const { greeting, icon } = getGreetingMessage();
+
     return (
         <div>
 
@@ -14,11 +32,13 @@ const Dashboards = () => {
                     <div className="row">
                         <div className="col-xl-5 d-flex">
                             <div className="dash-user-card w-100">
+
                                 <h4>
-                                    <i className="fe fe-sun" />
-                                    Good Morning, John
+                                    <i className={`fe ${icon}`} />
+                                    {greeting}, {UserNAme}
                                 </h4>
-                                <p>14 New Companies Subscribed Today</p>
+
+                                <p>14 New Strategies Subscribed</p>
                                 <div className="dash-btns">
                                     <a href="companies.html" className="btn view-company-btn">
                                         View Companies
@@ -32,6 +52,7 @@ const Dashboards = () => {
                                 </div>
                             </div>
                         </div>
+                        
                         <div className="col-xl-7 d-flex p-0">
                             <div className="row dash-company-row w-100 m-0">
                                 <div className="col-lg-3 col-sm-6 d-flex">

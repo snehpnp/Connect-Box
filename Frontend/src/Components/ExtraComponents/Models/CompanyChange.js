@@ -176,6 +176,7 @@ const StockOutModal = ({ rowData, onClose }) => {
                     />
                   </div>
                 </div>
+                
               </div>
             </div>
             <div className="modal-footer">
