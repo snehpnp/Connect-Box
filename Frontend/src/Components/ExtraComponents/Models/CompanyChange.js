@@ -1,12 +1,17 @@
-
-
-
 import React, { useState } from "react";
-import axios from "axios";
+import { SubadminDetail } from "../../../ReduxStore/Slice/Admin/SubAdminCompanyInfo";
+import { useDispatch } from "react-redux";
+
+import toast from "react-hot-toast";
+import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
 
 const StockOutModal = ({ rowData, onClose }) => {
-    const initialFormData = rowData?.companydata || {}; // Initialize with companydata or empty object
-    const [formData, setFormData] = useState(initialFormData);
+
+  const dispatch = useDispatch();
+
+
+    const initialFormData = rowData? rowData : {}; // Initialize with companydata or empty object
+    const [formData, setFormData] = useState(initialFormData && initialFormData);
   
     const handleInputChange = (e) => {
       const { name, value } = e.target;
@@ -15,26 +20,47 @@ const StockOutModal = ({ rowData, onClose }) => {
         [name]: value,
       });
     };
+
   
-    const handleUpdate = (e) => {
+    const handleUpdate = async(e) => {
       e.preventDefault();
+
       const updatedData = {
-        ...rowData,
-        data: {
-          ...rowData.data,
-          ...formData,
-        },
+        id: rowData._id,
+        companydata: {
+          email: formData.email || rowData.email,
+          smtp_password: formData.smtp_password || rowData.smtp_password,
+          cc_mail: formData.cc_mail || rowData.cc_mail,
+          bcc_mail: formData.bcc_mail || rowData.bcc_mail,
+          smtphost: formData.smtphost || rowData.smtphost,
+          smtpport: formData.smtpport || rowData.smtpport,
+          razorpay_key: formData.razorpay_key || rowData.razorpay_key,
+          logo: rowData.logo 
+        }
       };
+    
+      console.log("updatedData", updatedData);
+
   
-      axios
-        .post("http://localhost:7000/subadmin/company/edit", updatedData)
-        .then((response) => {
-         
+
+      
+      await dispatch(SubadminDetail(updatedData))
+      .unwrap()
+      .then(async (response) => {
+
+
+        if (response.status) {
+          toast.success(response.msg);
+    
           onClose();
-        })
-        .catch((error) => {
-          console.error("Update failed:", error);
-        });
+        } else {
+          toast.error(response.msg);
+        }
+
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
     };
 
   return (
@@ -113,10 +139,12 @@ const StockOutModal = ({ rowData, onClose }) => {
                     <label>razorpay key*</label>
                     <input
                       type="password"
+                      name="razorpay_key"
                       className="form-control"
                       placeholder="password"
                       defaultValue={rowData.razorpay_key}
-                      disabled // As it's not editable
+                      onChange={handleInputChange}
+              
                     />
                   </div>
                 </div>
@@ -168,7 +196,9 @@ const StockOutModal = ({ rowData, onClose }) => {
             </div>
           </form>
         </div>
+
       </div>
+      <ToastButton />
     </div>
   );
 };

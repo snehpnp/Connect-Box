@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useCallback } from "react";
 import { GetCompany_info } from "../../../ReduxStore/Slice/Admin/System";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
@@ -13,29 +13,24 @@ function System() {
   const [getCompnayData, SetCompnayData] = useState();
 
 
-  const GetCompnayData = async () => {
+  const fetchCompnayData = useCallback(async () => {
+    try {
+      const response = await dispatch(GetCompany_info()).unwrap();
+      console.log("response", response.data);
 
-
-    await dispatch(GetCompany_info())
-      .unwrap()
-      .then(async (response) => {
-        console.log("response", response.data)
-
-        if (response.status) {
-          SetCompnayData(response.data)
-        } else {
-          toast.error(response.msg);
-        }
-
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
+      if (response.status) {
+        SetCompnayData(response.data);
+      } else {
+        toast.error(response.msg);
+      }
+    } catch (error) {
+      console.error("Error", error);
+    }
+  }, [dispatch]);
 
   useEffect(() => {
-    GetCompnayData()
-  }, [])
+    fetchCompnayData();
+  }, [fetchCompnayData]);
 
 
 

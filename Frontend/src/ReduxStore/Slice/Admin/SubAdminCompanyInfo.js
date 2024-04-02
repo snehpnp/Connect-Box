@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetSubadmminCompanyInfo ,RechargeDetailsGet} from "../../../Services/Admin/SubadminCompany.service";
+import { GetSubadmminCompanyInfo ,RechargeDetailsGet,SubadminDetails} from "../../../Services/Admin/SubadminCompany.service";
 
 export const fetchSubadminCompanyInfo = createAsyncThunk(
     "subadmin/company/fetchAll",
@@ -26,6 +26,20 @@ export const RechargeDetailsGets = createAsyncThunk(
     }
 );
 
+
+export const SubadminDetail = createAsyncThunk(
+    "subadmin/company/edit",
+    async (data, thunkAPI) => {
+        try {
+            const response = await SubadminDetails(data);
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
+
+
 const subAdminSystemSlice = createSlice({
     name: "subAdminSystem",
     initialState: {
@@ -33,6 +47,8 @@ const subAdminSystemSlice = createSlice({
         isError: false,
         companyInfo: null,
         RechargeInfo: null,
+        SubDetalInfo: null,
+
 
     },
     reducers: {},
@@ -59,6 +75,18 @@ const subAdminSystemSlice = createSlice({
                 state.RechargeInfo = action.payload;
             })
             .addCase(RechargeDetailsGets.rejected, (state) => {
+                state.isLoading = false;
+                state.isError = true;
+            })
+            .addCase(SubadminDetail.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(SubadminDetail.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.SubDetalInfo = action.payload;
+            })
+            .addCase(SubadminDetail.rejected, (state) => {
                 state.isLoading = false;
                 state.isError = true;
             });
