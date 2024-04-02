@@ -46,7 +46,7 @@ function System() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     console.log("formData", formData)
-
+console.log("selectedImages",selectedImages && selectedImages)
   }
 
 
