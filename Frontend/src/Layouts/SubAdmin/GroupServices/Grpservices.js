@@ -1,20 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { GetAll_Group_Servics, Get_All_Catagory } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { useDispatch } from "react-redux";
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Loader from '../../../Utils/Loader';
+import { useFormik } from 'formik';
+import AddForm from '../../../Components/ExtraComponents/forms/AddForm'
+// import toast from "react-hot-toast";
+
+
+
 
 
 function Strategy() {
 
     const [showModal, setShowModal] = useState(false);
     const dispatch = useDispatch();
+    const [GetAllSgments, setGetAllSgments] = useState({
+        loading: true,
+        data: [],
+    });
 
-    const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+    const [isModalOpen, setIsModalOpen] = useState(false);  
     const [selectedRow, setSelectedRow] = useState(null);
+    const [refresh, setrefresh] = useState(false);
+    const [selectedServices, setSelectedServices] = useState([]);
+
+
 
 
     // Function to open the modal
@@ -36,10 +50,10 @@ function Strategy() {
         data: [],
     });
 
-    const handleOpenModal = (rowData) => {
-        setSelectedRow(rowData)
-        setIsModalOpen(true);
-    };
+    // const handleOpenModal = (rowData) => {
+    //     setSelectedRow(rowData)
+    //     setIsModalOpen(true);
+    // };
 
 
     const styles = {
@@ -76,8 +90,8 @@ function Strategy() {
     const columns = [
         { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
         {
-            field: 'strategy_name',
-            headerName: 'Strategy Name',
+            field: 'name',
+            headerName: 'name',
             width: 250,
             headerClassName: styles.boldHeader,
             renderCell: (params) => (
@@ -87,8 +101,8 @@ function Strategy() {
             )
         },
         {
-            field: 'strategy_description',
-            headerName: 'Strategy Description',
+            field: 'description',
+            headerName: 'Group Description',
             width: 400,
             headerClassName: styles.boldHeader,
             renderCell: (params) => (
@@ -98,8 +112,8 @@ function Strategy() {
             )
         },
         {
-            field: 'strategy_category',
-            headerName: 'Strategy Category',
+            field: 'resultCount',
+            headerName: 'Result Count',
             width: 250,
             headerClassName: styles.boldHeader,
             renderCell: (params) => (
@@ -108,17 +122,7 @@ function Strategy() {
                 </div>
             )
         },
-        {
-            field: 'strategy_segment',
-            headerName: 'Strategy Segment',
-            width: 150,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    {params.value || '-'}
-                </div>
-            )
-        },
+
         {
             field: 'actions',
             headerName: 'Actions',
@@ -143,16 +147,23 @@ function Strategy() {
     const getCompanyData = async () => {
         try {
             var data = { id: user_id }
-            const response = await dispatch(GetSubStrategys(data)).unwrap();
+            const response = await dispatch(GetAll_Group_Servics(data)).unwrap();
 
             if (response.status) {
                 const formattedData = response.data.map((row, index) => ({
                     ...row,
                     id: index + 1,
                 }));
+                console.log("formattedData :", formattedData)
+
                 setCompanyData({
                     loading: true,
                     data: formattedData,
+                });
+            } else {
+                setCompanyData({
+                    loading: true,
+                    data: [],
                 });
             }
         } catch (error) {
@@ -170,6 +181,100 @@ function Strategy() {
     }, []);
 
 
+
+
+    const formik = useFormik({
+        initialValues: {
+            groupname: '',
+            segment: false
+        },
+        validate: (values) => {
+            const errors = {};
+            if (!values.groupname) {
+                errors.groupname = "valid_err.EMPTY_GROUP_NAME_ERR";
+            }
+            if (!values.segment) {
+                errors.segment = "valid_err.SEGEMENTSELECT_ERROR";
+            }
+             
+    
+            return errors;
+        },
+        onSubmit: async (values) => {
+            let checkValid = true
+            selectedServices && selectedServices.map((item) => {
+                if (item.lotsize !== 1) {
+                    if ((item.group_qty) % (item.lotsize) !== 0) {
+                        alert(`Please Enter Valid Lot Size Inside ${item.name}`)
+                        checkValid = false
+                        return
+                    }
+                    return
+                }
+                return
+            })
+    
+    
+            // if (checkValid) {
+            //     await dispatch(Add_Group({
+            //         groupdetails: { name: values.groupname },
+            //         services_id: selectedServices
+            //     })).then((response) => {
+    
+            //         if (response.payload.status) {
+            //             toast.success(response.payload.msg);
+            //             setTimeout(() => {
+            //                 navigate("/admin/groupservices")
+            //             }, 1000);
+            //         } else {
+            //             toast.error(response.payload.msg);
+    
+            //         }
+            //     })
+    
+            // }
+        }
+    });
+    
+    
+    
+    const fields = [
+        { name: 'groupname', label: 'Group Name', type: 'text', label_size: 12, col_size: 6, disable: false },
+        {
+            name: 'segment',
+            label: 'Segment',
+            type: 'select',
+            options: GetAllSgments.data && GetAllSgments.data.map((item) => ({ label: item.name, value: item.segment })),
+            label_size: 12, col_size: 6, disable: false,
+        },
+    ];
+
+
+
+//  -------------------For Show Segment List-----------------
+
+
+const getservice = async () => {
+    await dispatch(Get_All_Catagory())
+        .unwrap()
+        .then((response) => {
+
+            if (response.status) {
+                setGetAllSgments({
+                    loading: false,
+                    data: response.data,
+                });
+            }
+        });
+};
+useEffect(() => {
+    getservice();
+}, []);
+
+
+
+
+
     return (
 
         <>
@@ -185,7 +290,7 @@ function Strategy() {
                                     <li>
                                         <a
                                             className="btn-filters"
-                                            href="javascript:void(0);"
+                                            href="/"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Refresh"
@@ -214,6 +319,7 @@ function Strategy() {
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Filter"
+                                            href="/"
                                         >
                                             <span className="me-2">
                                                 <img src="assets/img/icons/filter-icon.svg" alt="filter" />
@@ -244,7 +350,7 @@ function Strategy() {
                                                     <li>
                                                         <a
                                                             className="d-flex align-items-center download-item"
-                                                            href="javascript:void(0);"
+                                                            href="/"
                                                             download=""
                                                         >
                                                             <i className="far fa-file-pdf me-2" />
@@ -254,7 +360,7 @@ function Strategy() {
                                                     <li>
                                                         <a
                                                             className="d-flex align-items-center download-item"
-                                                            href="javascript:void(0);"
+                                                            href="/"
                                                             download=""
                                                         >
                                                             <i className="far fa-file-text me-2" />
@@ -267,13 +373,13 @@ function Strategy() {
                                     </li>
 
                                     <li>
-                                        <a
+                                        <p
                                             className="btn btn-primary"
-                                            onClick={openModal}
+                                            onClick={openModal} 
                                         >
                                             <i className="fa fa-plus-circle me-2" aria-hidden="true" />
                                             Create Strategy
-                                        </a>
+                                        </p>
                                     </li>
                                 </ul>
                             </div>
@@ -282,182 +388,41 @@ function Strategy() {
                 </div>
                 {
                     companyData.loading ? (
-                    <FullDataTable
-                        styles={styles}
-                        columns={columns}
-                        rows={companyData.data}
-                        checkboxSelection={false}
+                        <FullDataTable
+                            styles={styles}
+                            columns={columns}
+                            rows={companyData.data}
+                            checkboxSelection={false}
 
-                    />) : <Loader />
+                        />) : <Loader />
                 }
 
                 {/* CARD MODAL */}
                 {showModal && (
-                    <div className="modal custom-modal custom-lg-modal p-20 d-block"
-
-                    >
+                    <div className="modal custom-modal custom-lg-modal d-block">
                         <div className="modal-dialog modal-dialog-centered modal-md">
                             <div className="modal-content">
-                                <div className="modal-header border-0">
+                                <div className="modal-header border-0 mb-0 pb-0 pt-5 mx-3">
                                     <div className="form-header modal-header-title text-start mb-0">
-                                        <h4 className="mb-0">Add Strategy</h4>
+                                        <h4 className="mb-0">Add Group Services</h4>
                                     </div>
                                     <button
                                         type="button"
                                         className="btn-close"
                                         onClick={closeModal}
-
                                     ></button>
                                 </div>
-                                <form action="https://kanakku.dreamstechnologies.com/html/template/companies.html">
-                                    <div className="modal-body">
-                                        <div className="row">
-
-                                            <div className="col-md-6">
-                                                <div className="input-block mb-3">
-                                                    <label className="form-label">Strategy Name*</label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        placeholder="Enter Strategy Name"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="input-block mb-3">
-                                                    <label className="form-label">Per Lot Amount*</label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        placeholder="Enter Per Lot Amount"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="input-block mb-3">
-                                                    <label className="form-label">catagory*</label>
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        placeholder="Enter catagory*" />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="input-block mb-3">
-                                                    <label className="form-label">Select Segment*</label>
-
-                                                    <input
-                                                        type="text"
-                                                        className="form-control"
-                                                        placeholder="Please Select Segment"
-                                                    />
-
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="input-block mb-3">
-                                                    <label className="mb-2">Indicator*</label>
-                                                    <input
-                                                        className="form-control"
-
-                                                        type="file"
-                                                        placeholder="No file Choosen    "
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="input-block mb-3">
-                                                    <label className="form-label">Strategy Tester*</label>
-                                                    <input
-                                                        type="file"
-                                                        className="form-control"
-                                                        placeholder="No file Choosen"
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="input-block mb-3">
-                                                    <label className="form-control-label">Strategy Logo*</label>
-                                                    <div className="pass-group modal-password-field">
-                                                        <input
-                                                            type="file"
-                                                            className="form-control pass-input"
-                                                            placeholder="No file Choosen"
-                                                        />
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <div className="input-block mb-3">
-                                                    <label className="form-control-label">Strategy description</label>
-                                                    <div className="pass-group modal-password-field">
-                                                        <input
-                                                            type="text"
-                                                            className="form-control pass-input-two"
-                                                            placeholder="Strategy description"
-                                                        />
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-3">
-                                                <div className="input-block mb-3">
-                                                    <label className="form-label">Monthly</label>
-                                                    <textarea
-                                                        type="text"
-                                                        className="form-control"
-                                                        placeholder='Enter Monthly'
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-3">
-                                                <div className="input-block mb-3">
-                                                    <label className="form-label">Quaterly</label>
-                                                    <textarea
-                                                        type="text"
-                                                        className="form-control"
-                                                        placeholder='Enter Quaterly'
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-3">
-                                                <div className="input-block mb-3">
-                                                    <label className="form-label">Half Yearly</label>
-                                                    <textarea
-                                                        type="text"
-                                                        className="form-control"
-                                                        placeholder='Enter Half Yearly'
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="col-md-3">
-                                                <div className="input-block mb-3">
-                                                    <label className="form-label">Yearly</label>
-                                                    <textarea
-                                                        type="text"
-                                                        className="form-control"
-                                                        placeholder='Enter Yearly'
-                                                    />
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div className="modal-footer">
-
-                                        <button
-                                            type="submit"
-                                            data-bs-dismiss="modal"
-                                            className="btn btn-primary paid-continue-btn mt-2"
-                                        >
-                                            Add Strategy
-                                        </button>
-                                    </div>
-                                </form>
+                                <div className="modal-body m-0 p-0">
+                                    <AddForm
+                                        fields={fields}
+                                        formik={formik}
+                                        btn_name="Add Group Services"
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 )}
 
 

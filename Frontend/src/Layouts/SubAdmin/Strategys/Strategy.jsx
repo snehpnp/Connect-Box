@@ -421,7 +421,7 @@ function Strategy() {
                                     <li>
                                         <a
                                             className="btn-filters"
-                                            href="javascript:void(0);"
+                                             // href="javascript:void(0);"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Refresh"
@@ -480,7 +480,7 @@ function Strategy() {
                                                     <li>
                                                         <a
                                                             className="d-flex align-items-center download-item"
-                                                            href="javascript:void(0);"
+                                                             // href="javascript:void(0);"
                                                             download=""
                                                         >
                                                             <i className="far fa-file-pdf me-2" />
@@ -490,7 +490,7 @@ function Strategy() {
                                                     <li>
                                                         <a
                                                             className="d-flex align-items-center download-item"
-                                                            href="javascript:void(0);"
+                                                             // href="javascript:void(0);"
                                                             download=""
                                                         >
                                                             <i className="far fa-file-text me-2" />

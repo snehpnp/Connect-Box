@@ -14,7 +14,7 @@ const Tabes = () => {
                     <li>
                       <a
                         className="btn-filters"
-                        href="javascript:void(0);"
+                        //  // href="javascript:void(0);"
                         data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
                         title="Refresh"
@@ -60,7 +60,7 @@ const Tabes = () => {
                             <li>
                               <a
                                 className="d-flex align-items-center download-item"
-                                href="javascript:void(0);"
+                                //  // href="javascript:void(0);"
                                 download=""
                               >
                                 <i className="far fa-file-pdf me-2" />
@@ -70,7 +70,7 @@ const Tabes = () => {
                             <li>
                               <a
                                 className="d-flex align-items-center download-item"
-                                href="javascript:void(0);"
+                                //  // href="javascript:void(0);"
                                 download=""
                               >
                                 <i className="far fa-file-text me-2" />
@@ -84,7 +84,7 @@ const Tabes = () => {
                     <li>
                       <a
                         className="btn btn-filters"
-                        href="javascript:void(0);"
+                         // href="javascript:void(0);"
                         data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
                         title="Print"
@@ -281,7 +281,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                        // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#view_companies"
                                       >
@@ -292,7 +292,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#edit_companies"
                                       >
@@ -304,7 +304,7 @@ const Tabes = () => {
                                       <div>
                                         <a
                                           className="dropdown-item"
-                                          href="javascript:void(0);"
+                                           // href="javascript:void(0);"
                                           data-bs-toggle="modal"
                                           data-bs-target="#delete_modal"
                                         >
@@ -316,7 +316,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-user-x me-2" />
                                         Cancel Plan
@@ -325,7 +325,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-shuffle me-2" />
                                         Subscription Log
@@ -395,7 +395,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#view_companies"
                                       >
@@ -406,7 +406,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#edit_companies"
                                       >
@@ -418,7 +418,7 @@ const Tabes = () => {
                                       <div>
                                         <a
                                           className="dropdown-item"
-                                          href="javascript:void(0);"
+                                           // href="javascript:void(0);"
                                           data-bs-toggle="modal"
                                           data-bs-target="#delete_modal"
                                         >
@@ -430,7 +430,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-user-x me-2" />
                                         Cancel Plan
@@ -439,7 +439,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-shuffle me-2" />
                                         Subscription Log
@@ -509,7 +509,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#view_companies"
                                       >
@@ -520,7 +520,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#edit_companies"
                                       >
@@ -532,7 +532,7 @@ const Tabes = () => {
                                       <div>
                                         <a
                                           className="dropdown-item"
-                                          href="javascript:void(0);"
+                                           // href="javascript:void(0);"
                                           data-bs-toggle="modal"
                                           data-bs-target="#delete_modal"
                                         >
@@ -544,7 +544,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-user-x me-2" />
                                         Cancel Plan
@@ -553,7 +553,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-shuffle me-2" />
                                         Subscription Log
@@ -623,7 +623,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#view_companies"
                                       >
@@ -634,7 +634,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#edit_companies"
                                       >
@@ -646,7 +646,7 @@ const Tabes = () => {
                                       <div>
                                         <a
                                           className="dropdown-item"
-                                          href="javascript:void(0);"
+                                           // href="javascript:void(0);"
                                           data-bs-toggle="modal"
                                           data-bs-target="#delete_modal"
                                         >
@@ -658,7 +658,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-user-x me-2" />
                                         Cancel Plan
@@ -667,7 +667,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-shuffle me-2" />
                                         Subscription Log
@@ -737,7 +737,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#view_companies"
                                       >
@@ -748,7 +748,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#edit_companies"
                                       >
@@ -760,7 +760,7 @@ const Tabes = () => {
                                       <div>
                                         <a
                                           className="dropdown-item"
-                                          href="javascript:void(0);"
+                                           // href="javascript:void(0);"
                                           data-bs-toggle="modal"
                                           data-bs-target="#delete_modal"
                                         >
@@ -772,7 +772,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-user-x me-2" />
                                         Cancel Plan
@@ -781,7 +781,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-shuffle me-2" />
                                         Subscription Log
@@ -851,7 +851,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#view_companies"
                                       >
@@ -862,7 +862,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#edit_companies"
                                       >
@@ -874,7 +874,7 @@ const Tabes = () => {
                                       <div>
                                         <a
                                           className="dropdown-item"
-                                          href="javascript:void(0);"
+                                           // href="javascript:void(0);"
                                           data-bs-toggle="modal"
                                           data-bs-target="#delete_modal"
                                         >
@@ -886,7 +886,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-user-x me-2" />
                                         Cancel Plan
@@ -895,7 +895,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-shuffle me-2" />
                                         Subscription Log
@@ -965,7 +965,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#view_companies"
                                       >
@@ -976,7 +976,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#edit_companies"
                                       >
@@ -988,7 +988,7 @@ const Tabes = () => {
                                       <div>
                                         <a
                                           className="dropdown-item"
-                                          href="javascript:void(0);"
+                                           // href="javascript:void(0);"
                                           data-bs-toggle="modal"
                                           data-bs-target="#delete_modal"
                                         >
@@ -1000,7 +1000,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-user-x me-2" />
                                         Cancel Plan
@@ -1009,7 +1009,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-shuffle me-2" />
                                         Subscription Log
@@ -1079,7 +1079,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#view_companies"
                                       >
@@ -1090,7 +1090,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#edit_companies"
                                       >
@@ -1102,7 +1102,7 @@ const Tabes = () => {
                                       <div>
                                         <a
                                           className="dropdown-item"
-                                          href="javascript:void(0);"
+                                           // href="javascript:void(0);"
                                           data-bs-toggle="modal"
                                           data-bs-target="#delete_modal"
                                         >
@@ -1114,7 +1114,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-user-x me-2" />
                                         Cancel Plan
@@ -1123,7 +1123,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-shuffle me-2" />
                                         Subscription Log
@@ -1193,7 +1193,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#view_companies"
                                       >
@@ -1204,7 +1204,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#edit_companies"
                                       >
@@ -1216,7 +1216,7 @@ const Tabes = () => {
                                       <div>
                                         <a
                                           className="dropdown-item"
-                                          href="javascript:void(0);"
+                                           // href="javascript:void(0);"
                                           data-bs-toggle="modal"
                                           data-bs-target="#delete_modal"
                                         >
@@ -1228,7 +1228,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-user-x me-2" />
                                         Cancel Plan
@@ -1237,7 +1237,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-shuffle me-2" />
                                         Subscription Log
@@ -1307,7 +1307,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#view_companies"
                                       >
@@ -1318,7 +1318,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#edit_companies"
                                       >
@@ -1330,7 +1330,7 @@ const Tabes = () => {
                                       <div>
                                         <a
                                           className="dropdown-item"
-                                          href="javascript:void(0);"
+                                           // href="javascript:void(0);"
                                           data-bs-toggle="modal"
                                           data-bs-target="#delete_modal"
                                         >
@@ -1342,7 +1342,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-user-x me-2" />
                                         Cancel Plan
@@ -1351,7 +1351,7 @@ const Tabes = () => {
                                     <li>
                                       <a
                                         className="dropdown-item"
-                                        href="javascript:void(0);"
+                                         // href="javascript:void(0);"
                                       >
                                         <i className="fe fe-shuffle me-2" />
                                         Subscription Log
@@ -1385,7 +1385,7 @@ const Tabes = () => {
                   <div className="card-header-new" id="headingOne">
                     <h6 className="filter-title">
                       <a
-                        href="javascript:void(0);"
+                         // href="javascript:void(0);"
                         className="w-100"
                         data-bs-toggle="collapse"
                         data-bs-target="#collapseOne"
@@ -1475,7 +1475,7 @@ const Tabes = () => {
                   <div className="card-header-new" id="headingThree">
                     <h6 className="filter-title">
                       <a
-                        href="javascript:void(0);"
+                         // href="javascript:void(0);"
                         className="w-100 collapsed"
                         data-bs-toggle="collapse"
                         data-bs-target="#collapseThree"
@@ -1533,7 +1533,7 @@ const Tabes = () => {
                   <div className="card-header-new" id="headingFour">
                     <h6 className="filter-title">
                       <a
-                        href="javascript:void(0);"
+                         // href="javascript:void(0);"
                         className="w-100 collapsed"
                         data-bs-toggle="collapse"
                         data-bs-target="#collapseFour"
@@ -1582,7 +1582,7 @@ const Tabes = () => {
                   <div className="card-header-new" id="headingTwo">
                     <h6 className="filter-title">
                       <a
-                        href="javascript:void(0);"
+                         // href="javascript:void(0);"
                         className="w-100 collapsed"
                         data-bs-toggle="collapse"
                         data-bs-target="#collapseTwo"
