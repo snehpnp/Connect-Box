@@ -1,19 +1,13 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 const DropDown = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
+    var Role = JSON.parse(localStorage.getItem("user_details")).Role
+    var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
 
-    const handleClickOutside = (event) => {
-        if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-            setIsDropdownOpen(false);
-        }
-    };
+
 
     const LogoutUser = (e) => {
         e.stopPropagation(); // Stop event propagation
@@ -22,16 +16,11 @@ const DropDown = () => {
         window.location.reload();
     };
 
-    // useEffect(() => {
-    //     document.addEventListener('mousedown', handleClickOutside);
-    //     return () => {
-    //         document.removeEventListener('mousedown', handleClickOutside);
-    //     };
-    // }, []);  
+
 
     return (
         <div className="mb-0 dropdown custom-dropdown">
-            <ul className="nav nav-tabs user-menu">
+            <ul className="nav nav-tabs user-menu" >
                 <li className="nav-item dropdown mt-3">
 
                     <div
@@ -39,15 +28,11 @@ const DropDown = () => {
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         data-bs-original-title="download"
+                        style={{ margin:"0 5px 0 0" }}
+
                     >
 
-
-
-                        <a
-                            className="user-a nav-a d-flex"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
+                        <a className="user-a nav-a d-flex" data-bs-toggle="dropdown" aria-expanded="false" >
                             <span className="user-img">
                                 <img
                                     src="assets/img/profiles/avatar-07.jpg"
@@ -56,11 +41,15 @@ const DropDown = () => {
                                 />
                                 <span className="animate-circle" />
                             </span>
-
-                            <span className="user-content"  >
-                                <span className="user-details">Admin</span>
-                                <span className="user-name">Chandra Prakash</span>
+                            <span className="user-content">
+                                <span className="user-name">
+                                    <b>{UserNAme && UserNAme}</b>
+                                </span>
+                                <span className="user-details">{Role}</span>
+                                <span className="decorative-element">
+                                </span>
                             </span>
+
                         </a>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="subscription-menu">
@@ -85,6 +74,7 @@ const DropDown = () => {
                             </div>
                         </div>
                     </div>
+
                     <div style={{ height: "144px" }} className={`dropdown-menu menu-drop-user ${isDropdownOpen ? 'show' : ''}`}>
                         <div className="profilemenu table table-hover">
                             <div className="subscription-menu">
