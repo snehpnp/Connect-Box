@@ -7,6 +7,8 @@ import Faqs from '../Layouts/Admin/Help/Faqs';
 import Dashboards from '../Layouts/User/Dashboard/Dashboards';
 
 import Help from '../Layouts/Admin/Help/Help';
+import Stocklist from '../Layouts/User/Stock/Clientservice';
+
 
 
 
@@ -25,11 +27,15 @@ const User_Routing = () => {
                     <Route exact path="/dashboard" element={<Dashboards />} />
 
 
-                    <Route  path="/faqs" element={<Faqs />} />
-                    <Route  path="/help" element={<Help />} />
+                    <Route path="/faqs" element={<Faqs />} />
+                    <Route path="/help" element={<Help />} />
+                    <Route path="/stock" element={<Stocklist />} />
+                    <Route path="/payment" element={<Stocklist />} />
 
 
-              
+
+
+
 
                 </Routes>
 
