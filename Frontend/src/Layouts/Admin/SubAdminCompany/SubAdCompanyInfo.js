@@ -11,8 +11,9 @@ import CompanyChange from '../../../Components/ExtraComponents/Models/CompanyCha
 function Payment() {
   const dispatch = useDispatch();
 
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false); 
   const [selectedRow, setSelectedRow] = useState(null);
+  const [refresh, setrefresh] = useState(false); 
 
 
   const [companyData, setCompanyData] = useState({
@@ -23,8 +24,10 @@ function Payment() {
 
 
   const handleOpenModal = (rowData) => {
+
     setSelectedRow(rowData)
     setIsModalOpen(true);
+    
   };
 
 
@@ -74,9 +77,9 @@ function Payment() {
       )
     },
     {
-      field: 'razorpay_key',
-      headerName: 'razorpay_key',
-      width: 250,
+      field: 'email',
+      headerName: 'email',
+      width: 290,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -85,16 +88,17 @@ function Payment() {
       )
     },
     {
-      field: 'email',
-      headerName: 'email',
-      width: 250,
+      field: 'razorpay_key',
+      headerName: 'Razorpay key',
+      width: 200,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {params.value || '-'}
+          *****
         </div>
       )
     },
+   
     {
       field: "change",
       headerName: "Change",
@@ -168,7 +172,7 @@ function Payment() {
 
   useEffect(() => {
     getCompanyData();
-  }, []);
+  }, [refresh]);
 
 
 
@@ -194,7 +198,7 @@ function Payment() {
     {isModalOpen && selectedRow && (
       <CompanyChange
         rowData={selectedRow}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => (setIsModalOpen(false),setrefresh(!refresh))}
         
       />
     )}

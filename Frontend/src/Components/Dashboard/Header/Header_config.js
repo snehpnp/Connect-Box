@@ -256,6 +256,13 @@ export const subamdin_header = [
 export const User_header = [
     {
         id: 1,
+        name: 'Dashboard',
+        Icon: "fe fe-home",
+        route: "/user/dashboard",
+        Data: []
+    },
+    {
+        id: 2,
         name: 'Stock List',
         Icon: "fe fe-home",
         route: "/user/stock",

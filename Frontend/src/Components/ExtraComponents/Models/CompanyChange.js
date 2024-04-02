@@ -51,7 +51,6 @@ const StockOutModal = ({ rowData, onClose }) => {
 
         if (response.status) {
           toast.success(response.msg);
-
           onClose();
         } else {
           toast.error(response.msg);
