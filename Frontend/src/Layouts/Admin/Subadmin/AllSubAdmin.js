@@ -194,7 +194,7 @@ export default function Help() {
                       <li>
                         <a
                           className="btn-filters"
-                          href="javascript:void(0);"
+                          // href="javascript:void(0);"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Refresh"
@@ -254,7 +254,7 @@ export default function Help() {
                               <li>
                                 <a
                                   className="d-flex align-items-center download-item"
-                                  href="javascript:void(0);"
+                                  // href="javascript:void(0);"
                                   download=""
                                 >
                                   <i className="far fa-file-pdf me-2" />
@@ -264,7 +264,7 @@ export default function Help() {
                               <li>
                                 <a
                                   className="d-flex align-items-center download-item"
-                                  href="javascript:void(0);"
+                                  // href="javascript:void(0);"
                                   download=""
                                 >
                                   <i className="far fa-file-text me-2" />
@@ -278,7 +278,7 @@ export default function Help() {
                       <li>
                         <a
                           className="btn btn-filters"
-                          href="javascript:void(0);"
+                          // href="javascript:void(0);"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Print"
