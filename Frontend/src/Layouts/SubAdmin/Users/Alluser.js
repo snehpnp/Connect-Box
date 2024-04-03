@@ -15,6 +15,7 @@ import { GetAllSubAdmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from '../../../Utils/Date_formet';
 
 import Loader from '../../../Utils/Loader';
+import ExportToExcel from '../../../Utils/ExportCSV'
 
 
 
@@ -23,6 +24,7 @@ export default function Help() {
   const dispatch = useDispatch();
   const [searchInput, setSearchInput] = useState('')
   const [refresh, setrefresh] = useState(false);
+  const [ForGetCSV, setForGetCSV] = useState([])
 
 
   const [getAllSubadmins, setAllSubadmins] = useState({
@@ -31,6 +33,9 @@ export default function Help() {
     data1: [],
 
   });
+
+
+  console.log("getAllSubadmins :", getAllSubadmins.data)
 
 
   const styles = {
@@ -210,7 +215,33 @@ export default function Help() {
   }
 
 
-  console.log("searchInput :", searchInput)
+  const forCSVdata = () => {
+    let csvArr = []
+    if (getAllSubadmins.data.length > 0) {
+      getAllSubadmins.data.map((item) => {
+        return csvArr.push({
+          "FullName": item.FullName,
+          "UserName": item.UserName,
+          "Balance": item.Balance,
+          "Email": item.Email,
+          "Per Trade": item.Per_trade,
+          "PhoneNo": item.PhoneNo,
+          "Prifix key": item.prifix_key,
+          "Strategy Percentage": item.strategy_Percentage,
+        })
+      })
+
+      setForGetCSV(csvArr)
+    }
+
+  }
+
+  useEffect(() => {
+    forCSVdata()
+  }, [getAllSubadmins.data])
+
+
+
 
   return (
     <>
@@ -224,9 +255,9 @@ export default function Help() {
                 <div className="page-content">
                   <div className="list-btn">
                     <ul className="filter-list">
-                      <li>
+                      <li className="mt-3">
                         <p
-                          className="btn-filters p-4"
+                          className="btn-filters"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Refresh"
@@ -274,57 +305,17 @@ export default function Help() {
                           data-bs-placement="bottom"
                           title="Download"
                         >
-                          <a
-                            href="/"
-                            className="btn btn-filters"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <span className="me-2">
-                              <i className="fe fe-download" />
-                            </span>
-                            Export
-                          </a>
-                          <div className="dropdown-menu dropdown-menu-end">
-                            <ul className="d-block">
-                              <li>
-                                <a
-                                  className="d-flex align-items-center download-item"
-                                  href="/"
-                                  download=""
-                                >
-                                  <i className="far fa-file-pdf me-2" />
-                                  Export as PDF
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="d-flex align-items-center download-item"
-                                  href="/"
-                                  download=""
-                                >
-                                  <i className="far fa-file-text me-2" />
-                                  Export as Excel
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
+                          
+                            <div className="card-body">
+                              <ExportToExcel
+                                className="btn btn-primary "
+                                apiData={ForGetCSV}
+                                fileName={'All Strategy'} />
+                            </div>
+                           
                         </div>
                       </li>
-                      <li>
-                        <a
-                          className="btn btn-filters"
-                          href="/"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Print"
-                        >
-                          <span className="me-2">
-                            <i className="fe fe-printer" />
-                          </span>{" "}
-                          Print
-                        </a>
-                      </li>
+                      
                       <li>
                         <Link to={'/admin/subadmin/add'}
                           className="btn btn-primary"

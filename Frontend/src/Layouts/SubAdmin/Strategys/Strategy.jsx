@@ -385,9 +385,6 @@ function Strategy() {
 
 
 
-
-
-
     const getAllStrategy = async () => {
         try {
             var data = { id: user_id }
@@ -441,7 +438,7 @@ function Strategy() {
 
 
 
-    console.log("allStategy:", allStategy)
+    
 
     const forCSVdata = () => {
         let csvArr = []
