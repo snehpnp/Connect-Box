@@ -16,7 +16,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   GetAllSubAdmin,
-  update_Balance,
+  update_Balance,Show_Status
 } from "../../../ReduxStore/Slice/Admin/Subadmins";
 
 import { fDateTime } from "../../../Utils/Date_formet";
@@ -159,7 +159,7 @@ export default function Help() {
         <div>
           <Switch
             defaultChecked={params.value == 1}
-            onChange={(event) => handleChange(event, params.row.id)}
+            onChange={(event) => handleSwitchChange(event, params.row._id)}
             {...label}
           />
         </div>
@@ -199,9 +199,22 @@ export default function Help() {
     });
   };
 
-  const handleChange = (event, id) => {
-    console.log("Delete row:", event, id);
+  const handleSwitchChange = async (event,id) => {
+    const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
+    const response = await dispatch(
+      Show_Status({ id, user_active_status })
+    );
+    if (response.status) {
+      toast.success(response.msg);
+      setTimeout(() => {
+        navigate("/admin/allsubadmin");
+      }, 1000);
+    } else {
+      toast.error(response.msg);
+    }
   };
+  
+  
 
   const getSubadminData = async () => {
     await dispatch(GetAllSubAdmin())
