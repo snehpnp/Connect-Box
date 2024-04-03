@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { GetCompany_info } from "../../../ReduxStore/Slice/Admin/System";
+import { GetCompany_info, updateSystemInfo } from "../../../ReduxStore/Slice/Admin/System";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 
@@ -44,13 +44,37 @@ function System() {
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    console.log("formData", formData)
-    console.log("selectedImages", selectedImages && selectedImages)
+    if (formData) {
 
-    if (formData != undefined || formData != '' || formData != null) {
-      console.log("formData========", formData)
-      console.log("selectedImages=============", selectedImages && selectedImages)
+      var data = {
+        "id":"",
+        "data":formData
+      }
+      console.log("daa",data)
+      // try {
+      //   const response = await dispatch(updateSystemInfo()).unwrap();
+
+      //   if (response.status) {
+      //     setCompanyData(response.data);
+      //   } else {
+      //     toast.error(response.msg);
+      //   }
+      // } catch (error) {
+      //   console.error("Error", error);
+      // }
+
+
+
+
+
+    } else {
+      console.log("formData is null, undefined, empty string, or falsey value");
     }
+
+
+
+
+
 
   }
 
@@ -83,7 +107,7 @@ function System() {
       loginimage: null
     })
     setModal(0)
-    setFormData('')
+    setFormData(null)
   }
 
 
@@ -243,7 +267,7 @@ function System() {
                           <input
                             type="company_name"
                             className="form-control"
-                            name="email"
+                            name="panel_name"
                             placeholder="Enter Email"
                             defaultValue={getCompanyData && getCompanyData[0].panel_name || ''}
                             onChange={handleInputChange}
