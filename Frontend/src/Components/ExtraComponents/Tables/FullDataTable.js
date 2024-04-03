@@ -23,10 +23,10 @@ const FullDataTable = ({ styles, label, columns, rows, keyField, rowStyle, check
 
                     initialState={{
                         pagination: {
-                          paginationModel: { page: 0, pageSize: 5 },
+                          paginationModel: { page: 0, pageSize: 10 },
                         },
                       }}
-                      pageSizeOptions={[5, 10]}
+                      pageSizeOptions={[10, 20]}
                     className="custom-data-grid"
                     style={{ border: 'none', fontFamily: 'none', fontWeight: '400', fontSize: '14px', color: Color }}
                 />

@@ -9,8 +9,6 @@ import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 
 import { useFormik } from "formik";
 
-import axios from "axios";
-
 const AddClient = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,6 +41,7 @@ const AddClient = () => {
 
   const formik = useFormik({
     initialValues: {
+      profile_img: "",
       fullName: "",
       username: "",
       email: "",
@@ -90,7 +89,7 @@ const AddClient = () => {
     },
     onSubmit: async (values, { setSubmitting }) => {
       const data = {
-        ProfileImg: "",
+        ProfileImg: values.profile_img,
         FullName: values.fullName,
         UserName: values.username,
         Email: values.email,
@@ -126,6 +125,14 @@ const AddClient = () => {
   });
 
   const fields = [
+    {
+      name: "profile_img",
+      label: "Profile Image",
+      type: "file",
+      label_size: 6,
+      col_size: 6,
+      disable: false,
+    },
     {
       name: "fullName",
       label: "FullName",
@@ -237,7 +244,7 @@ const AddClient = () => {
         fields={fields.filter(
           (field) => !field.showWhen || field.showWhen(formik.values)
         )}
-        ProfileShow={ProfileShow}
+        ProfileShow={formik.values.profile_img}
         page_title="Add Subadmin"
         btn_name="Add Subadmin"
         btn_name1="Cancel"

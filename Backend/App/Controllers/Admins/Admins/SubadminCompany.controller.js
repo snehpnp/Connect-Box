@@ -16,7 +16,6 @@ class SubAdminCompany {
             if (!id) {
                 return res.status(400).json({ status: false, msg: 'Please provide an ID.', data: [] });
             }
-            console.log("id",companydata)
 
             const objectId =  new ObjectId(id)
             if (!companydata) {

@@ -2,19 +2,18 @@ import React, { useState, useEffect, useCallback } from "react";
 import { GetCompany_info, updateSystemInfo } from "../../../ReduxStore/Slice/Admin/System";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 
 function System() {
   const dispatch = useDispatch();
   const [getCompanyData, setCompanyData] = useState(null);
   const [modal, setModal] = useState(0);
+
+  const [refresh, setrefresh] = useState(false);
+
+
   const [formData, setFormData] = useState();
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+
 
 
   const OpenModal = (value) => {
@@ -22,7 +21,7 @@ function System() {
   }
 
   const [selectedImages, setSelectedImages] = useState({
-    Favicon: null,
+    favicon: null,
     logo: null,
     loginimage: null
   });
@@ -36,47 +35,52 @@ function System() {
           ...selectedImages,
           [imageName]: reader.result
         });
+        setFormData({
+          ...formData,
+          [imageName]: reader.result,
+        });
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   const handleUpdate = async (e) => {
+    console.log("formData",formData)
     e.preventDefault();
     if (formData) {
-
       var data = {
-        "id":"",
-        "data":formData
-      }
-      console.log("daa",data)
-      // try {
-      //   const response = await dispatch(updateSystemInfo()).unwrap();
+        "id": getCompanyData && getCompanyData[0]._id,
+        "data": formData
+      };
 
-      //   if (response.status) {
-      //     setCompanyData(response.data);
-      //   } else {
-      //     toast.error(response.msg);
-      //   }
-      // } catch (error) {
-      //   console.error("Error", error);
-      // }
-
-
-
-
+      await dispatch(updateSystemInfo(data))
+        .unwrap()
+        .then(async (response) => {
+          if (response.status) {
+            toast.success(response.msg);
+            setrefresh(!refresh)
+            CloseModal()
+          } else {
+            toast.error(response.msg);
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
 
     } else {
       console.log("formData is null, undefined, empty string, or falsey value");
     }
+  };
 
-
-
-
-
-
-  }
 
 
 
@@ -92,17 +96,17 @@ function System() {
     } catch (error) {
       console.error("Error", error);
     }
-  }, [dispatch]);
+  }, [refresh,dispatch]);
 
   useEffect(() => {
     fetchCompanyData();
-  }, [fetchCompanyData]);
+  }, [refresh, fetchCompanyData]);
 
 
 
   const CloseModal = () => {
     setSelectedImages({
-      Favicon: null,
+      favicon: null,
       logo: null,
       loginimage: null
     })
@@ -226,7 +230,7 @@ function System() {
                   </div>
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
-                      <p>Favicon <img src={getCompanyData && getCompanyData[0].favicon} alt="Favicon" style={{ height: '80px', width: '80px' }} /></p>
+                      <p>favicon <img src={getCompanyData && getCompanyData[0].favicon} alt="favicon" style={{ height: '80px', width: '80px' }} /></p>
                       <p>Logo <img src={getCompanyData && getCompanyData[0].logo} alt="Logo" style={{ height: '80px', width: '80px' }} /></p>
                       <p>Login Image <img src={getCompanyData && getCompanyData[0].loginimage} alt="Login Image" style={{ height: '80px', width: '80px' }} /></p>
                     </div>
@@ -432,19 +436,19 @@ function System() {
 
 
                         <div className="col-lg-6 col-md-12">
-                          <label>Favicon</label>
+                          <label>favicon</label>
                           <input
                             type="file"
                             className="form-control"
-                            name="Favicon"
+                            name="favicon"
                             accept="image/*"
-                            onChange={(event) => handleImageChange(event, "Favicon")}
+                            onChange={(event) => handleImageChange(event, "favicon")}
                           />
-                          {selectedImages.Favicon && (
+                          {selectedImages.favicon && (
                             <div className="mt-3">
                               <img
-                                src={selectedImages.Favicon}
-                                alt="Selected Favicon"
+                                src={selectedImages.favicon}
+                                alt="Selected favicon"
                                 className="img-fluid"
                               />
                             </div>
@@ -519,6 +523,7 @@ function System() {
         </div>
       )}
 
+      <ToastButton />
 
 
     </div>

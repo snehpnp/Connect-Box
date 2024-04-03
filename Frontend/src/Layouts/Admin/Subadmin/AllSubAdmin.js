@@ -153,7 +153,7 @@ export default function Help() {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          const formattedData =response.data && response.data.map((row, index) => ({
+          const formattedData = response.data && response.data.map((row, index) => ({
             ...row,
             id: index + 1,
           }));
@@ -161,15 +161,20 @@ export default function Help() {
             loading: true,
             data: formattedData,
             data1: [
-              { name: "Total Subadmins", count: response.totalCount || 0 },
-              { name: "Active Subadmins", count: response.ActiveCount || 0 },
+              { name: "Total Subadmins", count: response.totalCount || 0, Icon: "fe fe-life-buoy",color:"#ec8000"},
+              { name: "Active Subadmins", count: response.ActiveCount || 0, Icon: "fe fe-check-square",color:"#1e8edf" },
               {
                 name: "InActive Subadmins",
-                count: response.InActiveCount || 0,
+                count: response.InActiveCount || 0
+                , Icon: "fe fe-x-circle",
+                color:"#ed3a3a"
               },
               {
                 name: "Total Used Balance",
-                count: response.ActiveUseBalance || 0,
+                count: response.ActiveUseBalance || 0
+                , Icon: "fas fa-dollar-sign"
+                ,color:"#1d8147"
+
               },
             ],
           });
@@ -333,10 +338,10 @@ export default function Help() {
                           <div className="grid-info-item total-items">
                             <div className="grid-info">
                               <span>{data.name}</span>
-                              <h4>{data.count}</h4>
+                              <h4  style={{color:data.color}} >{data.count}</h4>
                             </div>
                             <div className="grid-head-icon">
-                              <i className="fe fe-life-buoy" />
+                              <i className={data.Icon} style={{color:data.color}} />
                             </div>
                           </div>
                         </div>
