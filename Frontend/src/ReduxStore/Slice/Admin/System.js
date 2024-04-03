@@ -4,7 +4,7 @@ import { GetCompanyInfo,ProfileData,EditCompanyInfo } from "../../../Services/Ad
 export const GetCompany_info = createAsyncThunk(
     "get/company",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await GetCompanyInfo(data);
             return res;
@@ -17,7 +17,7 @@ export const GetCompany_info = createAsyncThunk(
 export const updateSystemInfo = createAsyncThunk(
     "emailinfo/edit",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await EditCompanyInfo(data);
             return res;
@@ -31,7 +31,7 @@ export const updateSystemInfo = createAsyncThunk(
 export const ProfileInfo = createAsyncThunk(
     "subadmin/get",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await ProfileData(data);
             return res;

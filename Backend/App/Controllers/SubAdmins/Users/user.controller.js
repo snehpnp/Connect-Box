@@ -1002,7 +1002,6 @@ class Users {
             multy_stgfind.forEach(async (data) => {
 
               if (data.strategy_id.length > 1) {
-                console.log("data", data.strategy_id[0])
 
                 const filter = { _id: data._id };
                 const updateOperation = { $set: { strategy_id: [data.strategy_id[0]] } }

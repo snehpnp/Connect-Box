@@ -4,7 +4,7 @@ import { AddSubadmins, GetAllSubAdmins,EditSubadmins,GetOneSubAdmins } from "../
 export const AddSubadmin = createAsyncThunk(
     "subadmin/add",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await AddSubadmins(data);
             return res;
@@ -17,7 +17,7 @@ export const AddSubadmin = createAsyncThunk(
 export const editSubadmin = createAsyncThunk(
     "subadmin/edit",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await EditSubadmins(data);
             return res;
@@ -30,7 +30,7 @@ export const editSubadmin = createAsyncThunk(
 export const getSubAdminById = createAsyncThunk(
     "subadmin/getall",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await GetOneSubAdmins(data);
             return res;
@@ -43,7 +43,7 @@ export const getSubAdminById = createAsyncThunk(
 export const GetAllSubAdmin = createAsyncThunk(
     "subadmin/getall",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await GetAllSubAdmins(data);
             return res;

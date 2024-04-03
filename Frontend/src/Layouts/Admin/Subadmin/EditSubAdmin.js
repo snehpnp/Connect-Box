@@ -25,7 +25,6 @@ const EditClient = () => {
     location.state && location.state.rowData._id
   );
 
-  // console.log("RowData", rowData && rowData);
 
   const formik = useFormik({
     initialValues: {
@@ -57,13 +56,11 @@ const EditClient = () => {
         strategy_Percentage: values.strategy_Percentage,
         Per_trade: values.Per_trade,
       };
-      console.log("Request from initial", formik.initialValues.id);
-      console.log("Request is Onn", req.id);
+
       await dispatch(editSubadmin(req))
         .unwrap()
         .then(async (response) => {
           if (response.status) {
-            console.log("Response From API Edit", response);
             toast.success(response.msg);
             setTimeout(() => {
               navigate("/admin/allsubadmin");
@@ -77,10 +74,9 @@ const EditClient = () => {
         });
     },
   });
-  console.log("id", formik.initialValues.id);
+
   const handleSelectChange = (e) => {
-    console.log("handleSelectChange function called");
-    console.log("Selected value:", e.target.value);
+  
     const selectedValue = e.target.value;
     formik.handleChange(e);
     if (selectedValue === "1") {
@@ -245,7 +241,6 @@ const EditClient = () => {
   ];
 
   useEffect(() => {
-    console.log("USERNAME", rowData._id);
     formik.setFieldValue("username", rowData !== undefined && rowData.UserName);
     formik.setFieldValue("fullName", rowData !== undefined && rowData.FullName);
     formik.setFieldValue("email", rowData !== undefined && rowData.Email);
@@ -267,7 +262,6 @@ const EditClient = () => {
     }
   }, [rowData]);
 
-  // console.log("Formic value", formik.values);
 
   return (
     <>
