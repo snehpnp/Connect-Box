@@ -78,9 +78,9 @@ const DynamicForm = ({
 
   return (
     <div className="content container-fluid">
-      <div className="card mb-0">
+      <div className="card mb-0 p-0 ">
         <form onSubmit={formik.handleSubmit}>
-          <div className="card-body ">
+          <div className="card-body p-0">
             <div className="page-header">
               <div className="content-page-header d-flex justify-content-between align-items-center">
                 <h5>{page_title}</h5>
@@ -96,45 +96,11 @@ const DynamicForm = ({
               </div>
             </div>
 
-            {ProfileShow && ProfileShow ? (
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="form-group-item">
-                    <h5 className="form-title">Basic Details</h5>
-                    <div className="profile-picture">
-                      <div className="upload-profile">
-                        <div className="profile-img">
-                          <img
-                            id="blah"
-                            className="avatar"
-                            src={selectedImage ? URL.createObjectURL(selectedImage) : "assets/img/profiles/avatar-14.jpg"}
-                            alt="profile-img"
-                          />
-                        </div>
-                        <div className="add-profile">
-                          <h5>Upload a New Photo</h5>
-                          <span>{selectedImage ? selectedImage.name : "Profile-pic.jpg"}</span>
-                        </div>
-                      </div>
-                      <div className="img-upload">
-                        {/* Input field for selecting an image */}
-                        <label className="btn btn-upload">
-                          Upload <input type="file" onChange={handleImageChange} />
-                        </label>
-                        {/* Button to remove the selected image */}
-                        <button className="btn btn-remove" onClick={() => setSelectedImage(null)}>Remove</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
+             
             <div>
               <div>
                 {/*  form  */}
-                <div className="row d-flex ">
+                <div className="row d-flex " >
                   {fields.map((field, index) => (
                     <>
 
@@ -227,16 +193,16 @@ const DynamicForm = ({
                           </>
                         ) :
                           field.type === 'select' ? <>
-                            <div className={`col-lg-${title === "update_theme" ? 12 : 6}`}>
-                              <div className=" row">
+                            <div className={`col-lg-${field.col_size}`}>
+                              <div className="row d-flex pt-0" >
                                 <label
-                                  className={`col-lg-${title === "forlogin" ? 3 : title === "update_theme" ? 12 : 7}  col-form-label`}
+                                  className={`col-form-${field.label_size}`}
                                   htmlFor={field.name}
                                 >
                                   {field.label}
                                   <span className="text-danger">*</span>
                                 </label>
-                                <div className={`col-lg-${title === "addgroup" ? 12 : 12} input-block `}>
+                                <div className={`input-block `}>
                                   <select
                                     className="default-select wide form-control"
                                     id={field.name}

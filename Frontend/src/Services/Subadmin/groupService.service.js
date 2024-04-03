@@ -45,6 +45,20 @@ export async function GET_ALL_CATAGORY() {
     }
 }
 
+export async function SERVICE_BY_CATAGORY(data) {
+    try {
+ 
+        const res = await axios.post(`${Config.base_url}ServiceByCatagory`,data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
  
 
 

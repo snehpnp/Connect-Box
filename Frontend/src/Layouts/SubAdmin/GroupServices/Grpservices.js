@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Loader from '../../../Utils/Loader';
 import { useFormik } from 'formik';
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm'
+import { Link } from "react-router-dom";
 // import toast from "react-hot-toast";
 
 
@@ -373,13 +374,14 @@ useEffect(() => {
                                     </li>
 
                                     <li>
-                                        <p
+                                        <Link
                                             className="btn btn-primary"
-                                            onClick={openModal} 
+                                            // onClick={openModal} 
+                                            to={'/subadmin/group_service/add'}
                                         >
                                             <i className="fa fa-plus-circle me-2" aria-hidden="true" />
                                             Create Strategy
-                                        </p>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
