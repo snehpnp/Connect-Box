@@ -15,12 +15,17 @@ import { GetAllSubAdmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from '../../../Utils/Date_formet';
 
 import Loader from '../../../Utils/Loader';
+import ExportToExcel from '../../../Utils/ExportCSV'
 
 
 
 export default function Help() {
 
   const dispatch = useDispatch();
+  const [searchInput, setSearchInput] = useState('')
+  const [refresh, setrefresh] = useState(false);
+  const [ForGetCSV, setForGetCSV] = useState([])
+
 
   const [getAllSubadmins, setAllSubadmins] = useState({
     loading: false,
@@ -28,6 +33,9 @@ export default function Help() {
     data1: [],
 
   });
+
+
+  console.log("getAllSubadmins :", getAllSubadmins.data)
 
 
   const styles = {
@@ -70,20 +78,20 @@ export default function Help() {
       field: 'Balance', headerName: 'Balance', width: 120, headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {params.value }
+          {params.value}
         </div>
       )
     },
     {
-      field: 'ActiveStatus', 
-      headerName: 'Active State', 
-      width: 120, 
+      field: 'ActiveStatus',
+      headerName: 'Active State',
+      width: 120,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           <Switch
-            defaultChecked={params.value == 1} 
-            onChange={(event) => handleChange(event, params.row.id)} 
+            defaultChecked={params.value == 1}
+            onChange={(event) => handleChange(event, params.row.id)}
             {...label}
           />
         </div>
@@ -128,9 +136,9 @@ export default function Help() {
   };
 
 
-  const handleChange = (event,id) => {
+  const handleChange = (event, id) => {
     // Handle delete action
-    console.log('Delete row:', event,id);
+    console.log('Delete row:', event, id);
   };
 
 
@@ -147,13 +155,35 @@ export default function Help() {
             ...row,
             id: index + 1,
           }));
-          setAllSubadmins({
-            loading: true,
-            data: formattedData,
-            data1: [{ name:"Total Subadmins",count: response.totalCount || 0 }, { name:"Active Subadmins",count: response.ActiveCount|| 0 }, { name:"InActive Subadmins",count: response.InActiveCount || 0 }, {name:"Total Used Balance", count: response.ActiveUseBalance || 0 }]
+          console.log("formattedData :", formattedData)
+
+          const filteredData = formattedData.filter((item) => {
+
+
+
+            const searchTermMatch =
+              searchInput === '' ||
+              item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.prifix_key.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.Balance.toLowerCase().includes(searchInput.toLowerCase())
+
+            return searchTermMatch;
 
           });
-        } else {
+
+
+          setAllSubadmins({
+            loading: true,
+            data: searchInput ? filteredData : formattedData,
+            data1: [{ name: "Total Subadmins", count: response.totalCount || 0 }, { name: "Active Subadmins", count: response.ActiveCount || 0 }, { name: "InActive Subadmins", count: response.InActiveCount || 0 }, { name: "Total Used Balance", count: response.ActiveUseBalance || 0 }]
+
+          });
+
+        }
+
+        else {
           setAllSubadmins({
             loading: false,
             data: [],
@@ -174,7 +204,41 @@ export default function Help() {
 
   useEffect(() => {
     getSubadminData()
-  }, [])
+  }, [refresh, searchInput])
+
+
+
+  const RefreshHandle = () => {
+    console.log("cp")
+    setrefresh(!refresh)
+    setSearchInput('')
+  }
+
+
+  const forCSVdata = () => {
+    let csvArr = []
+    if (getAllSubadmins.data.length > 0) {
+      getAllSubadmins.data.map((item) => {
+        return csvArr.push({
+          "FullName": item.FullName,
+          "UserName": item.UserName,
+          "Balance": item.Balance,
+          "Email": item.Email,
+          "Per Trade": item.Per_trade,
+          "PhoneNo": item.PhoneNo,
+          "Prifix key": item.prifix_key,
+          "Strategy Percentage": item.strategy_Percentage,
+        })
+      })
+
+      setForGetCSV(csvArr)
+    }
+
+  }
+
+  useEffect(() => {
+    forCSVdata()
+  }, [getAllSubadmins.data])
 
 
 
@@ -184,25 +248,25 @@ export default function Help() {
       {getAllSubadmins.loading ? (
         <>
           <div className="content container-fluid">
-         
+
             <div className="page-header">
               <div className="content-page-header">
                 <h5>All Users</h5>
                 <div className="page-content">
                   <div className="list-btn">
                     <ul className="filter-list">
-                      <li>
-                        <a
+                      <li className="mt-3">
+                        <p
                           className="btn-filters"
-                           // href="javascript:void(0);"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Refresh"
+                          onClick={RefreshHandle}
                         >
                           <span>
                             <i className="fe fe-refresh-ccw" />
                           </span>
-                        </a>
+                        </p>
                       </li>
                       <li>
                         <div className="input-group">
@@ -212,6 +276,8 @@ export default function Help() {
                             placeholder="Search..."
                             aria-label="Search"
                             aria-describedby="search-addon"
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            value={searchInput}
                           />
 
                         </div>
@@ -223,6 +289,7 @@ export default function Help() {
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Filter"
+                          href='/'
                         >
                           <span className="me-2">
                             <img src="assets/img/icons/filter-icon.svg" alt="filter" />
@@ -238,57 +305,17 @@ export default function Help() {
                           data-bs-placement="bottom"
                           title="Download"
                         >
-                          <a
-                            href="/"
-                            className="btn btn-filters"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <span className="me-2">
-                              <i className="fe fe-download" />
-                            </span>
-                            Export
-                          </a>
-                          <div className="dropdown-menu dropdown-menu-end">
-                            <ul className="d-block">
-                              <li>
-                                <a
-                                  className="d-flex align-items-center download-item"
-                                   // href="javascript:void(0);"
-                                  download=""
-                                >
-                                  <i className="far fa-file-pdf me-2" />
-                                  Export as PDF
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="d-flex align-items-center download-item"
-                                   // href="javascript:void(0);"
-                                  download=""
-                                >
-                                  <i className="far fa-file-text me-2" />
-                                  Export as Excel
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
+                          
+                            <div className="card-body">
+                              <ExportToExcel
+                                className="btn btn-primary "
+                                apiData={ForGetCSV}
+                                fileName={'All Strategy'} />
+                            </div>
+                           
                         </div>
                       </li>
-                      <li>
-                        <a
-                          className="btn btn-filters"
-                           // href="javascript:void(0);"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Print"
-                        >
-                          <span className="me-2">
-                            <i className="fe fe-printer" />
-                          </span>{" "}
-                          Print
-                        </a>
-                      </li>
+                      
                       <li>
                         <Link to={'/admin/subadmin/add'}
                           className="btn btn-primary"
