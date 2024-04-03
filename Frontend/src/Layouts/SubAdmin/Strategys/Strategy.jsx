@@ -10,6 +10,7 @@ import Loader from '../../../Utils/Loader';
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
 import toast from "react-hot-toast";
+import ExportToExcel from '../../../Utils/ExportCSV'
 
 
 
@@ -20,9 +21,12 @@ function Strategy() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
- 
-    const [refresh,setrefresh] = useState(false);
-    
+    const [searchInput, setSearchInput] = useState("");
+
+    const [refresh, setrefresh] = useState(false);
+    const [ForGetCSV, setForGetCSV] = useState([])
+
+
 
     // Function to open the modal
     const openModal = () => {
@@ -38,10 +42,12 @@ function Strategy() {
 
 
 
-    const [companyData, setCompanyData] = useState({
+    const [allStategy, setAllStategy] = useState({
         loading: false,
         data: [],
     });
+
+
 
     const handleOpenModal = (rowData) => {
         setSelectedRow(rowData)
@@ -167,39 +173,6 @@ function Strategy() {
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
-    const getCompanyData = async () => {
-        try {
-            var data = { id: user_id }
-            const response = await dispatch(GetSubStrategys(data)).unwrap();
-
-            if (response.status) {
-                const formattedData = response.data.map((row, index) => ({
-                    ...row,
-                    id: index + 1,
-                }));
-                setCompanyData({
-                    loading: true,
-                    data: formattedData,
-                });
-            } else {
-                setCompanyData({
-                    loading: true,
-                    data: [],
-                });
-            }
-        } catch (error) {
-            console.log("Error", error);
-            setCompanyData({
-                loading: false,
-                data: [],
-            });
-        }
-    };
-
-
-    useEffect(() => {
-        getCompanyData();
-    }, [refresh]);
 
 
 
@@ -386,7 +359,7 @@ function Strategy() {
             await dispatch(AddStrategy(data))
                 .unwrap()
                 .then(async (response) => {
-                     if (response.status) {
+                    if (response.status) {
                         toast.success(response.msg);
                         setTimeout(() => {
                             setShowModal(false)
@@ -401,11 +374,102 @@ function Strategy() {
                 .catch((error) => {
                     console.log("Error", error);
                 });
-            },
+        },
     });
 
 
- 
+    const RefreshHandle = () => {
+        setrefresh(!refresh)
+        setSearchInput('')
+    }
+
+
+
+
+
+
+    const getAllStrategy = async () => {
+        try {
+            var data = { id: user_id }
+            const response = await dispatch(GetSubStrategys(data)).unwrap();
+
+            if (response.status) {
+                const formattedData = response.data.map((row, index) => ({
+                    ...row,
+                    id: index + 1,
+                }));
+
+
+                // MANAGE MULTIFILTER
+
+                const filteredData = formattedData.filter((item) => {
+                    const searchTermMatch =
+                        searchInput === '' ||
+                        item.strategy_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+                        item.strategy_description.toLowerCase().includes(searchInput.toLowerCase()) ||
+                        item.strategy_category.toLowerCase().includes(searchInput.toLowerCase()) ||
+                        item.strategy_segment.toLowerCase().includes(searchInput.toLowerCase())
+
+                    // Return true if all conditions are met
+                    return searchTermMatch;
+                });
+
+
+                setAllStategy({
+                    loading: true,
+                    data: searchInput ? filteredData : formattedData,
+                });
+            } else {
+                setAllStategy({
+                    loading: true,
+                    data: [],
+                });
+            }
+        } catch (error) {
+            console.log("Error", error);
+            setAllStategy({
+                loading: false,
+                data: [],
+            });
+        }
+    };
+
+    useEffect(() => {
+        getAllStrategy();
+    }, [refresh, searchInput]);
+
+
+
+
+    console.log("allStategy:", allStategy)
+
+    const forCSVdata = () => {
+        let csvArr = []
+        if (allStategy.data.length > 0) {
+            allStategy.data.map((item) => {
+                return csvArr.push({
+                    "Strategy Name": item.strategy_name,
+                    "Strategy Description": item.strategy_description,
+                    "Strategy Category": item.strategy_category,
+                    "Strategy Segment": item.strategy_segment,
+                })
+            })
+
+            setForGetCSV(csvArr)
+        }
+
+    }
+
+    useEffect(() => {
+        forCSVdata()
+    }, [allStategy.data])
+
+
+
+
+
+
+
     return (
 
         <>
@@ -419,26 +483,29 @@ function Strategy() {
                             <div className="list-btn">
                                 <ul className="filter-list">
                                     <li>
-                                        <a
+                                        <p
                                             className="btn-filters"
-                                             // href="javascript:void(0);"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Refresh"
+                                            onClick={RefreshHandle}
                                         >
                                             <span>
                                                 <i className="fe fe-refresh-ccw" />
                                             </span>
-                                        </a>
+                                        </p>
                                     </li>
                                     <li>
-                                        <div className="input-group">
+                                        <div className="input-group input-block">
                                             <input
                                                 type="text"
-                                                className="form-control"
+                                                className="form-control "
                                                 placeholder="Search..."
                                                 aria-label="Search"
                                                 aria-describedby="search-addon"
+                                                onChange={(e) => setSearchInput(e.target.value)}
+                                                value={searchInput}
+
                                             />
 
                                         </div>
@@ -464,52 +531,25 @@ function Strategy() {
                                             data-bs-placement="bottom"
                                             title="Download"
                                         >
-                                            <a
-                                                href="/"
-                                                className="btn btn-filters"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >
-                                                <span className="me-2">
-                                                    <i className="fe fe-download" />
-                                                </span>
-                                                Export
-                                            </a>
-                                            <div className="dropdown-menu dropdown-menu-end">
-                                                <ul className="d-block">
-                                                    <li>
-                                                        <a
-                                                            className="d-flex align-items-center download-item"
-                                                             // href="javascript:void(0);"
-                                                            download=""
-                                                        >
-                                                            <i className="far fa-file-pdf me-2" />
-                                                            Export as PDF
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a
-                                                            className="d-flex align-items-center download-item"
-                                                             // href="javascript:void(0);"
-                                                            download=""
-                                                        >
-                                                            <i className="far fa-file-text me-2" />
-                                                            Export as Excel
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                            <li>
+                                                <div className="card-body">
+                                                    <ExportToExcel
+                                                        className="btn btn-primary "
+                                                        apiData={ForGetCSV}
+                                                        fileName={'All Strategy'} />
+                                                </div>
+                                            </li>
                                         </div>
                                     </li>
 
                                     <li>
-                                        <a
+                                        <p
                                             className="btn btn-primary"
                                             onClick={openModal}
                                         >
                                             <i className="fa fa-plus-circle me-2" aria-hidden="true" />
                                             Create Strategy
-                                        </a>
+                                        </p>
                                     </li>
                                 </ul>
                             </div>
@@ -517,11 +557,11 @@ function Strategy() {
                     </div>
                 </div>
                 {
-                    companyData.loading ? (
+                    allStategy.loading ? (
                         <FullDataTable
                             styles={styles}
                             columns={columns}
-                            rows={companyData.data}
+                            rows={allStategy.data}
                             checkboxSelection={false}
 
                         />) : <Loader />
