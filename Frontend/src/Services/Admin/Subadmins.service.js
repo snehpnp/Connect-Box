@@ -48,3 +48,15 @@ export async function GetOneSubAdmins(data, token) {
     return await err;
   }
 }
+
+//Update balance From Row
+export async function updateBalance(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}balance/add`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
