@@ -60,3 +60,16 @@ export async function updateBalance(data, token) {
     return await err;
   }
 }
+
+
+//Active Status Data
+export async function active_Status(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}activestatus/update`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}

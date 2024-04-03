@@ -49,11 +49,17 @@ export default function Help() {
     const rowIndex = getAllSubadmins.data.findIndex(
       (row) => row.id === initialRowData.id
     );
-  
+
     if (rowIndex !== -1) {
-      const userId = getAllSubadmins.data[rowIndex]._id;
+      const admin_id = JSON.parse(
+        localStorage.getItem("user_details")
+      )?.user_id;
+      const id = getAllSubadmins.data[rowIndex]._id;
+      console.log("id", id);
       try {
-        const response = await dispatch(update_Balance({ userId, balance: balanceValue }));
+        const response = await dispatch(
+          update_Balance({ id, Balance: balanceValue, admin_id })
+        );
         if (response.status) {
           toast.success(response.msg);
           setTimeout(() => {
@@ -68,8 +74,6 @@ export default function Help() {
     }
     setShowBalanceModal(false);
   };
-  
-
 
   const styles = {
     container: {
@@ -411,24 +415,54 @@ export default function Help() {
         <Loader />
       )}
       <Modal open={showBalanceModal} onClose={handleCloseBalanceModal}>
-        <div style={{ padding: 20 }}>
-          <h2>Update Balance</h2>
-          <input
-            type="number"
-            value={balanceValue}
-            onChange={(e) => setBalanceValue(e.target.value)}
-            placeholder="Enter new balance"
-          />
-          <div style={{ marginTop: 20 }}>
-            <Button onClick={handleSubmitBalance} variant="contained">
-              Submit
-            </Button>
-            <Button onClick={handleCloseBalanceModal} variant="contained">
-              Cancel
-            </Button>
+        <div
+          className="modal"
+          style={{ display: "block", padding: "20px" }}
+          tabIndex="-1"
+          role="dialog"
+        >
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Update Balance</h5>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={handleCloseBalanceModal}
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <input
+                  type="number"
+                  value={balanceValue}
+                  onChange={(e) => setBalanceValue(e.target.value)}
+                  placeholder="Enter Balance You want to add"
+                />
+              </div>
+              <div className="modal-footer">
+                <Button
+                  onClick={handleSubmitBalance}
+                  variant="contained"
+                  color="primary"
+                >
+                  Submit
+                </Button>
+                <Button
+                  onClick={handleCloseBalanceModal}
+                  variant="contained"
+                  color="secondary"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </Modal>
+      ;
     </>
   );
 }

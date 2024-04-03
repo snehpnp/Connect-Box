@@ -155,7 +155,7 @@ class Subadmin {
         Balance,
       } = req.body;
 
-        // console.log("req.body",req.body)
+      // console.log("req.body",req.body)
 
       // IF USER ALEARDY EXIST
       console.log("Id from Backend", id);
@@ -288,7 +288,6 @@ class Subadmin {
     }
   }
 
-
   async GetAllRechargeDetails(req, res) {
     try {
       const { Role } = req.body;
@@ -339,7 +338,6 @@ class Subadmin {
     }
   }
 
-
   async UpdateActiveStatusSubadmin(req, res) {
     try {
       const { id, user_active_status } = req.body;
@@ -350,7 +348,7 @@ class Subadmin {
         return res.send({
           status: false,
           msg: "Empty data",
-          data: []
+          data: [],
         });
       }
 
@@ -362,7 +360,6 @@ class Subadmin {
       if (result) {
         // STATUS UPDATE SUCCESSFULLY
         var status_msg = user_active_status == "0" ? "DeActivate" : "Activate";
-      
 
         res.send({
           status: true,
@@ -375,25 +372,36 @@ class Subadmin {
     }
   }
 
-
-
   async AddBalanceSubadmin(req, res) {
     try {
-      const { id, Balance ,parent_id} = req.body;
+      const { id, Balance, parent_id } = req.body;
       // UPDATE ACTTIVE STATUS CLIENT
+      console.log("req.body", req.body);
 
-      const get_user = await User_model.find({ _id: id,Role:"SUBADMIN"});
+      const get_user = await User_model.find({ _id: id, Role: "SUBADMIN" });
+      console.log("get_user", get_user[0].Balance);
+      console.log("Balance", Balance);
       if (get_user.length == 0) {
         return res.send({
           status: false,
           msg: "Empty data",
-          data: []
+          data: [],
         });
       }
-
       const filter = { _id: id };
-      const updateOperation = { $set: { Balance: Number(Balance)  + Number(get_user[0].Balance)} };
+      const updatedBalance =
+        isNaN(get_user[0].Balance) || get_user[0].Balance === ""
+          ? Number(Balance)
+          : Number(Balance) + Number(get_user[0].Balance);
 
+      const updateOperation = {
+        $set: { Balance: updatedBalance },
+      };
+      
+      // const updateOperation = {
+      //   $set: { Balance: Number(Balance) + Number(get_user[0].Balance) },
+      // };
+      console.log("updateOperation", updateOperation);
       const result = await User_model.updateOne(filter, updateOperation);
 
       if (result) {
@@ -401,10 +409,9 @@ class Subadmin {
           user_id: get_user[0],
           Role: "SUBADMIN",
           admin_id: parent_id,
-          Balance:Balance,
+          Balance: Balance,
         });
         await count_licenses_add.save();
-      
 
         res.send({
           status: true,
@@ -416,10 +423,6 @@ class Subadmin {
       console.log("Error trading status Error-", error);
     }
   }
-
-
-
-
 }
 
 module.exports = new Subadmin();

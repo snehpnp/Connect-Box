@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { AddSubadmins, GetAllSubAdmins,EditSubadmins,GetOneSubAdmins,updateBalance } from "../../../Services/Admin/Subadmins.service";
+import { AddSubadmins, GetAllSubAdmins,EditSubadmins,GetOneSubAdmins,updateBalance,active_Status } from "../../../Services/Admin/Subadmins.service";
 
 
 
@@ -63,6 +63,19 @@ export const update_Balance = createAsyncThunk(
         
         try {
             const res = await updateBalance(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const Show_Status = createAsyncThunk(
+    "subadmin/add",
+    async (data) => {
+        
+        try {
+            const res = await active_Status(data);
             return res;
         } catch (err) {
             throw err;
@@ -135,6 +148,17 @@ const SubAdminSlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(update_Balance.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+            })
+            .addCase(Show_Status.pending, (state, action) => {
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(Show_Status.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(Show_Status.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
             });
