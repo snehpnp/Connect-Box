@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
+import Modal from "@mui/material/Modal";
+import Button from "@mui/material/Button";
+import toast from "react-hot-toast";
 
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
-
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { Link } from "react-router-dom";
 
 import IconButton from "@mui/material/IconButton";
@@ -11,7 +14,10 @@ import Switch from "@mui/material/Switch";
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { GetAllSubAdmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
+import {
+  GetAllSubAdmin,
+  update_Balance,
+} from "../../../ReduxStore/Slice/Admin/Subadmins";
 
 import { fDateTime } from "../../../Utils/Date_formet";
 
@@ -27,8 +33,47 @@ export default function Help() {
     data: [],
     data1: [],
   });
+  const [showBalanceModal, setShowBalanceModal] = useState(false);
+  const [balanceValue, setBalanceValue] = useState("");
 
-  // console.log("Checking From allSubadmin",getAllSubadmins.data)
+  const handleBalance = (row) => {
+    setInitialRowData(row);
+    setShowBalanceModal(true);
+  };
+
+  const handleCloseBalanceModal = () => {
+    setShowBalanceModal(false);
+  };
+
+  const handleSubmitBalance = async () => {
+    const rowIndex = getAllSubadmins.data.findIndex(
+      (row) => row.id === initialRowData.id
+    );
+
+    if (rowIndex !== -1) {
+      const admin_id = JSON.parse(
+        localStorage.getItem("user_details")
+      )?.user_id;
+      const id = getAllSubadmins.data[rowIndex]._id;
+      console.log("id", id);
+      try {
+        const response = await dispatch(
+          update_Balance({ id, Balance: balanceValue, admin_id })
+        );
+        if (response.status) {
+          toast.success(response.msg);
+          setTimeout(() => {
+            navigate("/admin/allsubadmin");
+          }, 1000);
+        } else {
+          toast.error(response.msg);
+        }
+      } catch (error) {
+        console.error("Error updating balance:", error.message);
+      }
+    }
+    setShowBalanceModal(false);
+  };
 
   const styles = {
     container: {
@@ -95,7 +140,15 @@ export default function Help() {
       headerName: "Balance",
       width: 120,
       headerClassName: styles.boldHeader,
-      renderCell: (params) => <div>{params.value}</div>,
+      renderCell: (params) => (
+        <div>
+          {params.value}
+          <AccountBalanceWalletIcon
+            size="small"
+            onClick={() => handleBalance(params.row)}
+          />{" "}
+        </div>
+      ),
     },
     {
       field: "ActiveStatus",
@@ -141,7 +194,9 @@ export default function Help() {
   const handleEdit = (row) => {
     console.log("Edit row:", row);
     setInitialRowData(row);
-    navigate("/admin/subadmin/edit", { state: { rowData: { ...row, _id: row._id } } });
+    navigate("/admin/subadmin/edit", {
+      state: { rowData: { ...row, _id: row._id } },
+    });
   };
 
   const handleChange = (event, id) => {
@@ -157,6 +212,7 @@ export default function Help() {
             ...row,
             id: index + 1,
           }));
+    
           setAllSubadmins({
             loading: true,
             data: formattedData,
@@ -362,6 +418,55 @@ export default function Help() {
       ) : (
         <Loader />
       )}
+      <Modal open={showBalanceModal} onClose={handleCloseBalanceModal}>
+        <div
+          className="modal"
+          style={{ display: "block", padding: "20px" }}
+          tabIndex="-1"
+          role="dialog"
+        >
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">Update Balance</h5>
+                <button
+                  type="button"
+                  className="close"
+                  onClick={handleCloseBalanceModal}
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div className="modal-body">
+                <input
+                  type="number"
+                  value={balanceValue}
+                  onChange={(e) => setBalanceValue(e.target.value)}
+                  placeholder="Enter Balance You want to add"
+                />
+              </div>
+              <div className="modal-footer">
+                <Button
+                  onClick={handleSubmitBalance}
+                  variant="contained"
+                  color="primary"
+                >
+                  Submit
+                </Button>
+                <Button
+                  onClick={handleCloseBalanceModal}
+                  variant="contained"
+                  color="secondary"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      ;
     </>
   );
 }
