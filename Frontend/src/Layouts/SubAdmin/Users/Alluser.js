@@ -310,7 +310,7 @@ export default function Help() {
                               <ExportToExcel
                                 className="btn btn-primary "
                                 apiData={ForGetCSV}
-                                fileName={'All Strategy'} />
+                                fileName={'All User'} />
                             </div>
                            
                         </div>
