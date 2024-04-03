@@ -287,6 +287,8 @@ class Subadmin {
       console.log("Error getallSubadmin error -", error);
     }
   }
+
+
   async GetAllRechargeDetails(req, res) {
     try {
       const { Role } = req.body;
@@ -336,6 +338,88 @@ class Subadmin {
       res.send({ status: false, msg: "Internal Server Error" });
     }
   }
+
+
+  async UpdateActiveStatusSubadmin(req, res) {
+    try {
+      const { id, user_active_status } = req.body;
+      // UPDATE ACTTIVE STATUS CLIENT
+
+      const get_user = await User_model.find({ _id: id });
+      if (get_user.length == 0) {
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: []
+        });
+      }
+
+      const filter = { _id: id };
+      const updateOperation = { $set: { ActiveStatus: user_active_status } };
+
+      const result = await User_model.updateOne(filter, updateOperation);
+
+      if (result) {
+        // STATUS UPDATE SUCCESSFULLY
+        var status_msg = user_active_status == "0" ? "DeActivate" : "Activate";
+      
+
+        res.send({
+          status: true,
+          msg: "Update Successfully",
+          data: result,
+        });
+      }
+    } catch (error) {
+      console.log("Error trading status Error-", error);
+    }
+  }
+
+
+
+  async AddBalanceSubadmin(req, res) {
+    try {
+      const { id, Balance ,parent_id} = req.body;
+      // UPDATE ACTTIVE STATUS CLIENT
+
+      const get_user = await User_model.find({ _id: id,Role:"SUBADMIN"});
+      if (get_user.length == 0) {
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: []
+        });
+      }
+
+      const filter = { _id: id };
+      const updateOperation = { $set: { Balance: Number(Balance)  + Number(get_user[0].Balance)} };
+
+      const result = await User_model.updateOne(filter, updateOperation);
+
+      if (result) {
+        const count_licenses_add = new count_licenses({
+          user_id: get_user[0],
+          Role: "SUBADMIN",
+          admin_id: parent_id,
+          Balance:Balance,
+        });
+        await count_licenses_add.save();
+      
+
+        res.send({
+          status: true,
+          msg: "Update Successfully",
+          data: result,
+        });
+      }
+    } catch (error) {
+      console.log("Error trading status Error-", error);
+    }
+  }
+
+
+
+
 }
 
 module.exports = new Subadmin();
