@@ -1,167 +1,185 @@
 import React, { useState, useEffect } from "react";
 
-import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
+import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Switch from '@mui/material/Switch';
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Switch from "@mui/material/Switch";
 
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { GetAllSubAdmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
 
-import { fDateTime } from '../../../Utils/Date_formet';
+import { fDateTime } from "../../../Utils/Date_formet";
 
-import Loader from '../../../Utils/Loader';
-
-
+import Loader from "../../../Utils/Loader";
 
 export default function Help() {
-
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+  const [initialRowData, setInitialRowData] = useState({});
   const [getAllSubadmins, setAllSubadmins] = useState({
     loading: false,
     data: [],
     data1: [],
-
   });
 
+  // console.log("Checking From allSubadmin",getAllSubadmins.data)
 
   const styles = {
     container: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '80vh',
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "80vh",
     },
     card: {
-      width: 'auto',
+      width: "auto",
     },
     boldHeader: {
-      fontWeight: 'bold',
+      fontWeight: "bold",
     },
     headerButton: {
       marginRight: 8,
     },
   };
 
-
-
-  const label = { inputProps: { 'aria-label': 'Switch demo' } };
+  const label = { inputProps: { "aria-label": "Switch demo" } };
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70, headerClassName: styles.boldHeader },
-    { field: 'FullName', headerName: 'First name', width: 160, headerClassName: styles.boldHeader },
-    { field: 'UserName', headerName: 'User name', width: 160, headerClassName: styles.boldHeader },
-    { field: 'PhoneNo', headerName: 'Phone Number', width: 180, headerClassName: styles.boldHeader },
-    { field: 'prifix_key', headerName: 'prifixkey', width: 120, headerClassName: styles.boldHeader },
+    {
+      field: "id",
+      headerName: "ID",
+      width: 70,
+      headerClassName: styles.boldHeader,
+    },
+    {
+      field: "FullName",
+      headerName: "First name",
+      width: 160,
+      headerClassName: styles.boldHeader,
+    },
+    {
+      field: "UserName",
+      headerName: "User name",
+      width: 160,
+      headerClassName: styles.boldHeader,
+    },
+    {
+      field: "PhoneNo",
+      headerName: "Phone Number",
+      width: 180,
+      headerClassName: styles.boldHeader,
+    },
+    {
+      field: "prifix_key",
+      headerName: "prifixkey",
+      width: 120,
+      headerClassName: styles.boldHeader,
+    },
 
     {
-      field: 'subadmin_service_type', headerName: 'Service-Type', width: 200, headerClassName: styles.boldHeader,
+      field: "subadmin_service_type",
+      headerName: "Service-Type",
+      width: 200,
+      headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>
-          {params.value == 2 ? "PER STRATEGY" : "PER TRADE"}
-        </div>
-      )
+        <div>{params.value == 1 ? "PER STRATEGY" : "PER TRADE"}</div>
+      ),
     },
     {
-      field: 'Balance', headerName: 'Balance', width: 120, headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div>
-          {params.value }
-        </div>
-      )
+      field: "Balance",
+      headerName: "Balance",
+      width: 120,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => <div>{params.value}</div>,
     },
     {
-      field: 'ActiveStatus', 
-      headerName: 'Active State', 
-      width: 120, 
+      field: "ActiveStatus",
+      headerName: "Active State",
+      width: 120,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           <Switch
-            defaultChecked={params.value == 1} 
-            onChange={(event) => handleChange(event, params.row.id)} 
+            defaultChecked={params.value == 1}
+            onChange={(event) => handleChange(event, params.row.id)}
             {...label}
           />
         </div>
-      )
+      ),
     },
     {
-      field: 'actions',
-      headerName: 'Actions',
+      field: "actions",
+      headerName: "Actions",
       width: 130,
       renderCell: (params) => (
         <div>
-          <IconButton aria-label="edit" size="small" onClick={() => handleEdit(params.row)}>
+          <IconButton
+            aria-label="edit"
+            size="small"
+            onClick={() => handleEdit(params.row)}
+          >
             <EditIcon />
-          </IconButton>
-          <IconButton aria-label="delete" size="small" onClick={() => handleDelete(params.row)}>
-            <DeleteIcon />
           </IconButton>
         </div>
       ),
       headerClassName: styles.boldHeader,
     },
     {
-      field: 'Create_Date', headerName: 'createdAt', width: 250, headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div>
-          {fDateTime(params.value)}
-        </div>
-      )
+      field: "Create_Date",
+      headerName: "createdAt",
+      width: 250,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => <div>{fDateTime(params.value)}</div>,
     },
-
   ];
 
-
   const handleEdit = (row) => {
-    // Handle edit action
-    console.log('Edit row:', row);
+    console.log("Edit row:", row);
+    setInitialRowData(row);
+    navigate("/admin/subadmin/edit", { state: { rowData: { ...row, _id: row._id } } });
   };
 
-  const handleDelete = (row) => {
-    // Handle delete action
-    console.log('Delete row:', row);
+  const handleChange = (event, id) => {
+    console.log("Delete row:", event, id);
   };
-
-
-  const handleChange = (event,id) => {
-    // Handle delete action
-    console.log('Delete row:', event,id);
-  };
-
-
 
   const getSubadminData = async () => {
-
-
     await dispatch(GetAllSubAdmin())
       .unwrap()
       .then(async (response) => {
-
         if (response.status) {
-          const formattedData = response.data.map((row, index) => ({
+          const formattedData =response.data && response.data.map((row, index) => ({
             ...row,
             id: index + 1,
           }));
           setAllSubadmins({
             loading: true,
             data: formattedData,
-            data1: [{ name:"Total Subadmins",count: response.totalCount || 0 }, { name:"Active Subadmins",count: response.ActiveCount|| 0 }, { name:"InActive Subadmins",count: response.InActiveCount || 0 }, {name:"Total Used Balance", count: response.ActiveUseBalance || 0 }]
-
+            data1: [
+              { name: "Total Subadmins", count: response.totalCount || 0 },
+              { name: "Active Subadmins", count: response.ActiveCount || 0 },
+              {
+                name: "InActive Subadmins",
+                count: response.InActiveCount || 0,
+              },
+              {
+                name: "Total Used Balance",
+                count: response.ActiveUseBalance || 0,
+              },
+            ],
           });
         } else {
           setAllSubadmins({
             loading: false,
             data: [],
             data1: [],
-
           });
         }
-
       })
       .catch((error) => {
         console.log("Error", error);
@@ -173,18 +191,14 @@ export default function Help() {
   };
 
   useEffect(() => {
-    getSubadminData()
-  }, [])
-
-
-
+    getSubadminData();
+  }, []);
 
   return (
     <>
       {getAllSubadmins.loading ? (
         <>
           <div className="content container-fluid">
-         
             <div className="page-header">
               <div className="content-page-header">
                 <h5>Subadmins</h5>
@@ -194,7 +208,7 @@ export default function Help() {
                       <li>
                         <a
                           className="btn-filters"
-                          // href="javascript:void(0);"
+                          href="javascript:void(0);"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Refresh"
@@ -213,7 +227,6 @@ export default function Help() {
                             aria-label="Search"
                             aria-describedby="search-addon"
                           />
-
                         </div>
                       </li>
 
@@ -225,7 +238,10 @@ export default function Help() {
                           title="Filter"
                         >
                           <span className="me-2">
-                            <img src="assets/img/icons/filter-icon.svg" alt="filter" />
+                            <img
+                              src="assets/img/icons/filter-icon.svg"
+                              alt="filter"
+                            />
                           </span>
                           Filter
                         </a>
@@ -254,7 +270,7 @@ export default function Help() {
                               <li>
                                 <a
                                   className="d-flex align-items-center download-item"
-                                  // href="javascript:void(0);"
+                                  href="javascript:void(0);"
                                   download=""
                                 >
                                   <i className="far fa-file-pdf me-2" />
@@ -264,7 +280,7 @@ export default function Help() {
                               <li>
                                 <a
                                   className="d-flex align-items-center download-item"
-                                  // href="javascript:void(0);"
+                                  href="javascript:void(0);"
                                   download=""
                                 >
                                   <i className="far fa-file-text me-2" />
@@ -278,7 +294,7 @@ export default function Help() {
                       <li>
                         <a
                           className="btn btn-filters"
-                          // href="javascript:void(0);"
+                          href="javascript:void(0);"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Print"
@@ -290,12 +306,14 @@ export default function Help() {
                         </a>
                       </li>
                       <li>
-                        <Link to={'/admin/subadmin/add'}
+                        <Link
+                          to={"/admin/subadmin/add"}
                           className="btn btn-primary"
-
-
                         >
-                          <i className="fa fa-plus-circle me-2" aria-hidden="true" />
+                          <i
+                            className="fa fa-plus-circle me-2"
+                            aria-hidden="true"
+                          />
                           Add Subadmins
                         </Link>
                       </li>
@@ -307,30 +325,26 @@ export default function Help() {
 
             <div className="super-admin-list-head">
               <div className="row">
-                {getAllSubadmins && getAllSubadmins.data1.map((data, index) => (
-                  <div className="col-xl-3 col-md-6 d-flex" key={index}>
-                    <div className="card w-100">
-                      <div className="card-body">
-                        <div className="grid-info-item total-items">
-                          <div className="grid-info">
-                            <span>{data.name}</span>
-                            <h4>{data.count}</h4>
-                          </div>
-                          <div className="grid-head-icon">
-                            <i className="fe fe-life-buoy" />
+                {getAllSubadmins &&
+                  getAllSubadmins.data1.map((data, index) => (
+                    <div className="col-xl-3 col-md-6 d-flex" key={index}>
+                      <div className="card w-100">
+                        <div className="card-body">
+                          <div className="grid-info-item total-items">
+                            <div className="grid-info">
+                              <span>{data.name}</span>
+                              <h4>{data.count}</h4>
+                            </div>
+                            <div className="grid-head-icon">
+                              <i className="fe fe-life-buoy" />
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
-
-
-
-
-
 
             <FullDataTable
               styles={styles}
@@ -338,9 +352,7 @@ export default function Help() {
               columns={columns}
               rows={getAllSubadmins.data}
             />
-
           </div>
-
         </>
       ) : (
         <Loader />
