@@ -33,27 +33,27 @@ export const admin_header = [
             },
         ]
     },
-    {
-        id: 4,
-        name: 'Trade',
-        Icon: "fe fe-shopping-cart",
-        Data: [
-            {
-                id: 41,
-                name: 'Orders',
-                route: "/admin/orders",
-                Icon: "fe fe-shopping-bag",
-                Data: []
-            },
-            {
-                id: 42,
-                name: 'Positions',
-                route: "/admin/positions",
-                Icon: "fe fe-map-pin",
-                Data: []
-            }
-        ]
-    },
+    // {
+    //     id: 4,
+    //     name: 'Trade',
+    //     Icon: "fe fe-shopping-cart",
+    //     Data: [
+    //         {
+    //             id: 41,
+    //             name: 'Orders',
+    //             route: "/admin/orders",
+    //             Icon: "fe fe-shopping-bag",
+    //             Data: []
+    //         },
+    //         {
+    //             id: 42,
+    //             name: 'Positions',
+    //             route: "/admin/positions",
+    //             Icon: "fe fe-map-pin",
+    //             Data: []
+    //         }
+    //     ]
+    // },
     {
         id: 5,
         name: 'Subadmin Details',

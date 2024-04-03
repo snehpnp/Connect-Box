@@ -128,7 +128,7 @@ const Overview = () => {
 
           </div>
 
-          <div className="row" data-aos="fade-left">
+          {/* <div className="row" data-aos="fade-left">
 
             <div className="col-xl-12 d-flex">
               <div className="card mb-0">
@@ -604,7 +604,7 @@ const Overview = () => {
               </div>
             </div>
             
-          </div>
+          </div> */}
 
 
 

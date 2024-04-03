@@ -21,7 +21,6 @@ function System() {
     setModal(value)
   }
 
-
   const [selectedImages, setSelectedImages] = useState({
     Favicon: null,
     logo: null,
@@ -46,7 +45,13 @@ function System() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     console.log("formData", formData)
-console.log("selectedImages",selectedImages && selectedImages)
+    console.log("selectedImages", selectedImages && selectedImages)
+
+    if (formData != undefined || formData != '' || formData != null) {
+      console.log("formData========", formData)
+      console.log("selectedImages=============", selectedImages && selectedImages)
+    }
+
   }
 
 
@@ -54,7 +59,7 @@ console.log("selectedImages",selectedImages && selectedImages)
   const fetchCompanyData = useCallback(async () => {
     try {
       const response = await dispatch(GetCompany_info()).unwrap();
-   
+
       if (response.status) {
         setCompanyData(response.data);
       } else {
@@ -71,6 +76,15 @@ console.log("selectedImages",selectedImages && selectedImages)
 
 
 
+  const CloseModal = () => {
+    setSelectedImages({
+      Favicon: null,
+      logo: null,
+      loginimage: null
+    })
+    setModal(0)
+    setFormData('')
+  }
 
 
   return (
@@ -217,7 +231,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                     className="btn-close"
                     data-bs-dismiss="modal"
                     aria-label="Close"
-                    onClick={() => setModal(0)}
+                    onClick={() => CloseModal()}
                   ></button>
                 </div>
                 {modal == 1 ? (<form onSubmit={handleUpdate}>
@@ -231,7 +245,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             className="form-control"
                             name="email"
                             placeholder="Enter Email"
-                            defaultValue= {getCompanyData && getCompanyData[0].panel_name || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].panel_name || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -243,7 +257,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             type="text"
                             className="form-control"
                             name="panel_key"
-                            defaultValue= {getCompanyData && getCompanyData[0].panel_key || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].panel_key || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -256,7 +270,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             className="form-control"
                             name="Version"
                             placeholder="Host"
-                            defaultValue= {getCompanyData && getCompanyData[0].Version || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].Version || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -268,7 +282,8 @@ console.log("selectedImages",selectedImages && selectedImages)
                       type="button"
                       data-bs-dismiss="modal"
                       className="btn btn-back cancel-btn me-2"
-                    // onClick={onClose}
+                      onClick={() => CloseModal()}
+
                     >
                       Cancel
                     </button>
@@ -290,7 +305,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             className="form-control"
                             name="email"
                             placeholder="Enter Email"
-                            defaultValue= {getCompanyData && getCompanyData[0].email || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].email || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -305,7 +320,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             className="form-control"
                             name="email"
                             placeholder="Enter Email"
-                            defaultValue= {getCompanyData && getCompanyData[0].email || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].email || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -318,7 +333,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             type="email"
                             className="form-control"
                             name="cc_mail"
-                            defaultValue= {getCompanyData && getCompanyData[0].cc_mail || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].cc_mail || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -331,7 +346,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             type="email"
                             className="form-control"
                             name="bcc_mail"
-                            defaultValue= {getCompanyData && getCompanyData[0].bcc_mail || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].bcc_mail || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -347,7 +362,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             className="form-control"
                             name="smtphost"
                             placeholder="Host"
-                            defaultValue= {getCompanyData && getCompanyData[0].smtphost || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].smtphost || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -361,7 +376,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             className="form-control"
                             name="smtpport"
                             placeholder="Enter Port"
-                            defaultValue= {getCompanyData && getCompanyData[0].smtpport || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].smtpport || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -374,7 +389,8 @@ console.log("selectedImages",selectedImages && selectedImages)
                       type="button"
                       data-bs-dismiss="modal"
                       className="btn btn-back cancel-btn me-2"
-                    // onClick={onClose}
+                      onClick={() => CloseModal()}
+
                     >
                       Cancel
                     </button>
@@ -458,7 +474,8 @@ console.log("selectedImages",selectedImages && selectedImages)
                         type="button"
                         data-bs-dismiss="modal"
                         className="btn btn-back cancel-btn me-2"
-                      // onClick={onClose}
+                        onClick={() => CloseModal()}
+
                       >
                         Cancel
                       </button>
