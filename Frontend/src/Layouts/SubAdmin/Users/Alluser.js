@@ -284,7 +284,7 @@ export default function Help() {
                       </li>
 
                       <li>
-                        <a
+                        <p
                           className="btn btn-filters w-auto popup-toggle"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
@@ -295,7 +295,7 @@ export default function Help() {
                             <img src="assets/img/icons/filter-icon.svg" alt="filter" />
                           </span>
                           Filter
-                        </a>
+                        </p>
                       </li>
 
                       <li>
