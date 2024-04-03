@@ -4,7 +4,7 @@
 const router = require("express").Router()
 const {verifyToken}= require('../../Middlewares/autt.middleware')
 
-const { AddSubadmin,EditSubadmin,getallSubadmin,getallSubadminClients,getOneSubadmin,GetAllRechargeDetails,UpdateActiveStatusSubadmin} = require('../../Controllers/Admins/Subadmins/subadmin.controller')
+const { AddSubadmin,EditSubadmin,getallSubadmin,getallSubadminClients,getOneSubadmin,GetAllRechargeDetails,UpdateActiveStatusSubadmin,AddBalanceSubadmin} = require('../../Controllers/Admins/Subadmins/subadmin.controller')
 
 
 
@@ -18,6 +18,8 @@ router.post('/subadmin/get', getOneSubadmin);
 router.post('/recharge/get', GetAllRechargeDetails);
 
 router.post('/activestatus/update', UpdateActiveStatusSubadmin);
+router.post('/balance/add', AddBalanceSubadmin);
+
 
 
 
