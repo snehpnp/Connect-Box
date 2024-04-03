@@ -521,7 +521,7 @@ function Strategy() {
                         <FullDataTable
                             styles={styles}
                             columns={columns}
-                            rows={companyData.data}
+                         zzz   rows={companyData.data}
                             checkboxSelection={false}
 
                         />) : <Loader />

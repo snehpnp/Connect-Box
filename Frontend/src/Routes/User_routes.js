@@ -8,6 +8,7 @@ import Dashboards from '../Layouts/User/Dashboard/Dashboards';
 
 import Help from '../Layouts/Admin/Help/Help';
 import Stocklist from '../Layouts/User/Stock/Clientservice';
+import Strategies from '../Layouts/User/Strategy/Strategies';
 
 
 
@@ -31,6 +32,7 @@ const User_Routing = () => {
                     <Route path="/help" element={<Help />} />
                     <Route path="/stock" element={<Stocklist />} />
                     <Route path="/payment" element={<Stocklist />} />
+                    <Route path="/strategy" element={<Strategies />} />
 
 
 
