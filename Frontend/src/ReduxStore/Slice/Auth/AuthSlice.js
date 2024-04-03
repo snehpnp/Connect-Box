@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { SIGN_IN_USER,SIGN_UP_USER, VARIFY_USER_DEVICE, LOG_OUT_USER, SET_THEME_DETAILS, RESET_PASSWORD, UPDATE_PASSWORD, FORGET_PASSWORD, GET_PANEL_INFORMATION, OTP_SEND_USEHERE, LOGOUT_FROM_OTHER_DEVICE } from "../../../Services/Auth/Auth.service";
+import { SIGN_IN_USER} from "../../../Services/Auth/Auth.service";
 
 
 

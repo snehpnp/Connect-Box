@@ -4,7 +4,7 @@ import Overview from '../Layouts/Admin/Dashboard/Overview';
 import Header from '../Components/Dashboard/Header/Header';
 import MainHeader from '../Components/Dashboard/Header/Main_header';
 import System from '../Layouts/SubAdmin/Systems/System.jsx';
-import AddUser from '../Layouts/SubAdmin/Users/Adduser.js';
+import Adduser from '../Layouts/SubAdmin/Users/User_Add.js';
 import ALLUSER from '../Layouts/SubAdmin/Users/Alluser.js';
 import Strategy from '../Layouts/SubAdmin/Strategys/Strategy.jsx';
 
@@ -32,8 +32,10 @@ const SubAdmin_Routing = () => {
 
                     <Route exact path="/strategys" element={<Strategy />} />
 
-                    <Route exact path="/User/add" element={<AddUser />} />
+                    <Route exact path="/User/add" element={<Adduser />} />
                     <Route exact path="/users" element={<ALLUSER />} />
+                    <Route exact path="/message-broadcast" element={<Msgbrodcast />} />
+
                 </Routes>
 
             </div>

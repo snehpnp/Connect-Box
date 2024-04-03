@@ -7,21 +7,17 @@ import SubadminRouting from './Subadmin_routes';
 import UserRouting from './User_routes';
 import Profile from '../Layouts/Admin/Profile/Profile';
 
-
 import Header from '../Components/Dashboard/Header/Header';
 import MainHeader from '../Components/Dashboard/Header/Main_header';
 import Login from '../Layouts/Auth/Login';
 
 const Routing = () => {
     const location = useLocation();
-    const navigate = useNavigate();
+    const navigate = useNavigate(); 
     const roles = JSON.parse(localStorage.getItem('user_role'));
     const user_details = JSON.parse(localStorage.getItem("user_details"));
 
-    console.log("roles:-", roles)
-
     useEffect(() => {
-
         // Check if user details exist
         if (!user_details || !roles || user_details === "null" || roles === "null") {
             navigate("/login");
@@ -57,8 +53,7 @@ const Routing = () => {
             default:
                 break;
         }
-    }, [location.pathname]);
-
+    }, [navigate, location.pathname, roles, user_details]);
 
     return (
         <Routes>
@@ -69,7 +64,6 @@ const Routing = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={<>     <MainHeader />
                 <Header />  <div className="page-wrapper"><Profile /></div></>} />
-
         </Routes>
     );
 }

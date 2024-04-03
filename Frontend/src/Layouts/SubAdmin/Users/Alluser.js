@@ -192,9 +192,8 @@ export default function Help() {
                   <div className="list-btn">
                     <ul className="filter-list">
                       <li>
-                        <a
+                        <p
                           className="btn-filters"
-                          href="javascript:void(0);"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Refresh"
@@ -202,7 +201,7 @@ export default function Help() {
                           <span>
                             <i className="fe fe-refresh-ccw" />
                           </span>
-                        </a>
+                        </p>
                       </li>
                       <li>
                         <div className="input-group">
@@ -218,7 +217,7 @@ export default function Help() {
                       </li>
 
                       <li>
-                        <a
+                        <p
                           className="btn btn-filters w-auto popup-toggle"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
@@ -228,7 +227,7 @@ export default function Help() {
                             <img src="assets/img/icons/filter-icon.svg" alt="filter" />
                           </span>
                           Filter
-                        </a>
+                        </p>
                       </li>
 
                       <li>
@@ -238,8 +237,7 @@ export default function Help() {
                           data-bs-placement="bottom"
                           title="Download"
                         >
-                          <a
-                            href="/"
+                          <p
                             className="btn btn-filters"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
@@ -248,37 +246,34 @@ export default function Help() {
                               <i className="fe fe-download" />
                             </span>
                             Export
-                          </a>
+                          </p>
                           <div className="dropdown-menu dropdown-menu-end">
                             <ul className="d-block">
                               <li>
-                                <a
+                                <p
                                   className="d-flex align-items-center download-item"
-                                  href="javascript:void(0);"
                                   download=""
                                 >
                                   <i className="far fa-file-pdf me-2" />
                                   Export as PDF
-                                </a>
+                                </p>
                               </li>
                               <li>
-                                <a
+                                <p
                                   className="d-flex align-items-center download-item"
-                                  href="javascript:void(0);"
                                   download=""
                                 >
                                   <i className="far fa-file-text me-2" />
                                   Export as Excel
-                                </a>
+                                </p>
                               </li>
                             </ul>
                           </div>
                         </div>
                       </li>
                       <li>
-                        <a
+                        <p
                           className="btn btn-filters"
-                          href="javascript:void(0);"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Print"
@@ -287,7 +282,7 @@ export default function Help() {
                             <i className="fe fe-printer" />
                           </span>{" "}
                           Print
-                        </a>
+                        </p>
                       </li>
                       <li>
                         <Link to={'/admin/subadmin/add'}
