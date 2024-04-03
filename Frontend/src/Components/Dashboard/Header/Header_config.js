@@ -163,7 +163,7 @@ export const subamdin_header = [
                 Icon: "fe fe-list",
                 route: "/subadmin/group-service",
             },
-        
+
             {
                 id: 52,
                 name: 'Strategy',
@@ -320,7 +320,7 @@ export const User_header = [
     {
         id: 8,
         name: 'Strategies',
-        route: "/User/Strategy/Strategies",
+        route: "/user/strategy",
         Icon: "fe fe-grid",
         Data: []
     },
