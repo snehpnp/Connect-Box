@@ -3,13 +3,16 @@
 const router = require("express").Router()
 const { verifyToken } = require('../../Middlewares/autt.middleware')
 
-const { AddUser } = require('../../Controllers/SubAdmins/Users/user.controller')
+const { AddUser,GetAllUser ,GetUser} = require('../../Controllers/SubAdmins/Users/user.controller')
 
 
 
 
 // STRATEGY RELETED ROUTES
 router.post('/user/add', AddUser);
+router.post('/user/getall', GetAllUser);
+router.post('/user/get', GetUser);
+
 
 
 

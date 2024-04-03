@@ -1002,7 +1002,6 @@ class Users {
             multy_stgfind.forEach(async (data) => {
 
               if (data.strategy_id.length > 1) {
-                console.log("data", data.strategy_id[0])
 
                 const filter = { _id: data._id };
                 const updateOperation = { $set: { strategy_id: [data.strategy_id[0]] } }
@@ -1043,26 +1042,25 @@ class Users {
 
 
 
-
-
-
   // GET ALL GetAllClients
-  async GetAllClients(req, res) {
+  async GetAllUser(req, res) {
     try {
       const { page, limit, Find_Role, user_ID } = req.body; //LIMIT & PAGE
       // const skip = (page - 1) * limit;
 
+      if (!user_ID || user_ID == '' || user_ID == null) {
+        return res.send({
+          status: false,
+          msg: "Please Enter Sub Admin Id",
+          data: [],
+        });
+      }
+
+
+
       // GET ALL CLIENTS
       var AdminMatch;
-
-
-
-
-      if (Find_Role == "ADMIN") {
-        AdminMatch = { Role: "USER" };
-      } else if (Find_Role == "SUBADMIN") {
-        AdminMatch = { Role: "USER", parent_id: user_ID };
-      }
+      AdminMatch = { Role: "USER", parent_id: user_ID };
 
 
 
@@ -1099,339 +1097,52 @@ class Users {
     }
   }
 
-  // // GET ALL LOGIN CLIENTS
-  // async loginClients(req, res) {
-  //   try {
-  //     // GET LOGIN CLIENTS
-  //     const getAllLoginClients = await User_model.find({
-  //       $or: [{ AppLoginStatus: 1 }, { WebLoginStatus: 1 }],
-  //     });
-  //     // const totalCount = getAllLoginClients.length;
-  //     // IF DATA NOT EXIST
-  //     if (getAllLoginClients.length == 0) {
-  //       return res.send({
-  //         status: false,
-  //         msg: "Empty data",
-  //         data: [],
-  //         // totalCount: totalCount,
-  //       });
-  //     }
+  async GetUser(req, res) {
+    try {
+      const { user_ID } = req.body;
 
-  //     // DATA GET SUCCESSFULLY
-  //     res.send({
-  //       status: true,
-  //       msg: "Get All Login Clients",
-  //       // totalCount: totalCount,
-  //       data: getAllLoginClients,
-  //       // page: Number(page),
-  //       // limit: Number(limit),
-  //       // totalPages: Math.ceil(totalCount / Number(limit)),
-  //     });
-  //   } catch (error) {
-  //     console.log("Error loginClients Error-", error);
-  //   }
-  // }
 
-  // // GET ALL TRADING ON  CLIENTS
-  // async tradingOnClients(req, res) {
-  //   try {
-  //     // GET LOGIN CLIENTS
-  //     const getAllTradingClients = await User_model.find({
-  //       TradingStatus: "on",
-  //     });
-  //     // const totalCount = getAllTradingClients.length;
+      if (!user_ID || user_ID == '' || user_ID == null) {
+        return res.send({
+          status: false,
+          msg: "Please Enter Sub Admin Id",
+          data: [],
+        });
+      }
 
-  //     // IF DATA NOT EXIST
-  //     if (getAllTradingClients.length == 0) {
-  //       return res.send({
-  //         status: false,
-  //         msg: "Empty data",
-  //         data: [],
-  //         // totalCount: totalCount,
-  //       });
-  //     }
 
-  //     // DATA GET SUCCESSFULLY
-  //     res.send({
-  //       status: true,
-  //       msg: "Get All trading Clients",
-  //       data: getAllTradingClients,
-  //       // page: Number(page),
-  //       // limit: Number(limit),
-  //       // totalCount: totalCount,
-  //       // totalPages: Math.ceil(totalCount / Number(limit)),
-  //     });
-  //   } catch (error) {
-  //     console.log("Error trading Clients Error-", error);
-  //   }
-  // }
 
-  // // GET ALL TRADING ON  CLIENTS
-  // async GetTradingStatus(req, res) {
-  //   try {
-  //     const { Role } = req.body;
-  //     // const status ="on"
+      const getAllClients = await User_model.find({ _id: user_ID, Role: "USER" })
 
-  //     const currentDate = new Date(); // Get the current date
-  //     const GetAlluser_logs = await User_model.find({
-  //       Role: 'USER',
-  //       $or: [
-  //         { license_type: "2" },
-  //         { license_type: "0" }
-  //       ],
-  //       TradingStatus: Role,
-  //       EndDate: { $gt: currentDate }
+      // IF DATA NOT EXIST
+      if (getAllClients.length == 0) {
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: [],
+        });
+      }
 
-  //     }).select('Email FullName EndDate TradingStatus UserName PhoneNo')
-
-  //     // const totalCount = GetAlluser_logs.length;
-  //     // IF DATA NOT EXIST
-  //     if (GetAlluser_logs.length == 0) {
-  //       return res.send({
-  //         status: false,
-  //         msg: "Empty data",
-  //         data: [],
-  //         // totalCount: totalCount,
-  //       });
-  //     }
-
-  //     // DATA GET SUCCESSFULLY
-  //     res.send({
-  //       status: true,
-  //       msg: "Get All user_logs",
-  //       data: GetAlluser_logs,
-  //       // totalCount: totalCount,
-  //     });
-  //   } catch (error) {
-  //     console.log("Error trading status Error-", error);
-  //   }
-  // }
-
-  // // CLIENTS ACTIVE INACTIVE STATUS UPDATE
-  // async UpdateActiveStatus(req, res) {
-  //   try {
-  //     const { id, user_active_status } = req.body;
-  //     // UPDATE ACTTIVE STATUS CLIENT
-
-  //     const get_user = await User_model.find({ _id: id });
-  //     if (get_user.length == 0) {
-  //       return res.send({
-  //         status: false,
-  //         msg: "Empty data",
-  //         data: [],
-  //         totalCount: totalCount,
-  //       });
-  //     }
-
-  //     const filter = { _id: id };
-  //     const updateOperation = { $set: { ActiveStatus: user_active_status } };
-
-  //     const result = await User_model.updateOne(filter, updateOperation);
-
-  //     if (result) {
-  //       // STATUS UPDATE SUCCESSFULLY
-  //       var status_msg = user_active_status == "0" ? "DeActivate" : "Activate";
-  //       logger1.info(`${status_msg} user Successfully`, {
-  //         Email: get_user[0].Email,
-  //         role: get_user[0].Role,
-  //         user_id: get_user[0]._id,
-  //       });
-
-  //       res.send({
-  //         status: true,
-  //         msg: "Update Successfully",
-  //         data: result,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log("Error trading status Error-", error);
-  //   }
-  // }
+      // DATA GET SUCCESSFULLY
+      return res.send({
+        status: true,
+        msg: "Get Client Data",
+        data: getAllClients,
+      });
+      
+    } catch (error) {
+      console.log("Error loginClients Error-", error);
+      return res.send({
+        status: false,
+        msg: "Empty data",
+        data: [],
+      });
+    }
+  }
 
 
 
 
-
-  // // DELETE USER AND USER REGARD SERVICES
-  // async DeleteUser(req, res) {
-  //   try {
-  //     const { id } = req.body;
-  //     // UPDATE ACTTIVE STATUS CLIENT
-
-  //     const get_user = await User_model.find({ _id: id });
-  //     if (get_user.length == 0) {
-  //       return res.send({ status: false, msg: "Empty data", data: [] });
-  //     }
-
-  //     var DeleteGroupServices = await groupService_User.deleteOne({
-  //       user_id: get_user[0]._id,
-  //     });
-  //     var DeleteStartegyClient = await strategy_client.deleteMany({
-  //       user_id: get_user[0]._id,
-  //     });
-  //     var DeleteClient_services = await client_services.deleteMany({
-  //       user_id: get_user[0]._id,
-  //     });
-  //     var count_licenses_delete = await count_licenses.deleteMany({
-  //       user_id: get_user[0]._id,
-  //     });
-
-  //     var DeleteUser = await User_model.deleteOne({ _id: get_user[0]._id });
-
-  //     logger1.info(`Delete User Successfully`, {
-  //       Email: get_user[0].Email,
-  //       role: get_user[0].Role,
-  //       user_id: get_user[0]._id,
-  //     });
-
-  //     res.send({
-  //       status: true,
-  //       msg: "Delete Successfully",
-  //       data: DeleteUser,
-  //     });
-  //   } catch (error) {
-  //     console.log("Error trading status Error-", error);
-  //   }
-  // }
-
-  // // GET USER ALL INFORMATION
-  // async GetUserInfo(req, res) {
-  //   try {
-  //     const { id } = req.body;
-  //     // UPDATE ACTTIVE STATUS CLIENT
-
-  //     if (!id) {
-  //       return res.send({
-  //         status: false,
-  //         msg: "Please Entrer User Id",
-  //         data: [],
-  //       });
-  //     }
-  //     var userId = new ObjectId(id);
-
-  //     const get_user = await User_model.find({ _id: userId });
-
-  //     if (get_user.length == 0) {
-  //       return res.send({
-  //         status: false,
-  //         msg: "Empty data",
-  //         data: [],
-  //         totalCount: totalCount,
-  //       });
-  //     }
-
-  //     const pipeline = [
-  //       {
-  //         $match: {
-  //           _id: userId,
-  //         },
-  //       },
-  //       {
-  //         $lookup: {
-  //           from: "groupservices_clients",
-  //           localField: "_id",
-  //           foreignField: "user_id",
-  //           as: "groupservices_clients",
-  //         },
-  //       },
-  //       {
-  //         $unwind: "$groupservices_clients",
-  //       },
-  //       {
-  //         $project: {
-  //           "groupservices_clients.groupService_id": 1,
-  //           _id: 1,
-  //           FullName: 1,
-  //           UserName: 1,
-  //           Email: 1,
-  //           PhoneNo: 1,
-  //           StartDate: 1,
-  //           EndDate: 1,
-  //           license_type: 1,
-  //           licence: 1,
-  //           parent_id: 1,
-  //           parent_role: 1,
-  //           service_given_month: 1,
-  //           api_secret: 1,
-  //           app_id: 1,
-  //           client_code: 1,
-  //           api_key: 1,
-  //           app_key: 1,
-  //           api_type: 1,
-  //           demat_userid: 1,
-  //           broker: 1,
-  //           multiple_strategy_select: 1
-  //         },
-  //       },
-  //     ];
-
-  //     const GetAllClientServices = await User_model.aggregate(pipeline);
-
-
-
-  //     const userSTG = await strategy_client.find({ user_id: userId });
-
-  //     res.send({
-  //       status: true,
-  //       msg: "Get User Successfully",
-  //       data: GetAllClientServices,
-  //       strategy: userSTG,
-  //     });
-  //   } catch (error) {
-  //     console.log("Error trading status Error-", error);
-  //   }
-  // }
-
-
-
-
-
-  // // UPDATE BROKER KEY
-  // async Update_Broker_Keys(req, res) {
-  //   try {
-  //     var userdata = req.body.data;
-  //     var _id = req.body.id;
-
-  //     User_model.findById(_id).then(async (value) => {
-  //       if (!value) {
-  //         return res.send({ status: false, msg: "Id not match", data: [] });
-  //       }
-  //       const filter = { _id: _id };
-  //       const updateOperation = { $set: userdata };
-  //       const result = await User_model.updateOne(filter, updateOperation);
-  //       if (!result) {
-  //         return res.send({ status: false, msg: "Key not update", data: [] });
-  //       }
-
-  //       return res.send({
-  //         status: true,
-  //         msg: "Update Keys  Successfully.",
-  //         data: [],
-  //       });
-  //     });
-  //   } catch (error) {
-  //     console.log("Error Theme error-", error);
-  //   }
-  // }
-
-  // // GET ONLY CLIENT KEY
-  // async GetclientKey(req, res) {
-  //   try {
-  //     const { id } = req.body
-  //     var _id = new ObjectId(id);
-  //     const Client_key = await User_model.findOne({ _id }, 'client_key');
-  //     // CHECK IF PANEL EXIST OR NOT
-
-
-
-  //     if (!Client_key) {
-  //       return res.status(409).json({ status: false, msg: 'Client Not exists', data: [] });
-  //     }
-  //     res.send({ status: true, msg: "Get Client key", data: Client_key })
-  //   } catch (error) {
-
-  //   }
-  // }
 
 }
 

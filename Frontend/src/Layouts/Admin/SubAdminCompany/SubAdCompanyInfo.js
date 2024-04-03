@@ -68,7 +68,7 @@ function Payment() {
     {
       field: 'makerInfo',
       headerName: 'Subadmin Name',
-      width: 210,
+      width: 200,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -88,9 +88,20 @@ function Payment() {
       )
     },
     {
+      field: 'smtpport',
+      headerName: 'PORT',
+      width: 110,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          {params.value || '-'}
+        </div>
+      )
+    },
+    {
       field: 'razorpay_key',
       headerName: 'Razorpay key',
-      width: 200,
+      width: 150,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>

@@ -3,7 +3,7 @@ import { GET_ALL_GROUP_SERVICS, ADD_GROUP_SERVICS, GET_ALL_CATAGORY, SERVICE_BY_
 
 export const GetAll_Group_Servics = createAsyncThunk("groupservices/getall",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await GET_ALL_GROUP_SERVICS(data);
             return res;

@@ -1,29 +1,27 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { GetCompany_info } from "../../../ReduxStore/Slice/Admin/System";
+import { GetCompany_info, updateSystemInfo } from "../../../ReduxStore/Slice/Admin/System";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 
 function System() {
   const dispatch = useDispatch();
   const [getCompanyData, setCompanyData] = useState(null);
   const [modal, setModal] = useState(0);
+
+  const [refresh, setrefresh] = useState(false);
+
+
   const [formData, setFormData] = useState();
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+
 
 
   const OpenModal = (value) => {
     setModal(value)
   }
 
-
   const [selectedImages, setSelectedImages] = useState({
-    Favicon: null,
+    favicon: null,
     logo: null,
     loginimage: null
   });
@@ -37,24 +35,59 @@ function System() {
           ...selectedImages,
           [imageName]: reader.result
         });
+        setFormData({
+          ...formData,
+          [imageName]: reader.result,
+        });
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
   const handleUpdate = async (e) => {
+    console.log("formData",formData)
     e.preventDefault();
-    console.log("formData", formData)
-console.log("selectedImages",selectedImages && selectedImages)
-  }
+    if (formData) {
+      var data = {
+        "id": getCompanyData && getCompanyData[0]._id,
+        "data": formData
+      };
+
+      await dispatch(updateSystemInfo(data))
+        .unwrap()
+        .then(async (response) => {
+          if (response.status) {
+            toast.success(response.msg);
+            setrefresh(!refresh)
+            CloseModal()
+          } else {
+            toast.error(response.msg);
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
+
+    } else {
+      console.log("formData is null, undefined, empty string, or falsey value");
+    }
+  };
+
 
 
 
   const fetchCompanyData = useCallback(async () => {
     try {
       const response = await dispatch(GetCompany_info()).unwrap();
-   
+
       if (response.status) {
         setCompanyData(response.data);
       } else {
@@ -63,14 +96,23 @@ console.log("selectedImages",selectedImages && selectedImages)
     } catch (error) {
       console.error("Error", error);
     }
-  }, [dispatch]);
+  }, [refresh,dispatch]);
 
   useEffect(() => {
     fetchCompanyData();
-  }, [fetchCompanyData]);
+  }, [refresh, fetchCompanyData]);
 
 
 
+  const CloseModal = () => {
+    setSelectedImages({
+      favicon: null,
+      logo: null,
+      loginimage: null
+    })
+    setModal(0)
+    setFormData(null)
+  }
 
 
   return (
@@ -188,7 +230,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                   </div>
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
-                      <p>Favicon <img src={getCompanyData && getCompanyData[0].favicon} alt="Favicon" style={{ height: '80px', width: '80px' }} /></p>
+                      <p>favicon <img src={getCompanyData && getCompanyData[0].favicon} alt="favicon" style={{ height: '80px', width: '80px' }} /></p>
                       <p>Logo <img src={getCompanyData && getCompanyData[0].logo} alt="Logo" style={{ height: '80px', width: '80px' }} /></p>
                       <p>Login Image <img src={getCompanyData && getCompanyData[0].loginimage} alt="Login Image" style={{ height: '80px', width: '80px' }} /></p>
                     </div>
@@ -217,7 +259,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                     className="btn-close"
                     data-bs-dismiss="modal"
                     aria-label="Close"
-                    onClick={() => setModal(0)}
+                    onClick={() => CloseModal()}
                   ></button>
                 </div>
                 {modal == 1 ? (<form onSubmit={handleUpdate}>
@@ -229,9 +271,9 @@ console.log("selectedImages",selectedImages && selectedImages)
                           <input
                             type="company_name"
                             className="form-control"
-                            name="email"
+                            name="panel_name"
                             placeholder="Enter Email"
-                            defaultValue= {getCompanyData && getCompanyData[0].panel_name || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].panel_name || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -243,7 +285,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             type="text"
                             className="form-control"
                             name="panel_key"
-                            defaultValue= {getCompanyData && getCompanyData[0].panel_key || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].panel_key || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -256,7 +298,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             className="form-control"
                             name="Version"
                             placeholder="Host"
-                            defaultValue= {getCompanyData && getCompanyData[0].Version || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].Version || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -268,7 +310,8 @@ console.log("selectedImages",selectedImages && selectedImages)
                       type="button"
                       data-bs-dismiss="modal"
                       className="btn btn-back cancel-btn me-2"
-                    // onClick={onClose}
+                      onClick={() => CloseModal()}
+
                     >
                       Cancel
                     </button>
@@ -290,7 +333,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             className="form-control"
                             name="email"
                             placeholder="Enter Email"
-                            defaultValue= {getCompanyData && getCompanyData[0].email || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].email || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -305,7 +348,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             className="form-control"
                             name="email"
                             placeholder="Enter Email"
-                            defaultValue= {getCompanyData && getCompanyData[0].email || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].email || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -318,7 +361,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             type="email"
                             className="form-control"
                             name="cc_mail"
-                            defaultValue= {getCompanyData && getCompanyData[0].cc_mail || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].cc_mail || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -331,7 +374,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             type="email"
                             className="form-control"
                             name="bcc_mail"
-                            defaultValue= {getCompanyData && getCompanyData[0].bcc_mail || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].bcc_mail || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -347,7 +390,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             className="form-control"
                             name="smtphost"
                             placeholder="Host"
-                            defaultValue= {getCompanyData && getCompanyData[0].smtphost || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].smtphost || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -361,7 +404,7 @@ console.log("selectedImages",selectedImages && selectedImages)
                             className="form-control"
                             name="smtpport"
                             placeholder="Enter Port"
-                            defaultValue= {getCompanyData && getCompanyData[0].smtpport || ''}
+                            defaultValue={getCompanyData && getCompanyData[0].smtpport || ''}
                             onChange={handleInputChange}
                           />
                         </div>
@@ -374,7 +417,8 @@ console.log("selectedImages",selectedImages && selectedImages)
                       type="button"
                       data-bs-dismiss="modal"
                       className="btn btn-back cancel-btn me-2"
-                    // onClick={onClose}
+                      onClick={() => CloseModal()}
+
                     >
                       Cancel
                     </button>
@@ -392,19 +436,19 @@ console.log("selectedImages",selectedImages && selectedImages)
 
 
                         <div className="col-lg-6 col-md-12">
-                          <label>Favicon</label>
+                          <label>favicon</label>
                           <input
                             type="file"
                             className="form-control"
-                            name="Favicon"
+                            name="favicon"
                             accept="image/*"
-                            onChange={(event) => handleImageChange(event, "Favicon")}
+                            onChange={(event) => handleImageChange(event, "favicon")}
                           />
-                          {selectedImages.Favicon && (
+                          {selectedImages.favicon && (
                             <div className="mt-3">
                               <img
-                                src={selectedImages.Favicon}
-                                alt="Selected Favicon"
+                                src={selectedImages.favicon}
+                                alt="Selected favicon"
                                 className="img-fluid"
                               />
                             </div>
@@ -458,7 +502,8 @@ console.log("selectedImages",selectedImages && selectedImages)
                         type="button"
                         data-bs-dismiss="modal"
                         className="btn btn-back cancel-btn me-2"
-                      // onClick={onClose}
+                        onClick={() => CloseModal()}
+
                       >
                         Cancel
                       </button>
@@ -478,6 +523,7 @@ console.log("selectedImages",selectedImages && selectedImages)
         </div>
       )}
 
+      <ToastButton />
 
 
     </div>

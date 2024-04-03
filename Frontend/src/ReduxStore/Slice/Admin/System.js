@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetCompanyInfo,ProfileData } from "../../../Services/Admin/System.service";
+import { GetCompanyInfo,ProfileData,EditCompanyInfo } from "../../../Services/Admin/System.service";
 
 export const GetCompany_info = createAsyncThunk(
     "get/company",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await GetCompanyInfo(data);
             return res;
@@ -14,10 +14,24 @@ export const GetCompany_info = createAsyncThunk(
     }
 );
 
+export const updateSystemInfo = createAsyncThunk(
+    "emailinfo/edit",
+    async (data) => {
+        
+        try {
+            const res = await EditCompanyInfo(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+
 export const ProfileInfo = createAsyncThunk(
     "subadmin/get",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await ProfileData(data);
             return res;
@@ -26,6 +40,7 @@ export const ProfileInfo = createAsyncThunk(
         }
     }
 );
+
 const SystemSlice = createSlice({
     name: "SystemSlice",
     initialState: {
@@ -65,6 +80,20 @@ const SystemSlice = createSlice({
                 state.profileInfo = action.payload;
             })
             .addCase(ProfileInfo.rejected, (state, action) => {
+
+                state.isLoading = false;
+                state.isError = true;
+            })
+            .addCase(updateSystemInfo.pending, (state, action) => {
+
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(updateSystemInfo.fulfilled, (state, action) => {
+
+                state.isLoading = false;
+            })
+            .addCase(updateSystemInfo.rejected, (state, action) => {
 
                 state.isLoading = false;
                 state.isError = true;

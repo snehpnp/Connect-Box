@@ -19,6 +19,21 @@ export async function GetCompanyInfo(data, token) {
 
 }
 
+export async function EditCompanyInfo(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}emailinfo/edit`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}
+
+
 export async function ProfileData(data, token) {
     try {
         const res = await axios.post(`${Config.base_url}subadmin/get`, data, {  

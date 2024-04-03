@@ -4,7 +4,7 @@ import { GetSubStrategy, ADD_STRATEGY, Delete_Strategy } from "../../../Services
 export const GetSubStrategys = createAsyncThunk(
     "sub/strategy/getall",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await GetSubStrategy(data);
             return res;
@@ -16,7 +16,7 @@ export const GetSubStrategys = createAsyncThunk(
 
 export const AddStrategy = createAsyncThunk("strategy/add",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await ADD_STRATEGY(data);
             console.log("resSlice :", res)
@@ -29,7 +29,7 @@ export const AddStrategy = createAsyncThunk("strategy/add",
 
 export const DELETE_STRATEGY = createAsyncThunk("strategy/delete",
     async (data) => {
-        console.log("data :", data);
+        
         try {
             const res = await Delete_Strategy(data);
             console.log("resSlice :", res)

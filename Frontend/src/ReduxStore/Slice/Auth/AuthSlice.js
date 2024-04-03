@@ -6,7 +6,7 @@ import { SIGN_IN_USER} from "../../../Services/Auth/Auth.service";
 
 export const SignIn = createAsyncThunk("DispatchLogin", async (data) => {
 
-  console.log("data :", data)
+  // console.log("data :", data)
   try {
     const res = await SIGN_IN_USER(data);
     return await res;

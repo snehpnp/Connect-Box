@@ -63,7 +63,7 @@ export const admin_header = [
     },
     {
         id: 6,
-        name: 'Recharge Details',
+        name: 'Payment History',
         route: "/admin/payment",
         Icon: "fe fe-credit-card",
         Data: []
