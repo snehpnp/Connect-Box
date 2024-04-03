@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
+import { IndianRupee } from 'lucide-react';
 
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -9,7 +10,6 @@ import { Link } from "react-router-dom";
 
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Switch from "@mui/material/Switch";
 
 import { useDispatch } from "react-redux";
@@ -142,7 +142,7 @@ export default function Help() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {params.value}
+          <span class="text-success-light">  <IndianRupee style={{ height: "19px" }} />{params.value || '-'}</span>
           <AccountBalanceWalletIcon
             size="small"
             onClick={() => handleBalance(params.row)}
@@ -207,33 +207,36 @@ export default function Help() {
     await dispatch(GetAllSubAdmin())
       .unwrap()
       .then(async (response) => {
+
         if (response.status) {
+
           const formattedData = response.data && response.data.map((row, index) => ({
             ...row,
             id: index + 1,
           }));
-    
+
           setAllSubadmins({
             loading: true,
             data: formattedData,
             data1: [
-              { name: "Total Subadmins", count: response.totalCount || 0, Icon: "fe fe-life-buoy",color:"#ec8000"},
-              { name: "Active Subadmins", count: response.ActiveCount || 0, Icon: "fe fe-check-square",color:"#1e8edf" },
+              { name: "Total Subadmins", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
+              { name: "Active Subadmins", count: response.ActiveCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
               {
                 name: "InActive Subadmins",
                 count: response.InActiveCount || 0
                 , Icon: "fe fe-x-circle",
-                color:"#ed3a3a"
+                color: "#ed3a3a"
               },
               {
                 name: "Total Used Balance",
                 count: response.ActiveUseBalance || 0
                 , Icon: "fas fa-dollar-sign"
-                ,color:"#1d8147"
+                , color: "#1d8147"
 
               },
             ],
           });
+
         } else {
           setAllSubadmins({
             loading: false,
@@ -394,10 +397,10 @@ export default function Help() {
                           <div className="grid-info-item total-items">
                             <div className="grid-info">
                               <span>{data.name}</span>
-                              <h4  style={{color:data.color}} >{data.count}</h4>
+                              <h4 style={{ color: data.color }} >{data.count}</h4>
                             </div>
                             <div className="grid-head-icon">
-                              <i className={data.Icon} style={{color:data.color}} />
+                              <i className={data.Icon} style={{ color: data.color }} />
                             </div>
                           </div>
                         </div>
