@@ -32456,7 +32456,7 @@ td .invoice-detail i {
 
     .wave:nth-child(10) {
         animation-delay: 0.9s;
-    }
+         }
 }
 
 @keyframes wave {

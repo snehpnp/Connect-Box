@@ -156,7 +156,7 @@ export const subamdin_header = [
                 Icon: "fe fe-list",
                 route: "/subadmin/group-service",
             },
-        
+
             {
                 id: 52,
                 name: 'Strategy',
@@ -249,13 +249,20 @@ export const subamdin_header = [
 export const User_header = [
     {
         id: 1,
+        name: 'Dashboard',
+        Icon: "fe fe-home",
+        route: "/user/dashboard",
+        Data: []
+    },
+    {
+        id: 2,
         name: 'Stock List',
         Icon: "fe fe-home",
         route: "/user/stock",
         Data: []
     },
     {
-        id: 4,
+        id: 3,
         name: 'Trade',
         Icon: "fe fe-shopping-cart",
         Data: [
@@ -276,42 +283,42 @@ export const User_header = [
         ]
     },
     {
-        id: 5,
+        id: 4,
         name: 'Recharge Details',
         route: "/user/payment",
         Icon: "fe fe-credit-card",
         Data: []
     },
     {
-        id: 7,
+        id: 5,
         name: 'Help',
         route: "/user/help",
         Icon: "fe fe-help-circle",
         Data: []
     },
     {
-        id: 8,
+        id: 6,
         name: 'Open Positions',
         route: "/user/open-positions",
         Icon: "fe fe-grid",
         Data: []
     },
     {
-        id: 9,
+        id: 7,
         name: 'Broker Response',
         route: "/user/broker-response",
         Icon: "fe fe-grid",
         Data: []
     },
     {
-        id: 10,
+        id: 8,
         name: 'Strategies',
-        route: "/user/strategies",
+        route: "/user/strategy",
         Icon: "fe fe-grid",
         Data: []
     },
     {
-        id: 11,
+        id: 9,
         name: 'FAQs',
         route: "/user/faqs",
         Icon: "fe fe-help-circle",

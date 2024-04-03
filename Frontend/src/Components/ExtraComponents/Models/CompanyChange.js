@@ -51,7 +51,6 @@ const StockOutModal = ({ rowData, onClose }) => {
 
         if (response.status) {
           toast.success(response.msg);
-
           onClose();
         } else {
           toast.error(response.msg);
@@ -177,6 +176,7 @@ const StockOutModal = ({ rowData, onClose }) => {
                     />
                   </div>
                 </div>
+                
               </div>
             </div>
             <div className="modal-footer">

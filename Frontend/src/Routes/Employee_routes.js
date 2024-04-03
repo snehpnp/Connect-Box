@@ -20,7 +20,7 @@ const Employee_Routing = () => {
             <Header />
             <div className='page-wrapper' >
             <Routes>
-                <Route exact path="/dashboard" element={<Overview />} />
+                <Route exact path="/dashboard" element={<Overview />} />        
                 <Route exact path="/system" element={<System />} />
 
             </Routes>
