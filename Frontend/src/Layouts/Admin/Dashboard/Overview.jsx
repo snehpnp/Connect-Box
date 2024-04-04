@@ -1,97 +1,127 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import { Dashboard_admin } from "../../../ReduxStore/Slice/Admin/Subadmins";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Overview = () => {
+  const [adminData, setAdminData] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    dashData();
+  }, [dispatch, navigate]);
+
+  const dashData = async () => {
+    await dispatch(Dashboard_admin())
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          toast.success(response.msg);
+          setAdminData(response.data);
+        } else {
+          toast.error(response.msg);
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
   const cardsData = [
     {
       iconClass: "fas fa-users",
       title: "Total Subadmins",
-      count: "1,642",
+      count: adminData.Totalcount,
       progress: 75,
       arrowIcon: "fas fa-arrow-down",
       percentageChange: "1.15%",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-5"
+      progressBarClass: "bg-5",
     },
     {
       iconClass: "fas fa-users",
       title: "Active Subadmins",
-      count: "3,642",
+      count: adminData.TotalActivecount,
       progress: 65,
       arrowIcon: "fas fa-arrow-up",
       percentageChange: "2.37%",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-6"
+      progressBarClass: "bg-6",
     },
     {
       iconClass: "fas fa-users",
       title: "Inactive Subadmins",
-      count: "1,041",
+      count: adminData.TotalInActivecount,
       progress: 85,
       arrowIcon: "fas fa-arrow-up",
       percentageChange: "3.77%",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-7"
+      progressBarClass: "bg-7",
     },
     {
       iconClass: "fas fa-users",
       title: "Total Users",
-      count: "1,642",
+      count: adminData.TotalUsercount,
       progress: 75,
       arrowIcon: "fas fa-arrow-down",
       percentageChange: "1.15%",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-5"
+      progressBarClass: "bg-5",
     },
     {
       iconClass: "fas fa-users",
       title: "Active Users",
-      count: "3,642",
+      count: adminData.TotalActiveUsercount,
       progress: 65,
       arrowIcon: "fas fa-arrow-up",
       percentageChange: "2.37%",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-6"
+      progressBarClass: "bg-6",
     },
     {
       iconClass: "fas fa-users",
       title: "Inactive Users",
-      count: "1,041",
+      count: adminData.TotalInActiveUsercount,
       progress: 85,
       arrowIcon: "fas fa-arrow-up",
       percentageChange: "3.77%",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-7"
-    }
+      progressBarClass: "bg-7",
+    },
   ];
 
   return (
     <div className="main-wrapper">
-      <div >
+      <div>
         <div className="content container-fluid">
-
-          <div className='row'>
-
-            <div className='col-md-3'>
-              <div className='card'>
+          <div className="row">
+            <div className="col-md-3">
+              <div className="card">
                 <div className="col card-header">
                   <h5 className="card-title">Admin Dashboard</h5>
                 </div>
-                <div data-aos="fade-down" className="gif-div " style={{ height: '300px' }}>
+                <div
+                  data-aos="fade-down"
+                  className="gif-div "
+                  style={{ height: "300px" }}
+                >
                   <iframe src="https://lottie.host/embed/1bc48686-c5b0-401d-ae40-9b241c697e31/qa4LRQq6FD.json"></iframe>
                 </div>
               </div>
             </div>
 
-            <div className='col-md-9'>
-
+            <div className="col-md-9">
               <div className="row" data-aos="fade-down">
                 {cardsData.map((data, index) => (
                   <div className="col-xl-4 col-sm-6 col-12" key={index}>
                     <div className="card">
                       <div className="card-body">
                         <div className="dash-widget-header">
-                          <span className={`dash-widget-icon ${data.progressBarClass}`}>
+                          <span
+                            className={`dash-widget-icon ${data.progressBarClass}`}
+                          >
                             <i className={data.iconClass} />
                           </span>
                           <div className="dash-count">
@@ -123,9 +153,7 @@ const Overview = () => {
                   </div>
                 ))}
               </div>
-
             </div>
-
           </div>
 
           {/* <div className="row" data-aos="fade-left">
@@ -605,11 +633,6 @@ const Overview = () => {
             </div>
             
           </div> */}
-
-
-
-
-
           <div className="row" data-aos="fade-left">
             <div className="col-xl-6 d-flex">
               <div className="card flex-fill">
@@ -631,28 +654,13 @@ const Overview = () => {
                         aria-labelledby="dropdownMenuButton1"
                       >
                         <li>
-                          <a
-
-                            className="dropdown-item"
-                          >
-                            Weekly
-                          </a>
+                          <a className="dropdown-item">Weekly</a>
                         </li>
                         <li>
-                          <a
-
-                            className="dropdown-item"
-                          >
-                            Monthly
-                          </a>
+                          <a className="dropdown-item">Monthly</a>
                         </li>
                         <li>
-                          <a
-
-                            className="dropdown-item"
-                          >
-                            Yearly
-                          </a>
+                          <a className="dropdown-item">Yearly</a>
                         </li>
                       </ul>
                     </div>
@@ -690,8 +698,10 @@ const Overview = () => {
                         </div>
                       </div>
                     </div>
-                    <div className='gif-div' style={{ height: '400px', marginTop: '-60px' }}>
-
+                    <div
+                      className="gif-div"
+                      style={{ height: "400px", marginTop: "-60px" }}
+                    >
                       <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
                     </div>
                   </div>
@@ -699,12 +709,10 @@ const Overview = () => {
               </div>
             </div>
           </div>
-
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default Overview
+export default Overview;

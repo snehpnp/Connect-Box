@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
-import { IndianRupee } from 'lucide-react';
+import { IndianRupee } from "lucide-react";
 
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -16,7 +16,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   GetAllSubAdmin,
-  update_Balance,Show_Status
+  update_Balance,
+  Show_Status,
 } from "../../../ReduxStore/Slice/Admin/Subadmins";
 
 import { fDateTime } from "../../../Utils/Date_formet";
@@ -142,7 +143,11 @@ export default function Help() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          <span class="text-success-light">  <IndianRupee style={{ height: "19px" }} />{params.value || '-'}</span>
+          <span class="text-success-light">
+            {" "}
+            <IndianRupee style={{ height: "19px" }} />
+            {params.value || "-"}
+          </span>
           <AccountBalanceWalletIcon
             size="small"
             onClick={() => handleBalance(params.row)}
@@ -199,11 +204,9 @@ export default function Help() {
     });
   };
 
-  const handleSwitchChange = async (event,id) => {
+  const handleSwitchChange = async (event, id) => {
     const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
-    const response = await dispatch(
-      Show_Status({ id, user_active_status })
-    );
+    const response = await dispatch(Show_Status({ id, user_active_status }));
     if (response.status) {
       toast.success(response.msg);
       setTimeout(() => {
@@ -213,43 +216,49 @@ export default function Help() {
       toast.error(response.msg);
     }
   };
-  
-  
 
   const getSubadminData = async () => {
     await dispatch(GetAllSubAdmin())
       .unwrap()
       .then(async (response) => {
-
         if (response.status) {
-
-          const formattedData = response.data && response.data.map((row, index) => ({
-            ...row,
-            id: index + 1,
-          }));
+          const formattedData =
+            response.data &&
+            response.data.map((row, index) => ({
+              ...row,
+              id: index + 1,
+            }));
 
           setAllSubadmins({
             loading: true,
             data: formattedData,
             data1: [
-              { name: "Total Subadmins", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
-              { name: "Active Subadmins", count: response.ActiveCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
+              {
+                name: "Total Subadmins",
+                count: response.totalCount || 0,
+                Icon: "fe fe-life-buoy",
+                color: "#ec8000",
+              },
+              {
+                name: "Active Subadmins",
+                count: response.ActiveCount || 0,
+                Icon: "fe fe-check-square",
+                color: "#1e8edf",
+              },
               {
                 name: "InActive Subadmins",
-                count: response.InActiveCount || 0
-                , Icon: "fe fe-x-circle",
-                color: "#ed3a3a"
+                count: response.InActiveCount || 0,
+                Icon: "fe fe-x-circle",
+                color: "#ed3a3a",
               },
               {
                 name: "Total Used Balance",
-                count: response.ActiveUseBalance || 0
-                , Icon: "fas fa-dollar-sign"
-                , color: "#1d8147"
-
+                count: response.ActiveUseBalance || 0,
+                Icon: "fas fa-dollar-sign",
+                color: "#1d8147",
               },
             ],
           });
-
         } else {
           setAllSubadmins({
             loading: false,
@@ -410,10 +419,15 @@ export default function Help() {
                           <div className="grid-info-item total-items">
                             <div className="grid-info">
                               <span>{data.name}</span>
-                              <h4 style={{ color: data.color }} >{data.count}</h4>
+                              <h4 style={{ color: data.color }}>
+                                {data.count}
+                              </h4>
                             </div>
                             <div className="grid-head-icon">
-                              <i className={data.Icon} style={{ color: data.color }} />
+                              <i
+                                className={data.Icon}
+                                style={{ color: data.color }}
+                              />
                             </div>
                           </div>
                         </div>
