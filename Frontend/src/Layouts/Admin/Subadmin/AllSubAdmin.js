@@ -111,7 +111,7 @@ export default function Help() {
       renderCell: (params) => (
         <div onClick={() => { setmodal(true); setInitialRowData(params.row); }}>
           <span className="text-success-light">
-            <IndianRupee style={{ height: "19px" }} />
+            <IndianRupee style={{ height: "19px" }} /> 
             {params.value || '-'}
           </span>
         </div>

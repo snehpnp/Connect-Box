@@ -64,8 +64,6 @@ const DynamicForm = ({
     const file = event.target.files[0];
     setSelectedImage(file);
   };
-  console.log("fields :", fields)
-
 
 
 
@@ -180,7 +178,7 @@ const DynamicForm = ({
                                   <img
                                     id="blah"
                                     className="avatar"
-                                    src={ProfileShow ? ProfileShow : "assets/img/profiles/avatar-14.jpg"}
+                                    src={formik.values[field.name] ? formik.values[field.name] : "assets/img/profiles/avatar-14.jpg"}
                                     alt="profile-img"
                                   />
                                 </div>

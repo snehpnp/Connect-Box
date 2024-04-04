@@ -438,7 +438,7 @@ function Strategy() {
 
 
 
-    
+
 
     const forCSVdata = () => {
         let csvArr = []
@@ -553,7 +553,7 @@ function Strategy() {
                         </div>
                     </div>
                 </div>
-                {
+                {/* {
                     allStategy.loading ? (
                         <FullDataTable
                             styles={styles}
@@ -562,10 +562,98 @@ function Strategy() {
                             checkboxSelection={false}
 
                         />) : <Loader />
-                }
+                } */}
 
-                {/* CARD MODAL */}
+                <div>
+                    <div className="content container-fluid pb-0">
 
+
+
+                        <div className="row d-flex align-items-center justify-content-center">
+
+                            {allStategy.data.map((stg) => {
+                                return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                    <div className="packages card">
+                                        <div className="package-header d-flex justify-content-between">
+                                            <div className="d-flex justify-content-between w-100">
+                                                <div className="">
+                                                    <h4>{stg.strategy_name}</h4>
+                                                    <p>Segment: {stg.strategy_segment}</p>
+                                                    <p>Category: {stg.strategy_category}</p>
+                                                </div>
+                                                <span className="icon-frame d-flex align-items-center justify-content-center">
+                                                    <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <p>{stg.strategy_description}</p>
+
+                                        <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
+                                        <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                                <span style={{ color: '#333' }}>Demo</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>Free</span>
+                                            </li>
+                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                                <span style={{ color: '#333' }}>Month</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$10/month</span>
+                                            </li>
+                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                                <span style={{ color: '#333' }}>Quarterly</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$25/quarter</span>
+                                            </li>
+                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                                <span style={{ color: '#333' }}>Half Yearly</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$45/half year</span>
+                                            </li>
+                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                                <span style={{ color: '#333' }}>Yearly</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$80/year</span>
+                                            </li>
+                                        </ul>
+
+                                        <div className="d-flex justify-content-center package-edit">
+                                            <a
+                                                className="btn-action-icon me-2"
+                                                href="javascript:void(0);"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#edit_package"
+                                            >
+                                                <i className="fe fe-eye" />
+                                            </a>
+                                            <a
+                                                className="btn-action-icon me-2"
+                                                href="javascript:void(0);"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#edit_package"
+                                            >
+                                                <i className="fe fe-edit" />
+                                            </a>
+                                            <a
+                                                className="btn-action-icon"
+                                                href="javascript:void(0);"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#delete_modal"
+                                            >
+                                                <i className="fe fe-trash-2" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            })}
+
+
+
+                        </div>
+                    </div>
+
+
+                </div>
 
                 {showModal && (
                     <div className="modal custom-modal custom-lg-modal d-block">
@@ -583,6 +671,8 @@ function Strategy() {
                                 </div>
                                 <div className="modal-body m-0 p-0">
                                     <AddForm
+                                        ProfileShow={formik.values.strategy_image}
+
                                         fields={fields}
                                         formik={formik}
                                         btn_name="Add Strategy"
