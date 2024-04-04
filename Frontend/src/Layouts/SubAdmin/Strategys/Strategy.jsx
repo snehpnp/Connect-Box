@@ -16,20 +16,32 @@ import ExportToExcel from '../../../Utils/ExportCSV'
 
 function Strategy() {
 
-    const [showModal, setShowModal] = useState(false);
     const dispatch = useDispatch();
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedRow, setSelectedRow] = useState(null);
+    const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+
     const [searchInput, setSearchInput] = useState("");
+    const [showModal, setShowModal] = useState(false);
     const [opneModal, setopneModal] = useState(false);
+    const [deleteModal, setdeleteModal] = useState(false);
+    const [editeModal, seteditModal] = useState(false);
+
 
 
     const [refresh, setrefresh] = useState(false);
+    const [modalId, setModalId] = useState(null);
+    const [modaldata, setmodaldata] = useState(null);
+
+
+
     const [ForGetCSV, setForGetCSV] = useState([])
 
+    const [allStategy, setAllStategy] = useState({
+        loading: false,
+        data: [],
+    });
 
-    console.log("opneModal", opneModal)
+
 
     // Function to open the modal
     const openModal = () => {
@@ -43,139 +55,22 @@ function Strategy() {
 
 
 
-
-
-    const [allStategy, setAllStategy] = useState({
-        loading: false,
-        data: [],
-    });
-
-
-
-    const handleOpenModal = (rowData) => {
-        setSelectedRow(rowData)
-        setIsModalOpen(true);
-    };
-
-
-    const styles = {
-        container: {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '80vh',
-        },
-        card: {
-            width: 'auto',
-        },
-        boldHeader: {
-            fontWeight: 'bold',
-        },
-        headerButton: {
-            marginRight: 12,
-        },
-    };
-
-
-
     const handleDelete = async (row) => {
         var req = {
             _id: row._id,
         };
-        if (window.confirm("Do you want to delete this User ?")) {
-            await dispatch(DELETE_STRATEGY(req))
-                .unwrap()
-                .then((response) => {
-                    if (response.status) {
-                        toast.success(response.msg);
-                        setrefresh(!refresh)
-                    } else {
-                        toast.error(response.msg);
+        await dispatch(DELETE_STRATEGY(req))
+            .unwrap()
+            .then((response) => {
+                if (response.status) {
+                    toast.success(response.msg);
+                    setrefresh(!refresh)
+                } else {
+                    toast.error(response.msg);
 
-                    }
-                });
-        } else {
-            return
-        }
+                }
+            });
     };
-
-
-
-
-
-    const handleEdit = (row) => {
-        // Handle delete action
-        console.log('Delete row:', row);
-    };
-
-
-    const columns = [
-        { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
-        {
-            field: 'strategy_name',
-            headerName: 'Strategy Name',
-            width: 250,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    {params.value}
-                </div>
-            )
-        },
-        {
-            field: 'strategy_description',
-            headerName: 'Strategy Description',
-            width: 400,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    {params.value}
-                </div>
-            )
-        },
-        {
-            field: 'strategy_category',
-            headerName: 'Strategy Category',
-            width: 250,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    {params.value || '-'}
-                </div>
-            )
-        },
-        {
-            field: 'strategy_segment',
-            headerName: 'Strategy Segment',
-            width: 150,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    {params.value || '-'}
-                </div>
-            )
-        },
-        {
-            field: 'actions',
-            headerName: 'Actions',
-            width: 200,
-            renderCell: (params) => (
-                <div>
-                    <IconButton aria-label="edit" size="small" onClick={() => handleEdit(params.row)}>
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton aria-label="delete" size="small" onClick={() => handleDelete(params.row)}>
-                        <DeleteIcon />
-                    </IconButton>
-                </div>
-            ),
-            headerClassName: styles.boldHeader,
-        },
-
-    ];
-
-    const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
-
 
 
 
@@ -441,8 +336,6 @@ function Strategy() {
 
 
 
-
-
     const forCSVdata = () => {
         let csvArr = []
         if (allStategy.data.length > 0) {
@@ -463,6 +356,8 @@ function Strategy() {
     useEffect(() => {
         forCSVdata()
     }, [allStategy.data])
+
+
 
 
 
@@ -556,106 +451,82 @@ function Strategy() {
                         </div>
                     </div>
                 </div>
-                {/* {
-                    allStategy.loading ? (
-                        <FullDataTable
-                            styles={styles}
-                            columns={columns}
-                            rows={allStategy.data}
-                            checkboxSelection={false}
 
-                        />) : <Loader />
-                } */}
+                {/* Cards */}
+                <div className="content container-fluid pb-0">
+                    <div className="row d-flex align-items-center justify-content-center">
 
-                <div>
-                    <div className="content container-fluid pb-0">
-
-
-
-                        <div className="row d-flex align-items-center justify-content-center">
-
-                            {allStategy.data.map((stg) => {
-                                return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                    <div className="packages card">
-                                        <div className="package-header d-flex justify-content-between">
-                                            <div className="d-flex justify-content-between w-100">
-                                                <div className="">
-                                                    <h4>{stg.strategy_name}</h4>
-                                                    <p>Segment: {stg.strategy_segment}</p>
-                                                    <p>Category: {stg.strategy_category}</p>
-                                                </div>
-                                                <span className="icon-frame d-flex align-items-center justify-content-center">
-                                                    <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
-                                                </span>
+                        {allStategy.data.map((stg) => {
+                            return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                <div className="packages card">
+                                    <div className="package-header d-flex justify-content-between">
+                                        <div className="d-flex justify-content-between w-100">
+                                            <div className="">
+                                                <h4>{stg.strategy_name}</h4>
+                                                <p>Segment: {stg.strategy_segment}</p>
+                                                <p>Category: {stg.strategy_category}</p>
                                             </div>
-                                        </div>
-                                        <p>{stg.strategy_description}</p>
-
-                                        <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
-                                        <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
-                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                                <span style={{ color: '#333' }}>Demo</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>Free</span>
-                                            </li>
-                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                                <span style={{ color: '#333' }}>Month</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$10/month</span>
-                                            </li>
-                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                                <span style={{ color: '#333' }}>Quarterly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$25/quarter</span>
-                                            </li>
-                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                                <span style={{ color: '#333' }}>Half Yearly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$45/half year</span>
-                                            </li>
-                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                                <span style={{ color: '#333' }}>Yearly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$80/year</span>
-                                            </li>
-                                        </ul>
-
-                                        <div className="d-flex justify-content-center package-edit">
-                                            <a
-                                                className="btn-action-icon me-2"
-                                                onClick={() => setopneModal(true)}
-                                            >
-                                                <i className="fe fe-eye" />
-                                            </a>
-                                            <a
-                                                className="btn-action-icon me-2"
-                                                href="javascript:void(0);"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#edit_package"
-                                            >
-                                                <i className="fe fe-edit" />
-                                            </a>
-                                            <a
-                                                className="btn-action-icon"
-                                                href="javascript:void(0);"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#delete_modal"
-                                            >
-                                                <i className="fe fe-trash-2" />
-                                            </a>
+                                            <span className="icon-frame d-flex align-items-center justify-content-center">
+                                                <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
+                                            </span>
                                         </div>
                                     </div>
+                                    <p>{stg.strategy_description}</p>
+
+                                    <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
+                                    <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                            <span style={{ color: '#333' }}>Demo</span>
+                                            <span style={{ marginLeft: 'auto', color: '#999' }}>Free</span>
+                                        </li>
+                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                            <span style={{ color: '#333' }}>Month</span>
+                                            <span style={{ marginLeft: 'auto', color: '#999' }}>$10/month</span>
+                                        </li>
+                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                            <span style={{ color: '#333' }}>Quarterly</span>
+                                            <span style={{ marginLeft: 'auto', color: '#999' }}>$25/quarter</span>
+                                        </li>
+                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                            <span style={{ color: '#333' }}>Half Yearly</span>
+                                            <span style={{ marginLeft: 'auto', color: '#999' }}>$45/half year</span>
+                                        </li>
+                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                            <span style={{ color: '#333' }}>Yearly</span>
+                                            <span style={{ marginLeft: 'auto', color: '#999' }}>$80/year</span>
+                                        </li>
+                                    </ul>
+
+                                    <div className="d-flex justify-content-center package-edit">
+                                        <a className="btn-action-icon me-2" onClick={() => setopneModal(true)} >
+                                            <i className="fe fe-eye" />
+                                        </a>
+
+                                        <a className="btn-action-icon me-2"  >
+                                            <i className="fe fe-edit" onClick={() => { seteditModal(true); setmodaldata(stg); }} />
+                                        </a>
+
+                                        <a className="btn-action-icon" onClick={() => { setdeleteModal(true); setModalId(stg._id); }}  >
+                                            <i className="fe fe-trash-2" />
+                                        </a>
+                                    </div>
                                 </div>
-                            })}
+                            </div>
+                        })}
 
 
 
-                        </div>
                     </div>
-
-
                 </div>
 
+
+
+                {/* ADD STRATEGY */}
                 {showModal && (
                     <div className="modal custom-modal custom-lg-modal d-block">
                         <div className="modal-dialog modal-dialog-centered modal-md">
@@ -686,7 +557,67 @@ function Strategy() {
                 )}
 
 
+                {/* EDIT STRATEGY */}
+                {editeModal && (
+                    <div className="modal custom-modal custom-lg-modal d-block">
+                        <div className="modal-dialog modal-dialog-centered modal-md">
+                            <div className="modal-content">
+                                <div className="modal-header border-0 mb-0 pb-0 pt-5 mx-3">
+                                    <div className="form-header modal-header-title text-start mb-0">
+                                        <h4 className="mb-0">Edit Strategy</h4>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        className="btn-close"
+                                        onClick={seteditModal(false)}
+                                    ></button>
+                                </div>
+                                <div className="modal-body m-0 p-0">
+                                    <AddForm
+                                        ProfileShow={formik.values.strategy_image}
 
+                                        fields={fields}
+                                        formik={formik}
+                                        btn_name="Add Strategy"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                )}
+
+
+
+                {/* CONFIRM BOX */}
+                {deleteModal && (
+                    <div className="modal custom-modal modal-delete d-block" >
+                        <div className="modal-dialog modal-dialog-centered modal-md">
+                            <div className="modal-content">
+                                <div className="modal-body">
+                                    <div className="form-header">
+                                        <div className="delete-modal-icon">
+                                            <span>
+                                                <i className="fe fe-check-circle" />
+                                            </span>
+                                        </div>
+                                        <h3>Are You Sure?</h3>
+                                        <p>You want delete company</p>
+                                    </div>
+                                    <div className="modal-btn delete-action">
+                                        <div className="modal-footer justify-content-center p-0">
+                                            <button type="submit" onClick={handleDelete} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
+                                            <button type="button" onClick={() => setdeleteModal(false)} className="btn btn-back cancel-btn">No, Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+
+                {/* STRATEGY VIEW */}
                 {opneModal && (
                     <div
                         className="modal custom-modal custom-lg-modal d-block"
@@ -712,7 +643,7 @@ function Strategy() {
                                         <button
                                             type="button"
                                             className="btn-close ms-2"
-                                         onClick={()=>setopneModal(false)}
+                                            onClick={() => setopneModal(false)}
                                         ></button>
                                     </div>
                                 </div>
@@ -841,11 +772,9 @@ function Strategy() {
                 )}
 
 
+
+
             </div>
-
-
-
-
 
         </>
 
