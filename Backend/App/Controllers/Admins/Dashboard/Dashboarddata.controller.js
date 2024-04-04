@@ -19,7 +19,7 @@ class Dashboard {
           $facet: {
             Totalcount: [{ $match: { Role: "SUBADMIN" } }, { $count: "count" }],
             TotalActivecount: [
-              { $match: { Role: "SUBADMIN", Is_Active: "1" } },
+              { $match: { Role: "SUBADMIN", ActiveStatus: "1" } },
               { $count: "count" },
             ],
             TotalUsercount: [{ $match: { Role: "USER" } }, { $count: "count" }],
@@ -27,7 +27,7 @@ class Dashboard {
               {
                 $match: {
                   Role: "USER",
-                  Is_Active: "1",
+                  ActiveStatus: "1",
                   $or: [{ End_Date: { $gte: new Date() } }, { End_Date: null }],
                 },
               },

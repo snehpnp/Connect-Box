@@ -148,10 +148,26 @@ export default function Help() {
             <IndianRupee style={{ height: "19px" }} />
             {params.value || "-"}
           </span>
+          <div style={{
+        width: '40px', // Adjust size of circle as needed
+        height: '40px', // Adjust size of circle as needed
+        backgroundColor: '#333', // Charcoal background color
+        borderRadius: '50%', // Make it a circle
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+      }}>
           <AccountBalanceWalletIcon
+            style={{
+              color: "#f0f0f0",
+              fontSize: "24px",
+            }}
             size="small"
             onClick={() => handleBalance(params.row)}
           />{" "}
+          </div>
+          
         </div>
       ),
     },

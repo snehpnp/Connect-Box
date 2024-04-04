@@ -8,6 +8,28 @@ const Overview = () => {
   const [adminData, setAdminData] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const maxPercentage = 10;
+  const calculatePercentage = (count) =>
+    count !== undefined && count !== null
+      ? (count / maxPercentage) * 100
+      : null;
+
+  const percentages = {
+    percentage: calculatePercentage(adminData.Totalcount),
+    percentage1: calculatePercentage(adminData.TotalActivecount),
+    percentage3: calculatePercentage(adminData.TotalInActivecount),
+    percentage4: calculatePercentage(adminData.TotalUsercount),
+    percentage5: calculatePercentage(adminData.TotalActiveUsercount),
+    percentage6: calculatePercentage(adminData.TotalInActiveUsercount),
+  };
+  const {
+    percentage,
+    percentage1,
+    percentage3,
+    percentage4,
+    percentage5,
+    percentage6,
+  } = percentages;
 
   useEffect(() => {
     dashData();
@@ -37,11 +59,18 @@ const Overview = () => {
         adminData.Totalcount !== undefined
           ? adminData.Totalcount
           : "Loading...",
-      progress: 75,
-      arrowIcon: "fas fa-arrow-down",
-      percentageChange: "1.15%",
+      progress: percentage !== null ? percentage : 0,
+      arrowIcon:
+        adminData.Totalcount !== undefined &&
+        percentage !== null &&
+        percentage < 100
+          ? "fas fa-arrow-down"
+          : "fas fa-arrow-up",
+      percentageChange:
+        percentage !== null ? `${Math.round(percentage / 10) * 10}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-5",
+      progressBarClass:
+        percentage !== null && percentage < 100 ? "bg-5" : "bg-6",
     },
     {
       iconClass: "fas fa-users",
@@ -50,11 +79,18 @@ const Overview = () => {
         adminData.TotalActivecount !== undefined
           ? adminData.TotalActivecount
           : "Loading...",
-      progress: 65,
-      arrowIcon: "fas fa-arrow-up",
-      percentageChange: "2.37%",
+      progress: percentage1 !== null ? percentage1 : 0,
+      arrowIcon:
+        adminData.TotalActivecount !== undefined &&
+        percentage1 !== null &&
+        percentage1 < 100
+          ? "fas fa-arrow-down"
+          : "fas fa-arrow-up",
+      percentageChange:
+        percentage1 !== null ? `${Math.round(percentage1 / 10) * 10}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-6",
+      progressBarClass:
+        percentage1 !== null && percentage1 < 100 ? "bg-5" : "bg-6",
     },
     {
       iconClass: "fas fa-users",
@@ -63,11 +99,18 @@ const Overview = () => {
         adminData.TotalInActivecount !== undefined
           ? adminData.TotalInActivecount
           : "Loading...",
-      progress: 85,
-      arrowIcon: "fas fa-arrow-up",
-      percentageChange: "3.77%",
+      progress: percentage3 !== null ? percentage3 : 0,
+      arrowIcon:
+        adminData.TotalActivecount !== undefined &&
+        percentage3 !== null &&
+        percentage3 < 100
+          ? "fas fa-arrow-down"
+          : "fas fa-arrow-up",
+      percentageChange:
+        percentage3 !== null ? `${Math.round(percentage3 / 10) * 10}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-7",
+      progressBarClass:
+        percentage3 !== null && percentage3 < 100 ? "bg-5" : "bg-6",
     },
     {
       iconClass: "fas fa-users",
@@ -76,11 +119,18 @@ const Overview = () => {
         adminData.TotalUsercount !== undefined
           ? adminData.TotalUsercount
           : "Loading...",
-      progress: 75,
-      arrowIcon: "fas fa-arrow-down",
-      percentageChange: "1.15%",
+      progress: percentage4 !== null ? percentage4 : 0,
+      arrowIcon:
+        adminData.TotalUsercount !== undefined &&
+        percentage4 !== null &&
+        percentage4 < 100
+          ? "fas fa-arrow-down"
+          : "fas fa-arrow-up",
+      percentageChange:
+        percentage4 !== null ? `${Math.round(percentage4 / 10) * 10}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-5",
+      progressBarClass:
+        percentage4 !== null && percentage4 < 100 ? "bg-5" : "bg-6",
     },
     {
       iconClass: "fas fa-users",
@@ -89,11 +139,18 @@ const Overview = () => {
         adminData.TotalActiveUsercount !== undefined
           ? adminData.TotalActiveUsercount
           : "Loading...",
-      progress: 65,
-      arrowIcon: "fas fa-arrow-up",
-      percentageChange: "2.37%",
+      progress: percentage5 !== null ? percentage5 : 0,
+      arrowIcon:
+        adminData.TotalActiveUsercount !== undefined &&
+        percentage5 !== null &&
+        percentage5 < 100
+          ? "fas fa-arrow-down"
+          : "fas fa-arrow-up",
+      percentageChange:
+        percentage5 !== null ? `${Math.round(percentage5 / 10) * 10}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-6",
+      progressBarClass:
+        percentage5 !== null && percentage5 < 100 ? "bg-5" : "bg-6",
     },
     {
       iconClass: "fas fa-users",
@@ -102,11 +159,18 @@ const Overview = () => {
         adminData.TotalInActiveUsercount !== undefined
           ? adminData.TotalInActiveUsercount
           : "Loading...",
-      progress: 85,
-      arrowIcon: "fas fa-arrow-up",
-      percentageChange: "3.77%",
+      progress: percentage6 !== null ? percentage6 : 0,
+      arrowIcon:
+        adminData.TotalInActiveUsercount !== undefined &&
+        percentage6 !== null &&
+        percentage6 < 100
+          ? "fas fa-arrow-down"
+          : "fas fa-arrow-up",
+      percentageChange:
+        percentage6 !== null ? `${Math.round(percentage6 / 10) * 10}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-7",
+      progressBarClass:
+        percentage6 !== null && percentage6 < 100 ? "bg-5" : "bg-6",
     },
   ];
   return (
