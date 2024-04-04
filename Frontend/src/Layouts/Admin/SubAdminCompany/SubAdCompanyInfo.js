@@ -11,9 +11,9 @@ import CompanyChange from '../../../Components/ExtraComponents/Models/CompanyCha
 function Payment() {
   const dispatch = useDispatch();
 
-  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-  const [refresh, setrefresh] = useState(false); 
+  const [refresh, setrefresh] = useState(false);
 
 
   const [companyData, setCompanyData] = useState({
@@ -27,7 +27,7 @@ function Payment() {
 
     setSelectedRow(rowData)
     setIsModalOpen(true);
-    
+
   };
 
 
@@ -53,14 +53,14 @@ function Payment() {
   const columns = [
     { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
     {
-      field: 'profile',
-      headerName: 'Profile',
+      field: 'logo',
+      headerName: 'Company Logo',
       width: 120,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           <a href="profile.html" className="company-avatar avatar-md me-2 companies company-icon">
-            <img className="avatar-img rounded-circle company" src="assets/img/companies/company-05.svg" alt="Company Image" />
+            <img className="avatar-img rounded-circle company" src={params.value ? params.value : "assets/img/companies/company-05.svg"} alt="Company Image" />
           </a>
         </div>
       )
@@ -109,7 +109,7 @@ function Payment() {
         </div>
       )
     },
-   
+
     {
       field: "change",
       headerName: "Change",
@@ -186,34 +186,35 @@ function Payment() {
   }, [refresh]);
 
 
+  console.log("companyData", companyData);
 
   return (
     <>
-    {companyData.loading ? (
-      <Content
-        Card_title="Subadmin Details"
-        Card_title_icon="fa-solid fa-users-gear pe-2"
-        Content={
-          <FullDataTable
-            styles={styles}
-            columns={columns}
-            rows={companyData.data}
-            checkboxSelection={false}
-            
-          />
-        }
-      />
-    ) : (
-      <Loader />
-    )}
-    {isModalOpen && selectedRow && (
-      <CompanyChange
-        rowData={selectedRow}
-        onClose={() => (setIsModalOpen(false),setrefresh(!refresh))}
-        
-      />
-    )}
-  </>
+      {companyData.loading ? (
+        <Content
+          Card_title="Subadmin Details"
+          Card_title_icon="fa-solid fa-users-gear pe-2"
+          Content={
+            <FullDataTable
+              styles={styles}
+              columns={columns}
+              rows={companyData.data}
+              checkboxSelection={false}
+
+            />
+          }
+        />
+      ) : (
+        <Loader />
+      )}
+      {isModalOpen && selectedRow && (
+        <CompanyChange
+          rowData={selectedRow}
+          onClose={() => (setIsModalOpen(false), setrefresh(!refresh))}
+
+        />
+      )}
+    </>
   );
 }
 

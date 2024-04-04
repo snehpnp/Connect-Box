@@ -11,7 +11,7 @@ const StockOutModal = ({ rowData, onClose }) => {
   const dispatch = useDispatch();
 
 
-  console.log("rowData", rowData)
+  // console.log("rowData", rowData)
 
   const formik = useFormik({
     initialValues: {
@@ -71,7 +71,7 @@ const StockOutModal = ({ rowData, onClose }) => {
         }
       };
 
-      console.log("updatedData", updatedData);
+      // console.log("updatedData", updatedData);
 
 
       setSubmitting(false);
@@ -123,16 +123,9 @@ const StockOutModal = ({ rowData, onClose }) => {
       col_size: 6,
       disable: false,
     },
+  
     {
       name: "smtp_password",
-      label: "smtp_password* ",
-      type: "password",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-    {
-      name: "razorpay_key",
       label: "Email Password* ",
       type: "password",
       label_size: 12,
@@ -189,7 +182,7 @@ const StockOutModal = ({ rowData, onClose }) => {
 
   useEffect(() => {
 
-    console.log("==>", rowData !== undefined && rowData.email)
+    // console.log("==>", rowData !== undefined && rowData.email)
 
     formik.setFieldValue("profile_img", rowData !== undefined && rowData.logo);
 
