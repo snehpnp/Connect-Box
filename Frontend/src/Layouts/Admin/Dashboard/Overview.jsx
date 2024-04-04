@@ -33,7 +33,10 @@ const Overview = () => {
     {
       iconClass: "fas fa-users",
       title: "Total Subadmins",
-      count: adminData.Totalcount || "Loading...",
+      count:
+        adminData.Totalcount !== undefined
+          ? adminData.Totalcount
+          : "Loading...",
       progress: 75,
       arrowIcon: "fas fa-arrow-down",
       percentageChange: "1.15%",
@@ -43,7 +46,10 @@ const Overview = () => {
     {
       iconClass: "fas fa-users",
       title: "Active Subadmins",
-      count: adminData.TotalActivecount || "Loading...",
+      count:
+        adminData.TotalActivecount !== undefined
+          ? adminData.TotalActivecount
+          : "Loading...",
       progress: 65,
       arrowIcon: "fas fa-arrow-up",
       percentageChange: "2.37%",
@@ -53,7 +59,10 @@ const Overview = () => {
     {
       iconClass: "fas fa-users",
       title: "Inactive Subadmins",
-      count: adminData.TotalInActivecount || "Loading...",
+      count:
+        adminData.TotalInActivecount !== undefined
+          ? adminData.TotalInActivecount
+          : "Loading...",
       progress: 85,
       arrowIcon: "fas fa-arrow-up",
       percentageChange: "3.77%",
@@ -63,7 +72,10 @@ const Overview = () => {
     {
       iconClass: "fas fa-users",
       title: "Total Users",
-      count: adminData.TotalUsercount || "Loading...",
+      count:
+        adminData.TotalUsercount !== undefined
+          ? adminData.TotalUsercount
+          : "Loading...",
       progress: 75,
       arrowIcon: "fas fa-arrow-down",
       percentageChange: "1.15%",
@@ -73,7 +85,10 @@ const Overview = () => {
     {
       iconClass: "fas fa-users",
       title: "Active Users",
-      count: adminData.TotalActiveUsercount || "Loading...",
+      count:
+        adminData.TotalActiveUsercount !== undefined
+          ? adminData.TotalActiveUsercount
+          : "Loading...",
       progress: 65,
       arrowIcon: "fas fa-arrow-up",
       percentageChange: "2.37%",
@@ -83,7 +98,10 @@ const Overview = () => {
     {
       iconClass: "fas fa-users",
       title: "Inactive Users",
-      count: adminData.TotalInActiveUsercount || "Loading...",
+      count:
+        adminData.TotalInActiveUsercount !== undefined
+          ? adminData.TotalInActiveUsercount
+          : "Loading...",
       progress: 85,
       arrowIcon: "fas fa-arrow-up",
       percentageChange: "3.77%",
@@ -91,7 +109,6 @@ const Overview = () => {
       progressBarClass: "bg-7",
     },
   ];
-
   return (
     <div className="main-wrapper">
       <div>
