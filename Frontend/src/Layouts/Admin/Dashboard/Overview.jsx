@@ -33,7 +33,7 @@ const Overview = () => {
     {
       iconClass: "fas fa-users",
       title: "Total Subadmins",
-      count: adminData.Totalcount,
+      count: adminData.Totalcount || "Loading...",
       progress: 75,
       arrowIcon: "fas fa-arrow-down",
       percentageChange: "1.15%",
@@ -43,7 +43,7 @@ const Overview = () => {
     {
       iconClass: "fas fa-users",
       title: "Active Subadmins",
-      count: adminData.TotalActivecount,
+      count: adminData.TotalActivecount || "Loading...",
       progress: 65,
       arrowIcon: "fas fa-arrow-up",
       percentageChange: "2.37%",
@@ -53,7 +53,7 @@ const Overview = () => {
     {
       iconClass: "fas fa-users",
       title: "Inactive Subadmins",
-      count: adminData.TotalInActivecount,
+      count: adminData.TotalInActivecount || "Loading...",
       progress: 85,
       arrowIcon: "fas fa-arrow-up",
       percentageChange: "3.77%",
@@ -63,7 +63,7 @@ const Overview = () => {
     {
       iconClass: "fas fa-users",
       title: "Total Users",
-      count: adminData.TotalUsercount,
+      count: adminData.TotalUsercount || "Loading...",
       progress: 75,
       arrowIcon: "fas fa-arrow-down",
       percentageChange: "1.15%",
@@ -73,7 +73,7 @@ const Overview = () => {
     {
       iconClass: "fas fa-users",
       title: "Active Users",
-      count: adminData.TotalActiveUsercount,
+      count: adminData.TotalActiveUsercount || "Loading...",
       progress: 65,
       arrowIcon: "fas fa-arrow-up",
       percentageChange: "2.37%",
@@ -83,7 +83,7 @@ const Overview = () => {
     {
       iconClass: "fas fa-users",
       title: "Inactive Users",
-      count: adminData.TotalInActiveUsercount,
+      count: adminData.TotalInActiveUsercount || "Loading...",
       progress: 85,
       arrowIcon: "fas fa-arrow-up",
       percentageChange: "3.77%",
