@@ -183,75 +183,7 @@ function System() {
                                     </div>
 
                                 </div>
-                                {/* <div className="tab-pane" id="solid-tab2">
-                                    <div class="card-header d-flex justify-content-between align-items-center border-bottom">
-                                        <h5 class="card-title mb-0 w-auto"> <i className="fa-solid fa-envelope pe-2"></i> Email Information</h5>
-                                        <div className="pay-btn text-end w-auto">
-                                            <button className="btn btn-primary " data-bs-toggle="modal"
-                                                data-bs-target="#email">
-                                                Edit Email Information
-                                            </button>
-                                        </div>
-                                    </div>
-
-
-                                    <div className="invoice-total-box px-3 border">
-                                        <div className="invoice-total-inner">
-                                            <p>
-                                                Email ID <span>$120.00</span>
-                                            </p>
-                                            <p>
-                                                Email <span>$13.20</span>
-                                            </p>
-                                            <p>
-                                                CC <span>$0.00</span>
-                                            </p>
-                                            <p>
-                                                BCC <span>$0.00</span>
-                                            </p>
-                                            <p>
-                                                Password <span>$0.00</span>
-                                            </p>
-                                            <p>
-                                                SMTP Port <span>$0.00</span>
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div className="tab-pane" id="solid-tab3">
-                                    <div class="card-header d-flex justify-content-between align-items-center border-bottom">
-                                        <h5 class="card-title mb-0 w-auto">  <i class="fa-regular fa-image pe-2"></i> Background Images</h5>
-                                        <div className="pay-btn text-end w-auto">
-                                            <button className="btn btn-primary " data-bs-toggle="modal"
-                                                data-bs-target="#back">
-                                                Update Images
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div className="invoice-total-box px-3 border">
-                                        <div className="invoice-total-inner">
-                                            <p>
-                                                Id <span>$0.00</span>
-                                            </p>
-                                            <p>
-                                                Favicon <span>$120.00</span>
-                                            </p>
-                                            <p>
-                                                Logo <span>$13.20</span>
-                                            </p>
-                                            <p>
-                                                Login Image <span>$0.00</span>
-                                            </p>
-                                            <p>
-                                                Mark <span>$0.00</span>
-                                            </p>
-                                        </div>
-                                    </div>
-
-
-                                </div> */}
+                              
 
                             </div>
                         </div>

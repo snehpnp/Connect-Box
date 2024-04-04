@@ -1,74 +1,222 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SubadminDetail } from "../../../ReduxStore/Slice/Admin/SubAdminCompanyInfo";
 import { useDispatch } from "react-redux";
-
 import toast from "react-hot-toast";
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
+import AddForm from "../../../Components/ExtraComponents/forms/AddForm";
+import { useFormik } from "formik";
 
 const StockOutModal = ({ rowData, onClose }) => {
 
   const dispatch = useDispatch();
 
 
-  const initialFormData = rowData ? rowData : {}; // Initialize with companydata or empty object
-  const [formData, setFormData] = useState(initialFormData && initialFormData);
+  console.log("rowData", rowData)
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const formik = useFormik({
+    initialValues: {
+      profile_img: "",
+      email: "",
+      cc_mail: "",
+      bcc_mail: "",
+      razorpay_key: "",
+      smtphost: "",
+      smtpport: "",
+      smtp_password:""
 
-
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-
-    const updatedData = {
-      id: rowData._id,
-      companydata: {
-        email: formData.email || rowData.email,
-        smtp_password: formData.smtp_password || rowData.smtp_password,
-        cc_mail: formData.cc_mail || rowData.cc_mail,
-        bcc_mail: formData.bcc_mail || rowData.bcc_mail,
-        smtphost: formData.smtphost || rowData.smtphost,
-        smtpport: formData.smtpport || rowData.smtpport,
-        razorpay_key: formData.razorpay_key || rowData.razorpay_key,
-        logo: rowData.logo
+    },
+    validate: (values) => {
+      let errors = {};
+      if (!values.razorpay_key) {
+        errors.fullName = "Razor pay Key is required";
       }
-    };
+      if (!values.smtphost) {
+        errors.username = "SMTP  is required";
+      }
+      if (!values.email) {
+        errors.email = "Please enter your email address.";
+      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
+        errors.email = "Please enter a valid email address.";
+      }
+      if (!values.cc_mail) {
+        errors.cc_mail = "Please enter your cc_mail address.";
+      } else if (!/^\S+@\S+\.\S+$/.test(values.cc_mail)) {
+        errors.cc_mail = "Please enter a valid cc_mail address.";
+      }
 
-    console.log("updatedData", updatedData);
+
+      if (!values.bcc_mail) {
+        errors.bcc_mail = "Please enter your bcc_mail address.";
+      } else if (!/^\S+@\S+\.\S+$/.test(values.bcc_mail)) {
+        errors.bcc_mail = "Please enter a valid bcc_mail address.";
+      }
 
 
 
+      return errors;
+    },
+    onSubmit: async (values, { setSubmitting }) => {
 
-    await dispatch(SubadminDetail(updatedData))
-      .unwrap()
-      .then(async (response) => {
-
-
-        if (response.status) {
-          toast.success(response.msg);
-          onClose();
-        } else {
-          toast.error(response.msg);
+      const updatedData = {
+        id: rowData._id,
+        companydata: {
+          email: values.email || rowData.email,
+          smtp_password: values.smtp_password || rowData.smtp_password,
+          cc_mail: values.cc_mail || rowData.cc_mail,
+          bcc_mail: values.bcc_mail || rowData.bcc_mail,
+          smtphost: values.smtphost || rowData.smtphost,
+          smtpport: values.smtpport || rowData.smtpport,
+          razorpay_key: values.razorpay_key || rowData.razorpay_key,
+          logo: values.profile_img || rowData.profile_img
         }
+      };
 
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
+      console.log("updatedData", updatedData);
+
+
+      setSubmitting(false);
+
+      await dispatch(SubadminDetail(updatedData))
+        .unwrap()
+        .then(async (response) => {
+
+
+          if (response.status) {
+            toast.success(response.msg);
+            onClose();
+          } else {
+            toast.error(response.msg);
+          }
+
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
+    },
+  });
+
+  const fields = [
+    {
+      name: "profile_img",
+      label: "Profile Image",
+      type: "file",
+      label_size: 6,
+      col_size: 12,
+      disable: false,
+    },
+
+    {
+      name: "FullName",
+      label: "Subadmin Name",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: true,
+
+    },
+
+    {
+      name: "email",
+      label: "email",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "smtp_password",
+      label: "smtp_password* ",
+      type: "password",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "razorpay_key",
+      label: "Email Password* ",
+      type: "password",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "cc_mail",
+      label: "CC*",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "bcc_mail",
+      label: "BCC* ",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "razorpay_key",
+      label: "Razorpay key* ",
+      type: "password",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "smtphost",
+      label: "HOST* ",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "smtpport",
+      label: "PORT* ",
+      type: "number",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+
+
+
+
+  ];
+
+
+
+  useEffect(() => {
+
+    console.log("==>", rowData !== undefined && rowData.email)
+
+    formik.setFieldValue("profile_img", rowData !== undefined && rowData.logo);
+
+    formik.setFieldValue("FullName", rowData !== undefined && rowData.makerInfo.FullName);
+
+    formik.setFieldValue("email", rowData !== undefined && rowData.email);
+    formik.setFieldValue("smtp_password", rowData !== undefined && rowData.smtp_password);
+    formik.setFieldValue("cc_mail", rowData !== undefined && rowData.cc_mail);
+    formik.setFieldValue("bcc_mail", rowData !== undefined && rowData.bcc_mail);
+    formik.setFieldValue("smtphost", rowData !== undefined && rowData.smtphost);
+    formik.setFieldValue("smtpport", rowData !== undefined && rowData.smtpport);
+    formik.setFieldValue("razorpay_key", rowData !== undefined && rowData.razorpay_key);
+
+
+
+
+
+
+  }, [rowData]);
 
   return (
     <div className="modal custom-modal d-block">
-      <div className="modal-dialog modal-dialog-centered modal-md">
-        <div className="modal-content">
+      <div className="modal-dialog modal-dialog-centered modal-md" >
+        <div className="modal-content" style={{ width: "150rem !important" }}>
           <div className="modal-header border-0 pb-0">
             <div className="form-header modal-header-title text-start mb-0">
-              <h4 className="mb-0">Remove Stock</h4>
+              <h4 className="mb-0">Update</h4>
             </div>
             <button
               type="button"
@@ -78,124 +226,16 @@ const StockOutModal = ({ rowData, onClose }) => {
               onClick={onClose} // Added onClick handler to close the modal
             ></button>
           </div>
-          <form onSubmit={handleUpdate}>
-            <div className="modal-body">
-              <div className="row">
-                <div className="col-lg-6 col-md-12">
-                  <div className="input-block mb-3">
-                    <label> Subadmin Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      defaultValue={rowData.makerInfo.FullName}
-                      disabled
-                    />
-                  </div>
-                </div>
+          <AddForm
+            fields={fields.filter(
+              (field) => !field.showWhen || field.showWhen(formik.values)
+            )}
+            ProfileShow={formik.values.profile_img}
 
-                <div className="col-lg-6 col-md-12">
-                  <div className="input-block mb-3">
-                    <label>EMAIL</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      name="email"
-                      placeholder="Enter Email"
-                      value={formData.email || ''}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
+            btn_name="Update"
+            formik={formik}
+          />
 
-                <div className="col-lg-6 col-md-12">
-                  <div className="input-block mb-3">
-                    <label>CC*</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      name="cc_mail"
-                      value={formData.cc_mail || ''}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-lg-6 col-md-12">
-                  <div className="input-block mb-3">
-                    <label>BCC*</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      name="bcc_mail"
-                      value={formData.bcc_mail || ''}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-lg-6 col-md-12">
-                  <div className="input-block mb-3">
-                    <label>razorpay key*</label>
-                    <input
-                      type="password"
-                      name="razorpay_key"
-                      className="form-control"
-                      placeholder="password"
-                      defaultValue={rowData.razorpay_key}
-                      onChange={handleInputChange}
-                      autoComplete="new-password" // Set autocomplete to "new-password" to prevent autofill
-                    />
-
-                  </div>
-                </div>
-
-                <div className="col-lg-6 col-md-12">
-                  <div className="input-block mb-3">
-                    <label>HOST*</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="smtphost"
-                      placeholder="Host"
-                      value={formData.smtphost || ''}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-
-                <div className="col-lg-6 col-md-12">
-                  <div className="input-block mb-3">
-                    <label>PORT*</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      name="smtpport"
-                      placeholder="Enter Port"
-                      value={formData.smtpport || ''}
-                      onChange={handleInputChange}
-                    />
-                  </div>
-                </div>
-                
-              </div>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                data-bs-dismiss="modal"
-                className="btn btn-back cancel-btn me-2"
-                onClick={onClose}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="btn btn-primary paid-continue-btn"
-              >
-                Update
-              </button>
-            </div>
-          </form>
         </div>
 
       </div>

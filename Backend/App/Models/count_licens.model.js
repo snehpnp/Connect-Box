@@ -28,6 +28,10 @@ const countLicenseSchema = Schema({
         type: String,
         default: null 
     },
+    Mode: {
+        type: String,
+        default: null 
+    },
 }, {
     // This enables Mongoose to handle the _id field automatically
     _id: true,

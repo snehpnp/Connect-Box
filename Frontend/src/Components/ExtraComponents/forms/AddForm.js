@@ -62,9 +62,12 @@ const DynamicForm = ({
   // Function to handle image selection
   const handleImageChange = (event) => {
     const file = event.target.files[0];
-    // Update selectedImage state with the selected file
     setSelectedImage(file);
   };
+
+
+
+
 
   return (
     <div className="content container-fluid">
@@ -73,7 +76,7 @@ const DynamicForm = ({
           <div className="card-body">
             <div className="page-header">
               <div className="content-page-header d-flex justify-content-between align-items-center">
-                <h5>{page_title}</h5>
+                {page_title ? <h5>{page_title}</h5> : ""}
                 {btn_status == "true" ? (
                   content_btn_name == "Back" ? (
                     <Link to={content_path} className="btn btn-primary">
@@ -92,55 +95,6 @@ const DynamicForm = ({
               </div>
             </div>
 
-            {ProfileShow && ProfileShow ? (
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="form-group-item">
-                    <h5 className="form-title">Basic Details</h5>
-                    <div className="profile-picture">
-                      <div className="upload-profile">
-                        <div className="profile-img">
-                          <img
-                            id="blah"
-                            className="avatar"
-                            src={
-                              selectedImage
-                                ? URL.createObjectURL(selectedImage)
-                                : "assets/img/profiles/avatar-14.jpg"
-                            }
-                            alt="profile-img"
-                          />
-                        </div>
-                        <div className="add-profile">
-                          <h5>Upload a New Photo</h5>
-                          <span>
-                            {selectedImage
-                              ? selectedImage.name
-                              : "Profile-pic.jpg"}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="img-upload">
-                        {/* Input field for selecting an image */}
-                        <label className="btn btn-upload">
-                          Upload{" "}
-                          <input type="file" onChange={handleImageChange} />
-                        </label>
-                        {/* Button to remove the selected image */}
-                        <button
-                          className="btn btn-remove"
-                          onClick={() => setSelectedImage(null)}
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              ""
-            )}
             <div>
               <div>
                 {/*  form  */}
@@ -148,7 +102,7 @@ const DynamicForm = ({
                   {fields.map((field, index) => (
                     <>
                       {field.type === "text" &&
-                      field.label === "Strategy Name" ? (
+                        field.label === "Strategy Name" ? (
                         <>
                           <div className={`col-lg-${field.col_size}`}>
                             <div className="input-block mb-3 flex-column">
@@ -170,18 +124,18 @@ const DynamicForm = ({
                                   )
                                     ? formik.values[field.name]
                                     : formik.values[field.name].startsWith(
-                                        prifix_key
-                                      )
-                                    ? prifix_key +
+                                      prifix_key
+                                    )
+                                      ? prifix_key +
                                       "_" +
                                       formik.values[field.name].substr(3)
-                                    : prifix_key +
+                                      : prifix_key +
                                       "_" +
                                       formik.values[field.name]
                                 }
                               />
                               {formik.touched[field.name] &&
-                              formik.errors[field.name] ? (
+                                formik.errors[field.name] ? (
                                 <div style={{ color: "red" }}>
                                   {formik.errors[field.name]}
                                 </div>
@@ -208,7 +162,7 @@ const DynamicForm = ({
                                 {...formik.getFieldProps(field.name)}
                               />
                               {formik.touched[field.name] &&
-                              formik.errors[field.name] ? (
+                                formik.errors[field.name] ? (
                                 <div style={{ color: "red" }}>
                                   {formik.errors[field.name]}
                                 </div>
@@ -219,52 +173,63 @@ const DynamicForm = ({
                       ) : field.type === "file" ? (
                         <>
                           <div className={`col-lg-${field.col_size}`}>
-                            <div className="row d-flex ">
-                              <div className="input-block mb-3">
-                                <label
-                                  className={`col-form-${field.label_size}`}
-                                  htmlFor={field.name}
-                                >
-                                  {field.label}
-                                  <span className="text-danger">*</span>
+                            <div className="profile-picture">
+                              <div className="upload-profile">
+                                <div className="profile-img">
+                                  <img
+                                    id="blah"
+                                    className="avatar"
+                                    src={ProfileShow ? ProfileShow : "assets/img/profiles/avatar-14.jpg"}
+                                    alt="profile-img"
+                                  />
+                                </div>
+                                <div className="add-profile">
+                                  <h5>Upload a Photo</h5>
+                                  <span>{selectedImage ? selectedImage.name : "Profile-pic.jpg"}</span>
+                                </div>
+                              </div>
+                              <div className="img-upload d-flex">
+                                {/* Input field for selecting an image */}
+                                <label className="btn btn-upload">
+                                  Upload <input type="file"
+                                    id={field.name}
+                                    className="form-control"
+                                    onChange={(e) =>
+                                      handleFileChange(e, index, field.name)
+                                    } />
                                 </label>
-                                <input
-                                  type="file"
-                                  id={field.name}
-                                  className="form-control"
-                                  onChange={(e) =>
-                                    handleFileChange(e, index, field.name)
-                                  }
-                                />
+                                {/* Button to remove the selected image */}
+                                {/* <button className="btn btn-remove" onClick={() => formik.setFieldValue(field.name, '')}>Remove</button> */}
                               </div>
                             </div>
+
+
+
+
                           </div>
                         </>
                       ) : field.type === "select" ? (
                         <>
                           <div
-                            className={`col-lg-${
-                              title === "update_theme" ? 12 : 6
-                            }`}
+                            className={`col-lg-${title === "update_theme" ? 12 : 6
+                              }`}
                           >
                             <div className="input-block row">
                               <label
-                                className={`col-lg-${
-                                  title === "forlogin"
-                                    ? 3
-                                    : title === "update_theme"
+                                className={`col-lg-${title === "forlogin"
+                                  ? 3
+                                  : title === "update_theme"
                                     ? 12
                                     : 7
-                                }  col-form-label`}
+                                  }  col-form-label`}
                                 htmlFor={field.name}
                               >
                                 {field.label}
                                 <span className="text-danger">*</span>
                               </label>
                               <div
-                                className={`col-lg-${
-                                  title === "addgroup" ? 12 : 12
-                                }`}
+                                className={`col-lg-${title === "addgroup" ? 12 : 12
+                                  }`}
                               >
                                 <select
                                   className="default-select wide form-control"
@@ -437,11 +402,10 @@ const DynamicForm = ({
                                   className={` form-control`}
                                 />
                                 <i
-                                  class={`fa-solid ${
-                                    passwordVisible[field.name]
-                                      ? "fa-eye-slash"
-                                      : "fa-eye"
-                                  }`}
+                                  class={`fa-solid ${passwordVisible[field.name]
+                                    ? "fa-eye-slash"
+                                    : "fa-eye"
+                                    }`}
                                   style={{
                                     position: "absolute",
                                     top: "1.5px",
@@ -457,7 +421,7 @@ const DynamicForm = ({
                                   }
                                 ></i>
                                 {formik.touched[field.name] &&
-                                formik.errors[field.name] ? (
+                                  formik.errors[field.name] ? (
                                   <div style={{ color: "red" }}>
                                     {formik.errors[field.name]}
                                   </div>
@@ -564,7 +528,7 @@ const DynamicForm = ({
                                     {...formik.getFieldProps(field.name)}
                                   />
                                   {formik.touched[field.name] &&
-                                  formik.errors[field.name] ? (
+                                    formik.errors[field.name] ? (
                                     <div style={{ color: "red" }}>
                                       {formik.errors[field.name]}
                                     </div>
@@ -590,7 +554,7 @@ const DynamicForm = ({
                                 required=""
                               />
                               {formik.touched[field.name] &&
-                              formik.errors[field.name] ? (
+                                formik.errors[field.name] ? (
                                 <div style={{ color: "red" }}>
                                   {formik.errors[field.name]}
                                 </div>

@@ -117,6 +117,7 @@ class Subadmin {
         Role: "SUBADMIN",
         admin_id: parent_id,
         Balance,
+        Mode:"CASH"
       });
       await count_licenses_add.save();
 
@@ -319,7 +320,7 @@ class Subadmin {
             _id: 1,
             Balance: 1,
             Role: 1,
-
+            Mode:1,
             createdAt: 1,
 
             username: "$user.UserName",
@@ -409,7 +410,8 @@ console.log("updateOperation",updateOperation)
           user_id: get_user[0],
           Role: "SUBADMIN",
           admin_id: parent_id,
-          Balance: Balance,
+          Balance:Balance,
+          Mode:"CASH"
         });
         await count_licenses_add.save();
 
@@ -423,6 +425,41 @@ console.log("updateOperation",updateOperation)
       console.log("Error trading status Error-", error);
     }
   }
+
+
+  async getallSubadminName(req, res) {
+    try {
+      // GET LOGIN CLIENTS
+      const getAllSubAdmins = await User_model.find({
+        Role: "SUBADMIN",
+      }).select(
+        "UserName"
+      );
+
+
+      // IF DATA NOT EXIST
+      if (getAllSubAdmins.length == 0) {
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: [],
+        });
+      }
+
+      // DATA GET SUCCESSFULLY
+      res.send({
+        status: true,
+        msg: "Get All Subadmins",
+        data: getAllSubAdmins,
+    
+      });
+    } catch (error) {
+      console.log("Error getallSubadmin error -", error);
+    }
+  }
+
+
+
 }
 
 module.exports = new Subadmin();

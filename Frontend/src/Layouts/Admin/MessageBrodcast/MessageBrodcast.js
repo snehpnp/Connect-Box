@@ -6,14 +6,14 @@ function MessageBroadcast() {
     const [messages, setMessages] = useState([]);
     const [strategies, setStrategies] = useState([]);
     const [brokers, setBrokers] = useState([]);
+    const [subadmin, setsubadmin] = useState([]);
+
     const [selectedStrategy, setSelectedStrategy] = useState('');
     const [selectedBroker, setSelectedBroker] = useState('');
     const [messageText, setMessageText] = useState('');
+    const roles = JSON.parse(localStorage.getItem('user_role'));
 
-    useEffect(() => {
-        fetchStrategies();
-        fetchBrokers();
-    }, []);
+
 
     const fetchStrategies = async () => {
         try {
@@ -28,6 +28,15 @@ function MessageBroadcast() {
         try {
             const response = await axios.get('http://localhost:7000/broker/get');
             setBrokers(response.data.data);
+        } catch (error) {
+            console.error('Error fetching brokers:', error);
+        }
+    };
+
+    const fetchSubadminName = async () => {
+        try {
+            const response = await axios.post('http://localhost:7000/subadmin/name/getall');
+            setsubadmin(response.data.data);
         } catch (error) {
             console.error('Error fetching brokers:', error);
         }
@@ -60,6 +69,14 @@ function MessageBroadcast() {
         setMessageText(e.target.value);
     };
 
+
+    useEffect(() => {
+        fetchStrategies();
+        fetchBrokers();
+        fetchSubadminName()
+    }, []);
+
+
     return (
         <Content
             Page_title="Message Boardcast"
@@ -67,24 +84,42 @@ function MessageBroadcast() {
             Card_title_icon='fas fa-message pe-3'
             Content={
                 <>
-                    <div className="mt-3">
-                        <label className="form-label" htmlFor="strategy-select">Strategy</label>
-                        <div className="input-group">
-                            <select
-                                id="strategy-select"
-                                className="form-control"
-                                value={selectedStrategy}
-                                onChange={handleStrategyChange}
-                            >
-                                <option value="">Select Strategy</option>
-                                {strategies.map(strategy => (
-                                    <option key={strategy._id} value={strategy.strategy_name}>{strategy.strategy_name}</option>
-                                ))}
-                            </select>
+                
+                    {roles == "SUBADMIN" ? (<div>
+                        <div className="mt-3">
+                            <label className="form-label" htmlFor="strategy-select">Strategy</label>
+                            <div className="input-group">
+                                <select
+                                    id="strategy-select"
+                                    className="form-control"
+                                    value={selectedStrategy}
+                                    onChange={handleStrategyChange}
+                                >
+                                    <option value="">Select Strategy</option>
+                                    {strategies.map(strategy => (
+                                        <option key={strategy._id} value={strategy.strategy_name}>{strategy.strategy_name}</option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div className="mt-3">
-                        <label className="form-label" htmlFor="broker-select">Broker</label>
+                        <div className="mt-3">
+                            <label className="form-label" htmlFor="broker-select">Broker</label>
+                            <div className="input-group">
+                                <select
+                                    id="broker-select"
+                                    className="form-control"
+                                    value={selectedBroker}
+                                    onChange={handleBrokerChange}
+                                >
+                                    <option value="">Select Broker</option>
+                                    {brokers.map(broker => (
+                                        <option key={broker._id} value={broker.title}>{broker.title}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                    </div>) : <div className="mt-3">
+                        <label className="form-label" htmlFor="broker-select">SubAdmins</label>
                         <div className="input-group">
                             <select
                                 id="broker-select"
@@ -92,13 +127,15 @@ function MessageBroadcast() {
                                 value={selectedBroker}
                                 onChange={handleBrokerChange}
                             >
-                                <option value="">Select Broker</option>
-                                {brokers.map(broker => (
-                                    <option key={broker._id} value={broker.title}>{broker.title}</option>
+                                <option value="">Select UserName</option>
+                                {subadmin.map(broker => (
+                                    <option key={broker._id} value={broker.UserName}>{broker.UserName}</option>
                                 ))}
                             </select>
                         </div>
-                    </div>
+                    </div>}
+
+
                     <div className="mt-3">
                         <label className="form-label" htmlFor="message">Message</label>
                         <textarea
