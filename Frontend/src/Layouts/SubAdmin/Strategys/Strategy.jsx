@@ -232,7 +232,7 @@ function Strategy() {
 
 
         },
-        onSubmit: async (values) => {
+        onSubmit: async (values ,{ resetForm }) => {
 
             const data = {
                 strategy_name: values.strategy_name,
@@ -258,6 +258,7 @@ function Strategy() {
                         toast.success(response.msg);
                         setShowModal(false)
                         setrefresh(!refresh)
+                         resetForm();
 
                     } else {
                         toast.error(response.msg);
