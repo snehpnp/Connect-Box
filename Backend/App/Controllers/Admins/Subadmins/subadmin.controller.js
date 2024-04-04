@@ -343,7 +343,7 @@ class Subadmin {
     try {
       const { id, user_active_status } = req.body;
       // UPDATE ACTTIVE STATUS CLIENT
-
+console.log("req.body",req.body)
       const get_user = await User_model.find({ _id: id });
       if (get_user.length == 0) {
         return res.send({
@@ -355,7 +355,7 @@ class Subadmin {
 
       const filter = { _id: id };
       const updateOperation = { $set: { ActiveStatus: user_active_status } };
-
+console.log("updateOperation",updateOperation)
       const result = await User_model.updateOne(filter, updateOperation);
 
       if (result) {
@@ -398,7 +398,7 @@ class Subadmin {
       const updateOperation = {
         $set: { Balance: updatedBalance },
       };
-      
+
       // const updateOperation = {
       //   $set: { Balance: Number(Balance) + Number(get_user[0].Balance) },
       // };
