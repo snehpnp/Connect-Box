@@ -1,17 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { GetSubStrategys, AddStrategy, DELETE_STRATEGY } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { useDispatch } from "react-redux";
-import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
-import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Loader from '../../../Utils/Loader';
-// import Model1 from "../../../Components/ExtraComponents/Models/Model1";
+
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
 import toast from "react-hot-toast";
 import ExportToExcel from '../../../Utils/ExportCSV'
 
+import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 
 
 function Strategy() {
@@ -55,9 +51,9 @@ function Strategy() {
 
 
 
-    const handleDelete = async (row) => {
+    const handleDelete = async () => {
         var req = {
-            _id: row._id,
+            _id: modalId,
         };
         await dispatch(DELETE_STRATEGY(req))
             .unwrap()
@@ -65,6 +61,7 @@ function Strategy() {
                 if (response.status) {
                     toast.success(response.msg);
                     setrefresh(!refresh)
+                    setdeleteModal(false)
                 } else {
                     toast.error(response.msg);
 
@@ -259,9 +256,7 @@ function Strategy() {
                 .then(async (response) => {
                     if (response.status) {
                         toast.success(response.msg);
-                        setTimeout(() => {
-                            setShowModal(false)
-                        }, 100);
+                        setShowModal(false)
                         setrefresh(!refresh)
 
                     } else {
@@ -772,7 +767,7 @@ function Strategy() {
                 )}
 
 
-
+                <ToastButton />
 
             </div>
 
