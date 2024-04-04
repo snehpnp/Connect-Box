@@ -10,7 +10,7 @@ import Strategy from '../Layouts/SubAdmin/Strategys/Strategy.jsx';
 
 import Grpservices from '../Layouts/SubAdmin/GroupServices/Grpservices';
 
-import Help from '../Layouts/Admin/Help/Help.js';
+import Help from '../Layouts/Comman/Help';
 import Msgbrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast.js';
 
 

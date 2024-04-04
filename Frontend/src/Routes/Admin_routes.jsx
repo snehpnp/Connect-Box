@@ -6,8 +6,8 @@ import Header from '../Components/Dashboard/Header/Header';
 import MainHeader from '../Components/Dashboard/Header/Main_header';
 import System from '../Layouts/Admin/System/System';
 
-import Help from '../Layouts/Admin/Help/Help';
-import Faqs from '../Layouts/Admin/Help/Faqs';
+import Help from '../Layouts/Comman/Help';
+import Faqs from '../Layouts/Comman/Faqs';
 import Payment from '../Layouts/Admin/Payment/Payment';
 import Orders from '../Layouts/Admin/Trade/Order';
 import Positions from '../Layouts/Admin/Trade/Position';
