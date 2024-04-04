@@ -238,3 +238,6 @@ const StockOutModal = ({ rowData, onClose }) => {
 };
 
 export default StockOutModal;
+
+
+

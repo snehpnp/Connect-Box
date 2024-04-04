@@ -3,25 +3,22 @@ import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
 import { IndianRupee } from 'lucide-react';
-
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { Link } from "react-router-dom";
-
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import Switch from "@mui/material/Switch";
-
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   GetAllSubAdmin,
-  update_Balance,Show_Status
+  update_Balance, Show_Status
 } from "../../../ReduxStore/Slice/Admin/Subadmins";
-
 import { fDateTime } from "../../../Utils/Date_formet";
-
 import Loader from "../../../Utils/Loader";
+
+
 
 export default function Help() {
   const dispatch = useDispatch();
@@ -33,47 +30,18 @@ export default function Help() {
     data: [],
     data1: [],
   });
-  const [showBalanceModal, setShowBalanceModal] = useState(false);
   const [balanceValue, setBalanceValue] = useState("");
+  const [refresh, setrefresh] = useState(false);
+  const [modal, setmodal] = useState(false);
 
-  const handleBalance = (row) => {
-    setInitialRowData(row);
-    setShowBalanceModal(true);
-  };
 
-  const handleCloseBalanceModal = () => {
-    setShowBalanceModal(false);
-  };
+  const admin_id = JSON.parse(
+    localStorage.getItem("user_details")
+  )?.user_id;
 
-  const handleSubmitBalance = async () => {
-    const rowIndex = getAllSubadmins.data.findIndex(
-      (row) => row.id === initialRowData.id
-    );
 
-    if (rowIndex !== -1) {
-      const admin_id = JSON.parse(
-        localStorage.getItem("user_details")
-      )?.user_id;
-      const id = getAllSubadmins.data[rowIndex]._id;
-      console.log("id", id);
-      try {
-        const response = await dispatch(
-          update_Balance({ id, Balance: balanceValue, admin_id })
-        );
-        if (response.status) {
-          toast.success(response.msg);
-          setTimeout(() => {
-            navigate("/admin/allsubadmin");
-          }, 1000);
-        } else {
-          toast.error(response.msg);
-        }
-      } catch (error) {
-        console.error("Error updating balance:", error.message);
-      }
-    }
-    setShowBalanceModal(false);
-  };
+
+ 
 
   const styles = {
     container: {
@@ -141,15 +109,15 @@ export default function Help() {
       width: 120,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>
-          <span class="text-success-light">  <IndianRupee style={{ height: "19px" }} />{params.value || '-'}</span>
-          <AccountBalanceWalletIcon
-            size="small"
-            onClick={() => handleBalance(params.row)}
-          />{" "}
+        <div onClick={() => { setmodal(true); setInitialRowData(params.row); }}>
+          <span className="text-success-light">
+            <IndianRupee style={{ height: "19px" }} />
+            {params.value || '-'}
+          </span>
         </div>
       ),
     },
+    
     {
       field: "ActiveStatus",
       headerName: "Active State",
@@ -191,30 +159,67 @@ export default function Help() {
     },
   ];
 
+
+
   const handleEdit = (row) => {
-    console.log("Edit row:", row);
     setInitialRowData(row);
     navigate("/admin/subadmin/edit", {
       state: { rowData: { ...row, _id: row._id } },
     });
   };
 
-  const handleSwitchChange = async (event,id) => {
+
+
+  const handleSwitchChange = async (event, id) => {
     const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
-    const response = await dispatch(
-      Show_Status({ id, user_active_status })
-    );
-    if (response.status) {
-      toast.success(response.msg);
-      setTimeout(() => {
-        navigate("/admin/allsubadmin");
-      }, 1000);
-    } else {
-      toast.error(response.msg);
-    }
+
+    await dispatch(Show_Status({ id, user_active_status }))
+      .unwrap()
+      .then(async (response) => {
+
+        if (response.status) {
+          toast.success(response.msg);
+          setrefresh(!refresh)
+
+        } else {
+          toast.error(response.msg);
+
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+
+      });
+
   };
-  
-  
+
+
+  const handleSubmit = async() => {
+
+    await dispatch(update_Balance({id: initialRowData._id, Balance: balanceValue, admin_id }))
+    .unwrap()
+    .then(async (response) => {
+
+      if (response.status) {
+        toast.success(response.msg);
+        setrefresh(!refresh)
+
+      } else {
+        toast.error(response.msg);
+
+      }
+    })
+    .catch((error) => {
+      console.log("Error", error);
+
+    });
+
+    setBalanceValue("")
+    setmodal(false);
+
+  };
+
+
 
   const getSubadminData = async () => {
     await dispatch(GetAllSubAdmin())
@@ -267,9 +272,14 @@ export default function Help() {
       });
   };
 
+
+
+
   useEffect(() => {
     getSubadminData();
-  }, []);
+  }, [refresh]);
+
+
 
   return (
     <>
@@ -434,55 +444,49 @@ export default function Help() {
       ) : (
         <Loader />
       )}
-      <Modal open={showBalanceModal} onClose={handleCloseBalanceModal}>
-        <div
-          className="modal"
-          style={{ display: "block", padding: "20px" }}
-          tabIndex="-1"
-          role="dialog"
-        >
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h5 className="modal-title">Update Balance</h5>
-                <button
-                  type="button"
-                  className="close"
-                  onClick={handleCloseBalanceModal}
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div className="modal-body">
-                <input
-                  type="number"
-                  value={balanceValue}
-                  onChange={(e) => setBalanceValue(e.target.value)}
-                  placeholder="Enter Balance You want to add"
-                />
-              </div>
-              <div className="modal-footer">
-                <Button
-                  onClick={handleSubmitBalance}
-                  variant="contained"
-                  color="primary"
-                >
-                  Submit
-                </Button>
-                <Button
-                  onClick={handleCloseBalanceModal}
-                  variant="contained"
-                  color="secondary"
-                >
-                  Cancel
-                </Button>
+
+
+      {
+        modal && (
+          <div className="modal custom-modal d-block">
+            <div className="modal-dialog modal-dialog-centered modal-md">
+              <div className="modal-content">
+                <div className="modal-header border-0 pb-0">
+                  <div className="form-header modal-header-title text-start mb-0">
+                    <h4 className="mb-0">Update</h4>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onClick={() => setmodal(false)}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <input
+                    type="number"
+                    value={balanceValue}
+                    onChange={(e) => setBalanceValue(e.target.value)}
+                    placeholder="Enter Balance You want to add"
+                  />
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleSubmit}
+                  >
+                    Submit
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </Modal>
-      ;
+        )
+
+
+      }
     </>
   );
 }
