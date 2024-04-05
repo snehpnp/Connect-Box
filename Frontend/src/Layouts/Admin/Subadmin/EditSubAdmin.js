@@ -8,7 +8,6 @@ import {
 } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-// import Content from "../../../Components/Dashboard/Content/Content";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const EditClient = () => {
@@ -76,7 +75,7 @@ const EditClient = () => {
   });
 
   const handleSelectChange = (e) => {
-  
+
     const selectedValue = e.target.value;
     formik.handleChange(e);
     if (selectedValue === "1") {
@@ -149,14 +148,14 @@ const EditClient = () => {
     {
       name:
         formik.values.subadmin_servic_type === "1" ||
-        formik.values.subadmin_servic_type === "2"
+          formik.values.subadmin_servic_type === "2"
           ? formik.values.subadmin_servic_type === "1"
             ? "Per_trade"
             : "strategy_Percentage"
           : "",
       label:
         formik.values.subadmin_servic_type === "1" ||
-        formik.values.subadmin_servic_type === "2"
+          formik.values.subadmin_servic_type === "2"
           ? formik.values.subadmin_servic_type === "1"
             ? "Trade Value"
             : "Strategies %"
@@ -164,7 +163,7 @@ const EditClient = () => {
       type: "number",
       placeholder:
         formik.values.subadmin_servic_type === "1" ||
-        formik.values.subadmin_servic_type === "2"
+          formik.values.subadmin_servic_type === "2"
           ? formik.values.subadmin_servic_type === "1"
             ? "Please Enter Trade Value"
             : "Please enter % between 1 to 100"
@@ -177,89 +176,20 @@ const EditClient = () => {
       disable: false,
     },
 
-    {
-      name: "demat_userid",
-      label: formik.values.broker == 9 ? "User Id" : "",
-      type: "text",
-      showWhen: (values) => values.broker === "9",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-    {
-      name: "app_id",
-      label:
-        formik.values.broker == 1
-          ? "Verification Code"
-          : formik.values.broker == 5
-          ? "Password"
-          : formik.values.broker == 7
-          ? "Demat Password"
-          : formik.values.broker == 11
-          ? "Password"
-          : formik.values.broker == 2
-          ? "Demat UserId"
-          : formik.values.broker == 13
-          ? "App Id"
-          : formik.values.broker == 9
-          ? "Password"
-          : formik.values.broker == 14
-          ? "User Id "
-          : "App Id",
-      type: "text",
-      showWhen: (values) =>
-        //  values.broker === '2' ||
-        values.broker === "1" ||
-        values.broker === "2" ||
-        values.broker === "3" ||
-        values.broker === "5" ||
-        values.broker === "7" ||
-        values.broker === "9" ||
-        values.broker === "11" ||
-        values.broker === "13" ||
-        values.broker === "14",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-    {
-      name: "api_type",
-      label:
-        formik.values.broker == 5
-          ? "DOB"
-          : formik.values.broker == 7
-          ? "Trade Api Password"
-          : formik.values.broker == 9
-          ? "Encryption IV"
-          : "Api Secret",
-      type: "text",
-      showWhen: (values) => values.broker === "7" || values.broker === "9",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
+
   ];
+
 
   useEffect(() => {
     formik.setFieldValue("username", rowData !== undefined && rowData.UserName);
     formik.setFieldValue("fullName", rowData !== undefined && rowData.FullName);
     formik.setFieldValue("email", rowData !== undefined && rowData.Email);
     formik.setFieldValue("mobile", rowData !== undefined && rowData.PhoneNo);
-    formik.setFieldValue(
-      "prifix_key",
-      rowData !== undefined && rowData.prifix_key
-    );
+    formik.setFieldValue("Per_trade", rowData !== undefined && rowData.Per_trade);
+    formik.setFieldValue("strategy_Percentage", rowData !== undefined && rowData.strategy_Percentage);
+    formik.setFieldValue("subadmin_servic_type", rowData !== undefined && rowData.subadmin_servic_type == 1 ? "1" : "2");
+    formik.setFieldValue("prifix_key", rowData !== undefined && rowData.prifix_key);
 
-    if (rowData !== undefined && rowData.subadmin_servic_type) {
-      formik.setFieldValue("subadmin_servic_type",rowData.subadmin_servic_type);
-      if (rowData.subadmin_servic_type === "1") {
-        formik.setFieldValue("strategy_Percentage",rowData.strategy_Percentage);
-      } else if (rowData.subadmin_servic_type === "2") {
-        formik.setFieldValue("Per_trade", rowData.Per_trade);
-      }
-    } else {
-      formik.setFieldValue("subadmin_servic_type", "1");
-    }
   }, [rowData]);
 
 
@@ -282,3 +212,71 @@ const EditClient = () => {
   );
 };
 export default EditClient;
+
+
+
+
+
+
+
+// {
+//   name: "demat_userid",
+//   label: formik.values.broker == 9 ? "User Id" : "",
+//   type: "text",
+//   showWhen: (values) => values.broker === "9",
+//   label_size: 12,
+//   col_size: 6,
+//   disable: false,
+// },
+// {
+//   name: "app_id",
+//   label:
+//     formik.values.broker == 1
+//       ? "Verification Code"
+//       : formik.values.broker == 5
+//         ? "Password"
+//         : formik.values.broker == 7
+//           ? "Demat Password"
+//           : formik.values.broker == 11
+//             ? "Password"
+//             : formik.values.broker == 2
+//               ? "Demat UserId"
+//               : formik.values.broker == 13
+//                 ? "App Id"
+//                 : formik.values.broker == 9
+//                   ? "Password"
+//                   : formik.values.broker == 14
+//                     ? "User Id "
+//                     : "App Id",
+//   type: "text",
+//   showWhen: (values) =>
+//     //  values.broker === '2' ||
+//     values.broker === "1" ||
+//     values.broker === "2" ||
+//     values.broker === "3" ||
+//     values.broker === "5" ||
+//     values.broker === "7" ||
+//     values.broker === "9" ||
+//     values.broker === "11" ||
+//     values.broker === "13" ||
+//     values.broker === "14",
+//   label_size: 12,
+//   col_size: 6,
+//   disable: false,
+// },
+// {
+//   name: "api_type",
+//   label:
+//     formik.values.broker == 5
+//       ? "DOB"
+//       : formik.values.broker == 7
+//         ? "Trade Api Password"
+//         : formik.values.broker == 9
+//           ? "Encryption IV"
+//           : "Api Secret",
+//   type: "text",
+//   showWhen: (values) => values.broker === "7" || values.broker === "9",
+//   label_size: 12,
+//   col_size: 6,
+//   disable: false,
+// },

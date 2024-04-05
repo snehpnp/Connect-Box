@@ -72,16 +72,17 @@ export default function Help() {
         <div> <b>{params.value +1}</b></div>
       ),
     },
-    {
-      field: "FullName",
-      headerName: "First name",
-      width: 160,
-      headerClassName: styles.boldHeader,
-    },
+   
     {
       field: "UserName",
       headerName: "User name",
       width: 160,
+      headerClassName: styles.boldHeader,
+    },
+    {
+      field: "Email",
+      headerName: "Email",
+      width: 220,
       headerClassName: styles.boldHeader,
     },
     {
@@ -103,7 +104,7 @@ export default function Help() {
       width: 200,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div> <b>{params.value == 1 ? "PER STRATEGY" : "PER TRADE"}</b></div>
+        <div> <b>{params.value == 2 ? "PER STRATEGY" : "PER TRADE"}</b></div>
       ),
     },
     {
