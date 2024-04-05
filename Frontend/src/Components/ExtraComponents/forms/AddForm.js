@@ -232,6 +232,7 @@ const DynamicForm = ({
                               >
                                 <select
                                   className="default-select wide form-control"
+                                  disabled={field.disable}
                                   id={field.name}
                                   {...formik.getFieldProps(field.name)}
                                 >
