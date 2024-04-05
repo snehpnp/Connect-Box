@@ -15,8 +15,6 @@ import Help from '../Layouts/Comman/Help';
 import Msgbrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast.js';
 
 
-import Chain from "../Layouts/SubAdmin/Option/Chain";
-import Add_Group from "../Layouts/SubAdmin/GroupServices/Add_Groups.js";
 import Chain from '../Layouts/SubAdmin/Option/Chain';
 import Add_Group from '../Layouts/SubAdmin/GroupServices/Add_Groups.js'
 import Makecall from '../Layouts/SubAdmin/Make/Makecall.js';
@@ -42,7 +40,7 @@ const SubAdmin_Routing = () => {
           <Route exact path="/option-chain" element={<Chain />} />
 
           <Route exact path="/User/add" element={<Adduser />} />
-          <Route exact path="make" element={<Makecall />} />
+          <Route exact path="/make-call" element={<Makecall />} />
         </Routes>
       </div>
     </>
