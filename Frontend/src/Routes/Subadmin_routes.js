@@ -16,6 +16,7 @@ import Msgbrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast.js';
 
 import Chain from '../Layouts/SubAdmin/Option/Chain';
 import Add_Group from '../Layouts/SubAdmin/GroupServices/Add_Groups.js'
+import GroupService_Edit from '../Layouts/SubAdmin/GroupServices/Edit_Group.js'
 
 // strategydesc
 const SubAdmin_Routing = () => {
@@ -34,12 +35,12 @@ const SubAdmin_Routing = () => {
                     <Route exact path="/strategys" element={<Strategy />} />
                     <Route exact path="/group-service" element={<Grpservices />} />
                     <Route exact path="/group_service/add" element={<Add_Group />} /> 
-              
                     <Route exact path="/users" element={<ALLUSER />} />
                     <Route exact path="/option-chain" element={<Chain />} />
-
                     <Route exact path="/User/add" element={<Adduser />} />
                     <Route exact path="/message-broadcast" element={<Msgbrodcast />} />
+                    <Route exact path="/group-service/edit/:id" element={<GroupService_Edit />} />
+
 
                 </Routes>
 

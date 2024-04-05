@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useFormik } from 'formik';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import toast from 'react-hot-toast';
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 import { Trash2 } from 'lucide-react';
 import AddForm from '../../../Components/ExtraComponents/forms/AddFrom1'
-import { Get_All_Catagory, AddGrpservices, Service_By_Catagory } from '../../../ReduxStore/Slice/Subadmin/GroupServicesSlice'
+import { Get_All_Catagory, Service_By_Catagory, Get_Group_Data, Edit_Group_Service } from '../../../ReduxStore/Slice/Subadmin/GroupServicesSlice'
 import Content from '../../../Components/Dashboard/Content/Content1'
 
 
@@ -14,6 +14,8 @@ import Content from '../../../Components/Dashboard/Content/Content1'
 
 
 const AddStrategy = () => {
+    const { id } = useParams();
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [state, setstate] = useState([]);
@@ -21,28 +23,29 @@ const AddStrategy = () => {
     const [selectedValue, setSelectedValue] = useState('')
     const [groupName, setGroupName] = useState('')
     const [groupDescription, setGroupDescription] = useState('')
-    const [selectSegment, setSelectSegment]= useState('')
-    const [GetAllSgments, setGetAllSgments] = useState({
-        loading: true,
-        data: [],
-    });
-    const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
-
-
-
-
-
-    const [allServices, setAllServices] = useState({
-        loading: true,
-        data: [],
-    });
-
+    const [selectSegment, setSelectSegment] = useState('')
     const [selectedServices, setSelectedServices] = useState([]);
+    const [selectedServices1, setSelectedServices1] = useState([]);
+
+
 
     const [GroupQty, setGroupQty] = useState([]);
     const [selectAllFiltered, setSelectAllFiltered] = useState(false);
 
-     
+
+    const [GetAllSgments, setGetAllSgments] = useState({
+        loading: true,
+        data: [],
+    });
+    const [getGroupData, setGroupData] = useState({
+        loading: true,
+        data: [],
+    });
+    const [allServices, setAllServices] = useState({
+        loading: true,
+        data: [],
+    })
+    const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
 
 
 
@@ -225,11 +228,9 @@ const AddStrategy = () => {
             if (!groupDescription) {
                 errors.groupDescription = "Group groupDescription is required";
             }
-            if (!selectedValue) {
-                errors.selectedValue = "Please select segment ";
-            }
-
-
+            // if (!selectedValue) {
+            //     errors.selectedValue = "Please select segment ";
+            // }
 
             return errors;
         },
@@ -238,10 +239,6 @@ const AddStrategy = () => {
 
             let checkValid = true
             selectedServices && selectedServices.map((item) => {
-                console.log("cppppppppppp 1:", (item.group_qty) % (item.lotsize))
-                console.log("cppppppppppp 2:",  (item.lotsize))
-                console.log("cppppppppppp 3:", (item.group_qty) )
-
                 if (item.lotsize !== 1) {
                     if ((item.group_qty) % (item.lotsize) !== 0) {
                         alert(`Please Enter Valid Lot Size Inside ${item.name}`)
@@ -255,13 +252,15 @@ const AddStrategy = () => {
 
 
             if (checkValid) {
-                await dispatch(AddGrpservices({
-                    groupdetails: { name: groupName, description: groupDescription },
+                await dispatch(Edit_Group_Service({
+                    groupdetails: { name: groupName, description: groupDescription, id:id },
                     services_id: selectedServices,
-
                     maker_id: user_id
                 })).then((response) => {
 
+
+
+                    console.log("response.payload.statu :", response.payload)
                     if (response.payload.status) {
                         toast.success(response.payload.msg);
                         setTimeout(() => {
@@ -284,7 +283,8 @@ const AddStrategy = () => {
     ];
 
 
- 
+
+
 
     const handleChange = async (event) => {
         setSelectedValue(event.target.value);
@@ -299,21 +299,79 @@ const AddStrategy = () => {
                         data: response.data,
                     });
                 }
+                else {
+                    setAllServices({
+                        loading: false,
+                        data: [],
+                    });
+                }
             });
     };
 
+    const FindData = async () => {
+        var req = {
+            _id: id
+        }
+        await dispatch(Get_Group_Data(req)).unwrap()
+            .then((response) => {
+                if (response.status) {
+
+                    setGroupData({
+                        loading: true,
+                        data: response.data
+                    })
+                    console.log("res :", response)
+                    setGroupDescription(response.data && response.data.group_name[0].description)
+                    setGroupName(response.data && response.data.group_name[0].name)
+                    setSelectedServices1(response.data && response.data.Service_name_get)
+
+                    response.data && response.data.Service_name_get.map((item) => {
+                        console.log("cp", item.ServiceResult._id)
+                        selectedServices.push({
+                            service_id:item.ServiceResult._id,
+                            // ServiceResult_id: item.ServiceResult._id,
+                            lotsize: item.ServiceResult.lotsize,
+                            name: item.ServiceResult.name,
+                            catagory_id: item.catagory._id,
+                            segment: item.catagory.name,
+                            catagory_segment: item.ServiceResult.segmen,
+                            group_qty: item.group_qty
+                
+                        })
+                    })
+                }
+                else {
+                    setGroupData({
+                        loading: true,
+                        data: []
+                    })
+
+                }
+            })
 
 
- 
+    }
+
+    useEffect(() => {
+        FindData();
+    }, []);
+
+
+
 
     
 
 
 
 
+
+
+
+
+
     return (
         <>
-            <Content Page_title="Add Group " button_title="Back" route="/subadmin/group-service"
+            <Content Page_title="Edit Group " button_title="Back" route="/subadmin/group-service"
                 additional_field={
                     <div style={{ overflowY: 'scroll', height: '65vh' }}>
                         <h4 className='text-center text-decoration-underline mb-3'>Select Services And Quantity</h4>
@@ -367,10 +425,10 @@ const AddStrategy = () => {
 
 
 
-                <AddForm fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))} formik={formik} btn_name="Add Group" title='addstrategy'
+                <AddForm fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))} formik={formik} btn_name="Edit Group" title='addstrategy'
                     additional_field={
                         <>
-                            
+
                             <div className='row '>
                                 <div className='col-lg-6 col-sm-6 mb-4'>
                                     <div className="form-group mx-2">
@@ -388,7 +446,7 @@ const AddStrategy = () => {
                                             {groupName ? '' :
                                                 <div style={{ color: 'red' }}>{formik.errors.groupName}</div>
                                             }
-                                            
+
 
                                         </div>
                                     </div>
@@ -434,9 +492,9 @@ const AddStrategy = () => {
                                                     </option>
                                                 ))}
                                             </select>
-                                            {selectedValue ? '' :
-                                              <div style={{ color: 'red' }}>{formik.errors.selectedValue}</div>
-                                            }
+                                            {/* {selectedValue ? '' :
+                                                <div style={{ color: 'red' }}>{formik.errors.selectedValue}</div>
+                                            } */}
                                         </div>
                                     </div>
                                 </div>
