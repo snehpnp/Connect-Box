@@ -1,97 +1,208 @@
-import React from 'react'
+import React, { useState, useEffect } from "react";
+import { Dashboard_admin } from "../../../ReduxStore/Slice/Admin/Subadmins";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Overview = () => {
+  const [adminData, setAdminData] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const maxPercentage = 10;
+  const calculatePercentage = (count) =>
+    count !== undefined && count !== null
+      ? (count / maxPercentage) * 100
+      : null;
+
+  const percentages = {
+    percentage: calculatePercentage(adminData.Totalcount),
+    percentage1: calculatePercentage(adminData.TotalActivecount),
+    percentage3: calculatePercentage(adminData.TotalInActivecount),
+    percentage4: calculatePercentage(adminData.TotalUsercount),
+    percentage5: calculatePercentage(adminData.TotalActiveUsercount),
+    percentage6: calculatePercentage(adminData.TotalInActiveUsercount),
+  };
+  const {
+    percentage,
+    percentage1,
+    percentage3,
+    percentage4,
+    percentage5,
+    percentage6,
+  } = percentages;
+
+  useEffect(() => {
+    dashData();
+  }, [dispatch, navigate]);
+
+  const dashData = async () => {
+    await dispatch(Dashboard_admin())
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          toast.success(response.msg);
+          setAdminData(response.data);
+        } else {
+          toast.error(response.msg);
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
   const cardsData = [
     {
       iconClass: "fas fa-users",
       title: "Total Subadmins",
-      count: "1,642",
-      progress: 75,
-      arrowIcon: "fas fa-arrow-down",
-      percentageChange: "1.15%",
+      count:
+        adminData.Totalcount !== undefined
+          ? adminData.Totalcount
+          : "Loading...",
+      progress: percentage !== null ? percentage : 0,
+      arrowIcon:
+        adminData.Totalcount !== undefined &&
+        percentage !== null &&
+        percentage < 100
+          ? "fas fa-arrow-down"
+          : "fas fa-arrow-up",
+      percentageChange:
+        percentage !== null ? `${Math.round(percentage / 10) * 10}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-5"
+      progressBarClass:
+        percentage !== null && percentage < 100 ? "bg-5" : "bg-6",
     },
     {
       iconClass: "fas fa-users",
       title: "Active Subadmins",
-      count: "3,642",
-      progress: 65,
-      arrowIcon: "fas fa-arrow-up",
-      percentageChange: "2.37%",
+      count:
+        adminData.TotalActivecount !== undefined
+          ? adminData.TotalActivecount
+          : "Loading...",
+      progress: percentage1 !== null ? percentage1 : 0,
+      arrowIcon:
+        adminData.TotalActivecount !== undefined &&
+        percentage1 !== null &&
+        percentage1 < 100
+          ? "fas fa-arrow-down"
+          : "fas fa-arrow-up",
+      percentageChange:
+        percentage1 !== null ? `${Math.round(percentage1 / 10) * 10}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-6"
+      progressBarClass:
+        percentage1 !== null && percentage1 < 100 ? "bg-5" : "bg-6",
     },
     {
       iconClass: "fas fa-users",
       title: "Inactive Subadmins",
-      count: "1,041",
-      progress: 85,
-      arrowIcon: "fas fa-arrow-up",
-      percentageChange: "3.77%",
+      count:
+        adminData.TotalInActivecount !== undefined
+          ? adminData.TotalInActivecount
+          : "Loading...",
+      progress: percentage3 !== null ? percentage3 : 0,
+      arrowIcon:
+        adminData.TotalActivecount !== undefined &&
+        percentage3 !== null &&
+        percentage3 < 100
+          ? "fas fa-arrow-down"
+          : "fas fa-arrow-up",
+      percentageChange:
+        percentage3 !== null ? `${Math.round(percentage3 / 10) * 10}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-7"
+      progressBarClass:
+        percentage3 !== null && percentage3 < 100 ? "bg-5" : "bg-6",
     },
     {
       iconClass: "fas fa-users",
       title: "Total Users",
-      count: "1,642",
-      progress: 75,
-      arrowIcon: "fas fa-arrow-down",
-      percentageChange: "1.15%",
+      count:
+        adminData.TotalUsercount !== undefined
+          ? adminData.TotalUsercount
+          : "Loading...",
+      progress: percentage4 !== null ? percentage4 : 0,
+      arrowIcon:
+        adminData.TotalUsercount !== undefined &&
+        percentage4 !== null &&
+        percentage4 < 100
+          ? "fas fa-arrow-down"
+          : "fas fa-arrow-up",
+      percentageChange:
+        percentage4 !== null ? `${Math.round(percentage4 / 10) * 10}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-5"
+      progressBarClass:
+        percentage4 !== null && percentage4 < 100 ? "bg-5" : "bg-6",
     },
     {
       iconClass: "fas fa-users",
       title: "Active Users",
-      count: "3,642",
-      progress: 65,
-      arrowIcon: "fas fa-arrow-up",
-      percentageChange: "2.37%",
+      count:
+        adminData.TotalActiveUsercount !== undefined
+          ? adminData.TotalActiveUsercount
+          : "Loading...",
+      progress: percentage5 !== null ? percentage5 : 0,
+      arrowIcon:
+        adminData.TotalActiveUsercount !== undefined &&
+        percentage5 !== null &&
+        percentage5 < 100
+          ? "fas fa-arrow-down"
+          : "fas fa-arrow-up",
+      percentageChange:
+        percentage5 !== null ? `${Math.round(percentage5 / 10) * 10}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-6"
+      progressBarClass:
+        percentage5 !== null && percentage5 < 100 ? "bg-5" : "bg-6",
     },
     {
       iconClass: "fas fa-users",
       title: "Inactive Users",
-      count: "1,041",
-      progress: 85,
-      arrowIcon: "fas fa-arrow-up",
-      percentageChange: "3.77%",
+      count:
+        adminData.TotalInActiveUsercount !== undefined
+          ? adminData.TotalInActiveUsercount
+          : "Loading...",
+      progress: percentage6 !== null ? percentage6 : 0,
+      arrowIcon:
+        adminData.TotalInActiveUsercount !== undefined &&
+        percentage6 !== null &&
+        percentage6 < 100
+          ? "fas fa-arrow-down"
+          : "fas fa-arrow-up",
+      percentageChange:
+        percentage6 !== null ? `${Math.round(percentage6 / 10) * 10}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass: "bg-7"
-    }
+      progressBarClass:
+        percentage6 !== null && percentage6 < 100 ? "bg-5" : "bg-6",
+    },
   ];
-
   return (
     <div className="main-wrapper">
-      <div >
+      <div>
         <div className="content container-fluid">
-
-          <div className='row'>
-
-            <div className='col-md-3'>
-              <div className='card'>
+          <div className="row">
+            <div className="col-md-3">
+              <div className="card">
                 <div className="col card-header">
                   <h5 className="card-title">Admin Dashboard</h5>
                 </div>
-                <div data-aos="fade-down" className="gif-div " style={{ height: '300px' }}>
+                <div
+                  data-aos="fade-down"
+                  className="gif-div "
+                  style={{ height: "300px" }}
+                >
                   <iframe src="https://lottie.host/embed/1bc48686-c5b0-401d-ae40-9b241c697e31/qa4LRQq6FD.json"></iframe>
                 </div>
               </div>
             </div>
 
-            <div className='col-md-9'>
-
+            <div className="col-md-9">
               <div className="row" data-aos="fade-down">
                 {cardsData.map((data, index) => (
                   <div className="col-xl-4 col-sm-6 col-12" key={index}>
                     <div className="card">
                       <div className="card-body">
                         <div className="dash-widget-header">
-                          <span className={`dash-widget-icon ${data.progressBarClass}`}>
+                          <span
+                            className={`dash-widget-icon ${data.progressBarClass}`}
+                          >
                             <i className={data.iconClass} />
                           </span>
                           <div className="dash-count">
@@ -123,9 +234,7 @@ const Overview = () => {
                   </div>
                 ))}
               </div>
-
             </div>
-
           </div>
 
           {/* <div className="row" data-aos="fade-left">
@@ -605,11 +714,6 @@ const Overview = () => {
             </div>
             
           </div> */}
-
-
-
-
-
           <div className="row" data-aos="fade-left">
             <div className="col-xl-6 d-flex">
               <div className="card flex-fill">
@@ -631,28 +735,13 @@ const Overview = () => {
                         aria-labelledby="dropdownMenuButton1"
                       >
                         <li>
-                          <a
-
-                            className="dropdown-item"
-                          >
-                            Weekly
-                          </a>
+                          <a className="dropdown-item">Weekly</a>
                         </li>
                         <li>
-                          <a
-
-                            className="dropdown-item"
-                          >
-                            Monthly
-                          </a>
+                          <a className="dropdown-item">Monthly</a>
                         </li>
                         <li>
-                          <a
-
-                            className="dropdown-item"
-                          >
-                            Yearly
-                          </a>
+                          <a className="dropdown-item">Yearly</a>
                         </li>
                       </ul>
                     </div>
@@ -690,8 +779,10 @@ const Overview = () => {
                         </div>
                       </div>
                     </div>
-                    <div className='gif-div' style={{ height: '400px', marginTop: '-60px' }}>
-
+                    <div
+                      className="gif-div"
+                      style={{ height: "400px", marginTop: "-60px" }}
+                    >
                       <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
                     </div>
                   </div>
@@ -699,12 +790,10 @@ const Overview = () => {
               </div>
             </div>
           </div>
-
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default Overview
+export default Overview;

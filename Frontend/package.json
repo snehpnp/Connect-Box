@@ -22,11 +22,11 @@
     "formik": "^2.4.5",
     "lucide-react": "^0.362.0",
     "node-datetime": "^2.1.2",
-
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-bootstrap-forms": "^0.0.1",
     "react-bootstrap-table-next": "^4.0.3",
+    "react-bootstrap-table2-editor": "^1.4.0",
     "react-bootstrap-table2-paginator": "^2.1.2",
     "react-bootstrap-v5": "^1.4.0",
     "react-data-export": "^0.6.0",
@@ -52,7 +52,6 @@
     "extends": [
       "react-app",
       "react-app/jest"
-       
     ]
   },
   "browserslist": {

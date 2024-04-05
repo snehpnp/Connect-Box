@@ -11,7 +11,8 @@ class SubAdminCompany {
     // EDIT COMPANY INFORMATION
     async EditSubAdminCompany(req, res) {
         try {
-            const { id,  companydata } = req.body;
+            const { id } = req.body;
+            var companydata = req.body.data
 
             if (!id) {
                 return res.status(400).json({ status: false, msg: 'Please provide an ID.', data: [] });
