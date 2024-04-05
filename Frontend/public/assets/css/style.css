@@ -32291,12 +32291,19 @@ td .invoice-detail i {
     top: 25px;
     right: 205px;
     z-index: 999;
+    margin-right: 10px;
+    margin-top: -7px;
+
 }
 
 .theme-switch input {
     opacity: 0;
     width: 0;
     height: 0;
+}
+
+.wallet {
+    margin-right: 70px !important;
 }
 
 .theme-switch .slider {
@@ -32456,7 +32463,7 @@ td .invoice-detail i {
 
     .wave:nth-child(10) {
         animation-delay: 0.9s;
-         }
+    }
 }
 
 @keyframes wave {
@@ -32622,4 +32629,8 @@ li.submenu {
 
 .horizontal-tab {
     border-bottom: none !important;
+}
+
+.dropdown-menu.notifications.show {
+    transform: translate(-236px, 52px) !important;
 }
