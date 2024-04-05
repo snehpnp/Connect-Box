@@ -202,6 +202,8 @@ const AddClient = () => {
     },
   });
 
+  console.log("formik.values :", formik.values)
+
 
   return (
     <>
