@@ -16,6 +16,8 @@ import Msgbrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast.js';
 
 import Chain from '../Layouts/SubAdmin/Option/Chain';
 import Add_Group from '../Layouts/SubAdmin/GroupServices/Add_Groups.js'
+import Makecall from '../Layouts/SubAdmin/Make/Makecall.js';
+
 
 // strategydesc
 const SubAdmin_Routing = () => {
@@ -40,7 +42,7 @@ const SubAdmin_Routing = () => {
 
                     <Route exact path="/User/add" element={<Adduser />} />
                     <Route exact path="/message-broadcast" element={<Msgbrodcast />} />
-
+                    <Route exact path="make" element={<Makecall />} />
                 </Routes>
 
             </div>
