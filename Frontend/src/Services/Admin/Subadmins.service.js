@@ -73,3 +73,15 @@ export async function active_Status(data, token) {
     return await err;
   }
 }
+
+//Admin DashBoard Data 
+export async function admin_dashData(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}admin/dashboard`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}

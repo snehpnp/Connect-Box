@@ -54,28 +54,31 @@ function Payment() {
     { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
     {
       field: 'logo',
-      headerName: 'Company Logo',
-      width: 120,
+      headerName: 'RA Name',
+      width: 220,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
+
           <a href="profile.html" className="company-avatar avatar-md me-2 companies company-icon">
             <img className="avatar-img rounded-circle company" src={params.value ? params.value : "assets/img/companies/company-05.svg"} alt="Company Image" />
           </a>
+          <a href="#">  {params.row.makerInfo.FullName}</a>
+
         </div>
       )
     },
-    {
-      field: 'makerInfo',
-      headerName: 'Subadmin Name',
-      width: 200,
-      headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div>
-          {params.row.makerInfo.FullName}
-        </div>
-      )
-    },
+    // {
+    //   field: 'makerInfo',
+    //   headerName: 'Subadmin Name',
+    //   width: 200,
+    //   headerClassName: styles.boldHeader,
+    //   renderCell: (params) => (
+    //     <div>
+    //       {params.row.makerInfo.FullName}
+    //     </div>
+    //   )
+    // },
     {
       field: 'email',
       headerName: 'email',
@@ -117,30 +120,27 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div onClick={() => handleOpenModal(params.row)}>
-          <span className="badge bg-purple">Change</span>
+          <span className="badge bg-purple" style={{width:"6rem",fontSize:"1rem"}}>Change</span>
         </div>
       ),
     },
     {
       field: 'Status',
       headerName: 'Status',
-      width: 120,
+      width: 200,
       headerClassName: styles.boldHeader,
       renderCell: (params) => {
         if (params.row.razorpay_key !== '') {
           return (
             <div>
-              <span className={`badge bg-success-light d-inline-flex align-items-center`}>
-                <i className={'fe fe-check me-1'} />Active
-              </span>
+              <span class="badge bg-success-light d-inline-flex align-items-center" style={{fontSize:"1rem"}}><i class="fe fe-check me-1"></i>Approved</span>
             </div>
           );
         } else {
           return (
-            <div>
-              <span className={`badge bg-danger-light d-inline-flex align-items-center`}>
-                <i className={`fe fe-x me-1`}></i>InActive</span>
-            </div>
+          
+              <span class="badge bg-orange-light d-inline-flex align-items-center" style={{width:"7rem",fontSize:"1rem"}}><i class="fe fe-clock me-1"></i>Pending</span>
+           
           );
         }
       }

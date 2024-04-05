@@ -15,7 +15,7 @@ import EditSubAdmin from '../Layouts/Admin/Subadmin/EditSubAdmin'
 
 const Routing = () => {
     const location = useLocation();
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const roles = JSON.parse(localStorage.getItem('user_role'));
     const user_details = JSON.parse(localStorage.getItem("user_details"));
 
@@ -60,13 +60,18 @@ const Routing = () => {
     return (
         <Routes>
             <Route path="/admin/*" element={(roles === "ADMIN") ? <AdminRouting /> : <Login />} />
-            <Route path='/editSubAdmin' element={<EditSubAdmin/>}/>
+            <Route path='/editSubAdmin' element={<EditSubAdmin />} />
             <Route path="/employee/*" element={(roles === "EMPLOYEE") ? <EmployeeRouting /> : <Login />} />
             <Route path="/subadmin/*" element={(roles === "SUBADMIN") ? <SubadminRouting /> : <Login />} />
             <Route path="/user/*" element={(roles === "USER") ? <UserRouting /> : <Login />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={<>     <MainHeader />
-                <Header />  <div className="page-wrapper"><Profile /></div></>} />
+            <Route path="/profile" element={
+                <>     <MainHeader />
+                    <Header />  
+                    <div className="page-wrapper">
+                        <Profile />
+                        </div>
+                </>} />
         </Routes>
     );
 }

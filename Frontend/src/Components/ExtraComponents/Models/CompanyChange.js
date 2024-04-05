@@ -59,7 +59,7 @@ const StockOutModal = ({ rowData, onClose }) => {
 
       const updatedData = {
         id: rowData._id,
-        companydata: {
+        data: {
           email: values.email || rowData.email,
           smtp_password: values.smtp_password || rowData.smtp_password,
           cc_mail: values.cc_mail || rowData.cc_mail,

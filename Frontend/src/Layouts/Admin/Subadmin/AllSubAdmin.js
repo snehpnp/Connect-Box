@@ -41,7 +41,7 @@ export default function Help() {
 
 
 
- 
+
 
   const styles = {
     container: {
@@ -68,6 +68,9 @@ export default function Help() {
       headerName: "ID",
       width: 70,
       headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div> <b>{params.value +1}</b></div>
+      ),
     },
     {
       field: "FullName",
@@ -100,7 +103,7 @@ export default function Help() {
       width: 200,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>{params.value == 1 ? "PER STRATEGY" : "PER TRADE"}</div>
+        <div> <b>{params.value == 1 ? "PER STRATEGY" : "PER TRADE"}</b></div>
       ),
     },
     {
@@ -111,28 +114,32 @@ export default function Help() {
       renderCell: (params) => (
         <div onClick={() => { setmodal(true); setInitialRowData(params.row); }}>
           <span className="text-success-light">
-            <IndianRupee style={{ height: "19px" }} /> 
+            <IndianRupee style={{ height: "19px" }} />
             {params.value || '-'}
           </span>
         </div>
       ),
     },
-    
+
     {
       field: "ActiveStatus",
-      headerName: "Active State",
+      headerName: "Status",
       width: 120,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>
-          <Switch
-            defaultChecked={params.value == 1}
+        <div className="status-toggle">
+          <input
+            id={`rating_${params.row.id}`}
+            className="check"
+            type="checkbox"
             onChange={(event) => handleSwitchChange(event, params.row._id)}
-            {...label}
+            defaultChecked={params.value == 1}
           />
+          <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg">checkbox</label>
         </div>
       ),
     },
+
     {
       field: "actions",
       headerName: "Actions",
@@ -173,6 +180,7 @@ export default function Help() {
   const handleSwitchChange = async (event, id) => {
     const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
 
+
     await dispatch(Show_Status({ id, user_active_status }))
       .unwrap()
       .then(async (response) => {
@@ -194,25 +202,25 @@ export default function Help() {
   };
 
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
 
-    await dispatch(update_Balance({id: initialRowData._id, Balance: balanceValue, admin_id }))
-    .unwrap()
-    .then(async (response) => {
+    await dispatch(update_Balance({ id: initialRowData._id, Balance: balanceValue, admin_id }))
+      .unwrap()
+      .then(async (response) => {
 
-      if (response.status) {
-        toast.success(response.msg);
-        setrefresh(!refresh)
+        if (response.status) {
+          toast.success(response.msg);
+          setrefresh(!refresh)
 
-      } else {
-        toast.error(response.msg);
+        } else {
+          toast.error(response.msg);
 
-      }
-    })
-    .catch((error) => {
-      console.log("Error", error);
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
 
-    });
+      });
 
     setBalanceValue("")
     setmodal(false);
