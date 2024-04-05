@@ -68,6 +68,9 @@ export default function Help() {
       headerName: "ID",
       width: 70,
       headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div> <b>{params.value +1}</b></div>
+      ),
     },
     {
       field: "FullName",
@@ -130,7 +133,7 @@ export default function Help() {
             className="check"
             type="checkbox"
             onChange={(event) => handleSwitchChange(event, params.row._id)}
-            defaultChecked={params.value === 1}
+            defaultChecked={params.value == 1}
           />
           <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg">checkbox</label>
         </div>
@@ -177,9 +180,7 @@ export default function Help() {
   const handleSwitchChange = async (event, id) => {
     const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
 
-    console.log(event.target.checked, id)
 
-    return
     await dispatch(Show_Status({ id, user_active_status }))
       .unwrap()
       .then(async (response) => {

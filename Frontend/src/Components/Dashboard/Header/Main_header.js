@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DrapDown from './DrapDown';
+import Loader from "../../../Utils/Loader";
+
 
 const Main_Header = () => {
   // State to manage theme mode
@@ -7,14 +9,17 @@ const Main_Header = () => {
 
   // Define toggleTheme function
   const toggleTheme = () => {
-    // Toggle theme mode
+
     const newThemeMode = themeMode === 'light' ? 'dark' : 'light';
     setThemeMode(newThemeMode);
 
-    // Update localStorage
     localStorage.setItem('theme_mode', newThemeMode);
-    window.location.reload()
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 200);
   };
+
 
   // Apply theme based on localStorage value on page load
   useEffect(() => {
@@ -34,7 +39,6 @@ const Main_Header = () => {
 
   return (
     <div>
-      {/* MAIN TOP HEADER */}
       <div className="header header-one">
 
         <div className="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">
