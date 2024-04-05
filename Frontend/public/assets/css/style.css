@@ -26802,7 +26802,7 @@ table tr td .status-toggle .checktoggle {
 .signature-invoice {
     padding: 20px;
     border-radius: 10px;
-    background-color: #fff
+    /* background-color: #fff */
 }
 
 .signature-invoice .form-group-bank {
@@ -26879,7 +26879,7 @@ table tr td .status-toggle .checktoggle {
 
 .notifications .page-header .noti-action-btns .btn-delete-all {
     border-color: #ed3a3a;
-    color: #ed3a3a
+    color: #ed3a3a;
 }
 
 .notifications .page-header .noti-action-btns .btn-delete-all:hover {
@@ -26904,7 +26904,7 @@ table tr td .status-toggle .checktoggle {
     top: 0;
     width: 8px;
     height: 8px;
-    border: none
+    border: none;
 }
 
 .notifications .user-list-item .users-list-body {

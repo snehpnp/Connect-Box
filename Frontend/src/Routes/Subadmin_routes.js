@@ -42,7 +42,7 @@ const SubAdmin_Routing = () => {
 
                     <Route exact path="/User/add" element={<Adduser />} />
                     <Route exact path="/message-broadcast" element={<Msgbrodcast />} />
-                    <Route exact path="make" element={<Makecall />} />
+                    <Route exact path="/make-call" element={<Makecall />} />
                 </Routes>
 
             </div>
