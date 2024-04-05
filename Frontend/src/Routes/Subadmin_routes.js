@@ -38,6 +38,8 @@ const SubAdmin_Routing = () => {
                     <Route exact path="/users" element={<ALLUSER />} />
                     <Route exact path="/option-chain" element={<Chain />} />
                     <Route exact path="/User/add" element={<Adduser />} />
+                    <Route exact path="/servicesAll" element={<AllServices />} />
+
 
                 </Routes>
 
