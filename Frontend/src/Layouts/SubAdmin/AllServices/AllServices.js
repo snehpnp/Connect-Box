@@ -25,6 +25,44 @@ const ServicesList = () => {
     data: [],
   });
 
+
+
+
+
+
+
+  const columns = [
+    {
+      dataField: "index",
+      text: "SR. No.",
+      sort: true,
+
+      formatter: (cell, row, rowIndex) => rowIndex + 1,
+    },
+    {
+      dataField: "category.name",
+      text: "Catagory",
+      sort: true,
+    },
+    {
+      dataField: "name",
+      text: "Service Name",
+      sort: true,
+    },
+    {
+      dataField: "category.segment",
+      text: "Segment",
+      sort: true,
+    },
+  ];
+
+
+
+
+
+
+
+
   const getservice = async () => {
     await dispatch(getCatogries())
       .unwrap()
@@ -40,20 +78,21 @@ const ServicesList = () => {
   useEffect(() => {
     getservice();
   }, []);
-console.log("CatagoryData",CatagoryData)
 
   const data = async () => {
     await dispatch(getAllServices({ segment: first }))
       .unwrap()
       .then((response) => {
-        setAllServices({
-          loading: false,
-          data: response,
-        });
+
         if (response.status) {
           setAllServices({
             loading: false,
             data: response.data,
+          });
+        } else {
+          setAllServices({
+            loading: false,
+            data: [],
           });
         }
       });
@@ -63,32 +102,8 @@ console.log("CatagoryData",CatagoryData)
     data(first);
   }, [first]);
 
-//   console.log("AllServices", AllServices);
 
-  const columns = [
-    {
-      dataField: "index",
-      text: "SR. No.",
-      sort: true,
-
-      formatter: (cell, row, rowIndex) => rowIndex + 1,
-    },
-    {
-      dataField: "categoryResult.name",
-      text: "Catagory",
-      sort: true,
-    },
-    {
-      dataField: "name",
-      text: "Service Name",
-      sort: true,
-    },
-    {
-      dataField: "categoryResult.segment",
-      text: "Segment",
-      sort: true,
-    },
-  ];
+console.log('AllServices',AllServices)
 
   return (
     <>
@@ -111,7 +126,7 @@ console.log("CatagoryData",CatagoryData)
                       <option selected value="all">
                         All
                       </option>
-                      {CatagoryData.data && 
+                      {CatagoryData.data &&
                         CatagoryData.data.map((item) => {
                           return (
                             <>

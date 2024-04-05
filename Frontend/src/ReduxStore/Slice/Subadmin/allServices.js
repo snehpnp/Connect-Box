@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { GET_ALL_SERVICS ,GET_ALL_Catagory} from "../../../Services/Subadmin/all.service";
 
 export const getAllServices = createAsyncThunk(
-  "AllService/get",
+  "ServiceByCatagory",
   async (data) => {
     try {
       const res = await GET_ALL_SERVICS(data);
@@ -30,8 +30,8 @@ const GrouoServicesSlice = createSlice({
     isLoading: false,
     isError: false,
     AllgroupService: null,
-    Add_group_servics: null,
-    delete_strategy: null,
+    Allcategaory: null,
+
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -54,7 +54,7 @@ const GrouoServicesSlice = createSlice({
       })
       .addCase(getCatogries.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.AllgroupService = action.payload;
+        state.Allcategaory = action.payload;
       })
       .addCase(getCatogries.rejected, (state, action) => {
         state.isLoading = false;

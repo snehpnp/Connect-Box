@@ -6,7 +6,7 @@ import * as Config from "../../Utils/Config";
 //getServices data 
 export async function GET_ALL_SERVICS(data) {
     try {
-        const res = await axios.post(`${Config.base_url}AllService/get`, data, {  
+        const res = await axios.post(`${Config.base_url}ServiceByCatagory`, data, {  
             data: {},
         })
         return await res?.data;
