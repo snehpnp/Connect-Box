@@ -32,7 +32,7 @@ const Header = () => {
                   const isOpen = openSubMenu === data.id;
 
                   return (
-                    <li className='submenu' key={data.id} onMouseEnter={() => toggleSubMenu(data.id)} onMouseLeave={() => setOpenSubMenu('')}>
+                  <li className='submenu' key={data.id} onMouseEnter={() => toggleSubMenu(data.id)} onMouseLeave={() => setOpenSubMenu('')}>
                       <Link
                         to={data.route}
                         className={openSubMenu === data.id ? 'subdrop' : ''}
@@ -41,7 +41,7 @@ const Header = () => {
                         <i className={data.Icon}></i> <span> {data.name}</span> {data.Data.length > 0 ? <span className="menu-arrow"></span> : ""}
                       </Link>
 
-                      <ul style={{ display: openSubMenu === data.id ? 'block' : 'none' }}>
+                       <ul style={{ display: openSubMenu === data.id ? 'block' : 'none' }}>
                         {data.Data.map((item) => (
                           <li key={item.id}>
                             <Link to={item.route} className="active">
@@ -50,7 +50,7 @@ const Header = () => {
                           </li>
                         ))}
                       </ul>
-                    </li>
+                  </li>
                   );
                 })}
               </ul>

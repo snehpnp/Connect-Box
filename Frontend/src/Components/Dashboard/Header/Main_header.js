@@ -76,11 +76,11 @@ const Main_Header = () => {
             <span className="slider"></span>
           </label>
         </div>
-      
+
 
 
         {/* Toggle theme switch */}
-      
+
         <div className="nav-item  has-arrow dropdown-heads ">
           <DrapDown />
         </div>
