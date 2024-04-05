@@ -91,13 +91,7 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    {
-      name: 'tomonth',
-      label: 'To Month',
-      type: 'text',
-      showWhen: values => values.licence === '2'
-      , label_size: 12, col_size: 6, disable: false, isSelected: true
-    },
+     
     {
       name: "subadmin_servic_type",
       label: "Subadmin Servic Type",

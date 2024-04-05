@@ -6,6 +6,7 @@ import AddForm from '../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
 import toast from "react-hot-toast";
 import ExportToExcel from '../../../Utils/ExportCSV'
+import ToastButton from '../../../Components/ExtraComponents/Alert_Toast'
 
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 
@@ -373,7 +374,7 @@ function Strategy() {
                         <div className="page-content">
                             <div className="list-btn">
                                 <ul className="filter-list">
-                                    <li>
+                                    <li className="mt-3">
                                         <p
                                             className="btn-filters"
                                             data-bs-toggle="tooltip"
@@ -771,6 +772,7 @@ function Strategy() {
                 <ToastButton />
 
             </div>
+            < ToastButton />
 
         </>
 
