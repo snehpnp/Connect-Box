@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 import ExportToExcel from '../../../Utils/ExportCSV'
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast'
 
-import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 
 
 function Strategy() {
