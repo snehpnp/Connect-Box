@@ -4,27 +4,92 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
+import ReactApexChart from 'react-apexcharts';
+import Footer from "../../../Components/Dashboard/Footer/Footer";
 
 
 
 const Overview = () => {
-
+  const [series1, setSeries1] = useState([44, 55, 13, 33]);
   const [options] = useState({
     chart: {
-      id: "basic-bar"
+      type: 'donut',
+      id: "basic",
+      animations: {
+        enabled: true,
+        easing: 'easeinout',
+        speed: 800,
+        animateGradually: {
+          enabled: true,
+          delay: 150
+        },
+        dynamicAnimation: {
+          enabled: true,
+          speed: 350
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        responsive: [
+          {
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200,
+              },
+              legend: {
+                show: false,
+              },
+            },
+          },
+        ],
+        legend: {
+          position: 'right',
+          offsetY: 0,
+          height: 230,
+        },
+
+      }
     },
     xaxis: {
       categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+    },
+    fill: {
+      colors: ['#9423FF']
     }
   });
 
-  const [series] = useState([
+  const appendData = () => {
+    const newArr = [...series1, Math.floor(Math.random() * (100 - 1 + 1)) + 1];
+    setSeries1(newArr);
+  };
+
+  const removeData = () => {
+    if (series1.length === 1) return;
+    const newArr = [...series1];
+    newArr.pop();
+    setSeries1(newArr);
+  };
+
+  const randomize = () => {
+    const newArr = series1.map(() => Math.floor(Math.random() * (100 - 1 + 1)) + 1);
+    setSeries1(newArr);
+  };
+
+  const reset = () => {
+    setSeries1([44, 55, 13, 33]);
+  };
+
+
+
+  const [series, setSeries] = useState([
+
     {
       name: "series-1",
       data: [30, 40, 45, 50, 49, 60, 70, 91]
     }
   ])
-  const [colors] = useState(["#9423FF"]);
+
   const [adminData, setAdminData] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -773,12 +838,13 @@ const Overview = () => {
                     <div className="row">
                       <div className="mixed-chart">
                         <Chart
-                          colors={colors}
+
 
                           options={options}
                           series={series}
                           type="bar"
                           width="100%"
+
 
                         />
                       </div>
@@ -822,43 +888,25 @@ const Overview = () => {
                 </div>
                 <div className="card-body">
                   <div id="invoice_chart" />
-                  <div className="text-center text-muted">
-                    <div className="row">
-                      <div className="col-4">
-                        <div className="mt-4">
-                          <p className="mb-2 text-truncate">
-                            <i className="fas fa-circle text-primary me-1" />{" "}
-                            Invoiced
-                          </p>
-                          <h5>$2,132</h5>
+                  <div>
+                    <div>
+                      <div className="chart-wrap">
+                        <div id="chart">
+                          <ReactApexChart options={options} series={series} type="donut" width={380} />
                         </div>
                       </div>
-                      <div className="col-4">
-                        <div className="mt-4">
-                          <p className="mb-2 text-truncate">
-                            <i className="fas fa-circle text-success me-1" />{" "}
-                            Received
-                          </p>
-                          <h5>$1,763</h5>
-                        </div>
-                      </div>
-                      <div className="col-4">
-                        <div className="mt-4">
-                          <p className="mb-2 text-truncate">
-                            <i className="fas fa-circle text-danger me-1" />{" "}
-                            Pending
-                          </p>
-                          <h5>$973</h5>
-                        </div>
-                      </div>
-                    </div>
-                    <div
-                      className="gif-div"
-                      style={{ height: "400px", marginTop: "-60px" }}
-                    >
-                      <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
-                    </div>
 
+                      <div className="actions">
+                        <button onClick={appendData}>+ ADD</button>
+
+                        <button onClick={removeData}>- REMOVE</button>
+
+                        <button onClick={randomize}>RANDOMIZE</button>
+
+                        <button onClick={reset}>RESET</button>
+                      </div>
+                    </div>
+                    <div id="html-dist"></div>
                   </div>
                 </div>
               </div>
@@ -868,7 +916,12 @@ const Overview = () => {
           </div>
         </div>
       </div>
+      <>
+        <Footer/>
+       </>
+
     </div>
+    
   );
 };
 

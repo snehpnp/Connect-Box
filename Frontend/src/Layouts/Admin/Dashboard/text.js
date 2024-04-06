@@ -1,5 +1,6 @@
 import React from "react";
 import { Formik, Form, Field } from "formik";
+import Footer from "../../../Components/Dashboard/Footer/Footer";
 
 const MyForm = () => {
   return (
@@ -37,7 +38,10 @@ const MyForm = () => {
           );
         }}
       </Formik>
+      <Footer />
     </div>
+    
+  
   );
 };
 
