@@ -381,7 +381,7 @@ const AddClient = () => {
 
 
   const handleStrategyChange = (e) => {
-
+console.log(e)
   }
 
 
