@@ -9,21 +9,23 @@ import Chart from "react-apexcharts";
 
 const Overview = () => {
 
-  const [options] = useState({
+  const [options, setOptions] = useState({
     chart: {
       id: "basic-bar"
     },
     xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+      categories: []
     }
   });
 
-  const [series] = useState([
+  const [series, setSeries] = useState([
     {
       name: "series-1",
-      data: [30, 40, 45, 50, 49, 60, 70, 91]
+      data: []
     }
-  ])
+  ]);
+
+
   const [colors] = useState(["#9423FF"]);
   const [adminData, setAdminData] = useState("");
   const dispatch = useDispatch();
@@ -62,6 +64,19 @@ const Overview = () => {
         if (response.status) {
           toast.success(response.msg);
           setAdminData(response.data);
+      
+          const categories = response.data.dummyData.categories;
+          const data = response.data.dummyData.data;
+      
+          setOptions(prevOptions => ({
+            ...prevOptions,
+            xaxis: {
+              ...prevOptions.xaxis,
+              categories: categories
+            }
+          }));
+      
+          setSeries([{ name: "series-1", data: data }]);
         } else {
           toast.error(response.msg);
         }
@@ -69,6 +84,7 @@ const Overview = () => {
       .catch((error) => {
         console.log("Error", error);
       });
+      
   };
 
   const cardsData = [
@@ -193,6 +209,10 @@ const Overview = () => {
         percentage6 !== null && percentage6 < 100 ? "bg-5" : "bg-6",
     },
   ];
+
+
+
+
   return (
     <div className="main-wrapper">
       <div>
@@ -257,483 +277,7 @@ const Overview = () => {
             </div>
           </div>
 
-          {/* <div className="row" data-aos="fade-left">
 
-            <div className="col-xl-12 d-flex">
-              <div className="card mb-0">
-                <div className="card-header">
-                  <div className="row align-center">
-                    <div className="col">
-                      <h5 className="card-title">Recent Invoices</h5>
-                    </div>
-                    <div className="col-auto">
-                      <a
-                        href="invoices.html"
-                        className="btn-right btn btn-sm btn-outline-primary"
-                      >
-                        View All
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div className="card-body">
-                  <div className="mb-3">
-                    <div className="progress progress-md rounded-pill mb-3">
-                      <div
-                        className="progress-bar bg-success"
-                        role="progressbar"
-                        style={{ width: "47%" }}
-                        aria-valuenow={47}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                      <div
-                        className="progress-bar bg-warning"
-                        role="progressbar"
-                        style={{ width: "28%" }}
-                        aria-valuenow={28}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                      <div
-                        className="progress-bar bg-danger"
-                        role="progressbar"
-                        style={{ width: "15%" }}
-                        aria-valuenow={15}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                      <div
-                        className="progress-bar bg-info"
-                        role="progressbar"
-                        style={{ width: "10%" }}
-                        aria-valuenow={10}
-                        aria-valuemin={0}
-                        aria-valuemax={100}
-                      />
-                    </div>
-                    <div className="row">
-                      <div className="col-auto">
-                        <i className="fas fa-circle text-success me-1" /> Paid
-                      </div>
-                      <div className="col-auto">
-                        <i className="fas fa-circle text-warning me-1" />{" "}
-                        Unpaid
-                      </div>
-                      <div className="col-auto">
-                        <i className="fas fa-circle text-danger me-1" />{" "}
-                        Overdue
-                      </div>
-                      <div className="col-auto">
-                        <i className="fas fa-circle text-info me-1" /> Draft
-                      </div>
-                    </div>
-                  </div>
-                  <div className="table-responsive">
-                    <table className="table table-stripped table-hover">
-                      <thead className="thead-light">
-                        <tr>
-                          <th>Customer</th>
-                          <th>Amount</th>
-                          <th>Due Date</th>
-                          <th>Status</th>
-                          <th className="text-end">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a href="profile.html">
-                                <img
-                                  className="avatar avatar-sm me-2 avatar-img rounded-circle"
-                                  src="assets/img/profiles/avatar-04.jpg"
-                                  alt="User Image"
-                                />
-                                Barbara Moore
-                              </a>
-                            </h2>
-                          </td>
-                          <td>$118</td>
-                          <td>23 Nov 2020</td>
-                          <td>
-                            <span className="badge bg-success-light">
-                              Paid
-                            </span>
-                          </td>
-                          <td className="text-end">
-                            <div className="dropdown dropdown-action">
-                              <a
-                                href="/"
-                                className="action-icon dropdown-toggle"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                <i className="fas fa-ellipsis-h" />
-                              </a>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                <a
-                                  className="dropdown-item"
-                                  href="edit-invoice.html"
-                                >
-                                  <i className="far fa-edit me-2" />
-                                  Edit
-                                </a>
-                                <a
-                                  className="dropdown-item"
-                                  href="invoice-details.html"
-                                >
-                                  <i className="far fa-eye me-2" />
-                                  View
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-trash-alt me-2" />
-                                  Delete
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-check-circle me-2" />
-                                  Mark as sent
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-paper-plane me-2" />
-                                  Send Invoice
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-copy me-2" />
-                                  Clone Invoice
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a href="profile.html">
-                                <img
-                                  className="avatar avatar-sm me-2 avatar-img rounded-circle"
-                                  src="assets/img/profiles/avatar-06.jpg"
-                                  alt="User Image"
-                                />
-                                Karlene Chaidez
-                              </a>
-                            </h2>
-                          </td>
-                          <td>$222</td>
-                          <td>18 Nov 2020</td>
-                          <td>
-                            <span className="badge bg-info-light text-info">
-                              Sent
-                            </span>
-                          </td>
-                          <td className="text-end">
-                            <div className="dropdown dropdown-action">
-                              <a
-                                href="/"
-                                className="action-icon dropdown-toggle"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                <i className="fas fa-ellipsis-h" />
-                              </a>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                <a
-                                  className="dropdown-item"
-                                  href="edit-invoice.html"
-                                >
-                                  <i className="far fa-edit me-2" />
-                                  Edit
-                                </a>
-                                <a
-                                  className="dropdown-item"
-                                  href="invoice-details.html"
-                                >
-                                  <i className="far fa-eye me-2" />
-                                  View
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-trash-alt me-2" />
-                                  Delete
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-check-circle me-2" />
-                                  Mark as sent
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-paper-plane me-2" />
-                                  Send Invoice
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-copy me-2" />
-                                  Clone Invoice
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a href="profile.html">
-                                <img
-                                  className="avatar avatar-sm me-2 avatar-img rounded-circle"
-                                  src="assets/img/profiles/avatar-08.jpg"
-                                  alt="User Image"
-                                />
-                                Russell Copeland
-                              </a>
-                            </h2>
-                          </td>
-                          <td>$347</td>
-                          <td>10 Nov 2020</td>
-                          <td>
-                            <span className="badge bg-warning-light text-warning">
-                              Partially Paid
-                            </span>
-                          </td>
-                          <td className="text-end">
-                            <div className="dropdown dropdown-action">
-                              <a
-                                href="/"
-                                className="action-icon dropdown-toggle"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                <i className="fas fa-ellipsis-h" />
-                              </a>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                <a
-                                  className="dropdown-item"
-                                  href="edit-invoice.html"
-                                >
-                                  <i className="far fa-edit me-2" />
-                                  Edit
-                                </a>
-                                <a
-                                  className="dropdown-item"
-                                  href="invoice-details.html"
-                                >
-                                  <i className="far fa-eye me-2" />
-                                  View
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-trash-alt me-2" />
-                                  Delete
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-check-circle me-2" />
-                                  Mark as sent
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-paper-plane me-2" />
-                                  Send Invoice
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-copy me-2" />
-                                  Clone Invoice
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a href="profile.html">
-                                <img
-                                  className="avatar avatar-sm me-2 avatar-img rounded-circle"
-                                  src="assets/img/profiles/avatar-10.jpg"
-                                  alt="User Image"
-                                />
-                                Joseph Collins
-                              </a>
-                            </h2>
-                          </td>
-                          <td>$826</td>
-                          <td>25 Sep 2020</td>
-                          <td>
-                            <span className="badge bg-danger-light">
-                              Overdue
-                            </span>
-                          </td>
-                          <td className="text-end">
-                            <div className="dropdown dropdown-action">
-                              <a
-                                href="/"
-                                className="action-icon dropdown-toggle"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                <i className="fas fa-ellipsis-h" />
-                              </a>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                <a
-                                  className="dropdown-item"
-                                  href="edit-invoice.html"
-                                >
-                                  <i className="far fa-edit me-2" />
-                                  Edit
-                                </a>
-                                <a
-                                  className="dropdown-item"
-                                  href="invoice-details.html"
-                                >
-                                  <i className="far fa-eye me-2" />
-                                  View
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-trash-alt me-2" />
-                                  Delete
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-check-circle me-2" />
-                                  Mark as sent
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-paper-plane me-2" />
-                                  Send Invoice
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-copy me-2" />
-                                  Clone Invoice
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a href="profile.html">
-                                <img
-                                  className="avatar avatar-sm me-2 avatar-img rounded-circle"
-                                  src="assets/img/profiles/avatar-11.jpg"
-                                  alt="User Image"
-                                />
-                                Jennifer Floyd
-                              </a>
-                            </h2>
-                          </td>
-                          <td>$519</td>
-                          <td>18 Sep 2020</td>
-                          <td>
-                            <span className="badge bg-success-light">
-                              Paid
-                            </span>
-                          </td>
-                          <td className="text-end">
-                            <div className="dropdown dropdown-action">
-                              <a
-                                href="/"
-                                className="action-icon dropdown-toggle"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                              >
-                                <i className="fas fa-ellipsis-h" />
-                              </a>
-                              <div className="dropdown-menu dropdown-menu-right">
-                                <a
-                                  className="dropdown-item"
-                                  href="edit-invoice.html"
-                                >
-                                  <i className="far fa-edit me-2" />
-                                  Edit
-                                </a>
-                                <a
-                                  className="dropdown-item"
-                                  href="invoice-details.html"
-                                >
-                                  <i className="far fa-eye me-2" />
-                                  View
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-trash-alt me-2" />
-                                  Delete
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-check-circle me-2" />
-                                  Mark as sent
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-paper-plane me-2" />
-                                  Send Invoice
-                                </a>
-                                <a
-                                  className="dropdown-item"
-
-                                >
-                                  <i className="far fa-copy me-2" />
-                                  Clone Invoice
-                                </a>
-                              </div>
-                            </div>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-          </div> */}
           <div className="row" data-aos="fade-left">
             <div className="col-xl-6 d-flex">
               <div className="card flex-fill">
@@ -755,10 +299,13 @@ const Overview = () => {
                         aria-labelledby="dropdownMenuButton1"
                       >
                         <li>
-                          <a className="dropdown-item">Weekly</a>
+                          <a className="dropdown-item">Monthly</a>
                         </li>
                         <li>
-                          <a className="dropdown-item">Monthly</a>
+                          <a className="dropdown-item">Quaterly</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item">Half Yearly</a>
                         </li>
                         <li>
                           <a className="dropdown-item">Yearly</a>
@@ -792,7 +339,7 @@ const Overview = () => {
               <div className="card flex-fill">
                 <div className="card-header">
                   <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="card-title">Invoice Analytics</h5>
+                    <h5 className="card-title">Invoice 1 Analytics</h5>
                     <div className="dropdown main">
                       <button
                         className="btn btn-white btn-sm dropdown-toggle"
