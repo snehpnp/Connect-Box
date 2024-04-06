@@ -357,8 +357,8 @@ function Strategy() {
 
 
     const handleEditPackage = (id) => {
-        navigate(`/subadmin/edit/strategies/${id.id}`,{ state: { allStategy } });
-      };
+        navigate(`/subadmin/edit/strategies/${id.id}`, { state: { allStategy } });
+    };
 
 
 
@@ -508,7 +508,7 @@ function Strategy() {
                                             </a>
 
                                             <a className="btn-action-icon me-2"  >
-                                                <i className="fe fe-edit" onClick={() =>handleEditPackage({ id: stg._id })} />
+                                                <i className="fe fe-edit" onClick={() => handleEditPackage({ id: stg._id })} />
                                             </a>
 
                                             <a className="btn-action-icon" onClick={() => { setdeleteModal(true); setModalId(stg._id); }}  >
