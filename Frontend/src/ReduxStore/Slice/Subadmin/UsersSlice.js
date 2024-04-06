@@ -7,7 +7,7 @@ export const GetAllUsers = createAsyncThunk("user/getAll",
         
         try {
             const res = await GET_ALL_USERS(data);
-            console.log("resSlice :", res)
+            
             return res;
         } catch (err) {
             throw err;

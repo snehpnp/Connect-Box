@@ -420,8 +420,7 @@ const AddClient = () => {
 
 
 
-
-  console.log("selectedCheckboxesAndPlan :", selectedCheckboxesAndPlan)
+ 
 
 
   return (
@@ -438,8 +437,7 @@ const AddClient = () => {
               btn_name1_route={'/subadmin/users'}
               additional_field={
                 <>
-                  <h6>All Group Service</h6>
-
+                {serviceName.data.length>0 ?  <h6>All Group Service</h6> : ''}
                   {serviceName && serviceName.data.map((item) => (
                     <>
                       <div className={`col-lg-2 `} key={item._id}>
@@ -454,7 +452,6 @@ const AddClient = () => {
 
                   <div className="row mt-4">
                     <h6>All Strategy</h6>
-                    {/* For Show All Strategy */}
                     {getAllStategy.data.map((strategy) => (
                       <div className={`col-lg-3 mt-2`} key={strategy._id}>
                         <div className="row">
@@ -531,9 +528,7 @@ const AddClient = () => {
                 </>
               }
             />
-
             <ToastButton />
-
           </>
       }
 

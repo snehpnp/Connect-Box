@@ -3,7 +3,7 @@ import React from 'react'
 function Clientservice() {
   return (
     <>
-      <div class="content-page-header mt-2">
+      <div className="content-page-header mt-2">
         <h5>Stock List</h5>
       </div>
       <div className="form-group-item">
@@ -43,7 +43,7 @@ function Clientservice() {
                       250
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
                         <option value="1">jhg</option>
                         <option value="2">RSI</option>
@@ -51,7 +51,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Stoploss Market</option>
                         <option value="1">Market</option>
                         <option value="2">Limit</option>
@@ -61,7 +61,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>MIS</option>
                         <option value="1">CNC</option>
                         <option value="2">BO</option>
@@ -102,7 +102,7 @@ function Clientservice() {
                       625
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
                         <option value="1">jhg</option>
                         <option value="2">RSI</option>
@@ -110,7 +110,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Stoploss Market</option>
                         <option value="1">Market</option>
                         <option value="2">Limit</option>
@@ -120,7 +120,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>MIS</option>
                         <option value="1">CNC</option>
                         <option value="2">BO</option>
@@ -160,7 +160,7 @@ function Clientservice() {
                       15
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
                         <option value="1">jhg</option>
                         <option value="2">RSI</option>
@@ -168,7 +168,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Stoploss Market</option>
                         <option value="1">Market</option>
                         <option value="2">Limit</option>
@@ -178,7 +178,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>MIS</option>
                         <option value="1">CNC</option>
                         <option value="2">BO</option>
@@ -219,7 +219,7 @@ function Clientservice() {
                       100
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
                         <option value="1">jhg</option>
                         <option value="2">RSI</option>
@@ -227,7 +227,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Stoploss Market</option>
                         <option value="1">Market</option>
                         <option value="2">Limit</option>
@@ -237,7 +237,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>MIS</option>
                         <option value="1">CNC</option>
                         <option value="2">BO</option>
@@ -278,7 +278,7 @@ function Clientservice() {
                       100
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
                         <option value="1">jhg</option>
                         <option value="2">RSI</option>
@@ -286,7 +286,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Stoploss Market</option>
                         <option value="1">Market</option>
                         <option value="2">Limit</option>
@@ -296,7 +296,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>MIS</option>
                         <option value="1">CNC</option>
                         <option value="2">BO</option>
@@ -336,7 +336,7 @@ function Clientservice() {
                       100
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
                         <option value="1">jhg</option>
                         <option value="2">RSI</option>
@@ -344,7 +344,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Stoploss Market</option>
                         <option value="1">Market</option>
                         <option value="2">Limit</option>
@@ -354,7 +354,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>MIS</option>
                         <option value="1">CNC</option>
                         <option value="2">BO</option>
@@ -395,7 +395,7 @@ function Clientservice() {
                       100
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
                         <option value="1">jhg</option>
                         <option value="2">RSI</option>
@@ -403,7 +403,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>Stoploss Market</option>
                         <option value="1">Market</option>
                         <option value="2">Limit</option>
@@ -413,7 +413,7 @@ function Clientservice() {
                       </select>
                     </td>
                     <td>
-                      <select class="form-select" aria-label="Default select example">
+                      <select className="form-select" aria-label="Default select example">
                         <option selected>MIS</option>
                         <option value="1">CNC</option>
                         <option value="2">BO</option>
