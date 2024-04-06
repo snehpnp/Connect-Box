@@ -26,7 +26,7 @@ const AddClient = () => {
 
 
   const [refresh, setrefresh] = useState(false)
-  const [strategyPlanMonth, setStrategyPlanMonth] = useState("monthly")
+  // const [strategyPlanMonth, setStrategyPlanMonth] = useState("monthly")
 
 
 
@@ -389,9 +389,6 @@ const AddClient = () => {
 
 
 
-  const handleChange = (e) => {
-    setStrategyPlanMonth(e.target.id);
-  }
 
 
   const handleStrategyChange = (id) => {
@@ -400,16 +397,31 @@ const AddClient = () => {
       setSelectedCheckboxesAndPlan(selectedCheckboxesAndPlan.filter(item => item._id !== id));
     } else {
       setSelectedCheckboxes([...selectedCheckboxes, id]);
-      setSelectedCheckboxesAndPlan([...selectedCheckboxesAndPlan, { _id: id, select_plan: strategyPlanMonth }])
+      setSelectedCheckboxesAndPlan([...selectedCheckboxesAndPlan, { _id: id, select_plan: "monthly" }])
     }
   }
 
 
 
-  console.log("selectedCheckboxesAndPlan :", selectedCheckboxesAndPlan)
 
 
 
+  const PlanSetinState = (id) => {
+    const strategyPlanMonth = id.split('_')[1];
+
+
+    if (selectedCheckboxes.includes(id.split('_')[0])) {
+        setSelectedCheckboxesAndPlan(prevState => (
+            prevState.map(item => (
+                item._id === id.split('_')[0] ? { ...item, select_plan: strategyPlanMonth } : item
+            ))
+        ));
+    }
+}
+
+
+
+console.log("selectedCheckboxesAndPlan :", selectedCheckboxesAndPlan)
 
 
   return (
@@ -456,7 +468,7 @@ const AddClient = () => {
                                 onChange={() => handleStrategyChange(strategy._id)}
                               />
                               <label className="form-check-label" htmlFor={strategy.strategy_name}>{strategy.strategy_name}</label>
-                         
+
                               {selectedCheckboxes.includes(strategy._id) && (
                                 <>
                                   <div className="border rounded" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -466,8 +478,9 @@ const AddClient = () => {
                                           type="radio"
                                           name={`option_${strategy._id}`}
                                           value="monthly"
+                                          defaultChecked
                                           id={`${strategy._id}_monthly`}
-                                          onChange={(e) => setStrategyPlanMonth(e.target.id)}
+                                          onChange={(e) => PlanSetinState(e.target.id)}
                                         />
                                         <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>monthly </label>
                                       </div>
@@ -477,7 +490,7 @@ const AddClient = () => {
                                           name={`option_${strategy._id}`}
                                           value="quarterly"
                                           id={`${strategy._id}_quarterly`}
-                                          onChange={(e) => setStrategyPlanMonth(e.target.id)}
+                                          onChange={(e) => PlanSetinState(e.target.id)}
                                         />
                                         <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>quarterly </label>
                                       </div>
@@ -487,7 +500,7 @@ const AddClient = () => {
                                           name={`option_${strategy._id}`}
                                           value="halfyearly"
                                           id={`${strategy._id}_halfyearly`}
-                                          onChange={(e) => setStrategyPlanMonth(e.target.id)}
+                                          onChange={(e) => PlanSetinState(e.target.id)}
                                         />
                                         <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>halfyearly </label>
                                       </div>
@@ -497,7 +510,7 @@ const AddClient = () => {
                                           name={`option_${strategy._id}`}
                                           value="yearly"
                                           id={`${strategy._id}_yearly`}
-                                          onChange={(e) => setStrategyPlanMonth(e.target.id)}
+                                          onChange={(e) => PlanSetinState(e.target.id)}
                                         />
                                         <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>yearly </label>
                                       </div>
