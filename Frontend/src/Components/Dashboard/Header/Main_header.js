@@ -3,6 +3,7 @@ import DrapDown from './DrapDown';
 
 const Main_Header = () => {
   // State to manage theme mode
+<<<<<<< HEAD
   const [themeMode, setThemeMode] = useState('light');
 
   // Define toggleTheme function
@@ -31,6 +32,8 @@ const Main_Header = () => {
     htmlElement.setAttribute('data-layout-mode', themeMode);
     htmlElement.setAttribute('data-topbar', themeMode);
   }, [themeMode]);
+=======
+>>>>>>> 3c70452185f908dfbc626fe958800bf271f51725
 
   return (
     <div>
@@ -71,10 +74,7 @@ const Main_Header = () => {
               />
             </a>
           </div>
-          <label className="theme-switch">
-            <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
-            <span className="slider"></span>
-          </label>
+
         </div>
 
 
@@ -83,7 +83,8 @@ const Main_Header = () => {
 
         <div className="nav-item  has-arrow dropdown-heads ">
           <DrapDown />
-        </div>
+         
+          </div>
 
 
 
