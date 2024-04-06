@@ -21,12 +21,12 @@ import Add_Group from '../Layouts/SubAdmin/GroupServices/Add_Groups.js'
 // strategydesc
 const SubAdmin_Routing = () => {
 
+
     return (
         <>
             <MainHeader />
             <Header />
-            <div className='page-wrapper' >
-
+            <div className="page-wrapper">
                 <Routes>
                     <Route exact path="/dashboard" element={<Overview />} />
                     <Route exact path="/system" element={<System />} />
@@ -34,18 +34,19 @@ const SubAdmin_Routing = () => {
                     <Route exact path="/message-broadcast" element={<Msgbrodcast />} />
                     <Route exact path="/strategys" element={<Strategy />} />
                     <Route exact path="/group-service" element={<Grpservices />} />
-                    <Route exact path="/group_service/add" element={<Add_Group />} /> 
+                    <Route exact path="/group_service/add" element={<Add_Group />} />
+                    <Route exact path="/servicesAll" element={<AllServices />} />
                     <Route exact path="/users" element={<ALLUSER />} />
                     <Route exact path="/option-chain" element={<Chain />} />
-                    <Route exact path="/User/add" element={<Adduser />} />
                     <Route exact path="/servicesAll" element={<AllServices />} />
 
-
+                    <Route exact path="/User/add" element={<Adduser />} />
+                    <Route exact path="/make-call" element={<Makecall />} />
                 </Routes>
-
             </div>
         </>
-    )
-}
+    );
+};
+
 
 export default SubAdmin_Routing
