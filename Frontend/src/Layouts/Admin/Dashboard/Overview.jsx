@@ -8,12 +8,11 @@ const Overview = () => {
   const [adminData, setAdminData] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const maxPercentage = 10;
+  const maxPercentage = adminData.Totalcount;
   const calculatePercentage = (count) =>
     count !== undefined && count !== null
       ? (count / maxPercentage) * 100
       : null;
-
   const percentages = {
     percentage: calculatePercentage(adminData.Totalcount),
     percentage1: calculatePercentage(adminData.TotalActivecount),
@@ -67,7 +66,7 @@ const Overview = () => {
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
-        percentage !== null ? `${Math.round(percentage / 10) * 10}%` : "N/A",
+        percentage !== null ? `${Math.round(percentage)}%` : "N/A",
       sinceLastWeek: "since last week",
       progressBarClass:
         percentage !== null && percentage < 100 ? "bg-5" : "bg-6",
@@ -87,7 +86,7 @@ const Overview = () => {
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
-        percentage1 !== null ? `${Math.round(percentage1 / 10) * 10}%` : "N/A",
+        percentage1 !== null ? `${Math.round(percentage1)}%` : "N/A",
       sinceLastWeek: "since last week",
       progressBarClass:
         percentage1 !== null && percentage1 < 100 ? "bg-5" : "bg-6",
@@ -107,7 +106,7 @@ const Overview = () => {
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
-        percentage3 !== null ? `${Math.round(percentage3 / 10) * 10}%` : "N/A",
+        percentage3 !== null ? `${Math.round(percentage3)}%` : "N/A",
       sinceLastWeek: "since last week",
       progressBarClass:
         percentage3 !== null && percentage3 < 100 ? "bg-5" : "bg-6",
@@ -127,7 +126,7 @@ const Overview = () => {
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
-        percentage4 !== null ? `${Math.round(percentage4 / 10) * 10}%` : "N/A",
+        percentage4 !== null ? `${Math.round(percentage4)}%` : "N/A",
       sinceLastWeek: "since last week",
       progressBarClass:
         percentage4 !== null && percentage4 < 100 ? "bg-5" : "bg-6",
@@ -147,7 +146,7 @@ const Overview = () => {
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
-        percentage5 !== null ? `${Math.round(percentage5 / 10) * 10}%` : "N/A",
+        percentage5 !== null ? `${Math.round(percentage5)}%` : "N/A",
       sinceLastWeek: "since last week",
       progressBarClass:
         percentage5 !== null && percentage5 < 100 ? "bg-5" : "bg-6",
@@ -167,7 +166,7 @@ const Overview = () => {
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
-        percentage6 !== null ? `${Math.round(percentage6 / 10) * 10}%` : "N/A",
+        percentage6 !== null ? `${Math.round(percentage6)}%` : "N/A",
       sinceLastWeek: "since last week",
       progressBarClass:
         percentage6 !== null && percentage6 < 100 ? "bg-5" : "bg-6",
@@ -237,7 +236,7 @@ const Overview = () => {
             </div>
           </div>
 
-          {/* <div className="row" data-aos="fade-left">
+{/* <div className="row" data-aos="fade-left">
 
             <div className="col-xl-12 d-flex">
               <div className="card mb-0">

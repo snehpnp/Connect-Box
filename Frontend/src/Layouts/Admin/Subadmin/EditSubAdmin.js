@@ -25,7 +25,6 @@ const EditClient = () => {
     location.state && location.state.rowData._id
   );
 
-
   const formik = useFormik({
     initialValues: {
       id: rowData?._id || "",
@@ -76,7 +75,6 @@ const EditClient = () => {
   });
 
   const handleSelectChange = (e) => {
-  
     const selectedValue = e.target.value;
     formik.handleChange(e);
     if (selectedValue === "1") {
@@ -251,9 +249,15 @@ const EditClient = () => {
     );
 
     if (rowData !== undefined && rowData.subadmin_servic_type) {
-      formik.setFieldValue("subadmin_servic_type",rowData.subadmin_servic_type);
+      formik.setFieldValue(
+        "subadmin_servic_type",
+        rowData.subadmin_servic_type
+      );
       if (rowData.subadmin_servic_type === "1") {
-        formik.setFieldValue("strategy_Percentage",rowData.strategy_Percentage);
+        formik.setFieldValue(
+          "strategy_Percentage",
+          rowData.strategy_Percentage
+        );
       } else if (rowData.subadmin_servic_type === "2") {
         formik.setFieldValue("Per_trade", rowData.Per_trade);
       }
@@ -261,7 +265,6 @@ const EditClient = () => {
       formik.setFieldValue("subadmin_servic_type", "1");
     }
   }, [rowData]);
-
 
   return (
     <>
