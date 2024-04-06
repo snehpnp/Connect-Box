@@ -24,7 +24,6 @@ const EditClient = () => {
     location.state && location.state.rowData._id
   );
 
-
   const formik = useFormik({
     initialValues: {
       id: rowData?._id || "",
@@ -75,8 +74,7 @@ const EditClient = () => {
   });
 
   const handleSelectChange = (e) => {
-
-    const selectedValue = e.target.value;
+  const selectedValue = e.target.value;
     formik.handleChange(e);
     if (selectedValue === "1") {
       setInputPerTrade(true);
@@ -190,8 +188,9 @@ const EditClient = () => {
     formik.setFieldValue("subadmin_servic_type", rowData !== undefined && rowData.subadmin_servic_type == 1 ? "1" : "2");
     formik.setFieldValue("prifix_key", rowData !== undefined && rowData.prifix_key);
 
-  }, [rowData]);
 
+   
+  }, [rowData]);
 
   return (
     <>
