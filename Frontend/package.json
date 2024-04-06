@@ -21,7 +21,6 @@
     "date-holidays": "^3.23.10",
     "faker": "^6.6.6",
     "formik": "^2.4.5",
-    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.362.0",
     "node-datetime": "^2.1.2",
     "react": "^18.2.0",
