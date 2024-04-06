@@ -277,14 +277,13 @@ const Overview = () => {
           </div>
 
 
-          <div className="row" data-aos="fade-left">
 
             <div className="row" data-aos="fade-left">
               <div className="col-xl-6 d-flex">
                 <div className="card flex-fill">
                   <div className="card-header">
                     <div className="d-flex justify-content-between align-items-center">
-                      <h5 className="card-title">Invoice Analytics</h5>
+                      <h5 className="card-title">Sales Analytics</h5>
                       <div className="dropdown main">
                         <button
                           className="btn btn-white btn-sm dropdown-toggle"
@@ -319,7 +318,28 @@ const Overview = () => {
                     <div id="invoice_chart" />
                     <div className="text-center text-muted">
                       <div className="row">
+                  
                         <div className="mixed-chart">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap flex-md-nowrap">
+                          <div class="w-md-100 d-flex align-items-center mb-3 flex-wrap flex-md-nowrap">
+                            <div>
+                              <span>Total Sales</span>
+                              <p class="h3 text-primary me-5">$1000</p>
+                            </div>
+                            <div>
+                              <span>Receipts</span>
+                              <p class="h3 text-success me-5">$1000</p>
+                            </div>
+                            <div>
+                              <span>Expenses</span>
+                              <p class="h3 text-danger me-5">$300</p>
+                            </div>
+                            <div>
+                              <span>Earnings</span>
+                              <p class="h3 text-dark me-5">$700</p>
+                            </div>
+                          </div>
+                        </div>
                           <Chart
                             colors={colors}
 
@@ -414,13 +434,13 @@ const Overview = () => {
 
 
             </div>
-          </div>
+         
 
 
         </div>
       </div>
-      </div>
-      );
+    </div>
+  );
 };
 
-      export default Overview;
+export default Overview;

@@ -60,6 +60,9 @@ class Dashboard {
             _id: "$date",
             totalBalance: { $sum: "$balance" }
           }
+        },
+        {
+          $sort: { _id: 1 } // Sort by date in ascending order
         }
       ]);
       
@@ -95,6 +98,7 @@ class Dashboard {
         TotalActiveUsercount: TotalActiveUsercount,
         TotalInActiveUsercount: TotalUsercount - TotalActiveUsercount,
         dummyData:dummyData
+
       };
 
       // DATA GET SUCCESSFULLY
