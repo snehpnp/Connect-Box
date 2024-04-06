@@ -8,6 +8,7 @@ import SubAdminSystemSlice from "../Slice/Admin/SubAdminCompanyInfo";
 
 import StrategySlice from "../Slice/Subadmin/Strategy";
 import GrouoServicesSlice from "../Slice/Subadmin/GroupServicesSlice";
+import UsersSlice from '../Slice/Subadmin/UsersSlice'
 
 
 
@@ -20,7 +21,9 @@ const store = configureStore({
     SystemSlice: SystemSlice.reducer,
     SubAdminSystemSlice: SubAdminSystemSlice.reducer,
     StrategySlice: StrategySlice.reducer,
-    GrouoServicesSlice : GrouoServicesSlice.reducer
+    GrouoServicesSlice : GrouoServicesSlice.reducer,
+    UsersSlice : UsersSlice.reducer
+
 
   },
 });

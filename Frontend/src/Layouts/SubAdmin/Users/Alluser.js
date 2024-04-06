@@ -12,11 +12,12 @@ import Switch from "@mui/material/Switch";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  GetAllSubAdmin,
+  
   update_Balance, Show_Status
 } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
+import {GetAllUsers} from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 
 
 
@@ -34,6 +35,8 @@ export default function Help() {
   const [refresh, setrefresh] = useState(false);
   const [modal, setmodal] = useState(false);
 
+
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
   const admin_id = JSON.parse(
     localStorage.getItem("user_details")
@@ -229,11 +232,13 @@ export default function Help() {
 
 
   const getSubadminData = async () => {
-    await dispatch(GetAllSubAdmin())
+    var data={user_ID : user_id}
+    await dispatch(GetAllUsers(data))
       .unwrap()
-      .then(async (response) => {
-
+      .then((response) => {
+    
         if (response.status) {
+         
 
           const formattedData = response.data && response.data.map((row, index) => ({
             ...row,
