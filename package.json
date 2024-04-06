@@ -1,5 +1,19 @@
 {
   "dependencies": {
+    "apexcharts": "^3.48.0",
+    "react": "^18.2.0",
+    "react-apexcharts": "^1.4.1",
+    "react-dom": "^18.2.0",
     "xlsx": "^0.18.5"
-  }
+  },
+  "name": "connect-box",
+  "description": "SNEH JAISWAL",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

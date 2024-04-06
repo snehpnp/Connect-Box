@@ -3,8 +3,28 @@ import { Dashboard_admin } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import Chart from "react-apexcharts";
+
+
 
 const Overview = () => {
+
+  const [options] = useState({
+    chart: {
+      id: "basic-bar"
+    },
+    xaxis: {
+      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+    }
+  });
+
+  const [series] = useState([
+    {
+      name: "series-1",
+      data: [30, 40, 45, 50, 49, 60, 70, 91]
+    }
+  ])
+  const [colors] = useState(["#9423FF"]);
   const [adminData, setAdminData] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,8 +82,8 @@ const Overview = () => {
       progress: percentage !== null ? percentage : 0,
       arrowIcon:
         adminData.Totalcount !== undefined &&
-        percentage !== null &&
-        percentage < 100
+          percentage !== null &&
+          percentage < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -82,8 +102,8 @@ const Overview = () => {
       progress: percentage1 !== null ? percentage1 : 0,
       arrowIcon:
         adminData.TotalActivecount !== undefined &&
-        percentage1 !== null &&
-        percentage1 < 100
+          percentage1 !== null &&
+          percentage1 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -102,8 +122,8 @@ const Overview = () => {
       progress: percentage3 !== null ? percentage3 : 0,
       arrowIcon:
         adminData.TotalActivecount !== undefined &&
-        percentage3 !== null &&
-        percentage3 < 100
+          percentage3 !== null &&
+          percentage3 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -122,8 +142,8 @@ const Overview = () => {
       progress: percentage4 !== null ? percentage4 : 0,
       arrowIcon:
         adminData.TotalUsercount !== undefined &&
-        percentage4 !== null &&
-        percentage4 < 100
+          percentage4 !== null &&
+          percentage4 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -142,8 +162,8 @@ const Overview = () => {
       progress: percentage5 !== null ? percentage5 : 0,
       arrowIcon:
         adminData.TotalActiveUsercount !== undefined &&
-        percentage5 !== null &&
-        percentage5 < 100
+          percentage5 !== null &&
+          percentage5 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -162,8 +182,8 @@ const Overview = () => {
       progress: percentage6 !== null ? percentage6 : 0,
       arrowIcon:
         adminData.TotalInActiveUsercount !== undefined &&
-        percentage6 !== null &&
-        percentage6 < 100
+          percentage6 !== null &&
+          percentage6 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -751,6 +771,59 @@ const Overview = () => {
                   <div id="invoice_chart" />
                   <div className="text-center text-muted">
                     <div className="row">
+                      <div className="mixed-chart">
+                        <Chart
+                          colors={colors}
+
+                          options={options}
+                          series={series}
+                          type="bar"
+                          width="100%"
+
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-xl-6 d-flex">
+              <div className="card flex-fill">
+                <div className="card-header">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <h5 className="card-title">Invoice Analytics</h5>
+                    <div className="dropdown main">
+                      <button
+                        className="btn btn-white btn-sm dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Monthly
+                      </button>
+                      <ul
+                        className="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton1"
+                      >
+                        <li>
+                          <a className="dropdown-item">Weekly</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item">Monthly</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item">Yearly</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div className="card-body">
+                  <div id="invoice_chart" />
+                  <div className="text-center text-muted">
+                    <div className="row">
                       <div className="col-4">
                         <div className="mt-4">
                           <p className="mb-2 text-truncate">
@@ -785,10 +858,13 @@ const Overview = () => {
                     >
                       <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
                     </div>
+
                   </div>
                 </div>
               </div>
             </div>
+
+
           </div>
         </div>
       </div>

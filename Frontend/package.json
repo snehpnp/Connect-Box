@@ -19,6 +19,7 @@
     "bootstrap": "^5.3.3",
     "date-fns": "^3.6.0",
     "date-holidays": "^3.23.10",
+    "faker": "^6.6.6",
     "formik": "^2.4.5",
     "lucide-react": "^0.362.0",
     "node-datetime": "^2.1.2",
