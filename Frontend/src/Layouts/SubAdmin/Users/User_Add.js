@@ -20,11 +20,15 @@ const AddClient = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
+
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
 
   const [refresh, setrefresh] = useState(false)
+  const [strategyPlanMonth, setStrategyPlanMonth] = useState("monthly")
+
+
 
   const [serviceName, setServiceName] = useState({
     loading: true,
@@ -35,13 +39,17 @@ const AddClient = () => {
     data: [],
   });
 
-  console.log("getAllStategy :", getAllStategy)
 
 
   const [allGroupService, setAllGroupService] = useState({
     loading: true,
     data: [],
   });
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
+
+
+
 
 
   const first = [1, 2, 3, 4]
@@ -380,12 +388,30 @@ const AddClient = () => {
   }, [])
 
 
-  const handleStrategyChange = (e) => {
 
+  const handleChange = (e) => {
+    setStrategyPlanMonth(e.target.id);
   }
 
 
-  console.log(getAllStategy.data)
+  const handleStrategyChange = (id) => {
+    if (selectedCheckboxes.includes(id)) {
+      setSelectedCheckboxes(selectedCheckboxes.filter(checkboxId => checkboxId !== id));
+      setSelectedCheckboxesAndPlan(selectedCheckboxesAndPlan.filter(item => item._id !== id));
+    } else {
+      setSelectedCheckboxes([...selectedCheckboxes, id]);
+      setSelectedCheckboxesAndPlan([...selectedCheckboxesAndPlan, { _id: id, select_plan: strategyPlanMonth }])
+    }
+  }
+
+
+
+  console.log("selectedCheckboxesAndPlan :", selectedCheckboxesAndPlan)
+
+
+
+
+
   return (
     <>
       {
@@ -418,23 +444,74 @@ const AddClient = () => {
                     <h6>All Strategy</h6>
                     {/* For Show All Strategy */}
                     {getAllStategy.data.map((strategy) => (
-                      <div className={`col-lg-2 mt-2`} key={strategy._id}>
-                        <div className="row ">
-                          <div className="col-lg-12 ">
+                      <div className={`col-lg-3 mt-2`} key={strategy._id}>
+                        <div className="row">
+                          <div className="col-lg-12">
                             <div className="form-check custom-checkbox mb-3">
                               <input
                                 type='checkbox'
                                 className="form-check-input"
                                 name={strategy.strategy_name}
                                 value={strategy._id}
-                                onChange={(e) => handleStrategyChange(e)}
+                                onChange={() => handleStrategyChange(strategy._id)}
                               />
                               <label className="form-check-label" htmlFor={strategy.strategy_name}>{strategy.strategy_name}</label>
+                         
+                              {selectedCheckboxes.includes(strategy._id) && (
+                                <>
+                                  <div className="border rounded" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <div className="form-group d-flex justify-content-between m-3">
+                                      <div className="d-flex align-items-center">
+                                        <input
+                                          type="radio"
+                                          name={`option_${strategy._id}`}
+                                          value="monthly"
+                                          id={`${strategy._id}_monthly`}
+                                          onChange={(e) => setStrategyPlanMonth(e.target.id)}
+                                        />
+                                        <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>monthly </label>
+                                      </div>
+                                      <div className="d-flex align-items-center">
+                                        <input
+                                          type="radio"
+                                          name={`option_${strategy._id}`}
+                                          value="quarterly"
+                                          id={`${strategy._id}_quarterly`}
+                                          onChange={(e) => setStrategyPlanMonth(e.target.id)}
+                                        />
+                                        <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>quarterly </label>
+                                      </div>
+                                      <div className="d-flex align-items-center">
+                                        <input
+                                          type="radio"
+                                          name={`option_${strategy._id}`}
+                                          value="halfyearly"
+                                          id={`${strategy._id}_halfyearly`}
+                                          onChange={(e) => setStrategyPlanMonth(e.target.id)}
+                                        />
+                                        <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>halfyearly </label>
+                                      </div>
+                                      <div className="d-flex align-items-center">
+                                        <input
+                                          type="radio"
+                                          name={`option_${strategy._id}`}
+                                          value="yearly"
+                                          id={`${strategy._id}_yearly`}
+                                          onChange={(e) => setStrategyPlanMonth(e.target.id)}
+                                        />
+                                        <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>yearly </label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </>
+                              )}
                             </div>
                           </div>
                         </div>
                       </div>
                     ))}
+
+
                   </div>
 
 
