@@ -662,19 +662,20 @@ class GroupService {
 
     try {
       const { data } = req.body
+
       var ServicesArr = []
       if (!data || data.length == 0 || data == '') {
         return res.send({ status: false, msg: 'Please Insert Coreect Data ', data: ServicesArr });
-
       }
 
-  
+
+
       data.forEach(async (info) => {
 
         const Service_name_get = await services.findOne({ _id: info.Service_id });
         console.log(" Service_name_get :", Service_name_get)
         if (Service_name_get) {
-          ServicesArr.push({ data: Service_name_get, data1: info  })
+          ServicesArr.push({ data: Service_name_get, data1: info })
 
           if (data.length == ServicesArr.length) {
             return res.send({ status: true, msg: 'Get All successfully ', data: ServicesArr });
@@ -683,13 +684,74 @@ class GroupService {
 
       })
 
+    } catch (error) {
+      console.log("Error GET SERVICES NAME -", error);
+    }
 
+  }
+
+  async GetAllServicesGiven(req, res) {
+
+    try {
+      const { data } = req.body
+
+      // console.log(data)
+
+      var ServicesArr = []
+      if (!data || data.length == 0 || data == '') {
+        return res.send({ status: false, msg: 'Please Insert Coreect Data ', data: ServicesArr });
+      }
+
+      data.forEach(async (info) => {
+
+
+        const pipeline = [
+          {
+            $match: {
+              _id: new ObjectId(info.Service_id)
+            }
+          },
+          {
+            $lookup: {
+              from: "categories",
+              localField: "categorie_id",
+              foreignField: "_id",
+              as: "category"
+            }
+          },
+          {
+            $unwind: "$category"
+          },
+          {
+            $project: {
+              "_id": 1, // include any other fields you want
+              "name": 1,
+              "category.segment": 1 // include specific fields from categories
+            }
+          }
+        ];
+
+        const Service_name_get = await services.aggregate(pipeline)
+
+
+        
+        if (Service_name_get) {
+          ServicesArr.push({ data: Service_name_get })
+
+          if (data.length == ServicesArr.length) {
+            return res.send({ status: true, msg: 'Get All successfully ', data: ServicesArr });
+          }
+        }
+
+      })
 
     } catch (error) {
       console.log("Error GET SERVICES NAME -", error);
     }
 
   }
+
+
 
   // GET SERVICES BY GROUP ID -- for edit update
   async GetServicesByGroupId(req, res) {
@@ -822,7 +884,7 @@ class GroupService {
 
 
         const Service_name_get = await serviceGroup_services_id.aggregate(pipeline);
-        
+
 
         if (Service_name_get.length == 0) {
           return res.send({ status: false, msg: 'No Data Found ', data: Service_name_get });
@@ -833,7 +895,7 @@ class GroupService {
         const Service_name_get1 = await serviceGroupName.find({ _id: objectId });
 
 
-    
+
 
 
         return res.send({

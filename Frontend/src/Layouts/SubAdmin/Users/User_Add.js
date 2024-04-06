@@ -6,22 +6,57 @@ import { useNavigate } from "react-router-dom";
 
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
-
+import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
+import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import Loader from '../../../Utils/Loader';
 
 import { useFormik } from 'formik';
+import { useState, useEffect } from "react";
+
+
 
 
 const AddClient = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
-  const userDetails = JSON.parse(localStorage.getItem("user_details"));
-  const Role = userDetails?.Role;
-  const user_id = userDetails?.user_id;
-  const ProfileShow = 1;
+  const Role = JSON.parse(localStorage.getItem("user_details")).Role;
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+
+
+  const [refresh, setrefresh] = useState(false)
+
+  const [serviceName, setServiceName] = useState({
+    loading: true,
+    data: [],
+  });
+  const [getAllStategy, setgetallStrategy] = useState({
+    loading: true,
+    data: [],
+  });
+
+  console.log("getAllStategy :", getAllStategy)
+
+
+  const [allGroupService, setAllGroupService] = useState({
+    loading: true,
+    data: [],
+  });
+
+
+  const first = [1, 2, 3, 4]
+  const GetBrokerInfo = [1, 2, 3, 4]
 
 
   const fields = [
+    {
+      name: "fullName",
+      label: "FullName",
+      type: "file",
+      label_size: 12,
+      col_size: 12,
+      disable: false,
+    },
     {
       name: "fullName",
       label: "FullName",
@@ -47,6 +82,14 @@ const AddClient = () => {
       disable: false,
     },
     {
+      name: "password",
+      label: "password",
+      type: "password",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
       name: "phone",
       label: "Phone No",
       type: "number",
@@ -62,14 +105,7 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    {
-      name: "password",
-      label: "password",
-      type: "password",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
+
     {
       name: "prifix_key",
       label: "Prifix Key",
@@ -78,20 +114,6 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    {
-      name: "license_type",
-      label: "Lincense Type",
-      type: "select",
-      options: [
-        { label: "Demo", value: "0" },
-        { label: "2 Day Live", value: "1" },
-        { label: "Live", value: "2" },
-      ],
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-     
     {
       name: "subadmin_servic_type",
       label: "Subadmin Servic Type",
@@ -103,6 +125,60 @@ const AddClient = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
+    },
+    {
+      name: 'Per_trade', label: 'Per Trade', type: 'text',
+      showWhen: values => values.subadmin_servic_type === '1'
+      , label_size: 12, col_size: 6, disable: false
+    },
+    {
+      name: 'Per_strategy', label: 'Per Strategy', type: 'text',
+      showWhen: values => values.subadmin_servic_type === '2'
+      , label_size: 12, col_size: 6, disable: false
+    },
+    {
+      name: "licence",
+      label: "Lincense Type",
+      type: "select",
+      options: [
+        { label: "Demo", value: "0" },
+        { label: "2 Day Live", value: "1" },
+        { label: "Live", value: "2" },
+      ],
+      label_size: 12,
+      col_size: 6,
+      disable: true,
+    },
+
+
+    {
+      name: 'broker',
+      label: 'Broker',
+      type: 'select',
+      options: GetBrokerInfo && GetBrokerInfo.map((item) => ({ label: item.title, value: item.broker_id })),
+      showWhen: values => values.licence === '2' || values.licence === '1'
+      , label_size: 12, col_size: 6, disable: false
+    },
+    //  For Demo Only Client
+    {
+      name: 'fromDate', label: 'From Date', type: 'date',
+      showWhen: values => values.licence === '0'
+      , label_size: 12, col_size: 6, disable: false
+    },
+    {
+      name: 'todate', label: 'To Date', type: 'date',
+      showWhen: values => values.licence === '0'
+      , label_size: 12, col_size: 6, disable: false
+    },
+
+
+    {
+      name: 'groupservice',
+      label: 'Group Service',
+      type: 'select',
+      options:
+        allGroupService.data && allGroupService.data.map((item) => ({ label: item.name, value: item._id }))
+      , label_size: 12, col_size: 6, disable: false
     },
   ];
 
@@ -118,10 +194,11 @@ const AddClient = () => {
       password: "",
       tomonth: null,
       prifix_key: "",
-      licence:null,
+      licence: null,
       subadmin_servic_type: "0",
       strategy_Percentage: "0",
       Per_trade: "0",
+      Per_strategy: '0',
       parent_id: null,
       parent_role: null,
     },
@@ -203,21 +280,174 @@ const AddClient = () => {
   });
 
 
+  const getAllGroupService = async () => {
+
+    try {
+      var data = { id: user_id }
+      const response = await dispatch(GetAll_Group_Servics(data)).unwrap();
+
+      if (response.status) {
+        const formattedData = response.data.map((row, index) => ({
+          ...row,
+          id: index + 1,
+        }));
+        setAllGroupService({
+          loading: true,
+          data: formattedData,
+        });
+      } else {
+        setAllGroupService({
+          loading: true,
+          data: [],
+        });
+      }
+    } catch (error) {
+      console.log("Error", error);
+      setAllGroupService({
+        loading: false,
+        data: [],
+      });
+    }
+
+
+
+  };
+
+  useEffect(() => {
+    getAllGroupService();
+  }, [refresh]);
+
+
+  //FIND ALL GROUP SERVICES
+  const FindAllGroupService = allGroupService.data.find(item => item._id === formik.values.groupservice);
+
+
+  const getAllGroupServicesName = async () => {
+    if (formik.values.groupservice) {
+      await dispatch(GET_ALL_SERVICES_GIVEN({
+        data: FindAllGroupService.result
+      })).unwrap()
+        .then((response) => {
+          if (response.status) {
+            setServiceName({
+              loading: false,
+              data: response.data
+            })
+          }
+          else {
+            setServiceName({
+              loading: false,
+              data: []
+            })
+          }
+        })
+        .catch((error) => {
+          console.log("erorr :", error)
+        })
+
+    }
+  }
+  useEffect(() => {
+    getAllGroupServicesName();
+  }, [refresh, formik.values.groupservice])
+
+
+  const GetAllStrategy = async () => {
+    var data = { id: user_id }
+    await dispatch(GetSubStrategys(data)).unwrap()
+      .then((response) => {
+        if (response.status) {
+          setgetallStrategy({
+            loading: true,
+            data: response.data
+          })
+        }
+        else {
+          setgetallStrategy({
+            loading: true,
+            data: []
+          })
+
+        }
+      })
+      .catch((error) => {
+        console.log("Stategy finding Error", error)
+      })
+  }
+
+  useState(() => {
+    GetAllStrategy();
+  }, [])
+
+
+  const handleStrategyChange = (e) => {
+
+  }
+
+
+  console.log(getAllStategy.data)
   return (
     <>
+      {
+        getAllStategy.data.length == 0 ? <Loader /> :
+          <>
+            <AddForm
+              fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))}
+              page_title="Add User"
+              btn_name="Add User"
+              btn_name1="Cancel"
+              formik={formik}
+              btn_name1_route={'/subadmin/users'}
+              additional_field={
+                <>
+                  <h6>All Group Service</h6>
 
-      <AddForm
-        ProfileShow={ProfileShow}
-        // fields={fields}
-        fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))}
-        page_title="Add User"
-        btn_name="Add User"
-        btn_name1="Cancel"
-        formik={formik}
-        btn_name1_route={'/subadmin/users'}
+                  {serviceName && serviceName.data.map((item) => (
+                    <>
+                      <div className={`col-lg-2 `} key={item._id}>
+                        <div className="col-lg-12 ">
+                          <label className="form-check-label bg-primary text-white py-2 px-4" for={item.data[0].name}>{`${item.data[0].name}[${item.data[0].category.segment}]`}</label>
 
-      />
-      <ToastButton />
+                        </div>
+                      </div>
+
+                    </>
+                  ))}
+
+                  <div className="row mt-4">
+                    <h6>All Strategy</h6>
+                    {/* For Show All Strategy */}
+                    {getAllStategy.data.map((strategy) => (
+                      <div className={`col-lg-2 mt-2`} key={strategy._id}>
+                        <div className="row ">
+                          <div className="col-lg-12 ">
+                            <div className="form-check custom-checkbox mb-3">
+                              <input
+                                type='checkbox'
+                                className="form-check-input"
+                                name={strategy.strategy_name}
+                                value={strategy._id}
+                                onChange={(e) => handleStrategyChange(e)}
+                              />
+                              <label className="form-check-label" htmlFor={strategy.strategy_name}>{strategy.strategy_name}</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+
+                </>
+              }
+            />
+
+            <ToastButton />
+
+          </>
+      }
+
+
     </>
 
   );
