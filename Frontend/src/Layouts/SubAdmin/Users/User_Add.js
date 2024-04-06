@@ -394,34 +394,34 @@ const AddClient = () => {
   const handleStrategyChange = (id) => {
     if (selectedCheckboxes.includes(id)) {
       setSelectedCheckboxes(selectedCheckboxes.filter(checkboxId => checkboxId !== id));
-      setSelectedCheckboxesAndPlan(selectedCheckboxesAndPlan.filter(item => item._id !== id));
+      setSelectedCheckboxesAndPlan(prevState => (
+        prevState.filter(item => item._id !== id)
+      ));
     } else {
       setSelectedCheckboxes([...selectedCheckboxes, id]);
-      setSelectedCheckboxesAndPlan([...selectedCheckboxesAndPlan, { _id: id, select_plan: "monthly" }])
+      setSelectedCheckboxesAndPlan(prevState => (
+        [...prevState, { _id: id, select_plan: "monthly" }]
+      ));
     }
-  }
-
-
-
-
-
+  };
 
   const PlanSetinState = (id) => {
     const strategyPlanMonth = id.split('_')[1];
+    const checkboxId = id.split('_')[0];
 
-
-    if (selectedCheckboxes.includes(id.split('_')[0])) {
-        setSelectedCheckboxesAndPlan(prevState => (
-            prevState.map(item => (
-                item._id === id.split('_')[0] ? { ...item, select_plan: strategyPlanMonth } : item
-            ))
-        ));
+    if (selectedCheckboxes.includes(checkboxId)) {
+      setSelectedCheckboxesAndPlan(prevState => (
+        prevState.map(item => (
+          item._id === checkboxId ? { ...item, select_plan: strategyPlanMonth } : item
+        ))
+      ));
     }
-}
+  };
 
 
 
-console.log("selectedCheckboxesAndPlan :", selectedCheckboxesAndPlan)
+
+  console.log("selectedCheckboxesAndPlan :", selectedCheckboxesAndPlan)
 
 
   return (
