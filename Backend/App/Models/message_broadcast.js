@@ -18,6 +18,12 @@ const newMessage = new mongoose.Schema({
         type: String,
         required: true
     },
+
+
+    Role: {
+        type: String,
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now

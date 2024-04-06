@@ -50,6 +50,36 @@ export async function Delete_Strategy(data) {
 
 }
 
+export async function EDIT_STRATEGY(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}strategy/edit`, data, {  
+            data: {},
+        })
+        console.log("res service :", res)
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}
+
+export async function Get_Strategy_By_Id(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}strategy/get`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+
+}
+
 
 
 

@@ -7,14 +7,14 @@ import { useFormik } from 'formik';
 import toast from "react-hot-toast";
 import ExportToExcel from '../../../Utils/ExportCSV'
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast'
-
+import { useNavigate } from "react-router-dom";
 import Loader from '../../../Utils/Loader'
 
 
 function Strategy() {
 
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
     const [searchInput, setSearchInput] = useState("");
@@ -356,7 +356,9 @@ function Strategy() {
 
 
 
-
+    const handleEditPackage = (id) => {
+        navigate(`/subadmin/edit/strategies/${id.id}`, { state: { allStategy } });
+    };
 
 
 
@@ -506,7 +508,7 @@ function Strategy() {
                                             </a>
 
                                             <a className="btn-action-icon me-2"  >
-                                                <i className="fe fe-edit" onClick={() => { seteditModal(true); setmodaldata(stg); }} />
+                                                <i className="fe fe-edit" onClick={() => handleEditPackage({ id: stg._id })} />
                                             </a>
 
                                             <a className="btn-action-icon" onClick={() => { setdeleteModal(true); setModalId(stg._id); }}  >

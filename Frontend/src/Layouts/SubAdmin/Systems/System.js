@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
-  GetCompany_info,
-  updateSystemInfo,
-} from "../../../ReduxStore/Slice/Admin/System";
+  infocompany,
+  edit_company_info,
+} from "../../../ReduxStore/Slice/Subadmin/System";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
@@ -15,6 +15,12 @@ function System() {
   const [refresh, setrefresh] = useState(false);
 
   const [formData, setFormData] = useState();
+
+  const userDetailsString = localStorage.getItem("user_details");
+  const userDetails = JSON.parse(userDetailsString);
+  const userId = userDetails ? userDetails.user_id : null;
+
+  console.log("getCompanyData from system", getCompanyData);
 
   const OpenModal = (value) => {
     setModal(value);
@@ -61,7 +67,7 @@ function System() {
         data: formData,
       };
 
-      await dispatch(updateSystemInfo(data))
+      await dispatch(edit_company_info(data))
         .unwrap()
         .then(async (response) => {
           if (response.status) {
@@ -82,9 +88,9 @@ function System() {
 
   const fetchCompanyData = useCallback(async () => {
     try {
-      const response = await dispatch(GetCompany_info()).unwrap();
-
+      const response = await dispatch(infocompany({ id: userId })).unwrap();
       if (response.status) {
+        console.log("System.", response);
         setCompanyData(response.data);
       } else {
         toast.error(response.msg);
@@ -182,30 +188,27 @@ function System() {
                   </div>
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
-                      <p>
-                        Company Name{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].panel_name}
-                        </span>
-                      </p>
-                      <p>
-                        Panel Key{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].panel_key}
-                        </span>
-                      </p>
-                      <p>
-                        Company Short Name{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].panel_short_name}
-                        </span>
-                      </p>
-                      <p>
-                        Version{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].version}
-                        </span>
-                      </p>
+                      {getCompanyData && getCompanyData[0] ? (
+                        <>
+                          <p>
+                            Company Name{" "}
+                            <span>{getCompanyData[0]?.panel_name}</span>
+                          </p>
+                          <p>
+                            Panel Key{" "}
+                            <span>{getCompanyData[0]?.panel_key}</span>
+                          </p>
+                          <p>
+                            Company Short Name{" "}
+                            <span>{getCompanyData[0]?.panel_short_name}</span>
+                          </p>
+                          <p>
+                            Version <span>{getCompanyData[0]?.version}</span>
+                          </p>
+                        </>
+                      ) : (
+                        <p>Data not found</p>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -229,36 +232,38 @@ function System() {
                     <div className="invoice-total-inner">
                       <p>
                         Email{" "}
-                        <span>{getCompanyData && getCompanyData[0].email}</span>
+                        <span>
+                          {getCompanyData && getCompanyData[0]?.email}
+                        </span>
                       </p>
                       <p>
                         CC{" "}
                         <span>
-                          {getCompanyData && getCompanyData[0].cc_mail}
+                          {getCompanyData && getCompanyData[0]?.cc_mail}
                         </span>
                       </p>
                       <p>
                         BCC{" "}
                         <span>
-                          {getCompanyData && getCompanyData[0].bcc_mail}
+                          {getCompanyData && getCompanyData[0]?.bcc_mail}
                         </span>
                       </p>
                       <p>
                         Password{" "}
                         <span>
-                          {getCompanyData && getCompanyData[0].smtp_password}
+                          {getCompanyData && getCompanyData[0]?.smtp_password}
                         </span>
                       </p>
                       <p>
                         SMTP Port{" "}
                         <span>
-                          {getCompanyData && getCompanyData[0].smtpport}
+                          {getCompanyData && getCompanyData[0]?.smtpport}
                         </span>
                       </p>
                       <p>
                         SMTP Host{" "}
                         <span>
-                          {getCompanyData && getCompanyData[0].smtphost}
+                          {getCompanyData && getCompanyData[0]?.smtphost}
                         </span>
                       </p>
                     </div>
@@ -282,30 +287,48 @@ function System() {
                   </div>
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
-                      <p>
-                        favicon{" "}
-                        <img
-                          src={getCompanyData && getCompanyData[0].favicon}
-                          alt="favicon"
-                          style={{ height: "80px", width: "80px" }}
-                        />
-                      </p>
-                      <p>
-                        Logo{" "}
-                        <img
-                          src={getCompanyData && getCompanyData[0].logo}
-                          alt="Logo"
-                          style={{ height: "80px", width: "80px" }}
-                        />
-                      </p>
-                      <p>
-                        Login Image{" "}
-                        <img
-                          src={getCompanyData && getCompanyData[0].loginimage}
-                          alt="Login Image"
-                          style={{ height: "80px", width: "80px" }}
-                        />
-                      </p>
+                      {getCompanyData && getCompanyData[0] ? (
+                        <>
+                          <p>
+                            favicon{" "}
+                            {getCompanyData[0]?.favicon ? (
+                              <img
+                                src={getCompanyData[0]?.favicon}
+                                alt="favicon"
+                                style={{ height: "80px", width: "80px" }}
+                              />
+                            ) : (
+                              <span>Data not found</span>
+                            )}
+                          </p>
+                          <p>
+                            Logo{" "}
+                            {getCompanyData[0]?.logo ? (
+                              <img
+                                src={getCompanyData[0]?.logo}
+                                alt="Logo"
+                                style={{ height: "80px", width: "80px" }}
+                              />
+                            ) : (
+                              <span>Data not found</span>
+                            )}
+                          </p>
+                          <p>
+                            Login Image{" "}
+                            {getCompanyData[0]?.loginimage ? (
+                              <img
+                                src={getCompanyData[0]?.loginimage}
+                                alt="Login Image"
+                                style={{ height: "80px", width: "80px" }}
+                              />
+                            ) : (
+                              <span>Data not found</span>
+                            )}
+                          </p>
+                        </>
+                      ) : (
+                        <p>Data not found</p>
+                      )}
                     </div>
                   </div>
                 </div>
