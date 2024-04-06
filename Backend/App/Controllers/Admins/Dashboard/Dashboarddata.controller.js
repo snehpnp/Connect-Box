@@ -78,7 +78,6 @@ class Dashboard {
         dummyData.data.push(parseInt(item.totalBalance)); // Converting Balance to integer and pushing to data array
       });
       
-      console.log(dummyData);
 
       const {
         Totalcount,
