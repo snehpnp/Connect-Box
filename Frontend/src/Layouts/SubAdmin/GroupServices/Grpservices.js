@@ -188,10 +188,13 @@ function GroupStrategy() {
 
     const GetAllServicesName = async (row) => {
         setShowModal(true);
+        console.log("cppp :", row.row.result)
         await dispatch(GET_ALL_SERVICES_NAMES({
             data: row.row.result
+
         })).unwrap()
             .then((response) => {
+        console.log("cppp 1:", response.data)
 
                 const formattedData = response.data.map((row, index) => ({
                     ...row,
@@ -225,20 +228,16 @@ function GroupStrategy() {
                     id: index + 1,
                 }));
 
-
-
-
-
                 const filteredData = formattedData.filter((item) => {
 
                     const searchTermMatch =
                         inputSearch === '' ||
-                        // item.description.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                        
                         item.name.toLowerCase().includes(inputSearch.toLowerCase())
-                    // item.resultCount.toLowerCase().includes(inputSearch.toLowerCase()) 
+                     
 
 
-                    // Return true if all conditions are met
+                   
                     return searchTermMatch;
                 });
 

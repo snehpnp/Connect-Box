@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_GROUP_SERVICS, ADD_GROUP_SERVICS, GET_ALL_CATAGORY, SERVICE_BY_CATAGORY, Get_All_Services_Name, DELETE_GROUP_SERVICE, GET_GROUP_DATA, EDIT_GROUP_SERVICE } from "../../../Services/Subadmin/groupService.service";
+import { GET_ALL_GROUP_SERVICS, ADD_GROUP_SERVICS,Get_All_Services_Given, GET_ALL_CATAGORY, SERVICE_BY_CATAGORY, Get_All_Services_Name, DELETE_GROUP_SERVICE, GET_GROUP_DATA, EDIT_GROUP_SERVICE } from "../../../Services/Subadmin/groupService.service";
 
 export const GetAll_Group_Servics = createAsyncThunk("groupservices/getall",
     async (data) => {
@@ -54,6 +54,18 @@ export const GET_ALL_SERVICES_NAMES = createAsyncThunk('servicesName/getall',
 
         try {
             const res = await Get_All_Services_Name(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const GET_ALL_SERVICES_GIVEN = createAsyncThunk('servicesGiven/getall',
+    async (data) => {
+
+        try {
+            const res = await Get_All_Services_Given(data);
             return res;
         } catch (err) {
             throw err;
@@ -115,6 +127,7 @@ const GrouoServicesSlice = createSlice({
         delete_groupservice:null,
         get_group_data:null,
         edit_group_service:null,
+        get_all_services_given:null,
 
 
     },
@@ -154,6 +167,10 @@ const GrouoServicesSlice = createSlice({
             .addCase(GET_ALL_SERVICES_NAMES.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.get_all_services_name = action.payload;
+            })
+            .addCase(GET_ALL_SERVICES_GIVEN.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.get_all_services_given = action.payload;
             })
             .addCase(Delete_GroupServices.fulfilled, (state, action) => {
                 state.isLoading = false;
