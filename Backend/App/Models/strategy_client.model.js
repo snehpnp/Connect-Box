@@ -20,6 +20,11 @@ const strategy_clientSchema = Schema({
         type: Date,
         required: true
     },
+    plan_id: {
+        type: String,
+        enum: ['0', '1', '2', '3', '4'],
+        default: '0'
+    },
     ActiveStatus: {
         type: String,
         enum: ['0', '1'], // 1 = Strategy wise , 2 = Per Trade Wise

@@ -18,11 +18,11 @@ const strategySchema = Schema({
         type: String,
         default: null
     },
-    strategy_amount_quarterly: {       //ID :2
+    strategy_amount_quarterly: {  //ID :2
         type: String,
         default: null
     },
-    strategy_amount_half_early: {       //ID :3
+    strategy_amount_half_early: { //ID :3
         type: String,
         default: null
     },

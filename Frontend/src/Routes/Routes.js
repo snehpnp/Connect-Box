@@ -19,6 +19,10 @@ const Routing = () => {
     const roles = JSON.parse(localStorage.getItem('user_role'));
     const user_details = JSON.parse(localStorage.getItem("user_details"));
 
+    // console.log("roles",roles)
+    // console.log(" location.pathname", location.pathname)
+
+
     useEffect(() => {
         // Check if user details exist
         if (!user_details || !roles || user_details === "null" || roles === "null") {
@@ -67,10 +71,10 @@ const Routing = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/profile" element={
                 <>     <MainHeader />
-                    <Header />  
+                    <Header />
                     <div className="page-wrapper">
                         <Profile />
-                        </div>
+                    </div>
                 </>} />
         </Routes>
     );

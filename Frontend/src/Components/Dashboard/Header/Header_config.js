@@ -107,25 +107,25 @@ export const subamdin_header = [
         Icon: "fe fe-settings",
         Data: []
     },
-    {
-        id: 3,
-        name: 'Employees',
-        Icon: "fe fe-users",
-        Data: [
-            {
-                id: 31,
-                name: 'Add Employee',
-                Icon: "fe fe-user-plus",
-                route: "/subadmin/employee/add",
-            },
-            {
-                id: 32,
-                name: 'All Employees',
-                Icon: "fe fe-users",
-                route: "/subadmin/employees",
-            },
-        ]
-    },
+    // {
+    //     id: 3,
+    //     name: 'Employees',
+    //     Icon: "fe fe-users",
+    //     Data: [
+    //         {
+    //             id: 31,
+    //             name: 'Add Employee',
+    //             Icon: "fe fe-user-plus",
+    //             route: "/subadmin/employee/add",
+    //         },
+    //         {
+    //             id: 32,
+    //             name: 'All Employees',
+    //             Icon: "fe fe-users",
+    //             route: "/subadmin/employees",
+    //         },
+    //     ]
+    // },
     {
         id: 4,
         name: 'Users',

@@ -36,9 +36,7 @@ class Users {
       var StartDate1 = "";
       var EndDate1 = "";
       let Strategies_id_array = [];
-      for (const strategy of Strategies) {
-        Strategies_id_array.push(strategy.id)
-      }
+
 
 
 
@@ -137,7 +135,9 @@ class Users {
 
       try {
         // Map each strategy ID to its corresponding ObjectId
-        const stgIds = Strategies.map(id => new ObjectId(id));
+        const stgIds = Strategies.map(stg => new ObjectId(stg.id));
+
+
 
         // Find strategies matching the IDs in the array
         var matchedStrategies = await Strategie_modal.find({ _id: { $in: stgIds } });
@@ -146,7 +146,12 @@ class Users {
         var matchedStrategyIds = matchedStrategies.map(strategy => strategy._id.toString());
 
         // Find IDs that didn't match
-        var unmatchedIds = Strategies.filter(id => !matchedStrategyIds.includes(id));
+        var unmatchedIds = Strategies.filter(stg => !matchedStrategyIds.includes(stg.id));
+
+
+
+
+
 
       } catch (error) {
         console.error('Error fetching strategies:', error);
@@ -275,6 +280,7 @@ class Users {
                 // STRATEGY ADD
                 const User_strategy_client = new strategy_client({
                   strategy_id: data.id,
+                  plan_id:data.plan_id,
                   user_id: User_id,
                   Start_Date: StartDate1,
                   End_Date: EndDate1
@@ -398,7 +404,6 @@ class Users {
                   group_id: group_service,
                   service_id: data.Service_id,
                   strategy_id: Strategies[0].id,
-                  // strategy_id: Strategies_id_array,
 
                   uniqueUserService: User_id + "_" + data.Service_id,
                   quantity: data.lotsize,
@@ -1112,10 +1117,22 @@ class Users {
 
 
 
-      const getAllClients = await User_model.find({ _id: user_ID, Role: "USER" })
+      const getClients = await User_model.find({ _id: user_ID, Role: "USER" })
+      const ClinetServices = await client_services.find({ user_id: user_ID })
+      const ClientStrategy = await strategy_client.find({ user_id: user_ID })
+      const ClientGroupName = await groupService_User.find({ user_id: user_ID })
+
+
+
+      var Userdata = {
+        getClients: getClients,
+        ClinetServices: ClinetServices,
+        ClientStrategy: ClientStrategy,
+        ClientGroupName: ClientGroupName
+      }
 
       // IF DATA NOT EXIST
-      if (getAllClients.length == 0) {
+      if (getClients.length == 0) {
         return res.send({
           status: false,
           msg: "Empty data",
@@ -1127,9 +1144,9 @@ class Users {
       return res.send({
         status: true,
         msg: "Get Client Data",
-        data: getAllClients,
+        data: Userdata,
       });
-      
+
     } catch (error) {
       console.log("Error loginClients Error-", error);
       return res.send({
