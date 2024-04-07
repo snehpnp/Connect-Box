@@ -4,112 +4,29 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
-import ReactApexChart from 'react-apexcharts';
-import Footer from "../../../Components/Dashboard/Footer/Footer";
 
 
 
 const Overview = () => {
-<<<<<<< HEAD
 
   const [options, setOptions] = useState({
-=======
-  const [series1, setSeries1] = useState([44, 55, 13, 33]);
-  const [options] = useState({
->>>>>>> 3c70452185f908dfbc626fe958800bf271f51725
     chart: {
-      type: 'donut',
-      id: "basic",
-      animations: {
-        enabled: true,
-        easing: 'easeinout',
-        speed: 800,
-        animateGradually: {
-          enabled: true,
-          delay: 150
-        },
-        dynamicAnimation: {
-          enabled: true,
-          speed: 350
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        responsive: [
-          {
-            breakpoint: 480,
-            options: {
-              chart: {
-                width: 200,
-              },
-              legend: {
-                show: false,
-              },
-            },
-          },
-        ],
-        legend: {
-          position: 'right',
-          offsetY: 0,
-          height: 230,
-        },
-
-      }
+      id: "basic-bar"
     },
     xaxis: {
-<<<<<<< HEAD
       categories: []
     }
   });
 
   const [series, setSeries] = useState([
-=======
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
-    },
-    fill: {
-      colors: ['#9423FF']
-    }
-  });
-
-  const appendData = () => {
-    const newArr = [...series1, Math.floor(Math.random() * (100 - 1 + 1)) + 1];
-    setSeries1(newArr);
-  };
-
-  const removeData = () => {
-    if (series1.length === 1) return;
-    const newArr = [...series1];
-    newArr.pop();
-    setSeries1(newArr);
-  };
-
-  const randomize = () => {
-    const newArr = series1.map(() => Math.floor(Math.random() * (100 - 1 + 1)) + 1);
-    setSeries1(newArr);
-  };
-
-  const reset = () => {
-    setSeries1([44, 55, 13, 33]);
-  };
-
-
-
-  const [series, setSeries] = useState([
-
->>>>>>> 3c70452185f908dfbc626fe958800bf271f51725
     {
       name: "series-1",
       data: []
     }
-<<<<<<< HEAD
   ]);
 
 
   const [colors] = useState(["#9423FF"]);
-=======
-  ])
-
->>>>>>> 3c70452185f908dfbc626fe958800bf271f51725
   const [adminData, setAdminData] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -360,14 +277,13 @@ const Overview = () => {
           </div>
 
 
-          <div className="row" data-aos="fade-left">
 
             <div className="row" data-aos="fade-left">
               <div className="col-xl-6 d-flex">
                 <div className="card flex-fill">
                   <div className="card-header">
                     <div className="d-flex justify-content-between align-items-center">
-                      <h5 className="card-title">Invoice Analytics</h5>
+                      <h5 className="card-title">Sales Analytics</h5>
                       <div className="dropdown main">
                         <button
                           className="btn btn-white btn-sm dropdown-toggle"
@@ -398,37 +314,42 @@ const Overview = () => {
                       </div>
                     </div>
                   </div>
-<<<<<<< HEAD
                   <div className="card-body">
                     <div id="invoice_chart" />
                     <div className="text-center text-muted">
                       <div className="row">
+                  
                         <div className="mixed-chart">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap flex-md-nowrap">
+                          <div class="w-md-100 d-flex align-items-center mb-3 flex-wrap flex-md-nowrap">
+                            <div>
+                              <span>Total Sales</span>
+                              <p class="h3 text-primary me-5">$1000</p>
+                            </div>
+                            <div>
+                              <span>Receipts</span>
+                              <p class="h3 text-success me-5">$1000</p>
+                            </div>
+                            <div>
+                              <span>Expenses</span>
+                              <p class="h3 text-danger me-5">$300</p>
+                            </div>
+                            <div>
+                              <span>Earnings</span>
+                              <p class="h3 text-dark me-5">$700</p>
+                            </div>
+                          </div>
+                        </div>
                           <Chart
                             colors={colors}
-=======
-                </div>
-                <div className="card-body">
-                  <div id="invoice_chart" />
-                  <div className="text-center text-muted">
-                    <div className="row">
-                      <div className="mixed-chart">
-                        <Chart
-
->>>>>>> 3c70452185f908dfbc626fe958800bf271f51725
 
                             options={options}
                             series={series}
                             type="bar"
                             width="100%"
 
-<<<<<<< HEAD
                           />
                         </div>
-=======
-
-                        />
->>>>>>> 3c70452185f908dfbc626fe958800bf271f51725
                       </div>
                     </div>
                   </div>
@@ -467,7 +388,6 @@ const Overview = () => {
                       </div>
                     </div>
                   </div>
-<<<<<<< HEAD
                   <div className="card-body">
                     <div id="invoice_chart" />
                     <div className="text-center text-muted">
@@ -508,53 +428,19 @@ const Overview = () => {
                       </div>
 
                     </div>
-=======
-                </div>
-                <div className="card-body">
-                  <div id="invoice_chart" />
-                  <div>
-                    <div>
-                      <div className="chart-wrap">
-                        <div id="chart">
-                          <ReactApexChart options={options} series={series} type="donut" width={380} />
-                        </div>
-                      </div>
-
-                      <div className="actions">
-                        <button onClick={appendData}>+ ADD</button>
-
-                        <button onClick={removeData}>- REMOVE</button>
-
-                        <button onClick={randomize}>RANDOMIZE</button>
-
-                        <button onClick={reset}>RESET</button>
-                      </div>
-                    </div>
-                    <div id="html-dist"></div>
->>>>>>> 3c70452185f908dfbc626fe958800bf271f51725
                   </div>
                 </div>
               </div>
 
 
             </div>
-          </div>
+         
 
 
         </div>
       </div>
-<<<<<<< HEAD
-      </div>
-      );
-=======
-      <>
-        <Footer/>
-       </>
-
     </div>
-    
   );
->>>>>>> 3c70452185f908dfbc626fe958800bf271f51725
 };
 
-      export default Overview;
+export default Overview;
