@@ -2,10 +2,8 @@ import React, { useEffect, useState } from 'react';
 import DrapDown from './DrapDown';
 
 const Main_Header = () => {
-  // State to manage theme mode
   const [themeMode, setThemeMode] = useState('light');
 
-  // Define toggleTheme function
   const toggleTheme = () => {
     // Toggle theme mode
     const newThemeMode = themeMode === 'light' ? 'dark' : 'light';
@@ -80,8 +78,8 @@ const Main_Header = () => {
 
         <div className="nav-item  has-arrow dropdown-heads ">
           <DrapDown />
-         
-          </div>
+
+        </div>
 
 
 
