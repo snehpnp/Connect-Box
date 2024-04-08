@@ -120,36 +120,13 @@ const AddClient = () => {
     //   disable: false,
     // },
 
-    {
-      name: "prifix_key",
-      label: "Prifix Key",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-    // {
-    //   name: "subadmin_servic_type",
-    //   label: "Subadmin Servic Type",
-    //   type: "select",
-    //   options: [
-    //     { label: "Per Trade", value: "1" },
-    //     { label: "Per Strategy", value: "2" },
-    //   ],
-    //   label_size: 12,
-    //   col_size: 6,
-    //   disable: false,
-    // },
+
     // {
     //   name: 'Per_trade', label: 'Per Trade', type: 'text',
     //   showWhen: values => values.subadmin_servic_type === '1'
     //   , label_size: 12, col_size: 6, disable: false
     // },
-    // {
-    //   name: 'Per_strategy', label: 'Per Strategy', type: 'text',
-    //   showWhen: values => values.subadmin_servic_type === '2'
-    //   , label_size: 12, col_size: 6, disable: false
-    // },
+
     {
       name: "licence",
       label: "Lincense Type",
@@ -187,30 +164,6 @@ const AddClient = () => {
       showWhen: values => values.broker === '12' 
       , label_size: 12, col_size: 6, disable: false
     },
-
-    {
-      name: 'tomonth',
-      label: 'To Month',
-      type: 'select',
-      options: month_plan && month_plan.map((item) => ({ label: item, value: item })),
-      showWhen: values => values.licence === '2'
-      , label_size: 12, col_size: 6, disable: false
-    },
-
-    {
-      name: 'fromDate',
-      label: 'From Date',
-      type: 'date',
-      showWhen: values => values.licence === '1'
-      , label_size: 12, col_size: 6, disable: false
-    },
-    {
-      name: 'todate',
-      label: 'To Date',
-      type: 'date',
-      showWhen: values => values.licence === '1'
-      , label_size: 12, col_size: 6, disable: false
-    },
     {
       name: 'groupservice',
       label: 'Group Service',
@@ -233,11 +186,8 @@ const AddClient = () => {
       email: "",
       phone: "",
       broker: null,
-      fromDate: null,
-      todate: null,
       groupservice: null,
-      tomonth: null,
-      prifix_key: "",
+  
       licence: null,
       parent_id: null,
       parent_role: null,
@@ -258,18 +208,11 @@ const AddClient = () => {
       if (!values.broker) {
         errors.broker = "Username is required";
       }
-      if (!values.fromDate) {
-        errors.fromDate = "Username is required";
-      }
-      if (!values.todate) {
-        errors.todate = "Username is required";
-      }
+  
       if (!values.licence) {
         errors.licence = "Username is required";
       }
-      if (!values.tomonth) {
-        errors.tomonth = "Username is required";
-      }
+     
       if (!values.groupservice) {
         errors.groupservice = "Username is required";
       }
@@ -283,11 +226,7 @@ const AddClient = () => {
       } else if (!/^\d{10}$/.test(values.phone)) {
         errors.phone = "Please enter a valid 10-digit phone number.";
       }
-      if (!values.prifix_key) {
-        errors.prifix_key = "Prefix key is required";
-      } else if (values.prifix_key.length !== 3) {
-        errors.prifix_key = "Key should be exactly 3 characters/number/both";
-      }
+    
       return errors;
     },
     onSubmit: async (values) => {
@@ -303,7 +242,6 @@ const AddClient = () => {
         subadmin_service_type: null,
         strategy_Percentage: null,
         Per_trade: null,
-        prifix_key: values.prifix_key,
         password: null,
         Strategies: selectedCheckboxesAndPlan,
         parent_id: user_id || "65feb434ce02a722ac3b997d",
