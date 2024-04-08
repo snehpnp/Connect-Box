@@ -8,6 +8,8 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from '@mui/icons-material/Delete';
+
 import Switch from "@mui/material/Switch";
 import { useDispatch } from "react-redux";
 import ExportToExcel from '../../../Utils/ExportCSV'
@@ -109,20 +111,20 @@ export default function Help() {
         <div> <b>{params.value == 1 ? "PER STRATEGY" : "PER TRADE"}</b></div>
       ),
     },
-    {
-      field: "Balance",
-      headerName: "Balance",
-      width: 120,
-      headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div onClick={() => { setmodal(true); setInitialRowData(params.row); }}>
-          <span className="text-success-light">
-            <IndianRupee style={{ height: "19px" }} />
-            {params.value || '-'}
-          </span>
-        </div>
-      ),
-    },
+    // {
+    //   field: "Balance",
+    //   headerName: "Balance",
+    //   width: 120,
+    //   headerClassName: styles.boldHeader,
+    //   renderCell: (params) => (
+    //     <div onClick={() => { setmodal(true); setInitialRowData(params.row); }}>
+    //       <span className="text-success-light">
+    //         <IndianRupee style={{ height: "19px" }} />
+    //         {params.value || '-'}
+    //       </span>
+    //     </div>
+    //   ),
+    // },
 
     {
       field: "ActiveStatus",
@@ -156,6 +158,9 @@ export default function Help() {
           >
             <EditIcon />
           </IconButton>
+          <IconButton aria-label="delete" size="small" onClick={() => handleDelete(params.row)}>
+            <DeleteIcon />
+          </IconButton>
         </div>
       ),
       headerClassName: styles.boldHeader,
@@ -178,13 +183,17 @@ export default function Help() {
     });
   };
 
+  const handleDelete = (row) => {
+    
+  };
+
 
 
   const handleSwitchChange = async (event, id) => {
     const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
- 
 
- 
+
+
     await dispatch(Show_Status({ id, user_active_status }))
       .unwrap()
       .then(async (response) => {
@@ -259,22 +268,22 @@ export default function Help() {
             return searchInputMatch
 
           })
-        
+
 
           setAllUsers({
             loading: true,
             data: searchInput ? filterData : formattedData,
             data1: [
-              { name: "Total Subadmins", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
-              { name: "Active Subadmins", count: response.ActiveCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
+              { name: "Total Users", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
+              { name: "Active Users", count: response.ActiveCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
               {
-                name: "InActive Subadmins",
+                name: "InActive Users",
                 count: response.InActiveCount || 0
                 , Icon: "fe fe-x-circle",
                 color: "#ed3a3a"
               },
               {
-                name: "Total Used Balance",
+                name: "Live Users",
                 count: response.ActiveUseBalance || 0
                 , Icon: "fas fa-dollar-sign"
                 , color: "#1d8147"
@@ -321,7 +330,7 @@ export default function Help() {
           "UserName": item.UserName,
           "PhoneNo": item.PhoneNo,
           "Prifix Key": item.prifix_key,
-          "Created At" :item.createdAt
+          "Created At": item.createdAt
         })
       })
 
@@ -334,7 +343,8 @@ export default function Help() {
     forCSVdata()
   }, [getAllUsers.data])
 
- 
+
+console.log("getAllUsers :", getAllUsers)
 
   return (
     <>
@@ -401,17 +411,17 @@ export default function Help() {
                           data-bs-placement="bottom"
                           title="Download"
                         >
-                        
-                            <div className="card-body">
-                              <ExportToExcel
-                                className="btn btn-primary "
-                                apiData={ForGetCSV}
-                                fileName={'All Strategy'} />
-                            </div>
-                          
+
+                          <div className="card-body">
+                            <ExportToExcel
+                              className="btn btn-primary "
+                              apiData={ForGetCSV}
+                              fileName={'All Strategy'} />
+                          </div>
+
                         </div>
                       </li>
-                       
+
                       <li>
                         <Link
                           to={"/subadmin/User/add"}

@@ -42,3 +42,30 @@ export async function GET_ALL_USERS(data) {
 
     }
 }
+
+export async function ADD_USERS(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}user/add`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+
+export async function GET_ALL_BROKER() {
+    try {
+        const res = await axios.get(`${Config.base_url}broker/get`, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}

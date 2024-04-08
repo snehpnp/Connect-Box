@@ -1,5 +1,5 @@
 
-import { AddSubadmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
+
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
 import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { AddUsers, Get_All_Broker } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 import Loader from '../../../Utils/Loader';
 
 import { useFormik } from 'formik';
@@ -47,19 +48,24 @@ const AddClient = () => {
   });
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
+  const [getAllBroker, setAllBroker] = useState([]);
+
+
+  console.log("selectedCheckboxesAndPlan :", selectedCheckboxesAndPlan)
 
 
 
-
-
-  const first = [1, 2, 3, 4]
   const GetBrokerInfo = [1, 2, 3, 4]
+  const month_plan = [1, 2, 3, 4]
 
+
+
+  // 0 = 2 days 1= Demo 2 =Live
 
   const fields = [
     {
-      name: "fullName",
-      label: "FullName",
+      name: "profile_Img",
+      label: "profile_img",
       type: "file",
       label_size: 12,
       col_size: 12,
@@ -89,14 +95,14 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    {
-      name: "password",
-      label: "password",
-      type: "password",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
+    // {
+    //   name: "password",
+    //   label: "password",
+    //   type: "password",
+    //   label_size: 12,
+    //   col_size: 6,
+    //   disable: false,
+    // },
     {
       name: "phone",
       label: "Phone No",
@@ -105,14 +111,14 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    {
-      name: "balance",
-      label: "Balance",
-      type: "number",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
+    // {
+    //   name: "balance",
+    //   label: "Balance",
+    //   type: "number",
+    //   label_size: 12,
+    //   col_size: 6,
+    //   disable: false,
+    // },
 
     {
       name: "prifix_key",
@@ -122,40 +128,40 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    {
-      name: "subadmin_servic_type",
-      label: "Subadmin Servic Type",
-      type: "select",
-      options: [
-        { label: "Per Trade", value: "1" },
-        { label: "Per Strategy", value: "2" },
-      ],
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-    {
-      name: 'Per_trade', label: 'Per Trade', type: 'text',
-      showWhen: values => values.subadmin_servic_type === '1'
-      , label_size: 12, col_size: 6, disable: false
-    },
-    {
-      name: 'Per_strategy', label: 'Per Strategy', type: 'text',
-      showWhen: values => values.subadmin_servic_type === '2'
-      , label_size: 12, col_size: 6, disable: false
-    },
+    // {
+    //   name: "subadmin_servic_type",
+    //   label: "Subadmin Servic Type",
+    //   type: "select",
+    //   options: [
+    //     { label: "Per Trade", value: "1" },
+    //     { label: "Per Strategy", value: "2" },
+    //   ],
+    //   label_size: 12,
+    //   col_size: 6,
+    //   disable: false,
+    // },
+    // {
+    //   name: 'Per_trade', label: 'Per Trade', type: 'text',
+    //   showWhen: values => values.subadmin_servic_type === '1'
+    //   , label_size: 12, col_size: 6, disable: false
+    // },
+    // {
+    //   name: 'Per_strategy', label: 'Per Strategy', type: 'text',
+    //   showWhen: values => values.subadmin_servic_type === '2'
+    //   , label_size: 12, col_size: 6, disable: false
+    // },
     {
       name: "licence",
       label: "Lincense Type",
       type: "select",
       options: [
-        { label: "Demo", value: "0" },
-        { label: "2 Day Live", value: "1" },
+        { label: "Demo", value: "1" },
+        { label: "2 Day Live", value: "0" },
         { label: "Live", value: "2" },
       ],
       label_size: 12,
       col_size: 6,
-      disable: true,
+      disable: false,
     },
 
 
@@ -163,23 +169,48 @@ const AddClient = () => {
       name: 'broker',
       label: 'Broker',
       type: 'select',
-      options: GetBrokerInfo && GetBrokerInfo.map((item) => ({ label: item.title, value: item.broker_id })),
-      showWhen: values => values.licence === '2' || values.licence === '1'
-      , label_size: 12, col_size: 6, disable: false
-    },
-    //  For Demo Only Client
-    {
-      name: 'fromDate', label: 'From Date', type: 'date',
-      showWhen: values => values.licence === '0'
+      options: getAllBroker && getAllBroker.map((item) => ({ label: item.title, value: item.broker_id})),
+      showWhen: values => values.licence === '2' || values.licence === '0'
       , label_size: 12, col_size: 6, disable: false
     },
     {
-      name: 'todate', label: 'To Date', type: 'date',
-      showWhen: values => values.licence === '0'
+      name: 'demat_userid',
+      label: 'Demat UserId',
+      type: 'text',
+      showWhen: values => values.broker === '2' 
+      , label_size: 12, col_size: 6, disable: false
+    },
+    {
+      name: 'api_key',
+      label: 'Api Key',
+      type: 'text',
+      showWhen: values => values.broker === '12' 
       , label_size: 12, col_size: 6, disable: false
     },
 
+    {
+      name: 'tomonth',
+      label: 'To Month',
+      type: 'select',
+      options: month_plan && month_plan.map((item) => ({ label: item, value: item })),
+      showWhen: values => values.licence === '2'
+      , label_size: 12, col_size: 6, disable: false
+    },
 
+    {
+      name: 'fromDate',
+      label: 'From Date',
+      type: 'date',
+      showWhen: values => values.licence === '1'
+      , label_size: 12, col_size: 6, disable: false
+    },
+    {
+      name: 'todate',
+      label: 'To Date',
+      type: 'date',
+      showWhen: values => values.licence === '1'
+      , label_size: 12, col_size: 6, disable: false
+    },
     {
       name: 'groupservice',
       label: 'Group Service',
@@ -192,48 +223,65 @@ const AddClient = () => {
 
 
 
+
+
   const formik = useFormik({
     initialValues: {
+      profile_Img: null,
       fullName: "",
       username: "",
       email: "",
       phone: "",
-      balance: "",
-      password: "",
+      broker: null,
+      fromDate: null,
+      todate: null,
+      groupservice: null,
       tomonth: null,
       prifix_key: "",
       licence: null,
-      subadmin_servic_type: "0",
-      strategy_Percentage: "0",
-      Per_trade: "0",
-      Per_strategy: '0',
       parent_id: null,
       parent_role: null,
+      demat_userid:null,
+      api_key:null,
     },
     validate: (values) => {
       let errors = {};
       if (!values.fullName) {
         errors.fullName = "Full Name is required";
       }
+      if (!values.profile_Img) {
+        errors.profile_Img = "Full Name is required";
+      }
       if (!values.username) {
         errors.username = "Username is required";
+      }
+      if (!values.broker) {
+        errors.broker = "Username is required";
+      }
+      if (!values.fromDate) {
+        errors.fromDate = "Username is required";
+      }
+      if (!values.todate) {
+        errors.todate = "Username is required";
+      }
+      if (!values.licence) {
+        errors.licence = "Username is required";
+      }
+      if (!values.tomonth) {
+        errors.tomonth = "Username is required";
+      }
+      if (!values.groupservice) {
+        errors.groupservice = "Username is required";
       }
       if (!values.email) {
         errors.email = "Please enter your email address.";
       } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
         errors.email = "Please enter a valid email address.";
       }
-
       if (!values.phone) {
         errors.phone = "Please enter your phone number.";
       } else if (!/^\d{10}$/.test(values.phone)) {
         errors.phone = "Please enter a valid 10-digit phone number.";
-      }
-      if (!values.balance) {
-        errors.balance = "Balance is required";
-      }
-      if (!values.password) {
-        errors.password = "Password is required";
       }
       if (!values.prifix_key) {
         errors.prifix_key = "Prefix key is required";
@@ -242,29 +290,34 @@ const AddClient = () => {
       }
       return errors;
     },
-    onSubmit: async (values, { setSubmitting }) => {
+    onSubmit: async (values) => {
 
-      const data = {
-        ProfileImg: "",
+      const req = {
+        ProfileImg: "cp",
         FullName: values.fullName,
         UserName: values.username,
         Email: values.email,
-        licence: values.tomonth,
+        license_type: values.licence,
         PhoneNo: values.phone,
-        Balance: values.balance,
-        subadmin_service_type: values.subadmin_servic_type,
-        strategy_Percentage: values.strategy_Percentage,
-        Per_trade: values.Per_trade,
+        Balance: null,
+        subadmin_service_type: null,
+        strategy_Percentage: null,
+        Per_trade: null,
         prifix_key: values.prifix_key,
-        password: values.password,
+        password: null,
+        Strategies: selectedCheckboxesAndPlan,
         parent_id: user_id || "65feb434ce02a722ac3b997d",
         parent_role: Role || "ADMIN",
+        demat_userid:values.demat_userid,
+        group_service: values.groupservice,
+        broker : values.broker,
+         
       };
 
-      setSubmitting(false);
+      console.log("req: ", req)
 
 
-      await dispatch(AddSubadmin(data))
+      await dispatch(AddUsers(req))
         .unwrap()
         .then(async (response) => {
 
@@ -272,7 +325,7 @@ const AddClient = () => {
           if (response.status) {
             toast.success(response.msg);
             setTimeout(() => {
-              navigate("/admin/allsubadmin")
+              navigate("/subadmin/users")
             }, 1000);
 
           } else {
@@ -287,6 +340,8 @@ const AddClient = () => {
     },
   });
 
+
+  console.log("cpp :", formik.values.broker)
 
   const getAllGroupService = async () => {
 
@@ -324,6 +379,8 @@ const AddClient = () => {
   useEffect(() => {
     getAllGroupService();
   }, [refresh]);
+
+
 
 
   //FIND ALL GROUP SERVICES
@@ -382,12 +439,9 @@ const AddClient = () => {
         console.log("Stategy finding Error", error)
       })
   }
-
   useState(() => {
     GetAllStrategy();
   }, [])
-
-
 
 
 
@@ -400,10 +454,12 @@ const AddClient = () => {
     } else {
       setSelectedCheckboxes([...selectedCheckboxes, id]);
       setSelectedCheckboxesAndPlan(prevState => (
-        [...prevState, { _id: id, select_plan: "monthly" }]
+        [...prevState, { id: id, plan_id: "1" }]
       ));
     }
   };
+
+
 
   const PlanSetinState = (id) => {
     const strategyPlanMonth = id.split('_')[1];
@@ -412,7 +468,7 @@ const AddClient = () => {
     if (selectedCheckboxes.includes(checkboxId)) {
       setSelectedCheckboxesAndPlan(prevState => (
         prevState.map(item => (
-          item._id === checkboxId ? { ...item, select_plan: strategyPlanMonth } : item
+          item._id === checkboxId ? { ...item, plan_id: strategyPlanMonth } : item
         ))
       ));
     }
@@ -420,7 +476,32 @@ const AddClient = () => {
 
 
 
- 
+  const AllBroker = async () => {
+    await dispatch(Get_All_Broker()).unwrap()
+      .then((response) => {
+        if (response.status) {
+          console.log("getAllBroker 1:", response)
+
+          setAllBroker(response.data);
+        }
+        else {
+          setAllBroker([]);
+        }
+      })
+      .catch((error) => {
+        console.log("Broker find Error :", error)
+      })
+
+  }
+
+
+  useState(() => {
+    AllBroker();
+  }, [])
+
+
+  console.log("getAllBroker :", getAllBroker)
+
 
 
   return (
@@ -437,12 +518,12 @@ const AddClient = () => {
               btn_name1_route={'/subadmin/users'}
               additional_field={
                 <>
-                {serviceName.data.length>0 ?  <h6>All Group Service</h6> : ''}
+                  {serviceName.data.length > 0 ? <h6>All Group Service</h6> : ''}
                   {serviceName && serviceName.data.map((item) => (
                     <>
                       <div className={`col-lg-2 `} key={item._id}>
                         <div className="col-lg-12 ">
-                          <label className="form-check-label bg-primary text-white py-2 px-4" for={item.data[0].name}>{`${item.data[0].name}[${item.data[0].category.segment}]`}</label>
+                          <label className="form-check-label bg-primary text-white  rounded py-2 px-4" for={item.data[0].name}>{`${item.data[0].name}[${item.data[0].category.segment}]`}</label>
 
                         </div>
                       </div>
@@ -474,9 +555,9 @@ const AddClient = () => {
                                         <input
                                           type="radio"
                                           name={`option_${strategy._id}`}
-                                          value="monthly"
+                                          value="1"
                                           defaultChecked
-                                          id={`${strategy._id}_monthly`}
+                                          id={`${strategy._id}_1`}
                                           onChange={(e) => PlanSetinState(e.target.id)}
                                         />
                                         <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>monthly </label>
@@ -485,8 +566,8 @@ const AddClient = () => {
                                         <input
                                           type="radio"
                                           name={`option_${strategy._id}`}
-                                          value="quarterly"
-                                          id={`${strategy._id}_quarterly`}
+                                          value="2"
+                                          id={`${strategy._id}_2`}
                                           onChange={(e) => PlanSetinState(e.target.id)}
                                         />
                                         <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>quarterly </label>
@@ -495,8 +576,8 @@ const AddClient = () => {
                                         <input
                                           type="radio"
                                           name={`option_${strategy._id}`}
-                                          value="halfyearly"
-                                          id={`${strategy._id}_halfyearly`}
+                                          value="3"
+                                          id={`${strategy._id}_3`}
                                           onChange={(e) => PlanSetinState(e.target.id)}
                                         />
                                         <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>halfyearly </label>
@@ -505,8 +586,8 @@ const AddClient = () => {
                                         <input
                                           type="radio"
                                           name={`option_${strategy._id}`}
-                                          value="yearly"
-                                          id={`${strategy._id}_yearly`}
+                                          value="3"
+                                          id={`${strategy._id}_4`}
                                           onChange={(e) => PlanSetinState(e.target.id)}
                                         />
                                         <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>yearly </label>
