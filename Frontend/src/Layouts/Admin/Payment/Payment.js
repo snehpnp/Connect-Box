@@ -89,7 +89,7 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          <span class="badge bg-success-light">{params.value || '-'}</span>
+          <span className="badge bg-success-light">{params.value || '-'}</span>
           
         </div>
       )
@@ -101,7 +101,7 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          <span class="text-success-light">  <IndianRupee style={{height:"19px"}}/>{params.value || '-'}</span>
+          <span className="text-success-light">  <IndianRupee style={{height:"19px"}}/>{params.value || '-'}</span>
           
         </div>
       )

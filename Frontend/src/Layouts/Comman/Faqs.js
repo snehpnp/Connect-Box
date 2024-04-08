@@ -18,21 +18,21 @@ const FAQs = () => {
         <div className="" onMouseMove={handleMouseMove}>
 
 
-            <div class="content container-fluid">
+            <div className="content container-fluid">
 
 
                 <div className='card-body'>
 
 
-                    <div class="row">
+                    <div className="row">
 
-                        <div class="col">
+                        <div className="col">
 
                             <img src="/assets/img/gif/FAQ.png" />
 
                         </div>
 
-                        <div class="col">
+                        <div className="col">
 
                             {faqData.map((faq, index) => (
                                 <div className="faq-item" key={index}>

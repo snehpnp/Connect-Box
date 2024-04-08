@@ -10,13 +10,15 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import Switch from "@mui/material/Switch";
 import { useDispatch } from "react-redux";
+import ExportToExcel from '../../../Utils/ExportCSV'
 import { useNavigate } from "react-router-dom";
 import {
-  GetAllSubAdmin,
+
   update_Balance, Show_Status
 } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
+import { GetAllUsers } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 
 
 
@@ -25,21 +27,25 @@ export default function Help() {
 
   const navigate = useNavigate();
   const [initialRowData, setInitialRowData] = useState({});
-  const [getAllSubadmins, setAllSubadmins] = useState({
-    loading: false,
-    data: [],
-    data1: [],
-  });
   const [balanceValue, setBalanceValue] = useState("");
   const [refresh, setrefresh] = useState(false);
   const [modal, setmodal] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
+  const [ForGetCSV, setForGetCSV] = useState([])
 
+
+
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
   const admin_id = JSON.parse(
     localStorage.getItem("user_details")
   )?.user_id;
 
-
+  const [getAllUsers, setAllUsers] = useState({
+    loading: false,
+    data: [],
+    data1: [],
+  });
 
 
 
@@ -71,7 +77,7 @@ export default function Help() {
     },
     {
       field: "FullName",
-      headerName: "First name",
+      headerName: "Full Name",
       width: 160,
       headerClassName: styles.boldHeader,
     },
@@ -176,10 +182,9 @@ export default function Help() {
 
   const handleSwitchChange = async (event, id) => {
     const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
+ 
 
-    console.log(event.target.checked, id)
-
-    return
+ 
     await dispatch(Show_Status({ id, user_active_status }))
       .unwrap()
       .then(async (response) => {
@@ -228,21 +233,37 @@ export default function Help() {
 
 
 
-  const getSubadminData = async () => {
-    await dispatch(GetAllSubAdmin())
+  const getUsersData = async () => {
+    var data = { user_ID: user_id }
+    await dispatch(GetAllUsers(data))
       .unwrap()
-      .then(async (response) => {
+      .then((response) => {
 
         if (response.status) {
+
 
           const formattedData = response.data && response.data.map((row, index) => ({
             ...row,
             id: index + 1,
           }));
 
-          setAllSubadmins({
+          const filterData = formattedData.filter((item) => {
+
+            const searchInputMatch =
+              searchInput == '' ||
+              item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.prifix_key.toLowerCase().includes(searchInput.toLowerCase())
+
+            return searchInputMatch
+
+          })
+        
+
+          setAllUsers({
             loading: true,
-            data: formattedData,
+            data: searchInput ? filterData : formattedData,
             data1: [
               { name: "Total Subadmins", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
               { name: "Active Subadmins", count: response.ActiveCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
@@ -263,7 +284,7 @@ export default function Help() {
           });
 
         } else {
-          setAllSubadmins({
+          setAllUsers({
             loading: false,
             data: [],
             data1: [],
@@ -272,7 +293,7 @@ export default function Help() {
       })
       .catch((error) => {
         console.log("Error", error);
-        setAllSubadmins({
+        setAllUsers({
           loading: false,
           data: [],
         });
@@ -283,43 +304,75 @@ export default function Help() {
 
 
   useEffect(() => {
-    getSubadminData();
-  }, [refresh]);
+    getUsersData();
+  }, [refresh, searchInput]);
 
+  const RefreshHandle = () => {
+    setrefresh(!refresh)
+    setSearchInput('')
+  }
 
+  const forCSVdata = () => {
+    let csvArr = []
+    if (getAllUsers.data.length > 0) {
+      getAllUsers.data.map((item) => {
+        return csvArr.push({
+          "FullName": item.FullName,
+          "UserName": item.UserName,
+          "PhoneNo": item.PhoneNo,
+          "Prifix Key": item.prifix_key,
+          "Created At" :item.createdAt
+        })
+      })
+
+      setForGetCSV(csvArr)
+    }
+
+  }
+
+  useEffect(() => {
+    forCSVdata()
+  }, [getAllUsers.data])
+
+ 
 
   return (
     <>
-      {getAllSubadmins.loading ? (
+      {getAllUsers.loading ? (
         <>
           <div className="content container-fluid">
             <div className="page-header">
               <div className="content-page-header">
-                <h5>Subadmins</h5>
+                <h5>All Users</h5>
                 <div className="page-content">
                   <div className="list-btn">
                     <ul className="filter-list">
-                      <li>
-                        <a
+                      <li className="mt-3">
+                        <p
                           className="btn-filters"
-                          href="javascript:void(0);"
+
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Refresh"
+                          onClick={RefreshHandle}
+
                         >
                           <span>
                             <i className="fe fe-refresh-ccw" />
                           </span>
-                        </a>
+                        </p>
                       </li>
                       <li>
-                        <div className="input-group">
+                        <div className="input-group input-block">
                           <input
                             type="text"
                             className="form-control"
                             placeholder="Search..."
                             aria-label="Search"
                             aria-describedby="search-addon"
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            value={searchInput}
+
                           />
                         </div>
                       </li>
@@ -348,67 +401,27 @@ export default function Help() {
                           data-bs-placement="bottom"
                           title="Download"
                         >
-                          <a
-                            href="/"
-                            className="btn btn-filters"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <span className="me-2">
-                              <i className="fe fe-download" />
-                            </span>
-                            Export
-                          </a>
-                          <div className="dropdown-menu dropdown-menu-end">
-                            <ul className="d-block">
-                              <li>
-                                <a
-                                  className="d-flex align-items-center download-item"
-                                  href="javascript:void(0);"
-                                  download=""
-                                >
-                                  <i className="far fa-file-pdf me-2" />
-                                  Export as PDF
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="d-flex align-items-center download-item"
-                                  href="javascript:void(0);"
-                                  download=""
-                                >
-                                  <i className="far fa-file-text me-2" />
-                                  Export as Excel
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
+                        
+                            <div className="card-body">
+                              <ExportToExcel
+                                className="btn btn-primary "
+                                apiData={ForGetCSV}
+                                fileName={'All Strategy'} />
+                            </div>
+                          
                         </div>
                       </li>
-                      <li>
-                        <a
-                          className="btn btn-filters"
-                          href="javascript:void(0);"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Print"
-                        >
-                          <span className="me-2">
-                            <i className="fe fe-printer" />
-                          </span>{" "}
-                          Print
-                        </a>
-                      </li>
+                       
                       <li>
                         <Link
-                          to={"/admin/subadmin/add"}
+                          to={"/subadmin/User/add"}
                           className="btn btn-primary"
                         >
                           <i
                             className="fa fa-plus-circle me-2"
                             aria-hidden="true"
                           />
-                          Add Subadmins
+                          Add Users
                         </Link>
                       </li>
                     </ul>
@@ -419,8 +432,8 @@ export default function Help() {
 
             <div className="super-admin-list-head">
               <div className="row">
-                {getAllSubadmins &&
-                  getAllSubadmins.data1.map((data, index) => (
+                {getAllUsers &&
+                  getAllUsers.data1.map((data, index) => (
                     <div className="col-xl-3 col-md-6 d-flex" key={index}>
                       <div className="card w-100">
                         <div className="card-body">
@@ -444,7 +457,7 @@ export default function Help() {
               styles={styles}
               label={label}
               columns={columns}
-              rows={getAllSubadmins.data}
+              rows={getAllUsers.data}
             />
           </div>
         </>
