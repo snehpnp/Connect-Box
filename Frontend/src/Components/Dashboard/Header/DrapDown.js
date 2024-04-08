@@ -76,9 +76,7 @@ const DropDown = () => {
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
-                 <li className="nav-item  has-arrow dropdown-heads wallet mt-2">
-                    <input className='form-control' type='number' placeholder='current balance' />
-                    </li>
+                 
 
                 <li className="nav-item dropdown ">
                     <button type="button" data-bs-dismiss="modal" class="btn btn-primary cancel-btn me-2"><i class="fas fa-plus me-1"></i> Wallet</button>
