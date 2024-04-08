@@ -60,7 +60,7 @@ function Payment() {
     //     </div>
     //   )
     // },
-    {   
+    {
       field: 'username',
       headerName: 'User Name',
       width: 210,
@@ -90,7 +90,7 @@ function Payment() {
       renderCell: (params) => (
         <div>
           <span className="badge bg-success-light">{params.value || '-'}</span>
-          
+
         </div>
       )
     },
@@ -101,8 +101,8 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          <span className="text-success-light">  <IndianRupee style={{height:"19px"}}/>{params.value || '-'}</span>
-          
+          <span className="text-success-light">  <IndianRupee style={{ height: "19px" }} />{params.value || '-'}</span>
+
         </div>
       )
     },
@@ -119,7 +119,7 @@ function Payment() {
 
   const getCompanyData = async () => {
     try {
-    var data = {Role:"SUBADMIN"}
+      var data = { Role: "SUBADMIN" }
       const response = await dispatch(RechargeDetailsGets(data)).unwrap();
 
       if (response.status) {
@@ -149,33 +149,33 @@ function Payment() {
 
   return (
     <>
-    {companyData.loading ? (
-      <Content
-        Card_title="Payment History"
-        Card_title_icon="fas fa-money-bill-wave pe-2"
-        Content={
-          <>
-          <FullDataTable
-            styles={styles}
-            columns={columns}
-            rows={companyData.data}
-            checkboxSelection={false}
-            
-          />
-          </>
-        }
-      />
-    ) : (
-      <Loader />
-    )}
-    {isModalOpen && selectedRow && (
-      <CompanyChange
-        rowData={selectedRow}
-        onClose={() => setIsModalOpen(false)}
-        
-      />
-    )}
-  </>
+      {companyData.loading ? (
+        <Content
+          Card_title="Payment History"
+          Card_title_icon="fas fa-money-bill-wave pe-2"
+          Content={
+            <>
+              <FullDataTable
+                styles={styles}
+                columns={columns}
+                rows={companyData.data}
+                checkboxSelection={false}
+
+              />
+            </>
+          }
+        />
+      ) : (
+        <Loader />
+      )}
+      {isModalOpen && selectedRow && (
+        <CompanyChange
+          rowData={selectedRow}
+          onClose={() => setIsModalOpen(false)}
+
+        />
+      )}
+    </>
   );
 }
 

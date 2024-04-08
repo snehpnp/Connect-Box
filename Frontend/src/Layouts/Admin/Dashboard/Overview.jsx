@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Dashboard_admin } from "../../../ReduxStore/Slice/Admin/Subadmins";
+import { Dashboard_admin, Dashboard_admin1, SubadminsNamesData } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
 
+import Loader from "../../../Utils/Loader";
 
 
 const Overview = () => {
@@ -21,9 +22,13 @@ const Overview = () => {
   const [series, setSeries] = useState([
     {
       name: "series-1",
-      data: []
+      data: [],
+      loading: false,
     }
   ]);
+
+  const [subadminName, setsubadminName] = useState([]);
+
 
 
   const [colors] = useState(["#9423FF"]);
@@ -31,6 +36,10 @@ const Overview = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const maxPercentage = adminData.Totalcount;
+
+
+
+
   const calculatePercentage = (count) =>
     count !== undefined && count !== null
       ? (count / maxPercentage) * 100
@@ -52,9 +61,7 @@ const Overview = () => {
     percentage6,
   } = percentages;
 
-  useEffect(() => {
-    dashData();
-  }, [dispatch, navigate]);
+
 
   const dashData = async () => {
     await dispatch(Dashboard_admin())
@@ -64,8 +71,25 @@ const Overview = () => {
           toast.success(response.msg);
           setAdminData(response.data);
 
-          const categories = response.data.dummyData.categories;
-          const data = response.data.dummyData.data;
+
+        } else {
+          toast.error(response.msg);
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+
+
+
+    await dispatch(Dashboard_admin1())
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+
+
+          const categories = response.data.categories;
+          const data = response.data.data;
 
           setOptions(prevOptions => ({
             ...prevOptions,
@@ -75,7 +99,27 @@ const Overview = () => {
             }
           }));
 
-          setSeries([{ name: "series-1", data: data }]);
+          setSeries([{ name: "series-1", data: data, loading: true }]);
+        } else {
+          toast.error(response.msg);
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+
+
+
+  };
+
+
+
+  const SubadminName = async () => {
+    await dispatch(SubadminsNamesData())
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          setsubadminName(response.data)
         } else {
           toast.error(response.msg);
         }
@@ -85,6 +129,9 @@ const Overview = () => {
       });
 
   };
+
+
+
 
   const cardsData = [
     {
@@ -209,8 +256,13 @@ const Overview = () => {
     },
   ];
 
+  useEffect(() => {
+    SubadminName()
+    dashData();
+  }, [dispatch, navigate]);
 
 
+  console.log("subadminName", subadminName)
 
   return (
     <div className="main-wrapper">
@@ -280,63 +332,93 @@ const Overview = () => {
           <div className="row" data-aos="fade-left">
 
             <div className="row" data-aos="fade-left">
-              <div className="col-xl-6 d-flex">
+
+              <div className="col-xl-8 d-flex">
                 <div className="card flex-fill">
                   <div className="card-header">
                     <div className="d-flex justify-content-between align-items-center">
-                      <h5 className="card-title">Invoice Analytics</h5>
-                      <div className="dropdown main">
-                        <button
-                          className="btn btn-white btn-sm dropdown-toggle"
-                          type="button"
-                          id="dropdownMenuButton1"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          Monthly
-                        </button>
-                        <ul
-                          className="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton1"
-                        >
-                          <li>
-                            <a className="dropdown-item">Monthly</a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item">Quaterly</a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item">Half Yearly</a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item">Yearly</a>
-                          </li>
-                        </ul>
+                      <h5 className="card-title">Sales Analytics</h5>
+                      <div className="d-flex">
+                        <div className="dropdown main">
+                          <button
+                            className="btn btn-white btn-sm dropdown-toggle"
+                            type="button"
+                            id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            SUBADMINS
+                          </button>
+                          <ul
+                            className="dropdown-menu"
+                            aria-labelledby="dropdownMenuButton1"
+                          >
+                            {subadminName && subadminName.map((data) => {
+                              return <li>
+                                <a className="dropdown-item">{data.UserName}</a>
+                              </li>
+
+                            })}
+
+                          </ul>
+                        </div>
+                        <div className="dropdown main">
+                          <button
+                            className="btn btn-white btn-sm dropdown-toggle"
+                            type="button"
+                            id="dropdownMenuButton1"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            Monthly
+                          </button>
+                          <ul
+                            className="dropdown-menu"
+                            aria-labelledby="dropdownMenuButton1"
+                          >
+                            <li>
+                              <a className="dropdown-item">Monthly</a>
+                            </li>
+                            <li>
+                              <a className="dropdown-item">Quaterly</a>
+                            </li>
+                            <li>
+                              <a className="dropdown-item">Half Yearly</a>
+                            </li>
+                            <li>
+                              <a className="dropdown-item">Yearly</a>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
+
                   <div className="card-body">
                     <div id="invoice_chart" />
                     <div className="text-center text-muted">
                       <div className="row">
-                        <div className="mixed-chart">
-                          <Chart
-                            colors={colors}
+                        {series && series.loading ? (
+                          <div className="mixed-chart">
+                            <Chart
+                              colors={colors}
+                              options={options}
+                              series={series}
+                              type="bar"
+                              width="100%"
+                            /></div>) :
+                          <div className="loding" style={{color:"white"}} >
+                            Loading...
+                          </div>}
 
-                            options={options}
-                            series={series}
-                            type="bar"
-                            width="100%"
 
-                          />
-                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div className="col-xl-6 d-flex">
+              <div className="col-xl-4 d-flex">
                 <div className="card flex-fill">
                   <div className="card-header">
                     <div className="d-flex justify-content-between align-items-center">
@@ -413,14 +495,71 @@ const Overview = () => {
               </div>
 
 
+              <div className="col-xl-8 d-flex">
+                <div className="card flex-fill">
+                  <div className="card-header">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <h5 className="card-title">Sales Analytics</h5>
+                      <div className="dropdown main">
+                        <button
+                          className="btn btn-white btn-sm dropdown-toggle"
+                          type="button"
+                          id="dropdownMenuButton1"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
+                        >
+                          Monthly
+                        </button>
+                        <ul
+                          className="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton1"
+                        >
+                          <li>
+                            <a className="dropdown-item">Monthly</a>
+                          </li>
+                          <li>
+                            <a className="dropdown-item">Quaterly</a>
+                          </li>
+                          <li>
+                            <a className="dropdown-item">Half Yearly</a>
+                          </li>
+                          <li>
+                            <a className="dropdown-item">Yearly</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card-body">
+                    <div id="invoice_chart" />
+                    <div className="text-center text-muted">
+                      <div className="row">
+                        {series && series.loading ? (
+                          <div className="mixed-chart">
+                            <Chart
+                              colors={colors}
+                              options={options}
+                              series={series}
+                              type="line"
+                              width="100%"
+                            /></div>) :
+                          <div className="loading-indicator">
+                            Loading...
+                          </div>}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
 
 
         </div>
       </div>
-      </div>
-      );
+    </div>
+  );
 };
 
-      export default Overview;
+export default Overview;

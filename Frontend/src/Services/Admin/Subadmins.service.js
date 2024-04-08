@@ -85,3 +85,27 @@ export async function admin_dashData(data, token) {
     return await err;
   }
 }
+
+//Admin DashBoard Data 
+export async function admin_dashData1(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}admin/dashboard1`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
+
+
+export async function SubadminsName(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}subadmin/name/getall`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}

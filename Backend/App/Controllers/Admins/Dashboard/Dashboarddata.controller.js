@@ -13,6 +13,8 @@ var dt = dateTime.create();
 
 // Product CLASS
 class Dashboard {
+
+
   async GetDashboardData(req, res) {
     try {
       const counts = await User_model.aggregate([
@@ -116,17 +118,43 @@ class Dashboard {
     }
   }
 
-  async GetDashboardData1(req, res) {
+ async GetDashboardData1(req, res) {
     try {
+   
 
+      const data = await count_licenses.aggregate([
+        {
+          $addFields: {
+            date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+            balance: { $toDouble: "$Balance" }
+          }
+        },
+        {
+          $group: {
+            _id: "$date",
+            totalBalance: { $sum: "$balance" }
+          }
+        },
+        {
+          $sort: { _id: 1 } // Sort by date in ascending order
+        }
+      ]);
+      
+ds
 
-
-
+      const dummyData = {
+        categories: [],
+        data: []
+      };
+      
+      // Assuming your data array is named 'responseData'
+      data.forEach(item => {
+        dummyData.categories.push(item._id); // Extracting the year from createdAt field
+        dummyData.data.push(parseInt(item.totalBalance)); // Converting Balance to integer and pushing to data array
+      });
       
 
 
-
-      return
       // DATA GET SUCCESSFULLY
       res.send({
         status: true,
