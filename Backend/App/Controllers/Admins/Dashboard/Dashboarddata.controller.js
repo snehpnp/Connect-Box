@@ -123,7 +123,7 @@ class Dashboard {
 
   async GetDashboardData1(req, res) {
     try {
-        console.log("data", req.body);
+   
         const selectedOption = req.body.selectedOption;
         const SUBADMINS = req.body.SUBADMINS;
 
@@ -254,7 +254,6 @@ class Dashboard {
             return dateA - dateB;
         });
 
-        console.log("data", data);
 
         const dummyData = {
             categories: [],
