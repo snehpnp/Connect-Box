@@ -102,15 +102,6 @@ export default function Help() {
       headerClassName: styles.boldHeader,
     },
 
-    {
-      field: "subadmin_service_type",
-      headerName: "Service-Type",
-      width: 200,
-      headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div> <b>{params.value == 1 ? "PER STRATEGY" : "PER TRADE"}</b></div>
-      ),
-    },
     // {
     //   field: "Balance",
     //   headerName: "Balance",
@@ -184,7 +175,7 @@ export default function Help() {
   };
 
   const handleDelete = (row) => {
-    
+
   };
 
 
@@ -344,7 +335,7 @@ export default function Help() {
   }, [getAllUsers.data])
 
 
-console.log("getAllUsers :", getAllUsers)
+  console.log("getAllUsers :", getAllUsers)
 
   return (
     <>
