@@ -31,6 +31,8 @@ import Dummyform from "../Components/ExtraComponents/forms/Dummyform"
 import Sub from '../Layouts/Admin/Tabe/Sub';
 import Tabe from '../Layouts/Admin/Tabe/Tabe';
 import Tabes from '../Layouts/Admin/Tabe/Tabes';
+import Wallets from '../Layouts/Admin/Wallet/wallets';
+
 
 
 import SubAdCompanyInfo from '../Layouts/Admin/SubAdminCompany/SubAdCompanyInfo';
@@ -69,6 +71,9 @@ const Admin_Routing = () => {
                     <Route exact path="/dashboard" element={<Overview />} />
                     <Route exact path="/system" element={<System />} />
                     <Route exact path="/payment" element={<Payment />} />
+
+                    <Route exact path="/wallet" element={<Wallets />} />
+
 
                 </Routes>
             </div>

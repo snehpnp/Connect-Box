@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
+
 import Footer from "../../../Components/Dashboard/Footer/Footer";
 
 const Overview = () => {
@@ -127,7 +128,7 @@ const Overview = () => {
   return (
     <div className="main-wrapper">
       {/* Dashboard content */}
-    </div>
+    </div >
   );
 };
 

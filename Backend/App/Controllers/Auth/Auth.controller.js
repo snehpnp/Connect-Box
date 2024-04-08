@@ -76,7 +76,9 @@ class Auth {
                 "broker": EmailCheck.broker,
                 "type": EmailCheck.license_type,
                 "UserName": EmailCheck.UserName,
-                "prifix_key": EmailCheck.prifix_key
+                "prifix_key": EmailCheck.prifix_key,
+                "subadmin_service_type": EmailCheck.subadmin_service_type
+
             };
 
 

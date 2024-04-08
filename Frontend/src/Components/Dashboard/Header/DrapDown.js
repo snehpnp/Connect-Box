@@ -50,25 +50,25 @@ const DropDown = () => {
     const [isFullScreen, setIsFullScreen] = useState(false);
 
     const toggleFullScreen = () => {
-      const element = document.documentElement;
-      if (!isFullScreen) {
-        if (element.requestFullscreen) {
-          element.requestFullscreen();
-        } else if (element.webkitRequestFullscreen) { /* Safari */
-          element.webkitRequestFullscreen();
-        } else if (element.msRequestFullscreen) { /* IE11 */
-          element.msRequestFullscreen();
+        const element = document.documentElement;
+        if (!isFullScreen) {
+            if (element.requestFullscreen) {
+                element.requestFullscreen();
+            } else if (element.webkitRequestFullscreen) { /* Safari */
+                element.webkitRequestFullscreen();
+            } else if (element.msRequestFullscreen) { /* IE11 */
+                element.msRequestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) { /* Safari */
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) { /* IE11 */
+                document.msExitFullscreen();
+            }
         }
-      } else {
-        if (document.exitFullscreen) {
-          document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) { /* Safari */
-          document.webkitExitFullscreen();
-        } else if (document.msExitFullscreen) { /* IE11 */
-          document.msExitFullscreen();
-        }
-      }
-      setIsFullScreen(!isFullScreen);
+        setIsFullScreen(!isFullScreen);
     };
 
     return (
@@ -79,7 +79,8 @@ const DropDown = () => {
 
                 <li className="nav-item dropdown ">
                     <button type="button" data-bs-dismiss="modal" class="btn btn-primary cancel-btn me-2"><i class="fas fa-plus me-1"></i> Wallet</button>
-                   </li>
+                </li>
+
                 <li className='nav-item dropdown  dropdown-heads'>
                     <label className="theme-switch mb-0">
                         <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
@@ -97,6 +98,7 @@ const DropDown = () => {
                         <i className="fe fe-bell" /> <span className="badge rounded-pill" />
                     </a>
                 </li>
+
                 <li className="nav-item  has-arrow dropdown-heads ">
                     <a onClick={toggleFullScreen} className="win-maximize">
                         <i className="fe fe-maximize" />

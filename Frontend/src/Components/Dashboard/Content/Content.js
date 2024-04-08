@@ -15,8 +15,8 @@ const Content = ({
   return (
     <div className="content container-fluid ">
       {Page_title ? (
-        <div class="page-header">
-          <div class="content-page-header">
+        <div className="page-header">
+          <div className="content-page-header">
             <h5>{Page_title}</h5>
           </div>
         </div>
@@ -24,10 +24,10 @@ const Content = ({
         ""
       )}
       <div className="card flex-fill bg-white">
-        <div class="card-header d-flex justify-content-between align-items-center border-bottom">
-          <h5 class="card-title mb-0 w-auto">
+        <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+          <h5 className="card-title mb-0 w-auto">
             {" "}
-            {Card_title_icon ? <i class={Card_title_icon}></i> : ""}
+            {Card_title_icon ? <i className={Card_title_icon}></i> : ""}
             {Card_title}
           </h5>
           <div className="pay-btn text-end w-auto">

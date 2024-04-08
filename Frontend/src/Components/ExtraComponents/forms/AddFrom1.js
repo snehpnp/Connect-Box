@@ -247,7 +247,7 @@ const DynamicForm = ({
                                               <div
                                                 className={`col-lg-${field.col_size}`}
                                               >
-                                                <div class="form-check custom-checkbox input-block mb-3">
+                                                <div className="form-check custom-checkbox input-block mb-3">
                                                   <input
                                                     type={field.type}
                                                     className="form-check-input"
@@ -281,7 +281,7 @@ const DynamicForm = ({
                                         <div
                                         //  className={`col-lg-${field.col_size}`}
                                         >
-                                          <div class="form-check custom-checkbox mb-3">
+                                          <div className="form-check custom-checkbox mb-3">
                                             <input
                                               type={field.type}
                                               className="form-check-input"
@@ -382,7 +382,7 @@ const DynamicForm = ({
                                         className={` form-control`}
                                       />
                                       <i
-                                        class={`fa-solid ${passwordVisible[field.name]
+                                        className={`fa-solid ${passwordVisible[field.name]
                                           ? "fa-eye-slash"
                                           : "fa-eye"
                                           }`}
@@ -415,7 +415,7 @@ const DynamicForm = ({
                                 <div className="col-lg-3">
                                   <div className="row d-flex">
                                     <div className="col-lg-12 ">
-                                      <div class="form-check custom-checkbox input-block  mb-3">
+                                      <div className="form-check custom-checkbox input-block  mb-3">
                                         <label className="col-lg-6 " for={field.name}>
                                           {field.name}
                                         </label>
@@ -443,7 +443,7 @@ const DynamicForm = ({
                                 <div className={`col-lg-${field.col_size}`}>
                                   <div className="row d-flex">
                                     <div className={`col-lg-${field.col_size}  `}>
-                                      <div class="mb-3 input-block">
+                                      <div className="mb-3 input-block">
                                         <label
                                           className={`col-lg-${field.label_size}`}
                                           for={field.name}
@@ -451,7 +451,7 @@ const DynamicForm = ({
                                           {field.label}
                                         </label>
                                         <textarea
-                                          class="form-control"
+                                          className="form-control"
                                           rows={field.row_size}
                                           id={field.name}
                                           name={field.name}
@@ -473,7 +473,7 @@ const DynamicForm = ({
                                 <div className="col-lg-3">
                                   <div className="row d-flex">
                                     <div className="col-lg-12 ">
-                                      <div class="form-check custom-checkbox input-block mb-3">
+                                      <div className="form-check custom-checkbox input-block mb-3">
                                         <input
                                           type={field.type}
                                           name={field.name}

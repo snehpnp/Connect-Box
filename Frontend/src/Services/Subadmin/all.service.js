@@ -29,3 +29,16 @@ export async function GET_ALL_Catagory(data) {
 
     }
 }
+
+export async function GET_ALL_USERS(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}user/getall`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
