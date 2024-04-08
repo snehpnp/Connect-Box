@@ -93,8 +93,8 @@ function System() {
                             <div className="tab-content">
                                 <div className="tab-pane show active" id="solid-tab1">
 
-                                    <div class="card-header d-flex justify-content-between align-items-center border-bottom">
-                                        <h5 class="card-title mb-0 w-auto"> <i className="fa-solid fa-landmark pe-2"></i>How Can I Help You</h5>
+                                    <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                                        <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-landmark pe-2"></i>How Can I Help You</h5>
                                         <div className="pay-btn text-end w-auto">
                                             <button className="btn btn-primary " data-bs-toggle="modal"
                                                 data-bs-target="#company">

@@ -133,13 +133,13 @@ function Payment() {
         if (params.row.razorpay_key !== '') {
           return (
             <div>
-              <span class="badge bg-success-light d-inline-flex align-items-center" style={{fontSize:"1rem"}}><i class="fe fe-check me-1"></i>Approved</span>
+              <span className="badge bg-success-light d-inline-flex align-items-center" style={{fontSize:"1rem"}}><i className="fe fe-check me-1"></i>Approved</span>
             </div>
           );
         } else {
           return (
           
-              <span class="badge bg-orange-light d-inline-flex align-items-center" style={{width:"7rem",fontSize:"1rem"}}><i class="fe fe-clock me-1"></i>Pending</span>
+              <span className="badge bg-orange-light d-inline-flex align-items-center" style={{width:"7rem",fontSize:"1rem"}}><i className="fe fe-clock me-1"></i>Pending</span>
            
           );
         }

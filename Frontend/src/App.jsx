@@ -4,6 +4,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Loader from './Utils/Loader';
 
+
 function App() {
   const [loading, setLoading] = useState(true);
   const pageRef = useRef(null);
