@@ -71,10 +71,7 @@ const Main_Header = () => {
               />
             </a>
           </div>
-          <label className="theme-switch">
-            <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
-            <span className="slider"></span>
-          </label>
+
         </div>
 
 
@@ -83,7 +80,8 @@ const Main_Header = () => {
 
         <div className="nav-item  has-arrow dropdown-heads ">
           <DrapDown />
-        </div>
+         
+          </div>
 
 
 
