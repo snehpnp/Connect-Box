@@ -216,6 +216,7 @@ const Overview = () => {
     <div className="main-wrapper">
       <div>
         <div className="content container-fluid">
+
           <div className="row">
             <div className="col-md-3">
               <div className="card">
@@ -278,8 +279,8 @@ const Overview = () => {
 
 
 
-<<<<<<< HEAD
           <div className="row" data-aos="fade-left">
+
             <div className="col-xl-6 d-flex">
               <div className="card flex-fill">
                 <div className="card-header">
@@ -321,93 +322,97 @@ const Overview = () => {
                     <div className="row">
 
                       <div className="mixed-chart">
-=======
-            <div className="row" data-aos="fade-left">
-              <div className="col-xl-6 d-flex">
-                <div className="card flex-fill">
-                  <div className="card-header">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <h5 className="card-title">Sales Analytics</h5>
-                      <div className="dropdown main">
-                        <button
-                          className="btn btn-white btn-sm dropdown-toggle"
-                          type="button"
-                          id="dropdownMenuButton1"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          Monthly
-                        </button>
-                        <ul
-                          className="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton1"
-                        >
-                          <li>
-                            <a className="dropdown-item">Monthly</a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item">Quaterly</a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item">Half Yearly</a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item">Yearly</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <div id="invoice_chart" />
-                    <div className="text-center text-muted">
-                      <div className="row">
-                  
-                        <div className="mixed-chart">
->>>>>>> 9f3d98dbe03a994291e289990d64889fd78b6c64
-                        <div class="d-flex align-items-center justify-content-between flex-wrap flex-md-nowrap">
-                          <div class="w-md-100 d-flex align-items-center mb-3 flex-wrap flex-md-nowrap">
-                            <div>
-                              <span>Total Sales</span>
-                              <p class="h3 text-primary me-5">$1000</p>
-                            </div>
-                            <div>
-                              <span>Receipts</span>
-                              <p class="h3 text-success me-5">$1000</p>
-                            </div>
-                            <div>
-                              <span>Expenses</span>
-                              <p class="h3 text-danger me-5">$300</p>
-                            </div>
-                            <div>
-                              <span>Earnings</span>
-                              <p class="h3 text-dark me-5">$700</p>
+
+                        <div className="row" data-aos="fade-left">
+                          <div className="col-xl-6 d-flex">
+                            <div className="card flex-fill">
+                              <div className="card-header">
+                                <div className="d-flex justify-content-between align-items-center">
+                                  <h5 className="card-title">Sales Analytics</h5>
+                                  <div className="dropdown main">
+                                    <button
+                                      className="btn btn-white btn-sm dropdown-toggle"
+                                      type="button"
+                                      id="dropdownMenuButton1"
+                                      data-bs-toggle="dropdown"
+                                      aria-expanded="false"
+                                    >
+                                      Monthly
+                                    </button>
+                                    <ul
+                                      className="dropdown-menu"
+                                      aria-labelledby="dropdownMenuButton1"
+                                    >
+                                      <li>
+                                        <a className="dropdown-item">Monthly</a>
+                                      </li>
+                                      <li>
+                                        <a className="dropdown-item">Quaterly</a>
+                                      </li>
+                                      <li>
+                                        <a className="dropdown-item">Half Yearly</a>
+                                      </li>
+                                      <li>
+                                        <a className="dropdown-item">Yearly</a>
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="card-body">
+                                <div id="invoice_chart" />
+                                <div className="text-center text-muted">
+                                  <div className="row">
+
+                                    <div className="mixed-chart">
+
+                                      <div class="d-flex align-items-center justify-content-between flex-wrap flex-md-nowrap">
+                                        <div class="w-md-100 d-flex align-items-center mb-3 flex-wrap flex-md-nowrap">
+                                          <div>
+                                            <span>Total Sales</span>
+                                            <p class="h3 text-primary me-5">$1000</p>
+                                          </div>
+                                          <div>
+                                            <span>Receipts</span>
+                                            <p class="h3 text-success me-5">$1000</p>
+                                          </div>
+                                          <div>
+                                            <span>Expenses</span>
+                                            <p class="h3 text-danger me-5">$300</p>
+                                          </div>
+                                          <div>
+                                            <span>Earnings</span>
+                                            <p class="h3 text-dark me-5">$700</p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <Chart
+                                        colors={colors}
+
+                                        options={options}
+                                        series={series}
+                                        type="bar"
+                                        width="100%"
+
+                                      />
+
+                                    </div>
+                                    <Chart
+                                      colors={colors}
+
+                                      options={options}
+                                      series={series}
+                                      type="bar"
+                                      width="100%"
+
+                                    />
+                                  </div>
+
+                                </div>
+                              </div>
                             </div>
                           </div>
-<<<<<<< HEAD
                         </div>
-                        <Chart
-                          colors={colors}
-
-                          options={options}
-                          series={series}
-                          type="bar"
-                          width="100%"
-
-                        />
-=======
-                        </div>
-                          <Chart
-                            colors={colors}
-
-                            options={options}
-                            series={series}
-                            type="bar"
-                            width="100%"
-
-                          />
-                        </div>
->>>>>>> 9f3d98dbe03a994291e289990d64889fd78b6c64
                       </div>
                     </div>
                   </div>
@@ -446,8 +451,7 @@ const Overview = () => {
                       </ul>
                     </div>
                   </div>
-<<<<<<< HEAD
-                </div>
+                </div >
                 <div className="card-body">
                   <div id="invoice_chart" />
                   <div className="text-center text-muted">
@@ -489,68 +493,61 @@ const Overview = () => {
 
 =======
                   <div className="card-body">
-                    <div id="invoice_chart" />
-                    <div className="text-center text-muted">
-                      <div className="row">
-                        <div className="col-4">
-                          <div className="mt-4">
-                            <p className="mb-2 text-truncate">
-                              <i className="fas fa-circle text-primary me-1" />{" "}
-                              Invoiced
-                            </p>
-                            <h5>$2,132</h5>
-                          </div>
-                        </div>
-                        <div className="col-4">
-                          <div className="mt-4">
-                            <p className="mb-2 text-truncate">
-                              <i className="fas fa-circle text-success me-1" />{" "}
-                              Received
-                            </p>
-                            <h5>$1,763</h5>
-                          </div>
-                        </div>
-                        <div className="col-4">
-                          <div className="mt-4">
-                            <p className="mb-2 text-truncate">
-                              <i className="fas fa-circle text-danger me-1" />{" "}
-                              Pending
-                            </p>
-                            <h5>$973</h5>
-                          </div>
-                        </div>
+                                <div id="invoice_chart" />
+                                <div className="text-center text-muted">
+                                  <div className="row">
+                                    <div className="col-4">
+                                      <div className="mt-4">
+                                        <p className="mb-2 text-truncate">
+                                          <i className="fas fa-circle text-primary me-1" />{" "}
+                                          Invoiced
+                                        </p>
+                                        <h5>$2,132</h5>
+                                      </div>
+                                    </div>
+                                    <div className="col-4">
+                                      <div className="mt-4">
+                                        <p className="mb-2 text-truncate">
+                                          <i className="fas fa-circle text-success me-1" />{" "}
+                                          Received
+                                        </p>
+                                        <h5>$1,763</h5>
+                                      </div>
+                                    </div>
+                                    <div className="col-4">
+                                      <div className="mt-4">
+                                        <p className="mb-2 text-truncate">
+                                          <i className="fas fa-circle text-danger me-1" />{" "}
+                                          Pending
+                                        </p>
+                                        <h5>$973</h5>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div
+                                    className="gif-div"
+                                    style={{ height: "400px", marginTop: "-60px" }}
+                                  >
+                                    <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
+                                  </div>
+
+                                </div>
+
+                              </div>
+                            </div>
                       </div>
-                      <div
-                        className="gif-div"
-                        style={{ height: "400px", marginTop: "-60px" }}
-                      >
-                        <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
-                      </div>
+                  </div >
 
-                    </div>
->>>>>>> 9f3d98dbe03a994291e289990d64889fd78b6c64
-                  </div>
-                </div>
-              </div>
-            </div>
-<<<<<<< HEAD
-
-
-          </div>
-=======
-         
->>>>>>> 9f3d98dbe03a994291e289990d64889fd78b6c64
+          </div >
 
 
 
-        </div>
-      </div>
-    </div>
+
+        </div >
+</div>
+      </div >
+    </div >
   );
 };
 
-<<<<<<< HEAD
 export default Overview;
-=======
-export default Overview;
->>>>>>> 9f3d98dbe03a994291e289990d64889fd78b6c64
