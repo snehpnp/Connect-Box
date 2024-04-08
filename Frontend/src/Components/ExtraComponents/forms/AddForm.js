@@ -213,14 +213,14 @@ const DynamicForm = ({
                             className={`col-lg-${title === "update_theme" ? 12 : 6
                               }`}
                           >
-                            <div className="input-block row">
+                            <div className="input-block row mb-3">
                               <label
                                 className={`col-lg-${title === "forlogin"
                                   ? 3
                                   : title === "update_theme"
                                     ? 12
                                     : 7
-                                  }  col-form-label`}
+                                  }  col-form-label p-0 mx-3 `}
                                 htmlFor={field.name}
                               >
                                 {field.label}
@@ -232,6 +232,7 @@ const DynamicForm = ({
                               >
                                 <select
                                   className="default-select wide form-control"
+                                  disabled={field.disable}
                                   id={field.name}
                                   {...formik.getFieldProps(field.name)}
                                 >
@@ -377,9 +378,9 @@ const DynamicForm = ({
                       ) : field.type === "password" ? (
                         <>
                           <div className={`col-lg-${field.col_size}`}>
-                            <div className="mb-3 input-block row">
+                            <div className=" input-block row">
                               <label
-                                className={`col-lg-${field.label_size} col-form-label `}
+                                className={`col-lg-${field.label_size} col-form-labelp-0 `}
                                 htmlFor={field.name}
                               >
                                 {field.label}

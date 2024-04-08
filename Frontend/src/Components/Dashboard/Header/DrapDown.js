@@ -47,13 +47,36 @@ const DropDown = () => {
         htmlElement.setAttribute('data-topbar', themeMode);
     }, [themeMode]);
 
+    const [isFullScreen, setIsFullScreen] = useState(false);
 
+    const toggleFullScreen = () => {
+      const element = document.documentElement;
+      if (!isFullScreen) {
+        if (element.requestFullscreen) {
+          element.requestFullscreen();
+        } else if (element.webkitRequestFullscreen) { /* Safari */
+          element.webkitRequestFullscreen();
+        } else if (element.msRequestFullscreen) { /* IE11 */
+          element.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) { /* Safari */
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE11 */
+          document.msExitFullscreen();
+        }
+      }
+      setIsFullScreen(!isFullScreen);
+    };
 
     return (
 
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
+
                 <li className="nav-item dropdown ">
                     <button type="button" data-bs-dismiss="modal" class="btn btn-primary cancel-btn me-2"><i class="fas fa-plus me-1"></i> Wallet</button>
                    </li>
@@ -62,6 +85,10 @@ const DropDown = () => {
                         <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
                         <span className="slider"></span>
                     </label>
+                   </li> 
+
+                <li className="nav-item  has-arrow dropdown-heads wallet mt-2">
+                    <input className='form-control' type='number' placeholder='current balance' />
 
                 </li>
 
@@ -69,144 +96,9 @@ const DropDown = () => {
                     <a className="nav-link" data-bs-toggle="dropdown" href="#" role="button">
                         <i className="fe fe-bell" /> <span className="badge rounded-pill" />
                     </a>
-                    <div className="dropdown-menu notifications">
-                        <div className="topnav-dropdown-header">
-                            <div className="notification-title">
-                                Notifications <a href="notifications.html">View all</a>
-                            </div>
-                            <a
-                                href="javascript:void(0)"
-                                className="clear-noti d-flex align-items-center"
-                            >
-                                Mark all as read <i className="fe fe-check-circle" />
-                            </a>
-                        </div>
-                        <div className="noti-content">
-                            <ul className="notification-list">
-                                <li className="notification-message">
-                                    <a href="profile.html">
-                                        <div className="d-flex">
-                                            <span className="avatar avatar-md active">
-                                                <img
-                                                    className="avatar-img rounded-circle"
-                                                    alt="avatar-img"
-                                                    src="assets/img/profiles/avatar-02.jpg"
-                                                />
-                                            </span>
-                                            <div className="media-body">
-                                                <p className="noti-details">
-                                                    <span className="noti-title">Lex Murphy</span> requested
-                                                    access to{" "}
-                                                    <span className="noti-title">
-                                                        UNIX directory tree hierarchy
-                                                    </span>
-                                                </p>
-                                                <div className="notification-btn">
-                                                    <span className="btn btn-primary">Accept</span>
-                                                    <span className="btn btn-outline-primary">Reject</span>
-                                                </div>
-                                                <p className="noti-time">
-                                                    <span className="notification-time">Today at 9:42 AM</span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li className="notification-message">
-                                    <a href="profile.html">
-                                        <div className="d-flex">
-                                            <span className="avatar avatar-md active">
-                                                <img
-                                                    className="avatar-img rounded-circle"
-                                                    alt="avatar-img"
-                                                    src="assets/img/profiles/avatar-10.jpg"
-                                                />
-                                            </span>
-                                            <div className="media-body">
-                                                <p className="noti-details">
-                                                    <span className="noti-title">Ray Arnold</span> left 6
-                                                    comments{" "}
-                                                    <span className="noti-title">
-                                                        on Isla Nublar SOC2 compliance report
-                                                    </span>
-                                                </p>
-                                                <p className="noti-time">
-                                                    <span className="notification-time">
-                                                        Yesterday at 11:42 PM
-                                                    </span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li className="notification-message">
-                                    <a href="profile.html">
-                                        <div className="d-flex">
-                                            <span className="avatar avatar-md">
-                                                <img
-                                                    className="avatar-img rounded-circle"
-                                                    alt="avatar-img"
-                                                    src="assets/img/profiles/avatar-13.jpg"
-                                                />
-                                            </span>
-                                            <div className="media-body">
-                                                <p className="noti-details">
-                                                    <span className="noti-title">Dennis Nedry</span> commented
-                                                    on{" "}
-                                                    <span className="noti-title">
-                                                        {" "}
-                                                        Isla Nublar SOC2 compliance report
-                                                    </span>
-                                                </p>
-                                                <blockquote>
-                                                    “Oh, I finished de-bugging the phones, but the system's
-                                                    compiling for eighteen minutes, or twenty. So, some minor
-                                                    systems may go on and off for a while.”
-                                                </blockquote>
-                                                <p className="noti-time">
-                                                    <span className="notification-time">
-                                                        Yesterday at 5:42 PM
-                                                    </span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li className="notification-message">
-                                    <a href="profile.html">
-                                        <div className="d-flex">
-                                            <span className="avatar avatar-md">
-                                                <img
-                                                    className="avatar-img rounded-circle"
-                                                    alt="avatar-img"
-                                                    src="assets/img/profiles/avatar-05.jpg"
-                                                />
-                                            </span>
-                                            <div className="media-body">
-                                                <p className="noti-details">
-                                                    <span className="noti-title">John Hammond</span> created{" "}
-                                                    <span className="noti-title">
-                                                        Isla Nublar SOC2 compliance report
-                                                    </span>
-                                                </p>
-                                                <p className="noti-time">
-                                                    <span className="notification-time">
-                                                        Last Wednesday at 11:15 AM
-                                                    </span>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className="topnav-dropdown-footer">
-                            <a href="#">Clear All</a>
-                        </div>
-                    </div>
                 </li>
                 <li className="nav-item  has-arrow dropdown-heads ">
-                    <a href="javascript:void(0);" className="win-maximize">
+                    <a onClick={toggleFullScreen} className="win-maximize">
                         <i className="fe fe-maximize" />
                     </a>
                 </li>

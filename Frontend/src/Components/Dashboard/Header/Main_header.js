@@ -1,13 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import DrapDown from './DrapDown';
-import Loader from "../../../Utils/Loader";
-
 
 const Main_Header = () => {
   // State to manage theme mode
 
+  const [themeMode, setThemeMode] = useState('light');
+
+  // Define toggleTheme function
+  const toggleTheme = () => {
+    // Toggle theme mode
+    const newThemeMode = themeMode === 'light' ? 'dark' : 'light';
+    setThemeMode(newThemeMode);
+
+    // Update localStorage
+    localStorage.setItem('theme_mode', newThemeMode);
+    window.location.reload()
+  };
+
+  // Apply theme based on localStorage value on page load
+  useEffect(() => {
+    const storedThemeMode = localStorage.getItem('theme_mode');
+    if (storedThemeMode) {
+      setThemeMode(storedThemeMode);
+    }
+  }, []);
+
+  // Update theme-related attributes on HTML element
+  useEffect(() => {
+    const htmlElement = document.querySelector('html');
+    htmlElement.setAttribute('data-sidebar', themeMode);
+    htmlElement.setAttribute('data-layout-mode', themeMode);
+    htmlElement.setAttribute('data-topbar', themeMode);
+  }, [themeMode]);
+
+
   return (
     <div>
+      {/* MAIN TOP HEADER */}
       <div className="header header-one">
 
         <div className="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">

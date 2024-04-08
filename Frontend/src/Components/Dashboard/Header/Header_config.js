@@ -107,25 +107,25 @@ export const subamdin_header = [
         Icon: "fe fe-settings",
         Data: []
     },
-    {
-        id: 3,
-        name: 'Employees',
-        Icon: "fe fe-users",
-        Data: [
-            {
-                id: 31,
-                name: 'Add Employee',
-                Icon: "fe fe-user-plus",
-                route: "/subadmin/employee/add",
-            },
-            {
-                id: 32,
-                name: 'All Employees',
-                Icon: "fe fe-users",
-                route: "/subadmin/employees",
-            },
-        ]
-    },
+    // {
+    //     id: 3,
+    //     name: 'Employees',
+    //     Icon: "fe fe-users",
+    //     Data: [
+    //         {
+    //             id: 31,
+    //             name: 'Add Employee',
+    //             Icon: "fe fe-user-plus",
+    //             route: "/subadmin/employee/add",
+    //         },
+    //         {
+    //             id: 32,
+    //             name: 'All Employees',
+    //             Icon: "fe fe-users",
+    //             route: "/subadmin/employees",
+    //         },
+    //     ]
+    // },
     {
         id: 4,
         name: 'Users',
@@ -180,14 +180,14 @@ export const subamdin_header = [
             {
                 id: 61,
                 name: 'Orders',
-                route: "/subadmin/orders",
+                route: "/subadmin/strategys",
                 Icon: "fe fe-list",
                 Data: []
             },
             {
                 id: 62,
                 name: 'Position',
-                route: "/subadmin/position",
+                route: "/subadmin/strategys",
                 Icon: "fe fe-map-pin",
                 Data: []
             }
@@ -196,14 +196,14 @@ export const subamdin_header = [
     {
         id: 7,
         name: 'Recharge',
-        route: "/subadmin/payment",
+        route: "/subadmin/strategys",
         Icon: "fe fe-credit-card",
         Data: []
     },
     {
         id: 8,
         name: 'Open Position',
-        route: "/subadmin/open-position",
+        route: "/subadmin/strategys",
         Icon: "fe fe-grid",
         Data: []
     },

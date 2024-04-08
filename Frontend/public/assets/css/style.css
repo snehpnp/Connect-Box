@@ -32581,7 +32581,7 @@ button.btn.btn-primary a {
 
 .custom-data-grid .MuiDataGrid-cell:focus {
     outline: none;
-    /* Remove the outline when the cell is focused */
+    
 }
 
 .custom-data-grid .cell:focus {

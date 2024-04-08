@@ -1,5 +1,33 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetSubStrategy, ADD_STRATEGY, Delete_Strategy } from "../../../Services/Subadmin/Strategy.service";
+import { GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id } from "../../../Services/Subadmin/Strategy.service";
+
+
+export const EditSubStrategys = createAsyncThunk(
+    "strategy/edit",
+    async (data) => {
+        
+        try {
+            const res = await EDIT_STRATEGY(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const GetSubStrategys_ById = createAsyncThunk(
+    "strategy/get",
+    async (data) => {
+        
+        try {
+            const res = await Get_Strategy_By_Id(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
 
 export const GetSubStrategys = createAsyncThunk(
     "sub/strategy/getall",
@@ -77,6 +105,14 @@ const StrategySlice = createSlice({
                 state.Add_Strategy = action.payload;
             })
             .addCase(DELETE_STRATEGY.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.delete_strategy = action.payload;
+            })
+            .addCase(EditSubStrategys.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.delete_strategy = action.payload;
+            })
+            .addCase(GetSubStrategys_ById.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.delete_strategy = action.payload;
             })

@@ -191,7 +191,7 @@ class Subadmin {
         Role: "SUBADMIN",
       }).select(
         "profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key subadmin_service_type strategy_Percentage Per_trade Create_Date"
-      );
+      ).sort({ Create_Date: -1 });
 
       const totalCount = getAllSubAdmins.length;
       const ActiveCount = getAllSubAdmins.filter(

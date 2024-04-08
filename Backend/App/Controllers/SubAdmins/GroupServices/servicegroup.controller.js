@@ -9,7 +9,7 @@ const serviceGroupName = db.serviceGroupName;
 const services = db.services;
 const serviceGroup_services_id = db.serviceGroup_services_id;
 const categorie = db.categorie;
-const groupServices_client1 = db.groupService_User;
+const group_services = db.group_services;
 const client_services = db.client_services;
 const strategy_client = db.strategy_client;
 const User = db.user;
@@ -125,6 +125,8 @@ class GroupService {
       const { maker_id, groupdetails, services_id } = req.body
 
 
+
+
       if (!groupdetails.id || groupdetails.id == "" || groupdetails.id == null) {
         return res.send({ status: false, msg: 'Please Enter Id', data: [] });
       }
@@ -150,44 +152,32 @@ class GroupService {
 
 
 
-
-      function checkStringValidity(groupdetails) {
-        // Check if the length of the string is at least 5 characters (to have 4th index)
-        if (groupdetails.length < 5) {
-          return res.send({ status: false, msg: 'Please Enter Group name long', data: [] });
-        }
-
-        // Check if the first three letters are capitalized
-        if (groupdetails.substring(0, 3) !== groupdetails.substring(0, 3).toUpperCase()) {
-          return res.send({ status: false, msg: 'Please Enter Group Name starting 3 letter Capital', data: [] });
-
-        }
-
-        // Check if there is an underscore (_) at the fourth index
-        if (groupdetails.charAt(3) != '_') {
-          return res.send({ status: false, msg: 'Please Enter Group name _ is mandatory', data: [] });
-        }
-        if (maker_id_find.prifix_key != groupdetails.substring(0, 3).toUpperCase()) {
-          return res.send({ status: false, msg: 'Please Enter Group starting 3 leter is your prifix letter', data: [] });
-
-        }
-        return true;
+      if (groupdetails.name.length < 5) {
+        return res.send({ status: false, msg: 'Please Enter Group name long', data: [] });
       }
 
-      if (!checkStringValidity(groupdetails.name)) {
-        return res.send({ status: false, msg: 'Some Issue in Group', data: [] });
+      // Check if the first three letters are capitalized
+      if (groupdetails.name.substring(0, 3) !== groupdetails.name.substring(0, 3).toUpperCase()) {
+        return res.send({ status: false, msg: 'Please Enter Group Name starting 3 letter Capital', data: [] });
+
+      }
+
+      // Check if there is an underscore (_) at the fourth index
+      if (groupdetails.name.charAt(3) != '_') {
+        return res.send({ status: false, msg: 'Please Enter Group name _ is mandatory', data: [] });
+      }
+      if (maker_id_find.prifix_key != groupdetails.name.substring(0, 3).toUpperCase()) {
+        return res.send({ status: false, msg: 'Please Enter Group starting 3 leter is your prifix letter', data: [] });
+
       }
 
 
-
-      console.log("runn")
 
       var groupServices = await serviceGroupName.find({ _id: { $ne: GroupServices_Id }, name: groupdetails.name })
 
       if (groupServices.length > 0) {
         return res.send({ status: false, msg: "Name is already Exist", data: groupServices })
       }
-      console.log("runn")
 
       if (services_id.length > 50) {
         return res.send({ status: false, msg: "You are Select Only 50 Services", data: groupServices })
@@ -297,53 +287,53 @@ class GroupService {
 
 
       // Client Services Update
-      if (delete_GroupServices.length > 0) {
-        delete_GroupServices.forEach(async (data) => {
-          var stgId = new ObjectId(data)
-          var find_user_service = await client_services.deleteMany({ group_id: GroupServices_Id, service_id: stgId })
-        })
-      }
+      // if (delete_GroupServices.length > 0) {
+      //   delete_GroupServices.forEach(async (data) => {
+      //     var stgId = new ObjectId(data)
+      //     var find_user_service = await client_services.deleteMany({ group_id: GroupServices_Id, service_id: stgId })
+      //   })
+      // }
 
 
       // ADD GROUP  SERVICES IN CLIENT SERVICES
-      if (add_Group_services.length > 0) {
-        add_Group_services.forEach(async (data) => {
-          var stgId = new ObjectId(data)
-          var Qty_find = services_id.filter((data1) => data1.service_id == data)
+      // if (add_Group_services.length > 0) {
+      //   add_Group_services.forEach(async (data) => {
+      //     var stgId = new ObjectId(data)
+      //     var Qty_find = services_id.filter((data1) => data1.service_id == data)
 
-          var find_user_service = await groupServices_client1.find({ groupService_id: GroupServices_Id })
-
-
-          if (find_user_service.length > 0) {
-            find_user_service.map(async (user) => {
-
-              var deleteStrategy = await strategy_client.find({ user_id: user.user_id });
-
-              const User_client_services = new client_services({
-                user_id: user.user_id,
-                group_id: GroupServices_Id,
-                service_id: stgId,
-                strategy_id: deleteStrategy[0].strategy_id,
-                uniqueUserService: user.user_id + "_" + data,
-                quantity: Qty_find[0].lotsize,
-                lot_size: 1
-
-              })
+      //     var find_user_service = await group_services.find({ groupService_id: GroupServices_Id })
 
 
-              User_client_services.save()
+      //     if (find_user_service.length > 0) {
+      //       find_user_service.map(async (user) => {
 
-            })
-          } else {
-            console.log("Error User Not Available in this group");
-          }
+      //         var deleteStrategy = await strategy_client.find({ user_id: user.user_id });
+
+      //         // const User_client_services = new client_services({
+      //         //   user_id: user.user_id,
+      //         //   group_id: GroupServices_Id,
+      //         //   service_id: stgId,
+      //         //   strategy_id: deleteStrategy[0].strategy_id,
+      //         //   uniqueUserService: user.user_id + "_" + data,
+      //         //   quantity: Qty_find[0].lotsize,
+      //         //   lot_size: 1
+
+      //         // })
 
 
+      //         // User_client_services.save()
+
+      //       })
+      //     } else {
+      //       console.log("Error User Not Available in this group");
+      //     }
 
 
 
-        })
-      }
+
+
+      //   })
+      // }
 
 
 
@@ -592,7 +582,7 @@ class GroupService {
   async getAllSubgroupServices(req, res) {
 
     try {
-      var {id}=req.body
+      var { id } = req.body
       const pipeline = [
         {
           '$match': {
@@ -634,12 +624,14 @@ class GroupService {
     try {
       const { id } = req.body; // Assuming your ID is passed as 'id' in the request body
 
-      // console.log("Received ID:", id);
+      console.log("Received ID:", id);
 
       // Convert the string ID to an ObjectId
       const objectId = new ObjectId(id);
+      console.log("Received ID:", objectId);
 
-      const groupServices_user = await groupServices_client1.find({ groupService_id: objectId })
+      const groupServices_user = await group_services.find({ groupService_id: objectId })
+      console.log("Received ID:", groupServices_user);
 
 
       if (groupServices_user.length != 0) {
@@ -670,32 +662,96 @@ class GroupService {
 
     try {
       const { data } = req.body
+
       var ServicesArr = []
       if (!data || data.length == 0 || data == '') {
         return res.send({ status: false, msg: 'Please Insert Coreect Data ', data: ServicesArr });
-
       }
 
-      data.result.forEach(async (info) => {
+
+
+      data.forEach(async (info) => {
 
         const Service_name_get = await services.findOne({ _id: info.Service_id });
+        console.log(" Service_name_get :", Service_name_get)
         if (Service_name_get) {
           ServicesArr.push({ data: Service_name_get, data1: info })
 
-          if (data.result.length == ServicesArr.length) {
+          if (data.length == ServicesArr.length) {
             return res.send({ status: true, msg: 'Get All successfully ', data: ServicesArr });
           }
         }
 
       })
 
+    } catch (error) {
+      console.log("Error GET SERVICES NAME -", error);
+    }
 
+  }
+
+  async GetAllServicesGiven(req, res) {
+
+    try {
+      const { data } = req.body
+
+      // console.log(data)
+
+      var ServicesArr = []
+      if (!data || data.length == 0 || data == '') {
+        return res.send({ status: false, msg: 'Please Insert Coreect Data ', data: ServicesArr });
+      }
+
+      data.forEach(async (info) => {
+
+
+        const pipeline = [
+          {
+            $match: {
+              _id: new ObjectId(info.Service_id)
+            }
+          },
+          {
+            $lookup: {
+              from: "categories",
+              localField: "categorie_id",
+              foreignField: "_id",
+              as: "category"
+            }
+          },
+          {
+            $unwind: "$category"
+          },
+          {
+            $project: {
+              "_id": 1, // include any other fields you want
+              "name": 1,
+              "category.segment": 1 // include specific fields from categories
+            }
+          }
+        ];
+
+        const Service_name_get = await services.aggregate(pipeline)
+
+
+        
+        if (Service_name_get) {
+          ServicesArr.push({ data: Service_name_get })
+
+          if (data.length == ServicesArr.length) {
+            return res.send({ status: true, msg: 'Get All successfully ', data: ServicesArr });
+          }
+        }
+
+      })
 
     } catch (error) {
       console.log("Error GET SERVICES NAME -", error);
     }
 
   }
+
+
 
   // GET SERVICES BY GROUP ID -- for edit update
   async GetServicesByGroupId(req, res) {
@@ -778,7 +834,6 @@ class GroupService {
               'as': 'ServiceResult'
             }
           },
-
           {
             $match: {
               Servicegroup_id: objectId,
@@ -792,11 +847,11 @@ class GroupService {
               'as': 'catagory'
             }
           },
-
           {
-            $match: {
-              Servicegroup_id: objectId,
-            }
+            $unwind: '$ServiceResult' // Unwind the 'ServiceResult' array
+          },
+          {
+            $unwind: '$catagory' // Unwind the 'catagory' array
           },
           {
             $project: {
@@ -806,19 +861,30 @@ class GroupService {
               'catagory.segment': 1,
               'catagory.name': 1,
               'catagory._id': 1,
-
               group_qty: 1
-            },
+            }
           },
           {
-            $unwind: '$ServiceResult', // Unwind the 'categoryResult' array
-          }, {
-            $unwind: '$catagory', // Unwind the 'categoryResult' array
+            $group: {
+              _id: '$_id',
+              ServiceResult: { $push: '$ServiceResult' },
+              catagory: { $push: '$catagory' },
+              group_qty: { $first: '$group_qty' }
+            }
           },
-
+          {
+            $project: {
+              'ServiceResult': { $arrayElemAt: ['$ServiceResult', 0] },
+              'catagory': { $arrayElemAt: ['$catagory', 0] },
+              group_qty: 1
+            }
+          }
         ];
 
+
+
         const Service_name_get = await serviceGroup_services_id.aggregate(pipeline);
+
 
         if (Service_name_get.length == 0) {
           return res.send({ status: false, msg: 'No Data Found ', data: Service_name_get });
@@ -827,6 +893,7 @@ class GroupService {
 
 
         const Service_name_get1 = await serviceGroupName.find({ _id: objectId });
+
 
 
 
@@ -893,9 +960,9 @@ class GroupService {
       ];
 
       // Execute the aggregation pipeline
-      const result = await groupServices_client1.aggregate(pipeline)
+      const result = await group_services.aggregate(pipeline)
 
-      const groupServices_user = await groupServices_client1.find({ groupService_id: objectId })
+      const groupServices_user = await group_services.find({ groupService_id: objectId })
 
       if (groupServices_user.length == 0) {
         return res.send({ status: false, msg: 'NO DATA', data: result });
@@ -911,6 +978,12 @@ class GroupService {
     }
 
   }
+
+
+
+
+
+
 
 }
 

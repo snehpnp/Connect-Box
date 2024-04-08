@@ -6,14 +6,15 @@ import AddForm from '../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
 import toast from "react-hot-toast";
 import ExportToExcel from '../../../Utils/ExportCSV'
-
-import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
+import ToastButton from '../../../Components/ExtraComponents/Alert_Toast'
+import { useNavigate } from "react-router-dom";
+import Loader from '../../../Utils/Loader'
 
 
 function Strategy() {
 
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
     const [searchInput, setSearchInput] = useState("");
@@ -100,7 +101,7 @@ function Strategy() {
         {
             name: "strategy_segment",
             label: "Strategy Segment",
-            type: "number",
+            type: "text",
             label_size: 12,
             col_size: 6,
             disable: false,
@@ -232,7 +233,7 @@ function Strategy() {
 
 
         },
-        onSubmit: async (values ,{ resetForm }) => {
+        onSubmit: async (values, { resetForm }) => {
 
             const data = {
                 strategy_name: values.strategy_name,
@@ -258,7 +259,7 @@ function Strategy() {
                         toast.success(response.msg);
                         setShowModal(false)
                         setrefresh(!refresh)
-                         resetForm();
+                        resetForm();
 
                     } else {
                         toast.error(response.msg);
@@ -355,7 +356,9 @@ function Strategy() {
 
 
 
-
+    const handleEditPackage = (id) => {
+        navigate(`/subadmin/edit/strategies/${id.id}`, { state: { allStategy } });
+    };
 
 
 
@@ -373,7 +376,7 @@ function Strategy() {
                         <div className="page-content">
                             <div className="list-btn">
                                 <ul className="filter-list">
-                                    <li>
+                                    <li className="mt-3">
                                         <p
                                             className="btn-filters"
                                             data-bs-toggle="tooltip"
@@ -449,76 +452,80 @@ function Strategy() {
                 </div>
 
                 {/* Cards */}
-                <div className="content container-fluid pb-0">
-                    <div className="row d-flex align-items-center justify-content-center">
+                {allStategy.loading ? (
+                    <div className="content container-fluid pb-0">
+                        <div className="row d-flex align-items-center justify-content-center">
 
-                        {allStategy.data.map((stg) => {
-                            return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                <div className="packages card">
-                                    <div className="package-header d-flex justify-content-between">
-                                        <div className="d-flex justify-content-between w-100">
-                                            <div className="">
-                                                <h4>{stg.strategy_name}</h4>
-                                                <p>Segment: {stg.strategy_segment}</p>
-                                                <p>Category: {stg.strategy_category}</p>
+                            {allStategy.data.map((stg) => {
+                                return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                    <div className="packages card">
+                                        <div className="package-header d-flex justify-content-between">
+                                            <div className="d-flex justify-content-between w-100">
+                                                <div className="">
+                                                    <h4>{stg.strategy_name}</h4>
+                                                    <p>Segment: {stg.strategy_segment}</p>
+                                                    <p>Category: {stg.strategy_category}</p>
+                                                </div>
+                                                <span className="icon-frame d-flex align-items-center justify-content-center">
+                                                    <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
+                                                </span>
                                             </div>
-                                            <span className="icon-frame d-flex align-items-center justify-content-center">
-                                                <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
-                                            </span>
+                                        </div>
+                                        <p>{stg.strategy_description}</p>
+
+                                        <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
+                                        <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                                <span style={{ color: '#333' }}>Demo</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>Free</span>
+                                            </li>
+                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                                <span style={{ color: '#333' }}>Month</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$10/month</span>
+                                            </li>
+                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                                <span style={{ color: '#333' }}>Quarterly</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$25/quarter</span>
+                                            </li>
+                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                                <span style={{ color: '#333' }}>Half Yearly</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$45/half year</span>
+                                            </li>
+                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
+                                                <span style={{ color: '#333' }}>Yearly</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$80/year</span>
+                                            </li>
+                                        </ul>
+
+                                        <div className="d-flex justify-content-center package-edit">
+                                            <a className="btn-action-icon me-2" onClick={() => setopneModal(true)} >
+                                                <i className="fe fe-eye" />
+                                            </a>
+
+                                            <a className="btn-action-icon me-2"  >
+                                                <i className="fe fe-edit" onClick={() => handleEditPackage({ id: stg._id })} />
+                                            </a>
+
+                                            <a className="btn-action-icon" onClick={() => { setdeleteModal(true); setModalId(stg._id); }}  >
+                                                <i className="fe fe-trash-2" />
+                                            </a>
                                         </div>
                                     </div>
-                                    <p>{stg.strategy_description}</p>
-
-                                    <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
-                                    <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
-                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                            <span style={{ color: '#333' }}>Demo</span>
-                                            <span style={{ marginLeft: 'auto', color: '#999' }}>Free</span>
-                                        </li>
-                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                            <span style={{ color: '#333' }}>Month</span>
-                                            <span style={{ marginLeft: 'auto', color: '#999' }}>$10/month</span>
-                                        </li>
-                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                            <span style={{ color: '#333' }}>Quarterly</span>
-                                            <span style={{ marginLeft: 'auto', color: '#999' }}>$25/quarter</span>
-                                        </li>
-                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                            <span style={{ color: '#333' }}>Half Yearly</span>
-                                            <span style={{ marginLeft: 'auto', color: '#999' }}>$45/half year</span>
-                                        </li>
-                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                            <span style={{ color: '#333' }}>Yearly</span>
-                                            <span style={{ marginLeft: 'auto', color: '#999' }}>$80/year</span>
-                                        </li>
-                                    </ul>
-
-                                    <div className="d-flex justify-content-center package-edit">
-                                        <a className="btn-action-icon me-2" onClick={() => setopneModal(true)} >
-                                            <i className="fe fe-eye" />
-                                        </a>
-
-                                        <a className="btn-action-icon me-2"  >
-                                            <i className="fe fe-edit" onClick={() => { seteditModal(true); setmodaldata(stg); }} />
-                                        </a>
-
-                                        <a className="btn-action-icon" onClick={() => { setdeleteModal(true); setModalId(stg._id); }}  >
-                                            <i className="fe fe-trash-2" />
-                                        </a>
-                                    </div>
                                 </div>
-                            </div>
-                        })}
+                            })}
 
 
 
+                        </div>
                     </div>
-                </div>
+                ) : (<Loader />)}
+
+
 
 
 
@@ -771,6 +778,7 @@ function Strategy() {
                 <ToastButton />
 
             </div>
+            < ToastButton />
 
         </>
 

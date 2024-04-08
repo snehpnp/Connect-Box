@@ -1,60 +1,52 @@
 import React, { useState, useEffect } from "react";
-import { GetAll_Group_Servics, Get_All_Catagory } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
+import { GetAll_Group_Servics, Get_All_Catagory, GET_ALL_SERVICES_NAMES, Delete_GroupServices, Get_All_Services_User_Name } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { useDispatch } from "react-redux";
-import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
+import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable1';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Loader from '../../../Utils/Loader';
-import { useFormik } from 'formik';
-import AddForm from '../../../Components/ExtraComponents/forms/AddForm'
-import { Link } from "react-router-dom";
-// import toast from "react-hot-toast";
+import { Link, useNavigate } from "react-router-dom";
+import { GanttChartSquare } from 'lucide-react';
+import toast from "react-hot-toast";
+import ToastButton from '../../../Components/ExtraComponents/Alert_Toast'
+import ExportToExcel from '../../../Utils/ExportCSV'
+import Modal from '../../../Components/Dashboard/Models/Model'
 
 
 
 
 
-function Strategy() {
 
-    const [showModal, setShowModal] = useState(false);
+function GroupStrategy() {
+
+
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [GetAllSgments, setGetAllSgments] = useState({
         loading: true,
         data: [],
     });
-
-    const [isModalOpen, setIsModalOpen] = useState(false);  
-    const [selectedRow, setSelectedRow] = useState(null);
-    const [refresh, setrefresh] = useState(false);
-    const [selectedServices, setSelectedServices] = useState([]);
-
-
-
-
-    // Function to open the modal
-    const openModal = () => {
-        setShowModal(true);
-    };
-
-    // Function to close the modal
-    const closeModal = () => {
-        setShowModal(false);
-    };
-
-
-
-
-
-    const [companyData, setCompanyData] = useState({
+    const [serviceName, setServiceName] = useState({
+        loading: true,
+        data: [],
+    });
+    const [allGroupService, setAllGroupService] = useState({
         loading: false,
         data: [],
     });
 
-    // const handleOpenModal = (rowData) => {
-    //     setSelectedRow(rowData)
-    //     setIsModalOpen(true);
-    // };
+    const [showModal, setShowModal] = useState(false)
+    const [showModal1, setShowModal1] = useState(false)
+
+    const [ForGetCSV, setForGetCSV] = useState([])
+
+    const [inputSearch, SetInputSearch] = useState('');
+
+
+    const [refresh, setrefresh] = useState(false)
+
+    const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
 
     const styles = {
@@ -77,14 +69,33 @@ function Strategy() {
 
 
 
-    const handleEdit = (row) => {
-        // Handle edit action
-        console.log('Edit row:', row);
+    const handleEdit = async (row) => {
+        navigate('/subadmin/group-service/edit/' + row._id)
     };
 
-    const handleDelete = (row) => {
-        // Handle delete action
-        console.log('Delete row:', row);
+    const handleDelete = async (row) => {
+        var req = {
+            id: row._id,
+        }
+        
+        if (window.confirm("Do you want to delete this Group Service ?")) {
+            await dispatch(Delete_GroupServices(req)).unwrap()
+                .then((response) => {
+                    if (response.status) {
+                        toast.success(response.msg);
+                        setrefresh(!refresh)
+                    }
+                    else {
+                        toast.error(response.msg)
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                })
+
+        }
+
+
     };
 
 
@@ -92,7 +103,7 @@ function Strategy() {
         { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
         {
             field: 'name',
-            headerName: 'name',
+            headerName: 'Group Service Name',
             width: 250,
             headerClassName: styles.boldHeader,
             renderCell: (params) => (
@@ -112,14 +123,38 @@ function Strategy() {
                 </div>
             )
         },
+
+
         {
             field: 'resultCount',
-            headerName: 'Result Count',
-            width: 250,
+            headerName: 'Service Count',
+            width: 200,
             headerClassName: styles.boldHeader,
             renderCell: (params) => (
                 <div>
                     {params.value || '-'}
+                </div>
+            )
+        },
+        {
+            field: 'descripto',
+            headerName: 'Service',
+            width: 200,
+            headerClassName: styles.boldHeader,
+            renderCell: (row) => (
+                <div>
+                    <GanttChartSquare size={20} onClick={(e) => GetAllServicesName(row)} color="#198754" strokeWidth={2} className="mx-1" />
+                </div>
+            )
+        },
+        {
+            field: 'descriptio',
+            headerName: 'Client Using',
+            width: 200,
+            headerClassName: styles.boldHeader,
+            renderCell: (row) => (
+                <div>
+                    <GanttChartSquare size={20} onClick={(e) => GetAllServicesUserName(row)} color="#198754" strokeWidth={2} className="mx-1" />
                 </div>
             )
         },
@@ -143,9 +178,46 @@ function Strategy() {
 
     ];
 
-    const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
-    const getCompanyData = async () => {
+    const GetAllServicesUserName = (row) => {
+         
+
+    }
+
+
+
+    const GetAllServicesName = async (row) => {
+        setShowModal(true);
+        console.log("cppp :", row.row.result)
+        await dispatch(GET_ALL_SERVICES_NAMES({
+            data: row.row.result
+
+        })).unwrap()
+            .then((response) => {
+        console.log("cppp 1:", response.data)
+
+                const formattedData = response.data.map((row, index) => ({
+                    ...row,
+                    id: index + 1,
+                }));
+
+                if (response.status) {
+                    setServiceName({
+                        loading: false,
+                        data: formattedData
+                    })
+                }
+                else {
+                    setServiceName({
+                        loading: false,
+                        data: []
+                    })
+                }
+            })
+
+    }
+
+    const getAllGroupService = async () => {
         try {
             var data = { id: user_id }
             const response = await dispatch(GetAll_Group_Servics(data)).unwrap();
@@ -155,122 +227,126 @@ function Strategy() {
                     ...row,
                     id: index + 1,
                 }));
-                console.log("formattedData :", formattedData)
 
-                setCompanyData({
+                const filteredData = formattedData.filter((item) => {
+
+                    const searchTermMatch =
+                        inputSearch === '' ||
+                        
+                        item.name.toLowerCase().includes(inputSearch.toLowerCase())
+                     
+
+
+                   
+                    return searchTermMatch;
+                });
+
+
+
+
+                setAllGroupService({
                     loading: true,
-                    data: formattedData,
+                    data: inputSearch ? filteredData : formattedData,
                 });
             } else {
-                setCompanyData({
+                setAllGroupService({
                     loading: true,
                     data: [],
                 });
             }
         } catch (error) {
             console.log("Error", error);
-            setCompanyData({
+            setAllGroupService({
                 loading: false,
                 data: [],
             });
         }
     };
 
-
     useEffect(() => {
-        getCompanyData();
+        getAllGroupService();
+    }, [refresh, inputSearch]);
+
+
+
+
+    //  -------------------For Show Segment List-----------------
+
+
+    const getservice = async () => {
+        await dispatch(Get_All_Catagory())
+            .unwrap()
+            .then((response) => {
+
+                if (response.status) {
+                    setGetAllSgments({
+                        loading: false,
+                        data: response.data,
+                    });
+                }
+            });
+    };
+    useEffect(() => {
+        getservice();
     }, []);
 
+    const RefreshHandle = () => {
+        setrefresh(!refresh)
+        SetInputSearch('')
+    }
 
+    const forCSVdata = () => {
+        let csvArr = []
+        if (allGroupService.data.length > 0) {
+            allGroupService.data.map((item) => {
+                return csvArr.push({
+                    "Group Name": item.name,
+                    "Group Description": item.description,
+                    "Group Count Category": item.resultCount,
 
-
-    const formik = useFormik({
-        initialValues: {
-            groupname: '',
-            segment: false
-        },
-        validate: (values) => {
-            const errors = {};
-            if (!values.groupname) {
-                errors.groupname = "valid_err.EMPTY_GROUP_NAME_ERR";
-            }
-            if (!values.segment) {
-                errors.segment = "valid_err.SEGEMENTSELECT_ERROR";
-            }
-             
-    
-            return errors;
-        },
-        onSubmit: async (values) => {
-            let checkValid = true
-            selectedServices && selectedServices.map((item) => {
-                if (item.lotsize !== 1) {
-                    if ((item.group_qty) % (item.lotsize) !== 0) {
-                        alert(`Please Enter Valid Lot Size Inside ${item.name}`)
-                        checkValid = false
-                        return
-                    }
-                    return
-                }
-                return
+                })
             })
-    
-    
-            // if (checkValid) {
-            //     await dispatch(Add_Group({
-            //         groupdetails: { name: values.groupname },
-            //         services_id: selectedServices
-            //     })).then((response) => {
-    
-            //         if (response.payload.status) {
-            //             toast.success(response.payload.msg);
-            //             setTimeout(() => {
-            //                 navigate("/admin/groupservices")
-            //             }, 1000);
-            //         } else {
-            //             toast.error(response.payload.msg);
-    
-            //         }
-            //     })
-    
-            // }
+
+            setForGetCSV(csvArr)
         }
-    });
-    
-    
-    
-    const fields = [
-        { name: 'groupname', label: 'Group Name', type: 'text', label_size: 12, col_size: 6, disable: false },
+
+    }
+
+    useEffect(() => {
+        forCSVdata()
+    }, [allGroupService.data])
+
+    const column1 = [
         {
-            name: 'segment',
-            label: 'Segment',
-            type: 'select',
-            options: GetAllSgments.data && GetAllSgments.data.map((item) => ({ label: item.name, value: item.segment })),
-            label_size: 12, col_size: 6, disable: false,
+            field: 'id',
+            headerName: '#',
+            width: 70,
+            headerClassName: styles.boldHeader
         },
-    ];
-
-
-
-//  -------------------For Show Segment List-----------------
-
-
-const getservice = async () => {
-    await dispatch(Get_All_Catagory())
-        .unwrap()
-        .then((response) => {
-
-            if (response.status) {
-                setGetAllSgments({
-                    loading: false,
-                    data: response.data,
-                });
-            }
-        });
-};
-useEffect(() => {
-    getservice();
-}, []);
+        {
+            field: 'data',
+            width: 200,
+            headerClassName: styles.boldHeader,
+            headerName: 'Services Name',
+            renderCell: (params) => (
+                <div>
+ 
+                    {params.row.data.name}
+                </div>
+            )
+        },
+        {
+            field: 'data1',
+            width: 190,
+            headerClassName: styles.boldHeader,
+            headerName: 'group qty',
+            renderCell: (params) => (
+                <div>
+                    {params.row.data1.group_qty}
+                </div>
+            )
+        },
+    ]
 
 
 
@@ -288,27 +364,31 @@ useEffect(() => {
                         <div className="page-content">
                             <div className="list-btn">
                                 <ul className="filter-list">
-                                    <li>
-                                        <a
+                                    <li className="mt-3">
+                                        <p
                                             className="btn-filters"
-                                            href="/"
+
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Refresh"
+                                            onClick={RefreshHandle}
                                         >
                                             <span>
                                                 <i className="fe fe-refresh-ccw" />
                                             </span>
-                                        </a>
+                                        </p>
                                     </li>
                                     <li>
-                                        <div className="input-group">
+                                        <div className="input-group input-block">
                                             <input
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Search..."
                                                 aria-label="Search"
                                                 aria-describedby="search-addon"
+                                                onChange={(e) => SetInputSearch(e.target.value || '')}
+                                                value={inputSearch}
+
                                             />
 
                                         </div>
@@ -335,48 +415,20 @@ useEffect(() => {
                                             data-bs-placement="bottom"
                                             title="Download"
                                         >
-                                            <a
-                                                href="/"
-                                                className="btn btn-filters"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >
-                                                <span className="me-2">
-                                                    <i className="fe fe-download" />
-                                                </span>
-                                                Export
-                                            </a>
-                                            <div className="dropdown-menu dropdown-menu-end">
-                                                <ul className="d-block">
-                                                    <li>
-                                                        <a
-                                                            className="d-flex align-items-center download-item"
-                                                            href="/"
-                                                            download=""
-                                                        >
-                                                            <i className="far fa-file-pdf me-2" />
-                                                            Export as PDF
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a
-                                                            className="d-flex align-items-center download-item"
-                                                            href="/"
-                                                            download=""
-                                                        >
-                                                            <i className="far fa-file-text me-2" />
-                                                            Export as Excel
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                            <li>
+                                                <div className="card-body">
+                                                    <ExportToExcel
+                                                        className="btn btn-primary "
+                                                        apiData={ForGetCSV}
+                                                        fileName={'All Strategy'} />
+                                                </div>
+                                            </li>
                                         </div>
                                     </li>
 
                                     <li>
                                         <Link
                                             className="btn btn-primary"
-                                            // onClick={openModal} 
                                             to={'/subadmin/group_service/add'}
                                         >
                                             <i className="fa fa-plus-circle me-2" aria-hidden="true" />
@@ -389,55 +441,48 @@ useEffect(() => {
                     </div>
                 </div>
                 {
-                    companyData.loading ? (
+                    allGroupService.loading ? (
                         <FullDataTable
                             styles={styles}
                             columns={columns}
-                            rows={companyData.data}
+                            rows={allGroupService.data}
                             checkboxSelection={false}
 
                         />) : <Loader />
                 }
 
-                {/* CARD MODAL */}
-                {showModal && (
-                    <div className="modal custom-modal custom-lg-modal d-block">
-                        <div className="modal-dialog modal-dialog-centered modal-md">
-                            <div className="modal-content">
-                                <div className="modal-header border-0 mb-0 pb-0 pt-5 mx-3">
-                                    <div className="form-header modal-header-title text-start mb-0">
-                                        <h4 className="mb-0">Add Group Services</h4>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        className="btn-close"
-                                        onClick={closeModal}
-                                    ></button>
-                                </div>
-                                <div className="modal-body m-0 p-0">
-                                    <AddForm
-                                        fields={fields}
-                                        formik={formik}
-                                        btn_name="Add Group Services"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                {
+                    showModal ?
+                        <>
+                            <Modal
+                                isOpen={showModal}
+                                backdrop="static"
+                                size="ms-6"
+                                title="Services"
+                                hideBtn={true}
+                                handleClose={() => setShowModal(false)
+                                
+                                }
+                            >
+                                <FullDataTable
+                                    styles={styles}
+                                    columns={column1}
+                                    rows={serviceName && serviceName.data}
+                                     
+                                    
+                                />
 
-                )}
+                            </Modal >
+                        </>
+                        : ""
+                }
+
 
 
             </div>
-
-
-
-
-
+            < ToastButton />
         </>
-
-
     )
 }
 
-export default Strategy
+export default GroupStrategy
