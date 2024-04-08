@@ -86,12 +86,9 @@ const DropDown = () => {
                         <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
                         <span className="slider"></span>
                     </label>
-                   </li> 
-
-                <li className="nav-item  has-arrow dropdown-heads wallet mt-2">
-                    <input className='form-control' type='number' placeholder='current balance' />
-
                 </li>
+
+
 
                 <li className="nav-item dropdown  flag-nav dropdown-heads">
                     <a className="nav-link" data-bs-toggle="dropdown" href="#" role="button">
