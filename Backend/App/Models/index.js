@@ -25,6 +25,8 @@ module.exports = {
     api_create_info: require('./api_create_info.model'),
     SubAdminCompanyInfo: require('./SubAdminCompany.model'),
 
+    msgdata:require('./message_broadcast'),
+
 
 
 };

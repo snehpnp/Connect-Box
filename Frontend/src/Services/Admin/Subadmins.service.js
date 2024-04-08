@@ -1,5 +1,4 @@
 import axios from "axios";
-
 // import Files
 import * as Config from "../../Utils/Config";
 
@@ -85,3 +84,17 @@ export async function admin_dashData(data, token) {
     return await err;
   }
 }
+
+//Admin MessageGet
+export async function getMsgByOwnerId(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}getMessageData`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
+
+//Admin get Subamins
