@@ -278,48 +278,48 @@ const Overview = () => {
 
 
 
-            <div className="row" data-aos="fade-left">
-              <div className="col-xl-6 d-flex">
-                <div className="card flex-fill">
-                  <div className="card-header">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <h5 className="card-title">Sales Analytics</h5>
-                      <div className="dropdown main">
-                        <button
-                          className="btn btn-white btn-sm dropdown-toggle"
-                          type="button"
-                          id="dropdownMenuButton1"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          Monthly
-                        </button>
-                        <ul
-                          className="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton1"
-                        >
-                          <li>
-                            <a className="dropdown-item">Monthly</a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item">Quaterly</a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item">Half Yearly</a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item">Yearly</a>
-                          </li>
-                        </ul>
-                      </div>
+          <div className="row" data-aos="fade-left">
+            <div className="col-xl-6 d-flex">
+              <div className="card flex-fill">
+                <div className="card-header">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <h5 className="card-title">Sales Analytics</h5>
+                    <div className="dropdown main">
+                      <button
+                        className="btn btn-white btn-sm dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Monthly
+                      </button>
+                      <ul
+                        className="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton1"
+                      >
+                        <li>
+                          <a className="dropdown-item">Monthly</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item">Quaterly</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item">Half Yearly</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item">Yearly</a>
+                        </li>
+                      </ul>
                     </div>
                   </div>
-                  <div className="card-body">
-                    <div id="invoice_chart" />
-                    <div className="text-center text-muted">
-                      <div className="row">
-                  
-                        <div className="mixed-chart">
+                </div>
+                <div className="card-body">
+                  <div id="invoice_chart" />
+                  <div className="text-center text-muted">
+                    <div className="row">
+
+                      <div className="mixed-chart">
                         <div class="d-flex align-items-center justify-content-between flex-wrap flex-md-nowrap">
                           <div class="w-md-100 d-flex align-items-center mb-3 flex-wrap flex-md-nowrap">
                             <div>
@@ -340,101 +340,101 @@ const Overview = () => {
                             </div>
                           </div>
                         </div>
-                          <Chart
-                            colors={colors}
+                        <Chart
+                          colors={colors}
 
-                            options={options}
-                            series={series}
-                            type="bar"
-                            width="100%"
+                          options={options}
+                          series={series}
+                          type="bar"
+                          width="100%"
 
-                          />
-                        </div>
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div className="col-xl-6 d-flex">
-                <div className="card flex-fill">
-                  <div className="card-header">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <h5 className="card-title">Invoice 1 Analytics</h5>
-                      <div className="dropdown main">
-                        <button
-                          className="btn btn-white btn-sm dropdown-toggle"
-                          type="button"
-                          id="dropdownMenuButton1"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
-                        >
-                          Monthly
-                        </button>
-                        <ul
-                          className="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton1"
-                        >
-                          <li>
-                            <a className="dropdown-item">Weekly</a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item">Monthly</a>
-                          </li>
-                          <li>
-                            <a className="dropdown-item">Yearly</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <div id="invoice_chart" />
-                    <div className="text-center text-muted">
-                      <div className="row">
-                        <div className="col-4">
-                          <div className="mt-4">
-                            <p className="mb-2 text-truncate">
-                              <i className="fas fa-circle text-primary me-1" />{" "}
-                              Invoiced
-                            </p>
-                            <h5>$2,132</h5>
-                          </div>
-                        </div>
-                        <div className="col-4">
-                          <div className="mt-4">
-                            <p className="mb-2 text-truncate">
-                              <i className="fas fa-circle text-success me-1" />{" "}
-                              Received
-                            </p>
-                            <h5>$1,763</h5>
-                          </div>
-                        </div>
-                        <div className="col-4">
-                          <div className="mt-4">
-                            <p className="mb-2 text-truncate">
-                              <i className="fas fa-circle text-danger me-1" />{" "}
-                              Pending
-                            </p>
-                            <h5>$973</h5>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="gif-div"
-                        style={{ height: "400px", marginTop: "-60px" }}
-                      >
-                        <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
             </div>
-         
+
+            <div className="col-xl-6 d-flex">
+              <div className="card flex-fill">
+                <div className="card-header">
+                  <div className="d-flex justify-content-between align-items-center">
+                    <h5 className="card-title">Invoice 1 Analytics</h5>
+                    <div className="dropdown main">
+                      <button
+                        className="btn btn-white btn-sm dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Monthly
+                      </button>
+                      <ul
+                        className="dropdown-menu"
+                        aria-labelledby="dropdownMenuButton1"
+                      >
+                        <li>
+                          <a className="dropdown-item">Weekly</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item">Monthly</a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item">Yearly</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div className="card-body">
+                  <div id="invoice_chart" />
+                  <div className="text-center text-muted">
+                    <div className="row">
+                      <div className="col-4">
+                        <div className="mt-4">
+                          <p className="mb-2 text-truncate">
+                            <i className="fas fa-circle text-primary me-1" />{" "}
+                            Invoiced
+                          </p>
+                          <h5>$2,132</h5>
+                        </div>
+                      </div>
+                      <div className="col-4">
+                        <div className="mt-4">
+                          <p className="mb-2 text-truncate">
+                            <i className="fas fa-circle text-success me-1" />{" "}
+                            Received
+                          </p>
+                          <h5>$1,763</h5>
+                        </div>
+                      </div>
+                      <div className="col-4">
+                        <div className="mt-4">
+                          <p className="mb-2 text-truncate">
+                            <i className="fas fa-circle text-danger me-1" />{" "}
+                            Pending
+                          </p>
+                          <h5>$973</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      className="gif-div"
+                      style={{ height: "400px", marginTop: "-60px" }}
+                    >
+                      <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
 
 
         </div>
