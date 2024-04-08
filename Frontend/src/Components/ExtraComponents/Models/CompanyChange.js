@@ -22,7 +22,7 @@ const StockOutModal = ({ rowData, onClose }) => {
       razorpay_key: "",
       smtphost: "",
       smtpport: "",
-      smtp_password:""
+      smtp_password: ""
 
     },
     validate: (values) => {
@@ -123,7 +123,7 @@ const StockOutModal = ({ rowData, onClose }) => {
       col_size: 6,
       disable: false,
     },
-  
+
     {
       name: "smtp_password",
       label: "Email Password* ",
@@ -204,7 +204,7 @@ const StockOutModal = ({ rowData, onClose }) => {
   }, [rowData]);
 
   return (
-    <div className="modal custom-modal d-block">
+    <div className="modal custom-modal d-block" data-aos="fade-down">
       <div className="modal-dialog modal-dialog-centered modal-md" >
         <div className="modal-content" style={{ width: "150rem !important" }}>
           <div className="modal-header border-0 pb-0">

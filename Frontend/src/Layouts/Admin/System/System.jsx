@@ -171,7 +171,7 @@ function System() {
                       <i className="fa-solid fa-landmark pe-2"></i> Company
                       Information
                     </h5>
-                    <div className="pay-btn text-end w-auto">
+                    <div className="pay-btn text-end w-auto ">
                       <button
                         className="btn btn-primary"
                         onClick={() => OpenModal(1)}
@@ -317,7 +317,7 @@ function System() {
 
       {modal !== 0 && (
         <div
-          className="modal fade show"
+          className="modal fade show" data-aos="fade-down"
           tabIndex="-1"
           style={{ display: "block" }}
         >
