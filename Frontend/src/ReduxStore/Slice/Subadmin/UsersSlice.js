@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_USERS, ADD_USERS ,GET_ALL_BROKER } from "../../../Services/Subadmin/all.service";
+import { GET_ALL_USERS, ADD_USERS, GET_ALL_BROKER, active_Status, GET_ONE_USER } from "../../../Services/Subadmin/all.service";
 
 
 export const GetAllUsers = createAsyncThunk("user/getAll",
@@ -39,6 +39,28 @@ export const Get_All_Broker = createAsyncThunk("broker/get",
         }
     });
 
+export const Show_Status = createAsyncThunk("user/status_update", async (data) => {
+    try {
+        const res = await active_Status(data);
+        return res;
+    } catch (err) {
+        throw err;
+    }
+});
+
+export const GetOneUser = createAsyncThunk('user/get', 
+   async (data)=>{
+    try{
+        const res = await GET_ONE_USER(data);
+        return res;
+    }
+    catch(err){
+        throw err
+    }
+   }
+)
+
+
 
 
 const StrategySlice = createSlice({
@@ -48,7 +70,9 @@ const StrategySlice = createSlice({
         isError: false,
         userslice: null,
         add_users: null,
-        get_all_broker:null,
+        get_all_broker: null,
+        show_status:null,
+        findone_user: null,
 
 
     },
@@ -80,6 +104,16 @@ const StrategySlice = createSlice({
 
                 state.isLoading = false;
                 state.get_all_broker = action.payload;
+            })
+            .addCase(Show_Status.fulfilled, (state, action) => {
+
+                state.isLoading = false;
+                state.show_status = action.payload;
+            })
+            .addCase(GetOneUser.fulfilled, (state, action) => {
+
+                state.isLoading = false;
+                state.findone_user = action.payload;
             })
 
 

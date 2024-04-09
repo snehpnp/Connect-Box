@@ -2,13 +2,13 @@
 
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
 import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
-import { AddUsers, Get_All_Broker } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
+import { AddUsers, Get_All_Broker, GetOneUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 import Loader from '../../../Utils/Loader';
 
 import { useFormik } from 'formik';
@@ -20,6 +20,9 @@ import { useState, useEffect } from "react";
 const AddClient = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  const { id } = useParams();
+
+
 
 
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
@@ -27,7 +30,7 @@ const AddClient = () => {
 
 
   const [refresh, setrefresh] = useState(false)
-  // const [strategyPlanMonth, setStrategyPlanMonth] = useState("monthly")
+
 
 
 
@@ -49,18 +52,20 @@ const AddClient = () => {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
   const [getAllBroker, setAllBroker] = useState([]);
-  const [BrokerDetails, setBrokerDetails] = useState([]);
-
-
- 
+  const [getOneUsers, setOneUsers] = useState([]);
 
 
 
-  const GetBrokerInfo = [1, 2, 3, 4]
+
+
+
+
+
+
   const month_plan = [1, 2, 3, 4]
 
 
-  
+
 
   // 0 = 2 days 1= Demo 2 =Live
 
@@ -97,7 +102,7 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    
+
     {
       name: "phone",
       label: "Phone No",
@@ -106,15 +111,38 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-     
 
 
+    {
+      name: "prifix_key",
+      label: "Prifix Key",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    // {
+    //   name: "subadmin_servic_type",
+    //   label: "Subadmin Servic Type",
+    //   type: "select",
+    //   options: [
+    //     { label: "Per Trade", value: "1" },
+    //     { label: "Per Strategy", value: "2" },
+    //   ],
+    //   label_size: 12,
+    //   col_size: 6,
+    //   disable: false,
+    // },
     // {
     //   name: 'Per_trade', label: 'Per Trade', type: 'text',
     //   showWhen: values => values.subadmin_servic_type === '1'
     //   , label_size: 12, col_size: 6, disable: false
     // },
-
+    // {
+    //   name: 'Per_strategy', label: 'Per Strategy', type: 'text',
+    //   showWhen: values => values.subadmin_servic_type === '2'
+    //   , label_size: 12, col_size: 6, disable: false
+    // },
     {
       name: "licence",
       label: "Lincense Type",
@@ -134,7 +162,7 @@ const AddClient = () => {
       name: 'broker',
       label: 'Broker',
       type: 'select',
-      options: getAllBroker && getAllBroker.map((item) => ({ label: item.title, value: item.broker_id})),
+      options: getAllBroker && getAllBroker.map((item) => ({ label: item.title, value: item.broker_id })),
       showWhen: values => values.licence === '2' || values.licence === '0'
       , label_size: 12, col_size: 6, disable: false
     },
@@ -142,14 +170,38 @@ const AddClient = () => {
       name: 'demat_userid',
       label: 'Demat UserId',
       type: 'text',
-      showWhen: values => values.broker === '2' 
+      showWhen: values => values.broker === '2'
       , label_size: 12, col_size: 6, disable: false
     },
     {
       name: 'api_key',
       label: 'Api Key',
       type: 'text',
-      showWhen: values => values.broker === '12' 
+      showWhen: values => values.broker === '12'
+      , label_size: 12, col_size: 6, disable: false
+    },
+
+    {
+      name: 'tomonth',
+      label: 'To Month',
+      type: 'select',
+      options: month_plan && month_plan.map((item) => ({ label: item, value: item })),
+      showWhen: values => values.licence === '2'
+      , label_size: 12, col_size: 6, disable: false
+    },
+
+    {
+      name: 'fromDate',
+      label: 'From Date',
+      type: 'date',
+      showWhen: values => values.licence === '1'
+      , label_size: 12, col_size: 6, disable: false
+    },
+    {
+      name: 'todate',
+      label: 'To Date',
+      type: 'date',
+      showWhen: values => values.licence === '1'
       , label_size: 12, col_size: 6, disable: false
     },
     {
@@ -173,13 +225,17 @@ const AddClient = () => {
       username: "",
       email: "",
       phone: "",
-      broker: null,
+      broker: '0',
+      fromDate: null,
+      todate: null,
       groupservice: null,
+      tomonth: null,
+      prifix_key: "",
       licence: null,
       parent_id: null,
       parent_role: null,
-      demat_userid:null,
-      api_key:null,
+      demat_userid: null,
+      api_key: null,
     },
     validate: (values) => {
       let errors = {};
@@ -195,11 +251,18 @@ const AddClient = () => {
       if (!values.broker) {
         errors.broker = "Username is required";
       }
-  
+      if (!values.fromDate) {
+        errors.fromDate = "Username is required";
+      }
+      if (!values.todate) {
+        errors.todate = "Username is required";
+      }
       if (!values.licence) {
         errors.licence = "Username is required";
       }
-     
+      if (!values.tomonth) {
+        errors.tomonth = "Username is required";
+      }
       if (!values.groupservice) {
         errors.groupservice = "Username is required";
       }
@@ -213,7 +276,11 @@ const AddClient = () => {
       } else if (!/^\d{10}$/.test(values.phone)) {
         errors.phone = "Please enter a valid 10-digit phone number.";
       }
-    
+      if (!values.prifix_key) {
+        errors.prifix_key = "Prefix key is required";
+      } else if (values.prifix_key.length !== 3) {
+        errors.prifix_key = "Key should be exactly 3 characters/number/both";
+      }
       return errors;
     },
     onSubmit: async (values) => {
@@ -229,17 +296,18 @@ const AddClient = () => {
         subadmin_service_type: null,
         strategy_Percentage: null,
         Per_trade: null,
+        prifix_key: values.prifix_key,
         password: null,
         Strategies: selectedCheckboxesAndPlan,
         parent_id: user_id || "65feb434ce02a722ac3b997d",
         parent_role: Role || "ADMIN",
-        demat_userid:values.demat_userid,
+        demat_userid: values.demat_userid,
         group_service: values.groupservice,
-        broker : values.broker,
-         
+        broker: values.broker,
+
       };
 
- 
+
 
 
       await dispatch(AddUsers(req))
@@ -266,7 +334,54 @@ const AddClient = () => {
   });
 
 
-  
+  const getAllUsers = async () => {
+    var data = { user_ID: id }
+    await dispatch(GetOneUser(data)).unwrap()
+      .then((response) => {
+        if (response.status) {
+          setOneUsers(response.data);
+        }
+        else {
+          setOneUsers([]);
+        }
+
+      })
+      .catch((error) => {
+        console.log("User data find Error", error);
+      })
+  }
+
+  useEffect(() => {
+    getAllUsers()
+  }, [])
+
+
+
+  console.log("getOneUsers :", getOneUsers.getClients && getOneUsers.getClients[0].FullName)
+
+  useEffect(() => {
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('username', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].UserName);
+    formik.setFieldValue('email', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Email);
+    formik.setFieldValue('phone', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].PhoneNo);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+
+  }, [getOneUsers.getClients])
+
+
+
 
   const getAllGroupService = async () => {
 
@@ -405,7 +520,6 @@ const AddClient = () => {
     await dispatch(Get_All_Broker()).unwrap()
       .then((response) => {
         if (response.status) {
-         
 
           setAllBroker(response.data);
         }
@@ -419,13 +533,12 @@ const AddClient = () => {
 
   }
 
-
   useState(() => {
     AllBroker();
   }, [])
 
 
- 
+
 
 
 
@@ -436,8 +549,8 @@ const AddClient = () => {
           <>
             <AddForm
               fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))}
-              page_title="Add User"
-              btn_name="Add User"
+              page_title="Edit User"
+              btn_name="Edit User"
               btn_name1="Cancel"
               formik={formik}
               btn_name1_route={'/subadmin/users'}

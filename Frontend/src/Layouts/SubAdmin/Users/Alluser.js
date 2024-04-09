@@ -1,53 +1,55 @@
 import React, { useState, useEffect } from "react";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
-import { IndianRupee } from 'lucide-react';
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from '@mui/icons-material/Delete';
-
-import Switch from "@mui/material/Switch";
 import { useDispatch } from "react-redux";
 import ExportToExcel from '../../../Utils/ExportCSV'
 import { useNavigate } from "react-router-dom";
 import {
-
-  update_Balance, Show_Status
+  update_Balance,
 } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
-import { GetAllUsers } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
+import { GetAllUsers, Get_All_Broker, Show_Status } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 
 
 
-export default function Help() {
+export default function AllUsers() {
+
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+  const admin_id = JSON.parse(
+    localStorage.getItem("user_details")
+  )?.user_id;
+
+
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
+
+
   const [initialRowData, setInitialRowData] = useState({});
   const [balanceValue, setBalanceValue] = useState("");
   const [refresh, setrefresh] = useState(false);
   const [modal, setmodal] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [ForGetCSV, setForGetCSV] = useState([])
+  const [getAllBroker, setAllBroker] = useState([]);
+  const [activateUser, setActiveUser] = useState(0);
+  const [inActivateUser, setInActiveUser] = useState(0);
 
 
-
-  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
-
-  const admin_id = JSON.parse(
-    localStorage.getItem("user_details")
-  )?.user_id;
 
   const [getAllUsers, setAllUsers] = useState({
     loading: false,
     data: [],
     data1: [],
   });
+
+
+
+  const label = { inputProps: { "aria-label": "Switch demo" } };
 
 
 
@@ -69,7 +71,65 @@ export default function Help() {
     },
   };
 
-  const label = { inputProps: { "aria-label": "Switch demo" } };
+
+
+
+
+
+  const showLicenceName = (row) => {
+    if (row.license_type === "0") {
+      return "2 Days Only";
+    } else if (row.license_type === "1") {
+      return "Demo";
+    } else {
+      return "Live";
+    }
+  };
+
+
+  const AllBroker = async () => {
+    await dispatch(Get_All_Broker()).unwrap()
+      .then((response) => {
+        if (response.status) {
+
+
+          setAllBroker(response.data);
+        }
+        else {
+          setAllBroker([]);
+        }
+      })
+      .catch((error) => {
+        console.log("Broker find Error :", error)
+      })
+
+  }
+
+
+  useState(() => {
+    AllBroker();
+  }, [])
+
+
+
+
+  const showBrokerName = (row) => {
+
+    if (row.license_type === "1") {
+      return "Demo";
+    } else {
+
+      const foundNumber = getAllBroker && getAllBroker.find((value) => value.broker_id == row.broker);
+      if (foundNumber != undefined) {
+        return foundNumber.title
+      } else {
+        return "--"
+      }
+    }
+  };
+
+
+
   const columns = [
     {
       field: "id",
@@ -90,18 +150,38 @@ export default function Help() {
       headerClassName: styles.boldHeader,
     },
     {
+      field: "Email",
+      headerName: "Email Id",
+      width: 220,
+      headerClassName: styles.boldHeader,
+    },
+
+    {
       field: "PhoneNo",
       headerName: "Phone Number",
       width: 180,
       headerClassName: styles.boldHeader,
     },
     {
-      field: "prifix_key",
-      headerName: "prifixkey",
-      width: 120,
+      field: "client_key",
+      headerName: "Client Key",
+      width: 200,
       headerClassName: styles.boldHeader,
     },
-
+    {
+      field: "broker",
+      headerName: "Broker",
+      width: 120,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => showBrokerName(params.row),
+    },
+    {
+      field: 'license_type',
+      headerName: "License Type",
+      width: 120,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => showLicenceName(params.row),
+    },
     // {
     //   field: "Balance",
     //   headerName: "Balance",
@@ -129,7 +209,7 @@ export default function Help() {
             className="check"
             type="checkbox"
             onChange={(event) => handleSwitchChange(event, params.row._id)}
-            defaultChecked={params.value === 1}
+            defaultChecked={params.value == 1}
           />
           <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg">checkbox</label>
         </div>
@@ -149,7 +229,10 @@ export default function Help() {
           >
             <EditIcon />
           </IconButton>
-          <IconButton aria-label="delete" size="small" onClick={() => handleDelete(params.row)}>
+          <IconButton
+            aria-label="delete"
+            size="small"
+            onClick={() => handleDelete(params.row)}>
             <DeleteIcon />
           </IconButton>
         </div>
@@ -168,10 +251,8 @@ export default function Help() {
 
 
   const handleEdit = (row) => {
-    setInitialRowData(row);
-    navigate("/admin/subadmin/edit", {
-      state: { rowData: { ...row, _id: row._id } },
-    });
+    console.log("row.id :", row._id)
+    navigate('/subadmin/user/edit/'+row._id)
   };
 
   const handleDelete = (row) => {
@@ -190,6 +271,7 @@ export default function Help() {
       .then(async (response) => {
 
         if (response.status) {
+
           toast.success(response.msg);
           setrefresh(!refresh)
 
@@ -233,6 +315,8 @@ export default function Help() {
 
 
 
+
+
   const getUsersData = async () => {
     var data = { user_ID: user_id }
     await dispatch(GetAllUsers(data))
@@ -265,11 +349,11 @@ export default function Help() {
             loading: true,
             data: searchInput ? filterData : formattedData,
             data1: [
-              { name: "Total Users", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
-              { name: "Active Users", count: response.ActiveCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
+              { name: "Total Users", count: response.data.length || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
+              { name: "Active Users", count: activateUser || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
               {
                 name: "InActive Users",
-                count: response.InActiveCount || 0
+                count: response.inActivateUser || 0
                 , Icon: "fe fe-x-circle",
                 color: "#ed3a3a"
               },
@@ -299,6 +383,27 @@ export default function Help() {
         });
       });
   };
+
+
+  const TotalActiveUser = () => {
+    var countActive = 0;
+    var countInActive = 0;
+    const filter = getAllUsers.data.map((item) => {
+      if (item.ActiveStatus == '0') {
+        countInActive++;
+      }
+      else {
+        countActive++;
+      }
+
+    })
+    setActiveUser(countActive);
+    setInActiveUser(countInActive)
+  }
+
+  useEffect(() => {
+    TotalActiveUser();
+  }, [])
 
 
 
@@ -335,7 +440,7 @@ export default function Help() {
   }, [getAllUsers.data])
 
 
-  console.log("getAllUsers :", getAllUsers)
+
 
   return (
     <>
