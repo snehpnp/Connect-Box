@@ -31,7 +31,7 @@ export const Get_All_Broker = createAsyncThunk("broker/get",
     async () => {
         try {
             const res = await GET_ALL_BROKER();
-            console.log("res :", res)
+        
             return res;
         }
         catch (err) {

@@ -65,7 +65,7 @@ const wallets = () => {
                                 <i className="fa-solid fa-up-long up"></i>
                               </a>
                             </td>
-                            <td>₹2000<span class="badge bg-success ms-1" >
+                            <td>₹2000<span className="badge bg-success ms-1" >
                               cr.
                             </span></td>
                           </tr>
@@ -83,10 +83,10 @@ const wallets = () => {
                                 href="javascript:void(0);"
                                 download=""
                               >
-                                <i class="fa-solid fa-down-long down"></i>
+                                <i className="fa-solid fa-down-long down"></i>
                               </a>
                             </td>
-                            <td>₹2000<span class="badge bg-danger ms-1" >
+                            <td>₹2000<span className="badge bg-danger ms-1" >
                               db.
                             </span></td>
                           </tr>
@@ -104,10 +104,10 @@ const wallets = () => {
                                 href="javascript:void(0);"
                                 download=""
                               >
-                                <i class="fa-solid fa-up-long up"></i>
+                                <i className="fa-solid fa-up-long up"></i>
                               </a>
                             </td>
-                            <td>₹2000<span class="badge bg-success ms-1" >
+                            <td>₹2000<span className="badge bg-success ms-1" >
                               cr.
                             </span></td>
                           </tr>
@@ -125,10 +125,10 @@ const wallets = () => {
                                 href="javascript:void(0);"
                                 download=""
                               >
-                                <i class="fa-solid fa-down-long down"></i>
+                                <i className="fa-solid fa-down-long down"></i>
                               </a>
                             </td>
-                            <td>₹2000<span class="badge bg-danger ms-1" >
+                            <td>₹2000<span className="badge bg-danger ms-1" >
                               db.
                             </span></td>
                           </tr>

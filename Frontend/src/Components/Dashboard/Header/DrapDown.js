@@ -77,7 +77,7 @@ const DropDown = () => {
 
             <ul className="nav nav-tabs user-menu">
                 <li className="nav-item dropdown ">
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary cancel-btn me-2 pulse"><img src="assets/img/wall.png" />₹500</button>
+                    <button type="button" data-bs-dismiss="modal" className="btn btn-primary cancel-btn me-2 pulse"><img src="assets/img/wall.png" />₹500</button>
                 </li>
 
                 <li className='nav-item dropdown  dropdown-heads'>
