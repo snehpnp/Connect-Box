@@ -1,8 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { IndianRupee } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
+
 
 const DropDown = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const navigate = useNavigate();
 
     var Role = JSON.parse(localStorage.getItem("user_details")).Role
     var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
@@ -39,6 +43,7 @@ const DropDown = () => {
         }
     }, []);
 
+    
     // Update theme-related attributes on HTML element
     useEffect(() => {
         const htmlElement = document.querySelector('html');
@@ -70,15 +75,38 @@ const DropDown = () => {
         }
         setIsFullScreen(!isFullScreen);
     };
+    
+
+
+    const walletmodal = () => {
+        if (Role == "ADMIN") {
+            navigate('/admin/wallet')
+        } else if (Role == "SUBADMIN") {
+            navigate('/subadmin/wallet')
+        }
+
+    }
 
     return (
 
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
-                <li className="nav-item dropdown ">
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary cancel-btn me-2 pulse"><img src="assets/img/wall.png" />₹500</button>
+
+                <li className="nav-item dropdown">
+                    <button
+                        type="button"
+                        data-bs-dismiss="modal"
+                        className="btn btn-primary cancel-btn me-2 mt-2"
+                        style={{ backgroundColor: "#e7dadac4", color: "black", border: "none", display: "flex", alignItems: "center" }}
+                        onClick={() => walletmodal()}
+                    >
+                        <IndianRupee style={{ height: "19px" }} /> 500
+                        +
+                    </button>
                 </li>
+
+
 
                 <li className='nav-item dropdown  dropdown-heads'>
                     <label className="theme-switch mb-0">
