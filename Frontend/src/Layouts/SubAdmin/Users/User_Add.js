@@ -27,7 +27,7 @@ const AddClient = () => {
 
 
   const [refresh, setrefresh] = useState(false)
-  // const [strategyPlanMonth, setStrategyPlanMonth] = useState("monthly")
+  const [strategyPlanMonth, setStrategyPlanMonth] = useState("monthly")
 
 
 
@@ -52,7 +52,7 @@ const AddClient = () => {
   const [BrokerDetails, setBrokerDetails] = useState([]);
 
 
- 
+
 
 
 
@@ -60,7 +60,7 @@ const AddClient = () => {
   const month_plan = [1, 2, 3, 4]
 
 
-  
+
 
   // 0 = 2 days 1= Demo 2 =Live
 
@@ -97,7 +97,7 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    
+
     {
       name: "phone",
       label: "Phone No",
@@ -106,7 +106,7 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-     
+
 
 
     // {
@@ -134,7 +134,7 @@ const AddClient = () => {
       name: 'broker',
       label: 'Broker',
       type: 'select',
-      options: getAllBroker && getAllBroker.map((item) => ({ label: item.title, value: item.broker_id})),
+      options: getAllBroker && getAllBroker.map((item) => ({ label: item.title, value: item.broker_id })),
       showWhen: values => values.licence === '2' || values.licence === '0'
       , label_size: 12, col_size: 6, disable: false
     },
@@ -142,14 +142,14 @@ const AddClient = () => {
       name: 'demat_userid',
       label: 'Demat UserId',
       type: 'text',
-      showWhen: values => values.broker === '2' 
+      showWhen: values => values.broker === '2'
       , label_size: 12, col_size: 6, disable: false
     },
     {
       name: 'api_key',
       label: 'Api Key',
       type: 'text',
-      showWhen: values => values.broker === '12' 
+      showWhen: values => values.broker === '12'
       , label_size: 12, col_size: 6, disable: false
     },
     {
@@ -178,8 +178,8 @@ const AddClient = () => {
       licence: null,
       parent_id: null,
       parent_role: null,
-      demat_userid:null,
-      api_key:null,
+      demat_userid: null,
+      api_key: null,
     },
     validate: (values) => {
       let errors = {};
@@ -195,11 +195,11 @@ const AddClient = () => {
       if (!values.broker) {
         errors.broker = "Username is required";
       }
-  
+
       if (!values.licence) {
         errors.licence = "Username is required";
       }
-     
+
       if (!values.groupservice) {
         errors.groupservice = "Username is required";
       }
@@ -213,10 +213,11 @@ const AddClient = () => {
       } else if (!/^\d{10}$/.test(values.phone)) {
         errors.phone = "Please enter a valid 10-digit phone number.";
       }
-    
+
       return errors;
     },
     onSubmit: async (values) => {
+
 
       const req = {
         ProfileImg: ".",
@@ -231,15 +232,13 @@ const AddClient = () => {
         Per_trade: null,
         password: null,
         Strategies: selectedCheckboxesAndPlan,
-        parent_id: user_id || "65feb434ce02a722ac3b997d",
-        parent_role: Role || "ADMIN",
-        demat_userid:values.demat_userid,
+        parent_id: user_id,
+        parent_role: Role || "SUBADMIN",
+        demat_userid: values.demat_userid,
         group_service: values.groupservice,
-        broker : values.broker,
-         
-      };
+        broker: values.broker,
 
- 
+      };
 
 
       await dispatch(AddUsers(req))
@@ -266,7 +265,7 @@ const AddClient = () => {
   });
 
 
-  
+
 
   const getAllGroupService = async () => {
 
@@ -369,43 +368,11 @@ const AddClient = () => {
   }, [])
 
 
-
-  const handleStrategyChange = (id) => {
-    if (selectedCheckboxes.includes(id)) {
-      setSelectedCheckboxes(selectedCheckboxes.filter(checkboxId => checkboxId !== id));
-      setSelectedCheckboxesAndPlan(prevState => (
-        prevState.filter(item => item._id !== id)
-      ));
-    } else {
-      setSelectedCheckboxes([...selectedCheckboxes, id]);
-      setSelectedCheckboxesAndPlan(prevState => (
-        [...prevState, { id: id, plan_id: "1" }]
-      ));
-    }
-  };
-
-
-
-  const PlanSetinState = (id) => {
-    const strategyPlanMonth = id.split('_')[1];
-    const checkboxId = id.split('_')[0];
-
-    if (selectedCheckboxes.includes(checkboxId)) {
-      setSelectedCheckboxesAndPlan(prevState => (
-        prevState.map(item => (
-          item._id === checkboxId ? { ...item, plan_id: strategyPlanMonth } : item
-        ))
-      ));
-    }
-  };
-
-
-
   const AllBroker = async () => {
     await dispatch(Get_All_Broker()).unwrap()
       .then((response) => {
         if (response.status) {
-         
+
 
           setAllBroker(response.data);
         }
@@ -420,14 +387,47 @@ const AddClient = () => {
   }
 
 
+
+  const handleStrategyChange = (id) => {
+    if (selectedCheckboxes.includes(id)) {
+      setSelectedCheckboxes(selectedCheckboxes.filter(checkboxId => checkboxId !== id));
+      setSelectedCheckboxesAndPlan(prevState => (
+        prevState.filter(item => item.id !== id)
+      ));
+    } else {
+      setSelectedCheckboxes([...selectedCheckboxes, id]);
+      setSelectedCheckboxesAndPlan(prevState => (
+        [...prevState, { id: id, plan_id: "1" }]
+      ));
+    }
+  };
+
+
+  
+  const PlanSetinState = (id) => {
+    const strategyPlanMonth = id.split('_')[1];
+    const checkboxId = id.split('_')[0];
+  
+  
+    if (selectedCheckboxes.includes(checkboxId)) {
+      setSelectedCheckboxesAndPlan(prevState => (
+        prevState.map(item => {
+          return item.id == checkboxId ? { ...item, plan_id: strategyPlanMonth } : item;
+        })
+      ));
+    }
+  };
+  
+
+
   useState(() => {
     AllBroker();
   }, [])
 
 
- 
 
 
+  console.log("strategyPlanMonth", selectedCheckboxesAndPlan)
 
   return (
     <>
