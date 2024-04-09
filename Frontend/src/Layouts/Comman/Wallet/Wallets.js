@@ -47,7 +47,7 @@ function Payment() {
 
   const columns = [
     { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
- 
+
     {
       field: 'username',
       headerName: 'User Name',
@@ -143,6 +143,74 @@ function Payment() {
           Card_title_icon="fas fa-money-bill-wave pe-2"
           Content={
             <>
+              <div className="super-admin-list-head">
+                <div className="row">
+                  <div className="col-xl-3 col-md-6 d-flex">
+                    <div className="card w-100">
+                      <div className="card-body">
+                        <div className="grid-info-item total-plane">
+                          <div className="grid-info">
+                            <span>Total Balance</span>
+                            <h4>10000</h4>
+                          </div>
+                          <div className="grid-head-icon">
+                            <i className="fe fe-package" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-xl-3 col-md-6 d-flex">
+                    <div className="card w-100">
+                      <div className="card-body">
+                        <div className="grid-info-item active-plane">
+                          <div className="grid-info">
+                            <span>Used Balance</span>
+                            <h4>7000</h4>
+                          </div>
+                          <div className="grid-head-icon">
+                            <i className="fe fe-list" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-xl-3 col-md-6 d-flex">
+                    <div className="card w-100">
+                      <div className="card-body">
+                        <div className="grid-info-item inactive-plane">
+                          <div className="grid-info">
+                            <span>Remaining Balance</span>
+                            <h4>3000</h4>
+                          </div>
+                          <div className="grid-head-icon">
+                            <i className="fe fe-pause-circle" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-xl-3 col-md-6 d-flex">
+
+
+                    <div className="card w-100" style={{ boxShadow: '0 4px 6px rgba(0,0,0,0.1)', borderRadius: '10px' }}>
+                      <div className="card-body">
+                        <div className="grid-info-item total-type" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <div className="grid-info">
+                            <h4 style={{ marginBottom: '0', fontSize: '1.25rem', color: '#333' }}>Wallet</h4>
+                            <span style={{ color: '#777', fontSize: '0.875rem' }}>Manage your funds</span>
+                          </div>
+                          <button className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '1rem', backgroundColor: '#007bff', border: 'none', borderRadius: '5px', color: '#fff', fontWeight: 'bold', cursor: 'pointer' }}>
+                            <i className="fe fe-plus-circle" style={{ marginRight: '5px' }} /> Add Funds
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
               <FullDataTable
                 styles={styles}
                 columns={columns}
