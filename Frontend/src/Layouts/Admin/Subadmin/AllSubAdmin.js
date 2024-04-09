@@ -457,7 +457,7 @@ export default function Help() {
 
       {
         modal && (
-          <div className="modal custom-modal d-block">
+          <div className="modal custom-modal d-block" data-aos="fade-down">
             <div className="modal-dialog modal-dialog-centered modal-md">
               <div className="modal-content">
                 <div className="modal-header border-0 pb-0">

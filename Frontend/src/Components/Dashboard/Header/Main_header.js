@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DrapDown from './DrapDown';
 
 const Main_Header = () => {
-  const [themeMode, setThemeMode] = useState('light');
+ const [themeMode, setThemeMode] = useState('light');
 
   const toggleTheme = () => {
     // Toggle theme mode

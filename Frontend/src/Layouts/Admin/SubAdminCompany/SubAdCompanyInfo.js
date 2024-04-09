@@ -139,7 +139,7 @@ function Payment() {
         } else {
           return (
           
-              <span className="badge bg-orange-light d-inline-flex align-items-center" style={{width:"7rem",fontSize:"1rem"}}><i className="fe fe-clock me-1"></i>Pending</span>
+            <span className="badge bg-orange-light d-inline-flex align-items-center" style={{width:"7rem",fontSize:"1rem"}}><i className="fe fe-clock me-1"></i>Pending</span>
            
           );
         }

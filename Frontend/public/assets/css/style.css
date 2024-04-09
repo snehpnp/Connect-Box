@@ -32581,7 +32581,7 @@ button.btn.btn-primary a {
 
 .custom-data-grid .MuiDataGrid-cell:focus {
     outline: none;
-    
+
 }
 
 .custom-data-grid .cell:focus {
@@ -32631,4 +32631,50 @@ li.submenu {
 
 .dropdown-menu.notifications.show {
     transform: translate(-236px, 52px) !important;
+}
+
+.app-wrapper {
+    background-color: #fff;
+    height: 700px;
+    max-width: 880px;
+    margin: 0 auto;
+    border-radius: 8px;
+    display: flex;
+
+    -webkit-box-shadow: 0px 8px 24px 4px rgba(255, 173, 40, 1);
+    -moz-box-shadow: 0px 8px 24px 4px rgba(255, 173, 40, 1);
+    box-shadow: 0px 8px 24px 4px rgba(255, 173, 40, 1);
+}
+
+@keyframes shadow-pulse {
+    0% {
+        box-shadow: 0 0 0 0px rgba(0, 112, 244, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 7px 25px rgba(0, 112, 244, 0);
+    }
+}
+
+.pulse {
+    padding: 5px 15px ! important;
+    font-size: 16px !important;
+    font-weight: 700;
+    margin-top: 10px;
+    color: #fff;
+    text-align: center;
+    background: #0070F4;
+    border-radius: 50px;
+    animation: shadow-pulse 1.5s infinite;
+}
+
+.pulse img {
+    width: 35px;
+    margin-right: 10px;
+}
+.up{
+   color:#6deb6d;
+}
+.down{
+    color:red;
 }

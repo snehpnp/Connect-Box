@@ -76,10 +76,8 @@ const DropDown = () => {
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
-                 
-
                 <li className="nav-item dropdown ">
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary cancel-btn me-2"><i class="fas fa-plus me-1"></i> Wallet</button>
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary cancel-btn me-2 pulse"><img src="assets/img/wall.png" />₹500</button>
                 </li>
 
                 <li className='nav-item dropdown  dropdown-heads'>
@@ -87,8 +85,9 @@ const DropDown = () => {
                         <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
                         <span className="slider"></span>
                     </label>
-
                 </li>
+
+
 
                 <li className="nav-item dropdown  flag-nav dropdown-heads">
                     <a className="nav-link" data-bs-toggle="dropdown" href="#" role="button">
