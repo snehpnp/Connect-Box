@@ -97,8 +97,8 @@ const DropDown = () => {
                     <button
                         type="button"
                         data-bs-dismiss="modal"
-                        className="btn btn-primary cancel-btn me-2 mt-2"
-                        style={{ backgroundColor: "#e7dadac4", color: "black", border: "none", display: "flex", alignItems: "center" }}
+                        className="btn btn-primary cancel-btn me-2 mt-2 "
+                        style={{}}
                         onClick={() => walletmodal()}
                     >
                         <IndianRupee style={{ height: "19px" }} /> 500

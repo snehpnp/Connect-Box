@@ -30625,7 +30625,7 @@ table th.no-sort::after {
 
 .packages h2 {
     margin: 24px 0;
-    font-size: 36px;
+    font-size: 25px;
     font-weight: 700;
     color: #7539ff
 }
@@ -32487,9 +32487,7 @@ td .invoice-detail i {
 }
 
 .css-t89xny-MuiDataGrid-columnHeaderTitle {
-
-
-    font-family: 'Inter';
+    font-family: inter, sans-serif !important;
     font-size: 16px;
     font-weight: 500;
 }
@@ -32511,7 +32509,7 @@ td .invoice-detail i {
 .MuiDataGrid-cell,
 .MuiDataGrid-selectedRowCount {
 
-    font-family: 'Inter' !important;
+    font-family: inter, sans-serif !important;
     font-size: 16px !important;
 }
 

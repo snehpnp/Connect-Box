@@ -371,7 +371,7 @@ function Strategy() {
 
                 {/* PAGE HEADER */}
                 <div className="page-header">
-                    <div className="content-page-header">
+                    <div className="content-page-header mb-0">
                         <h5>Strategies</h5>
                         <div className="page-content">
                             <div className="list-btn">
@@ -462,42 +462,46 @@ function Strategy() {
                                         <div className="package-header d-flex justify-content-between">
                                             <div className="d-flex justify-content-between w-100">
                                                 <div className="">
-                                                    <h4>{stg.strategy_name}</h4>
-                                                    <p>Segment: {stg.strategy_segment}</p>
-                                                    <p>Category: {stg.strategy_category}</p>
+                                                <h6>Segment: {stg.strategy_segment}</h6>
+                                                 
+                                                <h2 className="my-2">{stg.strategy_name}</h2>
+                                                    {/* <p>Category: {stg.strategy_category}</p> */}
                                                 </div>
                                                 <span className="icon-frame d-flex align-items-center justify-content-center">
-                                                    <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
+                                                    <img src= "assets/img/icons/price-01.svg" alt="img" />
                                                 </span>
+                                                {/* <span className="icon-frame d-flex align-items-center justify-content-center">
+                                                    <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
+                                                </span> */}
                                             </div>
                                         </div>
                                         <p>{stg.strategy_description}</p>
-
+                                        
                                         <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
                                         <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                                <span style={{ color: '#333' }}>Demo</span>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                <span >Demo</span>
                                                 <span style={{ marginLeft: 'auto', color: '#999' }}>Free</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                                <span style={{ color: '#333' }}>Month</span>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                <span >Month</span>
                                                 <span style={{ marginLeft: 'auto', color: '#999' }}>$10/month</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                                <span style={{ color: '#333' }}>Quarterly</span>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                <span >Quarterly</span>
                                                 <span style={{ marginLeft: 'auto', color: '#999' }}>$25/quarter</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                                <span style={{ color: '#333' }}>Half Yearly</span>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                <span >Half Yearly</span>
                                                 <span style={{ marginLeft: 'auto', color: '#999' }}>$45/half year</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px', color: '#5cb85c' }}></i>
-                                                <span style={{ color: '#333' }}>Yearly</span>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                <span >Yearly</span>
                                                 <span style={{ marginLeft: 'auto', color: '#999' }}>$80/year</span>
                                             </li>
                                         </ul>
