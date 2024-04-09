@@ -14,7 +14,7 @@ import Edit_Strategies from "../Layouts/SubAdmin/Strategys/Edit_Strategies"
 
 
 import Help from '../Layouts/Comman/Help';
-import Msgbrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast.js';
+import MessageBroadcast from '../Layouts/SubAdmin/MessageBroadCast/MessageBroadCast';
 
 
 import Chain from '../Layouts/SubAdmin/Option/Chain';
@@ -41,7 +41,7 @@ const SubAdmin_Routing = () => {
           <Route exact path="/dashboard" element={<Overview />} />
           <Route exact path="/system" element={<System />} />
           <Route exact path="/help" element={<Help />} />
-          <Route exact path="/message-broadcast" element={<Msgbrodcast />} />
+          <Route exact path="/message-broadcast" element={<MessageBroadcast />} />
           <Route exact path="/strategys" element={<Strategy />} />
           <Route exact path="/group-service" element={<Grpservices />} />
           <Route exact path="/group_service/add" element={<Add_Group />} />

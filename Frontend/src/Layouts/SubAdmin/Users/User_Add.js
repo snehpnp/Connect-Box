@@ -27,7 +27,7 @@ const AddClient = () => {
 
 
   const [refresh, setrefresh] = useState(false)
-  const [strategyPlanMonth, setStrategyPlanMonth] = useState("monthly")
+ 
 
 
 
@@ -49,15 +49,13 @@ const AddClient = () => {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
   const [getAllBroker, setAllBroker] = useState([]);
-  const [BrokerDetails, setBrokerDetails] = useState([]);
+ 
 
 
 
 
 
-
-  const GetBrokerInfo = [1, 2, 3, 4]
-  const month_plan = [1, 2, 3, 4]
+ 
 
 
 
@@ -427,7 +425,7 @@ const AddClient = () => {
 
 
 
-  console.log("strategyPlanMonth", selectedCheckboxesAndPlan)
+  console.log("selectedCheckboxes", selectedCheckboxes)
 
   return (
     <>
