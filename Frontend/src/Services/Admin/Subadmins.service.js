@@ -1,5 +1,4 @@
 import axios from "axios";
-
 // import Files
 import * as Config from "../../Utils/Config";
 
@@ -85,7 +84,6 @@ export async function admin_dashData(data, token) {
     return await err;
   }
 }
-
 //Admin DashBoard Data 
 export async function admin_dashData1(data, token) {
   try {
@@ -102,6 +100,42 @@ export async function admin_dashData1(data, token) {
 export async function SubadminsName(data, token) {
   try {
     const res = await axios.post(`${Config.base_url}subadmin/name/getall`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
+
+//Admin MessageGet
+export async function getMsgByOwnerId(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}getMessageData`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
+
+//Admin Delete MessageBoadcast Data
+export async function deleteMsgById(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}messageData/delete`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
+
+//Admin edit MessageBoadcast data
+export async function editMsgData(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}messagedata/edit`, data, {
       data: {},
     });
     return await res?.data;

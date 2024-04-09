@@ -219,8 +219,6 @@ class Admin {
     }
   }
 
-
-
   async GetAll_Broker_details(req, res) {
     try {
         // THEME LIST DATA
@@ -246,6 +244,7 @@ class Admin {
         console.log("Error Get all Info error-", error);
     }
 }
+
 
 
 
