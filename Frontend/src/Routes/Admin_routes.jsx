@@ -47,7 +47,7 @@ const Admin_Routing = () => {
             <div className="page-wrapper">
                 <Routes>
                     <Route exact path="/subadmin/add" element={<AddSubadmin />} />
-                    <Route exact path="/subadmin/edit" element={<EditSubadmin />} />
+                    <Route exact path="/subadmin/edit/:id" element={<EditSubadmin />} />
                     <Route exact path="/allsubadmin" element={<AllSubadmin />} />
                     <Route exact path="/help" element={<Help />} />
                     <Route exact path="/faqs" element={<Faqs />} />

@@ -2,7 +2,9 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { IndianRupee } from 'lucide-react';
 import { useNavigate } from "react-router-dom";
-
+import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
 const DropDown = () => {
     const navigate = useNavigate();
@@ -12,7 +14,46 @@ const DropDown = () => {
     const [showFunds, setShowFunds] = useState(false);
     const [themeMode, setThemeMode] = useState('light');
 
+    const dispatch = useDispatch();
 
+    const [profileData, setProfileData] = useState([]);
+    const [error, setError] = useState(null);
+
+    const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+
+
+    const fetchData = async () => {
+
+        try {
+            let data = { "id": user_id }
+
+            await dispatch(ProfileInfo(data))
+                .unwrap()
+                .then(async (response) => {
+                    if (response.status) {
+                        setProfileData(response.data)
+                    } else {
+                        toast.error(response.msg);
+                    }
+
+                })
+                .catch((error) => {
+                    console.log("Error", error);
+                });
+
+
+
+        } catch (error) {
+            setError(error.message);
+
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    console.log("loading", profileData)
 
     var Role = JSON.parse(localStorage.getItem("user_details")).Role
     var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName

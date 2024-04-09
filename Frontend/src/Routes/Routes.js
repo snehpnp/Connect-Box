@@ -5,7 +5,7 @@ import AdminRouting from './Admin_routes';
 import EmployeeRouting from './Employee_routes';
 import SubadminRouting from './Subadmin_routes';
 import UserRouting from './User_routes';
-import Profile from '../Layouts/Admin/Profile/Profile';
+import Profile from '../Layouts/Comman/Profile/Profile';
 
 import Header from '../Components/Dashboard/Header/Header';
 import MainHeader from '../Components/Dashboard/Header/Main_header';
@@ -18,9 +18,6 @@ const Routing = () => {
     const navigate = useNavigate();
     const roles = JSON.parse(localStorage.getItem('user_role'));
     const user_details = JSON.parse(localStorage.getItem("user_details"));
-
-    // console.log("roles",roles)
-    // console.log(" location.pathname", location.pathname)
 
 
     useEffect(() => {

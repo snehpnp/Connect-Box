@@ -171,9 +171,10 @@ export default function Help() {
 
   const handleEdit = (row) => {
     setInitialRowData(row);
-    navigate("/admin/subadmin/edit", {
-      state: { rowData: { ...row, _id: row._id } },
-    });
+    navigate('/admin/subadmin/edit/'+row._id)
+    // navigate("/admin/subadmin/edit", {
+    //   state: { rowData: { ...row, _id: row._id } },
+    // });
   };
 
 
@@ -288,7 +289,7 @@ export default function Help() {
     getSubadminData();
   }, [refresh]);
 
-
+ 
 
   return (
     <>

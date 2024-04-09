@@ -250,7 +250,7 @@ class Subadmin {
       // DATA GET SUCCESSFULLY
       res.send({
         status: true,
-        msg: "Get  Subadmins",
+        msg: "Get User",
         data: getAllSubAdmins,
       });
     } catch (error) {
