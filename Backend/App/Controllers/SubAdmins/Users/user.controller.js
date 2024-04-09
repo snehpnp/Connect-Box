@@ -402,6 +402,7 @@ class Users {
                 const strategy_transactionData = new strategy_transaction({
                   strategy_id: data.id,
                   user_id: User_id,
+                  admin_id: SubadminCheck[0]._id,
                   plan_id: matchedStrategy.plan_id,
                   Start_Date: StartDate1,
                   End_Date: EndDate1,
@@ -412,7 +413,6 @@ class Users {
               });
             }
           }
-
 
 
 
@@ -518,6 +518,7 @@ class Users {
 
 
           }
+
         })
         .catch((err) => {
           console.log("Error  Add Time Error-", err);
@@ -1213,6 +1214,70 @@ class Users {
 
 
 
+
+  // GET ALL GetAllClients
+  async GetAllUserStrategyTransaction(req, res) {
+    try {
+      const { page, limit, user_ID } = req.body; //LIMIT & PAGE
+      // const skip = (page - 1) * limit;
+
+      if (!user_ID || user_ID == '' || user_ID == null) {
+        return res.send({
+          status: false,
+          msg: "Please Enter Sub Admin Id",
+          data: [],
+        });
+      }
+
+
+
+      // GET ALL CLIENTS
+      var AdminMatch;
+      AdminMatch = { admin_id: user_ID };
+
+
+
+      const getAllClients = await strategy_transaction.find(AdminMatch)
+      .populate({
+        path: 'user_id',
+        select: 'UserName', // Select only the 'name' field from the 'users' collection
+      })
+      .populate({
+        path: 'strategy_id',
+        select: 'strategy_name', // Select only the 'name' field from the 'strategy' collection
+      })
+      .sort({ CreateDate: -1 });
+    
+
+    
+
+      // IF DATA NOT EXIST
+      if (getAllClients.length == 0) {
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: [],
+          // totalCount: totalCount,
+        });
+      }
+
+      // DATA GET SUCCESSFULLY
+      return res.send({
+        status: true,
+        msg: "Get All Strategy Charges",
+        data: getAllClients,
+
+      });
+    } catch (error) {
+      console.log("Error loginClients Error-", error);
+      return res.send({
+        status: false,
+        msg: "Empty data",
+        data: [],
+        // totalCount: totalCount,
+      });
+    }
+  }
 
 
 }

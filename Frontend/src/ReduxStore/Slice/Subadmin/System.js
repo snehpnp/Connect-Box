@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetInfo_Company,Edit_Company_info } from "../../../Services/Subadmin/system.service";
+import { GetInfo_Company,Edit_Company_info,GetInfo_strategyTransaction } from "../../../Services/Subadmin/system.service";
 
 export const infocompany = createAsyncThunk(
     "subadmin/company/getone",
@@ -27,6 +27,20 @@ export const edit_company_info = createAsyncThunk(
     }
 );
 
+export const FindStgTranscData = createAsyncThunk(
+    "strategy/transaction",
+    async (data) => {
+        
+        try {
+            const res = await GetInfo_strategyTransaction(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+
 
 
 const SystemSlice = createSlice({
@@ -36,6 +50,8 @@ const SystemSlice = createSlice({
         isError: false,
         companyInfo: null,
         profileInfo: null,
+        stg_trans: null,
+
 
     },
     reducers: {},
@@ -71,7 +87,22 @@ const SystemSlice = createSlice({
 
                 state.isLoading = false;
                 state.isError = true;
-            });
+            })
+            .addCase(FindStgTranscData.pending, (state, action) => {
+
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(FindStgTranscData.fulfilled, (state, action) => {
+
+                state.isLoading = false;
+                state.stg_trans = action.payload;
+            })
+            .addCase(FindStgTranscData.rejected, (state, action) => {
+
+                state.isLoading = false;
+                state.isError = true;
+            })
     },
 });
 

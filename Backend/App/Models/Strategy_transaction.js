@@ -7,6 +7,12 @@ const strategy_transactionSchema = Schema({
         ref: "USER",
         index: true
     },
+
+    admin_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "USER",
+        index: true
+    },
     strategy_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "strategy",

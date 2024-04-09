@@ -22,6 +22,8 @@ import Add_Group from '../Layouts/SubAdmin/GroupServices/Add_Groups.js'
 
 
 import Makecall from '../Layouts/SubAdmin/Make/Makecall.js';
+import Strategytransaction from '../Layouts/SubAdmin/Strategytransaction/Strategy_transaction.js';
+
 
 
 // strategydesc
@@ -49,6 +51,9 @@ const SubAdmin_Routing = () => {
           <Route exact path="/make-call" element={<Makecall />} />
 
           <Route exact path="/edit/strategies/:id" element={<Edit_Strategies />} />
+
+          <Route exact path="/strategys/transaction" element={<Strategytransaction />} />
+
         </Routes>
       </div>
     </>
