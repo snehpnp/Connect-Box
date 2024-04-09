@@ -8,7 +8,7 @@ import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
 import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
-import { AddUsers, Get_All_Broker, GetOneUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
+import { GetOneUser, Get_All_Broker, } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 import Loader from '../../../Utils/Loader';
 
 import { useFormik } from 'formik';
@@ -23,14 +23,13 @@ const AddClient = () => {
   const { id } = useParams();
 
 
-
-
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
 
   const [refresh, setrefresh] = useState(false)
 
+  const [getOneUsers, setOneUsers] = useState([]);
 
 
 
@@ -49,20 +48,15 @@ const AddClient = () => {
     loading: true,
     data: [],
   });
+
+
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
   const [getAllBroker, setAllBroker] = useState([]);
-  const [getOneUsers, setOneUsers] = useState([]);
 
 
 
 
-
-
-
-
-
-  const month_plan = [1, 2, 3, 4]
 
 
 
@@ -113,36 +107,13 @@ const AddClient = () => {
     },
 
 
-    {
-      name: "prifix_key",
-      label: "Prifix Key",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-    // {
-    //   name: "subadmin_servic_type",
-    //   label: "Subadmin Servic Type",
-    //   type: "select",
-    //   options: [
-    //     { label: "Per Trade", value: "1" },
-    //     { label: "Per Strategy", value: "2" },
-    //   ],
-    //   label_size: 12,
-    //   col_size: 6,
-    //   disable: false,
-    // },
+
     // {
     //   name: 'Per_trade', label: 'Per Trade', type: 'text',
     //   showWhen: values => values.subadmin_servic_type === '1'
     //   , label_size: 12, col_size: 6, disable: false
     // },
-    // {
-    //   name: 'Per_strategy', label: 'Per Strategy', type: 'text',
-    //   showWhen: values => values.subadmin_servic_type === '2'
-    //   , label_size: 12, col_size: 6, disable: false
-    // },
+
     {
       name: "licence",
       label: "Lincense Type",
@@ -180,30 +151,6 @@ const AddClient = () => {
       showWhen: values => values.broker === '12'
       , label_size: 12, col_size: 6, disable: false
     },
-
-    {
-      name: 'tomonth',
-      label: 'To Month',
-      type: 'select',
-      options: month_plan && month_plan.map((item) => ({ label: item, value: item })),
-      showWhen: values => values.licence === '2'
-      , label_size: 12, col_size: 6, disable: false
-    },
-
-    {
-      name: 'fromDate',
-      label: 'From Date',
-      type: 'date',
-      showWhen: values => values.licence === '1'
-      , label_size: 12, col_size: 6, disable: false
-    },
-    {
-      name: 'todate',
-      label: 'To Date',
-      type: 'date',
-      showWhen: values => values.licence === '1'
-      , label_size: 12, col_size: 6, disable: false
-    },
     {
       name: 'groupservice',
       label: 'Group Service',
@@ -225,12 +172,8 @@ const AddClient = () => {
       username: "",
       email: "",
       phone: "",
-      broker: '0',
-      fromDate: null,
-      todate: null,
+      broker: null,
       groupservice: null,
-      tomonth: null,
-      prifix_key: "",
       licence: null,
       parent_id: null,
       parent_role: null,
@@ -251,18 +194,11 @@ const AddClient = () => {
       if (!values.broker) {
         errors.broker = "Username is required";
       }
-      if (!values.fromDate) {
-        errors.fromDate = "Username is required";
-      }
-      if (!values.todate) {
-        errors.todate = "Username is required";
-      }
+
       if (!values.licence) {
         errors.licence = "Username is required";
       }
-      if (!values.tomonth) {
-        errors.tomonth = "Username is required";
-      }
+
       if (!values.groupservice) {
         errors.groupservice = "Username is required";
       }
@@ -276,15 +212,10 @@ const AddClient = () => {
       } else if (!/^\d{10}$/.test(values.phone)) {
         errors.phone = "Please enter a valid 10-digit phone number.";
       }
-      if (!values.prifix_key) {
-        errors.prifix_key = "Prefix key is required";
-      } else if (values.prifix_key.length !== 3) {
-        errors.prifix_key = "Key should be exactly 3 characters/number/both";
-      }
+
       return errors;
     },
     onSubmit: async (values) => {
-
       const req = {
         ProfileImg: ".",
         FullName: values.fullName,
@@ -296,42 +227,42 @@ const AddClient = () => {
         subadmin_service_type: null,
         strategy_Percentage: null,
         Per_trade: null,
-        prifix_key: values.prifix_key,
         password: null,
         Strategies: selectedCheckboxesAndPlan,
-        parent_id: user_id || "65feb434ce02a722ac3b997d",
-        parent_role: Role || "ADMIN",
+        parent_id: user_id,
+        parent_role: Role || "SUBADMIN",
         demat_userid: values.demat_userid,
         group_service: values.groupservice,
         broker: values.broker,
 
       };
 
+      console.log("req :", req)
 
 
+      // await dispatch(AddUsers(req))
+      //   .unwrap()
+      //   .then(async (response) => {
 
-      await dispatch(AddUsers(req))
-        .unwrap()
-        .then(async (response) => {
 
+      //     if (response.status) {
+      //       toast.success(response.msg);
+      //       setTimeout(() => {
+      //         navigate("/subadmin/users")
+      //       }, 1000);
 
-          if (response.status) {
-            toast.success(response.msg);
-            setTimeout(() => {
-              navigate("/subadmin/users")
-            }, 1000);
+      //     } else {
+      //       toast.error(response.msg);
+      //     }
 
-          } else {
-            toast.error(response.msg);
-          }
-
-        })
-        .catch((error) => {
-          console.log("Error", error);
-        });
+      //   })
+      //   .catch((error) => {
+      //     console.log("Error", error);
+      //   });
 
     },
   });
+
 
 
   const getAllUsers = async () => {
@@ -340,6 +271,9 @@ const AddClient = () => {
       .then((response) => {
         if (response.status) {
           setOneUsers(response.data);
+          setSelectedCheckboxes(response.data.ClientStrategy.map((stg) => stg.strategy_id))
+
+
         }
         else {
           setOneUsers([]);
@@ -357,30 +291,30 @@ const AddClient = () => {
 
 
 
-  console.log("getOneUsers :", getOneUsers.getClients && getOneUsers.getClients[0].FullName)
+
+  const filteredIds = allGroupService.data.map((item) => {
+    if (getOneUsers.ClientGroupName !== undefined) {
+      if (item._id == getOneUsers.ClientGroupName[0].groupService_id) {
+        return item._id;
+      }
+    }
+  }).filter(id => id !== undefined);
+
+  const itemId = filteredIds[0];
+
+
+
 
   useEffect(() => {
     formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
     formik.setFieldValue('username', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].UserName);
     formik.setFieldValue('email', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Email);
     formik.setFieldValue('phone', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].PhoneNo);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
-    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('broker', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].broker);
+    formik.setFieldValue('licence', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].license_type);
+    formik.setFieldValue('groupservice', itemId);
 
   }, [getOneUsers.getClients])
-
-
 
 
   const getAllGroupService = async () => {
@@ -484,12 +418,31 @@ const AddClient = () => {
   }, [])
 
 
+  const AllBroker = async () => {
+    await dispatch(Get_All_Broker()).unwrap()
+      .then((response) => {
+        if (response.status) {
+
+
+          setAllBroker(response.data);
+        }
+        else {
+          setAllBroker([]);
+        }
+      })
+      .catch((error) => {
+        console.log("Broker find Error :", error)
+      })
+
+  }
+
+
 
   const handleStrategyChange = (id) => {
     if (selectedCheckboxes.includes(id)) {
       setSelectedCheckboxes(selectedCheckboxes.filter(checkboxId => checkboxId !== id));
       setSelectedCheckboxesAndPlan(prevState => (
-        prevState.filter(item => item._id !== id)
+        prevState.filter(item => item.id !== id)
       ));
     } else {
       setSelectedCheckboxes([...selectedCheckboxes, id]);
@@ -505,41 +458,24 @@ const AddClient = () => {
     const strategyPlanMonth = id.split('_')[1];
     const checkboxId = id.split('_')[0];
 
+
     if (selectedCheckboxes.includes(checkboxId)) {
       setSelectedCheckboxesAndPlan(prevState => (
-        prevState.map(item => (
-          item._id === checkboxId ? { ...item, plan_id: strategyPlanMonth } : item
-        ))
+        prevState.map(item => {
+          return item.id == checkboxId ? { ...item, plan_id: strategyPlanMonth } : item;
+        })
       ));
     }
   };
 
 
 
-  const AllBroker = async () => {
-    await dispatch(Get_All_Broker()).unwrap()
-      .then((response) => {
-        if (response.status) {
-
-          setAllBroker(response.data);
-        }
-        else {
-          setAllBroker([]);
-        }
-      })
-      .catch((error) => {
-        console.log("Broker find Error :", error)
-      })
-
-  }
-
   useState(() => {
     AllBroker();
   }, [])
 
 
-
-
+  var planSelect = [1, 2, 3, 4]
 
 
   return (
@@ -549,8 +485,8 @@ const AddClient = () => {
           <>
             <AddForm
               fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))}
-              page_title="Edit User"
-              btn_name="Edit User"
+              page_title="Add User"
+              btn_name="Add User"
               btn_name1="Cancel"
               formik={formik}
               btn_name1_route={'/subadmin/users'}
@@ -576,64 +512,52 @@ const AddClient = () => {
                         <div className="row">
                           <div className="col-lg-12">
                             <div className="form-check custom-checkbox mb-3">
+
+
                               <input
                                 type='checkbox'
                                 className="form-check-input"
                                 name={strategy.strategy_name}
                                 value={strategy._id}
+                                defaultChecked={getOneUsers.ClientStrategy && getOneUsers.ClientStrategy.some((item) => (
+                                  item.strategy_id === strategy._id
+                                ))}
+
+
+
                                 onChange={() => handleStrategyChange(strategy._id)}
                               />
                               <label className="form-check-label" htmlFor={strategy.strategy_name}>{strategy.strategy_name}</label>
 
+
+
                               {selectedCheckboxes.includes(strategy._id) && (
-                                <>
-                                  <div className="border rounded" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                    <div className="form-group d-flex justify-content-between m-3">
-                                      <div className="d-flex align-items-center">
-                                        <input
-                                          type="radio"
-                                          name={`option_${strategy._id}`}
-                                          value="1"
-                                          defaultChecked
-                                          id={`${strategy._id}_1`}
-                                          onChange={(e) => PlanSetinState(e.target.id)}
-                                        />
-                                        <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>monthly </label>
-                                      </div>
-                                      <div className="d-flex align-items-center">
-                                        <input
-                                          type="radio"
-                                          name={`option_${strategy._id}`}
-                                          value="2"
-                                          id={`${strategy._id}_2`}
-                                          onChange={(e) => PlanSetinState(e.target.id)}
-                                        />
-                                        <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>quarterly </label>
-                                      </div>
-                                      <div className="d-flex align-items-center">
-                                        <input
-                                          type="radio"
-                                          name={`option_${strategy._id}`}
-                                          value="3"
-                                          id={`${strategy._id}_3`}
-                                          onChange={(e) => PlanSetinState(e.target.id)}
-                                        />
-                                        <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>halfyearly </label>
-                                      </div>
-                                      <div className="d-flex align-items-center">
-                                        <input
-                                          type="radio"
-                                          name={`option_${strategy._id}`}
-                                          value="3"
-                                          id={`${strategy._id}_4`}
-                                          onChange={(e) => PlanSetinState(e.target.id)}
-                                        />
-                                        <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>yearly </label>
-                                      </div>
-                                    </div>
+                                <div className="border rounded" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                  <div className="form-group d-flex justify-content-between m-3">
+                                    {planSelect.map((data) => {
+                                      const planId = getOneUsers.ClientStrategy && getOneUsers.ClientStrategy.filter((item) => (
+                                        item.strategy_id === strategy._id
+                                      )).map((item) => item.plan_id)[0];
+
+                                      return (
+                                        <div className="d-flex align-items-center" key={data}>
+                                          <input
+                                            type="radio"
+                                            name={`option_${strategy._id}`}
+                                            value={data}
+                                            defaultChecked={data == planId}
+                                            id={`${strategy._id}_${data}`}
+                                            onChange={(e) => PlanSetinState(e.target.id)}
+                                          />
+                                          <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>{data == 1 ? "monthly" : data == 2 ? "Quaterly" : data == 3 ? "half_yearly" : data == 4 ? "yearly" : "DEMO"} </label>
+                                        </div>
+                                      );
+                                    })}
                                   </div>
-                                </>
+                                </div>
                               )}
+
+
                             </div>
                           </div>
                         </div>
