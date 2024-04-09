@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Dashboard_admin, Dashboard_admin1, SubadminsNamesData } from "../../../ReduxStore/Slice/Admin/Subadmins";
+import {
+  Dashboard_admin,
+  Dashboard_admin1,
+  SubadminsNamesData,
+} from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,40 +11,38 @@ import Chart from "react-apexcharts";
 
 import Loader from "../../../Utils/Loader";
 
-
 const Overview = () => {
-
   const [options, setOptions] = useState({
     chart: {
-      id: "basic-bar"
+      id: "basic-bar",
     },
     xaxis: {
-      categories: []
-    }
+      categories: [],
+    },
   });
 
   const [series, setSeries] = useState([
     {
       name: "series-1",
       data: [],
-    }
+    },
   ]);
 
   const [subadminName, setsubadminName] = useState([]);
 
-  const [chart, setchart] = useState(false)
-
+  const [chart, setchart] = useState(false);
 
   const [colors] = useState(["#9423FF"]);
   const [adminData, setAdminData] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const maxPercentage = adminData.Totalcount;
+  const maxPercentageforUser = adminData.TotalUsercount;
 
-  const [selectedSubadmin, setSelectedSubadmin] = useState('');
-  const [selectedSubadminid, setSelectedSubadminid] = useState('');
+  const [selectedSubadmin, setSelectedSubadmin] = useState("");
+  const [selectedSubadminid, setSelectedSubadminid] = useState("");
 
-  const [selectedOption, setSelectedOption] = useState('Monthly');
+  const [selectedOption, setSelectedOption] = useState("Monthly");
 
   const handleSelect = (id) => {
     setSelectedSubadminid(id);
@@ -50,19 +52,22 @@ const Overview = () => {
     setSelectedOption(event.target.textContent);
   };
 
-
-
   const calculatePercentage = (count) =>
     count !== undefined && count !== null
       ? (count / maxPercentage) * 100
+      : null;
+
+  const calculateUser = (count) =>
+    count !== undefined && count !== null
+      ? (count / maxPercentageforUser) * 100
       : null;
   const percentages = {
     percentage: calculatePercentage(adminData.Totalcount),
     percentage1: calculatePercentage(adminData.TotalActivecount),
     percentage3: calculatePercentage(adminData.TotalInActivecount),
-    percentage4: calculatePercentage(adminData.TotalUsercount),
-    percentage5: calculatePercentage(adminData.TotalActiveUsercount),
-    percentage6: calculatePercentage(adminData.TotalInActiveUsercount),
+    percentage4: calculateUser(adminData.TotalUsercount),
+    percentage5: calculateUser(adminData.TotalActiveUsercount),
+    percentage6: calculateUser(adminData.TotalInActiveUsercount),
   };
   const {
     percentage,
@@ -72,7 +77,6 @@ const Overview = () => {
     percentage5,
     percentage6,
   } = percentages;
-
 
   const cardsData = [
     {
@@ -85,8 +89,8 @@ const Overview = () => {
       progress: percentage !== null ? percentage : 0,
       arrowIcon:
         adminData.Totalcount !== undefined &&
-          percentage !== null &&
-          percentage < 100
+        percentage !== null &&
+        percentage < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -105,8 +109,8 @@ const Overview = () => {
       progress: percentage1 !== null ? percentage1 : 0,
       arrowIcon:
         adminData.TotalActivecount !== undefined &&
-          percentage1 !== null &&
-          percentage1 < 100
+        percentage1 !== null &&
+        percentage1 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -125,8 +129,8 @@ const Overview = () => {
       progress: percentage3 !== null ? percentage3 : 0,
       arrowIcon:
         adminData.TotalActivecount !== undefined &&
-          percentage3 !== null &&
-          percentage3 < 100
+        percentage3 !== null &&
+        percentage3 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -145,8 +149,8 @@ const Overview = () => {
       progress: percentage4 !== null ? percentage4 : 0,
       arrowIcon:
         adminData.TotalUsercount !== undefined &&
-          percentage4 !== null &&
-          percentage4 < 100
+        percentage4 !== null &&
+        percentage4 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -165,8 +169,8 @@ const Overview = () => {
       progress: percentage5 !== null ? percentage5 : 0,
       arrowIcon:
         adminData.TotalActiveUsercount !== undefined &&
-          percentage5 !== null &&
-          percentage5 < 100
+        percentage5 !== null &&
+        percentage5 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -185,8 +189,8 @@ const Overview = () => {
       progress: percentage6 !== null ? percentage6 : 0,
       arrowIcon:
         adminData.TotalInActiveUsercount !== undefined &&
-          percentage6 !== null &&
-          percentage6 < 100
+        percentage6 !== null &&
+        percentage6 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -204,8 +208,6 @@ const Overview = () => {
         if (response.status) {
           toast.success(response.msg);
           setAdminData(response.data);
-
-
         } else {
           toast.error(response.msg);
         }
@@ -213,38 +215,33 @@ const Overview = () => {
       .catch((error) => {
         console.log("Error", error);
       });
-
   };
 
-
   const dashData1 = async () => {
-
-    console.log("done ")
+    console.log("done ");
 
     var data = {
       SUBADMINS: selectedSubadminid,
-      selectedOption: selectedOption
-    }
+      selectedOption: selectedOption,
+    };
     await dispatch(Dashboard_admin1(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-
-
           const categories = response.data.categories;
           const data = response.data.data;
 
-          setOptions(prevOptions => ({
+          setOptions((prevOptions) => ({
             ...prevOptions,
             xaxis: {
               ...prevOptions.xaxis,
-              categories: categories
-            }
+              categories: categories,
+            },
           }));
 
           setSeries([{ name: "series-1", data: data }]);
 
-          setchart(true)
+          setchart(true);
         } else {
           toast.error(response.msg);
         }
@@ -252,19 +249,14 @@ const Overview = () => {
       .catch((error) => {
         console.log("Error", error);
       });
-
-
-
   };
-
-
 
   const SubadminName = async () => {
     await dispatch(SubadminsNamesData())
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          setsubadminName(response.data)
+          setsubadminName(response.data);
         } else {
           toast.error(response.msg);
         }
@@ -272,27 +264,18 @@ const Overview = () => {
       .catch((error) => {
         console.log("Error", error);
       });
-
   };
 
-
-
-
-
-
   useEffect(() => {
-    SubadminName()
+    SubadminName();
     dashData();
   }, [dispatch, navigate]);
-
-
 
   useEffect(() => {
     dashData1();
   }, [selectedOption, selectedSubadmin]);
 
-
-  var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"]
+  var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
 
   return (
     <div className="main-wrapper">
@@ -358,18 +341,14 @@ const Overview = () => {
             </div>
           </div>
 
-
           <div className="row" data-aos="fade-left">
-
             <div className="row" data-aos="fade-left">
-
               <div className="col-xl-8 d-flex">
                 <div className="card flex-fill">
                   <div className="card-header">
                     <div className="d-flex justify-content-between align-items-center">
                       <h5 className="card-title">Sales Analytics</h5>
                       <div className="d-flex">
-
                         <div className="dropdown main me-3">
                           <button
                             className="btn btn-white btn-sm dropdown-toggle"
@@ -385,29 +364,31 @@ const Overview = () => {
                             aria-labelledby="subadminDropdownButton"
                           >
                             <li>
-                              <a className="dropdown-item" onClick={() => {
-                                setSelectedSubadminid('');
-                                setSelectedSubadmin("ALL");
-                              }}  >
+                              <a
+                                className="dropdown-item"
+                                onClick={() => {
+                                  setSelectedSubadminid("");
+                                  setSelectedSubadmin("ALL");
+                                }}
+                              >
                                 Admin
                               </a>
                             </li>
-                            {subadminName && subadminName.map((data, index) => (
-                              <li key={index}>
-                                <a
-                                  className="dropdown-item"
-                                  onClick={() => {
-                                    handleSelect(data._id);
-                                    setSelectedSubadmin(data.UserName);
-                                  }}
-                                >
-                                  {data.UserName}
-                                </a>
-                              </li>
-                            ))}
+                            {subadminName &&
+                              subadminName.map((data, index) => (
+                                <li key={index}>
+                                  <a
+                                    className="dropdown-item"
+                                    onClick={() => {
+                                      handleSelect(data._id);
+                                      setSelectedSubadmin(data.UserName);
+                                    }}
+                                  >
+                                    {data.UserName}
+                                  </a>
+                                </li>
+                              ))}
                           </ul>
-
-
                         </div>
 
                         <div className="dropdown main">
@@ -424,16 +405,19 @@ const Overview = () => {
                             className="dropdown-menu"
                             aria-labelledby="planDropdownButton"
                           >
-
                             {dropdown.map((data) => {
-                              return <li>
-                                <a className="dropdown-item" onClick={handleSelect1}  >
-                                  {data}
-                                </a>
-                              </li>
+                              return (
+                                <li>
+                                  <a
+                                    className="dropdown-item"
+                                    onClick={handleSelect1}
+                                  >
+                                    {data}
+                                  </a>
+                                </li>
+                              );
                             })}
                           </ul>
-
                         </div>
                       </div>
                     </div>
@@ -451,12 +435,13 @@ const Overview = () => {
                               series={series}
                               type="bar"
                               width="100%"
-                            /></div>) :
-                          <div className="loding" style={{ color: "white" }} >
+                            />
+                          </div>
+                        ) : (
+                          <div className="loding" style={{ color: "white" }}>
                             Loading...
-                          </div>}
-
-
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -533,19 +518,12 @@ const Overview = () => {
                       >
                         <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
                       </div>
-
                     </div>
                   </div>
                 </div>
               </div>
-
-
-
-
             </div>
           </div>
-
-
         </div>
       </div>
     </div>

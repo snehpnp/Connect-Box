@@ -155,3 +155,15 @@ export async function addMessage(data, token) {
     return await err;
   }
 }
+
+//get Strategy In Subadmin BroadCast
+export async function strategy_All(data, token) {
+  try {
+    const res = await axios.get(`${Config.base_url}strategy_for_add_client/getall`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
