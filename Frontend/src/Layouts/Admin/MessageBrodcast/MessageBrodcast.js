@@ -3,8 +3,9 @@ import Content from "../../../Components/Dashboard/Content/Content";
 import axios from "axios";
 import {
   admin_Msg_Get,
-  admin_Msg_Delete,
+  admin_Msg_Delete, 
   admin_Msg_Edit,
+  add_message
 } from "../../../ReduxStore/Slice/Admin/MessageData";
 import { GetAllSubAdmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
@@ -64,8 +65,21 @@ function MessageBroadcast() {
         messageTitle: messageText,
         status: "Sent",
       };
-      await axios.post("http://localhost:7000/messageData", newMessage);
-      console.log("Message sent successfully");
+
+      await dispatch(add_message(newMessage))
+        .unwrap()
+        .then(async (response) => {
+          if (response.status) {
+            toast.success(response.msg);
+            setrefresh(!refresh);
+
+          } else {
+            toast.error(response.msg);
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
     } catch (error) {
       console.error("Error sending message:", error);
     }

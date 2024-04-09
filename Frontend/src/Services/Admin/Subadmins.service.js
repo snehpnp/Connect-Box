@@ -143,3 +143,15 @@ export async function editMsgData(data, token) {
     return await err;
   }
 }
+
+
+export async function addMessage(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}messageData`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}

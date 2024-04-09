@@ -38,10 +38,10 @@ class MessageController {
         const userData = await User.findOne({ _id: ownerId });
         const result = await msg.save();
       }
-      return res.status(201).send("Successfully Created!");
+      return res.status(201).send({ status: true, message: "Successfully Created!", data: [] });
     } catch (error) {
       console.error("Error saving message:", error);
-      return res.status(500).send("Internal Server Error");
+      return res.status(500).send({ status: false, message: "Error deleting message", error: error.message });
     }
   }
 
@@ -130,13 +130,13 @@ class MessageController {
       }
       const result = await msgdata.findByIdAndDelete(id);
       if (!result) {
-        return res.status(404).send({status: false, message: "Message not found" });
+        return res.status(404).send({ status: false, message: "Message not found" });
       }
       res.send({ status: true, message: "Message deleted successfully" });
     } catch (error) {
       res
         .status(500)
-        .send({status: false, message: "Error deleting message", error: error.message });
+        .send({ status: false, message: "Error deleting message", error: error.message });
     }
   }
 
@@ -156,7 +156,7 @@ class MessageController {
       console.error("Error updating message:", error);
       return res.status(500).json({ status: false, msg: "Error updating message", error: error.message });
     }
-}
+  }
 
 }
 module.exports = new MessageController();
