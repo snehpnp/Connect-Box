@@ -97,4 +97,26 @@ export async function getMsgByOwnerId(data, token) {
   }
 }
 
-//Admin get Subamins
+//Admin Delete MessageBoadcast Data
+export async function deleteMsgById(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}messageData/delete`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
+
+//Admin edit MessageBoadcast data
+export async function editMsgData(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}messagedata/edit`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}

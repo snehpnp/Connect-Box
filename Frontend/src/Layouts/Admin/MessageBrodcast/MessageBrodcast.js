@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Content from "../../../Components/Dashboard/Content/Content";
 import axios from "axios";
-import { admin_Msg_Get } from "../../../ReduxStore/Slice/Admin/MessageData";
-import {GetAllSubAdmin} from "../../../ReduxStore/Slice/Admin/Subadmins"
+import {
+  admin_Msg_Get,
+  admin_Msg_Delete,
+  admin_Msg_Edit,
+} from "../../../ReduxStore/Slice/Admin/MessageData";
+import { GetAllSubAdmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import EditIcon from "@mui/icons-material/Edit";
@@ -16,8 +20,24 @@ function MessageBroadcast() {
   const [messageText, setMessageText] = useState("");
   const [pipelineData, setPipelineData] = useState([]);
   const [msgData, setMsgData] = useState([]);
+  const [modal, setModal] = useState(0);
+
+  const [openModalId, setopenModalId] = useState("");
+  const [refresh, setrefresh] = useState(false);
 
   const datas = JSON.parse(localStorage.getItem("user_details"));
+
+  const OpenModal = (value) => {
+    setModal(value);
+  };
+
+  const CloseModal = () => {
+    setModal(0);
+  };
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    setMsgData(value);
+  };
 
   const fetchSubadminName = async () => {
     await dispatch(GetAllSubAdmin())
@@ -73,7 +93,6 @@ function MessageBroadcast() {
       .then(async (response) => {
         if (response.status) {
           toast.success(response.msg);
-          setMsgData(response.data);
           setPipelineData(response.data1);
         } else {
           toast.error(response.msg);
@@ -87,10 +106,54 @@ function MessageBroadcast() {
   useEffect(() => {
     fetchSubadminName();
     getAdminTableData();
-  }, []);
+  }, [refresh]);
 
-  const handleDelete = () => {
-    console.log("handledelete working");
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this message?"
+    );
+    if (confirmed) {
+      await dispatch(admin_Msg_Delete({ id }))
+        .unwrap()
+        .then(async (response) => {
+          if (response.status) {
+            toast.success(response.msg);
+            setrefresh(!refresh);
+          } else {
+            toast.error(response.msg);
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
+    }
+  };
+
+  const handleUpdate = async () => {
+    var data = { id: openModalId, messageTitle: msgData };
+
+    await dispatch(admin_Msg_Edit(data))
+      .unwrap()
+      .then(async (response) => {
+        console.log("response from FE", response);
+        if (response.status) {
+          toast.success(response.msg);
+          OpenModal(0);
+          setopenModalId("");
+          setrefresh(!refresh);
+        } else {
+          toast.error(response.msg);
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
+
+  const handleIdCheck = (id) => {
+    console.log("id from", id);
+    setopenModalId(id);
+    OpenModal(1);
   };
 
   return (
@@ -112,11 +175,12 @@ function MessageBroadcast() {
                 onChange={handleSubadmins}
               >
                 <option value="all">All</option>
-                {subadmin && subadmin.map((val) => (
-                  <option key={val._id} value={val._id}>
-                    {val.UserName}
-                  </option>
-                ))}
+                {subadmin &&
+                  subadmin.map((val) => (
+                    <option key={val._id} value={val._id}>
+                      {val.UserName}
+                    </option>
+                  ))}
               </select>
             </div>
           </div>
@@ -163,12 +227,18 @@ function MessageBroadcast() {
                       <td>{message.messageDatasResult.messageTitle}</td>
                       <td>{message.messageDatasResult.createdAt}</td>
                       <td>
-                        <button style={{ backgroundColor: "greenyellow" }}>
+                        <button
+                          onClick={() =>
+                            handleIdCheck(message.messageDatasResult._id)
+                          }
+                          style={{ backgroundColor: "greenyellow" }}
+                        >
                           <EditIcon />
                         </button>
-
                         <button
-                          onClick={() => handleDelete()}
+                          onClick={() =>
+                            handleDelete(message.messageDatasResult._id)
+                          }
                           style={{ backgroundColor: "firebrick" }}
                         >
                           <DeleteOutlineOutlinedIcon />
@@ -179,6 +249,54 @@ function MessageBroadcast() {
               </tbody>
             </table>
           </div>
+
+          {modal !== 0 && (
+            <div
+              className="modal fade show"
+              tabIndex="-1"
+              style={{ display: "block" }}
+            >
+              <div className="modal custom-modal d-block">
+                <div className="modal-dialog modal-dialog-centered modal-md">
+                  <div className="modal-content">
+                    <div className="modal-header border-0 pb-0">
+                      <div className="form-header modal-header-title text-start mb-0">
+                        <h4 className="mb-0">Update Message</h4>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                        onClick={CloseModal}
+                      ></button>
+                    </div>
+                    {modal === 1 && (
+                      <form onSubmit={handleUpdate}>
+                        <div className="modal-body">
+                          <div className="row">
+                            <div className="input-block mb-3">
+                              <label>Message Title*</label>
+                              <textarea
+                                type="text"
+                                className="form-control"
+                                onChange={handleInputChange}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="modal-footer border-0 pt-0">
+                          <button type="submit" className="btn btn-primary">
+                            Update
+                          </button>
+                        </div>
+                      </form>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </>
       }
     />

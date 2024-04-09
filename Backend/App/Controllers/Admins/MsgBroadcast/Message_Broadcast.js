@@ -90,6 +90,7 @@ class MessageController {
         },
         {
           $project: {
+            "messageDatasResult._id": 1,
             "messageDatasResult.messageTitle": 1,
             "messageDatasResult.createdAt": 1,
             "subadminDetails.UserName": 1,
@@ -100,7 +101,6 @@ class MessageController {
 
       const dataFromMongo = await User.aggregate(pipeline);
 
-      // console.log("dataFromMongo",dataFromMongo)
 
       res.status(200).json({
         status: true,
@@ -117,7 +117,46 @@ class MessageController {
       });
     }
   }
-  
+
+  async deleteMsgData(req, res) {
+    console.log("thsiis delete");
+    try {
+      const { id } = req.body;
+      console.log("req.body from delete", req.body);
+      if (!id) {
+        return res
+          .status(400)
+          .send({ message: "Message ID is required in the request body" });
+      }
+      const result = await msgdata.findByIdAndDelete(id);
+      if (!result) {
+        return res.status(404).send({status: false, message: "Message not found" });
+      }
+      res.send({ status: true, message: "Message deleted successfully" });
+    } catch (error) {
+      res
+        .status(500)
+        .send({status: false, message: "Error deleting message", error: error.message });
+    }
+  }
+
+  async editMsgData(req, res) {
+    try {
+      const { id, messageTitle } = req.body;
+      console.log("req.body from backend", req.body);
+      const existingMsg = await msgdata.findById(id);
+      if (!existingMsg) {
+        return res.status(404).json({ status: false, msg: "Message not found", data: null });
+      }
+      existingMsg.messageTitle = messageTitle;
+      const updatedMsg = await existingMsg.save();
+      console.log("Updated Message from Backend", updatedMsg);
+      return res.status(200).json({ status: true, msg: "Message updated successfully", data: updatedMsg });
+    } catch (error) {
+      console.error("Error updating message:", error);
+      return res.status(500).json({ status: false, msg: "Error updating message", error: error.message });
+    }
 }
 
+}
 module.exports = new MessageController();
