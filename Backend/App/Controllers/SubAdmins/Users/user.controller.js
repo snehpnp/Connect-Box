@@ -425,16 +425,16 @@ class Users {
 
 
             // LICENSE TABLE ADD USE LICENSE OUR CLIENT
-            if (license_type == "2") {
-              const count_licenses_add = new count_licenses({
-                user_id: User_id,
-                Balance: Balance,
-                admin_id: parent_id,
-                Role: "USER"
+            // if (license_type == "2") {
+            //   const count_licenses_add = new count_licenses({
+            //     user_id: User_id,
+            //     Balance: Balance,
+            //     admin_id: parent_id,
+            //     Role: "USER"
 
-              });
-              count_licenses_add.save();
-            }
+            //   });
+            //   count_licenses_add.save();
+            // }
 
             var toEmail = Email;
             var subjectEmail = "User ID and Password";
@@ -1154,6 +1154,40 @@ class Users {
         msg: "Empty data",
         data: [],
       });
+    }
+  }
+
+  
+
+  async UpdateUserStatus(req, res) {
+    try {
+      const { id, user_active_status } = req.body;
+      // UPDATE ACTTIVE STATUS CLIENT
+      const get_user = await User_model.find({ _id: id });
+      if (get_user.length == 0) {
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: [],
+        });
+      }
+
+      const filter = { _id: id };
+      const updateOperation = { $set: { ActiveStatus: user_active_status } };
+      const result = await User_model.updateOne(filter, updateOperation);
+
+      if (result) {
+        // STATUS UPDATE SUCCESSFULLY
+        var status_msg = user_active_status == "0" ? "DeActivate" : "Activate";
+
+        res.send({
+          status: true,
+          msg: "Update Successfully",
+          data: result,
+        });
+      }
+    } catch (error) {
+      console.log("Error trading status Error-", error);
     }
   }
 

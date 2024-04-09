@@ -2,13 +2,13 @@
 
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
 import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
-import { AddUsers, Get_All_Broker } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
+import { AddUsers, Get_All_Broker, GetOneUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 import Loader from '../../../Utils/Loader';
 
 import { useFormik } from 'formik';
@@ -20,6 +20,9 @@ import { useState, useEffect } from "react";
 const AddClient = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  const { id } = useParams();
+
+
 
 
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
@@ -27,7 +30,7 @@ const AddClient = () => {
 
 
   const [refresh, setrefresh] = useState(false)
-  // const [strategyPlanMonth, setStrategyPlanMonth] = useState("monthly")
+
 
 
 
@@ -49,18 +52,20 @@ const AddClient = () => {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
   const [getAllBroker, setAllBroker] = useState([]);
-  const [BrokerDetails, setBrokerDetails] = useState([]);
-
-
- 
+  const [getOneUsers, setOneUsers] = useState([]);
 
 
 
-  const GetBrokerInfo = [1, 2, 3, 4]
+
+
+
+
+
+
   const month_plan = [1, 2, 3, 4]
 
 
-  
+
 
   // 0 = 2 days 1= Demo 2 =Live
 
@@ -97,7 +102,7 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    
+
     {
       name: "phone",
       label: "Phone No",
@@ -106,7 +111,7 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-     
+
 
     {
       name: "prifix_key",
@@ -157,7 +162,7 @@ const AddClient = () => {
       name: 'broker',
       label: 'Broker',
       type: 'select',
-      options: getAllBroker && getAllBroker.map((item) => ({ label: item.title, value: item.broker_id})),
+      options: getAllBroker && getAllBroker.map((item) => ({ label: item.title, value: item.broker_id })),
       showWhen: values => values.licence === '2' || values.licence === '0'
       , label_size: 12, col_size: 6, disable: false
     },
@@ -165,14 +170,14 @@ const AddClient = () => {
       name: 'demat_userid',
       label: 'Demat UserId',
       type: 'text',
-      showWhen: values => values.broker === '2' 
+      showWhen: values => values.broker === '2'
       , label_size: 12, col_size: 6, disable: false
     },
     {
       name: 'api_key',
       label: 'Api Key',
       type: 'text',
-      showWhen: values => values.broker === '12' 
+      showWhen: values => values.broker === '12'
       , label_size: 12, col_size: 6, disable: false
     },
 
@@ -229,8 +234,8 @@ const AddClient = () => {
       licence: null,
       parent_id: null,
       parent_role: null,
-      demat_userid:null,
-      api_key:null,
+      demat_userid: null,
+      api_key: null,
     },
     validate: (values) => {
       let errors = {};
@@ -296,13 +301,13 @@ const AddClient = () => {
         Strategies: selectedCheckboxesAndPlan,
         parent_id: user_id || "65feb434ce02a722ac3b997d",
         parent_role: Role || "ADMIN",
-        demat_userid:values.demat_userid,
+        demat_userid: values.demat_userid,
         group_service: values.groupservice,
-        broker : values.broker,
-         
+        broker: values.broker,
+
       };
 
- 
+
 
 
       await dispatch(AddUsers(req))
@@ -329,7 +334,54 @@ const AddClient = () => {
   });
 
 
-  
+  const getAllUsers = async () => {
+    var data = { user_ID: id }
+    await dispatch(GetOneUser(data)).unwrap()
+      .then((response) => {
+        if (response.status) {
+          setOneUsers(response.data);
+        }
+        else {
+          setOneUsers([]);
+        }
+
+      })
+      .catch((error) => {
+        console.log("User data find Error", error);
+      })
+  }
+
+  useEffect(() => {
+    getAllUsers()
+  }, [])
+
+
+
+  console.log("getOneUsers :", getOneUsers.getClients && getOneUsers.getClients[0].FullName)
+
+  useEffect(() => {
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('username', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].UserName);
+    formik.setFieldValue('email', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Email);
+    formik.setFieldValue('phone', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].PhoneNo);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+
+  }, [getOneUsers.getClients])
+
+
+
 
   const getAllGroupService = async () => {
 
@@ -468,7 +520,6 @@ const AddClient = () => {
     await dispatch(Get_All_Broker()).unwrap()
       .then((response) => {
         if (response.status) {
-         
 
           setAllBroker(response.data);
         }
@@ -482,13 +533,12 @@ const AddClient = () => {
 
   }
 
-
   useState(() => {
     AllBroker();
   }, [])
 
 
- 
+
 
 
 
@@ -499,8 +549,8 @@ const AddClient = () => {
           <>
             <AddForm
               fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))}
-              page_title="Add User"
-              btn_name="Add User"
+              page_title="Edit User"
+              btn_name="Edit User"
               btn_name1="Cancel"
               formik={formik}
               btn_name1_route={'/subadmin/users'}

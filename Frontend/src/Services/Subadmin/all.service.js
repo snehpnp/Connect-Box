@@ -69,3 +69,30 @@ export async function GET_ALL_BROKER() {
 
     }
 }
+
+//Active Status Data
+export async function active_Status(data, token) {
+    try {
+      const res = await axios.post(`${Config.base_url}user/status_update`, data, {
+        data: {},
+      });
+      return await res?.data;
+    } catch (err) {
+      return await err;
+    }
+  }
+
+  // FIND ONE USER
+
+  export async function GET_ONE_USER(data, token){
+    try{
+        const res= await axios.post(`${Config.base_url}user/get`, data,{
+            data: {}
+        });
+        return await res?.data;
+    }
+    catch(err){
+        return await err;
+
+    }
+  }

@@ -22,6 +22,9 @@ import Add_Group from '../Layouts/SubAdmin/GroupServices/Add_Groups.js'
 
 
 import Makecall from '../Layouts/SubAdmin/Make/Makecall.js';
+import Edit_Group_Service from '../Layouts/SubAdmin/GroupServices/Edit_Group.js'
+import Edit_User from '../Layouts/SubAdmin/Users/EditUser.js'
+
 
 
 // strategydesc
@@ -44,11 +47,13 @@ const SubAdmin_Routing = () => {
           <Route exact path="/users" element={<ALLUSER />} />
           <Route exact path="/option-chain" element={<Chain />} />
           <Route exact path="/servicesAll" element={<AllServices />} />
-
-          <Route exact path="/User/add" element={<Adduser />} />
+          <Route exact path="/user/add" element={<Adduser />} />
           <Route exact path="/make-call" element={<Makecall />} />
-
           <Route exact path="/edit/strategies/:id" element={<Edit_Strategies />} />
+          <Route exact path="/group-service/edit/:id" element={<Edit_Group_Service />} />
+          <Route exact path="/user/edit/:id" element={<Edit_User />} />
+
+
         </Routes>
       </div>
     </>

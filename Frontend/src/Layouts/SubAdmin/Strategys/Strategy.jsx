@@ -578,7 +578,6 @@ function Strategy() {
                                 <div className="modal-body m-0 p-0">
                                     <AddForm
                                         ProfileShow={formik.values.strategy_image}
-
                                         fields={fields}
                                         formik={formik}
                                         btn_name="Add Strategy"

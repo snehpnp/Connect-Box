@@ -28,6 +28,8 @@ const AddStrategy = () => {
     const [selectedServices1, setSelectedServices1] = useState([]);
 
 
+    console.log("groupName :", groupName)
+
 
     const [GroupQty, setGroupQty] = useState([]);
     const [selectAllFiltered, setSelectAllFiltered] = useState(false);

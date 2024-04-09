@@ -77,7 +77,7 @@ function GroupStrategy() {
         var req = {
             id: row._id,
         }
-        
+
         if (window.confirm("Do you want to delete this Group Service ?")) {
             await dispatch(Delete_GroupServices(req)).unwrap()
                 .then((response) => {
@@ -180,7 +180,7 @@ function GroupStrategy() {
 
 
     const GetAllServicesUserName = (row) => {
-         
+
 
     }
 
@@ -188,13 +188,13 @@ function GroupStrategy() {
 
     const GetAllServicesName = async (row) => {
         setShowModal(true);
-        console.log("cppp :", row.row.result)
+     
         await dispatch(GET_ALL_SERVICES_NAMES({
             data: row.row.result
 
         })).unwrap()
             .then((response) => {
-        console.log("cppp 1:", response.data)
+          
 
                 const formattedData = response.data.map((row, index) => ({
                     ...row,
@@ -232,12 +232,12 @@ function GroupStrategy() {
 
                     const searchTermMatch =
                         inputSearch === '' ||
-                        
+
                         item.name.toLowerCase().includes(inputSearch.toLowerCase())
-                     
 
 
-                   
+
+
                     return searchTermMatch;
                 });
 
@@ -330,7 +330,7 @@ function GroupStrategy() {
             headerName: 'Services Name',
             renderCell: (params) => (
                 <div>
- 
+
                     {params.row.data.name}
                 </div>
             )
@@ -461,15 +461,15 @@ function GroupStrategy() {
                                 title="Services"
                                 hideBtn={true}
                                 handleClose={() => setShowModal(false)
-                                
+
                                 }
                             >
                                 <FullDataTable
                                     styles={styles}
                                     columns={column1}
                                     rows={serviceName && serviceName.data}
-                                     
-                                    
+
+
                                 />
 
                             </Modal >
