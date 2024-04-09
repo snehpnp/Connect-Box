@@ -31,7 +31,7 @@ import Dummyform from "../Components/ExtraComponents/forms/Dummyform"
 import Sub from '../Layouts/Admin/Tabe/Sub';
 import Tabe from '../Layouts/Admin/Tabe/Tabe';
 import Tabes from '../Layouts/Admin/Tabe/Tabes';
-import Wallets from '../Layouts/Admin/Wallet/wallets';
+import Wallets from '../Layouts/Comman/Wallet/Wallets';
 
 
 

@@ -26,6 +26,7 @@ import Strategytransaction from '../Layouts/SubAdmin/Strategytransaction/Strateg
 import Edit_Group_Service from '../Layouts/SubAdmin/GroupServices/Edit_Group.js'
 import Edit_User from '../Layouts/SubAdmin/Users/EditUser.js'
 
+import Wallets from '../Layouts/Comman/Wallet/Wallets';
 
 
 // strategydesc
@@ -55,6 +56,8 @@ const SubAdmin_Routing = () => {
           <Route exact path="/strategys/transaction" element={<Strategytransaction />} />
           <Route exact path="/group-service/edit/:id" element={<Edit_Group_Service />} />
           <Route exact path="/user/edit/:id" element={<Edit_User />} />
+          
+          <Route exact path="/wallet" element={<Wallets />} />
 
 
         </Routes>
