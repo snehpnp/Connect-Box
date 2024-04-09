@@ -139,7 +139,7 @@ function Payment() {
     <>
       {companyData.loading ? (
         <Content
-          Card_title="Payment History"
+          Card_title="Wallet"
           Card_title_icon="fas fa-money-bill-wave pe-2"
           Content={
             <>
