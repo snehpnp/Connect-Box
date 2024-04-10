@@ -150,32 +150,13 @@ const DropDown = () => {
                 <li className="nav-item dropdown">
                     <button
                         type="button"
+                        data-bs-dismiss="modal"
                         className="btn btn-primary cancel-btn me-2 mt-2"
-                        style={{
-                            backgroundColor: "#1E88E5",
-                            color: "white",
-                            border: "none",
-                            display: "flex",
-                            alignItems: "center",
-                            padding: "10px 20px",
-                            borderRadius: "10px",
-                            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                            cursor: "pointer"
-                        }}
-                        onClick={toggleFundsVisibility}
+                        style={{ backgroundColor: "#e7dadac4", color: "black", border: "none", display: "flex", alignItems: "center" }}
+                        onClick={() => walletmodal()}
                     >
-                        {showFunds ? (
-                            <span>
-                                <IndianRupee style={{ height: "24px", marginRight: "10px" }} />
-                                <strong>500</strong>
-                            </span>
-                        ) : (
-                            <span>
-                                <i className="fe fe-eye" style={{ fontSize: "24px", marginRight: "10px" }} />
-                                <strong>*****</strong>
-                            </span>
-                        )}
-                        {showFunds && "+"}
+                        <IndianRupee style={{ height: "19px" }} /> 500
+                        +
                     </button>
                 </li>
 

@@ -111,6 +111,7 @@ console.log('AllServices',AllServices)
         <Loader />
       ) : (
         <>
+        <div className="content container-fluid">
           <Content Page_title="All Services" button_status={false}>
             <div className="d-flex">
               <div className="col-lg-6">
@@ -154,6 +155,7 @@ console.log('AllServices',AllServices)
               </>
             )}
           </Content>
+          </div>
         </>
       )}
     </>
