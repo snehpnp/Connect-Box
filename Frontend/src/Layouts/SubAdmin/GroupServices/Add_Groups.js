@@ -27,6 +27,7 @@ const AddStrategy = () => {
         data: [],
     });
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+    const prifix_key = JSON.parse(localStorage.getItem("user_details")).prifix_key;
 
 
 
@@ -238,9 +239,7 @@ const AddStrategy = () => {
 
             let checkValid = true
             selectedServices && selectedServices.map((item) => {
-                console.log("cppppppppppp 1:", (item.group_qty) % (item.lotsize))
-                console.log("cppppppppppp 2:",  (item.lotsize))
-                console.log("cppppppppppp 3:", (item.group_qty) )
+                
 
                 if (item.lotsize !== 1) {
                     if ((item.group_qty) % (item.lotsize) !== 0) {
@@ -306,6 +305,7 @@ const AddStrategy = () => {
 
  
 
+    console.log("groupName :", groupName)
     
 
 
@@ -382,7 +382,11 @@ const AddStrategy = () => {
                                                 style={{ width: '100%', borderRadius: '5px', padding: '5px' }}
                                                 placeholder='Enter Group Name'
                                                 onChange={(e) => setGroupName(e.target.value)}
-                                                value={groupName}
+                                                value={groupName.startsWith(prifix_key + '_') ? groupName :
+                                                    groupName.startsWith(prifix_key) ? 
+                                                    prifix_key + '_' + groupName.substr(3) :
+                                                    prifix_key + '_' + groupName
+                                            }
                                             />
 
                                             {groupName ? '' :

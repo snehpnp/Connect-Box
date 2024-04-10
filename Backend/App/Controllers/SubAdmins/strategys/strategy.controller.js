@@ -330,13 +330,11 @@ class strategy {
       const getAllstrategy = await strategy_model
         .find({})
         .sort({ createdAt: -1 });
-
       // IF DATA NOT EXIST
       if (getAllstrategy.length == 0) {
         res.send({ status: false, msg: "Empty data", data: getAllstrategy });
         return;
       }
-
       // DATA GET SUCCESSFULLY
       res.send({
         status: true,
@@ -347,21 +345,23 @@ class strategy {
       console.log("Error Get All Strategy Error-", error);
     }
   }
-
   // GET ALL STRATEGYS
   async GetAllSubadminStrategy(req, res) {
     try {
       const { page, limit, id } = req.body;
+
       const skip = (page - 1) * limit;
 
       if (!id) {
         res.send({ status: false, msg: "Enter Please Id", data: [] });
       }
 
-      // var getAllTheme = await strategy_model.find()
       const getAllstrategy = await strategy_model
-        .find({ maker_id: id })
-        .sort({ createdAt: -1 });
+      .find({ maker_id: id })
+      .sort({ createdAt: -1 })
+      .select('_id strategy_name');
+  
+       console.log("getAllstrategy :", getAllstrategy)
 
       // IF DATA NOT EXIST
       if (getAllstrategy.length == 0) {
@@ -447,7 +447,8 @@ class strategy {
           .status(500)
           .send({ status: false, msg: "Error deleting strategy", data: [] });
       }
-    } catch (error) {
+    } 
+    catch (error) {
       console.log("Error Delete Strategy Error:", error);
       return res
         .status(500)

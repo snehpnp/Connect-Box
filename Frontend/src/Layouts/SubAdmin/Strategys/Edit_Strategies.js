@@ -15,7 +15,7 @@ function Edit_Strategies() {
   const [makerId, setMakerId] = useState("");
   const [allStrategy, setAllStrategy] = useState(null);
 
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,7 +44,7 @@ function Edit_Strategies() {
     {
       name: "strategy_name",
       label: "Strategy Name",
-      type: "text",
+      type: "text1",
       label_size: 6,
       col_size: 6,
       disable: false,
@@ -77,17 +77,17 @@ function Edit_Strategies() {
     {
       name: "strategy_indicator",
       label: "Indicator",
-      type: "file",
+      type: "file1",
       label_size: 12,
       col_size: 6,
       onChange: (event) =>
-      formik.setFieldValue("strategy_indicator", event.currentTarget.files[0]),
+        formik.setFieldValue("strategy_indicator", event.currentTarget.files[0]),
       disable: false,
     },
     {
       name: "strategy_tester",
       label: "Strategy Tester",
-      type: "file",
+      type: "file1",
       label_size: 12,
       col_size: 6,
       onChange: (event) =>
@@ -97,7 +97,7 @@ function Edit_Strategies() {
     {
       name: "strategy_image",
       label: "Strategy Logo",
-      type: "file",
+      type: "file1",
       label_size: 12,
       col_size: 6,
       onChange: (event) =>
@@ -163,6 +163,35 @@ function Edit_Strategies() {
     },
     validate: (values) => {
       let errors = {};
+      if (!values.strategy_name) {
+        errors.strategy_name = "strategy name is required";
+      }
+      if (!values.strategy_demo_days) {
+        errors.strategy_demo_days = "strategy demo day is required";
+      }
+      if (!values.strategy_category) {
+        errors.strategy_category = "strategy category is required";
+      }
+      if (!values.strategy_segment) {
+        errors.strategy_segment = "strategy segment is required";
+      }
+
+      if (!values.strategy_description) {
+        errors.strategy_description = "strategy description is required";
+      }
+      if (!values.strategy_amount_month) {
+        errors.strategy_amount_month = "amount is required";
+      }
+      if (!values.strategy_amount_quarterly) {
+        errors.strategy_amount_quarterly = "amount is required";
+      }
+      if (!values.strategy_amount_half_early) {
+        errors.strategy_amount_half_early = "amount is required";
+      }
+
+      if (!values.strategy_amount_early) {
+        errors.strategy_amount_early = "amount is required";
+      }
       return errors;
     },
     onSubmit: async (values) => {

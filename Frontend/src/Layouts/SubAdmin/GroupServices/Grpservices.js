@@ -393,21 +393,6 @@ function GroupStrategy() {
 
                                         </div>
                                     </li>
-
-                                    <li>
-                                        <a
-                                            className="btn btn-filters w-auto popup-toggle"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="Filter"
-                                            href="/"
-                                        >
-                                            <span className="me-2">
-                                                <img src="assets/img/icons/filter-icon.svg" alt="filter" />
-                                            </span>
-                                            Filter
-                                        </a>
-                                    </li>
                                     <li>
                                         <div
                                             className="dropdown dropdown-action"
@@ -432,7 +417,7 @@ function GroupStrategy() {
                                             to={'/subadmin/group_service/add'}
                                         >
                                             <i className="fa fa-plus-circle me-2" aria-hidden="true" />
-                                            Create Strategy
+                                            Add GroupService
                                         </Link>
                                     </li>
                                 </ul>
