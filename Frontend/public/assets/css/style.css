@@ -7353,7 +7353,7 @@ table .badge {
 
 [data-layout-mode=light] .sidebar {
     background-color: #fff;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2)
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 12px rgba(0, 0, 0, 0.04);
 }
 
 [data-layout-mode=light] .sidebar .sidebar-menu ul ul {
@@ -9633,7 +9633,7 @@ table .badge {
 
 [data-sidebar=light] body .sidebar {
     background-color: #fff;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2)
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 12px rgba(0, 0, 0, 0.04);
 }
 
 [data-sidebar=light] body .sidebar ul li span {
@@ -14197,7 +14197,8 @@ body[data-layout-mode=dark] .alertify .ajs-header {
 
 .card .card {
     position: relative;
-    padding: 20px
+    padding: 20px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px;
 }
 
 @media(max-width: 1199.98px) {
@@ -30487,10 +30488,24 @@ table th.no-sort::after {
 
 .packages {
     padding: 24px;
-    border: 1px solid #eff0f6;
+    border: 2px solid #eff0f6 !important;
     box-shadow: 0 2px 12px 0 rgba(20, 20, 43, .08);
     margin-bottom: 24px;
-    border-radius: 24px
+    border-radius: 24px;
+    transition: 0.3s linear;
+}
+
+[data-layout-mode=dark] .packages {
+    border: none !important;
+
+}
+
+[data-layout-mode=light] .packages.card:hover {
+
+    transition: 0.3s linear;
+    border: 3px solid #7638ff !important;
+}
+
 }
 
 .packages .recommend-text {
@@ -30625,7 +30640,7 @@ table th.no-sort::after {
 
 .packages h2 {
     margin: 24px 0;
-    font-size: 36px;
+    font-size: 25px;
     font-weight: 700;
     color: #7539ff
 }
@@ -32487,9 +32502,7 @@ td .invoice-detail i {
 }
 
 .css-t89xny-MuiDataGrid-columnHeaderTitle {
-
-
-    font-family: 'Inter';
+    font-family: inter, sans-serif !important;
     font-size: 16px;
     font-weight: 500;
 }
@@ -32511,13 +32524,13 @@ td .invoice-detail i {
 .MuiDataGrid-cell,
 .MuiDataGrid-selectedRowCount {
 
-    font-family: 'Inter' !important;
+    font-family: inter, sans-serif !important;
     font-size: 16px !important;
 }
 
 span.badge.bg-success-light {
     font-size: 14px;
-    font-family: 'Inter';
+    font-family: inter, sans-serif !important;
 }
 
 [data-layout-mode=dark] body .css-qvtrhg-MuiDataGrid-virtualScroller,
@@ -32556,7 +32569,7 @@ button.btn.btn-primary a {
     background-color: var(--bs-backdrop-bg);
 }
 
-.loader {
+/* .loader {
     font-weight: bold;
     font-family: sans-serif;
     font-size: 30px;
@@ -32575,7 +32588,7 @@ button.btn.btn-primary a {
     to {
         background-position: left
     }
-}
+} */
 
 
 
@@ -32640,7 +32653,6 @@ li.submenu {
     margin: 0 auto;
     border-radius: 8px;
     display: flex;
-
     -webkit-box-shadow: 0px 8px 24px 4px rgba(255, 173, 40, 1);
     -moz-box-shadow: 0px 8px 24px 4px rgba(255, 173, 40, 1);
     box-shadow: 0px 8px 24px 4px rgba(255, 173, 40, 1);
@@ -32672,9 +32684,509 @@ li.submenu {
     width: 35px;
     margin-right: 10px;
 }
-.up{
-   color:#6deb6d;
+
+.up {
+    color: #6deb6d;
 }
-.down{
-    color:red;
+
+.down {
+    color: red;
+}
+
+.loader-container {
+    height: 100vh;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+[data-layout-mode=light] .loader-container {
+    background: #f2f2f2;
+}
+
+[data-layout-mode=dark] .loader-container {
+    background: #212529;
+}
+
+.loader-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loader {
+    position: relative;
+    width: 75px;
+    height: 100px;
+
+}
+
+.loader__bar {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 10px;
+    height: 50%;
+    background: #7539ff;
+    transform-origin: center bottom;
+    box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.loader__bar:nth-child(1) {
+    left: 0px;
+    transform: scale(1, 0.2);
+    -webkit-animation: barUp1 4s infinite;
+    animation: barUp1 4s infinite;
+}
+
+.loader__bar:nth-child(2) {
+    left: 15px;
+    transform: scale(1, 0.4);
+    -webkit-animation: barUp2 4s infinite;
+    animation: barUp2 4s infinite;
+}
+
+.loader__bar:nth-child(3) {
+    left: 30px;
+    transform: scale(1, 0.6);
+    -webkit-animation: barUp3 4s infinite;
+    animation: barUp3 4s infinite;
+}
+
+.loader__bar:nth-child(4) {
+    left: 45px;
+    transform: scale(1, 0.8);
+    -webkit-animation: barUp4 4s infinite;
+    animation: barUp4 4s infinite;
+}
+
+.loader__bar:nth-child(5) {
+    left: 60px;
+    transform: scale(1, 1);
+    -webkit-animation: barUp5 4s infinite;
+    animation: barUp5 4s infinite;
+}
+
+.loader__ball {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 10px;
+    height: 10px;
+    background: #7539ff;
+    border-radius: 50%;
+    -webkit-animation: ball 4s infinite;
+    animation: ball 4s infinite;
+}
+
+@-webkit-keyframes ball {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    5% {
+        transform: translate(8px, -14px);
+    }
+
+    10% {
+        transform: translate(15px, -10px);
+    }
+
+    17% {
+        transform: translate(23px, -24px);
+    }
+
+    20% {
+        transform: translate(30px, -20px);
+    }
+
+    27% {
+        transform: translate(38px, -34px);
+    }
+
+    30% {
+        transform: translate(45px, -30px);
+    }
+
+    37% {
+        transform: translate(53px, -44px);
+    }
+
+    40% {
+        transform: translate(60px, -40px);
+    }
+
+    50% {
+        transform: translate(60px, 0);
+    }
+
+    57% {
+        transform: translate(53px, -14px);
+    }
+
+    60% {
+        transform: translate(45px, -10px);
+    }
+
+    67% {
+        transform: translate(37px, -24px);
+    }
+
+    70% {
+        transform: translate(30px, -20px);
+    }
+
+    77% {
+        transform: translate(22px, -34px);
+    }
+
+    80% {
+        transform: translate(15px, -30px);
+    }
+
+    87% {
+        transform: translate(7px, -44px);
+    }
+
+    90% {
+        transform: translate(0, -40px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes ball {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    5% {
+        transform: translate(8px, -14px);
+    }
+
+    10% {
+        transform: translate(15px, -10px);
+    }
+
+    17% {
+        transform: translate(23px, -24px);
+    }
+
+    20% {
+        transform: translate(30px, -20px);
+    }
+
+    27% {
+        transform: translate(38px, -34px);
+    }
+
+    30% {
+        transform: translate(45px, -30px);
+    }
+
+    37% {
+        transform: translate(53px, -44px);
+    }
+
+    40% {
+        transform: translate(60px, -40px);
+    }
+
+    50% {
+        transform: translate(60px, 0);
+    }
+
+    57% {
+        transform: translate(53px, -14px);
+    }
+
+    60% {
+        transform: translate(45px, -10px);
+    }
+
+    67% {
+        transform: translate(37px, -24px);
+    }
+
+    70% {
+        transform: translate(30px, -20px);
+    }
+
+    77% {
+        transform: translate(22px, -34px);
+    }
+
+    80% {
+        transform: translate(15px, -30px);
+    }
+
+    87% {
+        transform: translate(7px, -44px);
+    }
+
+    90% {
+        transform: translate(0, -40px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@-webkit-keyframes barUp1 {
+    0% {
+        transform: scale(1, 0.2);
+    }
+
+    40% {
+        transform: scale(1, 0.2);
+    }
+
+    50% {
+        transform: scale(1, 1);
+    }
+
+    90% {
+        transform: scale(1, 1);
+    }
+
+    100% {
+        transform: scale(1, 0.2);
+    }
+}
+
+@keyframes barUp1 {
+    0% {
+        transform: scale(1, 0.2);
+    }
+
+    40% {
+        transform: scale(1, 0.2);
+    }
+
+    50% {
+        transform: scale(1, 1);
+    }
+
+    90% {
+        transform: scale(1, 1);
+    }
+
+    100% {
+        transform: scale(1, 0.2);
+    }
+}
+
+@-webkit-keyframes barUp2 {
+    0% {
+        transform: scale(1, 0.4);
+    }
+
+    40% {
+        transform: scale(1, 0.4);
+    }
+
+    50% {
+        transform: scale(1, 0.8);
+    }
+
+    90% {
+        transform: scale(1, 0.8);
+    }
+
+    100% {
+        transform: scale(1, 0.4);
+    }
+}
+
+@keyframes barUp2 {
+    0% {
+        transform: scale(1, 0.4);
+    }
+
+    40% {
+        transform: scale(1, 0.4);
+    }
+
+    50% {
+        transform: scale(1, 0.8);
+    }
+
+    90% {
+        transform: scale(1, 0.8);
+    }
+
+    100% {
+        transform: scale(1, 0.4);
+    }
+}
+
+@-webkit-keyframes barUp3 {
+    0% {
+        transform: scale(1, 0.6);
+    }
+
+    100% {
+        transform: scale(1, 0.6);
+    }
+}
+
+@keyframes barUp3 {
+    0% {
+        transform: scale(1, 0.6);
+    }
+
+    100% {
+        transform: scale(1, 0.6);
+    }
+}
+
+@-webkit-keyframes barUp4 {
+    0% {
+        transform: scale(1, 0.8);
+    }
+
+    40% {
+        transform: scale(1, 0.8);
+    }
+
+    50% {
+        transform: scale(1, 0.4);
+    }
+
+    90% {
+        transform: scale(1, 0.4);
+    }
+
+    100% {
+        transform: scale(1, 0.8);
+    }
+}
+
+@keyframes barUp4 {
+    0% {
+        transform: scale(1, 0.8);
+    }
+
+    40% {
+        transform: scale(1, 0.8);
+    }
+
+    50% {
+        transform: scale(1, 0.4);
+    }
+
+    90% {
+        transform: scale(1, 0.4);
+    }
+
+    100% {
+        transform: scale(1, 0.8);
+    }
+}
+
+@-webkit-keyframes barUp5 {
+    0% {
+        transform: scale(1, 1);
+    }
+
+    40% {
+        transform: scale(1, 1);
+    }
+
+    50% {
+        transform: scale(1, 0.2);
+    }
+
+    90% {
+        transform: scale(1, 0.2);
+    }
+
+    100% {
+        transform: scale(1, 1);
+    }
+}
+
+@keyframes barUp5 {
+    0% {
+        transform: scale(1, 1);
+    }
+
+    40% {
+        transform: scale(1, 1);
+    }
+
+    50% {
+        transform: scale(1, 0.2);
+    }
+
+    90% {
+        transform: scale(1, 0.2);
+    }
+
+    100% {
+        transform: scale(1, 1);
+    }
+}
+.tableContainer::-webkit-scrollbar {
+    width: 12px;/ width of the scrollbar /
+}
+
+.tableContainer::-webkit-scrollbar-track {
+    background: #f1f1f1;/ color of the track /
+}
+
+.tableContainer::-webkit-scrollbar-thumb {
+    background-color: #888;/ color of the scrollbar / border-radius: 6px;/ roundness of the scrollbar thumb /
+}
+
+.tableContainer::-webkit-scrollbar-thumb:hover {
+    background-color: #555;/ color of the scrollbar on hover /
+}
+
+.table-container {
+    max-height: 400px;
+    /* Adjust the max height of the container as needed */
+    overflow-y: auto;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-container thead {
+
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+.MuiDataGrid-virtualScroller::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #7539FF;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #7539FF;
 }

@@ -15,6 +15,7 @@ function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate()
 
+    const [showPassword, setShowPassword] = useState(false);
 
     const [typeOtp, setTypeOtp] = useState("");
 
@@ -25,6 +26,9 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const togglePasswordVisibility = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+      };
 
     const verifyOTP = () => {
 
@@ -167,10 +171,11 @@ function Login() {
                         <div className="container">
                             <img
                                 className="img-fluid logo-dark mb-2 logo-color"
-                                src="assets/img/logo2.png"
+                                src="https://www.pnpuniverse.com/images/logo/pnp.png"
                                 alt="Logo"
+                                style={{ width: "25rem" }}
                             />
-                        
+
 
                             <div className="loginbox">
                                 <div className="login-right">
@@ -184,13 +189,26 @@ function Login() {
                                                 <input type="email" id="email" className="form-control" value={email} onChange={handleEmailChange} />
                                             </div>
 
+
                                             <div className="input-block mb-3">
-                                                <label className="form-control-label d-flex justify-content-start" htmlFor="password">Password</label>
+                                                <label className="form-control-label d-flex justify-content-start" htmlFor="password">
+                                                    Password
+                                                </label>
                                                 <div className="pass-group">
-                                                    <input type="password" id="password" className="form-control pass-input" value={password} onChange={handlePasswordChange} />
-                                                    <span className="fas fa-eye toggle-password" />
+                                                    <input
+                                                        type={showPassword ? "text" : "password"}
+                                                        id="password"
+                                                        className="form-control pass-input"
+                                                        value={password}
+                                                        onChange={handlePasswordChange}
+                                                    />
+                                                    <span
+                                                        className={showPassword ? "fas fa-eye-slash toggle-password" : "fas fa-eye toggle-password"}
+                                                        onClick={togglePasswordVisibility}
+                                                    />
                                                 </div>
                                             </div>
+                                       
 
                                             <button className="btn btn-lg btn-primary w-100" onClick={handleSubmit}>
                                                 Login

@@ -154,7 +154,6 @@ class Users {
 
 
 
-
       } catch (error) {
         console.error('Error fetching strategies:', error);
         throw error;
@@ -167,8 +166,6 @@ class Users {
           data: [],
         });
       }
-
-
 
 
 
@@ -280,8 +277,10 @@ class Users {
                 const matchedStrategy = Strategies.find(strat => strat.id === data._id.toString());
                 const User_strategy_client = new strategy_client({
                   strategy_id: data.id,
-                  plan_id: matchedStrategy.plan_id,
+                  plan_id: 0,
                   user_id: User_id,
+                  admin_id: SubadminCheck[0]._id,
+
                   Start_Date: StartDate1,
                   End_Date: EndDate1
                 });
@@ -321,8 +320,11 @@ class Users {
 
                 // STRATEGY ADD
                 const User_strategy_client = new strategy_client({
+                
                   strategy_id: data.id,
+                  plan_id: 0,
                   user_id: User_id,
+                  admin_id: SubadminCheck[0]._id,
                   Start_Date: StartDate1,
                   End_Date: EndDate1
                 });
@@ -388,8 +390,9 @@ class Users {
                 // STRATEGY ADD
                 const User_strategy_client = new strategy_client({
                   strategy_id: data.id,
-                  user_id: User_id,
                   plan_id: matchedStrategy.plan_id,
+                  user_id: User_id,
+                  admin_id: SubadminCheck[0]._id,
                   Start_Date: StartDate1,
                   End_Date: EndDate1
 
@@ -1300,6 +1303,8 @@ class Users {
             stg_charge: 1,
             Admin_charge: 1,
             plan_id:1,
+            Start_Date:1,
+            End_Date:1,
             createdAt: 1,
           }
         }
@@ -1338,6 +1343,105 @@ class Users {
     }
   }
 
+
+
+  async GetAllUserStrategyhistory(req, res) {
+    try {
+      const { page, limit, user_ID } = req.body; //LIMIT & PAGE
+      // const skip = (page - 1) * limit;
+
+      if (!user_ID || user_ID == '' || user_ID == null) {
+        return res.send({
+          status: false,
+          msg: "Please Enter Sub Admin Id",
+          data: [],
+        });
+      }
+
+
+
+      // GET ALL CLIENTS
+      var AdminMatch;
+      AdminMatch = { admin_id: new ObjectId(user_ID) };
+
+
+
+      const getAllClients = await strategy_client.aggregate([
+        {
+          $match: AdminMatch
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'userData'
+          }
+        },
+        {
+          $lookup: {
+            from: 'strategies',
+            localField: 'strategy_id',
+            foreignField: '_id',
+            as: 'strategyData'
+          }
+        },
+        {
+          $addFields: {
+            user_id: { $arrayElemAt: ['$userData.UserName', 0] },
+            strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] }
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            user_id: 1,
+            strategy_id: 1,
+            ActiveStatus: 1,
+            plan_id:1,
+            Start_Date:1,
+            End_Date:1,
+            createdAt: 1,
+          }
+        }
+      ]);
+      
+
+
+
+
+
+      // IF DATA NOT EXIST
+      if (getAllClients.length == 0) {
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: [],
+          // totalCount: totalCount,
+        });
+      }
+
+      // DATA GET SUCCESSFULLY
+      return res.send({
+        status: true,
+        msg: "Get All Strategy Charges",
+        data: getAllClients,
+
+      });
+    } catch (error) {
+      console.log("Error loginClients Error-", error);
+      return res.send({
+        status: false,
+        msg: "Empty data",
+        data: [],
+        // totalCount: totalCount,
+      });
+    }
+  }
+
+
+
+// DELETE USER
   async DeleteUser(req,res){
    try{
     const { id } = req.body

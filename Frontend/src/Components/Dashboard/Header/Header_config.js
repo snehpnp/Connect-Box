@@ -195,6 +195,13 @@ export const subamdin_header = [
     },
     {
         id: 7,
+        name: 'Strategy History',
+        route: "/subadmin/strategys/history",
+        Icon: "fe fe-credit-card",
+        Data: []
+    },
+    {
+        id: 17,
         name: 'Strategy Transaction',
         route: "/subadmin/strategys/transaction",
         Icon: "fe fe-credit-card",

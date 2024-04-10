@@ -28,6 +28,7 @@ import Edit_User from '../Layouts/SubAdmin/Users/EditUser.js'
 
 import Wallets from '../Layouts/Comman/Wallet/Wallets';
 
+import Strategyhistory from '../Layouts/SubAdmin/StrategyHistory/Strategy_history.js'
 
 // strategydesc
 const SubAdmin_Routing = () => {
@@ -58,6 +59,8 @@ const SubAdmin_Routing = () => {
           <Route exact path="/user/edit/:id" element={<Edit_User />} />
           
           <Route exact path="/wallet" element={<Wallets />} />
+          <Route exact path="/strategys/history" element={<Strategyhistory />} />
+
 
 
         </Routes>
