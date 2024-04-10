@@ -29,7 +29,6 @@ const AddStrategy = () => {
 
 
 
-
     const [GroupQty, setGroupQty] = useState([]);
     const [selectAllFiltered, setSelectAllFiltered] = useState(false);
 
@@ -47,6 +46,8 @@ const AddStrategy = () => {
         data: [],
     })
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+    const prifix_key = JSON.parse(localStorage.getItem("user_details")).prifix_key;
+
 
 
 
@@ -254,14 +255,14 @@ const AddStrategy = () => {
 
             if (checkValid) {
                 await dispatch(Edit_Group_Service({
-                    groupdetails: { name: groupName, description: groupDescription, id:id },
+                    groupdetails: { name: groupName, description: groupDescription, id: id },
                     services_id: selectedServices,
                     maker_id: user_id
                 })).then((response) => {
 
 
 
-                    if (response.payload.status) {
+              if (response.payload.status) {
                         toast.success(response.payload.msg);
                         setTimeout(() => {
                             navigate("/subadmin/group-service")
@@ -320,14 +321,13 @@ const AddStrategy = () => {
                         loading: true,
                         data: response.data
                     })
-                    setGroupDescription(response.data && response.data.group_name[0].description)
+                setGroupDescription(response.data && response.data.group_name[0].description)
                     setGroupName(response.data && response.data.group_name[0].name)
                     setSelectedServices1(response.data && response.data.Service_name_get)
 
                     response.data && response.data.Service_name_get.map((item) => {
-                      
-                        selectedServices.push({
-                            service_id:item.ServiceResult._id,
+            selectedServices.push({
+                            service_id: item.ServiceResult._id,
                             // ServiceResult_id: item.ServiceResult._id,
                             lotsize: item.ServiceResult.lotsize,
                             name: item.ServiceResult.name,
@@ -335,7 +335,7 @@ const AddStrategy = () => {
                             segment: item.catagory.name,
                             catagory_segment: item.ServiceResult.segmen,
                             group_qty: item.group_qty
-                
+
                         })
                     })
                 }
@@ -358,7 +358,7 @@ const AddStrategy = () => {
 
 
 
-    
+
 
 
 
@@ -439,7 +439,11 @@ const AddStrategy = () => {
                                                 style={{ width: '100%', borderRadius: '5px', padding: '5px' }}
                                                 placeholder='Enter Group Name'
                                                 onChange={(e) => setGroupName(e.target.value)}
-                                                value={groupName}
+                                                value={groupName.startsWith(prifix_key + '_') ? groupName
+                                                    : groupName.startsWith(prifix_key) ?
+                                                        prifix_key + '_' + groupName.substr(3)
+                                                        : prifix_key + '_' + groupName
+                                                }
                                             />
 
                                             {groupName ? '' :

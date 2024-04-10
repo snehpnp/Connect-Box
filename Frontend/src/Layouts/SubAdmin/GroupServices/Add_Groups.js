@@ -21,12 +21,13 @@ const AddStrategy = () => {
     const [selectedValue, setSelectedValue] = useState('')
     const [groupName, setGroupName] = useState('')
     const [groupDescription, setGroupDescription] = useState('')
-    const [selectSegment, setSelectSegment]= useState('')
+    const [selectSegment, setSelectSegment] = useState('')
     const [GetAllSgments, setGetAllSgments] = useState({
         loading: true,
         data: [],
     });
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+    const prifix_key = JSON.parse(localStorage.getItem("user_details")).prifix_key;
 
 
 
@@ -42,7 +43,7 @@ const AddStrategy = () => {
     const [GroupQty, setGroupQty] = useState([]);
     const [selectAllFiltered, setSelectAllFiltered] = useState(false);
 
-     
+
 
 
 
@@ -238,7 +239,7 @@ const AddStrategy = () => {
 
             let checkValid = true
             selectedServices && selectedServices.map((item) => {
-           
+
 
                 if (item.lotsize !== 1) {
                     if ((item.group_qty) % (item.lotsize) !== 0) {
@@ -282,7 +283,7 @@ const AddStrategy = () => {
     ];
 
 
- 
+
 
     const handleChange = async (event) => {
         setSelectedValue(event.target.value);
@@ -302,9 +303,10 @@ const AddStrategy = () => {
 
 
 
- 
 
-    
+
+    console.log("groupName :", groupName)
+
 
 
 
@@ -368,7 +370,7 @@ const AddStrategy = () => {
                 <AddForm fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))} formik={formik} btn_name="Add Group" title='addstrategy'
                     additional_field={
                         <>
-                            
+
                             <div className='row '>
                                 <div className='col-lg-6 col-sm-6 mb-4'>
                                     <div className="form-group mx-2">
@@ -380,13 +382,17 @@ const AddStrategy = () => {
                                                 style={{ width: '100%', borderRadius: '5px', padding: '5px' }}
                                                 placeholder='Enter Group Name'
                                                 onChange={(e) => setGroupName(e.target.value)}
-                                                value={groupName}
+                                                value={groupName.startsWith(prifix_key + '_') ? groupName :
+                                                    groupName.startsWith(prifix_key) ?
+                                                        prifix_key + '_' + groupName.substr(3) :
+                                                        prifix_key + '_' + groupName
+                                                }
                                             />
 
                                             {groupName ? '' :
                                                 <div style={{ color: 'red' }}>{formik.errors.groupName}</div>
                                             }
-                                            
+
 
                                         </div>
                                     </div>
@@ -433,7 +439,7 @@ const AddStrategy = () => {
                                                 ))}
                                             </select>
                                             {selectedValue ? '' :
-                                              <div style={{ color: 'red' }}>{formik.errors.selectedValue}</div>
+                                                <div style={{ color: 'red' }}>{formik.errors.selectedValue}</div>
                                             }
                                         </div>
                                     </div>

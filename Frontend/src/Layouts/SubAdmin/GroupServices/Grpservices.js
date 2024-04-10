@@ -38,13 +38,12 @@ function GroupStrategy() {
 
     const [showModal, setShowModal] = useState(false)
     const [showModal1, setShowModal1] = useState(false)
-
     const [ForGetCSV, setForGetCSV] = useState([])
-
     const [inputSearch, SetInputSearch] = useState('');
-
-
     const [refresh, setrefresh] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [modalId, setModalId] = useState('')
+
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
@@ -75,25 +74,28 @@ function GroupStrategy() {
 
     const handleDelete = async (row) => {
         var req = {
-            id: row._id,
+            id: modalId,
         }
 
-        if (window.confirm("Do you want to delete this Group Service ?")) {
-            await dispatch(Delete_GroupServices(req)).unwrap()
-                .then((response) => {
-                    if (response.status) {
-                        toast.success(response.msg);
-                        setrefresh(!refresh)
-                    }
-                    else {
-                        toast.error(response.msg)
-                    }
-                })
-                .catch((error) => {
-                    console.log("Error",error)
-                })
 
-        }
+        await dispatch(Delete_GroupServices(req)).unwrap()
+            .then((response) => {
+                if (response.status) {
+                    toast.success(response.msg);
+                    setrefresh(!refresh)
+                    setModalId('');
+                    setShowDeleteModal(false)
+
+                }
+                else {
+                    toast.error(response.msg)
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+
+
 
 
     };
@@ -168,7 +170,10 @@ function GroupStrategy() {
                     <IconButton aria-label="edit" size="small" onClick={() => handleEdit(params.row)}>
                         <EditIcon />
                     </IconButton>
-                    <IconButton aria-label="delete" size="small" onClick={() => handleDelete(params.row)}>
+                    <IconButton
+                        aria-label="delete"
+                        size="small"
+                        onClick={() => { setShowDeleteModal(true); setModalId(params.row._id) }}>
                         <DeleteIcon />
                     </IconButton>
                 </div>
@@ -188,13 +193,13 @@ function GroupStrategy() {
 
     const GetAllServicesName = async (row) => {
         setShowModal(true);
-     
+
         await dispatch(GET_ALL_SERVICES_NAMES({
             data: row.row.result
 
         })).unwrap()
             .then((response) => {
-          
+
 
                 const formattedData = response.data.map((row, index) => ({
                     ...row,
@@ -240,10 +245,6 @@ function GroupStrategy() {
 
                     return searchTermMatch;
                 });
-
-
-
-
                 setAllGroupService({
                     loading: true,
                     data: inputSearch ? filteredData : formattedData,
@@ -393,21 +394,6 @@ function GroupStrategy() {
 
                                         </div>
                                     </li>
-
-                                    <li>
-                                        <a
-                                            className="btn btn-filters w-auto popup-toggle"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="Filter"
-                                            href="/"
-                                        >
-                                            <span className="me-2">
-                                                <img src="assets/img/icons/filter-icon.svg" alt="filter" />
-                                            </span>
-                                            Filter
-                                        </a>
-                                    </li>
                                     <li>
                                         <div
                                             className="dropdown dropdown-action"
@@ -432,7 +418,7 @@ function GroupStrategy() {
                                             to={'/subadmin/group_service/add'}
                                         >
                                             <i className="fa fa-plus-circle me-2" aria-hidden="true" />
-                                            Create Strategy
+                                            Add GroupService
                                         </Link>
                                     </li>
                                 </ul>
@@ -451,31 +437,58 @@ function GroupStrategy() {
                         />) : <Loader />
                 }
 
-                {
-                    showModal ?
-                        <>
-                            <Modal
-                                isOpen={showModal}
-                                backdrop="static"
-                                size="ms-6"
-                                title="Services"
-                                hideBtn={true}
-                                handleClose={() => setShowModal(false)
+                {showModal ?
+                    <>
+                        <Modal
+                            isOpen={showModal}
+                            backdrop="static"
+                            size="ms-6"
+                            title="Services"
+                            hideBtn={true}
+                            handleClose={() => setShowModal(false)
 
-                                }
-                            >
-                                <FullDataTable
-                                    styles={styles}
-                                    columns={column1}
-                                    rows={serviceName && serviceName.data}
+                            }
+                        >
+                            <FullDataTable
+                                styles={styles}
+                                columns={column1}
+                                rows={serviceName && serviceName.data}
 
 
-                                />
+                            />
 
-                            </Modal >
-                        </>
-                        : ""
-                }
+                        </Modal >
+                    </>
+                    : ""}
+
+                {showDeleteModal && (
+
+
+                    <div className="modal custom-modal modal-delete d-block" >
+                        <div className="modal-dialog modal-dialog-centered modal-md">
+                            <div className="modal-content">
+                                <div className="modal-body">
+                                    <div className="form-header">
+                                        <div className="delete-modal-icon">
+                                            <span>
+                                                <i className="fe fe-check-circle" />
+                                            </span>
+                                        </div>
+                                        <h3>Are You Sure?</h3>
+                                        <p>You want delete company</p>
+                                    </div>
+                                    <div className="modal-btn delete-action">
+                                        <div className="modal-footer justify-content-center p-0">
+                                            <button type="submit" onClick={() => handleDelete()} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
+                                            <button type="button" onClick={() => setShowDeleteModal(false)} className="btn btn-back cancel-btn">No, Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
 
 
 

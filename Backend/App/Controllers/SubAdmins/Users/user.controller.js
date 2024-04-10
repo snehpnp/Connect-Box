@@ -21,6 +21,7 @@ const count_licenses = db.count_licenses;
 const user_activity_logs = db.user_activity_logs;
 const strategy = db.strategy;
 const serviceGroupName = db.serviceGroupName;
+const Client_group_Service = db.group_services;
 
 
 
@@ -1100,8 +1101,6 @@ class Users {
     }
   }
 
-
-
   // GET ALL GetAllClients
   async GetAllUser(req, res) {
     try {
@@ -1212,9 +1211,7 @@ class Users {
     }
   }
 
-
-
-  async UpdateUserStatus(req, res) {
+ async UpdateUserStatus(req, res) {
     try {
       const { id, user_active_status } = req.body;
       // UPDATE ACTTIVE STATUS CLIENT
@@ -1245,8 +1242,6 @@ class Users {
       console.log("Error trading status Error-", error);
     }
   }
-
-
 
 
   // GET ALL GetAllClients
@@ -1341,6 +1336,57 @@ class Users {
         // totalCount: totalCount,
       });
     }
+  }
+
+  async DeleteUser(req,res){
+   try{
+    const { id } = req.body
+    console.log("id", id)
+
+     // CHECK IF USER EXIT IN USER MODAL
+     const user_Model_ckeck = await User_model.findOne({ _id: id , Role: "USER"});
+     if (!user_Model_ckeck) {
+       return res.send({
+         status: false,
+         msg: "User does not exist",
+         data: [],
+       });
+     }
+
+      // CHECK IF USER EXIT IN CLIENT SERVICE
+  
+        // Delete the strategy
+      
+        const deleteResult = await User_model.deleteOne({ _id: id });
+        const deleteResult1 = await client_services.deleteOne({ user_id: id });
+        const deleteResult2 = await Client_group_Service.deleteOne({ user_id: id });
+        const deleteResult3 = await strategy_client.deleteOne({ user_id: id });
+        const deleteResult4 = await strategy_transaction.deleteOne({ user_id: id });
+        const deleteResult5 = await count_licenses.deleteOne({ user_id: id });
+     
+
+        if (deleteResult.deletedCount === 1) {
+          return res
+            .status(200)
+            .send({
+              status: true,
+              msg: "Strategy deleted successfully!",
+              data: [],
+            });
+        } else {
+          return res
+            .status(500)
+            .send({ status: false, msg: "Error deleting strategy", data: [] });
+        }
+   }
+   catch(error){
+    console.log("Delete User Error , ", error);
+    return res.send({
+      status: false,
+      msg:"Id id Not Found",
+      data: []
+    })
+   }
   }
 
 
