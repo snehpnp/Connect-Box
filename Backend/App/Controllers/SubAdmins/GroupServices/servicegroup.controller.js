@@ -47,7 +47,6 @@ class GroupService {
           return res.send({ status: false, msg: 'Please Enter Group Name starting 3 letter Capital', data: [] });
 
         }
-        console.log("grpService.charAt(3)", grpService.charAt(3))
 
         // Check if there is an underscore (_) at the fourth index
         if (grpService.charAt(3) != '_') {
@@ -624,14 +623,12 @@ class GroupService {
     try {
       const { id } = req.body; // Assuming your ID is passed as 'id' in the request body
 
-      console.log("Received ID:", id);
 
       // Convert the string ID to an ObjectId
       const objectId = new ObjectId(id);
-      console.log("Received ID:", objectId);
 
       const groupServices_user = await group_services.find({ groupService_id: objectId })
-      console.log("Received ID:", groupServices_user);
+
 
 
       if (groupServices_user.length != 0) {
@@ -642,7 +639,6 @@ class GroupService {
       const result1 = await serviceGroup_services_id.deleteMany({ Servicegroup_id: objectId });
 
 
-      // console.log("result", result.acknowledged);
 
 
       // Handle the results here, e.g., send them in the response
@@ -673,7 +669,7 @@ class GroupService {
       data.forEach(async (info) => {
 
         const Service_name_get = await services.findOne({ _id: info.Service_id });
-        console.log(" Service_name_get :", Service_name_get)
+
         if (Service_name_get) {
           ServicesArr.push({ data: Service_name_get, data1: info })
 
@@ -973,7 +969,6 @@ class GroupService {
 
 
     } catch (error) {
-      console.log("GET SERVICES NAME -", error);
       return res.send({ status: false, msg: 'Internal Server Error' });
     }
 

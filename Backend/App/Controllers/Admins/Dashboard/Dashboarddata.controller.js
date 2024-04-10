@@ -130,7 +130,6 @@ class Dashboard {
         let aggregationPipeline = [];
 
         if (SUBADMINS) {
-          console.log("SUBADMINS", SUBADMINS);
 
           aggregationPipeline.push({
               $match: {

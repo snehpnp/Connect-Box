@@ -218,7 +218,7 @@ const Overview = () => {
   };
 
   const dashData1 = async () => {
-    console.log("done ");
+
 
     var data = {
       SUBADMINS: selectedSubadminid,

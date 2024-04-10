@@ -250,7 +250,7 @@ function Strategy() {
                 strategy_amount_early: values.strategy_amount_early,
                 maker_id: user_id
             };
-            console.log("req :", data)
+   
 
             await dispatch(AddStrategy(data))
                 .unwrap()

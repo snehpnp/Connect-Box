@@ -175,7 +175,6 @@ class SubAdminCompany {
         data: companyInfo,
       });
 
-      console.log("companyInfo",companyInfo)
     } catch (error) {
       console.error("Error fetching company information:", error);
       return res

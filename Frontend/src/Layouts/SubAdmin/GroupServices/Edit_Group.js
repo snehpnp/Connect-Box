@@ -28,7 +28,6 @@ const AddStrategy = () => {
     const [selectedServices1, setSelectedServices1] = useState([]);
 
 
-    console.log("groupName :", groupName)
 
 
     const [GroupQty, setGroupQty] = useState([]);
@@ -262,7 +261,6 @@ const AddStrategy = () => {
 
 
 
-                    console.log("response.payload.statu :", response.payload)
                     if (response.payload.status) {
                         toast.success(response.payload.msg);
                         setTimeout(() => {
@@ -322,13 +320,12 @@ const AddStrategy = () => {
                         loading: true,
                         data: response.data
                     })
-                    console.log("res :", response)
                     setGroupDescription(response.data && response.data.group_name[0].description)
                     setGroupName(response.data && response.data.group_name[0].name)
                     setSelectedServices1(response.data && response.data.Service_name_get)
 
                     response.data && response.data.Service_name_get.map((item) => {
-                        console.log("cp", item.ServiceResult._id)
+                      
                         selectedServices.push({
                             service_id:item.ServiceResult._id,
                             // ServiceResult_id: item.ServiceResult._id,

@@ -66,7 +66,6 @@ function System() {
   };
 
   const handleUpdate = async (e) => {
-    console.log("formData", formData);
     e.preventDefault();
     if (formData) {
       var data = {
@@ -97,7 +96,6 @@ function System() {
     try {
       const response = await dispatch(infocompany({ id: userId })).unwrap();
       if (response.status) {
-        console.log("System.", response);
         setCompanyData(response.data);
       } else {
         toast.error(response.msg);

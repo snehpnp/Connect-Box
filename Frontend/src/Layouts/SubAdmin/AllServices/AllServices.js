@@ -103,7 +103,6 @@ const ServicesList = () => {
   }, [first]);
 
 
-console.log('AllServices',AllServices)
 
   return (
     <>

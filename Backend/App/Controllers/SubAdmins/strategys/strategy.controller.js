@@ -509,7 +509,6 @@ class strategy {
 
   // Get Add Remove Strategy
   async GetAddRemoveStrategy(req, res) {
-    //console.log("req",req.body)
     try {
       const { _id } = req.body;
       // GET LOGIN CLIENTS

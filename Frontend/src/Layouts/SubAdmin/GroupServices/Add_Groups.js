@@ -238,9 +238,7 @@ const AddStrategy = () => {
 
             let checkValid = true
             selectedServices && selectedServices.map((item) => {
-                console.log("cppppppppppp 1:", (item.group_qty) % (item.lotsize))
-                console.log("cppppppppppp 2:",  (item.lotsize))
-                console.log("cppppppppppp 3:", (item.group_qty) )
+           
 
                 if (item.lotsize !== 1) {
                     if ((item.group_qty) % (item.lotsize) !== 0) {

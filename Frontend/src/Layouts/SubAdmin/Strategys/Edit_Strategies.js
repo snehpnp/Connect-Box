@@ -21,7 +21,7 @@ function Edit_Strategies() {
       try {
         const response = await dispatch(GetSubStrategys_ById({ id }));
         if (response.payload && response.payload.data) {
-          console.log("response", response.payload.data);
+     
           setAllStrategy(response.payload.data);
         }
       } catch (error) {

@@ -281,7 +281,7 @@ const AddClient = () => {
 
       })
       .catch((error) => {
-        console.log("User data find Error", error);
+        console.log("Error User data find Error", error);
       })
   }
 
@@ -410,7 +410,7 @@ const AddClient = () => {
         }
       })
       .catch((error) => {
-        console.log("Stategy finding Error", error)
+        console.log("Error Stategy finding Error", error)
       })
   }
   useState(() => {
@@ -431,7 +431,7 @@ const AddClient = () => {
         }
       })
       .catch((error) => {
-        console.log("Broker find Error :", error)
+        console.log("Error Broker find Error :", error)
       })
 
   }

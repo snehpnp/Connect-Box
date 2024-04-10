@@ -128,7 +128,7 @@ function Payment() {
           ...row,
           id: index + 1,
         }));
-        console.log("formattedData",formattedData)
+        
         setCompanyData({
           loading: true,
           data: formattedData,
