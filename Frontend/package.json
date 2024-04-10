@@ -6,7 +6,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@fontsource/roboto": "^5.0.12",
-    "@mui/icons-material": "^5.15.14",
+    "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.14",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@mui/x-data-grid": "^6.19.6",

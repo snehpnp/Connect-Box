@@ -219,12 +219,9 @@ class Admin {
     }
   }
 
-
-
   async GetAll_Broker_details(req, res) {
     try {
         // THEME LIST DATA
-        console.log("RUNNNN")
         const getAllpanel = await ApiCreateInfo
             .find({}).select("title  broker_id _id ")
 
@@ -246,6 +243,7 @@ class Admin {
         console.log("Error Get all Info error-", error);
     }
 }
+
 
 
 

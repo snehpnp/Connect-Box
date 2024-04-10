@@ -20,7 +20,6 @@ function System() {
   const userDetails = JSON.parse(userDetailsString);
   const userId = userDetails ? userDetails.user_id : null;
 
-  console.log("getCompanyData from system", getCompanyData);
 
   const OpenModal = (value) => {
     setModal(value);
@@ -33,21 +32,29 @@ function System() {
   });
 
   const handleImageChange = (event, imageName) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setSelectedImages({
-          ...selectedImages,
-          [imageName]: reader.result,
-        });
-        setFormData({
-          ...formData,
-          [imageName]: reader.result,
-        });
-      };
-      reader.readAsDataURL(file);
+    if (event.target.files[0].size > 420000) {
+      alert("Please  Select file less then 420KB");
+      event.target.value = "";
+      return;
+    } else { 
+
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          setSelectedImages({
+            ...selectedImages,
+            [imageName]: reader.result,
+          });
+          setFormData({
+            ...formData,
+            [imageName]: reader.result,
+          });
+        };
+        reader.readAsDataURL(file);
+      }
     }
+   
   };
 
   const handleInputChange = (e) => {
@@ -59,7 +66,6 @@ function System() {
   };
 
   const handleUpdate = async (e) => {
-    console.log("formData", formData);
     e.preventDefault();
     if (formData) {
       var data = {
@@ -90,7 +96,6 @@ function System() {
     try {
       const response = await dispatch(infocompany({ id: userId })).unwrap();
       if (response.status) {
-        console.log("System.", response);
         setCompanyData(response.data);
       } else {
         toast.error(response.msg);
@@ -177,14 +182,14 @@ function System() {
                       <i className="fa-solid fa-landmark pe-2"></i> Company
                       Information
                     </h5>
-                    <div className="pay-btn text-end w-auto">
+                    {/* <div className="pay-btn text-end w-auto">
                       <button
                         className="btn btn-primary"
                         onClick={() => OpenModal(1)}
                       >
                         Edit Customer Information
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
@@ -195,16 +200,14 @@ function System() {
                             <span>{getCompanyData[0]?.panel_name}</span>
                           </p>
                           <p>
-                            Panel Key{" "}
-                            <span>{getCompanyData[0]?.panel_key}</span>
-                          </p>
-                          <p>
                             Company Short Name{" "}
-                            <span>{getCompanyData[0]?.panel_short_name}</span>
+                            <span>{getCompanyData[0]?.prifix_key}</span>
                           </p>
                           <p>
-                            Version <span>{getCompanyData[0]?.version}</span>
+                            Panel Key{" "}
+                            <span>{getCompanyData[0]?.client_key}</span>
                           </p>
+
                         </>
                       ) : (
                         <p>Data not found</p>
@@ -289,7 +292,7 @@ function System() {
                     <div className="invoice-total-inner">
                       {getCompanyData && getCompanyData[0] ? (
                         <>
-                          <p>
+                          {/* <p>
                             favicon{" "}
                             {getCompanyData[0]?.favicon ? (
                               <img
@@ -300,7 +303,7 @@ function System() {
                             ) : (
                               <span>Data not found</span>
                             )}
-                          </p>
+                          </p> */}
                           <p>
                             Logo{" "}
                             {getCompanyData[0]?.logo ? (
@@ -313,7 +316,7 @@ function System() {
                               <span>Data not found</span>
                             )}
                           </p>
-                          <p>
+                          {/* <p>
                             Login Image{" "}
                             {getCompanyData[0]?.loginimage ? (
                               <img
@@ -324,7 +327,7 @@ function System() {
                             ) : (
                               <span>Data not found</span>
                             )}
-                          </p>
+                          </p> */}
                         </>
                       ) : (
                         <p>Data not found</p>
@@ -561,7 +564,7 @@ function System() {
                   <form onSubmit={handleUpdate}>
                     <div className="modal-body">
                       <div className="row">
-                        <div className="col-lg-6 col-md-12">
+                        {/* <div className="col-lg-6 col-md-12">
                           <label>favicon</label>
                           <input
                             type="file"
@@ -581,7 +584,7 @@ function System() {
                               />
                             </div>
                           )}
-                        </div>
+                        </div> */}
 
                         <div className="col-lg-6 col-md-12">
                           <label>logo</label>
@@ -605,7 +608,7 @@ function System() {
                           )}
                         </div>
 
-                        <div className="col-lg-6 col-md-12">
+                        {/* <div className="col-lg-6 col-md-12">
                           <label>Login Image</label>
                           <input
                             type="file"
@@ -625,7 +628,7 @@ function System() {
                               />
                             </div>
                           )}
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <div className="modal-footer">

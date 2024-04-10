@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Loader from '../../../Utils/Loader';
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import { useDispatch } from "react-redux";
@@ -26,7 +25,6 @@ const Profile = () => {
             await dispatch(ProfileInfo(data))
                 .unwrap()
                 .then(async (response) => {
-                    console.log("response", response)
 
                     if (response.status) {
                         setProfileData(response.data)
@@ -53,7 +51,6 @@ const Profile = () => {
         fetchData();
     }, []);
 
-    console.log("loading", profileData)
     return (
         <div>
             {loading ? (

@@ -7,13 +7,52 @@ import {
   updateBalance,
   active_Status,
   admin_dashData,
+  admin_dashData1,
+  SubadminsName,
+  strategy_All
 } from "../../../Services/Admin/Subadmins.service";
 
+export const allStrategy_subAd = createAsyncThunk(
+  "strategy_for_add_client/getall",
+  async (data) => {
+    try {
+      const res = await strategy_All(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
 export const Dashboard_admin = createAsyncThunk(
-  "subadmin/add",
+  "admin/dashboard",
   async (data) => {
     try {
       const res = await admin_dashData(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
+export const Dashboard_admin1 = createAsyncThunk(
+  "admin/dashboard",
+  async (data) => {
+    try {
+      const res = await admin_dashData1(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
+export const SubadminsNamesData = createAsyncThunk(
+  "subadmin/name/getalls",
+  async (data) => {
+    try {
+      const res = await SubadminsName(data);
       return res;
     } catch (err) {
       throw err;
@@ -88,6 +127,8 @@ const SubAdminSlice = createSlice({
     isError: false,
     subadminsInfo: null,
     Edit_Subadmin: null,
+    NameSubadmin: null,
+
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -168,6 +209,39 @@ const SubAdminSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(Dashboard_admin.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(Dashboard_admin1.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(Dashboard_admin1.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(Dashboard_admin1.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(SubadminsNamesData.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(SubadminsNamesData.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(SubadminsNamesData.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(allStrategy_subAd.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(allStrategy_subAd.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(allStrategy_subAd.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });

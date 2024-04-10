@@ -16,13 +16,15 @@ const StockOutModal = ({ rowData, onClose }) => {
   const formik = useFormik({
     initialValues: {
       profile_img: "",
+      panel_name: "",
+
       email: "",
       cc_mail: "",
       bcc_mail: "",
       razorpay_key: "",
       smtphost: "",
       smtpport: "",
-      smtp_password:""
+      smtp_password: ""
 
     },
     validate: (values) => {
@@ -61,6 +63,8 @@ const StockOutModal = ({ rowData, onClose }) => {
         id: rowData._id,
         data: {
           email: values.email || rowData.email,
+          panel_name: values.panel_name || rowData.panel_name,
+
           smtp_password: values.smtp_password || rowData.smtp_password,
           cc_mail: values.cc_mail || rowData.cc_mail,
           bcc_mail: values.bcc_mail || rowData.bcc_mail,
@@ -79,8 +83,6 @@ const StockOutModal = ({ rowData, onClose }) => {
       await dispatch(SubadminDetail(updatedData))
         .unwrap()
         .then(async (response) => {
-
-
           if (response.status) {
             toast.success(response.msg);
             onClose();
@@ -116,6 +118,16 @@ const StockOutModal = ({ rowData, onClose }) => {
     },
 
     {
+      name: "panel_name",
+      label: "Company Name",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+
+    },
+
+    {
       name: "email",
       label: "email",
       type: "text",
@@ -123,7 +135,7 @@ const StockOutModal = ({ rowData, onClose }) => {
       col_size: 6,
       disable: false,
     },
-  
+
     {
       name: "smtp_password",
       label: "Email Password* ",
@@ -187,6 +199,8 @@ const StockOutModal = ({ rowData, onClose }) => {
     formik.setFieldValue("profile_img", rowData !== undefined && rowData.logo);
 
     formik.setFieldValue("FullName", rowData !== undefined && rowData.makerInfo.FullName);
+    formik.setFieldValue("panel_name", rowData !== undefined && rowData.panel_name);
+
 
     formik.setFieldValue("email", rowData !== undefined && rowData.email);
     formik.setFieldValue("smtp_password", rowData !== undefined && rowData.smtp_password);
@@ -204,7 +218,7 @@ const StockOutModal = ({ rowData, onClose }) => {
   }, [rowData]);
 
   return (
-    <div className="modal custom-modal d-block">
+    <div className="modal custom-modal d-block" data-aos="fade-down">
       <div className="modal-dialog modal-dialog-centered modal-md" >
         <div className="modal-content" style={{ width: "150rem !important" }}>
           <div className="modal-header border-0 pb-0">

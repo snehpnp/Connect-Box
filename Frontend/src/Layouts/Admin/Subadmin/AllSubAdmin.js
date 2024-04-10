@@ -171,9 +171,10 @@ export default function Help() {
 
   const handleEdit = (row) => {
     setInitialRowData(row);
-    navigate("/admin/subadmin/edit", {
-      state: { rowData: { ...row, _id: row._id } },
-    });
+    navigate('/admin/subadmin/edit/'+row._id)
+    // navigate("/admin/subadmin/edit", {
+    //   state: { rowData: { ...row, _id: row._id } },
+    // });
   };
 
 
@@ -288,7 +289,7 @@ export default function Help() {
     getSubadminData();
   }, [refresh]);
 
-
+ 
 
   return (
     <>
@@ -457,7 +458,7 @@ export default function Help() {
 
       {
         modal && (
-          <div className="modal custom-modal d-block">
+          <div className="modal custom-modal d-block" data-aos="fade-down">
             <div className="modal-dialog modal-dialog-centered modal-md">
               <div className="modal-content">
                 <div className="modal-header border-0 pb-0">

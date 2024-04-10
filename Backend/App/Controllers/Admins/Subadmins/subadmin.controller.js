@@ -5,6 +5,7 @@ const User_model = db.user;
 const Role_model = db.role;
 const SubAdminCompanyInfo = db.SubAdminCompanyInfo;
 
+
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
 
@@ -156,10 +157,7 @@ class Subadmin {
         Balance,
       } = req.body;
 
-      // console.log("req.body",req.body)
 
-      // IF USER ALEARDY EXIST
-      console.log("Id from Backend", id);
 
       const existingUsername = await User_model.findOne({ _id: id });
       if (!existingUsername) {
@@ -177,7 +175,6 @@ class Subadmin {
         existingUsername._id,
         User
       );
-      console.log("User From Backend", subadminUpdate);
       return res.send({ status: true, msg: "successfully Edit!", data: [] });
     } catch (error) {
       res.send({ msg: "Error=>", error });
@@ -249,7 +246,7 @@ class Subadmin {
       // DATA GET SUCCESSFULLY
       res.send({
         status: true,
-        msg: "Get  Subadmins",
+        msg: "Get User",
         data: getAllSubAdmins,
       });
     } catch (error) {
@@ -343,7 +340,6 @@ class Subadmin {
     try {
       const { id, user_active_status } = req.body;
       // UPDATE ACTTIVE STATUS CLIENT
-console.log("req.body",req.body)
       const get_user = await User_model.find({ _id: id });
       if (get_user.length == 0) {
         return res.send({
@@ -355,7 +351,6 @@ console.log("req.body",req.body)
 
       const filter = { _id: id };
       const updateOperation = { $set: { ActiveStatus: user_active_status } };
-console.log("updateOperation",updateOperation)
       const result = await User_model.updateOne(filter, updateOperation);
 
       if (result) {
@@ -377,11 +372,9 @@ console.log("updateOperation",updateOperation)
     try {
       const { id, Balance, parent_id } = req.body;
       // UPDATE ACTTIVE STATUS CLIENT
-      console.log("req.body", req.body);
 
       const get_user = await User_model.find({ _id: id, Role: "SUBADMIN" });
-      console.log("get_user", get_user[0].Balance);
-      console.log("Balance", Balance);
+
       if (get_user.length == 0) {
         return res.send({
           status: false,
@@ -399,10 +392,7 @@ console.log("updateOperation",updateOperation)
         $set: { Balance: updatedBalance },
       };
 
-      // const updateOperation = {
-      //   $set: { Balance: Number(Balance) + Number(get_user[0].Balance) },
-      // };
-      console.log("updateOperation", updateOperation);
+     
       const result = await User_model.updateOne(filter, updateOperation);
 
       if (result) {

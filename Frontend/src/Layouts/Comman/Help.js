@@ -19,7 +19,6 @@ function System() {
         await dispatch(GetCompany_info())
             .unwrap()
             .then(async (response) => {
-                console.log("response", response.data)
 
                 if (response.status) {
                     SetCompnayData(response.data)

@@ -195,15 +195,15 @@ export const subamdin_header = [
     },
     {
         id: 7,
-        name: 'Recharge',
-        route: "/subadmin/strategys",
+        name: 'Strategy Transaction',
+        route: "/subadmin/strategys/transaction",
         Icon: "fe fe-credit-card",
         Data: []
     },
     {
         id: 8,
         name: 'Open Position',
-        route: "/subadmin/strategys",
+        route: "/subadmin/open-position",
         Icon: "fe fe-grid",
         Data: []
     },

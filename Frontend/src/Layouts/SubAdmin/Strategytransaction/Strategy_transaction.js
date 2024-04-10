@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { RechargeDetailsGets } from "../../../ReduxStore/Slice/Admin/SubAdminCompanyInfo";
+import { FindStgTranscData } from "../../../ReduxStore/Slice/Subadmin/System";
 import { useDispatch } from "react-redux";
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
 import Content from '../../../Components/Dashboard/Content/Content';
@@ -10,6 +10,7 @@ import { IndianRupee } from 'lucide-react';
 
 function Payment() {
   const dispatch = useDispatch();
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
   const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
   const [selectedRow, setSelectedRow] = useState(null);
@@ -47,34 +48,11 @@ function Payment() {
 
   const columns = [
     { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
-    // {
-    //   field: 'profile',
-    //   headerName: 'Profile',
-    //   width: 120,
-    //   headerClassName: styles.boldHeader,
-    //   renderCell: (params) => (
-    //     <div>
-    //       <a href="profile.html" className="company-avatar avatar-md me-2 companies company-icon">
-    //         <img className="avatar-img rounded-circle company" src="assets/img/companies/company-05.svg" alt="Company Image" />
-    //       </a>
-    //     </div>
-    //   )
-    // },
+
     {
-      field: 'username',
+      field: 'user_id',
       headerName: 'User Name',
       width: 210,
-      headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div>
-          {params.value}
-        </div>
-      )
-    },
-    {
-      field: 'Role',
-      headerName: 'Role',
-      width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -82,27 +60,51 @@ function Payment() {
         </div>
       )
     },
+    
     {
-      field: 'Mode',
-      headerName: 'Mode',
+      field: 'strategy_id',
+      headerName: 'Strategy Name',
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          <span className="badge bg-success-light">{params.value || '-'}</span>
+          {params.value || '-'}
 
         </div>
       )
     },
     {
-      field: 'Balance',
-      headerName: 'Balance',
+      field: 'plan_id',
+      headerName: 'Plan',
+      width: 210,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          {params.value == 1 ? "MONTHLY" : params.value == 2 ? "QUATERLY" : params.value == 3 ? "HALF-YEARLY" : params.value == 4 ? "YEARLY" : "-"}
+        </div>
+      )
+    },
+
+
+    {
+      field: 'stg_charge',
+      headerName: 'Strategy Price',
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           <span className="text-success-light">  <IndianRupee style={{ height: "19px" }} />{params.value || '-'}</span>
-
+        </div>
+      )
+    },
+    {
+      field: 'Admin_charge',
+      headerName: 'Admin Charges',
+      width: 210,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          <span className="text-success-light">  <IndianRupee style={{ height: "19px" }} />{params.value || '-'}</span>
         </div>
       )
     },
@@ -118,47 +120,56 @@ function Payment() {
 
 
   const getCompanyData = async () => {
-    try {
-      var data = { Role: "SUBADMIN" }
-      const response = await dispatch(RechargeDetailsGets(data)).unwrap();
 
-      if (response.status) {
-        const formattedData = response.data.map((row, index) => ({
-          ...row,
-          id: index + 1,
-        }));
-        setCompanyData({
-          loading: true,
-          data: formattedData,
-        });
-      }
-    } catch (error) {
-      console.log("Error", error);
-      setCompanyData({
-        loading: false,
-        data: [],
+    var data = { user_ID: user_id }
+
+    await dispatch(FindStgTranscData(data))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          const formattedData = response.data.map((row, index) => ({
+            ...row,
+            id: index + 1,
+          }));
+
+          setCompanyData({
+            loading: true,
+            data: formattedData,
+          });
+        } else {
+          setCompanyData({
+            loading: true,
+            data: [],
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
       });
-    }
-  };
+
+
+  }
+
 
 
   useEffect(() => {
     getCompanyData();
   }, []);
 
+  console.log("companyData.data", companyData.data)
 
   return (
     <>
-      {companyData.loading ? (
+      {companyData && companyData.loading ? (
         <Content
-          Card_title="Payment History"
+          Card_title="Strategy Transaction"
           Card_title_icon="fas fa-money-bill-wave pe-2"
           Content={
             <>
               <FullDataTable
                 styles={styles}
                 columns={columns}
-                rows={companyData.data}
+                rows={companyData && companyData.data}
                 checkboxSelection={false}
 
               />
@@ -177,6 +188,7 @@ function Payment() {
       )}
     </>
   );
-}
+};
+
 
 export default Payment;

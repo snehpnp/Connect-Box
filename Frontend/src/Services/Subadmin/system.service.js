@@ -32,3 +32,17 @@ export async function Edit_Company_info(data, token) {
     }
 
 }
+
+export async function GetInfo_strategyTransaction(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}strategy/transaction`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}

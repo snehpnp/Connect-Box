@@ -1,51 +1,60 @@
 import React, { useState, useEffect } from "react";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
-import { IndianRupee } from 'lucide-react';
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-import Switch from "@mui/material/Switch";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch } from "react-redux";
 import ExportToExcel from '../../../Utils/ExportCSV'
 import { useNavigate } from "react-router-dom";
 import {
-
-  update_Balance, Show_Status
+  update_Balance,
 } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
-import { GetAllUsers } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
+import { GetAllUsers, Get_All_Broker, Show_Status, DeleteUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 
 
 
-export default function Help() {
+export default function AllUsers() {
+
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+  const admin_id = JSON.parse(
+    localStorage.getItem("user_details")
+  )?.user_id;
+
+
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
+
+
   const [initialRowData, setInitialRowData] = useState({});
   const [balanceValue, setBalanceValue] = useState("");
   const [refresh, setrefresh] = useState(false);
   const [modal, setmodal] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [ForGetCSV, setForGetCSV] = useState([])
+  const [getAllBroker, setAllBroker] = useState([]);
+  const [activateUser, setActiveUser] = useState(0);
+  const [inActivateUser, setInActiveUser] = useState(0);
+  const [ShowDeleteModal, setShowDeleteModal] = useState(false );
+  const [deleteUser, setDeleteUser] = useState(false)
 
 
-
-  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
-
-  const admin_id = JSON.parse(
-    localStorage.getItem("user_details")
-  )?.user_id;
+  const [modalId, setmodalId] = useState('');
 
   const [getAllUsers, setAllUsers] = useState({
     loading: false,
     data: [],
     data1: [],
   });
+
+
+  console.log("getAllUsers :", getAllUsers)
+
+
+  const label = { inputProps: { "aria-label": "Switch demo" } };
 
 
 
@@ -67,7 +76,65 @@ export default function Help() {
     },
   };
 
-  const label = { inputProps: { "aria-label": "Switch demo" } };
+
+
+
+
+
+  const showLicenceName = (row) => {
+    if (row.license_type === "0") {
+      return "2 Days Only";
+    } else if (row.license_type === "1") {
+      return "Demo";
+    } else {
+      return "Live";
+    }
+  };
+
+
+  const AllBroker = async () => {
+    await dispatch(Get_All_Broker()).unwrap()
+      .then((response) => {
+        if (response.status) {
+
+
+          setAllBroker(response.data);
+        }
+        else {
+          setAllBroker([]);
+        }
+      })
+      .catch((error) => {
+        console.log("Broker find Error :", error)
+      })
+
+  }
+
+
+  useState(() => {
+    AllBroker();
+  }, [])
+
+
+
+
+  const showBrokerName = (row) => {
+
+    if (row.license_type === "1") {
+      return "Demo";
+    } else {
+
+      const foundNumber = getAllBroker && getAllBroker.find((value) => value.broker_id == row.broker);
+      if (foundNumber != undefined) {
+        return foundNumber.title
+      } else {
+        return "--"
+      }
+    }
+  };
+
+
+
   const columns = [
     {
       field: "id",
@@ -88,41 +155,52 @@ export default function Help() {
       headerClassName: styles.boldHeader,
     },
     {
+      field: "Email",
+      headerName: "Email Id",
+      width: 220,
+      headerClassName: styles.boldHeader,
+    },
+
+    {
       field: "PhoneNo",
       headerName: "Phone Number",
       width: 180,
       headerClassName: styles.boldHeader,
     },
     {
-      field: "prifix_key",
-      headerName: "prifixkey",
-      width: 120,
-      headerClassName: styles.boldHeader,
-    },
-
-    {
-      field: "subadmin_service_type",
-      headerName: "Service-Type",
+      field: "client_key",
+      headerName: "Client Key",
       width: 200,
       headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div> <b>{params.value == 1 ? "PER STRATEGY" : "PER TRADE"}</b></div>
-      ),
     },
     {
-      field: "Balance",
-      headerName: "Balance",
+      field: "broker",
+      headerName: "Broker",
       width: 120,
       headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div onClick={() => { setmodal(true); setInitialRowData(params.row); }}>
-          <span className="text-success-light">
-            <IndianRupee style={{ height: "19px" }} />
-            {params.value || '-'}
-          </span>
-        </div>
-      ),
+      renderCell: (params) => showBrokerName(params.row),
     },
+    {
+      field: 'license_type',
+      headerName: "License Type",
+      width: 120,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => showLicenceName(params.row),
+    },
+    // {
+    //   field: "Balance",
+    //   headerName: "Balance",
+    //   width: 120,
+    //   headerClassName: styles.boldHeader,
+    //   renderCell: (params) => (
+    //     <div onClick={() => { setmodal(true); setInitialRowData(params.row); }}>
+    //       <span className="text-success-light">
+    //         <IndianRupee style={{ height: "19px" }} />
+    //         {params.value || '-'}
+    //       </span>
+    //     </div>
+    //   ),
+    // },
 
     {
       field: "ActiveStatus",
@@ -136,7 +214,7 @@ export default function Help() {
             className="check"
             type="checkbox"
             onChange={(event) => handleSwitchChange(event, params.row._id)}
-            defaultChecked={params.value === 1}
+            defaultChecked={params.value == 1}
           />
           <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg">checkbox</label>
         </div>
@@ -156,10 +234,21 @@ export default function Help() {
           >
             <EditIcon />
           </IconButton>
+          <IconButton
+            aria-label="delete"
+            size="small"
+            onClick={() => {
+              setShowDeleteModal(true);
+              setmodalId(params.row._id);
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
         </div>
       ),
       headerClassName: styles.boldHeader,
     },
+    
     {
       field: "Create_Date",
       headerName: "createdAt",
@@ -172,24 +261,48 @@ export default function Help() {
 
 
   const handleEdit = (row) => {
-    setInitialRowData(row);
-    navigate("/admin/subadmin/edit", {
-      state: { rowData: { ...row, _id: row._id } },
-    });
+    console.log("row.id :", row._id)
+    navigate('/subadmin/user/edit/' + row._id)
+  };
+
+  const handleDelete = async (row) => {
+   
+    var data = { id: modalId }
+    
+      await dispatch(DeleteUser(data)).unwrap()
+      .then((response) => {
+        if (response.status) {
+          toast.success(response.msg)
+          setShowDeleteModal(false)
+          setmodalId('')
+          setrefresh(!refresh);
+        }
+        else {
+          toast.error(response.msg);
+        }
+      })
+      .catch((error) => {
+        console.log("User Does Not Exit", error)
+      })
+
+    
+  
+
   };
 
 
 
   const handleSwitchChange = async (event, id) => {
     const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
- 
 
- 
+
+
     await dispatch(Show_Status({ id, user_active_status }))
       .unwrap()
       .then(async (response) => {
 
         if (response.status) {
+
           toast.success(response.msg);
           setrefresh(!refresh)
 
@@ -233,6 +346,8 @@ export default function Help() {
 
 
 
+
+
   const getUsersData = async () => {
     var data = { user_ID: user_id }
     await dispatch(GetAllUsers(data))
@@ -240,15 +355,12 @@ export default function Help() {
       .then((response) => {
 
         if (response.status) {
-
-
           const formattedData = response.data && response.data.map((row, index) => ({
             ...row,
             id: index + 1,
           }));
 
           const filterData = formattedData.filter((item) => {
-
             const searchInputMatch =
               searchInput == '' ||
               item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -259,22 +371,20 @@ export default function Help() {
             return searchInputMatch
 
           })
-        
-
           setAllUsers({
             loading: true,
             data: searchInput ? filterData : formattedData,
             data1: [
-              { name: "Total Subadmins", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
-              { name: "Active Subadmins", count: response.ActiveCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
+              { name: "Total Users", count: response.data.length || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
+              { name: "Active Users", count: activateUser || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
               {
-                name: "InActive Subadmins",
-                count: response.InActiveCount || 0
+                name: "InActive Users",
+                count: response.inActivateUser || 0
                 , Icon: "fe fe-x-circle",
                 color: "#ed3a3a"
               },
               {
-                name: "Total Used Balance",
+                name: "Live Users",
                 count: response.ActiveUseBalance || 0
                 , Icon: "fas fa-dollar-sign"
                 , color: "#1d8147"
@@ -285,7 +395,7 @@ export default function Help() {
 
         } else {
           setAllUsers({
-            loading: false,
+            loading: true,
             data: [],
             data1: [],
           });
@@ -296,9 +406,31 @@ export default function Help() {
         setAllUsers({
           loading: false,
           data: [],
+          data1: [],
         });
       });
   };
+
+
+  const TotalActiveUser = () => {
+    var countActive = 0;
+    var countInActive = 0;
+    const filter = getAllUsers.data.map((item) => {
+      if (item.ActiveStatus == '0') {
+        countInActive++;
+      }
+      else {
+        countActive++;
+      }
+
+    })
+    setActiveUser(countActive);
+    setInActiveUser(countInActive)
+  }
+
+  useEffect(() => {
+    TotalActiveUser();
+  }, [])
 
 
 
@@ -321,7 +453,7 @@ export default function Help() {
           "UserName": item.UserName,
           "PhoneNo": item.PhoneNo,
           "Prifix Key": item.prifix_key,
-          "Created At" :item.createdAt
+          "Created At": item.createdAt
         })
       })
 
@@ -334,7 +466,8 @@ export default function Help() {
     forCSVdata()
   }, [getAllUsers.data])
 
- 
+
+
 
   return (
     <>
@@ -376,24 +509,6 @@ export default function Help() {
                           />
                         </div>
                       </li>
-
-                      <li>
-                        <a
-                          className="btn btn-filters w-auto popup-toggle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Filter"
-                        >
-                          <span className="me-2">
-                            <img
-                              src="assets/img/icons/filter-icon.svg"
-                              alt="filter"
-                            />
-                          </span>
-                          Filter
-                        </a>
-                      </li>
-
                       <li>
                         <div
                           className="dropdown dropdown-action"
@@ -401,17 +516,17 @@ export default function Help() {
                           data-bs-placement="bottom"
                           title="Download"
                         >
-                        
-                            <div className="card-body">
-                              <ExportToExcel
-                                className="btn btn-primary "
-                                apiData={ForGetCSV}
-                                fileName={'All Strategy'} />
-                            </div>
-                          
+
+                          <div className="card-body">
+                            <ExportToExcel
+                              className="btn btn-primary "
+                              apiData={ForGetCSV}
+                              fileName={'All Strategy'} />
+                          </div>
+
                         </div>
                       </li>
-                       
+
                       <li>
                         <Link
                           to={"/subadmin/User/add"}
@@ -504,9 +619,38 @@ export default function Help() {
             </div>
           </div>
         )
-
-
       }
+
+      {ShowDeleteModal &&
+        (
+          <div className="modal custom-modal modal-delete d-block" >
+            <div className="modal-dialog modal-dialog-centered modal-md">
+              <div className="modal-content">
+                <div className="modal-body">
+                  <div className="form-header">
+                    <div className="delete-modal-icon">
+                      <span>
+                        <i className="fe fe-check-circle" />
+                      </span>
+                    </div>
+                    <h3>Are You Sure?</h3>
+                    <p>You want delete company</p>
+                  </div>
+                  <div className="modal-btn delete-action">
+                    <div className="modal-footer justify-content-center p-0">
+                      <button type="submit" onClick={()=>handleDelete()} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
+                      <button type="button" onClick={() => setShowDeleteModal(false)} className="btn btn-back cancel-btn">No, Cancel</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+
+
+
     </>
   );
 }

@@ -17,7 +17,7 @@ export default function ExportToExport({ apiData, fileName }) {
   };
 
   return (
-    // <button onClick={(e) => exportToCSV(apiData, fileName)}><i class="fa-solid fa-file-csv fs-5"></i></button>
+     
     <button onClick={(e) => exportToCSV(apiData, fileName)} type="button" className="btn btn-primary float-end " data-toggle="tooltip" data-placement="top" title="Export To Excel" delay={{ show: "0", hide: "100" }}>
       <i className="fa fa-download" aria-hidden="true"></i> Export-Excel
     </button>

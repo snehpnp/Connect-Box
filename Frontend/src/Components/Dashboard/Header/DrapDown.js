@@ -1,8 +1,58 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { IndianRupee } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
+import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
 const DropDown = () => {
+    const navigate = useNavigate();
+
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isFullScreen, setIsFullScreen] = useState(false);
+    const [showFunds, setShowFunds] = useState(false);
+    const [themeMode, setThemeMode] = useState('light');
+
+    const dispatch = useDispatch();
+
+    const [profileData, setProfileData] = useState([]);
+    const [error, setError] = useState(null);
+
+    const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+
+
+    const fetchData = async () => {
+
+        try {
+            let data = { "id": user_id }
+
+            await dispatch(ProfileInfo(data))
+                .unwrap()
+                .then(async (response) => {
+                    if (response.status) {
+                        setProfileData(response.data)
+                    } else {
+                        toast.error(response.msg);
+                    }
+
+                })
+                .catch((error) => {
+                    console.log("Error", error);
+                });
+
+
+
+        } catch (error) {
+            setError(error.message);
+
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
 
     var Role = JSON.parse(localStorage.getItem("user_details")).Role
     var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
@@ -15,7 +65,6 @@ const DropDown = () => {
         localStorage.clear();
         window.location.reload();
     };
-    const [themeMode, setThemeMode] = useState('light');
 
     // Define toggleTheme function
     const toggleTheme = () => {
@@ -31,23 +80,8 @@ const DropDown = () => {
     };
 
 
-    // Apply theme based on localStorage value on page load
-    useEffect(() => {
-        const storedThemeMode = localStorage.getItem('theme_mode');
-        if (storedThemeMode) {
-            setThemeMode(storedThemeMode);
-        }
-    }, []);
 
-    // Update theme-related attributes on HTML element
-    useEffect(() => {
-        const htmlElement = document.querySelector('html');
-        htmlElement.setAttribute('data-sidebar', themeMode);
-        htmlElement.setAttribute('data-layout-mode', themeMode);
-        htmlElement.setAttribute('data-topbar', themeMode);
-    }, [themeMode]);
 
-    const [isFullScreen, setIsFullScreen] = useState(false);
 
     const toggleFullScreen = () => {
         const element = document.documentElement;
@@ -71,26 +105,92 @@ const DropDown = () => {
         setIsFullScreen(!isFullScreen);
     };
 
+
+
+    const walletmodal = () => {
+        if (Role == "ADMIN") {
+            // navigate('/admin/wallet')
+        } else if (Role == "SUBADMIN") {
+            navigate('/subadmin/wallet')
+        }
+
+    }
+
+
+    const toggleFundsVisibility = () => {
+        setShowFunds(!showFunds);
+        walletmodal()
+    };
+
+
+
+
+    // Apply theme based on localStorage value on page load
+    useEffect(() => {
+        const storedThemeMode = localStorage.getItem('theme_mode');
+        if (storedThemeMode) {
+            setThemeMode(storedThemeMode);
+        }
+    }, []);
+
+
+    // Update theme-related attributes on HTML element
+    useEffect(() => {
+        const htmlElement = document.querySelector('html');
+        htmlElement.setAttribute('data-sidebar', themeMode);
+        htmlElement.setAttribute('data-layout-mode', themeMode);
+        htmlElement.setAttribute('data-topbar', themeMode);
+    }, [themeMode]);
+
     return (
 
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
-                 <li className="nav-item  has-arrow dropdown-heads wallet mt-2">
-                    <input className='form-control' type='number' placeholder='current balance' />
-                    </li>
+              {Role !== "USER" ?   <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
+                    <button
+                        type="button"
+                        className="btn btn-primary cancel-btn me-2 mt-2"
+                        style={{
+                            backgroundColor: "#1E88E5",
+                            color: "white",
+                            border: "none",
+                            display: "flex",
+                            alignItems: "center",
+                            padding: "10px 20px",
+                            borderRadius: "10px",
+                            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                            cursor: "pointer"
+                        }}
+                        
+                    >
+                        {showFunds ? (
+                            <span>
+                                <IndianRupee style={{ height: "24px", marginRight: "10px" }} />
+                                <strong>{profileData &&  profileData[0].Balance || "-"}</strong>
+                            </span>
+                        ) : (
+                            <span>
+                                <i className="fe fe-eye" style={{ fontSize: "24px", marginRight: "10px" }} />
+                                <strong>*****</strong>
+                            </span>
+                        )}
+                        {/* {showFunds && "+"} */}
+                    </button>
+                </li> :""}
+              
 
-                <li className="nav-item dropdown ">
-                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary cancel-btn me-2"><i class="fas fa-plus me-1"></i> Wallet</button>
-                </li>
+
+
 
                 <li className='nav-item dropdown  dropdown-heads'>
                     <label className="theme-switch mb-0">
                         <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
                         <span className="slider"></span>
                     </label>
-
                 </li>
+
+
 
                 <li className="nav-item dropdown  flag-nav dropdown-heads">
                     <a className="nav-link" data-bs-toggle="dropdown" href="#" role="button">

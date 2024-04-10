@@ -3,7 +3,7 @@ import React from 'react'
 const Model1 = ({closeModal , page_title}) => {
     return (
         <>
-            <div className="modal custom-modal custom-lg-modal p-20 d-block">
+            <div className="modal custom-modal custom-lg-modal p-20 d-block" data-aos="fade-down">
                 <div className="modal-dialog modal-dialog-centered modal-md">
                     <div className="modal-content">
                         <div className="modal-header border-0">

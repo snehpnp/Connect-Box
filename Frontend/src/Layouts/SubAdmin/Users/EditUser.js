@@ -2,13 +2,13 @@
 
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
 import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
-import { AddUsers, Get_All_Broker } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
+import { GetOneUser, Get_All_Broker, } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 import Loader from '../../../Utils/Loader';
 
 import { useFormik } from 'formik';
@@ -20,6 +20,7 @@ import { useState, useEffect } from "react";
 const AddClient = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  const { id } = useParams();
 
 
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
@@ -28,6 +29,7 @@ const AddClient = () => {
 
   const [refresh, setrefresh] = useState(false)
 
+  const [getOneUsers, setOneUsers] = useState([]);
 
 
 
@@ -46,13 +48,11 @@ const AddClient = () => {
     loading: true,
     data: [],
   });
+
+
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
   const [getAllBroker, setAllBroker] = useState([]);
-
-
-
-
 
 
 
@@ -100,7 +100,7 @@ const AddClient = () => {
     {
       name: "phone",
       label: "Phone No",
-      type: "number1",
+      type: "number",
       label_size: 12,
       col_size: 6,
       disable: false,
@@ -164,6 +164,7 @@ const AddClient = () => {
 
 
 
+
   const formik = useFormik({
     initialValues: {
       profile_Img: null,
@@ -184,20 +185,22 @@ const AddClient = () => {
       if (!values.fullName) {
         errors.fullName = "Full Name is required";
       }
-
+      if (!values.profile_Img) {
+        errors.profile_Img = "Full Name is required";
+      }
       if (!values.username) {
         errors.username = "Username is required";
       }
-      if (!values.broker && values.licence != 1) {
-        errors.broker = "Please Select Broker ";
+      if (!values.broker) {
+        errors.broker = "Username is required";
       }
 
       if (!values.licence) {
-        errors.licence = "licence  is required";
+        errors.licence = "Username is required";
       }
 
       if (!values.groupservice) {
-        errors.groupservice = "Please select group service ";
+        errors.groupservice = "Username is required";
       }
       if (!values.email) {
         errors.email = "Please enter your email address.";
@@ -213,8 +216,6 @@ const AddClient = () => {
       return errors;
     },
     onSubmit: async (values) => {
-
-
       const req = {
         ProfileImg: ".",
         FullName: values.fullName,
@@ -236,33 +237,84 @@ const AddClient = () => {
 
       };
 
+      console.log("req :", req)
 
 
-      await dispatch(AddUsers(req))
-        .unwrap()
-        .then(async (response) => {
+      // await dispatch(AddUsers(req))
+      //   .unwrap()
+      //   .then(async (response) => {
 
 
-          if (response.status) {
-            toast.success(response.msg);
-            setTimeout(() => {
-              navigate("/subadmin/users")
-            }, 1000);
+      //     if (response.status) {
+      //       toast.success(response.msg);
+      //       setTimeout(() => {
+      //         navigate("/subadmin/users")
+      //       }, 1000);
 
-          } else {
-            toast.error(response.msg);
-          }
+      //     } else {
+      //       toast.error(response.msg);
+      //     }
 
-        })
-        .catch((error) => {
-          console.log("Error", error);
-        });
+      //   })
+      //   .catch((error) => {
+      //     console.log("Error", error);
+      //   });
 
     },
   });
 
 
- 
+
+  const getAllUsers = async () => {
+    var data = { user_ID: id }
+    await dispatch(GetOneUser(data)).unwrap()
+      .then((response) => {
+        if (response.status) {
+          setOneUsers(response.data);
+          setSelectedCheckboxes(response.data.ClientStrategy.map((stg) => stg.strategy_id))
+
+
+        }
+        else {
+          setOneUsers([]);
+        }
+
+      })
+      .catch((error) => {
+        console.log("Error User data find Error", error);
+      })
+  }
+
+  useEffect(() => {
+    getAllUsers()
+  }, [])
+
+
+
+
+  const filteredIds = allGroupService.data.map((item) => {
+    if (getOneUsers.ClientGroupName !== undefined) {
+      if (item._id == getOneUsers.ClientGroupName[0].groupService_id) {
+        return item._id;
+      }
+    }
+  }).filter(id => id !== undefined);
+
+  const itemId = filteredIds[0];
+
+
+
+
+  useEffect(() => {
+    formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
+    formik.setFieldValue('username', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].UserName);
+    formik.setFieldValue('email', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Email);
+    formik.setFieldValue('phone', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].PhoneNo);
+    formik.setFieldValue('broker', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].broker);
+    formik.setFieldValue('licence', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].license_type);
+    formik.setFieldValue('groupservice', itemId);
+
+  }, [getOneUsers.getClients])
 
 
   const getAllGroupService = async () => {
@@ -329,7 +381,7 @@ const AddClient = () => {
           }
         })
         .catch((error) => {
-          console.log("Erorre :", error)
+          console.log("erorr :", error)
         })
 
     }
@@ -423,7 +475,7 @@ const AddClient = () => {
   }, [])
 
 
-
+  var planSelect = [1, 2, 3, 4]
 
 
   return (
@@ -460,68 +512,50 @@ const AddClient = () => {
                         <div className="row">
                           <div className="col-lg-12">
                             <div className="form-check custom-checkbox mb-3">
+
+
                               <input
                                 type='checkbox'
                                 className="form-check-input"
                                 name={strategy.strategy_name}
                                 value={strategy._id}
+                                defaultChecked={getOneUsers.ClientStrategy && getOneUsers.ClientStrategy.some((item) => (
+                                  item.strategy_id === strategy._id
+                                ))}
+
+
+
                                 onChange={() => handleStrategyChange(strategy._id)}
                               />
                               <label className="form-check-label" htmlFor={strategy.strategy_name}>{strategy.strategy_name}</label>
 
-                              {formik.values.licence == 1 ? '' :
 
-                                selectedCheckboxes.includes(strategy._id) && (
-                                  <>
-                                    <div className="border rounded" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                      <div className="form-group d-flex justify-content-between m-3">
-                                        <div className="d-flex align-items-center">
-                                          <input
-                                            type="radio"
-                                            name={`option_${strategy._id}`}
-                                            value="1"
-                                            defaultChecked
-                                            id={`${strategy._id}_1`}
-                                            onChange={(e) => PlanSetinState(e.target.id)}
-                                          />
-                                          <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>monthly </label>
-                                        </div>
-                                        <div className="d-flex align-items-center">
-                                          <input
-                                            type="radio"
-                                            name={`option_${strategy._id}`}
-                                            value="2"
-                                            id={`${strategy._id}_2`}
-                                            onChange={(e) => PlanSetinState(e.target.id)}
-                                          />
-                                          <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>quarterly </label>
-                                        </div>
-                                        <div className="d-flex align-items-center">
-                                          <input
-                                            type="radio"
-                                            name={`option_${strategy._id}`}
-                                            value="3"
-                                            id={`${strategy._id}_3`}
-                                            onChange={(e) => PlanSetinState(e.target.id)}
-                                          />
-                                          <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>halfyearly </label>
-                                        </div>
-                                        <div className="d-flex align-items-center">
-                                          <input
-                                            type="radio"
-                                            name={`option_${strategy._id}`}
-                                            value="3"
-                                            id={`${strategy._id}_4`}
-                                            onChange={(e) => PlanSetinState(e.target.id)}
-                                          />
-                                          <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>yearly </label>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </>
-                                )
 
-                              }
+                              {selectedCheckboxes.includes(strategy._id) && (
+                                <div className="border rounded" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                  <div className="form-group d-flex justify-content-between m-3">
+                                    {planSelect.map((data) => {
+                                      const planId = getOneUsers.ClientStrategy && getOneUsers.ClientStrategy.filter((item) => (
+                                        item.strategy_id === strategy._id
+                                      )).map((item) => item.plan_id)[0];
+
+                                      return (
+                                        <div className="d-flex align-items-center" key={data}>
+                                          <input
+                                            type="radio"
+                                            name={`option_${strategy._id}`}
+                                            value={data}
+                                            defaultChecked={data == planId}
+                                            id={`${strategy._id}_${data}`}
+                                            onChange={(e) => PlanSetinState(e.target.id)}
+                                          />
+                                          <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>{data == 1 ? "monthly" : data == 2 ? "Quaterly" : data == 3 ? "half_yearly" : data == 4 ? "yearly" : "DEMO"} </label>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              )}
 
 
                             </div>
