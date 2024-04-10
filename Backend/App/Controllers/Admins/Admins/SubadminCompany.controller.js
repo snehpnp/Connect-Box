@@ -117,19 +117,48 @@ class SubAdminCompany {
   async GetCompanyInfoById(req, res) {
     try {
       const { id } = req.body; // Assuming the ID is passed as a route parameter
-      console.log("req.body", req.body);
+
       if (!id) {
         return res
           .status(400)
           .json({ status: false, msg: "Please provide an ID.", data: [] });
       }
       const objectId = new ObjectId(id);
-      console.log("objectId", objectId);
+     
 
-      const companyInfo = await SubAdminCompanyInfo.find({
-        maker_id: objectId,
-      });
-
+      // const companyInfo = await SubAdminCompanyInfo.find({
+      //   maker_id: objectId,
+      // });
+      const companyInfo = await SubAdminCompanyInfo.aggregate([
+        {
+          $match: { maker_id: objectId }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "maker_id",
+            foreignField: "_id", 
+            as: "userData" 
+          }
+        },
+        {
+          $addFields: {
+            prifix_key: { $arrayElemAt: ["$userData.prifix_key", 0] },
+            client_key: { $arrayElemAt: ["$userData.client_key", 0] }
+          }
+        },
+        {
+          $project: {
+            userData: 0 // Exclude the userData array
+          }
+        }
+      ]);
+      
+      // Now companyInfo will contain the data from SubAdminCompanyInfo with prifix_key and client_key added from the joined user data.
+      
+      
+     
+     
       if (!companyInfo) {
         return res
           .status(404)

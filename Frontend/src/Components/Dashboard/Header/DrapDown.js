@@ -53,7 +53,6 @@ const DropDown = () => {
         fetchData();
     }, []);
 
-    console.log("loading", profileData)
 
     var Role = JSON.parse(localStorage.getItem("user_details")).Role
     var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
@@ -120,6 +119,7 @@ const DropDown = () => {
 
     const toggleFundsVisibility = () => {
         setShowFunds(!showFunds);
+        walletmodal()
     };
 
 
@@ -147,7 +147,7 @@ const DropDown = () => {
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
-                <li className="nav-item dropdown">
+                <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
                     <button
                         type="button"
                         className="btn btn-primary cancel-btn me-2 mt-2"
@@ -162,12 +162,12 @@ const DropDown = () => {
                             boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
                             cursor: "pointer"
                         }}
-                        onClick={toggleFundsVisibility}
+                        
                     >
                         {showFunds ? (
                             <span>
                                 <IndianRupee style={{ height: "24px", marginRight: "10px" }} />
-                                <strong>500</strong>
+                                <strong>{profileData &&  profileData[0].Balance || "-"}</strong>
                             </span>
                         ) : (
                             <span>
@@ -175,7 +175,7 @@ const DropDown = () => {
                                 <strong>*****</strong>
                             </span>
                         )}
-                        {showFunds && "+"}
+                        {/* {showFunds && "+"} */}
                     </button>
                 </li>
 

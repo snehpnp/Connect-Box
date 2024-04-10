@@ -16,6 +16,8 @@ const StockOutModal = ({ rowData, onClose }) => {
   const formik = useFormik({
     initialValues: {
       profile_img: "",
+      panel_name: "",
+
       email: "",
       cc_mail: "",
       bcc_mail: "",
@@ -61,6 +63,8 @@ const StockOutModal = ({ rowData, onClose }) => {
         id: rowData._id,
         data: {
           email: values.email || rowData.email,
+          panel_name: values.panel_name || rowData.panel_name,
+
           smtp_password: values.smtp_password || rowData.smtp_password,
           cc_mail: values.cc_mail || rowData.cc_mail,
           bcc_mail: values.bcc_mail || rowData.bcc_mail,
@@ -79,8 +83,6 @@ const StockOutModal = ({ rowData, onClose }) => {
       await dispatch(SubadminDetail(updatedData))
         .unwrap()
         .then(async (response) => {
-
-
           if (response.status) {
             toast.success(response.msg);
             onClose();
@@ -112,6 +114,16 @@ const StockOutModal = ({ rowData, onClose }) => {
       label_size: 12,
       col_size: 6,
       disable: true,
+
+    },
+
+    {
+      name: "panel_name",
+      label: "Company Name",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
 
     },
 
@@ -187,6 +199,8 @@ const StockOutModal = ({ rowData, onClose }) => {
     formik.setFieldValue("profile_img", rowData !== undefined && rowData.logo);
 
     formik.setFieldValue("FullName", rowData !== undefined && rowData.makerInfo.FullName);
+    formik.setFieldValue("panel_name", rowData !== undefined && rowData.panel_name);
+
 
     formik.setFieldValue("email", rowData !== undefined && rowData.email);
     formik.setFieldValue("smtp_password", rowData !== undefined && rowData.smtp_password);
