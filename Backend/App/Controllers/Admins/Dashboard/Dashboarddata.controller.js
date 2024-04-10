@@ -123,162 +123,127 @@ class Dashboard {
 
   async GetDashboardData1(req, res) {
     try {
-   
-        const selectedOption = req.body.selectedOption;
-        const SUBADMINS = req.body.SUBADMINS;
+      const selectedOption = req.body.selectedOption;
+      const SUBADMINS = req.body.SUBADMINS;
 
-        let aggregationPipeline = [];
+      let aggregationPipelines = [];
 
-        if (SUBADMINS) {
+      if (SUBADMINS !== '') {
+        // Add a single pipeline for the specified user
+        const pipeline = [
+          { $match: { user_id: new ObjectId(SUBADMINS) } },
+          { $sort: { createdAt: 1 } },
+          { $addFields: { date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, balance: { $toDouble: "$Balance" } } },
+          { $group: { _id: "$date", totalBalance: { $sum: "$balance" } } }
+        ];
 
-          aggregationPipeline.push({
-              $match: {
-                  user_id: new ObjectId(SUBADMINS)
-              }
-          });
+        aggregationPipelines.push(pipeline);
+      } else {
+        const pipeline = [
+          { $sort: { createdAt: 1 } },
+          { $addFields: { date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, balance: { $toDouble: "$Balance" } } },
+          { $group: { _id: "$date", totalBalance: { $sum: "$balance" } } }
+        ];
+
+        aggregationPipelines.push(pipeline);
       }
 
-        // Sort data by createdAt field in ascending order
-        aggregationPipeline.push({ $sort: { createdAt: 1 } });
-
-        // Add fields and group stage for common operations
-        aggregationPipeline.push(
-            {
-                $addFields: {
-                    date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-                    balance: { $toDouble: "$Balance" }
-                }
-            },
-            {
-                $group: {
-                    _id: "$date",
-                    totalBalance: { $sum: "$balance" }
-                }
-            }
-        );
-
-        // Assuming 'user_id' is the correct field name, modify the filter stage accordingly
-      
-
-        // Modify aggregation pipeline based on selected option
+      aggregationPipelines.forEach(pipeline => {
         switch (selectedOption) {
-            case "Monthly":
-                // Group by month and year
-                aggregationPipeline.push(
-                    {
-                        $group: {
-                            _id: { $dateToString: { format: "%Y-%m", date: { $toDate: "$_id" } } },
-                            totalBalance: { $sum: "$totalBalance" }
-                        }
-                    }
-                );
-                break;
-            case "Yearly":
-                // Group by year
-                aggregationPipeline.push(
-                    {
-                        $group: {
-                            _id: { $dateToString: { format: "%Y", date: { $toDate: "$_id" } } },
-                            totalBalance: { $sum: "$totalBalance" }
-                        }
-                    }
-                );
-                break;
-            case "Quarterly":
-                // Group by quarter and year
-                aggregationPipeline.push(
-                    {
-                        $group: {
-                            _id: {
-                                $concat: [
-                                    { $substr: [{ $year: { $toDate: "$_id" } }, 0, -1] },
-                                    "-Q",
-                                    {
-                                        $cond: [
-                                            { $lte: [{ $month: { $toDate: "$_id" } }, 3] },
-                                            "1",
-                                            {
-                                                $cond: [
-                                                    { $lte: [{ $month: { $toDate: "$_id" } }, 6] },
-                                                    "2",
-                                                    {
-                                                        $cond: [
-                                                            { $lte: [{ $month: { $toDate: "$_id" } }, 9] },
-                                                            "3",
-                                                            "4"
-                                                        ]
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            totalBalance: { $sum: "$totalBalance" }
-                        }
-                    }
-                );
-                break;
-
-            case "Half-Yearly":
-                // Group by half-year intervals
-                aggregationPipeline.push(
-                    {
-                        $group: {
-                            _id: {
-                                $concat: [
-                                    { $substr: [{ $year: { $toDate: "$_id" } }, 0, -1] },
-                                    "-HY",
-                                    { $cond: [{ $lte: [{ $month: { $toDate: "$_id" } }, 6] }, "1", "2"] }
-                                ]
-                            },
-                            totalBalance: { $sum: "$totalBalance" }
-                        }
-                    }
-                );
-                break;
-            // Case for "Day" remains unchanged
+          case "Day":
+            pipeline.push(
+              { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: { $toDate: "$_id" } } }, totalBalance: { $sum: "$totalBalance" } } }
+            );
+            break;
+          case "Monthly":
+            pipeline.push(
+              { $group: { _id: { $dateToString: { format: "%Y-%m", date: { $toDate: "$_id" } } }, totalBalance: { $sum: "$totalBalance" } } }
+            );
+            break;
+          case "Yearly":
+            pipeline.push(
+              { $group: { _id: { $dateToString: { format: "%Y", date: { $toDate: "$_id" } } }, totalBalance: { $sum: "$totalBalance" } } }
+            );
+            break;
+          case "Quarterly":
+            pipeline.push(
+              {
+                $group: {
+                  _id: {
+                    $concat: [
+                      { $substr: [{ $year: { $toDate: "$_id" } }, 0, -1] },
+                      "-Q",
+                      {
+                        $cond: [
+                          { $lte: [{ $month: { $toDate: "$_id" } }, 3] },
+                          "1",
+                          { $cond: [{ $lte: [{ $month: { $toDate: "$_id" } }, 6] }, "2", { $cond: [{ $lte: [{ $month: { $toDate: "$_id" } }, 9] }, "3", "4"] }] }
+                        ]
+                      }
+                    ]
+                  },
+                  totalBalance: { $sum: "$totalBalance" }
+                }
+              }
+            );
+            break;
+          case "Half-Yearly":
+            pipeline.push(
+              {
+                $group: {
+                  _id: {
+                    $concat: [
+                      { $substr: [{ $year: { $toDate: "$_id" } }, 0, -1] },
+                      "-HY",
+                      { $cond: [{ $lte: [{ $month: { $toDate: "$_id" } }, 6] }, "1", "2"] }
+                    ]
+                  },
+                  totalBalance: { $sum: "$totalBalance" }
+                }
+              }
+            );
+            break;
         }
+      });
 
-        // Execute the aggregation pipeline
-        let data = await count_licenses.aggregate(aggregationPipeline);
 
-        // Sort the data based on the _id field (date)
-        data.sort((a, b) => {
-            // Convert _id values to Date objects
-            const dateA = new Date(a._id);
-            const dateB = new Date(b._id);
+      let results = [];
+      for (let pipeline of aggregationPipelines) {
+        var data = await count_licenses.aggregate(pipeline);
+        results.push(data);
+      }
+      console.log("results", results);
 
-            // Compare the dates
-            return dateA - dateB;
+      let sortedResults = [];
+      results.forEach(data => {
+        sortedResults.push(data.sort((a, b) => {
+          const dateA = new Date(a._id);
+          const dateB = new Date(b._id);
+          return dateA - dateB;
+        }));
+      });
+
+      const dummyData = { categories: [], data: [] };
+      sortedResults.forEach(item => {
+        item.forEach(data => {
+          dummyData.categories.push(data._id);
+          dummyData.data.push(parseInt(data.totalBalance));
         });
+      });
 
-
-        const dummyData = {
-            categories: [],
-            data: []
-        };
-
-        // Assuming your data array is named 'responseData'
-        data.forEach(item => {
-            dummyData.categories.push(item._id); // Extracting the year from createdAt field
-            dummyData.data.push(parseInt(item.totalBalance)); // Converting Balance to integer and pushing to data array
-        });
-
-        // DATA GET
-        res.send({
-            status: true,
-            msg: "Get Subadmins",
-            data: dummyData,
-        });
+      res.send({
+        status: true,
+        msg: "Get Subadmins",
+        data: dummyData,
+      });
     } catch (error) {
-        console.log("Error getting Subadmins:", error);
-        res.status(500).send({
-            status: false,
-            msg: "Internal Server Error"
-        });
+      console.log("Error getting Subadmins:", error);
+      res.status(500).send({
+        status: false,
+        msg: "Internal Server Error"
+      });
     }
-}
+  }
 
 
 
