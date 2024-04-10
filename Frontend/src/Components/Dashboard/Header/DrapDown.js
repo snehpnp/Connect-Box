@@ -72,12 +72,15 @@ const DropDown = () => {
 
         const newThemeMode = themeMode === 'light' ? 'dark' : 'light';
         setThemeMode(newThemeMode);
-
+        const htmlElement = document.querySelector('html');
+        htmlElement.setAttribute('data-sidebar', newThemeMode);
+        htmlElement.setAttribute('data-layout-mode', newThemeMode);
+        htmlElement.setAttribute('data-topbar', newThemeMode);
         localStorage.setItem('theme_mode', newThemeMode);
 
-        setTimeout(() => {
-            window.location.reload();
-        }, 200);
+        // setTimeout(() => {
+        //     window.location.reload();
+        // }, 200);
     };
 
 
