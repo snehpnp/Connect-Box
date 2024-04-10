@@ -109,7 +109,7 @@ const DropDown = () => {
 
     const walletmodal = () => {
         if (Role == "ADMIN") {
-            navigate('/admin/wallet')
+            // navigate('/admin/wallet')
         } else if (Role == "SUBADMIN") {
             navigate('/subadmin/wallet')
         }

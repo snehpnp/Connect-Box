@@ -203,7 +203,7 @@ export const subamdin_header = [
     {
         id: 8,
         name: 'Open Position',
-        route: "/subadmin/strategys",
+        route: "/subadmin/open-position",
         Icon: "fe fe-grid",
         Data: []
     },
