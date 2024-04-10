@@ -3,6 +3,7 @@ import React from 'react'
 function Clientservice() {
   return (
     <>
+    <div className="content container-fluid">
       <div className="content-page-header mt-2">
         <h5>Stock List</h5>
       </div>
@@ -452,7 +453,7 @@ function Clientservice() {
           </div>
         </div>
       </div>
-
+      </div>
     </>
   )
 }

@@ -47,7 +47,7 @@
 }
 
 .active .icon {
-  transform: rotate(45deg);
+  transform: rotate(0deg);
 }
 
 .answer {

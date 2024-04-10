@@ -101,8 +101,9 @@ const DropDown = () => {
                         style={{}}
                         onClick={() => walletmodal()}
                     >
-                        <IndianRupee style={{ height: "19px" }} /> 500
-                        +
+                       
+                        <IndianRupee style={{ height: "19px" }} />500 
+                        <i className="fa-solid fa-wallet ps-3"></i>
                     </button>
                     </li>
 

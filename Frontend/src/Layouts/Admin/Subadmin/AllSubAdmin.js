@@ -243,7 +243,7 @@ export default function Help() {
           }));
 
           setAllSubadmins({
-            loading: true,
+            loading: false,
             data: formattedData,
             data1: [
               { name: "Total Subadmins", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
