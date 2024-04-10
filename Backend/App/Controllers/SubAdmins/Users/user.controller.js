@@ -341,21 +341,21 @@ class Users {
                 var price_stg = 0
                 var daysforstg = 0
                 if (matchedStrategy.plan_id == 1) {
-                  price_stg=data.strategy_amount_month
+                  price_stg = data.strategy_amount_month
                   daysforstg = 1
                 } else if (matchedStrategy.plan_id == 2) {
-                  price_stg=data.strategy_amount_quarterly
+                  price_stg = data.strategy_amount_quarterly
                   daysforstg = 3
                 } else if (matchedStrategy.plan_id == 3) {
-                  price_stg=data.strategy_amount_half_early
+                  price_stg = data.strategy_amount_half_early
                   daysforstg = 6
                 }
                 else if (matchedStrategy.plan_id == 4) {
-                  price_stg=data.strategy_amount_early
+                  price_stg = data.strategy_amount_early
                   daysforstg = 12
                 } else {
                   daysforstg = 0
-                  price_stg=0
+                  price_stg = 0
                 }
 
 
@@ -366,21 +366,21 @@ class Users {
                 var start_date_2days = dateTime.create(currentDate);
                 start_date_2days = start_date_2days.format("Y-m-d H:M:S");
                 var start_date = start_date_2days;
-        
-        
+
+
                 StartDate1 = start_date;
-        
+
                 var UpdateDate = "";
                 var StartDate = new Date(start_date);
-        
+
                 UpdateDate = StartDate.setMonth(
                   StartDate.getMonth() + parseInt(daysforstg)
                 );
-        
+
                 var end_date_2days = dateTime.create(UpdateDate);
                 var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
-        
-        
+
+
                 EndDate1 = end_date_2days;
 
 
@@ -391,7 +391,7 @@ class Users {
                   plan_id: matchedStrategy.plan_id,
                   Start_Date: StartDate1,
                   End_Date: EndDate1
-                 
+
                 });
                 User_strategy_client.save();
 
@@ -406,7 +406,7 @@ class Users {
                   plan_id: matchedStrategy.plan_id,
                   Start_Date: StartDate1,
                   End_Date: EndDate1,
-                  stg_charge:price_stg,
+                  stg_charge: price_stg,
                   Admin_charge: Admin_charge1
                 });
                 strategy_transactionData.save();
@@ -1212,7 +1212,7 @@ class Users {
     }
   }
 
-  
+
 
   async UpdateUserStatus(req, res) {
     try {
@@ -1267,23 +1267,53 @@ class Users {
 
       // GET ALL CLIENTS
       var AdminMatch;
-      AdminMatch = { admin_id: user_ID };
+      AdminMatch = { admin_id: new ObjectId(user_ID) };
 
 
 
-      const getAllClients = await strategy_transaction.find(AdminMatch)
-      .populate({
-        path: 'user_id',
-        select: 'UserName', // Select only the 'name' field from the 'users' collection
-      })
-      .populate({
-        path: 'strategy_id',
-        select: 'strategy_name', // Select only the 'name' field from the 'strategy' collection
-      })
-      .sort({ CreateDate: -1 });
-    
+      const getAllClients = await strategy_transaction.aggregate([
+        {
+          $match: AdminMatch
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'userData'
+          }
+        },
+        {
+          $lookup: {
+            from: 'strategies',
+            localField: 'strategy_id',
+            foreignField: '_id',
+            as: 'strategyData'
+          }
+        },
+        {
+          $addFields: {
+            user_id: { $arrayElemAt: ['$userData.UserName', 0] },
+            strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] }
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            user_id: 1,
+            strategy_id: 1,
+            stg_charge: 1,
+            Admin_charge: 1,
+            plan_id:1,
+            createdAt: 1,
+          }
+        }
+      ]);
+      
 
-    
+
+
+
 
       // IF DATA NOT EXIST
       if (getAllClients.length == 0) {

@@ -50,24 +50,25 @@ function Payment() {
     { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
 
     {
-      field: 'username',
+      field: 'user_id',
       headerName: 'User Name',
       width: 210,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {params.row.user_id.UserName || '-'}
+          {params.value || '-'}
         </div>
       )
     },
+    
     {
-      field: 'strategy',
+      field: 'strategy_id',
       headerName: 'Strategy Name',
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {params.row.strategy_id.strategy_name || '-'}
+          {params.value || '-'}
 
         </div>
       )
@@ -119,39 +120,47 @@ function Payment() {
 
 
   const getCompanyData = async () => {
-    try {
-      var data = { user_ID: user_id }
-      const response = await dispatch(FindStgTranscData(data)).unwrap();
 
-      if (response.status) {
-        const formattedData = response.data.map((row, index) => ({
-          ...row,
-          id: index + 1,
-        }));
-        
-        setCompanyData({
-          loading: true,
-          data: formattedData,
-        });
-      }
-    } catch (error) {
-      console.log("Error", error);
-      setCompanyData({
-        loading: false,
-        data: [],
+    var data = { user_ID: user_id }
+
+    await dispatch(FindStgTranscData(data))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          const formattedData = response.data.map((row, index) => ({
+            ...row,
+            id: index + 1,
+          }));
+
+          setCompanyData({
+            loading: true,
+            data: formattedData,
+          });
+        } else {
+          setCompanyData({
+            loading: true,
+            data: [],
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
       });
-    }
-  };
+
+
+  }
+
 
 
   useEffect(() => {
     getCompanyData();
   }, []);
 
+  console.log("companyData.data", companyData.data)
 
   return (
     <>
-      {companyData.loading ? (
+      {companyData && companyData.loading ? (
         <Content
           Card_title="Strategy Transaction"
           Card_title_icon="fas fa-money-bill-wave pe-2"
@@ -160,7 +169,7 @@ function Payment() {
               <FullDataTable
                 styles={styles}
                 columns={columns}
-                rows={companyData.data}
+                rows={companyData && companyData.data}
                 checkboxSelection={false}
 
               />
@@ -179,6 +188,7 @@ function Payment() {
       )}
     </>
   );
-}
+};
+
 
 export default Payment;
