@@ -307,7 +307,7 @@ const Overview = () => {
                           <span
                             className={`dash-widget-icon ${data.progressBarClass}`}
                           >
-                            <i className={data.iconClass} />
+                            <i className= {data.iconClass} />
                           </span>
                           <div className="dash-count">
                             <div className="dash-title">{data.title}</div>

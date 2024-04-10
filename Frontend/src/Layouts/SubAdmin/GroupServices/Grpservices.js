@@ -402,7 +402,7 @@ function GroupStrategy() {
                                             title="Filter"
                                             href="/"
                                         >
-                                            <span className="me-2">
+                                            <span className="me-2 iconclass">
                                                 <img src="assets/img/icons/filter-icon.svg" alt="filter" />
                                             </span>
                                             Filter
@@ -418,7 +418,7 @@ function GroupStrategy() {
                                             <li>
                                                 <div className="card-body">
                                                     <ExportToExcel
-                                                        className="btn btn-primary "
+                                                        className="btn btn-primary iconclass"
                                                         apiData={ForGetCSV}
                                                         fileName={'All Strategy'} />
                                                 </div>
@@ -428,7 +428,7 @@ function GroupStrategy() {
 
                                     <li>
                                         <Link
-                                            className="btn btn-primary"
+                                            className="btn btn-primary iconclass"
                                             to={'/subadmin/group_service/add'}
                                         >
                                             <i className="fa fa-plus-circle me-2" aria-hidden="true" />

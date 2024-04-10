@@ -179,7 +179,7 @@ function System() {
                     </h5>
                     <div className="pay-btn text-end w-auto">
                       <button
-                        className="btn btn-primary"
+                        className="btn btn-primary iconclass"
                         onClick={() => OpenModal(1)}
                       >
                         Edit Customer Information
@@ -221,7 +221,7 @@ function System() {
                     </h5>
                     <div className="pay-btn text-end w-auto">
                       <button
-                        className="btn btn-primary"
+                        className="btn btn-primary iconclass"
                         onClick={() => OpenModal(2)}
                       >
                         Edit Email Information
@@ -278,7 +278,7 @@ function System() {
                     </h5>
                     <div className="pay-btn text-end w-auto">
                       <button
-                        className="btn btn-primary"
+                        className="btn btn-primary iconclass"
                         onClick={() => OpenModal(3)}
                       >
                         Update Images

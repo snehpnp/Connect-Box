@@ -33133,19 +33133,19 @@ li.submenu {
     }
 }
 .tableContainer::-webkit-scrollbar {
-    width: 12px;/ width of the scrollbar /
+    width: 12px;
 }
 
 .tableContainer::-webkit-scrollbar-track {
-    background: #f1f1f1;/ color of the track /
+    background: #f1f1f1;
 }
 
 .tableContainer::-webkit-scrollbar-thumb {
-    background-color: #888;/ color of the scrollbar / border-radius: 6px;/ roundness of the scrollbar thumb /
+    background-color: #888; border-radius: 6px;
 }
 
 .tableContainer::-webkit-scrollbar-thumb:hover {
-    background-color: #555;/ color of the scrollbar on hover /
+    background-color: #555;
 }
 
 .table-container {
@@ -33190,3 +33190,44 @@ li.submenu {
 ::-webkit-scrollbar-thumb:hover {
     background: #7539FF;
 }
+
+.fe {
+    font-size: 20px;
+    font-family: feather!important;
+  
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes tilt {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(50deg); }
+    100% { transform: rotate(0deg); }
+  }
+  
+  /* Apply animation to the icon */
+  #animated-icon {
+    animation: tilt 1s infinite;
+  }
+
+  /* Define animation keyframes */
+/* Define animation keyframes */
+@keyframes bounce {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+  
+  /* Apply animation to the icon */
+  .iconclass:hover {
+    animation: bounce 1s infinite;
+  }
+  
+  
+  
+  
