@@ -35,9 +35,8 @@ export default function Help() {
   const [modal, setmodal] = useState(false);
 
 
-  const admin_id = JSON.parse(
-    localStorage.getItem("user_details")
-  )?.user_id;
+  
+  const admin_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
 
 
@@ -205,8 +204,8 @@ export default function Help() {
 
 
   const handleSubmit = async () => {
-
-    await dispatch(update_Balance({ id: initialRowData._id, Balance: balanceValue, admin_id }))
+var data = { id: initialRowData._id, Balance: balanceValue, admin_id:admin_id }
+    await dispatch(update_Balance(data))
       .unwrap()
       .then(async (response) => {
 

@@ -33,6 +33,7 @@ const AddClient = () => {
 
 
 
+
   const [serviceName, setServiceName] = useState({
     loading: true,
     data: [],
@@ -53,115 +54,6 @@ const AddClient = () => {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
   const [getAllBroker, setAllBroker] = useState([]);
-
-
-
-
-
-
-
-
-  // 0 = 2 days 1= Demo 2 =Live
-
-  const fields = [
-    {
-      name: "profile_Img",
-      label: "profile_img",
-      type: "file",
-      label_size: 12,
-      col_size: 12,
-      disable: false,
-    },
-    {
-      name: "fullName",
-      label: "FullName",
-      type: "text",
-      label_size: 6,
-      col_size: 6,
-      disable: false,
-    },
-    {
-      name: "username",
-      label: "Username",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-    {
-      name: "email",
-      label: "Email",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-
-    {
-      name: "phone",
-      label: "Phone No",
-      type: "number",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-
-
-
-    // {
-    //   name: 'Per_trade', label: 'Per Trade', type: 'text',
-    //   showWhen: values => values.subadmin_servic_type === '1'
-    //   , label_size: 12, col_size: 6, disable: false
-    // },
-
-    {
-      name: "licence",
-      label: "Lincense Type",
-      type: "select",
-      options: [
-        { label: "Demo", value: "1" },
-        { label: "2 Day Live", value: "0" },
-        { label: "Live", value: "2" },
-      ],
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-
-
-    {
-      name: 'broker',
-      label: 'Broker',
-      type: 'select',
-      options: getAllBroker && getAllBroker.map((item) => ({ label: item.title, value: item.broker_id })),
-      showWhen: values => values.licence === '2' || values.licence === '0'
-      , label_size: 12, col_size: 6, disable: false
-    },
-    {
-      name: 'demat_userid',
-      label: 'Demat UserId',
-      type: 'text',
-      showWhen: values => values.broker === '2'
-      , label_size: 12, col_size: 6, disable: false
-    },
-    {
-      name: 'api_key',
-      label: 'Api Key',
-      type: 'text',
-      showWhen: values => values.broker === '12'
-      , label_size: 12, col_size: 6, disable: false
-    },
-    {
-      name: 'groupservice',
-      label: 'Group Service',
-      type: 'select',
-      options:
-        allGroupService.data && allGroupService.data.map((item) => ({ label: item.name, value: item._id }))
-      , label_size: 12, col_size: 6, disable: false
-    },
-  ];
-
-
 
 
 
@@ -263,7 +155,113 @@ const AddClient = () => {
     },
   });
 
+  console.log(" getOneUsers.getClients.license_type :", getOneUsers.getClients && getOneUsers.getClients[0].license_type)
 
+
+  // 0 = 2 days 1= Demo 2 =Live
+
+  const fields = [
+    {
+      name: "profile_Img",
+      label: "profile_img",
+      type: "file",
+      label_size: 12,
+      col_size: 12,
+      disable: false,
+    },
+    {
+      name: "fullName",
+      label: "FullName",
+      type: "text",
+      label_size: 6,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "username",
+      label: "Username",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "email",
+      label: "Email",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+
+    {
+      name: "phone",
+      label: "Phone No",
+      type: "number",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+
+
+
+
+    {
+      name: "licence",
+      label: "Lincense Type",
+      type: "select",
+      options: getOneUsers.getClients && getOneUsers.getClients[0].license_type == 1 ?
+        [
+          { label: "Demo", value: "1" },
+          { label: "2 Day Live", value: "0" },
+          { label: "Live", value: "2" },
+        ]
+        : getOneUsers.getClients && getOneUsers.getClients[0].license_type == 0 ?
+          [
+            { label: "2 Day Live", value: "0" },
+            { label: "Live", value: "2" },
+          ] :
+          [
+
+            { label: "Live", value: "2" },
+          ],
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+
+
+    {
+      name: 'broker',
+      label: 'Broker',
+      type: 'select',
+      options: getAllBroker && getAllBroker.map((item) => ({ label: item.title, value: item.broker_id })),
+      showWhen: values => values.licence === '2' || values.licence === '0'
+      , label_size: 12, col_size: 6, disable: false
+    },
+    {
+      name: 'demat_userid',
+      label: 'Demat UserId',
+      type: 'text',
+      showWhen: values => values.broker === '2'
+      , label_size: 12, col_size: 6, disable: false
+    },
+    {
+      name: 'api_key',
+      label: 'Api Key',
+      type: 'text',
+      showWhen: values => values.broker === '12'
+      , label_size: 12, col_size: 6, disable: false
+    },
+    {
+      name: 'groupservice',
+      label: 'Group Service',
+      type: 'select',
+      options:
+        allGroupService.data && allGroupService.data.map((item) => ({ label: item.name, value: item._id }))
+      , label_size: 12, col_size: 6, disable: false
+    },
+  ];
 
   const getAllUsers = async () => {
     var data = { user_ID: id }
