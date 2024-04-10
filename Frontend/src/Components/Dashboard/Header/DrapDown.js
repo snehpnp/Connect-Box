@@ -147,7 +147,7 @@ const DropDown = () => {
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
-                <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
+              {Role !== "USER" ?   <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
                     <button
                         type="button"
                         className="btn btn-primary cancel-btn me-2 mt-2"
@@ -177,7 +177,8 @@ const DropDown = () => {
                         )}
                         {/* {showFunds && "+"} */}
                     </button>
-                </li>
+                </li> :""}
+              
 
 
 
