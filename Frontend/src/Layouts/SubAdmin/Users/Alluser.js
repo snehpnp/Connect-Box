@@ -274,6 +274,7 @@ export default function AllUsers() {
         if (response.status) {
           toast.success(response.msg)
           setShowDeleteModal(false)
+          setmodalId('')
           setrefresh(!refresh);
         }
         else {
