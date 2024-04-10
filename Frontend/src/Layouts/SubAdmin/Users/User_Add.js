@@ -311,9 +311,10 @@ const AddClient = () => {
 
   const getAllGroupServicesName = async () => {
     if (formik.values.groupservice) {
-      await dispatch(GET_ALL_SERVICES_GIVEN({
-        data: FindAllGroupService.result
-      })).unwrap()
+      var data = {
+        id:formik.values.groupservice
+      }
+      await dispatch(GET_ALL_SERVICES_GIVEN(data)).unwrap()
         .then((response) => {
           if (response.status) {
             setServiceName({
@@ -443,9 +444,9 @@ const AddClient = () => {
                   {serviceName.data.length > 0 ? <h6>All Group Service</h6> : ''}
                   {serviceName && serviceName.data.map((item) => (
                     <>
-                      <div className={`col-lg-2 `} key={item._id}>
+                      <div className={`col-lg-2 `} key={item.serviceId}>
                         <div className="col-lg-12 ">
-                          <label className="form-check-label bg-primary text-white  rounded py-2 px-4" for={item.data[0].name}>{`${item.data[0].name}[${item.data[0].category.segment}]`}</label>
+                          <label className="form-check-label bg-primary text-white  rounded py-2 px-4" for={item.serviceName}>{`${item.serviceName}[${item.categoryName}]`}</label>
 
                         </div>
                       </div>

@@ -28,6 +28,8 @@ module.exports = {
     strategy_transaction: require('./Strategy_transaction'),
 
     msgdata:require('./message_broadcast'),
+    Plan:require('./Plan.model'),
+
 
 
 

@@ -291,20 +291,6 @@ const AddClient = () => {
 
 
 
-
-  const filteredIds = allGroupService.data.map((item) => {
-    if (getOneUsers.ClientGroupName !== undefined) {
-      if (item._id == getOneUsers.ClientGroupName[0].groupService_id) {
-        return item._id;
-      }
-    }
-  }).filter(id => id !== undefined);
-
-  const itemId = filteredIds[0];
-
-
-
-
   useEffect(() => {
     formik.setFieldValue('fullName', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].FullName);
     formik.setFieldValue('username', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].UserName);
@@ -312,7 +298,8 @@ const AddClient = () => {
     formik.setFieldValue('phone', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].PhoneNo);
     formik.setFieldValue('broker', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].broker);
     formik.setFieldValue('licence', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].license_type);
-    formik.setFieldValue('groupservice', itemId);
+    formik.setFieldValue('groupservice', getOneUsers.getClients !== undefined && getOneUsers.ClientGroupName[0].groupService_id);
+
 
   }, [getOneUsers.getClients])
 
@@ -363,9 +350,8 @@ const AddClient = () => {
 
   const getAllGroupServicesName = async () => {
     if (formik.values.groupservice) {
-      await dispatch(GET_ALL_SERVICES_GIVEN({
-        data: FindAllGroupService.result
-      })).unwrap()
+      var data= { id:formik.values.groupservice}
+      await dispatch(GET_ALL_SERVICES_GIVEN(data)).unwrap()
         .then((response) => {
           if (response.status) {
             setServiceName({
@@ -478,6 +464,7 @@ const AddClient = () => {
   var planSelect = [1, 2, 3, 4]
 
 
+  console.log("serviceName",serviceName)
   return (
     <>
       {
@@ -485,8 +472,8 @@ const AddClient = () => {
           <>
             <AddForm
               fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))}
-              page_title="Add User"
-              btn_name="Add User"
+              page_title="Edit User"
+              btn_name="Update User"
               btn_name1="Cancel"
               formik={formik}
               btn_name1_route={'/subadmin/users'}
@@ -495,9 +482,9 @@ const AddClient = () => {
                   {serviceName.data.length > 0 ? <h6>All Group Service</h6> : ''}
                   {serviceName && serviceName.data.map((item) => (
                     <>
-                      <div className={`col-lg-2 `} key={item._id}>
+                      <div className={`col-lg-2 `} key={item.serviceId}>
                         <div className="col-lg-12 ">
-                          <label className="form-check-label bg-primary text-white  rounded py-2 px-4" for={item.data[0].name}>{`${item.data[0].name}[${item.data[0].category.segment}]`}</label>
+                          <label className="form-check-label bg-primary text-white  rounded py-2 px-4" for={item.serviceName}>{`${item.serviceName}[${item.categoryName}]`}</label>
 
                         </div>
                       </div>
@@ -530,8 +517,7 @@ const AddClient = () => {
                               <label className="form-check-label" htmlFor={strategy.strategy_name}>{strategy.strategy_name}</label>
 
 
-
-                              {selectedCheckboxes.includes(strategy._id) && (
+                              {formik.values.licence != 1 && selectedCheckboxes.includes(strategy._id) && (
                                 <div className="border rounded" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                   <div className="form-group d-flex justify-content-between m-3">
                                     {planSelect.map((data) => {

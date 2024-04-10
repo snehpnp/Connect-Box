@@ -755,6 +755,72 @@ class GroupService {
 
   }
 
+  async GetAllServicesGivengroupId(req, res) {
+
+    try {
+      const { id } = req.body
+
+     
+      var ServicesArr = []
+      if (!id ||id == '') {
+        return res.send({ status: false, msg: 'Please Insert Coreect id ', data: [] });
+      }
+
+
+
+      const GroupName = await serviceGroupName.aggregate([
+        {
+          $match: { _id: new ObjectId(id) }
+        },
+        {
+          $lookup: {
+            from: "servicegroup_services_ids", 
+            localField: "_id", 
+            foreignField: "Servicegroup_id", 
+            as: "services" 
+          }
+        },
+        {
+          $unwind: "$services" 
+        },
+        {
+          $lookup: {
+            from: "services", 
+            localField: "services.Service_id", 
+            foreignField: "_id", 
+            as: "serviceDetails" 
+          }
+        },
+        {
+          $lookup: {
+            from: "categories", 
+            localField: "serviceDetails.categorie_id", 
+            foreignField: "_id", 
+            as: "categoryDetails" 
+          }
+        },
+        {
+          $project: {
+            _id: 1, // Keep the original _id from the document
+            serviceId: "$services._id", // Include the _id from the services array
+            serviceName: { $arrayElemAt: ["$serviceDetails.name", 0] },
+            categoryName: { $arrayElemAt: ["$categoryDetails.segment", 0] }
+          }
+        }
+        
+      ]);
+      
+      
+      
+      
+
+      return res.send({ status: true, msg: 'Get All successfully ', data: GroupName });
+
+    } catch (error) {
+      console.log("Error GET SERVICES NAME -", error);
+    }
+
+  }
 
 
   // GET SERVICES BY GROUP ID -- for edit update
