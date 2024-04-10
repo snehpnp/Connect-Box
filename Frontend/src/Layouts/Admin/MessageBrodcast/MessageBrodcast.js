@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Content from "../../../Components/Dashboard/Content/Content";
-import axios from "axios";
 import {
   admin_Msg_Get,
   admin_Msg_Delete, 
@@ -63,7 +62,6 @@ function MessageBroadcast() {
         ownerId: datas.user_id,
         subAdminId: selectedSubadmin,
         messageTitle: messageText,
-        status: "Sent",
       };
 
       await dispatch(add_message(newMessage))
@@ -90,7 +88,6 @@ function MessageBroadcast() {
     if (value === "all") {
       const allSubadminUsernames = subadmin.map((sub) => sub._id);
       setSelectedSubadmin(allSubadminUsernames);
-      console.log("allSubadminUsernames", allSubadminUsernames);
     } else {
       setSelectedSubadmin(value);
     }
@@ -101,8 +98,8 @@ function MessageBroadcast() {
   };
 
   const getAdminTableData = async () => {
-    const ownerId = datas.user_id;
-    await dispatch(admin_Msg_Get({ ownerId: ownerId }))
+    const ownerId=datas.user_id
+    await dispatch(admin_Msg_Get({ownerId}))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
@@ -149,7 +146,6 @@ function MessageBroadcast() {
     await dispatch(admin_Msg_Edit(data))
       .unwrap()
       .then(async (response) => {
-        console.log("response from FE", response);
         if (response.status) {
           toast.success(response.msg);
           OpenModal(0);
@@ -165,7 +161,6 @@ function MessageBroadcast() {
   };
 
   const handleIdCheck = (id) => {
-    console.log("id from", id);
     setopenModalId(id);
     OpenModal(1);
   };

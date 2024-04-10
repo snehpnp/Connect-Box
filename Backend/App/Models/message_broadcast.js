@@ -12,7 +12,7 @@ const newMessage = new mongoose.Schema({
   },
   brokerId: {
     type: ObjectId,
-    ref: "",
+    ref: "api_create_infos",
   },
   subAdminId: [{
     type: ObjectId,
@@ -24,7 +24,7 @@ const newMessage = new mongoose.Schema({
   },
   Role: {
     type: String,
-    // required: true
+    required: true
   },
   createdAt: {
     type: Date,
