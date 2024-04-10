@@ -71,12 +71,15 @@ const DropDown = () => {
 
         const newThemeMode = themeMode === 'light' ? 'dark' : 'light';
         setThemeMode(newThemeMode);
-
+        const htmlElement = document.querySelector('html');
+        htmlElement.setAttribute('data-sidebar', newThemeMode);
+        htmlElement.setAttribute('data-layout-mode', newThemeMode);
+        htmlElement.setAttribute('data-topbar', newThemeMode);
         localStorage.setItem('theme_mode', newThemeMode);
 
-        setTimeout(() => {
-            window.location.reload();
-        }, 200);
+        // setTimeout(() => {
+        //     window.location.reload();
+        // }, 200);
     };
 
 
@@ -150,6 +153,7 @@ const DropDown = () => {
               {Role !== "USER" ?   <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
                     <button
                         type="button"
+                        data-bs-dismiss="modal"
                         className="btn btn-primary cancel-btn me-2 mt-2"
                         style={{
                             backgroundColor: "#1E88E5",
