@@ -51,11 +51,10 @@ export default function AllUsers() {
   });
 
 
-  console.log("getAllUsers :", getAllUsers)
+  
 
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
-
 
 
   const styles = {
@@ -75,10 +74,6 @@ export default function AllUsers() {
       marginRight: 8,
     },
   };
-
-
-
-
 
 
   const showLicenceName = (row) => {
@@ -261,7 +256,7 @@ export default function AllUsers() {
 
 
   const handleEdit = (row) => {
-    console.log("row.id :", row._id)
+   
     navigate('/subadmin/user/edit/' + row._id)
   };
 

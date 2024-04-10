@@ -36,6 +36,8 @@ function GroupStrategy() {
         data: [],
     });
 
+    console.log("allGroupService :", allGroupService)
+
     const [showModal, setShowModal] = useState(false)
     const [showModal1, setShowModal1] = useState(false)
     const [ForGetCSV, setForGetCSV] = useState([])
@@ -46,7 +48,6 @@ function GroupStrategy() {
 
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
-
 
     const styles = {
         container: {
@@ -186,7 +187,6 @@ function GroupStrategy() {
 
     const GetAllServicesUserName = (row) => {
 
-
     }
 
 
@@ -232,16 +232,13 @@ function GroupStrategy() {
                     ...row,
                     id: index + 1,
                 }));
+                
 
                 const filteredData = formattedData.filter((item) => {
-
                     const searchTermMatch =
                         inputSearch === '' ||
-
-                        item.name.toLowerCase().includes(inputSearch.toLowerCase())
-
-
-
+                        item.name.toLowerCase().includes(inputSearch.toLowerCase()) || 
+                        item.description.toLowerCase().includes(inputSearch.toLowerCase())
 
                     return searchTermMatch;
                 });

@@ -547,7 +547,15 @@ class GroupService {
   // GET ALL GROUP BY SERVICES
   async getAllgroupServices(req, res) {
     try {
+      const { id } = req.body
+
       const pipeline = [
+        {
+          '$match': {
+            'maker_id': new ObjectId(id)
+          }
+        },
+
         {
           '$lookup': {
             'from': 'servicegroup_services_ids',
@@ -730,7 +738,7 @@ class GroupService {
         const Service_name_get = await services.aggregate(pipeline)
 
 
-        
+
         if (Service_name_get) {
           ServicesArr.push({ data: Service_name_get })
 
