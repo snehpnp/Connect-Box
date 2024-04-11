@@ -453,7 +453,7 @@ function Strategy() {
                                                 <h6>Segment: {stg.strategy_segment}</h6>
                                                  
                                                 <h2 className="my-2">{stg.strategy_name}</h2>
-                                                    {/* <p>Category: {stg.strategy_category}</p> */}
+                                                    
                                                 </div>
                                                 <span className="icon-frame d-flex align-items-center justify-content-center">
                                                     <img src= "assets/img/icons/price-01.svg" alt="img" />
