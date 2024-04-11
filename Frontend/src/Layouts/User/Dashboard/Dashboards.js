@@ -1,7 +1,7 @@
 import React from "react";
 
 const Dashboards = () => {
-  var Role = JSON.parse(localStorage.getItem("user_details")).Role;
+  // var Role = JSON.parse(localStorage.getItem("user_details")).Role;
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
 
   const getGreetingMessage = () => {
