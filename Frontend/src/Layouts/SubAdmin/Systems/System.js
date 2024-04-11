@@ -292,18 +292,7 @@ function System() {
                     <div className="invoice-total-inner">
                       {getCompanyData && getCompanyData[0] ? (
                         <>
-                          {/* <p>
-                            favicon{" "}
-                            {getCompanyData[0]?.favicon ? (
-                              <img
-                                src={getCompanyData[0]?.favicon}
-                                alt="favicon"
-                                style={{ height: "80px", width: "80px" }}
-                              />
-                            ) : (
-                              <span>Data not found</span>
-                            )}
-                          </p> */}
+                           
                           <p>
                             Logo{" "}
                             {getCompanyData[0]?.logo ? (
@@ -316,18 +305,7 @@ function System() {
                               <span>Data not found</span>
                             )}
                           </p>
-                          {/* <p>
-                            Login Image{" "}
-                            {getCompanyData[0]?.loginimage ? (
-                              <img
-                                src={getCompanyData[0]?.loginimage}
-                                alt="Login Image"
-                                style={{ height: "80px", width: "80px" }}
-                              />
-                            ) : (
-                              <span>Data not found</span>
-                            )}
-                          </p> */}
+                         
                         </>
                       ) : (
                         <p>Data not found</p>
