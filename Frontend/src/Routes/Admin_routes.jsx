@@ -15,6 +15,7 @@ import Positions from '../Layouts/Admin/Trade/Position';
 
 import Test from '../Layouts/Admin/Dashboard/text';
 
+import Login from '../Layouts/Auth/Login';
 
 import MessageBrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast';
 
@@ -54,6 +55,7 @@ const Admin_Routing = () => {
                     <Route exact path="/faqs" element={<Faqs />} />
                     <Route exact path="/message-broadcast" element={<MessageBrodcast />} />
                     <Route exact path="/sub" element={<Sub />} />
+                    <Route path="/login" element={<Login />} />
 
                     <Route exact path="/subadmin/company" element={<SubAdCompanyInfo />} />
                     <Route exact path="/orders" element={<Orders />} />

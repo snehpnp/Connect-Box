@@ -14,8 +14,9 @@ import { useNavigate } from "react-router-dom";
 function Login() {
     const dispatch = useDispatch();
     const navigate = useNavigate()
+var theme_mode= localStorage.getItem('theme_mode')
 
-    const [showPassword, setShowPassword] = useState(false);
+     const [showPassword, setShowPassword] = useState(false);
 
     const [typeOtp, setTypeOtp] = useState("");
 
@@ -160,14 +161,21 @@ function Login() {
     };
 
 
-
+    useEffect(() => {
+        console.log("theme_mode",theme_mode)
+        const htmlElement = document.querySelector('html');
+        htmlElement.setAttribute('data-sidebar', theme_mode);
+        htmlElement.setAttribute('data-layout-mode', theme_mode);
+        htmlElement.setAttribute('data-topbar', theme_mode);
+    }, [])
+    
     return (
 
         <>
 
             <>
                 <div className="main-wrapper login-body">
-                    <div className="login-wrapper">
+                    <div className="login-wrapper page-wrapper">
                         <div className="container">
                             <img
                                 className="img-fluid logo-dark mb-2 logo-color"
