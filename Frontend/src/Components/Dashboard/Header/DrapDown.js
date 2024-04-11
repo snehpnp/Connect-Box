@@ -150,7 +150,7 @@ const DropDown = () => {
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
-              {Role !== "USER" ?   <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
+                {Role !== "USER" ? <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
                     <button
                         type="button"
                         data-bs-dismiss="modal"
@@ -166,12 +166,12 @@ const DropDown = () => {
                             boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
                             cursor: "pointer"
                         }}
-                        
+
                     >
                         {showFunds ? (
                             <span>
                                 <IndianRupee style={{ height: "24px", marginRight: "10px" }} />
-                                <strong>{profileData &&  profileData[0].Balance || "-"}</strong>
+                                <strong>{profileData && profileData[0].Balance || "-"}</strong>
                             </span>
                         ) : (
                             <span>
@@ -181,18 +181,13 @@ const DropDown = () => {
                         )}
                         {/* {showFunds && "+"} */}
                     </button>
-                </li> :""}
-              
+                </li> : ""}
 
 
 
 
-                <li className='nav-item dropdown  dropdown-heads'>
-                    <label className="theme-switch mb-0">
-                        <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
-                        <span className="slider"></span>
-                    </label>
-                </li>
+
+
 
 
 
@@ -240,7 +235,7 @@ const DropDown = () => {
                         </a>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="subscription-menu">
-                                <ul>
+                                <ul className="list-unstyled">
                                     <li>
                                         <Link className="dropdown-item dev" to="/profile">
                                             Profile
@@ -251,15 +246,22 @@ const DropDown = () => {
                                             Settings
                                         </Link>
                                     </li>
+                                    <li className='dropdown-item de '>
+                                        <label className="theme-switch mb-0">
+                                            <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
+                                            <span className="slider"></span>
+                                        </label>
+                                        
+                                    </li>
                                     <li>
                                         <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
                                             Log out
                                         </a>
-
                                     </li>
                                 </ul>
                             </div>
                         </div>
+
                     </div>
 
                     <div style={{ height: "144px" }} className={`dropdown-menu menu-drop-user ${isDropdownOpen ? 'show' : ''}`}>
@@ -275,6 +277,12 @@ const DropDown = () => {
                                         <Link className="dropdown-item dev" to="/settings">
                                             Settings
                                         </Link>
+                                    </li>
+                                    <li className='dropdown-item de nav-item dropdown  dropdown-heads'>
+                                        <label className="theme-switch mb-0">
+                                            <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
+                                            <span className="slider"></span>
+                                        </label>
                                     </li>
                                     <li>
                                         <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>

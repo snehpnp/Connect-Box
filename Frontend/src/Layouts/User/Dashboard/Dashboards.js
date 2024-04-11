@@ -52,26 +52,28 @@ const Dashboards = () => {
 
             <div className="col-xl-7 d-flex p-0">
               <div className="row dash-company-row w-100 m-0">
+
                 <div className="col-lg-3 col-sm-6 d-flex">
-                  <div className="company-detail-card w-100">
+                  <div className="company-detail-card bg-success-light w-100">
                     <div className="company-icon">
                       <img
-                        src="assets/img/icons/dash-card-icon-01.svg"
+                        src="assets/img/icons/dash-card-icon-04.svg"
                         alt=""
                       />
                     </div>
                     <div className="dash-comapny-info">
-                      <h6>Total Companies</h6>
-                      <h5>987</h5>
+                      <h6>Total Strategies </h6>
+                      <h5>6</h5>
                       <p>
                         <span>
-                          14% <i className="fe fe-chevrons-up" />
+                          6% <i className="fe fe-chevrons-up" />
                         </span>
                         Last month
                       </p>
                     </div>
                   </div>
                 </div>
+
                 <div className="col-lg-3 col-sm-6 d-flex">
                   <div className="company-detail-card bg-info-light w-100">
                     <div className="company-icon">
@@ -81,7 +83,7 @@ const Dashboards = () => {
                       />
                     </div>
                     <div className="dash-comapny-info">
-                      <h6>Active Companies</h6>
+                      <h6>Your Strategies</h6>
                       <h5>154</h5>
                       <p>
                         <span>
@@ -92,6 +94,7 @@ const Dashboards = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="col-lg-3 col-sm-6 d-flex">
                   <div className="company-detail-card bg-pink-light w-100">
                     <div className="company-icon">
@@ -101,7 +104,7 @@ const Dashboards = () => {
                       />
                     </div>
                     <div className="dash-comapny-info">
-                      <h6>Inactive Company</h6>
+                      <h6>Active Strategies</h6>
                       <h5>2</h5>
                       <p>
                         <span>
@@ -112,6 +115,7 @@ const Dashboards = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="col-lg-3 col-sm-6 d-flex">
                   <div className="company-detail-card bg-success-light w-100">
                     <div className="company-icon">
@@ -121,7 +125,7 @@ const Dashboards = () => {
                       />
                     </div>
                     <div className="dash-comapny-info">
-                      <h6>Total Active Plans</h6>
+                      <h6>Inactive Strategies </h6>
                       <h5>6</h5>
                       <p>
                         <span>
@@ -134,18 +138,20 @@ const Dashboards = () => {
                 </div>
               </div>
             </div>
+
+
             <div className="col-xl-5 d-flex">
               <div className="card super-admin-dash-card">
                 <div className="card-header">
                   <div className="row align-center">
                     <div className="col">
                       <h5 className="card-title mt-2 ms-2">
-                        Latest Registered Companies
+                        Latest Strategies
                       </h5>
                     </div>
                     <div className="col-auto">
                       <a
-                        href="companies.html"
+                        href="/#/user/dashboard"
                         className="btn-right btn btn-sm btn-outline-primary mt-2 me-2"
                       >
                         View All
@@ -322,7 +328,7 @@ const Dashboards = () => {
               <div className="card super-admin-dash-card">
                 <div className="card-header">
                   <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="card-title mt-2 ms-2">Earnings </h5>
+                    <h5 className="card-title mt-2 ms-2">Your Orders </h5>
                     <div className="d-flex align-center">
                       <span className="earning-income-text">
                         <i />
@@ -371,16 +377,304 @@ const Dashboards = () => {
                     </div>
                   </div>
                 </div>
-                <div className="card-body p-0">
-                  <div id="earnings-chart" />
+
+                <div className="card-body p-0 mr-2" style={{ maxHeight: "300px", overflowY: "auto" }}>
+                  <div className="table-responsive">
+                    <table className="table table-stripped table-hover">
+                      <tbody>
+                        <tr>
+                          <td>
+                            <h2 className="table-avatar">
+                              <a
+                                href="profile.html"
+                                className="company-avatar avatar-md me-2 companies company-icon"
+                              >
+                                <img
+                                  className="avatar-img rounded-circle company"
+                                  src="assets/img/companies/company-01.svg"
+                                  alt="Company Image"
+                                />
+                              </a>
+                              <a href="companies.html">
+                                Hermann Groups{" "}
+                                <span className="plane-type">
+                                  Basic (Monthly)
+                                </span>
+                              </a>
+                            </h2>
+                          </td>
+                          <td>24 Feb 2024</td>
+                          <td className="text-end">
+                            <a
+                              href="companies.html"
+                              className="view-companies btn"
+                            >
+                              View
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <h2 className="table-avatar">
+                              <a
+                                href="profile.html"
+                                className="company-avatar avatar-md me-2 companies company-icon"
+                              >
+                                <img
+                                  className="avatar-img rounded-circle company"
+                                  src="assets/img/companies/company-02.svg"
+                                  alt="Company Image"
+                                />
+                              </a>
+                              <a href="companies.html">
+                                Skiles LLC{" "}
+                                <span className="plane-type">
+                                  Enterprise (Yearly)
+                                </span>
+                              </a>
+                            </h2>
+                          </td>
+                          <td>23 Feb 2024</td>
+                          <td className="text-end">
+                            <a
+                              href="companies.html"
+                              className="view-companies btn"
+                            >
+                              View
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <h2 className="table-avatar">
+                              <a
+                                href="profile.html"
+                                className="company-avatar avatar-md me-2 companies company-icon"
+                              >
+                                <img
+                                  className="avatar-img rounded-circle company"
+                                  src="assets/img/companies/company-03.svg"
+                                  alt="Company Image"
+                                />
+                              </a>
+                              <a href="companies.html">
+                                Kerluke Group{" "}
+                                <span className="plane-type">
+                                  Advanced (Monthly)
+                                </span>
+                              </a>
+                            </h2>
+                          </td>
+                          <td>22 Feb 2024</td>
+                          <td className="text-end">
+                            <a
+                              href="companies.html"
+                              className="view-companies btn"
+                            >
+                              View
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <h2 className="table-avatar">
+                              <a
+                                href="profile.html"
+                                className="company-avatar avatar-md me-2 companies company-icon"
+                              >
+                                <img
+                                  className="avatar-img rounded-circle company"
+                                  src="assets/img/companies/company-04.svg"
+                                  alt="Company Image"
+                                />
+                              </a>
+                              <a href="companies.html">
+                                Schowalter Group{" "}
+                                <span className="plane-type">
+                                  Basic (Yearly)
+                                </span>
+                              </a>
+                            </h2>
+                          </td>
+                          <td>21 Feb 2024</td>
+                          <td className="text-end">
+                            <a
+                              href="companies.html"
+                              className="view-companies btn"
+                            >
+                              View
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <h2 className="table-avatar">
+                              <a
+                                href="profile.html"
+                                className="company-avatar avatar-md me-2 companies company-icon"
+                              >
+                                <img
+                                  className="avatar-img rounded-circle company"
+                                  src="assets/img/companies/company-05.svg"
+                                  alt="Company Image"
+                                />
+                              </a>
+                              <a href="companies.html">
+                                Accentric Global{" "}
+                                <span className="plane-type">
+                                  Basic (Monthly)
+                                </span>
+                              </a>
+                            </h2>
+                          </td>
+                          <td>20 Feb 2024</td>
+                          <td className="text-end">
+                            <a
+                              href="companies.html"
+                              className="view-companies btn"
+                            >
+                              View
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <h2 className="table-avatar">
+                              <a
+                                href="profile.html"
+                                className="company-avatar avatar-md me-2 companies company-icon"
+                              >
+                                <img
+                                  className="avatar-img rounded-circle company"
+                                  src="assets/img/companies/company-02.svg"
+                                  alt="Company Image"
+                                />
+                              </a>
+                              <a href="companies.html">
+                                Skiles LLC{" "}
+                                <span className="plane-type">
+                                  Enterprise (Yearly)
+                                </span>
+                              </a>
+                            </h2>
+                          </td>
+                          <td>23 Feb 2024</td>
+                          <td className="text-end">
+                            <a
+                              href="companies.html"
+                              className="view-companies btn"
+                            >
+                              View
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <h2 className="table-avatar">
+                              <a
+                                href="profile.html"
+                                className="company-avatar avatar-md me-2 companies company-icon"
+                              >
+                                <img
+                                  className="avatar-img rounded-circle company"
+                                  src="assets/img/companies/company-03.svg"
+                                  alt="Company Image"
+                                />
+                              </a>
+                              <a href="companies.html">
+                                Kerluke Group{" "}
+                                <span className="plane-type">
+                                  Advanced (Monthly)
+                                </span>
+                              </a>
+                            </h2>
+                          </td>
+                          <td>22 Feb 2024</td>
+                          <td className="text-end">
+                            <a
+                              href="companies.html"
+                              className="view-companies btn"
+                            >
+                              View
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <h2 className="table-avatar">
+                              <a
+                                href="profile.html"
+                                className="company-avatar avatar-md me-2 companies company-icon"
+                              >
+                                <img
+                                  className="avatar-img rounded-circle company"
+                                  src="assets/img/companies/company-04.svg"
+                                  alt="Company Image"
+                                />
+                              </a>
+                              <a href="companies.html">
+                                Schowalter Group{" "}
+                                <span className="plane-type">
+                                  Basic (Yearly)
+                                </span>
+                              </a>
+                            </h2>
+                          </td>
+                          <td>21 Feb 2024</td>
+                          <td className="text-end">
+                            <a
+                              href="companies.html"
+                              className="view-companies btn"
+                            >
+                              View
+                            </a>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <h2 className="table-avatar">
+                              <a
+                                href="profile.html"
+                                className="company-avatar avatar-md me-2 companies company-icon"
+                              >
+                                <img
+                                  className="avatar-img rounded-circle company"
+                                  src="assets/img/companies/company-05.svg"
+                                  alt="Company Image"
+                                />
+                              </a>
+                              <a href="companies.html">
+                                Accentric Global{" "}
+                                <span className="plane-type">
+                                  Basic (Monthly)
+                                </span>
+                              </a>
+                            </h2>
+                          </td>
+                          <td>20 Feb 2024</td>
+                          <td className="text-end">
+                            <a
+                              href="companies.html"
+                              className="view-companies btn"
+                            >
+                              View
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
+
+
               </div>
             </div>
+
             <div className="col-xl-4 d-flex">
               <div className="card super-admin-dash-card flex-fill">
                 <div className="card-header">
                   <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="card-title mt-2 ms-2">Most Ordered Plan</h5>
+                    <h5 className="card-title mt-2 ms-2">Most Ordered Strategy</h5>
                     <div className="dropdown main">
                       <button
                         className="btn btn-white btn-sm dropdown-toggle mt-2 me-2"
@@ -447,7 +741,7 @@ const Dashboards = () => {
                 <div className="card-header">
                   <div className="d-flex justify-content-between align-items-center">
                     <h5 className="card-title mt-2 ms-2">
-                      Top Company with Plan
+                      Top Plan
                     </h5>
                     <div className="dropdown main">
                       <button
@@ -508,7 +802,7 @@ const Dashboards = () => {
               <div className="card super-admin-dash-card flex-fill">
                 <div className="card-header">
                   <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="card-title mt-2 ms-2">Most Domains</h5>
+                    <h5 className="card-title mt-2 ms-2">Most Profitabel Strategies</h5>
                     <div className="dropdown main">
                       <button
                         className="btn btn-white btn-sm dropdown-toggle mt-2 me-2"
