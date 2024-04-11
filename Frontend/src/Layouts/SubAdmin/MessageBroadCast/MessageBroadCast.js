@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Content from "../../../Components/Dashboard/Content/Content";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import {
@@ -11,10 +10,12 @@ import {
   admin_Msg_Delete,
   add_message,
   admin_Msg_Get,
-  admin_Msg_Edit
+  admin_Msg_Edit,
 } from "../../../ReduxStore/Slice/Admin/MessageData";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import io from "socket.io-client";
+// const socket = io("http://localhost:3000");
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
@@ -27,11 +28,24 @@ function MessageBroadcast() {
   const [selectedBroker, setSelectedBroker] = useState("");
   const [messageText, setMessageText] = useState("");
   const datas = JSON.parse(localStorage.getItem("user_details"));
+  const ownerId=datas.user_id;
   const [modal, setModal] = useState(0);
   const [msgData, setMsgData] = useState([]);
+  const [isSentChecked, setIsSentChecked] = useState(false);
+  const [isReceivedChecked, setIsReceivedChecked] = useState(false);
 
   const [openModalId, setopenModalId] = useState("");
   const [refresh, setrefresh] = useState(false);
+
+  // useEffect(() => {
+  //   socket.on("messagesUpdated", (data) => {
+  //     console.log("Received updated messages:", data);
+  //     setPipelineData(data);
+  //   });
+  //   return () => {
+  //     socket.off("messagesUpdated");
+  //   };
+  // }, []);
 
   const OpenModal = (value) => {
     setModal(value);
@@ -111,7 +125,6 @@ function MessageBroadcast() {
   };
 
   const sendMessage = async () => {
-    const ownerId = datas.user_id;
     try {
       const newMessage = {
         Role: datas.Role,
@@ -125,6 +138,7 @@ function MessageBroadcast() {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
+            // socket.emit("newMessage", newMessage);
             toast.success(response.msg);
           } else {
             toast.error(response.msg);
@@ -151,8 +165,7 @@ function MessageBroadcast() {
   };
 
   const getSubadminTableData = async () => {
-    const ownerId = datas.user_id;
-    await dispatch(admin_Msg_Get({ ownerId: ownerId }))
+    await dispatch(admin_Msg_Get({ ownerId,key:2 }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
@@ -173,13 +186,13 @@ function MessageBroadcast() {
     getSubadminTableData();
   }, []);
 
-  const handleDlt= async (id)=>{
+  const handleDlt = async (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this message?"
     );
     if (confirmed) {
       await dispatch(admin_Msg_Delete({ id }))
-        .unwrap() 
+        .unwrap()
         .then(async (response) => {
           if (response.status) {
             toast.success(response.msg);
@@ -192,12 +205,39 @@ function MessageBroadcast() {
           console.log("Error", error);
         });
     }
-  }
+  };
   const handleIdCheck = (id) => {
-    console.log("id from check",id)
+    console.log("id from check", id);
     setopenModalId(id);
     OpenModal(1);
   };
+
+  const handleSentChange = () => {
+    setIsSentChecked(!isSentChecked);
+  };
+
+  const handleReceivedChange = () => {
+    setIsReceivedChecked(!isReceivedChecked);
+  };
+
+console.log("pipelineData",pipelineData)
+
+  let filteredData = [];
+  if (isSentChecked && !isReceivedChecked) {
+    filteredData = pipelineData.filter(
+      (message) => message.ownerId === ownerId
+    );
+    console.log("filteredData is in if",filteredData)
+  } else if (!isSentChecked && isReceivedChecked) {
+
+    filteredData = pipelineData.filter(
+      (message) =>
+        Array.isArray(message.subAdminId) &&
+        message.subAdminId.find(element => element.id.toString() == ownerId) 
+        
+    );
+    console.log("filteredData",filteredData.subAdminId)
+  }
 
   return (
     <Content
@@ -271,7 +311,38 @@ function MessageBroadcast() {
             Send
           </button>
 
-          <div className="mt-3">
+
+
+          <div className="mt-3 ">
+            <div className="d-flex">
+              <div className="form-check ">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value="sent"
+                  id="sent"
+                  checked={isSentChecked}
+                  onChange={handleSentChange}
+                />
+                <label className="form-check-label" for="sent">
+                  Sent Messages
+                </label>
+              </div>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  value="sent"
+                  id="sent"
+                  checked={isReceivedChecked}
+                  onChange={handleReceivedChange}
+                />
+                <label className="form-check-label" for="recieve">
+                  Recieved Messages
+                </label>
+              </div>
+            </div>
+
             <table className="table">
               <thead>
                 <tr>
@@ -283,34 +354,35 @@ function MessageBroadcast() {
                 </tr>
               </thead>
               <tbody>
-                {pipelineData &&
-                  pipelineData.map((message, index) => (
-                    <tr key={message.id}>
-                      <th scope="row">{index + 1}</th>
-                      <td>{message.ownerId}</td>
-                      <td>{message.messageTitle}</td>
-                      <td>{message.createdAt}</td>
-                      <td>
+                {filteredData.map((message, index) => (
+                  <tr key={message._id}>
+                    <th scope="row">{index + 1}</th>
+                    <td>{message.Role}</td>
+                    <td>{message.messageTitle}</td>
+                    <td>{message.createdAt}</td>
+                    <td>
                       <button
-                          onClick={() =>
-                            handleIdCheck(message._id)
-                          }
-                          style={{ backgroundColor: "greenyellow" }}
-                        >
-                          <EditIcon />
-                        </button>
-                        <button
-                          onClick={()=>handleDlt(message._id)}
-                          style={{ backgroundColor: "firebrick" }}
-                        >
-                          <DeleteOutlineOutlinedIcon />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                        onClick={() => handleIdCheck(message._id)}
+                        style={{ backgroundColor: "greenyellow" }}
+                      >
+                        <EditIcon />
+                      </button>
+                      <button
+                        onClick={() => handleDlt(message._id)}
+                        style={{ backgroundColor: "firebrick" }}
+                      >
+                        <DeleteOutlineOutlinedIcon />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
+
+
+
+
           {modal !== 0 && (
             <div
               className="modal fade show"
