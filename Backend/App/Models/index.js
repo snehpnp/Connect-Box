@@ -30,6 +30,7 @@ module.exports = {
     msgdata:require('./message_broadcast'),
     Plan:require('./Plan.model'),
 
+    Signals:require('./Signals.model'),
 
 
 
