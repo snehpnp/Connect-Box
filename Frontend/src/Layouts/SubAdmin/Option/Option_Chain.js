@@ -6,6 +6,10 @@ import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTa
 import Loader from '../../../Utils/Loader';
 import { fDateTime } from '../../../Utils/Date_formet';
 import CompanyChange from '../../../Components/ExtraComponents/Models/CompanyChange';
+import {
+    getAllServices,
+    getCatogries,
+} from "../../../ReduxStore/Slice/Subadmin/allServices";
 
 
 function Option_Chain() {
@@ -14,13 +18,16 @@ function Option_Chain() {
     const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
     const [selectedRow, setSelectedRow] = useState(null);
     const [symbolStrike, setSymbolStrike] = useState('')
-    const [symbol, setSymbol] = useState('')
+
     const [expiry, setExpiry] = useState('')
     const [strategy, setStrategy] = useState('')
     const [ButtonDisabled, setButtonDisabled] = useState(false)
     const [refresh, setRefresh] = useState(false)
 
-
+    const [symbol, setSymbol] = useState({
+        loading: false,
+        data: []
+    })
     const [companyData, setCompanyData] = useState({
         loading: false,
         data: [],
@@ -185,6 +192,35 @@ function Option_Chain() {
     }, []);
 
 
+    const getSymbols = async () => {
+        var data = { segment: 'O' }
+        await dispatch(getAllServices(data)).unwrap()
+            .then((response) => {
+                if (response.status) {
+                    setSymbol({
+                        loading: true,
+                        data: response.data
+                    })
+                }
+                else {
+                    setSymbol({
+                        loading: true,
+                        data: []
+                    })
+                }
+            })
+            .catch((err) => {
+                console.log("Error to finding in the Symbols ", err);
+            })
+    }
+
+    useState(() => {
+        getSymbols()
+    },[])
+
+    console.log("symbol :", symbol.data)
+
+
 
     return (
         <>
@@ -202,23 +238,23 @@ function Option_Chain() {
                                     <select
                                         name="symbols_filter"
                                         className="default-select wide form-control spacing  "
-                                    onChange={(e) => {
-                                        setSymbol(e.target.value)
-                                        setSymbolStrike(e.target.options[e.target.selectedIndex].getAttribute("name"))
-                                        setStrategy("")
-                                        setExpiry("")
-                                        setOptionChainData({
-                                            loading: false,
-                                            data: [],
-                                        });
-                                    }}
+                                        onChange={(e) => {
+                                            setSymbol(e.target.value)
+                                            setSymbolStrike(e.target.options[e.target.selectedIndex].getAttribute("name"))
+                                            setStrategy("")
+                                            setExpiry("")
+                                            setOptionChainData({
+                                                loading: false,
+                                                data: [],
+                                            });
+                                        }}
                                     >
                                         <option value="" >Select Stock Name</option>
-                                        <option value="" >Select Stock Name</option>
 
-                                        {/* {All_Symbols.data && All_Symbols.data.map((item) => {
-                                            return <option value={item.symbol} name={item.price}>{item.symbol}</option>
-                                        })} */}
+
+                                        { symbol.data && symbol.data.map((item) => {
+                                            return <option key={item._id} value={item.name} name={item.name}>{item.name}</option>
+                                        })}
                                     </select>
                                 </div>
                                 <div className="col-md-2 text-secondary input-block">
