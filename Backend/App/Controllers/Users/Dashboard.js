@@ -19,32 +19,41 @@ class Dashboard {
     // GET ADMIN SIGNALS
     async UserDashboardData(req, res) {
         try {
-            const { id } = req.body
-
-            var User = await user_modal.find({ _id: id }).select('parent_id')
-
-            const TotalStrategyCount = await Strategies.countDocuments({ maker_id: User[0].parent_id });
-            const YourStrategies = await strategy_client.countDocuments({ user_id: User[0]._id });
-            const YourActiveStrategies = await strategy_client.countDocuments({ user_id: User[0]._id, ActiveStatus: "1" });
-            const YourInActiveStrategies = await strategy_client.countDocuments({ user_id: User[0]._id, ActiveStatus: "0" });
-
-            const Latest_Strategies = await Strategies.find({ maker_id: User[0].parent_id })
-            .sort({ createdAt: -1 }) 
-            .select('strategy_name strategy_segment createdAt strategy_image'); 
-        
-  
-            const mostOrderedStrategy = await strategy_client.aggregate([
+            const { id } = req.body;
+    
+            // Fetch parent_id of the user
+            const user = await user_modal.findById(id).select('parent_id');
+            if (!user) {
+                return res.status(404).json({ status: false, msg: "User not found" });
+            }
+            const parent_id = user.parent_id;
+    
+            // Get total strategy count for the parent user
+            const TotalStrategyCount = await Strategies.countDocuments({ maker_id: parent_id });
+    
+            // Get counts for the logged-in user's strategies
+            const YourStrategies = await strategy_client.countDocuments({ user_id: id });
+            const YourActiveStrategies = await strategy_client.countDocuments({ user_id: id, ActiveStatus: "1" });
+            const YourInActiveStrategies = await strategy_client.countDocuments({ user_id: id, ActiveStatus: "0" });
+    
+            // Get latest strategies for the parent user
+            const Latest_Strategies = await Strategies.find({ maker_id: parent_id })
+                .sort({ createdAt: -1 })
+                .select('strategy_name strategy_segment createdAt strategy_image');
+    
+            // Get the most ordered strategy
+            const mostOrderedStrategyResult = await strategy_client.aggregate([
                 {
                     $group: {
-                        _id: "$strategy_id", // Group by strategy_id
-                        count: { $sum: 1 } // Count occurrences of each strategy_id
+                        _id: "$strategy_id",
+                        count: { $sum: 1 }
                     }
                 },
                 {
-                    $sort: { count: -1 } // Sort by count in descending order
+                    $sort: { count: -1 }
                 },
                 {
-                    $limit: 1 // Limit to the first document
+                    $limit: 1
                 },
                 {
                     $lookup: {
@@ -65,30 +74,29 @@ class Dashboard {
                     }
                 }
             ]);
-            
-           
-            
-
-
-        
-            var StrategyCount = {
-                TotalStrategyCount: TotalStrategyCount,
-                YourStrategies: YourStrategies,
-                YourActiveStrategies: YourActiveStrategies,
-                YourInActiveStrategies: YourInActiveStrategies
-            }
-
-            var data = [{ StrategyCount: StrategyCount, Latest_Strategies: Latest_Strategies ,mostOrderedStrategy:mostOrderedStrategy,MostProfitabelStrategies:mostOrderedStrategy
-            }]
-
+    
+            const mostOrderedStrategy = mostOrderedStrategyResult.length > 0 ? mostOrderedStrategyResult[0] : null;
+    
+            // Combine all data into a single object
+            const data = {
+                StrategyCount: {
+                    TotalStrategyCount,
+                    YourStrategies,
+                    YourActiveStrategies,
+                    YourInActiveStrategies
+                },
+                Latest_Strategies,
+                mostOrderedStrategy
+            };
+    
             console.log(data);
-
-            return res.send({ status: true, data:data , msg: "Done" })
-
+            return res.json({ status: true, data, msg: "Done" });
         } catch (error) {
-            console.log("Error Signals  error -", error);
+            console.log("Error:", error);
+            return res.status(500).json({ status: false, msg: "Internal server error" });
         }
     }
+    
 
 
 }
