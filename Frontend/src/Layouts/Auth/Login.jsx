@@ -49,7 +49,7 @@ function Login() {
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
-                localStorage.setItem("theme_mode", "dark");
+                // localStorage.setItem("theme_mode", "light");
                 setIsLoading(true)
                 setShowModal(false)
                 setTimeout(() => {
@@ -62,13 +62,13 @@ function Login() {
                     "user_details",
                     JSON.stringify(getData)
                 );
-                localStorage.setItem("theme_mode", "dark");
+                // localStorage.setItem("theme_mode", "light");
 
                 localStorage.setItem(
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
-                localStorage.setItem("theme_mode", "dark");
+                // localStorage.setItem("theme_mode", "light");
 
                 setIsLoading(true)
                 setShowModal(false)
@@ -87,7 +87,7 @@ function Login() {
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
-                localStorage.setItem("theme_mode", "dark");
+                // localStorage.setItem("theme_mode", "light");
 
                 setIsLoading(true)
                 setShowModal(false)
@@ -106,7 +106,7 @@ function Login() {
                     "user_role",
                     JSON.stringify(getData.Role)
                 );
-                localStorage.setItem("theme_mode", "dark");
+                // localStorage.setItem("theme_mode", "light");
 
                 setIsLoading(true)
                 setShowModal(false)

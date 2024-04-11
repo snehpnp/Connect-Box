@@ -62,7 +62,11 @@ const DropDown = () => {
     const LogoutUser = (e) => {
         e.stopPropagation(); // Stop event propagation
         console.log("LogoutUser function is called");
-        localStorage.clear();
+        // localStorage.clear();
+
+        localStorage.removeItem('user_details')
+        localStorage.removeItem('user_role')
+
         window.location.reload();
     };
 
