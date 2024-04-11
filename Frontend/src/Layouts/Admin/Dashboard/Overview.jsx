@@ -405,9 +405,9 @@ const Overview = () => {
                             className="dropdown-menu"
                             aria-labelledby="planDropdownButton"
                           >
-                            {dropdown.map((data) => {
-                              return (
-                                <li>
+                            {/* subadminName.map((data, index) => ( */}
+                            {dropdown.map((data,index) => (
+                                <li key={index}>
                                   <a
                                     className="dropdown-item"
                                     onClick={handleSelect1}
@@ -415,8 +415,8 @@ const Overview = () => {
                                     {data}
                                   </a>
                                 </li>
-                              );
-                            })}
+                              ))
+                            }
                           </ul>
                         </div>
                       </div>

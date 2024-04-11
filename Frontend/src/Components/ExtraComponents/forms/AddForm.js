@@ -99,7 +99,7 @@ const DynamicForm = ({
                 {/*  form  */}
                 <div className="row d-flex ">
                   {fields.map((field, index) => (
-                    <>
+                    <React.Fragment key={index}>
                       {field.type === "text1" ? (
                         <>
                           <div className={`col-lg-${field.col_size}`}>
@@ -286,7 +286,7 @@ const DynamicForm = ({
                                   id={field.name}
                                   {...formik.getFieldProps(field.name)}
                                 >
-                                  <option value="" selected disable={true}>
+                                  <option value="" selected  >
                                     Please Select {field.label}
                                   </option>
                                   {field.options.map((option) => (
@@ -656,7 +656,7 @@ const DynamicForm = ({
                           </div>
                         </>
                       )}
-                    </>
+                    </React.Fragment>
                   ))}
                   {additional_field}
                   <div className="add-customer-btns text-end mt-3">

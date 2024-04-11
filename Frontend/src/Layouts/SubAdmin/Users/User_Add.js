@@ -105,15 +105,6 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-
-
-
-    // {
-    //   name: 'Per_trade', label: 'Per Trade', type: 'text',
-    //   showWhen: values => values.subadmin_servic_type === '1'
-    //   , label_size: 12, col_size: 6, disable: false
-    // },
-
     {
       name: "licence",
       label: "Lincense Type",
@@ -141,7 +132,7 @@ const AddClient = () => {
       name: 'demat_userid',
       label: 'Demat UserId',
       type: 'text',
-      showWhen: values => values.broker === '2'
+      showWhen: values => values.broker === '2' && values.licence!='1'
       , label_size: 12, col_size: 6, disable: false
     },
     {
@@ -304,9 +295,7 @@ const AddClient = () => {
 
 
 
-
-  //FIND ALL GROUP SERVICES
-  const FindAllGroupService = allGroupService.data.find(item => item._id === formik.values.groupservice);
+ 
 
 
   const getAllGroupServicesName = async () => {

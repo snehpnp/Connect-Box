@@ -129,7 +129,6 @@ const AddClient = () => {
 
       };
 
-      console.log("req :", req)
 
 
       // await dispatch(AddUsers(req))
@@ -155,7 +154,6 @@ const AddClient = () => {
     },
   });
 
-  console.log(" getOneUsers.getClients.license_type :", getOneUsers.getClients && getOneUsers.getClients[0].license_type)
 
 
   // 0 = 2 days 1= Demo 2 =Live
@@ -243,7 +241,7 @@ const AddClient = () => {
       name: 'demat_userid',
       label: 'Demat UserId',
       type: 'text',
-      showWhen: values => values.broker === '2'
+      showWhen: values => values.broker === '2' && values.licence!='1'
       , label_size: 12, col_size: 6, disable: false
     },
     {
@@ -462,7 +460,6 @@ const AddClient = () => {
   var planSelect = [1, 2, 3, 4]
 
 
-  console.log("serviceName",serviceName)
   return (
     <>
       {

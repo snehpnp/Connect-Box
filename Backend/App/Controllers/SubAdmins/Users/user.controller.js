@@ -1104,12 +1104,13 @@ class Users {
     }
   }
 
+
+
   // GET ALL GetAllClients
   async GetAllUser(req, res) {
     try {
       const { page, limit, Find_Role, user_ID } = req.body; //LIMIT & PAGE
-      // const skip = (page - 1) * limit;
-
+  
       if (!user_ID || user_ID == '' || user_ID == null) {
         return res.send({
           status: false,
@@ -1117,47 +1118,63 @@ class Users {
           data: [],
         });
       }
-
-
-
+  
       // GET ALL CLIENTS
-      var AdminMatch;
-      AdminMatch = { Role: "USER", parent_id: user_ID };
-
-
-
+      const AdminMatch = { Role: "USER", parent_id: user_ID };
       const getAllClients = await User_model.find(AdminMatch).sort({ CreateDate: -1 });
+      const totalCount= getAllClients.length;
 
-      // IF DATA NOT EXIST
-      if (getAllClients.length == 0) {
+
+      const totalActiveUser = getAllClients.filter((item)=>{
+        return item.ActiveStatus==1
+      }).length;
+
+      const liveUser = getAllClients.filter((item)=>{
+        return item.license_type == 2;
+      }).length;
+
+
+ 
+
+
+
+  
+ 
+ 
+  
+      // IF NO DATA EXIST
+      if (getAllClients.length === 0) {
         return res.send({
           status: false,
           msg: "Empty data",
           data: [],
-          // totalCount: totalCount,
         });
       }
-
-      // DATA GET SUCCESSFULLY
+  
+      // DATA RETRIEVED SUCCESSFULLY
       return res.send({
         status: true,
         msg: "Get All Clients",
-        // totalCount: totalCount,
         data: getAllClients,
-        // page: Number(page),
-        // limit: Number(limit),
-        // totalPages: Math.ceil(totalCount / Number(limit)),
+        liveUser : liveUser,
+        activeClientsCount: totalActiveUser,
+        totalCount : totalCount,
+        inActiveCount : totalCount- totalActiveUser,
       });
     } catch (error) {
-      console.log("Error loginClients Error-", error);
+      console.log("Error fetching clients:", error);
       return res.send({
         status: false,
-        msg: "Empty data",
+        msg: "Error fetching clients",
         data: [],
-        // totalCount: totalCount,
+        liveUser: 0,
+        activeClientsCount: 0,
+        totalCount : 0,
+        inActiveCount : 0,
       });
     }
   }
+  
 
   async GetUser(req, res) {
     try {
