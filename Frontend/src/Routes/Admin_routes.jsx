@@ -26,6 +26,7 @@ import AllSubadmin from "../Layouts/Admin/Subadmin/AllSubAdmin"
 
 import Dummyform from "../Components/ExtraComponents/forms/Dummyform"
 
+import Profile from '../Layouts/Comman/Profile/Profile';
 
 
 import Sub from '../Layouts/Admin/Tabe/Sub';
@@ -73,6 +74,8 @@ const Admin_Routing = () => {
                     <Route exact path="/payment" element={<Payment />} />
 
                     <Route exact path="/wallet" element={<Wallets />} />
+                    <Route exact path="/profile" element={<Profile />} />
+
 
 
                 </Routes>

@@ -30,6 +30,13 @@ import Wallets from '../Layouts/Comman/Wallet/Wallets';
 
 import Strategyhistory from '../Layouts/SubAdmin/StrategyHistory/Strategy_history.js'
 
+
+
+
+import Profile from '../Layouts/Comman/Profile/Profile';
+
+
+
 // strategydesc
 const SubAdmin_Routing = () => {
 
@@ -60,6 +67,7 @@ const SubAdmin_Routing = () => {
           
           <Route exact path="/wallet" element={<Wallets />} />
           <Route exact path="/strategys/history" element={<Strategyhistory />} />
+          <Route exact path="/profile" element={<Profile />} />
 
 
 

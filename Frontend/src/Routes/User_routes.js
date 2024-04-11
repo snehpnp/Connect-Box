@@ -11,6 +11,7 @@ import Stocklist from '../Layouts/User/Stock/Clientservice';
 import Strategies from '../Layouts/User/Strategy/Strategies';
 
 
+import Profile from '../Layouts/Comman/Profile/Profile';
 
 
 // strategydesc
@@ -34,6 +35,7 @@ const User_Routing = () => {
                     <Route path="/payment" element={<Stocklist />} />
                     <Route path="/strategy" element={<Strategies />} />
 
+                    <Route exact path="/profile" element={<Profile />} />
 
 
 

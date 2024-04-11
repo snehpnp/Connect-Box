@@ -124,6 +124,19 @@ const DropDown = () => {
     }
 
 
+    const ProfilePage = () => {
+        if (Role == "ADMIN") {
+            navigate('/admin/profile')
+        } else if (Role == "SUBADMIN") {
+            navigate('/subadmin/profile')
+        } else if (Role == "USER") {
+            navigate('/user/profile')
+        } else if (Role == "EMPLOYEE") {
+            navigate('/employee/profile')
+        }
+
+    }
+
     const toggleFundsVisibility = () => {
         setShowFunds(!showFunds);
         walletmodal()
@@ -240,8 +253,8 @@ const DropDown = () => {
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="subscription-menu">
                                 <ul className="list-unstyled">
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/profile">
+                                    <li onClick={() => ProfilePage()}>
+                                        <Link className="dropdown-item dev" >
                                             Profile
                                         </Link>
                                     </li>
@@ -255,7 +268,7 @@ const DropDown = () => {
                                             <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
                                             <span className="slider"></span>
                                         </label>
-                                        
+
                                     </li>
                                     <li>
                                         <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
@@ -272,8 +285,8 @@ const DropDown = () => {
                         <div className="profilemenu table table-hover">
                             <div className="subscription-menu">
                                 <ul>
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/profile">
+                                    <li onClick={() => ProfilePage()}>
+                                        <Link className="dropdown-item dev" >
                                             Profile
                                         </Link>
                                     </li>
