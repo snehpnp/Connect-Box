@@ -336,6 +336,116 @@ class Subadmin {
     }
   }
 
+
+
+
+  async GetAllRechargeDetailsById(req, res) {
+    try {
+      const { Role,id } = req.body;
+
+      if (!id) {
+        return res.send({
+          status: false,
+          msg: "id is required in the request body",
+        });
+      }
+
+      const rechargeDetails = await count_licenses.aggregate([
+        {
+          $match: {user_id: new ObjectId(id)},
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "user_id",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $unwind: "$user",
+        },
+        {
+          $project: {
+            _id: 1,
+            Balance: 1,
+            Role: 1,
+            Mode:1,
+            createdAt: 1,
+
+            username: "$user.UserName",
+          },
+        },
+      ]);
+
+
+      const UsedBalance = await count_licenses.aggregate([
+        {
+            $match: { user_id: new ObjectId(id) },
+        },
+        {
+            $lookup: {
+                from: "users",
+                localField: "user_id",
+                foreignField: "_id",
+                as: "user",
+            },
+        },
+        {
+            $unwind: "$user",
+        },
+        {
+            $addFields: {
+                Balance: { $toInt: "$Balance" }, // Convert Balance field to integer
+            },
+        },
+        {
+            $project: {
+                _id: 1,
+                Balance: 1,
+                Role: 1,
+                Mode: 1,
+                createdAt: 1,
+                username: "$user.UserName",
+            },
+        },
+        {
+            $group: {
+                _id: "$username",
+                totalBalance: { $sum: "$Balance" }, // Calculate the sum of Balance field
+                Role: { $first: "$Role" }, // Take the first Role value
+                Mode: { $first: "$Mode" }, // Take the first Mode value
+                createdAt: { $first: "$createdAt" }, // Take the first createdAt value
+            },
+        },
+    ]);
+    
+    
+    
+    
+
+      const TotalBalance = await User_model.find({_id:id}).select('Balance')
+      var Count = {
+        TotalBalance:TotalBalance[0].Balance,
+        UsedBalance:UsedBalance[0].totalBalance,
+        RemainingBalance:Number(TotalBalance[0].Balance || 0) - Number(UsedBalance[0].totalBalance || 0)
+      }
+      console.log("Count",Count)
+
+      res.send({
+        status: true,
+        msg: "Recharge details fetched successfully",
+        data: rechargeDetails,
+        Count:Count
+      });
+    } catch (error) {
+      console.error("Error while fetching recharge details:", error);
+      res.send({ status: false, msg: "Internal Server Error" });
+    }
+  }
+
+
+
   async UpdateActiveStatusSubadmin(req, res) {
     try {
       const { id, user_active_status } = req.body;

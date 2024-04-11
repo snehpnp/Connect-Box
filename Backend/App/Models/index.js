@@ -19,6 +19,9 @@ module.exports = {
     msgdata:require('./message_broadcast'),
     Plan:require('./Plan.model'),
     Signals:require('./Signals.model'),
+
+    user_activity_logs:require('./user_logs.model'),
+
     get_option_chain_symbols: require('./Get_Option_Chain_Symboll.model')
 
 };
