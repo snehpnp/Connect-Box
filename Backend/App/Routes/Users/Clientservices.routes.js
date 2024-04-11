@@ -2,9 +2,11 @@
 
 const router = require("express").Router()
 
-const { getClientServices} = require('../../Controllers/Users/Clientservices')
+const { getClientServices,updateClientServices} = require('../../Controllers/Users/Clientservices')
 
 const { GetUserTradeSignals } = require('../../Controllers/Users/Signals')
+const { UserDashboardData } = require('../../Controllers/Users/Dashboard')
+
 
 
 
@@ -12,6 +14,10 @@ const { GetUserTradeSignals } = require('../../Controllers/Users/Signals')
 router.post('/getall/user/clientServices', getClientServices);
 
 router.post('/getall/user/signals', GetUserTradeSignals);
+router.post('/update/clientServices', updateClientServices);
+
+router.post('/user/dashboard', UserDashboardData);
+
 
 
 

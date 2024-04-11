@@ -32,6 +32,7 @@ module.exports = {
 
     Signals:require('./Signals.model'),
 
+    user_activity_logs:require('./user_logs.model'),
 
 
 };

@@ -12,7 +12,6 @@ class Signals {
     async GetUserTradeSignals(req, res) {
         try {
             const { user_id } = req.body;
-
             const objectId = new ObjectId(user_id);
 
             var currentDate = new Date();
@@ -55,8 +54,9 @@ class Signals {
                         from: "signals",
                         let: {
                             service_name: '$service.name',
-                            strategy_name: '$strategys.strategy_name'
-                         
+                            strategy_name: '$strategys.strategy_name',
+                            currentDate: currentDate,
+                            endOfDay: endOfDay,
                         },
                         pipeline: [
                             {
@@ -65,14 +65,15 @@ class Signals {
                                         $and: [
                                             { $eq: ['$symbol', '$$service_name'] },
                                             { $eq: ['$strategy', '$$strategy_name'] },
-                              
+                                            { $gte: ['$createdAt', '$$currentDate'] },
+                                            { $lte: ['$createdAt', '$$endOfDay'] },
                                         ],
                                     },
                                 },
                             },
                             {
                                 $sort: {
-                                    createdAt: -1
+                                    createdAt: -1 // 1 for ascending order, -1 for descending
                                 }
                             },
                         ],
@@ -93,31 +94,25 @@ class Signals {
                 },
             ];
 
-            console.log("pipeline",pipeline)
-            res.send(pipeline)
             const GetAllClientServices = await client_services.aggregate(pipeline);
+            if (!GetAllClientServices) {
 
-            if(GetAllClientServices.length == 0){
-                return res.send({ status: false, data: [], msg: "No Signals Found" })
-
+                return res.send({ status: false, data: [], msg: "Data Empty" });
             }
 
             if (GetAllClientServices[0].allSignals.flat().length > 0) {
-
                 const sortedAndFilteredArray = GetAllClientServices[0].allSignals.flat()
-                .sort((a, b) => b.createdAt - a.createdAt);
+                    .sort((a, b) => b.createdAt - a.createdAt);
 
-
-                return res.send({ status: true, data: sortedAndFilteredArray, msg: "Get Signals" })
+                return res.send({ status: true, data: sortedAndFilteredArray, msg: "Get Signals" });
             } else {
-                res.send({ status: false, data: [], msg: "Data Empty" })
+                return res.send({ status: false, data: [], msg: "Data Empty" });
             }
-
-
         } catch (error) {
             console.log("Error Signals  error -", error);
         }
     }
+
 
 }
 
