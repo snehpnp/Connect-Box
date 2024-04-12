@@ -22,13 +22,13 @@ import Add_Group from '../Layouts/SubAdmin/GroupServices/Add_Groups.js'
 
 
 import Makecall from '../Layouts/SubAdmin/Make/Makecall.js';
-import Strategytransaction from '../Layouts/SubAdmin/Strategytransaction/Strategy_transaction.js';
+import Strategytransaction from '../Layouts/SubAdmin/Strategys/Strategy_transaction.js';
 import Edit_Group_Service from '../Layouts/SubAdmin/GroupServices/Edit_Group.js'
 import Edit_User from '../Layouts/SubAdmin/Users/EditUser.js'
 
 import Wallets from '../Layouts/Comman/Wallet/Wallets';
 
-import Strategyhistory from '../Layouts/SubAdmin/StrategyHistory/Strategy_history.js'
+import Strategyhistory from '../Layouts/SubAdmin/Strategys/Strategy_history.js'
 
 
 
