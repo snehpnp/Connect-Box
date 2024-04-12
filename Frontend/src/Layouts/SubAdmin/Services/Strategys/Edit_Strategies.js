@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AddForm from "../../../Components/ExtraComponents/forms/AddForm";
+import AddForm from "../../../../Components/ExtraComponents/forms/AddForm";
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
 import { useParams, useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import {
   EditSubStrategys,
   GetSubStrategys_ById,
-} from "../../../ReduxStore/Slice/Subadmin/Strategy";
+} from "../../../../ReduxStore/Slice/Subadmin/Strategy";
 function Edit_Strategies() {
   const navigate = useNavigate();
   const dispatch = useDispatch();

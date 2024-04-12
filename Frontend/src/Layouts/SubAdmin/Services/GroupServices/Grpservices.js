@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { GetAll_Group_Servics, Get_All_Catagory, GET_ALL_SERVICES_NAMES, Delete_GroupServices, Get_All_Services_User_Name } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
+import { GetAll_Group_Servics, Get_All_Catagory, GET_ALL_SERVICES_NAMES, Delete_GroupServices, Get_All_Services_User_Name } from "../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { useDispatch } from "react-redux";
-import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable1';
+import FullDataTable from '../../../../Components/ExtraComponents/Tables/FullDataTable1';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Loader from '../../../Utils/Loader';
+import Loader from '../../../../Utils/Loader';
 import { Link, useNavigate } from "react-router-dom";
 import { GanttChartSquare } from 'lucide-react';
 import toast from "react-hot-toast";
-import ToastButton from '../../../Components/ExtraComponents/Alert_Toast'
-import ExportToExcel from '../../../Utils/ExportCSV'
-import Modal from '../../../Components/Dashboard/Models/Model'
+import ToastButton from '../../../../Components/ExtraComponents/Alert_Toast'
+import ExportToExcel from '../../../../Utils/ExportCSV'
+import Modal from '../../../../Components/Dashboard/Models/Model'
 
 
 
