@@ -70,6 +70,8 @@ class Dashboard {
                     $project: {
                         _id: 0,
                         strategy_name: "$strategy.strategy_name",
+                        plan: "$strategy.strategy_amount_early",
+
                         count: 1
                     }
                 }

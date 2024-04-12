@@ -303,13 +303,7 @@ export const User_header = [
         Icon: "fe fe-credit-card",
         Data: []
     },
-    {
-        id: 5,
-        name: 'Help',
-        route: "/user/help",
-        Icon: "fe fe-help-circle",
-        Data: []
-    },
+   
     {
         id: 6,
         name: 'Open Positions',
@@ -329,6 +323,13 @@ export const User_header = [
         name: 'Strategies',
         route: "/user/strategy",
         Icon: "fe fe-grid",
+        Data: []
+    },
+    {
+        id: 5,
+        name: 'Help',
+        route: "/user/help",
+        Icon: "fe fe-help-circle",
         Data: []
     },
     {

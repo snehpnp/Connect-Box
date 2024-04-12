@@ -265,7 +265,7 @@ const Dashboards = () => {
                                 <a href="companies.html">
                                   {data1.strategy_name}{" "}
                                   <span className="plane-type">
-                                  {data1.strategy_segment}
+                                    {data1.strategy_segment}
                                   </span>
                                 </a>
                               </h2>
@@ -281,7 +281,7 @@ const Dashboards = () => {
                             </td>
                           </tr>
                         })}
-                      
+
 
 
                       </tbody>
@@ -693,11 +693,11 @@ const Dashboards = () => {
                         />
                       </span>
                       <div className="plane-name">
-                        Enterprise <span>(Monthly)</span>{" "}
-                        <h6>Total Order : 201</h6>
+                        {getDashboardData.data.mostOrderedStrategy && getDashboardData.data.mostOrderedStrategy.strategy_name} <span>(Yearly)</span>{" "}
+                        <h6>Total Order : {getDashboardData.data.mostOrderedStrategy && getDashboardData.data.mostOrderedStrategy.count}</h6>
                       </div>
                     </div>
-                    <span className="plane-rate">$549.00</span>
+                    <span className="plane-rate">{getDashboardData.data.mostOrderedStrategy && getDashboardData.data.mostOrderedStrategy.plan}</span>
                   </div>
                 </div>
               </div>
@@ -777,6 +777,7 @@ const Dashboards = () => {
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
                       >
+                      
                         This Week
                       </button>
                       <ul
@@ -818,10 +819,11 @@ const Dashboards = () => {
                         <img src="assets/img/companies/company-04.svg" alt="" />
                       </span>
                       <div className="plane-name">
-                        <span>Schowalter Group</span> <h6>sk.example.com</h6>
+                        <span>{getDashboardData.data.mostOrderedStrategy && getDashboardData.data.mostOrderedStrategy.strategy_name}</span> 
+                        {/* <h6>sk.example.com</h6> */}
                       </div>
                     </div>
-                    <span className="plane-rate">150 Users</span>
+                    <span className="plane-rate">10 Trade Per Day</span>
                   </div>
                 </div>
               </div>
