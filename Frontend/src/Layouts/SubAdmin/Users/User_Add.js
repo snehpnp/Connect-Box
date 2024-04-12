@@ -27,7 +27,7 @@ const AddClient = () => {
 
 
   const [refresh, setrefresh] = useState(false)
- 
+
 
 
 
@@ -49,13 +49,14 @@ const AddClient = () => {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
   const [getAllBroker, setAllBroker] = useState([]);
- 
 
 
 
 
 
- 
+
+
+
 
 
 
@@ -99,20 +100,11 @@ const AddClient = () => {
     {
       name: "phone",
       label: "Phone No",
-      type: "number",
+      type: "number1",
       label_size: 12,
       col_size: 6,
       disable: false,
     },
-
-
-
-    // {
-    //   name: 'Per_trade', label: 'Per Trade', type: 'text',
-    //   showWhen: values => values.subadmin_servic_type === '1'
-    //   , label_size: 12, col_size: 6, disable: false
-    // },
-
     {
       name: "licence",
       label: "Lincense Type",
@@ -140,7 +132,7 @@ const AddClient = () => {
       name: 'demat_userid',
       label: 'Demat UserId',
       type: 'text',
-      showWhen: values => values.broker === '2'
+      showWhen: values => values.broker === '2' && values.licence!='1'
       , label_size: 12, col_size: 6, disable: false
     },
     {
@@ -159,7 +151,6 @@ const AddClient = () => {
       , label_size: 12, col_size: 6, disable: false
     },
   ];
-
 
 
 
@@ -184,22 +175,20 @@ const AddClient = () => {
       if (!values.fullName) {
         errors.fullName = "Full Name is required";
       }
-      if (!values.profile_Img) {
-        errors.profile_Img = "Full Name is required";
-      }
+
       if (!values.username) {
         errors.username = "Username is required";
       }
-      if (!values.broker) {
-        errors.broker = "Username is required";
+      if (!values.broker && values.licence != 1) {
+        errors.broker = "Please Select Broker ";
       }
 
       if (!values.licence) {
-        errors.licence = "Username is required";
+        errors.licence = "licence  is required";
       }
 
       if (!values.groupservice) {
-        errors.groupservice = "Username is required";
+        errors.groupservice = "Please select group service ";
       }
       if (!values.email) {
         errors.email = "Please enter your email address.";
@@ -239,6 +228,7 @@ const AddClient = () => {
       };
 
 
+
       await dispatch(AddUsers(req))
         .unwrap()
         .then(async (response) => {
@@ -263,6 +253,7 @@ const AddClient = () => {
   });
 
 
+ 
 
 
   const getAllGroupService = async () => {
@@ -304,16 +295,15 @@ const AddClient = () => {
 
 
 
-
-  //FIND ALL GROUP SERVICES
-  const FindAllGroupService = allGroupService.data.find(item => item._id === formik.values.groupservice);
+ 
 
 
   const getAllGroupServicesName = async () => {
     if (formik.values.groupservice) {
-      await dispatch(GET_ALL_SERVICES_GIVEN({
-        data: FindAllGroupService.result
-      })).unwrap()
+      var data = {
+        id:formik.values.groupservice
+      }
+      await dispatch(GET_ALL_SERVICES_GIVEN(data)).unwrap()
         .then((response) => {
           if (response.status) {
             setServiceName({
@@ -329,7 +319,7 @@ const AddClient = () => {
           }
         })
         .catch((error) => {
-          console.log("erorr :", error)
+          console.log("Erorre :", error)
         })
 
     }
@@ -358,7 +348,7 @@ const AddClient = () => {
         }
       })
       .catch((error) => {
-        console.log("Stategy finding Error", error)
+        console.log("Error Stategy finding Error", error)
       })
   }
   useState(() => {
@@ -379,7 +369,7 @@ const AddClient = () => {
         }
       })
       .catch((error) => {
-        console.log("Broker find Error :", error)
+        console.log("Error Broker find Error :", error)
       })
 
   }
@@ -401,12 +391,12 @@ const AddClient = () => {
   };
 
 
-  
+
   const PlanSetinState = (id) => {
     const strategyPlanMonth = id.split('_')[1];
     const checkboxId = id.split('_')[0];
-  
-  
+
+
     if (selectedCheckboxes.includes(checkboxId)) {
       setSelectedCheckboxesAndPlan(prevState => (
         prevState.map(item => {
@@ -415,7 +405,7 @@ const AddClient = () => {
       ));
     }
   };
-  
+
 
 
   useState(() => {
@@ -425,7 +415,6 @@ const AddClient = () => {
 
 
 
-  console.log("selectedCheckboxes", selectedCheckboxes)
 
   return (
     <>
@@ -444,9 +433,9 @@ const AddClient = () => {
                   {serviceName.data.length > 0 ? <h6>All Group Service</h6> : ''}
                   {serviceName && serviceName.data.map((item) => (
                     <>
-                      <div className={`col-lg-2 `} key={item._id}>
+                      <div className={`col-lg-2 `} key={item.serviceId}>
                         <div className="col-lg-12 ">
-                          <label className="form-check-label bg-primary text-white  rounded py-2 px-4" for={item.data[0].name}>{`${item.data[0].name}[${item.data[0].category.segment}]`}</label>
+                          <label className="form-check-label bg-primary text-white  rounded py-2 px-4" for={item.serviceName}>{`${item.serviceName}[${item.categoryName}]`}</label>
 
                         </div>
                       </div>
@@ -470,55 +459,61 @@ const AddClient = () => {
                               />
                               <label className="form-check-label" htmlFor={strategy.strategy_name}>{strategy.strategy_name}</label>
 
-                              {selectedCheckboxes.includes(strategy._id) && (
-                                <>
-                                  <div className="border rounded" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                    <div className="form-group d-flex justify-content-between m-3">
-                                      <div className="d-flex align-items-center">
-                                        <input
-                                          type="radio"
-                                          name={`option_${strategy._id}`}
-                                          value="1"
-                                          defaultChecked
-                                          id={`${strategy._id}_1`}
-                                          onChange={(e) => PlanSetinState(e.target.id)}
-                                        />
-                                        <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>monthly </label>
-                                      </div>
-                                      <div className="d-flex align-items-center">
-                                        <input
-                                          type="radio"
-                                          name={`option_${strategy._id}`}
-                                          value="2"
-                                          id={`${strategy._id}_2`}
-                                          onChange={(e) => PlanSetinState(e.target.id)}
-                                        />
-                                        <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>quarterly </label>
-                                      </div>
-                                      <div className="d-flex align-items-center">
-                                        <input
-                                          type="radio"
-                                          name={`option_${strategy._id}`}
-                                          value="3"
-                                          id={`${strategy._id}_3`}
-                                          onChange={(e) => PlanSetinState(e.target.id)}
-                                        />
-                                        <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>halfyearly </label>
-                                      </div>
-                                      <div className="d-flex align-items-center">
-                                        <input
-                                          type="radio"
-                                          name={`option_${strategy._id}`}
-                                          value="3"
-                                          id={`${strategy._id}_4`}
-                                          onChange={(e) => PlanSetinState(e.target.id)}
-                                        />
-                                        <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>yearly </label>
+                              {formik.values.licence == 1 ? '' :
+
+                                selectedCheckboxes.includes(strategy._id) && (
+                                  <>
+                                    <div className="border rounded" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                      <div className="form-group d-flex justify-content-between m-3">
+                                        <div className="d-flex align-items-center">
+                                          <input
+                                            type="radio"
+                                            name={`option_${strategy._id}`}
+                                            value="1"
+                                            defaultChecked
+                                            id={`${strategy._id}_1`}
+                                            onChange={(e) => PlanSetinState(e.target.id)}
+                                          />
+                                          <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>monthly </label>
+                                        </div>
+                                        <div className="d-flex align-items-center">
+                                          <input
+                                            type="radio"
+                                            name={`option_${strategy._id}`}
+                                            value="2"
+                                            id={`${strategy._id}_2`}
+                                            onChange={(e) => PlanSetinState(e.target.id)}
+                                          />
+                                          <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>quarterly </label>
+                                        </div>
+                                        <div className="d-flex align-items-center">
+                                          <input
+                                            type="radio"
+                                            name={`option_${strategy._id}`}
+                                            value="3"
+                                            id={`${strategy._id}_3`}
+                                            onChange={(e) => PlanSetinState(e.target.id)}
+                                          />
+                                          <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>halfyearly </label>
+                                        </div>
+                                        <div className="d-flex align-items-center">
+                                          <input
+                                            type="radio"
+                                            name={`option_${strategy._id}`}
+                                            value="3"
+                                            id={`${strategy._id}_4`}
+                                            onChange={(e) => PlanSetinState(e.target.id)}
+                                          />
+                                          <label style={{ margin: '0 10px 0 5px', fontSize: '1rem' }}>yearly </label>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                </>
-                              )}
+                                  </>
+                                )
+
+                              }
+
+
                             </div>
                           </div>
                         </div>

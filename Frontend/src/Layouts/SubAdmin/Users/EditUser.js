@@ -33,6 +33,7 @@ const AddClient = () => {
 
 
 
+
   const [serviceName, setServiceName] = useState({
     loading: true,
     data: [],
@@ -53,115 +54,6 @@ const AddClient = () => {
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
   const [getAllBroker, setAllBroker] = useState([]);
-
-
-
-
-
-
-
-
-  // 0 = 2 days 1= Demo 2 =Live
-
-  const fields = [
-    {
-      name: "profile_Img",
-      label: "profile_img",
-      type: "file",
-      label_size: 12,
-      col_size: 12,
-      disable: false,
-    },
-    {
-      name: "fullName",
-      label: "FullName",
-      type: "text",
-      label_size: 6,
-      col_size: 6,
-      disable: false,
-    },
-    {
-      name: "username",
-      label: "Username",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-    {
-      name: "email",
-      label: "Email",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-
-    {
-      name: "phone",
-      label: "Phone No",
-      type: "number",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-
-
-
-    // {
-    //   name: 'Per_trade', label: 'Per Trade', type: 'text',
-    //   showWhen: values => values.subadmin_servic_type === '1'
-    //   , label_size: 12, col_size: 6, disable: false
-    // },
-
-    {
-      name: "licence",
-      label: "Lincense Type",
-      type: "select",
-      options: [
-        { label: "Demo", value: "1" },
-        { label: "2 Day Live", value: "0" },
-        { label: "Live", value: "2" },
-      ],
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
-
-
-    {
-      name: 'broker',
-      label: 'Broker',
-      type: 'select',
-      options: getAllBroker && getAllBroker.map((item) => ({ label: item.title, value: item.broker_id })),
-      showWhen: values => values.licence === '2' || values.licence === '0'
-      , label_size: 12, col_size: 6, disable: false
-    },
-    {
-      name: 'demat_userid',
-      label: 'Demat UserId',
-      type: 'text',
-      showWhen: values => values.broker === '2'
-      , label_size: 12, col_size: 6, disable: false
-    },
-    {
-      name: 'api_key',
-      label: 'Api Key',
-      type: 'text',
-      showWhen: values => values.broker === '12'
-      , label_size: 12, col_size: 6, disable: false
-    },
-    {
-      name: 'groupservice',
-      label: 'Group Service',
-      type: 'select',
-      options:
-        allGroupService.data && allGroupService.data.map((item) => ({ label: item.name, value: item._id }))
-      , label_size: 12, col_size: 6, disable: false
-    },
-  ];
-
-
 
 
 
@@ -237,7 +129,6 @@ const AddClient = () => {
 
       };
 
-      console.log("req :", req)
 
 
       // await dispatch(AddUsers(req))
@@ -265,6 +156,111 @@ const AddClient = () => {
 
 
 
+  // 0 = 2 days 1= Demo 2 =Live
+
+  const fields = [
+    {
+      name: "profile_Img",
+      label: "profile_img",
+      type: "file",
+      label_size: 12,
+      col_size: 12,
+      disable: false,
+    },
+    {
+      name: "fullName",
+      label: "FullName",
+      type: "text",
+      label_size: 6,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "username",
+      label: "Username",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "email",
+      label: "Email",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+
+    {
+      name: "phone",
+      label: "Phone No",
+      type: "number",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+
+
+
+
+    {
+      name: "licence",
+      label: "Lincense Type",
+      type: "select",
+      options: getOneUsers.getClients && getOneUsers.getClients[0].license_type == 1 ?
+        [
+          { label: "Demo", value: "1" },
+          { label: "2 Day Live", value: "0" },
+          { label: "Live", value: "2" },
+        ]
+        : getOneUsers.getClients && getOneUsers.getClients[0].license_type == 0 ?
+          [
+            { label: "2 Day Live", value: "0" },
+            { label: "Live", value: "2" },
+          ] :
+          [
+
+            { label: "Live", value: "2" },
+          ],
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+
+
+    {
+      name: 'broker',
+      label: 'Broker',
+      type: 'select',
+      options: getAllBroker && getAllBroker.map((item) => ({ label: item.title, value: item.broker_id })),
+      showWhen: values => values.licence === '2' || values.licence === '0'
+      , label_size: 12, col_size: 6, disable: false
+    },
+    {
+      name: 'demat_userid',
+      label: 'Demat UserId',
+      type: 'text',
+      showWhen: values => values.broker === '2' && values.licence!='1'
+      , label_size: 12, col_size: 6, disable: false
+    },
+    {
+      name: 'api_key',
+      label: 'Api Key',
+      type: 'text',
+      showWhen: values => values.broker === '12'
+      , label_size: 12, col_size: 6, disable: false
+    },
+    {
+      name: 'groupservice',
+      label: 'Group Service',
+      type: 'select',
+      options:
+        allGroupService.data && allGroupService.data.map((item) => ({ label: item.name, value: item._id }))
+      , label_size: 12, col_size: 6, disable: false
+    },
+  ];
+
   const getAllUsers = async () => {
     var data = { user_ID: id }
     await dispatch(GetOneUser(data)).unwrap()
@@ -281,27 +277,13 @@ const AddClient = () => {
 
       })
       .catch((error) => {
-        console.log("User data find Error", error);
+        console.log("Error User data find Error", error);
       })
   }
 
   useEffect(() => {
     getAllUsers()
   }, [])
-
-
-
-
-  const filteredIds = allGroupService.data.map((item) => {
-    if (getOneUsers.ClientGroupName !== undefined) {
-      if (item._id == getOneUsers.ClientGroupName[0].groupService_id) {
-        return item._id;
-      }
-    }
-  }).filter(id => id !== undefined);
-
-  const itemId = filteredIds[0];
-
 
 
 
@@ -312,7 +294,8 @@ const AddClient = () => {
     formik.setFieldValue('phone', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].PhoneNo);
     formik.setFieldValue('broker', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].broker);
     formik.setFieldValue('licence', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].license_type);
-    formik.setFieldValue('groupservice', itemId);
+    formik.setFieldValue('groupservice', getOneUsers.getClients !== undefined && getOneUsers.ClientGroupName[0].groupService_id);
+
 
   }, [getOneUsers.getClients])
 
@@ -363,9 +346,8 @@ const AddClient = () => {
 
   const getAllGroupServicesName = async () => {
     if (formik.values.groupservice) {
-      await dispatch(GET_ALL_SERVICES_GIVEN({
-        data: FindAllGroupService.result
-      })).unwrap()
+      var data= { id:formik.values.groupservice}
+      await dispatch(GET_ALL_SERVICES_GIVEN(data)).unwrap()
         .then((response) => {
           if (response.status) {
             setServiceName({
@@ -410,7 +392,7 @@ const AddClient = () => {
         }
       })
       .catch((error) => {
-        console.log("Stategy finding Error", error)
+        console.log("Error Stategy finding Error", error)
       })
   }
   useState(() => {
@@ -431,7 +413,7 @@ const AddClient = () => {
         }
       })
       .catch((error) => {
-        console.log("Broker find Error :", error)
+        console.log("Error Broker find Error :", error)
       })
 
   }
@@ -485,8 +467,8 @@ const AddClient = () => {
           <>
             <AddForm
               fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))}
-              page_title="Add User"
-              btn_name="Add User"
+              page_title="Edit User"
+              btn_name="Update User"
               btn_name1="Cancel"
               formik={formik}
               btn_name1_route={'/subadmin/users'}
@@ -495,9 +477,9 @@ const AddClient = () => {
                   {serviceName.data.length > 0 ? <h6>All Group Service</h6> : ''}
                   {serviceName && serviceName.data.map((item) => (
                     <>
-                      <div className={`col-lg-2 `} key={item._id}>
+                      <div className={`col-lg-2 `} key={item.serviceId}>
                         <div className="col-lg-12 ">
-                          <label className="form-check-label bg-primary text-white  rounded py-2 px-4" for={item.data[0].name}>{`${item.data[0].name}[${item.data[0].category.segment}]`}</label>
+                          <label className="form-check-label bg-primary text-white  rounded py-2 px-4" for={item.serviceName}>{`${item.serviceName}[${item.categoryName}]`}</label>
 
                         </div>
                       </div>
@@ -530,8 +512,7 @@ const AddClient = () => {
                               <label className="form-check-label" htmlFor={strategy.strategy_name}>{strategy.strategy_name}</label>
 
 
-
-                              {selectedCheckboxes.includes(strategy._id) && (
+                              {formik.values.licence != 1 && selectedCheckboxes.includes(strategy._id) && (
                                 <div className="border rounded" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                   <div className="form-group d-flex justify-content-between m-3">
                                     {planSelect.map((data) => {

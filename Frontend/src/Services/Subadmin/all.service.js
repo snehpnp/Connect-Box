@@ -96,3 +96,16 @@ export async function active_Status(data, token) {
 
     }
   }
+
+  export async function DELETE_USER(data,token){
+    try{
+        const res = await axios.post(`${Config.base_url}user/delete`, data,{
+            data: {}
+        })
+        return await res?.data;
+
+    }
+    catch(err){
+        return await err;
+    }
+  }

@@ -1,23 +1,29 @@
 "use strict";
 require('dotenv').config();
-const mongoConnection = require('./App/Connections/mongo_connection')
+const mongoConnection = require('./App/Connections/mongo_connection');
 const express = require("express");
 const app = express();
-
-// HELLO SNEH
-const http = require("http");
-const https = require('https');
+const http = require('http'); 
+const socketIo = require('socket.io');
 const cors = require('cors');
-const bodyparser = require('body-parser')
+const bodyparser = require('body-parser');
 
+const server = http.createServer(app);
+const io = socketIo(server); // Initialize socket.io with the server
 
+// Socket.io connection handler
+io.on('connection', (socket) => {
+  console.log('New client connected');
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected');
+  });
+});
+
+// Setting up CORS options
 const corsOpts = {
   origin: '*',
-  methods: [
-    'GET',
-    'POST',
-  ],
-
+  methods: ['GET', 'POST'],
   allowedHeaders: [
     "Access-Control-Allow-Headers",
     "x-access-token, Origin, Content-Type, Accept", "authorization",
@@ -25,35 +31,22 @@ const corsOpts = {
 };
 app.use(cors(corsOpts));
 
-
+// Body-parser middleware setup
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json({ limit: '10mb', extended: true }));
 
-app.use(bodyparser.json());
-const server = http.createServer(app);
-app.use(express.json());
+// Requiring utility files
+require('./App/Utils/Cron.utils');
 
+// Importing routes
+require("./App/Routes")(app);
 
+app.get('/tokenget', (req, res) => {
+  console.log("RUNNNNNN");
+  TokenSymbolUpdate();
+});
 
-// REQUIRE File
-require('./App/Utils/Cron.utils')
-
-// Routes all
-require("./App/Routes")(app)
-
-
-
-const {TokenSymbolUpdate} = require("./App/Utils/Cron.utils")
-
-
-app.get('/tokenget',(req,res)=>{
-  console.log("RUNNNNNN")
-  TokenSymbolUpdate()
-})
-
-
-// Server start
-server.listen(process.env.PORT, () =>{
-  console.log(`Server is running on  http://0.0.0.0:${process.env.PORT}`)
-
+// Starting the server
+server.listen(process.env.PORT, () => {
+  console.log(`Server is running on http://0.0.0.0:${process.env.PORT}`);
 });

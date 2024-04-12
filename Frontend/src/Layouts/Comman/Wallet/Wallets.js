@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { RechargeDetailsGets } from "../../../ReduxStore/Slice/Admin/SubAdminCompanyInfo";
+import { RechargeDetailsGets, BalanceGetbyId } from "../../../ReduxStore/Slice/Admin/SubAdminCompanyInfo";
 import { useDispatch } from "react-redux";
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
 import Content from '../../../Components/Dashboard/Content/Content';
@@ -13,7 +13,9 @@ function Payment() {
 
   const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
   const [selectedRow, setSelectedRow] = useState(null);
+  const admin_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
+  const [cardData, setcardData] = useState({});
 
   const [companyData, setCompanyData] = useState({
     loading: false,
@@ -60,13 +62,14 @@ function Payment() {
       )
     },
     {
-      field: 'Role',
-      headerName: 'Role',
+      field: 'strategy_id',
+      headerName: 'strategy Name',
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           {params.value || '-'}
+
         </div>
       )
     },
@@ -77,19 +80,20 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          <span className="badge bg-success-light">{params.value || '-'}</span>
+          <span className="badge bg-success-light">{params.value || 'CASH'}</span>
 
         </div>
       )
     },
+
     {
       field: 'Balance',
       headerName: 'Balance',
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>
-          <span className="text-success-light">  <IndianRupee style={{ height: "19px" }} />{params.value || '-'}</span>
+        <div>{params.row.Mode ? <span className="text-success-light"> +<IndianRupee style={{ height: "15px" }} />{params.value || '-'}</span> : <span className="text-danger-light"> -<IndianRupee style={{ height: "15px" }} />{params.value || '-'}</span>}
+
 
         </div>
       )
@@ -107,18 +111,20 @@ function Payment() {
 
   const getCompanyData = async () => {
     try {
-      var data = { Role: "SUBADMIN" }
-      const response = await dispatch(RechargeDetailsGets(data)).unwrap();
+      var data = { id: admin_id }
+      const response = await dispatch(BalanceGetbyId(data)).unwrap();
 
       if (response.status) {
         const formattedData = response.data.map((row, index) => ({
           ...row,
           id: index + 1,
         }));
+
         setCompanyData({
           loading: true,
           data: formattedData,
         });
+        setcardData(response.Count)
       }
     } catch (error) {
       console.log("Error", error);
@@ -151,7 +157,7 @@ function Payment() {
                         <div className="grid-info-item total-plane">
                           <div className="grid-info">
                             <span>Total Balance</span>
-                            <h4>10000</h4>
+                            <h4>{cardData && cardData.TotalBalance}</h4>
                           </div>
                           <div className="grid-head-icon">
                             <i className="fe fe-package" />
@@ -166,7 +172,7 @@ function Payment() {
                         <div className="grid-info-item active-plane">
                           <div className="grid-info">
                             <span>Used Balance</span>
-                            <h4>7000</h4>
+                            <h4>{cardData && cardData.UsedBalance}</h4>
                           </div>
                           <div className="grid-head-icon">
                             <i className="fe fe-list" />
@@ -181,7 +187,7 @@ function Payment() {
                         <div className="grid-info-item inactive-plane">
                           <div className="grid-info">
                             <span>Remaining Balance</span>
-                            <h4>3000</h4>
+                            <h4>{cardData && cardData.RemainingBalance}</h4>
                           </div>
                           <div className="grid-head-icon">
                             <i className="fe fe-pause-circle" />

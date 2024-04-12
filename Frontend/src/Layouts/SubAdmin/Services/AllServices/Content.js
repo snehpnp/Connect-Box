@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import ExportToExcel from "../../../Utils/ExportCSV";
-import { f_time } from "../../../Utils/Date_formet";
+import ExportToExcel from "../../../../Utils/ExportCSV";
+import { f_time } from "../../../../Utils/Date_formet";
 
 const Content = ({
   Page_title,

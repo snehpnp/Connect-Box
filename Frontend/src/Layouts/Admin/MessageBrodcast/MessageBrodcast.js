@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Content from "../../../Components/Dashboard/Content/Content";
-import axios from "axios";
 import {
   admin_Msg_Get,
   admin_Msg_Delete,
@@ -12,6 +11,8 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import io from "socket.io-client";
+// const socket = io("http://localhost:3000");
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
@@ -27,6 +28,15 @@ function MessageBroadcast() {
   const [refresh, setrefresh] = useState(false);
 
   const datas = JSON.parse(localStorage.getItem("user_details"));
+  // useEffect(() => {
+  //   socket.on("messagesUpdated", (data) => {
+  //     console.log("Received updated messages:", data);
+  //     setPipelineData(data); 
+  //   });
+  //   return () => {
+  //     socket.off("messagesUpdated");
+  //   };
+  // }, []);
 
   const OpenModal = (value) => {
     setModal(value);
@@ -47,6 +57,10 @@ function MessageBroadcast() {
         if (response.status) {
           toast.success(response.msg);
           setsubadmin(response.data);
+
+          const allSubadminUsernames = response.data.map((sub) => sub._id);
+          setSelectedSubadmin(allSubadminUsernames);
+
         } else {
           toast.error(response.msg);
         }
@@ -61,18 +75,19 @@ function MessageBroadcast() {
       const newMessage = {
         Role: datas.Role,
         ownerId: datas.user_id,
-        subAdminId: selectedSubadmin,
+        subAdminId: [selectedSubadmin],
         messageTitle: messageText,
-        status: "Sent",
       };
 
       await dispatch(add_message(newMessage))
         .unwrap()
         .then(async (response) => {
           if (response.status) {
+            //  socket.emit('newMessage', newMessage);
             toast.success(response.msg);
+            setSelectedSubadmin("")
+            setMessageText("")
             setrefresh(!refresh);
-
           } else {
             toast.error(response.msg);
           }
@@ -90,7 +105,6 @@ function MessageBroadcast() {
     if (value === "all") {
       const allSubadminUsernames = subadmin.map((sub) => sub._id);
       setSelectedSubadmin(allSubadminUsernames);
-      console.log("allSubadminUsernames", allSubadminUsernames);
     } else {
       setSelectedSubadmin(value);
     }
@@ -101,13 +115,13 @@ function MessageBroadcast() {
   };
 
   const getAdminTableData = async () => {
-    const ownerId = datas.user_id;
-    await dispatch(admin_Msg_Get({ ownerId: ownerId }))
+    const ownerId = datas.user_id
+    await dispatch(admin_Msg_Get({ ownerId, key: 2 }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
           toast.success(response.msg);
-          setPipelineData(response.data1);
+          setPipelineData(response.data);
         } else {
           toast.error(response.msg);
         }
@@ -117,10 +131,7 @@ function MessageBroadcast() {
       });
   };
 
-  useEffect(() => {
-    fetchSubadminName();
-    getAdminTableData();
-  }, [refresh]);
+
 
   const handleDelete = async (id) => {
     const confirmed = window.confirm(
@@ -149,7 +160,6 @@ function MessageBroadcast() {
     await dispatch(admin_Msg_Edit(data))
       .unwrap()
       .then(async (response) => {
-        console.log("response from FE", response);
         if (response.status) {
           toast.success(response.msg);
           OpenModal(0);
@@ -165,10 +175,19 @@ function MessageBroadcast() {
   };
 
   const handleIdCheck = (id) => {
-    console.log("id from", id);
     setopenModalId(id);
     OpenModal(1);
   };
+
+
+
+  useEffect(() => {
+    fetchSubadminName();
+    getAdminTableData();
+
+    const allSubadminUsernames = subadmin.map((sub) => sub._id);
+    setSelectedSubadmin(allSubadminUsernames);
+  }, [refresh]);
 
   return (
     <Content
@@ -222,9 +241,9 @@ function MessageBroadcast() {
                 onClick={sendMessage}
               >
                 Send
-              </button>
-            </div>
-          </div>
+              </ button>
+            </div >
+          </div >
 
 
           <div className="mt-3">
@@ -245,13 +264,13 @@ function MessageBroadcast() {
                     <tr key={message.id}>
                       <td scope="row">{index + 1}</td>
                       <td>{message.UserName}</td>
-                      <td>{message.subadminDetails.UserName}</td>
-                      <td>{message.messageDatasResult.messageTitle}</td>
-                      <td>{message.messageDatasResult.createdAt}</td>
+                      <td>{message.UserName}</td>
+                      <td>{message.messageTitle}</td>
+                      <td>{message.createdAt}</td>
                       <td>
                         <button className=" btn-action-icon"
                           onClick={() =>
-                            handleIdCheck(message.messageDatasResult._id)
+                            handleIdCheck(message._id)
                           }
 
                         >
@@ -259,7 +278,7 @@ function MessageBroadcast() {
                         </button>
                         <button className=" btn-action-icon"
                           onClick={() =>
-                            handleDelete(message.messageDatasResult._id)
+                            handleDelete(message._id)
                           }
 
                         >
@@ -272,53 +291,55 @@ function MessageBroadcast() {
             </table>
           </div>
 
-          {modal !== 0 && (
-            <div
-              className="modal fade show"
-              tabIndex="-1"
-              style={{ display: "block" }}
-            >
-              <div className="modal custom-modal d-block">
-                <div className="modal-dialog modal-dialog-centered modal-md">
-                  <div className="modal-content">
-                    <div className="modal-header border-0 pb-0">
-                      <div className="form-header modal-header-title text-start mb-0">
-                        <h4 className="mb-0">Update Message</h4>
+          {
+            modal !== 0 && (
+              <div
+                className="modal fade show"
+                tabIndex="-1"
+                style={{ display: "block" }}
+              >
+                <div className="modal custom-modal d-block">
+                  <div className="modal-dialog modal-dialog-centered modal-md">
+                    <div className="modal-content">
+                      <div className="modal-header border-0 pb-0">
+                        <div className="form-header modal-header-title text-start mb-0">
+                          <h4 className="mb-0">Update Message</h4>
+                        </div>
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                          onClick={CloseModal}
+                        ></button>
                       </div>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                        onClick={CloseModal}
-                      ></button>
-                    </div>
-                    {modal === 1 && (
-                      <form onSubmit={handleUpdate}>
-                        <div className="modal-body">
-                          <div className="row">
-                            <div className="input-block mb-3">
-                              <label>Message Title*</label>
-                              <textarea
-                                type="text"
-                                className="form-control"
-                                onChange={handleInputChange}
-                              />
+                      {modal === 1 && (
+                        <form onSubmit={handleUpdate}>
+                          <div className="modal-body">
+                            <div className="row">
+                              <div className="input-block mb-3">
+                                <label>Message Title*</label>
+                                <textarea
+                                  type="text"
+                                  className="form-control"
+                                  onChange={handleInputChange}
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="modal-footer border-0 pt-0">
-                          <button type="submit" className="btn btn-primary">
-                            Update
-                          </button>
-                        </div>
-                      </form>
-                    )}
+                          <div className="modal-footer border-0 pt-0">
+                            <button type="submit" className="btn btn-primary">
+                              Update
+                            </button>
+                          </div>
+                        </form>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            )
+          }
         </>
       }
     />
