@@ -58,9 +58,9 @@ function MessageBroadcast() {
           toast.success(response.msg);
           setsubadmin(response.data);
 
-            const allSubadminUsernames = response.data.map((sub) => sub._id);
-            setSelectedSubadmin(allSubadminUsernames);
-        
+          const allSubadminUsernames = response.data.map((sub) => sub._id);
+          setSelectedSubadmin(allSubadminUsernames);
+
         } else {
           toast.error(response.msg);
         }
@@ -115,8 +115,8 @@ function MessageBroadcast() {
   };
 
   const getAdminTableData = async () => {
-    const ownerId=datas.user_id
-    await dispatch(admin_Msg_Get({ownerId,key:2}))
+    const ownerId = datas.user_id
+    await dispatch(admin_Msg_Get({ ownerId, key: 2 }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
@@ -131,7 +131,7 @@ function MessageBroadcast() {
       });
   };
 
- 
+
 
   const handleDelete = async (id) => {
     const confirmed = window.confirm(
@@ -184,7 +184,7 @@ function MessageBroadcast() {
   useEffect(() => {
     fetchSubadminName();
     getAdminTableData();
-    
+
     const allSubadminUsernames = subadmin.map((sub) => sub._id);
     setSelectedSubadmin(allSubadminUsernames);
   }, [refresh]);
@@ -196,27 +196,32 @@ function MessageBroadcast() {
       Card_title_icon="fas fa-message pe-3"
       Content={
         <>
-          <div className="mt-3">
-            <label className="form-label" htmlFor="broker-select">
-              SubAdmins
-            </label>
-            <div className="input-group">
-              <select
-                id="broker-select"
-                className="form-control"
-                value={selectedSubadmin}
-                onChange={handleSubadmins}
-              >
-                <option value="all">All</option>
-                {subadmin &&
-                  subadmin.map((val) => (
-                    <option key={val._id} value={val._id}>
-                      {val.UserName}
-                    </option>
-                  ))}
-              </select>
+          <div className="row">
+            <div className="col-md-6">
+
             </div>
-          </div>
+            <div className="col-md-6">
+              <div className="mt-3">
+                <label className="form-label" htmlFor="broker-select">
+                  SubAdmins
+                </label>
+                <div className="input-group">
+                  <select
+                    id="broker-select"
+                    className="form-control"
+                    value={selectedSubadmin}
+                    onChange={handleSubadmins}
+                  >
+                    <option value="all">All</option>
+                    {subadmin &&
+                      subadmin.map((val) => (
+                        <option key={val._id} value={val._id}>
+                          {val.UserName}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
 
               <div className="mt-3">
                 <label className="form-label" htmlFor="message">
@@ -236,9 +241,9 @@ function MessageBroadcast() {
                 onClick={sendMessage}
               >
                 Send
-              </button>
-            </div>
-          </div>
+              </ button>
+            </div >
+          </div >
 
 
           <div className="mt-3">
@@ -286,53 +291,55 @@ function MessageBroadcast() {
             </table>
           </div>
 
-          {modal !== 0 && (
-            <div
-              className="modal fade show"
-              tabIndex="-1"
-              style={{ display: "block" }}
-            >
-              <div className="modal custom-modal d-block">
-                <div className="modal-dialog modal-dialog-centered modal-md">
-                  <div className="modal-content">
-                    <div className="modal-header border-0 pb-0">
-                      <div className="form-header modal-header-title text-start mb-0">
-                        <h4 className="mb-0">Update Message</h4>
+          {
+            modal !== 0 && (
+              <div
+                className="modal fade show"
+                tabIndex="-1"
+                style={{ display: "block" }}
+              >
+                <div className="modal custom-modal d-block">
+                  <div className="modal-dialog modal-dialog-centered modal-md">
+                    <div className="modal-content">
+                      <div className="modal-header border-0 pb-0">
+                        <div className="form-header modal-header-title text-start mb-0">
+                          <h4 className="mb-0">Update Message</h4>
+                        </div>
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                          onClick={CloseModal}
+                        ></button>
                       </div>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                        onClick={CloseModal}
-                      ></button>
-                    </div>
-                    {modal === 1 && (
-                      <form onSubmit={handleUpdate}>
-                        <div className="modal-body">
-                          <div className="row">
-                            <div className="input-block mb-3">
-                              <label>Message Title*</label>
-                              <textarea
-                                type="text"
-                                className="form-control"
-                                onChange={handleInputChange}
-                              />
+                      {modal === 1 && (
+                        <form onSubmit={handleUpdate}>
+                          <div className="modal-body">
+                            <div className="row">
+                              <div className="input-block mb-3">
+                                <label>Message Title*</label>
+                                <textarea
+                                  type="text"
+                                  className="form-control"
+                                  onChange={handleInputChange}
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="modal-footer border-0 pt-0">
-                          <button type="submit" className="btn btn-primary">
-                            Update
-                          </button>
-                        </div>
-                      </form>
-                    )}
+                          <div className="modal-footer border-0 pt-0">
+                            <button type="submit" className="btn btn-primary">
+                              Update
+                            </button>
+                          </div>
+                        </form>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            )
+          }
         </>
       }
     />
