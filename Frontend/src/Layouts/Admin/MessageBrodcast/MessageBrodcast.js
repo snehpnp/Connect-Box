@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Content from "../../../Components/Dashboard/Content/Content";
 import {
   admin_Msg_Get,
-  admin_Msg_Delete, 
+  admin_Msg_Delete,
   admin_Msg_Edit,
   add_message
 } from "../../../ReduxStore/Slice/Admin/MessageData";
@@ -210,7 +210,7 @@ function MessageBroadcast() {
                 <option value="all">All</option>
                 {subadmin &&
                   subadmin.map((val) => (
-                    <option key={val._id} value={val._id} >
+                    <option key={val._id} value={val._id}>
                       {val.UserName}
                     </option>
                   ))}
@@ -218,25 +218,28 @@ function MessageBroadcast() {
             </div>
           </div>
 
-          <div className="mt-3">
-            <label className="form-label" htmlFor="message">
-              Message
-            </label>
-            <textarea
-              id="message"
-              className="form-control"
-              rows="4"
-              value={messageText}
-              onChange={handleMessageChange}
-            ></textarea>
+              <div className="mt-3">
+                <label className="form-label" htmlFor="message">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  className="form-control"
+                  rows="4"
+                  value={messageText}
+                  onChange={handleMessageChange}
+                ></textarea>
+              </div>
+              <button
+                type="button"
+                className="btn btn-primary mt-3"
+                onClick={sendMessage}
+              >
+                Send
+              </button>
+            </div>
           </div>
-          <button
-            type="button"
-            className="btn btn-primary mt-3"
-            onClick={sendMessage}
-          >
-            Send
-          </button>
+
 
           <div className="mt-3">
             <table className="table">
@@ -254,27 +257,27 @@ function MessageBroadcast() {
                 {pipelineData &&
                   pipelineData.map((message, index) => (
                     <tr key={message.id}>
-                      <th scope="row">{index + 1}</th>
+                      <td scope="row">{index + 1}</td>
                       <td>{message.UserName}</td>
                       <td>{message.UserName}</td>
                       <td>{message.messageTitle}</td>
                       <td>{message.createdAt}</td>
                       <td>
-                        <button
+                        <button className=" btn-action-icon"
                           onClick={() =>
                             handleIdCheck(message._id)
                           }
-                          style={{ backgroundColor: "greenyellow" }}
+
                         >
-                          <EditIcon />
+                          <i className="fe fe-edit"></i>
                         </button>
-                        <button
+                        <button className=" btn-action-icon"
                           onClick={() =>
                             handleDelete(message._id)
                           }
-                          style={{ backgroundColor: "firebrick" }}
+
                         >
-                          <DeleteOutlineOutlinedIcon />
+                          <i className="fe fe-trash-2"></i>
                         </button>
                       </td>
                     </tr>

@@ -33200,7 +33200,7 @@ li.submenu {
     background: #7539FF;
 }
 
-.fe {
+/* .fe {
     font-size: 19px;
     font-family: feather !important;
     font-style: normal;
@@ -33210,7 +33210,7 @@ li.submenu {
     line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
+} */
 
 @keyframes tilt {
     0% {
@@ -33344,3 +33344,33 @@ title {
     justify-content: center;
 }
 
+button.btn-action-icon {
+    background: #F3F3F3;
+    color: #3F4254;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    padding: 0;
+    border-radius: 50px;
+}
+
+table.table,
+.custom-data-grid {
+    position: relative;
+}
+
+table.table:before,
+.custom-data-grid:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.1;
+    background-image: url('http://localhost:3000/assets/img/pnp.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%;
+}
