@@ -3,7 +3,7 @@ import Content from "../../../Components/Dashboard/Content/Content";
 import axios from "axios";
 import {
   admin_Msg_Get,
-  admin_Msg_Delete, 
+  admin_Msg_Delete,
   admin_Msg_Edit,
   add_message
 } from "../../../ReduxStore/Slice/Admin/MessageData";
@@ -177,47 +177,55 @@ function MessageBroadcast() {
       Card_title_icon="fas fa-message pe-3"
       Content={
         <>
-          <div className="mt-3">
-            <label className="form-label" htmlFor="broker-select">
-              SubAdmins
-            </label>
-            <div className="input-group">
-              <select
-                id="broker-select"
-                className="form-control"
-                value={selectedSubadmin}
-                onChange={handleSubadmins}
+          <div className="row">
+            <div className="col-md-6">
+
+            </div>
+            <div className="col-md-6">
+              <div className="mt-3">
+                <label className="form-label" htmlFor="broker-select">
+                  SubAdmins
+                </label>
+                <div className="input-group">
+                  <select
+                    id="broker-select"
+                    className="form-control"
+                    value={selectedSubadmin}
+                    onChange={handleSubadmins}
+                  >
+                    <option value="all">All</option>
+                    {subadmin &&
+                      subadmin.map((val) => (
+                        <option key={val._id} value={val._id}>
+                          {val.UserName}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="mt-3">
+                <label className="form-label" htmlFor="message">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  className="form-control"
+                  rows="4"
+                  value={messageText}
+                  onChange={handleMessageChange}
+                ></textarea>
+              </div>
+              <button
+                type="button"
+                className="btn btn-primary mt-3"
+                onClick={sendMessage}
               >
-                <option value="all">All</option>
-                {subadmin &&
-                  subadmin.map((val) => (
-                    <option key={val._id} value={val._id}>
-                      {val.UserName}
-                    </option>
-                  ))}
-              </select>
+                Send
+              </button>
             </div>
           </div>
 
-          <div className="mt-3">
-            <label className="form-label" htmlFor="message">
-              Message
-            </label>
-            <textarea
-              id="message"
-              className="form-control"
-              rows="4"
-              value={messageText}
-              onChange={handleMessageChange}
-            ></textarea>
-          </div>
-          <button
-            type="button"
-            className="btn btn-primary mt-3"
-            onClick={sendMessage}
-          >
-            Send
-          </button>
 
           <div className="mt-3">
             <table className="table">
@@ -235,27 +243,27 @@ function MessageBroadcast() {
                 {pipelineData &&
                   pipelineData.map((message, index) => (
                     <tr key={message.id}>
-                      <th scope="row">{index + 1}</th>
+                      <td scope="row">{index + 1}</td>
                       <td>{message.UserName}</td>
                       <td>{message.subadminDetails.UserName}</td>
                       <td>{message.messageDatasResult.messageTitle}</td>
                       <td>{message.messageDatasResult.createdAt}</td>
                       <td>
-                        <button
+                        <button className=" btn-action-icon"
                           onClick={() =>
                             handleIdCheck(message.messageDatasResult._id)
                           }
-                          style={{ backgroundColor: "greenyellow" }}
+
                         >
-                          <EditIcon />
+                          <i className="fe fe-edit"></i>
                         </button>
-                        <button
+                        <button className=" btn-action-icon"
                           onClick={() =>
                             handleDelete(message.messageDatasResult._id)
                           }
-                          style={{ backgroundColor: "firebrick" }}
+
                         >
-                          <DeleteOutlineOutlinedIcon />
+                          <i className="fe fe-trash-2"></i>
                         </button>
                       </td>
                     </tr>
