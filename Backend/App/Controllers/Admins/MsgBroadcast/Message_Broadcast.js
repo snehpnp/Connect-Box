@@ -69,202 +69,71 @@ class MessageController {
 
   async getMsgData(req, res) {
     try {
-      const { ownerId, key } = req.body;
+      const { ownerId, key } = req.body; 
 
-      console.log("key", req.body);
-
-      if (key == 1) {
-       
-        const getMessages = await msgdata.aggregate([
-          {
-            $match: {
-              Role: "SUBADMIN",
-              ownerId: new ObjectId("661623b1d2e6f70e7a879cb5"),
-            },
-          },
-          {
-            $lookup: {
-              from: "users",
-              localField: "ownerId",
-              foreignField: "_id",
-              as: "makerInfo",
-            },
-          },
-          {
-            $unwind: "$makerInfo", // assuming there's only one makerInfo per document; adjust if that's not the case
-          },
-          {
-            $addFields: {
-              UserName: "$makerInfo.UserName", // Add the username field
-            },
-          },
-          {
-            $project: {
-              makerInfo: 0, // Exclude the makerInfo array from the output
-            },
-          },
-        ]);
-        
-        console.log(getMessages);
-        
-        res.send({
-          status: true,
-          msg: "Messages retrieved successfully",
-          data: getMessages,
-          // data1: dataFromMongo,
-        });
-      } else if (key == 2) {
-        const getMessages = await msgdata.aggregate([
-          {
-            $match: {
-              Role: "ADMIN",
-              subAdminId: new ObjectId(ownerId),
-            },
-          },
-          {
-            $lookup: {
-              from: "users",
-              localField: "ownerId",
-              foreignField: "_id",
-              as: "makerInfo",
-            },
-          },
-          {
-            $unwind: "$makerInfo", // assuming there's only one makerInfo per document; adjust if that's not the case
-          },
-          {
-            $addFields: {
-              UserName: "$makerInfo.UserName", // Add the username field
-            },
-          },
-          {
-            $project: {
-              makerInfo: 0, // Exclude the makerInfo array from the output
-            },
-          },
-        ]);
-        
-        console.log(getMessages);
-        
-        res.send({
-          status: true,
-          msg: "Messages retrieved successfully",
-          data: getMessages,
-          // data1: dataFromMongo,
-        });
-      }else{
-        const getMessages = await msgdata.aggregate([
-          {
-            $match: {
-              Role: "ADMIN"
-            },
-          },
-          {
-            $lookup: {
-              from: "users",
-              localField: "ownerId",
-              foreignField: "_id",
-              as: "makerInfo",
-            },
-          },
-          {
-            $unwind: "$makerInfo", // assuming there's only one makerInfo per document; adjust if that's not the case
-          },
-          {
-            $addFields: {
-              UserName: "$makerInfo.UserName", // Add the username field
-            },
-          },
-          {
-            $project: {
-              makerInfo: 0, // Exclude the makerInfo array from the output
-            },
-          },
-        ]);
-        
-        console.log(getMessages);
-        
-        res.send({
-          status: true,
-          msg: "Messages retrieved successfully",
-          data: getMessages,
-          // data1: dataFromMongo,
+      if (!ownerId) {
+        return res.status(400).json({
+          status: false,
+          msg: "Owner ID is required",
+          data: [],
         });
       }
 
+      let matchCondition = {};
 
-      // return
-      // if (!ownerId) {
-      //   return res.status(400).json({
-      //     status: false,
-      //     msg: "Please provide ownerId",
-      //     data: [],
-      //   });
-      // }
+      if (key === 1) { 
+        matchCondition = {
+          $or: [
+            { Role: "SUBADMIN", ownerId: new ObjectId(ownerId) }, 
+            { Role: "ADMIN", subAdminId: { $in: [new ObjectId(ownerId)] } }
+          ]
+        };
+      } else if (key === 2) { 
+        matchCondition = {
+          $or: [
+            { Role: "SUBADMIN" },
+            { Role: "ADMIN" }
+          ]
+        };
+      } else {
+        return res.status(400).json({
+          status: false,
+          msg: "Invalid role key",
+          data: []
+        });
+      }
 
-      // return;
-      // const getMessages = await msgdata.find();
+      const pipeline = [
+        { $match: matchCondition },
+        {
+          $lookup: {
+            from: "users",
+            localField: "ownerId",
+            foreignField: "_id",
+            as: "makerInfo",
+          },
+        },
+        { $unwind: "$makerInfo" },
+        {
+          $addFields: {
+            UserName: "$makerInfo.UserName",
+          },
+        },
+        {
+          $project: {
+            makerInfo: 0, 
+          },
+        },
+      ];
 
-      // if (getMessages.length === 0) {
-      //   return res.status(404).json({
-      //     status: false,
-      //     msg: "No messages found for the specified ownerId",
-      //     data: [],
-      //   });
-      // }
+      const getMessages = await msgdata.aggregate(pipeline);
+      // console.log("Retrieved Messages:", getMessages);
 
-      // const pipeline = [
-      //   {
-      //     $lookup: {
-      //       from: "messagedatas",
-      //       localField: "_id",
-      //       foreignField: "ownerId",
-      //       as: "messageDatasResult",
-      //     },
-      //   },
-      //   {
-      //     $unwind: "$messageDatasResult",
-      //   },
-      //   {
-      //     $lookup: {
-      //       from: "users",
-      //       localField: "messageDatasResult.subAdminId",
-      //       foreignField: "_id",
-      //       as: "subadminDetails",
-      //     },
-      //   },
-      //   {
-      //     $unwind: "$subadminDetails",
-      //   },
-      //   {
-      //     $project: {
-      //       "messageDatasResult._id": 1,
-      //       "strategiesDetails.strategy_name": 1,
-      //       "brokerDetails.title": 1,
-      //       "messageDatasResult.messageTitle": 1,
-      //       "messageDatasResult.createdAt": 1,
-      //       "subadminDetails.UserName": 1,
-      //       "subadminDetails._id": 1,
-      //       UserName: 1,
-      //     },
-      //   },
-      // ];
-
-      // const dataFromMongo = await User.aggregate(pipeline);
-
-      // // Emit messages to connected clients
-      // // io.emit("messagesUpdated", {
-      // //   status: true,
-      // //   msg: "Messages retrieved successfully",
-      // //   data: getMessages,
-      // //   data1: dataFromMongo,
-      // // });
-      // res.status(200).json({
-      //   status: true,
-      //   msg: "Messages retrieved successfully",
-      //   data: getMessages,
-      //   data1: dataFromMongo,
-      // });
+      res.send({
+        status: true,
+        msg: "Messages retrieved successfully",
+        data: getMessages,
+      });
     } catch (error) {
       console.error("Error retrieving messages:", error);
       res.status(500).json({
@@ -274,6 +143,7 @@ class MessageController {
       });
     }
   }
+
 
   async deleteMsgData(req, res) {
     try {

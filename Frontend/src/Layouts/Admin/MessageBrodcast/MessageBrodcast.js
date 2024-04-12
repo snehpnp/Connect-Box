@@ -75,7 +75,7 @@ function MessageBroadcast() {
       const newMessage = {
         Role: datas.Role,
         ownerId: datas.user_id,
-        subAdminId: selectedSubadmin,
+        subAdminId: [selectedSubadmin],
         messageTitle: messageText,
       };
 
@@ -85,8 +85,9 @@ function MessageBroadcast() {
           if (response.status) {
             //  socket.emit('newMessage', newMessage);
             toast.success(response.msg);
+            setSelectedSubadmin("")
+            setMessageText("")
             setrefresh(!refresh);
-
           } else {
             toast.error(response.msg);
           }
@@ -115,7 +116,7 @@ function MessageBroadcast() {
 
   const getAdminTableData = async () => {
     const ownerId=datas.user_id
-    await dispatch(admin_Msg_Get({ownerId,key:3}))
+    await dispatch(admin_Msg_Get({ownerId,key:2}))
       .unwrap()
       .then(async (response) => {
         if (response.status) {

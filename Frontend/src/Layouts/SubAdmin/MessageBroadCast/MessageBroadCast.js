@@ -165,9 +165,10 @@ function MessageBroadcast() {
   };
 
   const getSubadminTableData = async () => {
-    await dispatch(admin_Msg_Get({ ownerId,key:2 }))
+    await dispatch(admin_Msg_Get({ ownerId,key:1 }))
       .unwrap()
       .then(async (response) => {
+        console.log("getSubadminTableData response: ", response);
         if (response.status) {
           toast.success(response.msg);
           setPipelineData(response.data);
@@ -220,24 +221,18 @@ function MessageBroadcast() {
     setIsReceivedChecked(!isReceivedChecked);
   };
 
-console.log("pipelineData",pipelineData)
 
   let filteredData = [];
-  if (isSentChecked && !isReceivedChecked) {
-    filteredData = pipelineData.filter(
-      (message) => message.ownerId === ownerId
-    );
-    console.log("filteredData is in if",filteredData)
-  } else if (!isSentChecked && isReceivedChecked) {
 
-    filteredData = pipelineData.filter(
-      (message) =>
-        Array.isArray(message.subAdminId) &&
-        message.subAdminId.find(element => element.id.toString() == ownerId) 
-        
-    );
-    console.log("filteredData",filteredData.subAdminId)
+  if (isSentChecked && !isReceivedChecked) {
+      filteredData = pipelineData.filter(message => message.ownerId === ownerId);
+  } else if (!isSentChecked && isReceivedChecked) {
+      filteredData = pipelineData.filter(message =>
+          (Array.isArray(message.subAdminId) && message.subAdminId.includes(ownerId)) ||
+          (Array.isArray(message.strategyId) && message.strategyId.includes(ownerId))
+      );
   }
+  
 
   return (
     <Content
