@@ -37,21 +37,20 @@ const Main_Header = () => {
 
         <div className="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">
           <div className="logo-white">
-            <a href="index.html">
+           
               <img
                 src="assets/img/pnp.png"
                 className="img-fluid logo-blue"
                 alt="Logo"
               />
 
-            </a>
-            <a href="index.html">
+           
               <img
                 src="assets/img/pnp.png"
                 className="img-fluid logo-small"
                 alt="Logo"
               />
-            </a>
+           
           </div>
           <div className="logo-color">
             <a href="index.html">

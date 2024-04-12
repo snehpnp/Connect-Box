@@ -339,7 +339,7 @@ export default function Help() {
     <>
       {getAllSubadmins.loading ? (
         <>
-          <div className="content container-fluid">
+          <div className="content container-fluid" data-aos="fade-left">
             <div className="page-header">
               <div className="content-page-header">
                 <h5>Subadmins</h5>

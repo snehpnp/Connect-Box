@@ -191,6 +191,7 @@ function Payment() {
   return (
     <>
       {companyData.loading ? (
+        <div  data-aos="fade-left">
         <Content
           Card_title="Subadmin Details"
           Card_title_icon="fa-solid fa-users-gear pe-2"
@@ -204,6 +205,7 @@ function Payment() {
             />
           }
         />
+        </div>
       ) : (
         <Loader />
       )}

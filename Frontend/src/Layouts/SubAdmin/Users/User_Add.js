@@ -463,7 +463,10 @@ const AddClient = () => {
 
                                 selectedCheckboxes.includes(strategy._id) && (
                                   <>
-                                    <div className="border rounded" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                  <table>
+                                    
+                                  </table>
+                                    <div className="" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                       <div className="form-group d-flex justify-content-between m-3">
                                         <div className="d-flex align-items-center">
                                           <input

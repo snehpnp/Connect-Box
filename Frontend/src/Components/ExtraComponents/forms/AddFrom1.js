@@ -77,7 +77,7 @@ const DynamicForm = ({
   console.log("fields :", fields)
 
   return (
-    <div className="content container-fluid">
+    <div className="content container-fluid" data-aos="fade-left">
       <div className="card mb-0 p-0 ">
         <form onSubmit={formik.handleSubmit}>
           <div className="card-body p-0">

@@ -144,6 +144,7 @@ function Payment() {
   return (
     <>
       {companyData.loading ? (
+        <div data-aos="fade-left">
         <Content
           Card_title="Wallet"
           Card_title_icon="fas fa-money-bill-wave pe-2"
@@ -224,9 +225,12 @@ function Payment() {
                 checkboxSelection={false}
 
               />
+              
             </>
+            
           }
         />
+        </div>
       ) : (
         <Loader />
       )}

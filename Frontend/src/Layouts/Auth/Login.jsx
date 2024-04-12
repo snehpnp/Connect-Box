@@ -175,11 +175,11 @@ var theme_mode= localStorage.getItem('theme_mode')
 
             <>
                 <div className="main-wrapper login-body">
-                    <div className="login-wrapper page-wrapper">
+                    <div className="login-wrapper ">
                         <div className="container">
                             <img
                                 className="img-fluid logo-dark mb-2 logo-color"
-                                src="https://www.pnpuniverse.com/images/logo/pnp.png"
+                                src="/assets/img/pnp-logo.png"
                                 alt="Logo"
                                 style={{ width: "25rem" }}
                             />
@@ -261,7 +261,7 @@ var theme_mode= localStorage.getItem('theme_mode')
                             isOpen={showModal}
                             handleClose={() => setShowModal(false)}
                             backdrop="static"
-                            size="sm"
+                            size="md"
                             title="Verify OTP"
                             btn_name="Verify"
                             btn_name1="Verify1"
@@ -271,7 +271,7 @@ var theme_mode= localStorage.getItem('theme_mode')
 
 
 
-                            <section onSubmit={verifyOTP} className='section1'>
+                            <section onSubmit={verifyOTP} className='section1 text-center'>
                                 <svg
                                     width={250}
                                     height={200}
