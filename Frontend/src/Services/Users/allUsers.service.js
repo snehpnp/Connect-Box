@@ -17,3 +17,18 @@ import * as Config from "../../Utils/Config";
     }
  } 
  
+
+ export async function GET_USER_DASHBOARD(data,token){
+    try{
+        const res = await axios.post(`${Config.base_url}user/dashboard`, data, {
+            data: {}
+        })
+        return await res?.data
+
+    }
+    catch(err){
+        return await err
+
+    }
+ } 
+ 
