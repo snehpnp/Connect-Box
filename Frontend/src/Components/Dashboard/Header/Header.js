@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { admin_header, subamdin_header, User_header } from './Header_config'; 
+import { admin_header, subamdin_header, User_header } from './Header_config';
 
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +32,7 @@ const Header = () => {
 
 
   const ClearSession = async () => {
- 
+
     if (token) {
       const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode JWT token
       const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
@@ -76,14 +76,14 @@ const Header = () => {
                         className={openSubMenu === data.id ? 'subdrop' : ''}
                         style={{ textDecoration: 'none', color: 'inherit' }} // Add inline style to remove underline and retain original color
                       >
-                        <i className={data.Icon}></i> <span> {data.name}</span> {data.Data.length > 0 ? <span className="menu-arrow"></span> : ""}
+                        <i className={data.Icon} id="animated-icon"></i> <span> {data.name}</span> {data.Data.length > 0 ? <span className="menu-arrow"></span> : ""}
                       </Link>
 
                       <ul style={{ display: openSubMenu === data.id ? 'block' : 'none' }}>
                         {data.Data.map((item) => (
                           <li key={item.id}>
                             <Link to={item.route} className="active">
-                              <i className={item.Icon}></i> <span> {item.name}</span>
+                              <i className={item.Icon} id="animated1-icon"></i> <span> {item.name}</span>
                             </Link>
                           </li>
                         ))}

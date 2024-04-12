@@ -2,36 +2,44 @@ import React, { useState, useEffect } from "react";
 import EditForm from "../../../Components/ExtraComponents/forms/AddForm";
 import { useFormik } from "formik";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
-import {
-  editSubadmin,
-  getSubAdminById,
-} from "../../../ReduxStore/Slice/Admin/Subadmins";
+import {editSubadmin,getSubAdminById} from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
+
 
 const EditClient = () => {
   const dispatch = useDispatch();
-  const [inputPerTrade, setInputPerTrade] = useState(false);
-  const [inputPerStrategy, setInputPerStrategy] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
-  // const rowData = location.state?.rowData || {};
-  const [rowData, setRowData] = useState(
-    location.state && location.state.rowData
-  );
-  const [userId, setUserId] = useState(
-    location.state && location.state.rowData._id
-  );
+  const [rowData, setRowData] = useState();
+  const { id } = useParams();
+
+
+  const GetSubadminDataById = async () => {
+    await dispatch(getSubAdminById({ id: id }))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          setRowData(response.data)
+        } else {
+          toast.error(response.msg);
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  }
+
+
 
   const formik = useFormik({
     initialValues: {
-      id: rowData?._id || "",
+      id: id,
       username: "",
       fullName: "",
       email: "",
       mobile: "",
-
       prifix_key: "",
       subadmin_servic_type: "",
       strategy_Percentage: "",
@@ -44,7 +52,7 @@ const EditClient = () => {
     },
     onSubmit: async (values) => {
       const req = {
-        id: values.id,
+        id: id,
         UserName: values.username,
         FullName: values.fullName,
         Email: values.email,
@@ -73,20 +81,7 @@ const EditClient = () => {
     },
   });
 
-  const handleSelectChange = (e) => {
-  const selectedValue = e.target.value;
-    formik.handleChange(e);
-    if (selectedValue === "1") {
-      setInputPerTrade(true);
-      setInputPerStrategy(false);
-    } else if (selectedValue === "2") {
-      setInputPerTrade(false);
-      setInputPerStrategy(true);
-    } else {
-      setInputPerTrade(false);
-      setInputPerStrategy(false);
-    }
-  };
+
 
   const fields = [
     {
@@ -140,7 +135,7 @@ const EditClient = () => {
       label_size: 12,
       col_size: 6,
       disable: true,
-      onChange: handleSelectChange,
+ 
       value: formik.values["subadmin_servic_type"],
     },
     {
@@ -179,18 +174,27 @@ const EditClient = () => {
 
 
   useEffect(() => {
-    formik.setFieldValue("username", rowData !== undefined && rowData.UserName);
-    formik.setFieldValue("fullName", rowData !== undefined && rowData.FullName);
-    formik.setFieldValue("email", rowData !== undefined && rowData.Email);
-    formik.setFieldValue("mobile", rowData !== undefined && rowData.PhoneNo);
-    formik.setFieldValue("Per_trade", rowData !== undefined && rowData.Per_trade);
-    formik.setFieldValue("strategy_Percentage", rowData !== undefined && rowData.strategy_Percentage);
-    formik.setFieldValue("subadmin_servic_type", rowData !== undefined && rowData.subadmin_servic_type == 1 ? "1" : "2");
-    formik.setFieldValue("prifix_key", rowData !== undefined && rowData.prifix_key);
+    formik.setFieldValue("username", rowData !== undefined && rowData[0].UserName);
+    formik.setFieldValue("fullName", rowData !== undefined && rowData[0].FullName);
+    formik.setFieldValue("email", rowData !== undefined && rowData[0].Email);
+    formik.setFieldValue("mobile", rowData !== undefined && rowData[0].PhoneNo);
+    formik.setFieldValue("Per_trade", rowData !== undefined && rowData[0].Per_trade);
+    formik.setFieldValue("strategy_Percentage", rowData !== undefined && rowData[0].strategy_Percentage);
+    formik.setFieldValue("subadmin_servic_type", rowData !== undefined && rowData[0].subadmin_servic_type == 1 ? "1" : "2");
+    formik.setFieldValue("prifix_key", rowData !== undefined && rowData[0].prifix_key);
 
 
-   
+
   }, [rowData]);
+
+
+
+  useEffect(() => {
+    GetSubadminDataById()
+  }, []);
+
+
+
 
   return (
     <>
@@ -214,68 +218,3 @@ export default EditClient;
 
 
 
-
-
-
-
-// {
-//   name: "demat_userid",
-//   label: formik.values.broker == 9 ? "User Id" : "",
-//   type: "text",
-//   showWhen: (values) => values.broker === "9",
-//   label_size: 12,
-//   col_size: 6,
-//   disable: false,
-// },
-// {
-//   name: "app_id",
-//   label:
-//     formik.values.broker == 1
-//       ? "Verification Code"
-//       : formik.values.broker == 5
-//         ? "Password"
-//         : formik.values.broker == 7
-//           ? "Demat Password"
-//           : formik.values.broker == 11
-//             ? "Password"
-//             : formik.values.broker == 2
-//               ? "Demat UserId"
-//               : formik.values.broker == 13
-//                 ? "App Id"
-//                 : formik.values.broker == 9
-//                   ? "Password"
-//                   : formik.values.broker == 14
-//                     ? "User Id "
-//                     : "App Id",
-//   type: "text",
-//   showWhen: (values) =>
-//     //  values.broker === '2' ||
-//     values.broker === "1" ||
-//     values.broker === "2" ||
-//     values.broker === "3" ||
-//     values.broker === "5" ||
-//     values.broker === "7" ||
-//     values.broker === "9" ||
-//     values.broker === "11" ||
-//     values.broker === "13" ||
-//     values.broker === "14",
-//   label_size: 12,
-//   col_size: 6,
-//   disable: false,
-// },
-// {
-//   name: "api_type",
-//   label:
-//     formik.values.broker == 5
-//       ? "DOB"
-//       : formik.values.broker == 7
-//         ? "Trade Api Password"
-//         : formik.values.broker == 9
-//           ? "Encryption IV"
-//           : "Api Secret",
-//   type: "text",
-//   showWhen: (values) => values.broker === "7" || values.broker === "9",
-//   label_size: 12,
-//   col_size: 6,
-//   disable: false,
-// },

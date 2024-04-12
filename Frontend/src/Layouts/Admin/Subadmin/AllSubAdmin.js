@@ -69,10 +69,10 @@ export default function Help() {
       width: 70,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div> <b>{params.value +1}</b></div>
+        <div> <b>{params.value + 1}</b></div>
       ),
     },
-   
+
     {
       field: "UserName",
       headerName: "User name",
@@ -171,9 +171,10 @@ export default function Help() {
 
   const handleEdit = (row) => {
     setInitialRowData(row);
-    navigate("/admin/subadmin/edit", {
-      state: { rowData: { ...row, _id: row._id } },
-    });
+    navigate('/admin/subadmin/edit/' + row._id)
+    // navigate("/admin/subadmin/edit", {
+    //   state: { rowData: { ...row, _id: row._id } },
+    // });
   };
 
 
@@ -243,7 +244,7 @@ export default function Help() {
           }));
 
           setAllSubadmins({
-            loading: false,
+            loading: true,
             data: formattedData,
             data1: [
               { name: "Total Subadmins", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Loader from '../../../Utils/Loader';
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import { useDispatch } from "react-redux";

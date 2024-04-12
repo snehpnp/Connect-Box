@@ -38,7 +38,7 @@ const FAQs = () => {
                                 <div className="faq-item" key={index}>
                                     <div className={`question ${activeIndex === index ? 'active' : ''}`} onClick={() => toggleAccordion(index)}>
                                         <span className="question-text">{faq.question}</span>
-                                        <span className="icon">{activeIndex === index ? '-' : '+'}</span>
+                                        <span className="icon">{activeIndex === index ? '-  ' : '+'}</span>
                                     </div>
                                     <div className={`answer ${activeIndex === index ? 'show' : ''}`}>
                                         <p><b>{faq.answer}</b></p>
