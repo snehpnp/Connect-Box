@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { GetSubStrategys, AddStrategy, DELETE_STRATEGY } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { GetSubStrategys, AddStrategy, DELETE_STRATEGY } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
 import { useDispatch } from "react-redux";
 
-import AddForm from '../../../Components/ExtraComponents/forms/AddForm'
+import AddForm from '../../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
 import toast from "react-hot-toast";
-import ExportToExcel from '../../../Utils/ExportCSV'
-import ToastButton from '../../../Components/ExtraComponents/Alert_Toast'
+import ExportToExcel from '../../../../Utils/ExportCSV'
+import ToastButton from '../../../../Components/ExtraComponents/Alert_Toast'
 import { useNavigate } from "react-router-dom";
-import Loader from '../../../Utils/Loader'
+import Loader from '../../../../Utils/Loader'
 
 
 function Strategy() {

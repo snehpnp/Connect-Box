@@ -153,7 +153,7 @@ function System() {
             <div className="card-body">
               <div data-aos="fade-down" className="gif-div h-100">
                 <img
-                  src="/assets/img/gif/Investment-data.gif"
+                  src="/assets/img/Investdark.png"
                   alt="Investment data"
                 />
               </div>

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Content from "./Content";
-import Loader from "../../../Utils/Loader";
+import Loader from "../../../../Utils/Loader";
 import { Pencil, Trash2 } from "lucide-react";
 import FullDataTable from "./FullDataTable";
 import {
   getAllServices,
   getCatogries,
-} from "../../../ReduxStore/Slice/Subadmin/allServices";
+} from "../../../../ReduxStore/Slice/Subadmin/allServices";
 
 import { useDispatch } from "react-redux";
 

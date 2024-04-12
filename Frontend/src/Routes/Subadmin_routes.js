@@ -6,11 +6,11 @@ import MainHeader from "../Components/Dashboard/Header/Main_header";
 import System from "../Layouts/SubAdmin/Systems/System.js";
 import Adduser from "../Layouts/SubAdmin/Users/User_Add.js";
 import ALLUSER from "../Layouts/SubAdmin/Users/Alluser.js";
-import Strategy from "../Layouts/SubAdmin/Strategys/Strategy.jsx";
+import Strategy from "../Layouts/SubAdmin/Services/Strategys/Strategy.jsx";
 
-import Grpservices from "../Layouts/SubAdmin/GroupServices/Grpservices";
-import AllServices from "../Layouts/SubAdmin/AllServices/AllServices";
-import Edit_Strategies from "../Layouts/SubAdmin/Strategys/Edit_Strategies"
+import Grpservices from "../Layouts/SubAdmin/Services/GroupServices/Grpservices";
+import AllServices from "../Layouts/SubAdmin/Services/AllServices/AllServices.js";
+import Edit_Strategies from "../Layouts/SubAdmin/Services/Strategys/Edit_Strategies"
 
 
 import Help from '../Layouts/Comman/Help';
@@ -18,17 +18,17 @@ import MessageBroadcast from '../Layouts/SubAdmin/MessageBroadCast/MessageBroadC
 
 
 import Option_Chain from '../Layouts/SubAdmin/Option/Option_Chain.js';
-import Add_Group from '../Layouts/SubAdmin/GroupServices/Add_Groups.js'
+import Add_Group from '../Layouts/SubAdmin/Services/GroupServices/Add_Groups.js'
 
 
 import Makecall from '../Layouts/SubAdmin/Make/Makecall.js';
-import Strategytransaction from '../Layouts/SubAdmin/Strategys/Strategy_transaction.js';
-import Edit_Group_Service from '../Layouts/SubAdmin/GroupServices/Edit_Group.js'
+import Strategytransaction from '../Layouts/SubAdmin/Services/Strategys/Strategy_transaction.js';
+import Edit_Group_Service from '../Layouts/SubAdmin/Services/GroupServices/Edit_Group.js'
 import Edit_User from '../Layouts/SubAdmin/Users/EditUser.js'
 
 import Wallets from '../Layouts/Comman/Wallet/Wallets';
 
-import Strategyhistory from '../Layouts/SubAdmin/Strategys/Strategy_history.js'
+import Strategyhistory from '../Layouts/SubAdmin/Services/Strategys/Strategy_history.js'
 
 
 
