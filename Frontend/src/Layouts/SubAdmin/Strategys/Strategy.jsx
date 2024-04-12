@@ -27,7 +27,7 @@ function Strategy() {
 
     const [refresh, setrefresh] = useState(false);
     const [modalId, setModalId] = useState(null);
-    const [modaldata, setmodaldata] = useState(null);
+ 
 
 
 
@@ -76,7 +76,7 @@ function Strategy() {
         {
             name: "strategy_name",
             label: "Strategy Name",
-            type: "text",
+            type: "text1",
             label_size: 6,
             col_size: 6,
             disable: false,
@@ -109,7 +109,7 @@ function Strategy() {
         {
             name: "strategy_indicator",
             label: "Indicator",
-            type: "file",
+            type: "file1",
             label_size: 12,
             col_size: 6,
             disable: false,
@@ -117,7 +117,7 @@ function Strategy() {
         {
             name: "strategy_tester",
             label: "Strategy Tester",
-            type: "file",
+            type: "file1",
             label_size: 12,
             col_size: 6,
             disable: false,
@@ -125,7 +125,7 @@ function Strategy() {
         {
             name: "strategy_image",
             label: "Strategy Logo",
-            type: "file",
+            type: "file1",
             label_size: 12,
             col_size: 6,
             disable: false,
@@ -202,16 +202,16 @@ function Strategy() {
             if (!values.strategy_segment) {
                 errors.strategy_segment = "strategy segment is required";
             }
-            if (!values.strategy_tester) {
-                errors.strategy_tester = "strategy tester is required";
-            }
-            if (!values.strategy_indicator) {
-                errors.strategy_indicator = "strategy indicator is required";
-            }
+            // if (!values.strategy_tester) {
+            //     errors.strategy_tester = "strategy tester is required";
+            // }
+            // if (!values.strategy_indicator) {
+            //     errors.strategy_indicator = "strategy indicator is required";
+            // }
 
-            if (!values.strategy_image) {
-                errors.strategy_image = "strategy image is required";
-            }
+            // if (!values.strategy_image) {
+            //     errors.strategy_image = "strategy image is required";
+            // }
             if (!values.strategy_description) {
                 errors.strategy_description = "strategy description is required";
             }
@@ -250,7 +250,7 @@ function Strategy() {
                 strategy_amount_early: values.strategy_amount_early,
                 maker_id: user_id
             };
-            console.log("req :", data)
+   
 
             await dispatch(AddStrategy(data))
                 .unwrap()
@@ -405,19 +405,7 @@ function Strategy() {
                                         </div>
                                     </li>
 
-                                    <li>
-                                        <a
-                                            className="btn btn-filters w-auto popup-toggle"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="Filter"
-                                        >
-                                            <span className="me-2">
-                                                <img src="assets/img/icons/filter-icon.svg" alt="filter" />
-                                            </span>
-                                            Filter
-                                        </a>
-                                    </li>
+                                     
                                     <li>
                                         <div
                                             className="dropdown dropdown-action"
@@ -465,7 +453,7 @@ function Strategy() {
                                                 <h6>Segment: {stg.strategy_segment}</h6>
                                                  
                                                 <h2 className="my-2">{stg.strategy_name}</h2>
-                                                    {/* <p>Category: {stg.strategy_category}</p> */}
+                                                    
                                                 </div>
                                                 <span className="icon-frame d-flex align-items-center justify-content-center">
                                                     <img src= "assets/img/icons/price-01.svg" alt="img" />
@@ -551,7 +539,6 @@ function Strategy() {
                                 <div className="modal-body m-0 p-0">
                                     <AddForm
                                         ProfileShow={formik.values.strategy_image}
-
                                         fields={fields}
                                         formik={formik}
                                         btn_name="Add Strategy"

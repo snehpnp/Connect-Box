@@ -119,18 +119,15 @@ export default function Help() {
 
   const handleEdit = (row) => {
     // Handle edit action
-    console.log('Edit row:', row);
   };
 
   const handleDelete = (row) => {
     // Handle delete action
-    console.log('Delete row:', row);
   };
 
 
   const handleChange = (event,id) => {
     // Handle delete action
-    console.log('Delete row:', event,id);
   };
 
 

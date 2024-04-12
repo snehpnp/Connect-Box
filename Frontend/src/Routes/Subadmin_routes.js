@@ -17,7 +17,7 @@ import Help from '../Layouts/Comman/Help';
 import MessageBroadcast from '../Layouts/SubAdmin/MessageBroadCast/MessageBroadCast';
 
 
-import Chain from '../Layouts/SubAdmin/Option/Chain';
+import Option_Chain from '../Layouts/SubAdmin/Option/Option_Chain.js';
 import Add_Group from '../Layouts/SubAdmin/GroupServices/Add_Groups.js'
 
 
@@ -27,6 +27,14 @@ import Edit_Group_Service from '../Layouts/SubAdmin/GroupServices/Edit_Group.js'
 import Edit_User from '../Layouts/SubAdmin/Users/EditUser.js'
 
 import Wallets from '../Layouts/Comman/Wallet/Wallets';
+
+import Strategyhistory from '../Layouts/SubAdmin/StrategyHistory/Strategy_history.js'
+
+
+
+
+import Profile from '../Layouts/Comman/Profile/Profile';
+
 
 
 // strategydesc
@@ -47,7 +55,7 @@ const SubAdmin_Routing = () => {
           <Route exact path="/group_service/add" element={<Add_Group />} />
           <Route exact path="/servicesAll" element={<AllServices />} />
           <Route exact path="/users" element={<ALLUSER />} />
-          <Route exact path="/option-chain" element={<Chain />} />
+          <Route exact path="/option-chain" element={<Option_Chain />} />
           <Route exact path="/servicesAll" element={<AllServices />} />
           <Route exact path="/user/add" element={<Adduser />} />
           <Route exact path="/make-call" element={<Makecall />} />
@@ -58,6 +66,9 @@ const SubAdmin_Routing = () => {
           <Route exact path="/user/edit/:id" element={<Edit_User />} />
           
           <Route exact path="/wallet" element={<Wallets />} />
+          <Route exact path="/strategys/history" element={<Strategyhistory />} />
+          <Route exact path="/profile" element={<Profile />} />
+
 
 
         </Routes>

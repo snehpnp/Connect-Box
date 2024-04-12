@@ -119,10 +119,8 @@ class MessageController {
   }
 
   async deleteMsgData(req, res) {
-    console.log("thsiis delete");
     try {
       const { id } = req.body;
-      console.log("req.body from delete", req.body);
       if (!id) {
         return res
           .status(400)
@@ -143,14 +141,12 @@ class MessageController {
   async editMsgData(req, res) {
     try {
       const { id, messageTitle } = req.body;
-      console.log("req.body from backend", req.body);
       const existingMsg = await msgdata.findById(id);
       if (!existingMsg) {
         return res.status(404).json({ status: false, msg: "Message not found", data: null });
       }
       existingMsg.messageTitle = messageTitle;
       const updatedMsg = await existingMsg.save();
-      console.log("Updated Message from Backend", updatedMsg);
       return res.status(200).json({ status: true, msg: "Message updated successfully", data: updatedMsg });
     } catch (error) {
       console.error("Error updating message:", error);

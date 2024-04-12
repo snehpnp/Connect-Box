@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const { Schema, model } = require('mongoose');
 const strategy_clientSchema = Schema({
+    admin_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "USER",
+        index: true
+    },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "USER",

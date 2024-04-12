@@ -9,14 +9,12 @@ const MyForm = () => {
       <Formik
         initialValues={{ inputField: "" }}
         onSubmit={(values, { resetForm }) => {
-          console.log("Submitted value:", values.inputField);
 
           // Optionally, reset the form after submission
           resetForm();
         }}
       >
         {({ handleSubmit, values, handleChange }) => {
-          console.log(values); // Log values inside the render props function
           return (
             <Form onSubmit={handleSubmit}>
               <label htmlFor="inputField">Enter something:</label>

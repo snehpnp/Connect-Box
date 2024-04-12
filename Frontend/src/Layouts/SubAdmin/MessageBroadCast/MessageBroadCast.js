@@ -41,7 +41,6 @@ function MessageBroadcast() {
     }
   };
   
-  console.log("strategies",strategies)
 
   const fetchBrokers = async () => {
     try {
@@ -72,7 +71,7 @@ function MessageBroadcast() {
         status: "Sent",
       };
       await axios.post("http://localhost:7000/messageData", newMessage);
-      console.log("Message sent successfully");
+     
     } catch (error) {
       console.error("Error sending message:", error);
     }

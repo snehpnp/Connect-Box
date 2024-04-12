@@ -25,7 +25,6 @@ const Profile = () => {
             await dispatch(ProfileInfo(data))
                 .unwrap()
                 .then(async (response) => {
-                    console.log("response", response)
 
                     if (response.status) {
                         setProfileData(response.data)
@@ -52,7 +51,6 @@ const Profile = () => {
         fetchData();
     }, []);
 
-    console.log("loading", profileData)
     return (
         <div>
             {loading ? (

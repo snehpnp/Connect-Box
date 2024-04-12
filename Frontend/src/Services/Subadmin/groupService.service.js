@@ -76,7 +76,7 @@ export async function Get_All_Services_Name(data) {
 export async function Get_All_Services_Given(data) {
     try {
  
-        const res = await axios.post(`${Config.base_url}servicesGiven/getall`,data, {  
+        const res = await axios.post(`${Config.base_url}groupservice/name`,data, {  
             data: {},
         })
         return await res?.data;
