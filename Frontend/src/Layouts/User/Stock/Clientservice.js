@@ -15,14 +15,6 @@ function Clientservice() {
   })
 
 
-
-
-  console.log("getAllClientService 1:", getAllClientService.data.services && getAllClientService.data.services[0].strategy_id[0])
-  console.log("getAllClientService 2:", getAllClientService.data.services && getAllClientService.data.strategy)
-
-
-
-
   const GetAllClientServiceDetails = async () => {
 
     var data = { user_Id: user_id };
@@ -118,14 +110,7 @@ function Clientservice() {
                                   }
 
 
-                                }
-
-
-
-
-
-                                )
-                              }
+                                })}
 
 
 

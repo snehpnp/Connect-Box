@@ -272,7 +272,7 @@ function Edit_Strategies() {
       fields={fields}
       formik={formik}
       btn_name="Update"
-      btn_name1="Cancel"
+      btn_name1="Cancel" btn_name1_route="/subadmin/strategys"
     />
   );
 }

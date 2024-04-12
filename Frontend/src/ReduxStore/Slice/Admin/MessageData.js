@@ -3,7 +3,7 @@ import {
   getMsgByOwnerId,
   deleteMsgById,
   editMsgData,
-  addMessage
+  addMessage,
 } from "../../../Services/Admin/Subadmins.service";
 //AllApi Belogns To Msg BroadCast
 
@@ -19,17 +19,14 @@ export const admin_Msg_Get = createAsyncThunk(
   }
 );
 
-export const add_message = createAsyncThunk(
-  "messageData",
-  async (data) => {
-    try {
-      const res = await addMessage(data);
-      return res;
-    } catch (err) {
-      throw err;
-    }
+export const add_message = createAsyncThunk("messageData", async (data) => {
+  try {
+    const res = await addMessage(data);
+    return res;
+  } catch (err) {
+    throw err;
   }
-);
+});
 
 export const admin_Msg_Delete = createAsyncThunk(
   "messageData/delete",
@@ -87,7 +84,6 @@ const SubAdminSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
       })
-
       .addCase(admin_Msg_Edit.pending, (state, action) => {
         state.isLoading = true;
         state.isError = false;

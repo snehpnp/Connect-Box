@@ -4,6 +4,7 @@ const db = require("../../../Models");
 const User_model = db.user;
 const Role_model = db.role;
 const SubAdminCompanyInfo = db.SubAdminCompanyInfo;
+const strategy_transaction = db.strategy_transaction;
 
 
 var dateTime = require("node-datetime");
@@ -118,7 +119,7 @@ class Subadmin {
         Role: "SUBADMIN",
         admin_id: parent_id,
         Balance,
-        Mode:"CASH"
+        Mode: "CASH"
       });
       await count_licenses_add.save();
 
@@ -317,7 +318,7 @@ class Subadmin {
             _id: 1,
             Balance: 1,
             Role: 1,
-            Mode:1,
+            Mode: 1,
             createdAt: 1,
 
             username: "$user.UserName",
@@ -341,7 +342,7 @@ class Subadmin {
 
   async GetAllRechargeDetailsById(req, res) {
     try {
-      const { Role,id } = req.body;
+      const { Role, id } = req.body;
 
       if (!id) {
         return res.send({
@@ -350,9 +351,13 @@ class Subadmin {
         });
       }
 
+      // GET ALL CLIENTS
+      var AdminMatch;
+      AdminMatch = { admin_id: new ObjectId(id) };
+
       const rechargeDetails = await count_licenses.aggregate([
         {
-          $match: {user_id: new ObjectId(id)},
+          $match: { user_id: new ObjectId(id) },
         },
         {
           $lookup: {
@@ -370,7 +375,7 @@ class Subadmin {
             _id: 1,
             Balance: 1,
             Role: 1,
-            Mode:1,
+            Mode: 1,
             createdAt: 1,
 
             username: "$user.UserName",
@@ -379,64 +384,170 @@ class Subadmin {
       ]);
 
 
-      const UsedBalance = await count_licenses.aggregate([
-        {
-            $match: { user_id: new ObjectId(id) },
-        },
-        {
-            $lookup: {
-                from: "users",
-                localField: "user_id",
-                foreignField: "_id",
-                as: "user",
-            },
-        },
-        {
-            $unwind: "$user",
-        },
-        {
-            $addFields: {
-                Balance: { $toInt: "$Balance" }, // Convert Balance field to integer
-            },
-        },
-        {
-            $project: {
-                _id: 1,
-                Balance: 1,
-                Role: 1,
-                Mode: 1,
-                createdAt: 1,
-                username: "$user.UserName",
-            },
-        },
-        {
-            $group: {
-                _id: "$username",
-                totalBalance: { $sum: "$Balance" }, // Calculate the sum of Balance field
-                Role: { $first: "$Role" }, // Take the first Role value
-                Mode: { $first: "$Mode" }, // Take the first Mode value
-                createdAt: { $first: "$createdAt" }, // Take the first createdAt value
-            },
-        },
-    ]);
-    
-    
-    
-    
+      // const UsedBalance = await count_licenses.aggregate([
+      //   {
+      //     $match: { user_id: new ObjectId(id) },
+      //   },
+      //   {
+      //     $lookup: {
+      //       from: "users",
+      //       localField: "user_id",
+      //       foreignField: "_id",
+      //       as: "user",
+      //     },
+      //   },
+      //   {
+      //     $unwind: "$user",
+      //   },
+      //   {
+      //     $addFields: {
+      //       Balance: { $toInt: "$Balance" }, // Convert Balance field to integer
+      //     },
+      //   },
+      //   {
+      //     $project: {
+      //       _id: 1,
+      //       Balance: 1,
+      //       Role: 1,
+      //       Mode: 1,
+      //       createdAt: 1,
+      //       username: "$user.UserName",
+      //     },
+      //   },
+      //   {
+      //     $group: {
+      //       _id: "$username",
+      //       totalBalance: { $sum: "$Balance" }, // Calculate the sum of Balance field
+      //       Role: { $first: "$Role" }, // Take the first Role value
+      //       Mode: { $first: "$Mode" }, // Take the first Mode value
+      //       createdAt: { $first: "$createdAt" }, // Take the first createdAt value
+      //     },
+      //   },
+      // ]);
 
-      const TotalBalance = await User_model.find({_id:id}).select('Balance')
+
+
+      const getAllClients = await strategy_transaction.aggregate([
+        {
+          $match: AdminMatch
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'userData'
+          }
+        },
+        {
+          $lookup: {
+            from: 'strategies',
+            localField: 'strategy_id',
+            foreignField: '_id',
+            as: 'strategyData'
+          }
+        },
+        {
+          $addFields: {
+            username: { $arrayElemAt: ['$userData.UserName', 0] },
+            strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] },
+            Balance: "$Admin_charge" // Renaming Admin_charge to Balance
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            username: 1,
+            strategy_id: 1,
+            stg_charge: 1,
+            Balance: 1, // Including Balance instead of Admin_charge
+            plan_id: 1,
+            Start_Date: 1,
+            End_Date: 1,
+            createdAt: 1,
+          }
+        }
+      ]);
+      
+
+
+
+      const UsedBalance = await strategy_transaction.aggregate([
+        {
+          $match: AdminMatch
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'userData'
+          }
+        },
+        {
+          $lookup: {
+            from: 'strategies',
+            localField: 'strategy_id',
+            foreignField: '_id',
+            as: 'strategyData'
+          }
+        },
+        {
+          $addFields: {
+            username: { $arrayElemAt: ['$userData.UserName', 0] },
+            strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] },
+            Balance: { $toDouble: "$Admin_charge" } // Convert Admin_charge to number
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            username: 1,
+            strategy_id: 1,
+            stg_charge: 1,
+            Balance: 1, // Including Balance instead of Admin_charge
+            plan_id: 1,
+            Start_Date: 1,
+            End_Date: 1,
+            createdAt: 1,
+          }
+        },
+        {
+          $group: {
+            _id: null,
+            totalBalance: { $sum: "$Balance" } // Calculate the sum of Balance
+          }
+        }
+      ]);
+      
+      
+console.log("UsedBalance",UsedBalance)
+
+
+      const mergedArray = [...getAllClients, ...rechargeDetails];
+      mergedArray.sort((a, b) => {
+        return new Date(a.createdAt) - new Date(b.createdAt);
+      });
+
+      const TotalBalance = await User_model.find({ _id: id }).select('Balance')
+   
       var Count = {
-        TotalBalance:TotalBalance[0].Balance,
-        UsedBalance:UsedBalance[0].totalBalance,
-        RemainingBalance:Number(TotalBalance[0].Balance || 0) - Number(UsedBalance[0].totalBalance || 0)
+        TotalBalance: TotalBalance[0].Balance,
+        UsedBalance: UsedBalance[0].totalBalance,
+        RemainingBalance: Number(TotalBalance[0].Balance || 0) - Number(UsedBalance[0].totalBalance || 0)
       }
-      console.log("Count",Count)
+
+
+      console.log("Count", mergedArray)
+
+
+
 
       res.send({
         status: true,
         msg: "Recharge details fetched successfully",
-        data: rechargeDetails,
-        Count:Count
+        data: mergedArray,
+        Count: Count
       });
     } catch (error) {
       console.error("Error while fetching recharge details:", error);
@@ -502,7 +613,7 @@ class Subadmin {
         $set: { Balance: updatedBalance },
       };
 
-     
+
       const result = await User_model.updateOne(filter, updateOperation);
 
       if (result) {
@@ -510,8 +621,8 @@ class Subadmin {
           user_id: get_user[0],
           Role: "SUBADMIN",
           admin_id: parent_id,
-          Balance:Balance,
-          Mode:"CASH"
+          Balance: Balance,
+          Mode: "CASH"
         });
         await count_licenses_add.save();
 
@@ -551,7 +662,7 @@ class Subadmin {
         status: true,
         msg: "Get All Subadmins",
         data: getAllSubAdmins,
-    
+
       });
     } catch (error) {
       console.log("Error getallSubadmin error -", error);
