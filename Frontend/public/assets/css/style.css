@@ -9186,7 +9186,7 @@ table .badge {
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li i,
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a .menu-arrow {
     display: inline-block !important;
-    color: #878a99
+    color: #fff;
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a span.badge {
@@ -9225,7 +9225,8 @@ table .badge {
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-horizantal {
-    display: flex !important
+    display: flex !important;
+    margin-top: 10px;
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a {
@@ -9248,7 +9249,7 @@ table .badge {
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a:hover span,
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a.subdrop span,
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a.active span {
-    color: #7539ff
+    color: #000
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a:hover span.menu-arrow,
@@ -9304,7 +9305,7 @@ table .badge {
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li.submenu ul li a:hover {
     color: #7539ff;
-    background: #fff
+    background: #6d44ff;
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a .menu-arrow {
@@ -9429,7 +9430,7 @@ table .badge {
 
 [data-layout=horizontal] body .page-wrapper {
     margin: 0;
-    padding-top: 120px
+    padding-top: 140px
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul ul ul {
@@ -9446,12 +9447,13 @@ table .badge {
 
 [data-layout=horizontal] body .hidden-links .menu-title {
     display: inline-block !important;
-    color: #333 !important
+    color: #333 !important;
+
 }
 
 [data-sidebar=dark][data-layout=horizontal] body .sidebar .sidebar-menu ul li a:hover span.menu-arrow,
 [data-sidebar=dark][data-layout=horizontal] body .sidebar .sidebar-menu ul li a.active span.menu-arrow {
-    color: #7539ff
+    color: #fff;
 }
 
 [data-sidebar=dark] body .sidebar-twocol.sidebar .sidebar-left {
@@ -9477,25 +9479,26 @@ table .badge {
 
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li a,
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li a span {
-    color: #b7c0cd
+    color: #fff;
 }
 
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li a:hover i,
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li a:hover span,
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li a.active span,
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li a.active i {
-    color: #7539ff
+    color: #fff
 }
 
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li ul li a {
-    background: 0 0
+    background: 0 0;
 }
 
 [data-sidebar=dark] body .sidebar .sidebar-menu .greedy ul li a:hover,
 [data-sidebar=dark] body .sidebar .sidebar-menu ul>li>a:hover,
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li a:hover span,
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li.submenu ul li a.active {
-    color: #7539ff
+
+    text-decoration: underline;
 }
 
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li.submenu ul li a.active:after {
@@ -14234,7 +14237,7 @@ body[data-layout-mode=dark] .alertify .ajs-header {
 .dash-widget-header .dash-count .dash-title {
     font-weight: 400;
     font-size: 13px;
-    color: #878a99
+    /* color: #000; */
 }
 
 .dash-widget-header .dash-count .dash-counts p {
@@ -14363,7 +14366,7 @@ body[data-layout-mode=dark] .alertify .ajs-header {
 }
 
 .text-muted {
-    color: #b5b5c3 !important
+    color: #fff !important;
 }
 
 .bg-light-gray {
@@ -33132,20 +33135,22 @@ li.submenu {
         transform: scale(1, 1);
     }
 }
+
 .tableContainer::-webkit-scrollbar {
-    width: 12px;/ width of the scrollbar /
+    width: 12px;
 }
 
 .tableContainer::-webkit-scrollbar-track {
-    background: #f1f1f1;/ color of the track /
+    background: #f1f1f1;
 }
 
 .tableContainer::-webkit-scrollbar-thumb {
-    background-color: #888;/ color of the scrollbar / border-radius: 6px;/ roundness of the scrollbar thumb /
+    background-color: #888;
+    border-radius: 6px;
 }
 
 .tableContainer::-webkit-scrollbar-thumb:hover {
-    background-color: #555;/ color of the scrollbar on hover /
+    background-color: #555;
 }
 
 .table-container {
@@ -33190,3 +33195,148 @@ li.submenu {
 ::-webkit-scrollbar-thumb:hover {
     background: #7539FF;
 }
+
+.fe {
+    font-size: 19px;
+    font-family: feather !important;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+@keyframes tilt {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(50deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+#animated-icon {
+    animation: tilt 1s infinite;
+    color: #fff;
+}
+
+@keyframes tilt {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(50deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+#animated1-icon {
+    animation: tilt 1s infinite;
+
+}
+
+
+@keyframes tilt {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(50deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+#animated:hover {
+    animation: tilt 1s infinite;
+
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.iconclass:hover {
+    animation: bounce 1s infinite;
+}
+
+nav.greedys.sidebar-horizantal {
+    background-color: #7539FF;
+}
+
+.otp-div {
+    justify-content: center;
+}
+
+.otp-div {
+    justify-content: center;
+}
+
+
+
+title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.para {
+    color: #a3a3a3;
+    font-size: 14px;
+    width: 200px;
+    margin-top: 4px;
+}
+
+/* input {
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    border: none;
+    border-bottom: 1.5px solid #d2d2d2;
+    margin: 0 10px;
+} */
+
+/* input:focus {
+    border-bottom: 1.5px solid deepskyblue;
+    outline: none;
+} */
+
+/* button {
+    width: 250px;
+    letter-spacing: 2px;
+    margin-top: 24px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: #33cdff;
+    color: white;
+    cursor: pointer;
+} */
+
+.text1 {
+    justify-content: center;
+}
+

@@ -39,7 +39,7 @@ const Main_Header = () => {
           <div className="logo-white">
             <a href="index.html">
               <img
-                src="https://www.pnpuniverse.com/images/logo/pnp.png"
+                src="assets/img/pnp.png"
                 className="img-fluid logo-blue"
                 alt="Logo"
               />
@@ -47,7 +47,7 @@ const Main_Header = () => {
             </a>
             <a href="index.html">
               <img
-                src="https://www.pnpuniverse.com/images/logo/pnp.png"
+                src="assets/img/pnp.png"
                 className="img-fluid logo-small"
                 alt="Logo"
               />
@@ -56,14 +56,14 @@ const Main_Header = () => {
           <div className="logo-color">
             <a href="index.html">
               <img
-                src="https://www.pnpuniverse.com/images/logo/pnp.png"
+                src="assets/img/pnp.png"
                 className="img-fluid logo-blue"
                 alt="Logo"
               />
             </a>
             <a href="index.html">
               <img
-                src="https://www.pnpuniverse.com/images/logo/pnp.png"
+                src="assets/img/pnp.png"
                 className="img-fluid logo-small"
                 alt="Logo"
               />
