@@ -2,17 +2,16 @@ import React, { useState, useEffect } from "react";
 import Content from "../../../Components/Dashboard/Content/Content";
 import {
   admin_Msg_Get,
-  admin_Msg_Delete, 
+  admin_Msg_Delete,
   admin_Msg_Edit,
-  add_message
+  add_message,
 } from "../../../ReduxStore/Slice/Admin/MessageData";
 import { GetAllSubAdmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import io from "socket.io-client";
-// const socket = io("http://localhost:3000");
+
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
@@ -28,15 +27,6 @@ function MessageBroadcast() {
   const [refresh, setrefresh] = useState(false);
 
   const datas = JSON.parse(localStorage.getItem("user_details"));
-  // useEffect(() => {
-  //   socket.on("messagesUpdated", (data) => {
-  //     console.log("Received updated messages:", data);
-  //     setPipelineData(data); 
-  //   });
-  //   return () => {
-  //     socket.off("messagesUpdated");
-  //   };
-  // }, []);
 
   const OpenModal = (value) => {
     setModal(value);
@@ -58,9 +48,8 @@ function MessageBroadcast() {
           toast.success(response.msg);
           setsubadmin(response.data);
 
-            const allSubadminUsernames = response.data.map((sub) => sub._id);
-            setSelectedSubadmin(allSubadminUsernames);
-        
+          const allSubadminUsernames = response.data.map((sub) => sub._id);
+          setSelectedSubadmin(allSubadminUsernames);
         } else {
           toast.error(response.msg);
         }
@@ -83,10 +72,9 @@ function MessageBroadcast() {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
-            //  socket.emit('newMessage', newMessage);
             toast.success(response.msg);
-            setSelectedSubadmin("")
-            setMessageText("")
+            setSelectedSubadmin("");
+            setMessageText("");
             setrefresh(!refresh);
           } else {
             toast.error(response.msg);
@@ -115,8 +103,8 @@ function MessageBroadcast() {
   };
 
   const getAdminTableData = async () => {
-    const ownerId=datas.user_id
-    await dispatch(admin_Msg_Get({ownerId,key:2}))
+    const ownerId = datas.user_id;
+    await dispatch(admin_Msg_Get({ ownerId, key: 2 }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
@@ -130,8 +118,6 @@ function MessageBroadcast() {
         console.log("Error", error);
       });
   };
-
- 
 
   const handleDelete = async (id) => {
     const confirmed = window.confirm(
@@ -179,12 +165,10 @@ function MessageBroadcast() {
     OpenModal(1);
   };
 
-
-
   useEffect(() => {
     fetchSubadminName();
     getAdminTableData();
-    
+
     const allSubadminUsernames = subadmin.map((sub) => sub._id);
     setSelectedSubadmin(allSubadminUsernames);
   }, [refresh]);
@@ -210,7 +194,7 @@ function MessageBroadcast() {
                 <option value="all">All</option>
                 {subadmin &&
                   subadmin.map((val) => (
-                    <option key={val._id} value={val._id} >
+                    <option key={val._id} value={val._id}>
                       {val.UserName}
                     </option>
                   ))}
@@ -261,17 +245,13 @@ function MessageBroadcast() {
                       <td>{message.createdAt}</td>
                       <td>
                         <button
-                          onClick={() =>
-                            handleIdCheck(message._id)
-                          }
+                          onClick={() => handleIdCheck(message._id)}
                           style={{ backgroundColor: "greenyellow" }}
                         >
                           <EditIcon />
                         </button>
                         <button
-                          onClick={() =>
-                            handleDelete(message._id)
-                          }
+                          onClick={() => handleDelete(message._id)}
                           style={{ backgroundColor: "firebrick" }}
                         >
                           <DeleteOutlineOutlinedIcon />

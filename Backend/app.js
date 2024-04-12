@@ -9,16 +9,6 @@ const cors = require('cors');
 const bodyparser = require('body-parser');
 
 const server = http.createServer(app);
-const io = socketIo(server); // Initialize socket.io with the server
-
-// Socket.io connection handler
-io.on('connection', (socket) => {
-  console.log('New client connected');
-
-  socket.on('disconnect', () => {
-    console.log('Client disconnected');
-  });
-});
 
 // Setting up CORS options
 const corsOpts = {
