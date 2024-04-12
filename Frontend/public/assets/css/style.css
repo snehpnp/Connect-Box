@@ -4601,9 +4601,12 @@ span.select2-container.select2-container--default.select2-container--open {
 }
 
 .sidebar .sidebar-menu ul li a i {
-    line-height: 18px
+    line-height: 18px;
+    font-size: 18px;
 }
-
+.question.active {
+    background: #eaddff;
+}
 .sidebar .sidebar-menu ul li a svg {
     width: 18px
 }
@@ -9633,7 +9636,8 @@ table .badge {
 
 [data-sidebar=light] body .sidebar {
     background-color: #fff;
-    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2)
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2);
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.08), 0px 8px 12px rgba(0,0,0,0.04);
 }
 
 [data-sidebar=light] body .sidebar ul li span {
@@ -31646,7 +31650,7 @@ td .invoice-detail i {
 }
 
 .super-admin-dash-card .card-header {
-    padding: 0 0 15px;
+    padding: 15px;
     margin-bottom: 5px
 }
 
