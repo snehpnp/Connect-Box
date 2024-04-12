@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Content from "../../../Components/Dashboard/Content/Content";
-import axios from "axios";
 import {
   admin_Msg_Get,
   admin_Msg_Delete, 
@@ -12,6 +11,8 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import io from "socket.io-client";
+// const socket = io("http://localhost:3000");
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
@@ -27,6 +28,15 @@ function MessageBroadcast() {
   const [refresh, setrefresh] = useState(false);
 
   const datas = JSON.parse(localStorage.getItem("user_details"));
+  // useEffect(() => {
+  //   socket.on("messagesUpdated", (data) => {
+  //     console.log("Received updated messages:", data);
+  //     setPipelineData(data); 
+  //   });
+  //   return () => {
+  //     socket.off("messagesUpdated");
+  //   };
+  // }, []);
 
   const OpenModal = (value) => {
     setModal(value);
@@ -47,6 +57,10 @@ function MessageBroadcast() {
         if (response.status) {
           toast.success(response.msg);
           setsubadmin(response.data);
+
+            const allSubadminUsernames = response.data.map((sub) => sub._id);
+            setSelectedSubadmin(allSubadminUsernames);
+        
         } else {
           toast.error(response.msg);
         }
@@ -61,18 +75,19 @@ function MessageBroadcast() {
       const newMessage = {
         Role: datas.Role,
         ownerId: datas.user_id,
-        subAdminId: selectedSubadmin,
+        subAdminId: [selectedSubadmin],
         messageTitle: messageText,
-        status: "Sent",
       };
 
       await dispatch(add_message(newMessage))
         .unwrap()
         .then(async (response) => {
           if (response.status) {
+            //  socket.emit('newMessage', newMessage);
             toast.success(response.msg);
+            setSelectedSubadmin("")
+            setMessageText("")
             setrefresh(!refresh);
-
           } else {
             toast.error(response.msg);
           }
@@ -100,13 +115,13 @@ function MessageBroadcast() {
   };
 
   const getAdminTableData = async () => {
-    const ownerId = datas.user_id;
-    await dispatch(admin_Msg_Get({ ownerId: ownerId }))
+    const ownerId=datas.user_id
+    await dispatch(admin_Msg_Get({ownerId,key:2}))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
           toast.success(response.msg);
-          setPipelineData(response.data1);
+          setPipelineData(response.data);
         } else {
           toast.error(response.msg);
         }
@@ -116,10 +131,7 @@ function MessageBroadcast() {
       });
   };
 
-  useEffect(() => {
-    fetchSubadminName();
-    getAdminTableData();
-  }, [refresh]);
+ 
 
   const handleDelete = async (id) => {
     const confirmed = window.confirm(
@@ -166,6 +178,16 @@ function MessageBroadcast() {
     setopenModalId(id);
     OpenModal(1);
   };
+
+
+
+  useEffect(() => {
+    fetchSubadminName();
+    getAdminTableData();
+    
+    const allSubadminUsernames = subadmin.map((sub) => sub._id);
+    setSelectedSubadmin(allSubadminUsernames);
+  }, [refresh]);
 
   return (
     <Content
@@ -234,13 +256,13 @@ function MessageBroadcast() {
                     <tr key={message.id}>
                       <th scope="row">{index + 1}</th>
                       <td>{message.UserName}</td>
-                      <td>{message.subadminDetails.UserName}</td>
-                      <td>{message.messageDatasResult.messageTitle}</td>
-                      <td>{message.messageDatasResult.createdAt}</td>
+                      <td>{message.UserName}</td>
+                      <td>{message.messageTitle}</td>
+                      <td>{message.createdAt}</td>
                       <td>
                         <button
                           onClick={() =>
-                            handleIdCheck(message.messageDatasResult._id)
+                            handleIdCheck(message._id)
                           }
                           style={{ backgroundColor: "greenyellow" }}
                         >
@@ -248,7 +270,7 @@ function MessageBroadcast() {
                         </button>
                         <button
                           onClick={() =>
-                            handleDelete(message.messageDatasResult._id)
+                            handleDelete(message._id)
                           }
                           style={{ backgroundColor: "firebrick" }}
                         >
