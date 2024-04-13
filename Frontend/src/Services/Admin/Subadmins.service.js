@@ -167,3 +167,15 @@ export async function strategy_All(data, token) {
     return await err;
   }
 }
+
+//get broker In Subadmin BroadCast
+export async function broker_All(data, token) {
+  try {
+    const res = await axios.get(`${Config.base_url}broker/get`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}

@@ -180,14 +180,14 @@ export const subamdin_header = [
             {
                 id: 61,
                 name: 'Orders',
-                route: "/subadmin/strategys",
+                route: "/subadmin/orders",
                 Icon: "fe fe-list",
                 Data: []
             },
             {
                 id: 62,
                 name: 'Position',
-                route: "/subadmin/strategys",
+                route: "/subadmin/position",
                 Icon: "fe fe-map-pin",
                 Data: []
             }
@@ -207,13 +207,7 @@ export const subamdin_header = [
         Icon: "fe fe-credit-card",
         Data: []
     },
-    {
-        id: 8,
-        name: 'Open Position',
-        route: "/subadmin/open-position",
-        Icon: "fe fe-grid",
-        Data: []
-    },
+   
     {
         id: 9,
         name: 'Trades',
@@ -238,6 +232,13 @@ export const subamdin_header = [
                 name: 'Make Strategy',
                 route: "/subadmin/make-strategy",
                 Icon: "fe fe-clipboard",
+                Data: []
+            },
+            {
+                id: 94,
+                name: 'Open Position',
+                route: "/subadmin/open-position",
+                Icon: "fe fe-grid",
                 Data: []
             },
         ]
@@ -303,13 +304,7 @@ export const User_header = [
         Icon: "fe fe-credit-card",
         Data: []
     },
-    {
-        id: 5,
-        name: 'Help',
-        route: "/user/help",
-        Icon: "fe fe-help-circle",
-        Data: []
-    },
+   
     {
         id: 6,
         name: 'Open Positions',
@@ -329,6 +324,13 @@ export const User_header = [
         name: 'Strategies',
         route: "/user/strategy",
         Icon: "fe fe-grid",
+        Data: []
+    },
+    {
+        id: 5,
+        name: 'Help',
+        route: "/user/help",
+        Icon: "fe fe-help-circle",
         Data: []
     },
     {

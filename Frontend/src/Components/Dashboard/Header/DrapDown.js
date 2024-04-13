@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import { Minimize } from 'lucide-react';
 
 const DropDown = () => {
     const navigate = useNavigate();
@@ -214,11 +215,12 @@ const DropDown = () => {
                     </a>
                 </li>
 
-                <li className="nav-item  has-arrow dropdown-heads ">
+                <li className="nav-item has-arrow dropdown-heads">
                     <a onClick={toggleFullScreen} className="win-maximize">
-                        <i className="fe fe-maximize" />
+                        {isFullScreen ? <Minimize /> : <i className="fe fe-maximize" />}
                     </a>
                 </li>
+
 
                 <li className="nav-item dropdown mt-3">
 

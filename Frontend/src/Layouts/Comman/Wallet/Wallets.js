@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { RechargeDetailsGets,BalanceGetbyId } from "../../../ReduxStore/Slice/Admin/SubAdminCompanyInfo";
+import { RechargeDetailsGets, BalanceGetbyId } from "../../../ReduxStore/Slice/Admin/SubAdminCompanyInfo";
 import { useDispatch } from "react-redux";
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
 import Content from '../../../Components/Dashboard/Content/Content';
@@ -62,13 +62,14 @@ function Payment() {
       )
     },
     {
-      field: 'Role',
-      headerName: 'Role',
+      field: 'strategy_id',
+      headerName: 'strategy Name',
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           {params.value || '-'}
+
         </div>
       )
     },
@@ -79,19 +80,20 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          <span className="badge bg-success-light">{params.value || '-'}</span>
+          <span className="badge bg-success-light">{params.value || 'CASH'}</span>
 
         </div>
       )
     },
+
     {
       field: 'Balance',
       headerName: 'Balance',
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>
-          <span className="text-success-light">  <IndianRupee style={{ height: "19px" }} />{params.value || '-'}</span>
+        <div>{params.row.Mode ? <span className="text-success-light"> +<IndianRupee style={{ height: "15px" }} />{params.value || '-'}</span> : <span className="text-danger-light"> -<IndianRupee style={{ height: "15px" }} />{params.value || '-'}</span>}
+
 
         </div>
       )
@@ -117,7 +119,7 @@ function Payment() {
           ...row,
           id: index + 1,
         }));
-        
+
         setCompanyData({
           loading: true,
           data: formattedData,

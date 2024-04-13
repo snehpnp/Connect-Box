@@ -89,8 +89,8 @@ const Overview = () => {
       progress: percentage !== null ? percentage : 0,
       arrowIcon:
         adminData.Totalcount !== undefined &&
-        percentage !== null &&
-        percentage < 100
+          percentage !== null &&
+          percentage < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -109,8 +109,8 @@ const Overview = () => {
       progress: percentage1 !== null ? percentage1 : 0,
       arrowIcon:
         adminData.TotalActivecount !== undefined &&
-        percentage1 !== null &&
-        percentage1 < 100
+          percentage1 !== null &&
+          percentage1 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -129,8 +129,8 @@ const Overview = () => {
       progress: percentage3 !== null ? percentage3 : 0,
       arrowIcon:
         adminData.TotalActivecount !== undefined &&
-        percentage3 !== null &&
-        percentage3 < 100
+          percentage3 !== null &&
+          percentage3 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -149,8 +149,8 @@ const Overview = () => {
       progress: percentage4 !== null ? percentage4 : 0,
       arrowIcon:
         adminData.TotalUsercount !== undefined &&
-        percentage4 !== null &&
-        percentage4 < 100
+          percentage4 !== null &&
+          percentage4 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -169,8 +169,8 @@ const Overview = () => {
       progress: percentage5 !== null ? percentage5 : 0,
       arrowIcon:
         adminData.TotalActiveUsercount !== undefined &&
-        percentage5 !== null &&
-        percentage5 < 100
+          percentage5 !== null &&
+          percentage5 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -189,8 +189,8 @@ const Overview = () => {
       progress: percentage6 !== null ? percentage6 : 0,
       arrowIcon:
         adminData.TotalInActiveUsercount !== undefined &&
-        percentage6 !== null &&
-        percentage6 < 100
+          percentage6 !== null &&
+          percentage6 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -307,7 +307,7 @@ const Overview = () => {
                           <span
                             className={`dash-widget-icon ${data.progressBarClass}`}
                           >
-                            <i className={data.iconClass} />
+                            <i className={data.iconClass} id="animated" />
                           </span>
                           <div className="dash-count">
                             <div className="dash-title">{data.title}</div>
@@ -378,7 +378,7 @@ const Overview = () => {
                               subadminName.map((data, index) => (
                                 <li key={index}>
                                   <a
-                                    className="dropdown-item"
+                                    className="dropdown-item iconclass"
                                     onClick={() => {
                                       handleSelect(data._id);
                                       setSelectedSubadmin(data.UserName);
@@ -393,7 +393,7 @@ const Overview = () => {
 
                         <div className="dropdown main">
                           <button
-                            className="btn btn-white btn-sm dropdown-toggle"
+                            className="btn btn-white btn-sm dropdown-toggle iconclass"
                             type="button"
                             id="planDropdownButton"
                             data-bs-toggle="dropdown"
@@ -455,7 +455,7 @@ const Overview = () => {
                       <h5 className="card-title">Invoice 1 Analytics</h5>
                       <div className="dropdown main">
                         <button
-                          className="btn btn-white btn-sm dropdown-toggle"
+                          className="btn btn-white btn-sm dropdown-toggle iconclass"
                           type="button"
                           id="dropdownMenuButton1"
                           data-bs-toggle="dropdown"
