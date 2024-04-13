@@ -24,6 +24,7 @@ function GroupStrategy() {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+ 
     const [GetAllSgments, setGetAllSgments] = useState({
         loading: true,
         data: [],
@@ -37,10 +38,8 @@ function GroupStrategy() {
         data: [],
     });
 
-    console.log("allGroupService :", allGroupService)
 
     const [showModal, setShowModal] = useState(false)
-    const [showModal1, setShowModal1] = useState(false)
     const [ForGetCSV, setForGetCSV] = useState([])
     const [inputSearch, SetInputSearch] = useState('');
     const [refresh, setrefresh] = useState(false)
@@ -106,8 +105,8 @@ function GroupStrategy() {
     const columns = [
         { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
         {
-            field: 'name',
-            headerName: 'Group Service Name',
+            field: 'createdAt',
+            headerName: 'Trade Time',
             width: 250,
             headerClassName: styles.boldHeader,
             renderCell: (params) => (
@@ -117,8 +116,8 @@ function GroupStrategy() {
             )
         },
         {
-            field: 'description',
-            headerName: 'Group Description',
+            field: 'type',
+            headerName: 'Type',
             width: 400,
             headerClassName: styles.boldHeader,
             renderCell: (params) => (
@@ -130,98 +129,59 @@ function GroupStrategy() {
 
 
         {
-            field: 'resultCount',
-            headerName: 'Service Count',
+            field: 'trade_symbol',
+            headerName: 'Symbol',
             width: 200,
             headerClassName: styles.boldHeader,
             renderCell: (params) => (
                 <div>
-                    {params.value || '-'}
+                    {params.value}
                 </div>
             )
         },
         {
-            field: 'descripto',
-            headerName: 'Service',
-            width: 200,
+            field: 'price',
+            headerName: 'Price',
+            width: 400,
             headerClassName: styles.boldHeader,
-            renderCell: (row) => (
+            renderCell: (params) => (
                 <div>
-                    <GanttChartSquare size={20} onClick={(e) => GetAllServicesName(row)} color="#198754" strokeWidth={2} className="mx-1" />
+                    {params.value}
                 </div>
             )
         },
         {
-            field: 'descriptio',
-            headerName: 'Client Using',
-            width: 200,
+            field: 'strategy',
+            headerName: 'Strategy',
+            width: 400,
             headerClassName: styles.boldHeader,
-            renderCell: (row) => (
+            renderCell: (params) => (
                 <div>
-                    <GanttChartSquare size={20} onClick={(e) => GetAllServicesUserName(row)} color="#198754" strokeWidth={2} className="mx-1" />
+                    {params.value}
                 </div>
             )
         },
 
         {
-            field: 'actions',
-            headerName: 'Actions',
-            width: 200,
+            field: 'TradeType',
+            headerName: 'Trade Type',
+            width: 400,
+            headerClassName: styles.boldHeader,
             renderCell: (params) => (
                 <div>
-                    <IconButton aria-label="edit" size="small" onClick={() => handleEdit(params.row)}>
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton
-                        aria-label="delete"
-                        size="small"
-                        onClick={() => { setShowDeleteModal(true); setModalId(params.row._id) }}>
-                        <DeleteIcon />
-                    </IconButton>
+                    {params.value}
                 </div>
-            ),
-            headerClassName: styles.boldHeader,
-        },
+            )
+        }
 
     ];
 
 
-    const GetAllServicesUserName = (row) => {
-
-    }
+     
 
 
 
-    const GetAllServicesName = async (row) => {
-        setShowModal(true);
-
-        await dispatch(GET_ALL_SERVICES_NAMES({
-            data: row.row.result
-
-        })).unwrap()
-            .then((response) => {
-
-
-                const formattedData = response.data.map((row, index) => ({
-                    ...row,
-                    id: index + 1,
-                }));
-
-                if (response.status) {
-                    setServiceName({
-                        loading: false,
-                        data: formattedData
-                    })
-                }
-                else {
-                    setServiceName({
-                        loading: false,
-                        data: []
-                    })
-                }
-            })
-
-    }
+    
 
     const getAllGroupService = async () => {
         try {
@@ -264,7 +224,7 @@ function GroupStrategy() {
 
     useEffect(() => {
         getAllGroupService();
-    }, [refresh, inputSearch]);
+    }, []);
 
 
 
@@ -409,8 +369,6 @@ function GroupStrategy() {
                                             </li>
                                         </div>
                                     </li>
-
-                              
                                 </ul>
                             </div>
                         </div>
