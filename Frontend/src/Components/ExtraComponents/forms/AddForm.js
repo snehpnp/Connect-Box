@@ -113,8 +113,7 @@ const DynamicForm = ({
                                 {field.label}
                                 <span className="text-danger">*</span>
                               </label>
-                              <div className="input-group">
-                              <span class="input-group-text" id="basic-addon1"><i className="fa-regular fa-keyboard"></i></span>
+                             
                               <input
                                 type="text"
                                 className="form-control"
@@ -132,7 +131,7 @@ const DynamicForm = ({
                                       : prifix_key + "_" + formik.values[field.name]
                                 }
                               />
-                              </div>
+                             
                               {formik.touched[field.name] &&
                                 formik.errors[field.name] ? (
                                 <div style={{ color: "red" }}>
@@ -150,8 +149,7 @@ const DynamicForm = ({
                                 {field.label}
                                 <span className="text-danger">*</span>
                               </label>
-                              <div className="input-group">
-                              <span class="input-group-text" id="basic-addon1"><i className="fa-regular fa-keyboard"></i></span>
+                             
                               <input
                                 type="text"
                                 aria-describedby="basic-addon1"
@@ -170,7 +168,7 @@ const DynamicForm = ({
                                 </div>
                               ) : null}
                             </div>
-                          </div>
+                        
                         </>
                       ) : field.type === "file" ? (
                         <>
@@ -292,8 +290,7 @@ const DynamicForm = ({
                                 className={`col-lg-${title === "addgroup" ? 12 : 12
                                   }`}
                               >
-                                 <div className="input-group">
-                              <span class="input-group-text" id="basic-addon1"><i className="fa-regular fa-keyboard"></i></span>
+                                
                                 
                                 <select
                                   className="default-select wide form-control"
@@ -314,7 +311,7 @@ const DynamicForm = ({
                                     </option>
                                   ))}
                                 </select>
-                                </div>
+                                
                                 {formik.touched[field.name] &&
                                   formik.errors[field.name] ? (
                                   <div style={{ color: "red" }}>
@@ -592,8 +589,7 @@ const DynamicForm = ({
                                   <label htmlFor={field.name}>
                                     {field.label}
                                   </label>
-                                  <div className="input-group">
-                                  <span class="input-group-text" id="basic-addon1"><i className="fa-regular fa-keyboard"></i></span>
+                                 
                                   <input
                                     type="number"
                                     name={field.name}
@@ -603,7 +599,7 @@ const DynamicForm = ({
                                     placeholder={`Enter ${field.label}`}
                                     {...formik.getFieldProps(field.name)}
                                   />
-                                  </div>
+                                 
                                   {formik.touched[field.name] &&
                                     formik.errors[field.name] ? (
                                     <div style={{ color: "red" }}>
@@ -624,8 +620,7 @@ const DynamicForm = ({
                                   <label htmlFor={field.name}>
                                     {field.label}
                                   </label>
-                                  <div className="input-group">
-                              <span class="input-group-text" id="basic-addon1"><i className="fa-regular fa-keyboard"></i></span>
+                                 
                                   <input
                                     type="number"  
                                     name={field.name}
@@ -643,7 +638,7 @@ const DynamicForm = ({
                                       }
                                     }}
                                   />
-                                  </div>
+                                  
                                   {formik.touched[field.name] &&
                                     formik.errors[field.name] ? (
                                     <div style={{ color: "red" }}>
