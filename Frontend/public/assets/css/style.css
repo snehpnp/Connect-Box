@@ -14446,9 +14446,9 @@ body[data-layout-mode=dark] .alertify .ajs-header {
 
 .input-block label {
     margin: 0 0 8px;
-    font-weight: 500;
+    font-weight: 600;
     font-size: 16px;
-    color: #282828
+    color: #282727;
 }
 
 .input-block .optional {
@@ -14458,16 +14458,17 @@ body[data-layout-mode=dark] .alertify .ajs-header {
 }
 
 .input-block .form-control {
-    border: 1px solid #7539ff40;
+    border: none;
+    border-bottom: 1px solid #7539ff;
     box-shadow: none;
     border-radius: 4px;
     margin: 0;
     padding: 9px 12px;
     font-size: 14px;
     font-weight: 400;
-    background: #7539ff00;
+    background: #cab6f921;
     color: #3f4254;
-    box-shadow: 0 0 2px 0.5px #D3D3D3;
+    /* box-shadow: 0 0 2px 0.5px #401e1e; */
 }
 
 .input-block .form-control ::placeholder,
@@ -33367,4 +33368,45 @@ label.form-label ,label {
     font-weight: 500;
     font-size: 16px;
     color: #282828;
+}
+
+.MuiTablePagination-input{
+    margin-bottom: 20px !important;
+}
+
+span#basic-addon1 {
+    box-shadow: 0 40px 0 0 #eaddff inset;
+    border-color: #d3d3d3;
+    -webkit-transition: all .4s ease;
+    -ms-transition: all .4s ease;
+    transition: all .4s ease;
+    color: #282727;
+}
+
+/* ::placeholder{
+  color:#7539ff !important;  
+} */
+table.table thead{
+    padding:10px 0px;
+}
+table.table thead th
+ {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+table.table.bg-none::before {
+    background: none !important;
+    position: unset;
+}
+.profile-picture .img-upload .btn {
+    color: #fff;
+}
+
+.profile-picture .img-upload .btn:hover {
+    color: #7539ff;
+    border:1px solid #7539ff !important;
+}
+.form-check-input:checked {
+    background-color: #7539ff !important;
+    border-color: #7539ff !important;
 }

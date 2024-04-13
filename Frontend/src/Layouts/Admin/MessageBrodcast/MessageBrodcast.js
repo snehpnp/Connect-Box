@@ -192,8 +192,8 @@ function MessageBroadcast() {
   return (
     <div data-aos="fade-left">
     <Content
-      Page_title="Message Boardcast"
-      Card_title="Message"
+      // Page_title="Message Boardcast"
+      Card_title=" Message Boardcast"
       Card_title_icon="fas fa-message pe-3"
       Content={
         <>
