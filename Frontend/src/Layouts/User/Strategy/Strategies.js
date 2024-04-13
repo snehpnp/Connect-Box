@@ -11,7 +11,7 @@ const Strategies = () => {
                         <div className="page-content">
                             <div className="list-btn">
                                 <ul className="filter-list">
-                                    <li>
+                                    {/* <li>
                                         <a
                                             className="btn-filters active"
                                             href="packages.html"
@@ -23,8 +23,8 @@ const Strategies = () => {
                                                 <i className="fe fe-grid" />
                                             </span>
                                         </a>
-                                    </li>
-                                    <li>
+                                    </li> */}
+                                    {/* <li>
                                         <a
                                             className="btn-filters"
                                             href="plans-list.html"
@@ -36,8 +36,8 @@ const Strategies = () => {
                                                 <i className="fe fe-list" />
                                             </span>
                                         </a>
-                                    </li>
-                                    <li>
+                                    </li> */}
+                                    {/* <li>
                                         <a
                                             className="btn-filters"
                                             href="javascript:void(0);"
@@ -49,21 +49,9 @@ const Strategies = () => {
                                                 <i className="fe fe-refresh-ccw" />
                                             </span>
                                         </a>
-                                    </li>
-                                    <li>
-                                        <a
-                                            className="btn btn-filters w-auto popup-toggle"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="Filter"
-                                        >
-                                            <span className="me-2">
-                                                <img src="assets/img/icons/filter-icon.svg" alt="filter" />
-                                            </span>
-                                            Filter
-                                        </a>
-                                    </li>
-                                    <li>
+                                    </li> */}
+                                  
+                                    {/* <li>
                                         <div
                                             className="dropdown dropdown-action"
                                             data-bs-toggle="tooltip"
@@ -106,8 +94,8 @@ const Strategies = () => {
                                                 </ul>
                                             </div>
                                         </div>
-                                    </li>
-                                    <li>
+                                    </li> */}
+                                    {/* <li>
                                         <a
                                             className="btn btn-filters"
                                             href="javascript:void(0);"
@@ -120,17 +108,17 @@ const Strategies = () => {
                                             </span>{" "}
                                             Print
                                         </a>
-                                    </li>
+                                    </li> */}
                                     <li>
-                                        <a
+                                        <p
                                             className="btn btn-primary"
-                                            href="#"
+                                             
                                             data-bs-toggle="modal"
                                             data-bs-target="#add_newpackage"
                                         >
                                             <i className="fa fa-plus-circle me-2" aria-hidden="true" />
                                             Add Plan
-                                        </a>
+                                        </p>
                                     </li>
                                 </ul>
                             </div>

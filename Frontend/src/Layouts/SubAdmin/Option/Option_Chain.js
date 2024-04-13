@@ -2,18 +2,21 @@ import React, { useState, useEffect } from "react";
 import { fetchSubadminCompanyInfo } from "../../../ReduxStore/Slice/Admin/SubAdminCompanyInfo";
 import { useDispatch } from "react-redux";
 import Content from '../../../Components/Dashboard/Content/Content';
-import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
+import FullDataTable from '../../../Components/ExtraComponents/Tables/DataTable';
 import Loader from '../../../Utils/Loader';
-import { fDateTime } from '../../../Utils/Date_formet';
+import { get_three_digit_month } from '../../../Utils/Date_formet'
+
 import CompanyChange from '../../../Components/ExtraComponents/Models/CompanyChange';
-import {
-    getAllServices,
-    getCatogries,
-} from "../../../ReduxStore/Slice/Subadmin/allServices";
+
+
+import { Get_Option_All_Round_token, Get_Option_Symbols, Get_Symbol_Expiry, Get_Company_Infos, Get_All_Strategy_for_Client } from '../../../ReduxStore/Slice/Subadmin/OptionChainSlice'
 
 
 function Option_Chain() {
     const dispatch = useDispatch();
+    const token = JSON.parse(localStorage.getItem('user_details')).token
+    const user_id = JSON.parse(localStorage.getItem('user_details')).user_id;
+
 
     const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
     const [selectedRow, setSelectedRow] = useState(null);
@@ -23,15 +26,30 @@ function Option_Chain() {
     const [strategy, setStrategy] = useState('')
     const [ButtonDisabled, setButtonDisabled] = useState(false)
     const [refresh, setRefresh] = useState(false)
+    const [TokenSymbolChain, setTokenSymbolChain] = useState('')
 
-    const [symbol, setSymbol] = useState({
-        loading: false,
-        data: []
-    })
+    // State ForShow Selected Service After Filter And Show Into Table
+    const [selectedServices, setSelectedServices] = useState([]);
+    const [tags1, setTags] = useState([]);
+
+
+    const [symbol, setSymbol] = useState([])
+    const [getBrokerUrl, setBrokerUrl] = useState('')
+    const [PanelKey, setPanelKey] = useState('');
+
+
+
+
     const [companyData, setCompanyData] = useState({
         loading: false,
         data: [],
     });
+    const [getAllStrategyName, setAllStrategyName] = useState({
+        loading: true,
+        data: [],
+    });
+
+ 
     const [OptionChainData, setOptionChainData] = useState({
         loading: true,
         data: [],
@@ -40,129 +58,264 @@ function Option_Chain() {
         loading: false,
         data: []
     });
+    const [All_Symbols_Expiry, set_All_Symbols_Expiry] = useState({
+        loading: false,
+        data: []
+    });
 
-
-
-    const handleOpenModal = (rowData) => {
-        setSelectedRow(rowData)
-        setIsModalOpen(true);
-    };
-
-
-    const styles = {
-        container: {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: '80vh',
-        },
-        card: {
-            width: 'auto',
-        },
-        boldHeader: {
-            fontWeight: 'bold',
-        },
-        headerButton: {
-            marginRight: 12,
-        },
-    };
 
 
     const columns = [
-        { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
         {
-            field: 'profile',
-            headerName: 'Profile',
-            width: 120,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    <a href="profile.html" className="company-avatar avatar-md me-2 companies company-icon">
-                        <img className="avatar-img rounded-circle company" src="assets/img/companies/company-05.svg" alt="Company Image" />
-                    </a>
-                </div>
-            )
+            dataField: 'CALL',
+            text: 'BUY/SELL',
+            // style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+            //     parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+            formatter: (cell, row, rowIndex) => (
+                <div key={rowIndex}
+
+                >
+                    <button
+                        value="LE"
+                        className={`button_BUY  button_call_buy_${row.call_token}`}
+                    // onClick={(e) => {
+                    //     CreateRequest('CALL', row, 'LE', rowIndex, e);
+                    // }}
+                    // onDoubleClick={(e) => { RemoveClases('CALL', row, 'LE', rowIndex, e) }}
+                    >
+                        B
+                    </button >
+                    <button
+                        value="SE"
+                        className={`button_sell button_call_sell_${row.call_token}`}
+                    // onClick={(e) => {
+                    //     CreateRequest('CALL', row, 'SE', rowIndex, e);
+                    // }}
+                    // onDoubleClick={(e) => { RemoveClases('CALL', row, 'SE', rowIndex, e) }}
+
+                    >
+                        S
+                    </button >
+                </div >
+            ),
         },
         {
-            field: 'makerInfo',
-            headerName: 'Subadmin Name',
-            width: 210,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    {params.row.makerInfo.FullName}
-                </div>
-            )
-        },
-        {
-            field: 'razorpay_key',
-            headerName: 'razorpay_key',
-            width: 250,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    {params.value || '-'}
-                </div>
-            )
-        },
-        {
-            field: 'email',
-            headerName: 'email',
-            width: 250,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    {params.value || '-'}
-                </div>
-            )
-        },
-        {
-            field: "change",
-            headerName: "Change",
-            width: 150,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div onClick={() => handleOpenModal(params.row)}>
-                    <span className="badge bg-purple">Change</span>
+            dataField: 'CALL/LP',
+            text: 'CALL/LP',
+            // style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+            //     parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+            formatter: (cell, row, rowIndex) => (
+                <div >
+                    <span className={`Call_Price_${row.call_token} `}></span>
+                    <span className={`SP1_Call_Price_${row.call_token} d-none`}></span>
                 </div>
             ),
         },
         {
-            field: 'Status',
-            headerName: 'Status',
-            width: 120,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => {
-                if (params.row.razorpay_key !== '') {
-                    return (
-                        <div>
-                            <span className={`badge bg-success-light d-inline-flex align-items-center`}>
-                                <i className={'fe fe-check me-1'} />Active
-                            </span>
-                        </div>
-                    );
-                } else {
-                    return (
-                        <div>
-                            <span className={`badge bg-danger-light d-inline-flex align-items-center`}>
-                                <i className={`fe fe-x me-1`}></i>InActive</span>
-                        </div>
-                    );
-                }
-            }
+            dataField: 'strike_price',
+            text: 'STRIKE PRICE',
+            // style: (cell, row) => parseInt(row.strike_price) == parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+            formatter: (cell, row, rowIndex) => (
+
+                <div >
+                    <span className={`fw-bold`}>{cell}</span>
+                </div>
+            ),
         },
         {
-            field: 'createdAt', headerName: 'createdAt', width: 250, headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    {fDateTime(params.value)}
+            dataField: 'PUT/LP',
+            text: 'PUT/LP',
+            // style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+            //     parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+
+            formatter: (cell, row, rowIndex) => (
+                <div
+
+                >
+                    <span className={`Put_Price_${row.put_token} `}></span>
+                    <span className={`BP1_Put_Price_${row.put_token} d-none`}></span>
                 </div>
-            )
+            ),
+        },
+        {
+            dataField: 'PUT',
+            text: 'BUY/SELL',
+            // style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+            //     parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
+            //       { backgroundColor: '' },
+            formatter: (cell, row, rowIndex) => (
+                <div key={rowIndex}
+
+                >
+                    <button
+                        value="LE"
+                        className={`button_BUY  button_put_buy_${row.put_token}`}
+                    // onClick={(e) => { CreateRequest("PUT", row, "LE", rowIndex, e) }}
+                    // onDoubleClick={(e) => { RemoveClases("PUT", row, "LE", rowIndex, e) }}
+                    >
+                        B
+                    </button>
+                    <button
+                        value="SE"
+                        className={`button_sell button_put_sell_${row.put_token}`}
+                    // onClick={(e) => { CreateRequest("PUT", row, "SE", rowIndex, e) }}
+                    // onDoubleClick={(e) => { RemoveClases("PUT", row, "SE", rowIndex, e) }}
+
+                    >
+                        S
+                    </button >
+                </div >
+            ),
         },
     ];
 
 
+    const getPanelDetails = async () => {
+        await dispatch(Get_Company_Infos())
 
+            .unwrap()
+            .then((response) => {
+                console.log("response :", response)
+                let res = response.data[0]
+                setBrokerUrl(res.broker_url)
+            });
+    };
+
+
+    // --------------- FOR GET PANEL KEY-----------------------
+
+    // const getPanelKey = async (e) => {
+    //     var data={id: user_id}
+    //     await dispatch(Get_Panel_key(data)).unwrap()
+    //         .then((response) => {
+    //             if (response.status) {
+    //                 setPanelKey(response.data)
+    //             }
+
+    //         });
+    // };
+
+    // --------------- FOR GET ALL STRATEGY NAME-----------------------
+
+
+    const GetAllStrategyName = async (e) => {
+        var data = { id: user_id }
+        await dispatch(Get_All_Strategy_for_Client(data))
+            .unwrap()
+            .then((response) => {
+                if (response.status) {
+                    setAllStrategyName({
+                        loading: false,
+                        data: response.data,
+                    });
+                }
+            });
+    };
+
+
+    const symbols = async () => {
+        var data = {
+            req: '',
+            token: token
+        }
+
+        await dispatch(Get_Option_Symbols(data)).unwrap()
+
+            .then((response) => {
+
+                if (response.status) {
+                    set_All_Symbols({
+                        loading: false,
+                        data: response.data
+                    });
+                    const filteredSelectedData = response.data.filter((item) => item.token === "1").map((item) => item.symbol);
+
+                    setSelectedServices(filteredSelectedData)
+                    setTags(filteredSelectedData)
+                }
+            })
+            .catch((err) => {
+                console.log("Error in find symbole :", err)
+            })
+    }
+
+    useEffect(() => {
+        getPanelDetails()
+        symbols()
+        // getPanelKey()
+        GetAllStrategyName();
+
+        // const currentDateIST = new Date().toLocaleString('en-US', { timeZone: 'Asia/Kolkata' });
+
+        // Set the cutoff time to 3:30 PM in IST timezone
+        // const cutoffTimeIST = new Date();
+        // cutoffTimeIST.setHours(15, 30, 0, 0);
+
+        // Check if the current time is after 3:30 PM in IST timezone
+        // const isAfterCutoffTime = new Date(currentDateIST).getTime() > cutoffTimeIST.getTime();
+
+
+
+    }, [])
+
+    const getSymbolsExpriy = async () => {
+        if (symbol) {
+            var data = {
+                symbol: symbol
+            }
+        }
+        await dispatch(Get_Symbol_Expiry(data)).unwrap()
+            .then((response) => {
+                if (response.status) {
+                    set_All_Symbols_Expiry({
+                        loading: false,
+                        data: response.data
+                    })
+                }
+                else {
+                    set_All_Symbols_Expiry({
+                        loading: false,
+                        data: []
+                    })
+                }
+            }).catch((err) => {
+                console.log("Error in finding in Symbol expriy", err)
+            })
+
+
+    }
+
+    useEffect(() => {
+        getSymbolsExpriy()
+    }, [symbol])
+
+
+    // --------------- FOR GET OPTIONS SYMBOLS -----------------------
+
+    const getAllRoundToken = async () => {
+        if (expiry) {
+            const data = {
+                expiry: expiry,
+                symbol: symbol
+            };
+            await dispatch(Get_Option_All_Round_token(data, token))
+                .unwrap()
+                .then((response) => {
+                    if (response.status) {
+                        setOptionChainData({
+                            loading: false,
+                            data: response.data,
+                        });
+                        setTokenSymbolChain(response.channellist)
+                    }
+                });
+        }
+    }
+
+
+    useEffect(() => {
+        getAllRoundToken()
+    }, [expiry, refresh])
 
     const getCompanyData = async () => {
         try {
@@ -192,33 +345,9 @@ function Option_Chain() {
     }, []);
 
 
-    const getSymbols = async () => {
-        var data = { segment: 'O' }
-        await dispatch(getAllServices(data)).unwrap()
-            .then((response) => {
-                if (response.status) {
-                    setSymbol({
-                        loading: true,
-                        data: response.data
-                    })
-                }
-                else {
-                    setSymbol({
-                        loading: true,
-                        data: []
-                    })
-                }
-            })
-            .catch((err) => {
-                console.log("Error to finding in the Symbols ", err);
-            })
-    }
 
-    useState(() => {
-        getSymbols()
-    },[])
 
-    console.log("symbol :", symbol.data)
+
 
 
 
@@ -240,7 +369,7 @@ function Option_Chain() {
                                         className="default-select wide form-control spacing  "
                                         onChange={(e) => {
                                             setSymbol(e.target.value)
-                                            setSymbolStrike(e.target.options[e.target.selectedIndex].getAttribute("name"))
+                                            // setSymbolStrike(e.target.options[e.target.selectedIndex].getAttribute("name"))
                                             setStrategy("")
                                             setExpiry("")
                                             setOptionChainData({
@@ -252,8 +381,8 @@ function Option_Chain() {
                                         <option value="" >Select Stock Name</option>
 
 
-                                        { symbol.data && symbol.data.map((item) => {
-                                            return <option key={item._id} value={item.name} name={item.name}>{item.name}</option>
+                                        {All_Symbols.data && All_Symbols.data.map((item) => {
+                                            return <option key={item._id} value={item.symbol} name={item.symbol}>{item.symbol}</option>
                                         })}
                                     </select>
                                 </div>
@@ -265,15 +394,15 @@ function Option_Chain() {
                                         EXPIRY DATE
                                     </label>
                                     <select className="default-select wide form-control" name="expiry_date"
-                                    // onChange={(e) => {
-                                    //     setExpiry(e.target.value)
-                                    // }}
-                                    // value={expiry}
+                                        onChange={(e) => {
+                                            setExpiry(e.target.value)
+                                        }}
+                                        value={expiry}
                                     >
                                         <option value="" >Select Expiry</option>
-                                        {/* {All_Symbols_Expiry.data && All_Symbols_Expiry.data.map((item) => {
-                                            return <option value={item.uniqueExpiryValues}>{get_thre_digit_month(item.expiryDate)}</option>
-                                        })} */}
+                                        {All_Symbols_Expiry.data && All_Symbols_Expiry.data.map((item) => {
+                                            return <option value={item.uniqueExpiryValues}>{get_three_digit_month(item.expiryDate)}</option>
+                                        })}
                                     </select>
                                 </div>
                                 <div className="col-md-2 input-block ">
@@ -284,23 +413,23 @@ function Option_Chain() {
                                         STRATEGY
                                     </label>
                                     <select className="default-select wide form-control" name="strategyname"
-                                    // onChange={(e) => {
-                                    //     setStrategy(e.target.value);
-                                    //     test(e);
+                                    onChange={(e) => {
+                                        setStrategy(e.target.value);
+                                        test(e);
 
-                                    // }} value={strategy}
+                                    }} value={strategy}
 
                                     // disabled={CreateSignalRequest.length === 0}
                                     >
                                         <option value="">Select Strategy</option>
-                                        {/* {getAllStrategyName.data &&
+                                        {getAllStrategyName.data &&
                                             getAllStrategyName.data.map((item) => {
                                                 return (
                                                     <option value={item.strategy_name}>
                                                         {item.strategy_name}
                                                     </option>
                                                 );
-                                            })} */}
+                                            })}
                                     </select>
                                 </div>
                                 <div className="col-md-2 input-block  text-secondary ">
@@ -334,12 +463,9 @@ function Option_Chain() {
                                 </div>
                             </div>
 
-                            <FullDataTable
-                                styles={styles}
-                                columns={columns}
-                                rows={companyData.data}
-                                checkboxSelection={false}
-                            />
+                            <FullDataTable TableColumns={columns} tableData={OptionChainData.data} pagination1={true}></FullDataTable>
+
+
                         </>
 
 

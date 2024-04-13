@@ -60,14 +60,13 @@ const SubAdmin_Routing = () => {
           <Route exact path="/user/add" element={<Adduser />} />
           <Route exact path="/make-call" element={<Makecall />} />
           <Route exact path="/edit/strategies/:id" element={<Edit_Strategies />} />
-
           <Route exact path="/strategys/transaction" element={<Strategytransaction />} />
           <Route exact path="/group-service/edit/:id" element={<Edit_Group_Service />} />
           <Route exact path="/user/edit/:id" element={<Edit_User />} />
-          
           <Route exact path="/wallet" element={<Wallets />} />
           <Route exact path="/strategys/history" element={<Strategyhistory />} />
           <Route exact path="/profile" element={<Profile />} />
+          
 
 
 

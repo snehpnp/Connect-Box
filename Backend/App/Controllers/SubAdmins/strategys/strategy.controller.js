@@ -356,10 +356,7 @@ class strategy {
         res.send({ status: false, msg: "Enter Please Id", data: [] });
       }
 
-      const getAllstrategy = await strategy_model
-      .find({ maker_id: id })
-      .sort({ createdAt: -1 })
-      .select('_id strategy_name');
+      const getAllstrategy = await strategy_model.find({ maker_id: id }).sort({ createdAt: -1 }).select('_id strategy_name');
   
        console.log("getAllstrategy :", getAllstrategy)
 
