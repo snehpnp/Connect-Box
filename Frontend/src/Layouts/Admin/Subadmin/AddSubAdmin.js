@@ -129,7 +129,7 @@ const AddClient = () => {
       label: "Profile Image",
       type: "file",
       label_size: 6,
-      col_size: 6,
+      col_size: 12,
       disable: false,
     },
     {

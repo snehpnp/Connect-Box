@@ -9,6 +9,7 @@ import OtpInput from "react-otp-input";
 import Lodding from '../../Utils/Loader';
 
 import { useNavigate } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 
 function Login() {
@@ -241,7 +242,7 @@ var theme_mode= localStorage.getItem('theme_mode')
                                         </div>
 
                                         <div className="text-center dont-have">
-                                            Don't have an account yet? <a href="register.html">Register</a>
+                                            Don't have an account yet? <Link to="./Register.jsx">Register</Link>
                                         </div>
                                     </div>
                                 </div>

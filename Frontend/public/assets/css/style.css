@@ -4604,9 +4604,11 @@ span.select2-container.select2-container--default.select2-container--open {
     line-height: 18px;
     font-size: 18px;
 }
+
 .question.active {
     background: #394bff30;
 }
+
 .sidebar .sidebar-menu ul li a svg {
     width: 18px
 }
@@ -9640,7 +9642,7 @@ table .badge {
 [data-sidebar=light] body .sidebar {
     background-color: #fff;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .2);
-    box-shadow: 0px 2px 4px rgba(0,0,0,0.08), 0px 8px 12px rgba(0,0,0,0.04);
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.08), 0px 8px 12px rgba(0, 0, 0, 0.04);
 }
 
 [data-sidebar=light] body .sidebar ul li span {
@@ -33229,28 +33231,11 @@ li.submenu {
 }
 
 #animated-icon {
-    animation: tilt 1s infinite;
+
     color: #fff;
 }
 
-@keyframes tilt {
-    0% {
-        transform: rotate(0deg);
-    }
 
-    50% {
-        transform: rotate(50deg);
-    }
-
-    100% {
-        transform: rotate(0deg);
-    }
-}
-
-#animated1-icon {
-    animation: tilt 1s infinite;
-
-}
 
 
 @keyframes tilt {
