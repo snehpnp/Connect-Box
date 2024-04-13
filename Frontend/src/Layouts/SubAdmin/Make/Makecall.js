@@ -6,11 +6,15 @@ const Makecall = () => {
             <div className="content container-fluid">
                 <div className="card">
                     <div className="card-body">
-                        <div className="page-header">
-                            <div className="content-page-header">
-                                <h5>Make Call</h5>
-                            </div>
+                        <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                            <h5 className="card-title mb-0 w-auto">
+
+                                <i className="fas fa-money-bill-wave pe-2" />
+                                Make Call
+                            </h5>
+                            <div className="pay-btn text-end w-auto" />
                         </div>
+
                         <div className="row">
                             <div className="col-md-12">
                                 <div className="edit-card">
@@ -286,7 +290,7 @@ const Makecall = () => {
                                             </div>
 
 
-                                            <div className="invoice-total-box px-3 border">
+                                            <div className="invoice-total-box border">
                                                 <div className="invoice-total-inner">
                                                     <div className="inventory-table">
                                                         <table className="table table-center table-hover datatable">
@@ -300,6 +304,7 @@ const Makecall = () => {
                                                                     <th>Selling Price</th>
                                                                     <th>Purchase Price</th>
                                                                     <th className="no-sort">Action</th>
+
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -502,7 +507,7 @@ const Makecall = () => {
                                             </div>
 
 
-                                            <div className="invoice-total-box px-3 border">
+                                            <div className="invoice-total-box border">
                                                 <div className="invoice-total-inner">
                                                     <div className="inventory-table">
                                                         <table className="table table-center table-hover datatable">
@@ -717,7 +722,7 @@ const Makecall = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="invoice-total-box px-3 border">
+                                            <div className="invoice-total-box border">
                                                 <div className="invoice-total-inner">
                                                     <div className="inventory-table">
                                                         <table className="table table-center table-hover datatable">
@@ -730,7 +735,8 @@ const Makecall = () => {
                                                                     <th>Quantity</th>
                                                                     <th>Selling Price</th>
                                                                     <th>Purchase Price</th>
-                                                                    <th className="no-sort">Action</th>
+                                                                    <th>Action</th>
+
                                                                 </tr>
                                                             </thead>
                                                             <tbody>

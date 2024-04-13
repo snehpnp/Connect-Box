@@ -190,17 +190,22 @@ function MessageBroadcast() {
   }, [refresh]);
 
   return (
+    <div data-aos="fade-left">
     <Content
-      Page_title="Message Boardcast"
-      Card_title="Message"
+      // Page_title="Message Boardcast"
+      Card_title=" Message Boardcast"
       Card_title_icon="fas fa-message pe-3"
       Content={
         <>
-          <div className="row">
-            <div className="col-md-6">
-
+          <div className="row align-items-center">
+            <div className="col-md-5">
+            <img
+                  src="/assets/img/gif/Email-campaign.png"
+                  alt="Investment data"
+                  className="w-75"
+                />
             </div>
-            <div className="col-md-6">
+            <div className="col-md-7">
               <div className="mt-3">
                 <label className="form-label" htmlFor="broker-select">
                   SubAdmins
@@ -343,6 +348,7 @@ function MessageBroadcast() {
         </>
       }
     />
+    </div>
   );
 }
 

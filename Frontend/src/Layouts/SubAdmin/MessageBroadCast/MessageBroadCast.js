@@ -237,8 +237,8 @@ function MessageBroadcast() {
 
   return (
     <Content
-      Page_title="Message Boardcast"
-      Card_title="Message"
+      // Page_title=""
+      Card_title="Message Boardcast"
       Card_title_icon="fas fa-message pe-3"
       Content={
         <>
