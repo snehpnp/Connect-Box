@@ -49,7 +49,7 @@ function Option_Chain() {
         data: [],
     });
 
- 
+
     const [OptionChainData, setOptionChainData] = useState({
         loading: true,
         data: [],
@@ -399,6 +399,7 @@ function Option_Chain() {
                                         }}
                                         value={expiry}
                                     >
+                                        {console.log("expiry :", expiry)}
                                         <option value="" >Select Expiry</option>
                                         {All_Symbols_Expiry.data && All_Symbols_Expiry.data.map((item) => {
                                             return <option value={item.uniqueExpiryValues}>{get_three_digit_month(item.expiryDate)}</option>
@@ -413,16 +414,16 @@ function Option_Chain() {
                                         STRATEGY
                                     </label>
                                     <select className="default-select wide form-control" name="strategyname"
-                                    onChange={(e) => {
-                                        setStrategy(e.target.value);
-                                        test(e);
+                                        onChange={(e) => {
+                                            setStrategy(e.target.value);
+                                            test(e);
 
-                                    }} value={strategy}
+                                        }} value={strategy}
 
                                     // disabled={CreateSignalRequest.length === 0}
                                     >
                                         <option value="">Select Strategy</option>
-                                        {getAllStrategyName.data &&
+                                        {expiry && getAllStrategyName.data &&
                                             getAllStrategyName.data.map((item) => {
                                                 return (
                                                     <option value={item.strategy_name}>
