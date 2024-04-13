@@ -39,10 +39,10 @@ const Overview = () => {
   const maxPercentage = adminData.Totalcount;
   const maxPercentageforUser = adminData.TotalUsercount;
 
-  const [selectedSubadmin, setSelectedSubadmin] = useState("");
+  const [selectedSubadmin, setSelectedSubadmin] = useState("ALL");
   const [selectedSubadminid, setSelectedSubadminid] = useState("");
 
-  const [selectedOption, setSelectedOption] = useState("Monthly");
+  const [selectedOption, setSelectedOption] = useState("Day");
 
   const handleSelect = (id) => {
     setSelectedSubadminid(id);
@@ -224,12 +224,15 @@ const Overview = () => {
       SUBADMINS: selectedSubadminid,
       selectedOption: selectedOption,
     };
+
     await dispatch(Dashboard_admin1(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
           const categories = response.data.categories;
           const data = response.data.data;
+
+           
 
           setOptions((prevOptions) => ({
             ...prevOptions,
@@ -371,7 +374,7 @@ const Overview = () => {
                                   setSelectedSubadmin("ALL");
                                 }}
                               >
-                                Admin
+                                ALL
                               </a>
                             </li>
                             {subadminName &&
@@ -385,6 +388,9 @@ const Overview = () => {
                                     }}
                                   >
                                     {data.UserName}
+                                  
+                                   
+                                    
                                   </a>
                                 </li>
                               ))}

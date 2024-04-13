@@ -25,7 +25,7 @@ export function fa_time(date) {
   return format(new Date(date), 'yyyy/MM/dd');
 }
 
-export function get_thre_digit_month(date) {
+export function get_three_digit_month(date) {
   return format(new Date(date), 'yyyy-MMM-dd');
 }
 

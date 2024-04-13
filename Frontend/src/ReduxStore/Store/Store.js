@@ -13,6 +13,8 @@ import ClientServiceSlice from '../Slice/Users/ClientServiceSlice'
 import UserdashboardSlice from '../Slice/Users/Userdashboard.Slice'
 
 
+import OptionChainSlice from '../Slice/Subadmin/OptionChainSlice'
+
 
 
 
@@ -27,6 +29,7 @@ const store = configureStore({
     GrouoServicesSlice : GrouoServicesSlice.reducer,
     UsersSlice : UsersSlice.reducer,
     ClientServiceSlice : ClientServiceSlice.reducer,
+    OptionChainSlice : OptionChainSlice.reducer,
     UserdashboardSlice : UserdashboardSlice.reducer
 
 
