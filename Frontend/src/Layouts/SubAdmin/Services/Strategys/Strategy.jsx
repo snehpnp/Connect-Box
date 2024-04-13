@@ -418,7 +418,7 @@ function Strategy() {
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Download"
-                                        >
+                                        > 
                                             <li>
                                                 <div className="card-body">
                                                     <ExportToExcel
