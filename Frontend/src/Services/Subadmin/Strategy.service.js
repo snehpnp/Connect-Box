@@ -14,10 +14,19 @@ export async function GetSubStrategy(data, token) {
     }
     catch (err) {
         return await err;
-
     }
+}
 
-
+export async function GET_ALL_STRETGY_WITH_IMG(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}strategy/getall`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+    }
 }
 
 export async function ADD_STRATEGY(data) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetSubStrategys, AddStrategy, DELETE_STRATEGY } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
+import { GetStretgyWithImg, AddStrategy, DELETE_STRATEGY } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
 import { useDispatch } from "react-redux";
 
 import AddForm from '../../../../Components/ExtraComponents/forms/AddForm'
@@ -7,8 +7,10 @@ import { useFormik } from 'formik';
 import toast from "react-hot-toast";
 import ExportToExcel from '../../../../Utils/ExportCSV'
 import ToastButton from '../../../../Components/ExtraComponents/Alert_Toast'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loader from '../../../../Utils/Loader'
+import { IndianRupee } from 'lucide-react';
+
 
 
 function Strategy() {
@@ -27,7 +29,9 @@ function Strategy() {
 
     const [refresh, setrefresh] = useState(false);
     const [modalId, setModalId] = useState(null);
- 
+    const [StrategyId, setStrategyId] = useState('')
+
+
 
 
 
@@ -37,6 +41,8 @@ function Strategy() {
         loading: false,
         data: [],
     });
+
+    console.log("allStategy :", allStategy)
 
 
 
@@ -250,7 +256,7 @@ function Strategy() {
                 strategy_amount_early: values.strategy_amount_early,
                 maker_id: user_id
             };
-   
+
 
             await dispatch(AddStrategy(data))
                 .unwrap()
@@ -283,7 +289,7 @@ function Strategy() {
     const getAllStrategy = async () => {
         try {
             var data = { id: user_id }
-            const response = await dispatch(GetSubStrategys(data)).unwrap();
+            const response = await dispatch(GetStretgyWithImg(data)).unwrap();
 
             if (response.status) {
                 const formattedData = response.data.map((row, index) => ({
@@ -405,7 +411,7 @@ function Strategy() {
                                         </div>
                                     </li>
 
-                                     
+
                                     <li>
                                         <div
                                             className="dropdown dropdown-action"
@@ -450,13 +456,15 @@ function Strategy() {
                                         <div className="package-header d-flex justify-content-between">
                                             <div className="d-flex justify-content-between w-100">
                                                 <div className="">
-                                                <h6>Segment: {stg.strategy_segment}</h6>
-                                                 
-                                                <h2 className="my-2">{stg.strategy_name}</h2>
-                                                    
+                                                    <h6>Segment: {stg.strategy_segment}</h6>
+
+                                                    <h2 className="my-2">{stg.strategy_name}</h2>
+
                                                 </div>
                                                 <span className="icon-frame d-flex align-items-center justify-content-center">
-                                                    <img src= "assets/img/icons/price-01.svg" alt="img" />
+                                                    {/* <img src="assets/img/icons/price-01.svg" alt="img" /> */}
+                                                    <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
+
                                                 </span>
                                                 {/* <span className="icon-frame d-flex align-items-center justify-content-center">
                                                     <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
@@ -464,40 +472,38 @@ function Strategy() {
                                             </div>
                                         </div>
                                         <p>{stg.strategy_description}</p>
-                                        
+
                                         <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
                                         <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                 <span >Demo</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>Free</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                 <span >Month</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$10/month</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{height:'1rem'}}/>{stg.strategy_amount_month}/month</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                 <span >Quarterly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$25/quarter</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{height:'1rem'}}/>{stg.strategy_amount_quarterly}/Quarterly</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                 <span >Half Yearly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$45/half year</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{height:'1rem'}}/>{stg.strategy_amount_half_early}/half year</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                 <span >Yearly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>$80/year</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{height:'1rem'}}/>{stg.strategy_amount_early}/year</span>
                                             </li>
                                         </ul>
 
                                         <div className="d-flex justify-content-center package-edit">
-                                            <a className="btn-action-icon me-2" onClick={() => setopneModal(true)} >
-                                                <i className="fe fe-eye" />
-                                            </a>
+                                            
 
                                             <a className="btn-action-icon me-2"  >
                                                 <i className="fe fe-edit" onClick={() => handleEditPackage({ id: stg._id })} />
@@ -619,20 +625,16 @@ function Strategy() {
                     >
                         <div className="modal-dialog modal-dialog-centered modal-md">
                             <div className="modal-content">
-                                <div className="modal-header border-0">
+                                <div className="modal-header border-0 d-flex justify-content-between">
                                     <div className="form-header modal-header-title text-start mb-0">
                                         <h4 className="mb-0">Hello Company Details</h4>
                                     </div>
-                                    <div className="d-flex details-edit-link">
-                                        <a
-                                            href="#"
-                                            className="modal-edit-link d-flex align-items-center"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#edit_companies"
-                                        >
+                                    <div className="d-flex ">
+                                     
+                                        <Link className="modal-edit-link d-flex align-items-center border p-2" to={`/subadmin/edit/strategies/`+StrategyId}>
                                             <i className="fe fe-edit me-2" />
-                                            Edit Company
-                                        </a>
+                                            Edit Strategy
+                                        </Link>
                                         <button
                                             type="button"
                                             className="btn-close ms-2"

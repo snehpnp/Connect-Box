@@ -218,7 +218,7 @@ function Edit_Strategies() {
           if (response.status) {
             toast.success(response.msg);
             setTimeout(() => {
-              navigate("subadmin/strategys");
+              navigate("/subadmin/strategys");
             }, 1000);
           } else {
             toast.error(response.msg);

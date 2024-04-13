@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { fetchSubadminCompanyInfo } from "../../../ReduxStore/Slice/Admin/SubAdminCompanyInfo";
 import { useDispatch } from "react-redux";
 import Content from '../../../Components/Dashboard/Content/Content';
@@ -14,6 +14,7 @@ import { Get_Option_All_Round_token, Get_Option_Symbols, Get_Symbol_Expiry, Get_
 
 function Option_Chain() {
     const dispatch = useDispatch();
+    const strategyRef = useRef("");
     const token = JSON.parse(localStorage.getItem('user_details')).token
     const user_id = JSON.parse(localStorage.getItem('user_details')).user_id;
 
@@ -344,7 +345,13 @@ function Option_Chain() {
         getCompanyData();
     }, []);
 
-
+    const test = (e) => {
+        if (e.target.value !== "") {
+            strategyRef.current = e.target.value
+        } else {
+            strategyRef.current = ""
+        }
+    }
 
 
 

@@ -66,6 +66,9 @@ const SubAdmin_Routing = () => {
           <Route exact path="/wallet" element={<Wallets />} />
           <Route exact path="/strategys/history" element={<Strategyhistory />} />
           <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/" element={<Profile />} />
+
+
           
 
 
