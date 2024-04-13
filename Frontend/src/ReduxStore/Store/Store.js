@@ -14,6 +14,7 @@ import UserdashboardSlice from '../Slice/Users/Userdashboard.Slice'
 
 
 import OptionChainSlice from '../Slice/Subadmin/OptionChainSlice'
+import TradeDetailsSlice from '../Slice/Subadmin/TradeDetailsSlice'
 
 
 
@@ -30,7 +31,8 @@ const store = configureStore({
     UsersSlice : UsersSlice.reducer,
     ClientServiceSlice : ClientServiceSlice.reducer,
     OptionChainSlice : OptionChainSlice.reducer,
-    UserdashboardSlice : UserdashboardSlice.reducer
+    UserdashboardSlice : UserdashboardSlice.reducer,
+    TradeDetailsSlice : TradeDetailsSlice.reducer,
 
 
 

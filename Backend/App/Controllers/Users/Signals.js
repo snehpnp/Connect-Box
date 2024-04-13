@@ -95,7 +95,7 @@ class Signals {
             ];
 
             const GetAllClientServices = await client_services.aggregate(pipeline);
-            if (!GetAllClientServices) {
+            if (!GetAllClientServices || GetAllClientServices.length==0 ) {
 
                 return res.send({ status: false, data: [], msg: "Data Empty" });
             }
