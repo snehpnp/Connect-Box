@@ -13,6 +13,9 @@ import Strategies from '../Layouts/User/Strategy/Strategies';
 
 import Profile from '../Layouts/Comman/Profile/Profile';
 
+import Orders from '../Layouts/User/Trade/Order';
+
+
 
 // strategydesc
 
@@ -32,10 +35,18 @@ const User_Routing = () => {
                     <Route path="/faqs" element={<Faqs />} />
                     <Route path="/help" element={<Help />} />
                     <Route path="/stock" element={<Stocklist />} />
-                    <Route path="/payment" element={<Stocklist />} />
                     <Route path="/strategy" element={<Strategies />} />
 
                     <Route exact path="/profile" element={<Profile />} />
+                    <Route exact path="/orders" element={<Orders />} />
+                    <Route exact path="/positions" element={<Orders />} />
+                    <Route exact path="/open-positions" element={<Orders />} />
+                    <Route exact path="/broker-response" element={<Orders />} />
+                    <Route path="/payment" element={<Orders />} />
+
+
+
+
 
 
 
