@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetAll_Group_Servics, Get_All_Catagory, GET_ALL_SERVICES_NAMES, Delete_GroupServices, Get_All_Services_User_Name } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
+import { GetAll_Group_Servics, Get_All_Catagory, GET_ALL_SERVICES_NAMES, Delete_GroupServices } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { useDispatch } from "react-redux";
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable1';
 import IconButton from '@mui/material/IconButton';
@@ -410,15 +410,7 @@ function GroupStrategy() {
                                         </div>
                                     </li>
 
-                                    <li>
-                                        <Link
-                                            className="btn btn-primary"
-                                            to={'/subadmin/group_service/add'}
-                                        >
-                                            <i className="fa fa-plus-circle me-2" aria-hidden="true" />
-                                            Add GroupService
-                                        </Link>
-                                    </li>
+                              
                                 </ul>
                             </div>
                         </div>
