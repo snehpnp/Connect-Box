@@ -256,6 +256,13 @@ export const subamdin_header = [
         route: "/subadmin/help",
         Icon: "fe fe-help-circle",
         Data: []
+    },
+    {
+        id: 9,
+        name: 'FAQs',
+        route: "/admin/faqs",
+        Icon: "fe fe-help-circle",
+        Data: []
     }
 ];
 
