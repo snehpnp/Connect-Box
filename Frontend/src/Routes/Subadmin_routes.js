@@ -32,6 +32,7 @@ import Strategyhistory from '../Layouts/SubAdmin/Services/Strategys/Strategy_his
 import OrderDetails from '../Layouts/SubAdmin/Trade/Order.js'
 
 
+import Position from '../Layouts/SubAdmin/Trade/Position.js'
 
 
 import Profile from '../Layouts/Comman/Profile/Profile';
@@ -68,6 +69,8 @@ const SubAdmin_Routing = () => {
           <Route exact path="/strategys/history" element={<Strategyhistory />} />
           <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/orders" element={<OrderDetails />} />
+          <Route exact path="/position" element={<Position />} />
+
 
 
           

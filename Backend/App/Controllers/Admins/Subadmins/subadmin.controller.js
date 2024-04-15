@@ -521,7 +521,6 @@ class Subadmin {
       ]);
       
       
-console.log("UsedBalance",UsedBalance)
 
 
       const mergedArray = [...getAllClients, ...rechargeDetails];
@@ -538,7 +537,6 @@ console.log("UsedBalance",UsedBalance)
       }
 
 
-      console.log("Count", mergedArray)
 
 
 
