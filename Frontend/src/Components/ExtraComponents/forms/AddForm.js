@@ -72,15 +72,15 @@ const DynamicForm = ({
     <div className="content container-fluid" data-aos="fade-left">
       <div className="card mb-0">
         <div className="card-header">
-        
+
           {page_title ? <h5 className="card-title mb-0 w-auto"><i className="fa-regular fa-circle-user pe-2"></i>{page_title} </h5> : ""}
-          
+
         </div>
         <form onSubmit={formik.handleSubmit}>
           <div className="card-body ">
             <div className="page-header">
               <div className="content-page-header d-flex justify-content-between align-items-center">
-              
+
                 {btn_status == "true" ? (
                   content_btn_name == "Back" ? (
                     <Link to={content_path} className="btn btn-primary">
@@ -113,7 +113,7 @@ const DynamicForm = ({
                                 {field.label}
                                 <span className="text-danger">*</span>
                               </label>
-                             
+
                               <input
                                 type="text"
                                 className="form-control"
@@ -131,7 +131,7 @@ const DynamicForm = ({
                                       : prifix_key + "_" + formik.values[field.name]
                                 }
                               />
-                             
+
                               {formik.touched[field.name] &&
                                 formik.errors[field.name] ? (
                                 <div style={{ color: "red" }}>
@@ -149,7 +149,7 @@ const DynamicForm = ({
                                 {field.label}
                                 <span className="text-danger">*</span>
                               </label>
-                             
+
                               <input
                                 type="text"
                                 aria-describedby="basic-addon1"
@@ -160,15 +160,15 @@ const DynamicForm = ({
                                 name={field.name}
                                 {...formik.getFieldProps(field.name)}
                               />
-                              </div>
-                              {formik.touched[field.name] &&
-                                formik.errors[field.name] ? (
-                                <div style={{ color: "red" }}>
-                                  {formik.errors[field.name]}
-                                </div>
-                              ) : null}
                             </div>
-                        
+                            {formik.touched[field.name] &&
+                              formik.errors[field.name] ? (
+                              <div style={{ color: "red" }}>
+                                {formik.errors[field.name]}
+                              </div>
+                            ) : null}
+                          </div>
+
                         </>
                       ) : field.type === "file" ? (
                         <>
@@ -290,8 +290,8 @@ const DynamicForm = ({
                                 className={`col-lg-${title === "addgroup" ? 12 : 12
                                   }`}
                               >
-                                
-                                
+
+
                                 <select
                                   className="default-select wide form-control"
                                   aria-describedby="basic-addon1"
@@ -311,7 +311,7 @@ const DynamicForm = ({
                                     </option>
                                   ))}
                                 </select>
-                                
+
                                 {formik.touched[field.name] &&
                                   formik.errors[field.name] ? (
                                   <div style={{ color: "red" }}>
@@ -589,7 +589,7 @@ const DynamicForm = ({
                                   <label htmlFor={field.name}>
                                     {field.label}
                                   </label>
-                                 
+
                                   <input
                                     type="number"
                                     name={field.name}
@@ -597,9 +597,33 @@ const DynamicForm = ({
                                     className="form-control"
                                     id={field.name}
                                     placeholder={`Enter ${field.label}`}
+                                    onKeyDown={(e) => {
+                                      // Allow: backspace, delete, tab, escape, enter, and .
+                                      if (
+                                        [46, 8, 9, 27, 13, 110, 190].includes(e.keyCode) ||
+                                        // Allow: Ctrl+A, Command+A
+                                        (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                                        // Allow: Ctrl+C, Command+C
+                                        (e.keyCode === 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+                                        // Allow: Ctrl+V, Command+V
+                                        (e.keyCode === 86 && (e.ctrlKey === true || e.metaKey === true)) ||
+                                        // Allow: Ctrl+X, Command+X
+                                        (e.keyCode === 88 && (e.ctrlKey === true || e.metaKey === true))
+                                      ) {
+                                        // let it happen, don't do anything
+                                        return;
+                                      }
+                                      // Ensure that it is a number and stop the keypress
+                                      if (
+                                        (e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
+                                        (e.keyCode < 96 || e.keyCode > 105)
+                                      ) {
+                                        e.preventDefault();
+                                      }
+                                    }}
                                     {...formik.getFieldProps(field.name)}
                                   />
-                                 
+
                                   {formik.touched[field.name] &&
                                     formik.errors[field.name] ? (
                                     <div style={{ color: "red" }}>
@@ -620,9 +644,9 @@ const DynamicForm = ({
                                   <label htmlFor={field.name}>
                                     {field.label}
                                   </label>
-                                 
+
                                   <input
-                                    type="number"  
+                                    type="number"
                                     name={field.name}
                                     aria-describedby="basic-addon1"
                                     className="form-control"
@@ -632,13 +656,13 @@ const DynamicForm = ({
                                     onChange={(e) => {
                                       const value = e.target.value
                                       if (value.length > 10) {
-                                        e.target.value = value.slice(0, 10);  
+                                        e.target.value = value.slice(0, 10);
                                       } else {
                                         formik.handleChange(e);
                                       }
                                     }}
                                   />
-                                  
+
                                   {formik.touched[field.name] &&
                                     formik.errors[field.name] ? (
                                     <div style={{ color: "red" }}>
