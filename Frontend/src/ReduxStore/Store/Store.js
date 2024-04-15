@@ -32,7 +32,6 @@ const store = configureStore({
     TradeDetailsSlice : TradeDetailsSlice.reducer,
     Userinfo1Slice: Userinfo1Slice.reducer,
    
-    TradeDetailsSlice: TradeDetailsSlice.reducer,
 
 
 
