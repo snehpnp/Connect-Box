@@ -598,22 +598,16 @@ const DynamicForm = ({
                                     id={field.name}
                                     placeholder={`Enter ${field.label}`}
                                     onKeyDown={(e) => {
-                                      // Allow: backspace, delete, tab, escape, enter, and .
+                                      
                                       if (
                                         [46, 8, 9, 27, 13, 110, 190].includes(e.keyCode) ||
-                                        // Allow: Ctrl+A, Command+A
                                         (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
-                                        // Allow: Ctrl+C, Command+C
                                         (e.keyCode === 67 && (e.ctrlKey === true || e.metaKey === true)) ||
-                                        // Allow: Ctrl+V, Command+V
                                         (e.keyCode === 86 && (e.ctrlKey === true || e.metaKey === true)) ||
-                                        // Allow: Ctrl+X, Command+X
                                         (e.keyCode === 88 && (e.ctrlKey === true || e.metaKey === true))
                                       ) {
-                                        // let it happen, don't do anything
                                         return;
                                       }
-                                      // Ensure that it is a number and stop the keypress
                                       if (
                                         (e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
                                         (e.keyCode < 96 || e.keyCode > 105)
@@ -652,6 +646,26 @@ const DynamicForm = ({
                                     className="form-control"
                                     id={field.name}
                                     placeholder={`Enter ${field.label}`}
+                                    {...formik.getFieldProps(field.name)}
+                                    
+                                    onKeyDown={(e) => {
+                                      
+                                      if (
+                                        [46, 8, 9, 27, 13, 110, 190].includes(e.keyCode) ||
+                                        (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                                        (e.keyCode === 67 && (e.ctrlKey === true || e.metaKey === true)) ||
+                                        (e.keyCode === 86 && (e.ctrlKey === true || e.metaKey === true)) ||
+                                        (e.keyCode === 88 && (e.ctrlKey === true || e.metaKey === true))
+                                      ) {
+                                        return;
+                                      }
+                                      if (
+                                        (e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
+                                        (e.keyCode < 96 || e.keyCode > 105)
+                                      ) {
+                                        e.preventDefault();
+                                      }
+                                    }}
                                     {...formik.getFieldProps(field.name)}
                                     onChange={(e) => {
                                       const value = e.target.value

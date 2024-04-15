@@ -24,13 +24,14 @@ const store = configureStore({
     SystemSlice: SystemSlice.reducer,
     SubAdminSystemSlice: SubAdminSystemSlice.reducer,
     StrategySlice: StrategySlice.reducer,
-    GrouoServicesSlice: GrouoServicesSlice.reducer,
-    UsersSlice: UsersSlice.reducer,
-    ClientServiceSlice: ClientServiceSlice.reducer,
-    OptionChainSlice: OptionChainSlice.reducer,
-    UserdashboardSlice: UserdashboardSlice.reducer,
+    GrouoServicesSlice : GrouoServicesSlice.reducer,
+    UsersSlice : UsersSlice.reducer,
+    ClientServiceSlice : ClientServiceSlice.reducer,
+    OptionChainSlice : OptionChainSlice.reducer,
+    UserdashboardSlice : UserdashboardSlice.reducer,
+    TradeDetailsSlice : TradeDetailsSlice.reducer,
     Userinfo1Slice: Userinfo1Slice.reducer,
-    TradeDetailsSlice: TradeDetailsSlice.reducer,
+   
 
 
 
