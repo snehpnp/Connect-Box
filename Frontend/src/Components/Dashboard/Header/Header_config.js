@@ -284,6 +284,13 @@ export const User_header = [
         Data: []
     },
     {
+        id: 2,
+        name: 'Stock List 1',
+        Icon: "fa-solid fa-arrow-trend-up",
+        route: "/user/stock1",
+        Data: []
+    },
+    {
         id: 3,
         name: 'Trade',
         Icon: "fa-solid fa-chart-simple",
