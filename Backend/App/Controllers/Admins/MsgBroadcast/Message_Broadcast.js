@@ -39,6 +39,8 @@ class MessageController {
             Role,
           });
           await msg.save();
+          io.emit("message_updated", msg);
+
         }
       } else if (Role === "SUBADMIN") {
         msg = new msgdata({
@@ -50,9 +52,8 @@ class MessageController {
           Role,
         });
         await msg.save();
-      }
 
-      // io.emit("newMessage", msg);
+      }
 
       return res
         .status(201)

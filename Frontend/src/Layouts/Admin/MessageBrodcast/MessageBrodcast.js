@@ -4,7 +4,7 @@ import {
   admin_Msg_Get,
   admin_Msg_Delete,
   admin_Msg_Edit,
-  add_message
+  add_message,
 } from "../../../ReduxStore/Slice/Admin/MessageData";
 import { GetAllSubAdmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import io from "socket.io-client";
-// const socket = io("http://localhost:3000");
+
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
@@ -28,15 +28,17 @@ function MessageBroadcast() {
   const [refresh, setrefresh] = useState(false);
 
   const datas = JSON.parse(localStorage.getItem("user_details"));
-  // useEffect(() => {
-  //   socket.on("messagesUpdated", (data) => {
-  //     console.log("Received updated messages:", data);
-  //     setPipelineData(data); 
-  //   });
-  //   return () => {
-  //     socket.off("messagesUpdated");
-  //   };
-  // }, []);
+  const [socket, setSocket] = useState(null);
+
+  
+  useEffect(() => {
+    const newSocket = io.connect("http://localhost:7000");
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+    };
+  }, []);
 
   const OpenModal = (value) => {
     setModal(value);
@@ -83,10 +85,10 @@ function MessageBroadcast() {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
-            //  socket.emit('newMessage', newMessage);
+            await socket.emit("send_message", newMessage);
             toast.success(response.msg);
-            setSelectedSubadmin("")
-            setMessageText("")
+            setSelectedSubadmin("");
+            setMessageText("");
             setrefresh(!refresh);
           } else {
             toast.error(response.msg);
@@ -115,8 +117,10 @@ function MessageBroadcast() {
   };
 
   const getAdminTableData = async () => {
+
     const ownerId = datas.user_id
-    await dispatch(admin_Msg_Get({ ownerId, key: 2 }))
+
+   await dispatch(admin_Msg_Get({ ownerId, key: 2 }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
@@ -131,9 +135,7 @@ function MessageBroadcast() {
       });
   };
 
-
-
-  const handleDelete = async (id) => {
+ const handleDelete = async (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to delete this message?"
     );
@@ -179,8 +181,6 @@ function MessageBroadcast() {
     OpenModal(1);
   };
 
-
-
   useEffect(() => {
     fetchSubadminName();
     getAdminTableData();
@@ -197,14 +197,26 @@ function MessageBroadcast() {
       Card_title_icon="fas fa-message pe-3"
       Content={
         <>
-          <div className="row align-items-center">
-            <div className="col-md-5">
-            <img
-                  src="/assets/img/gif/Email-campaign.png"
-                  alt="Investment data"
-                  className="w-75"
-                />
-            </div>
+          <div className="mt-3">
+            {/* <label className="form-label" htmlFor="broker-select">
+              SubAdmins
+            </label>
+            <div className="input-group">
+              <select
+                id="broker-select"
+                className="form-control"
+                value={selectedSubadmin}
+                onChange={handleSubadmins}
+              >
+                <option value="all">All</option>
+                {subadmin &&
+                  subadmin.map((val) => (
+                    <option key={val._id} value={val._id}>
+                      {val.UserName}
+                    </option>
+                  ))}
+              </select>
+            </div> */}
             <div className="col-md-7">
               <div className="mt-3">
                 <label className="form-label" htmlFor="broker-select">
@@ -273,19 +285,15 @@ function MessageBroadcast() {
                       <td>{message.messageTitle}</td>
                       <td>{message.createdAt}</td>
                       <td>
-                        <button className=" btn-action-icon"
-                          onClick={() =>
-                            handleIdCheck(message._id)
-                          }
-
+                        <button
+                          onClick={() => handleIdCheck(message._id)}
+                          style={{ backgroundColor: "greenyellow" }}
                         >
                           <i className="fe fe-edit"></i>
                         </button>
-                        <button className=" btn-action-icon"
-                          onClick={() =>
-                            handleDelete(message._id)
-                          }
-
+                        <button
+                          onClick={() => handleDelete(message._id)}
+                          style={{ backgroundColor: "firebrick" }}
                         >
                           <i className="fe fe-trash-2"></i>
                         </button>

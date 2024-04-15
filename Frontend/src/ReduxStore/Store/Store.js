@@ -30,7 +30,11 @@ const store = configureStore({
     OptionChainSlice : OptionChainSlice.reducer,
     UserdashboardSlice : UserdashboardSlice.reducer,
     TradeDetailsSlice : TradeDetailsSlice.reducer,
-    Userinfo1Slice: Userinfo1Slice.reducer
+    Userinfo1Slice: Userinfo1Slice.reducer,
+   
+    TradeDetailsSlice: TradeDetailsSlice.reducer,
+
+
 
   },
 });

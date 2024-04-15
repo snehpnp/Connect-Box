@@ -4,21 +4,10 @@ const mongoConnection = require('./App/Connections/mongo_connection');
 const express = require("express");
 const app = express();
 const http = require('http'); 
-const socketIo = require('socket.io');
 const cors = require('cors');
 const bodyparser = require('body-parser');
-
+const { Server } = require("socket.io");
 const server = http.createServer(app);
-const io = socketIo(server); // Initialize socket.io with the server
-
-// Socket.io connection handler
-io.on('connection', (socket) => {
-  console.log('New client connected');
-
-  socket.on('disconnect', () => {
-    console.log('Client disconnected');
-  });
-});
 
 // Setting up CORS options
 const corsOpts = {
@@ -34,6 +23,29 @@ app.use(cors(corsOpts));
 // Body-parser middleware setup
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json({ limit: '10mb', extended: true }));
+
+//socket.io
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+  },
+});
+
+
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+
+
+  socket.on("send_message", (data) => {
+    console.log("data from backend",data)
+    io.emit("receive_message", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+  });
+});
 
 // Requiring utility files
 require('./App/Utils/Cron.utils');
