@@ -179,3 +179,15 @@ export async function broker_All(data, token) {
     return await err;
   }
 }
+
+//Subadmin DashBoard
+export async function subadmin_dashboard(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}data/dashboard`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}

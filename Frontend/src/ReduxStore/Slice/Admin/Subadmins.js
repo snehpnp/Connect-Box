@@ -10,8 +10,23 @@ import {
   admin_dashData1,
   SubadminsName,
   strategy_All,
-  broker_All
+  broker_All,
+  subadmin_dashboard
 } from "../../../Services/Admin/Subadmins.service";
+
+//subadmin dashboard
+export const Subadmin_Dashdata = createAsyncThunk(
+  "strategy_for_add_client/getall",
+  async (data) => {
+    try {
+      const res = await subadmin_dashboard(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
 
 export const allStrategy_subAd = createAsyncThunk(
   "strategy_for_add_client/getall",
@@ -267,6 +282,18 @@ const SubAdminSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(get_allBroker.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+
+      .addCase(Subadmin_Dashdata.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(Subadmin_Dashdata.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(Subadmin_Dashdata.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });
