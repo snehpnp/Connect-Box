@@ -31,20 +31,23 @@ function MessageBroadcast() {
   const [modal, setModal] = useState(0);
   const [msgData, setMsgData] = useState([]);
   const [isSentChecked, setIsSentChecked] = useState(false);
-  const [isReceivedChecked, setIsReceivedChecked] = useState(false);
+  const [isReceivedChecked, setIsReceivedChecked] = useState(true);
 
   const [openModalId, setopenModalId] = useState("");
   const [refresh, setrefresh] = useState(false);
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const socket = io.connect("http://localhost:7000");
-
-    socket.on("receive_message", (data) => {
-      setPipelineData((list) => [...list, data]);
+    const newSocket = io.connect("http://localhost:7000");
+    setSocket(newSocket);
+    newSocket.on("receive_message", (data) => {
+      // setPipelineData((list) => [...list, data]);
+      setrefresh(!refresh)
     });
+  
     return () => {
-      socket.off("receive_message");
-      socket.close();
+      newSocket.off("receive_message");
+      newSocket.close();
     };
   }, []);
 
@@ -184,7 +187,7 @@ function MessageBroadcast() {
     fetchStrategies();
     fetchBrokers();
     getSubadminTableData();
-  }, []);
+  }, [refresh]);
 
   const handleDlt = async (id) => {
     const confirmed = window.confirm(

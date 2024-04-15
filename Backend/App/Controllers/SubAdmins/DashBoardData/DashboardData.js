@@ -2,15 +2,13 @@
 const db = require("../../../Models");
 const User_model = db.user;
 
-
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
 
 class Dashboard_Subadmin_Data {
   async GetDashboardData(req, res) {
     try {
-      const {subadminId} = req.body;
-      console.log("subadminId",req.body);
+      const { subadminId } = req.body;
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
@@ -26,95 +24,121 @@ class Dashboard_Subadmin_Data {
               { $count: "count" },
             ],
             TotalExpiredUsercount: [
-              { $match: { End_Date: null } },
+              { $match: { ActiveStatus: "0" } },
               { $count: "count" },
             ],
-
             TotalLiveUsercount: [
-              { $match: { Type: "Live" } },
+              { $match: { license_type: "2" } },
               { $count: "count" },
             ],
             TotalActiveLiveUsercount: [
-              { $match: { ActiveStatus: "1", Type: "Live" } },
+              { $match: { Is_Active: "1", license_type: "2" } },
               { $count: "count" },
             ],
             TotalExpiredLiveUsercount: [
-              { $match: { ActiveStatus: "0", Type: "Live" } },
+              { $match: { Is_Active: "0", license_type: "2" } },
               { $count: "count" },
             ],
-
             TotalTodayUsercount: [
-              { $match: { CreatedAt: { $gte: today } } },
+              { $match: { license_type: "0" } },
               { $count: "count" },
             ],
             TotalActiveTodayUsercount: [
-              { $match: { ActiveStatus: "1", CreatedAt: { $gte: today } } },
-              { $count: "count" },
-            ],
-            TotalConvertedTodayUsercount: [
-              { $match: { Converted: true, CreatedAt: { $gte: today } } },
-              { $count: "count" },
-            ],
-            TotalExpiredTodayUsercount: [
-              { $match: { ActiveStatus: "0", CreatedAt: { $gte: today } } },
+              {
+                $match: {
+                  Is_Active: "1",
+                  license_type: "0",
+                  CreatedAt: { $gte: today },
+                },
+              },
               { $count: "count" },
             ],
 
+            TotalExpiredTodayUsercount: [
+              {
+                $match: {
+                  ActiveStatus: "0",
+                  license_type: "2",
+                  CreatedAt: { $gte: today },
+                },
+              },
+              { $count: "count" },
+            ],
             TotalDemoUsercount: [
-              { $match: { Type: "license_type" } },
+              { $match: { license_type: "1" } },
               { $count: "count" },
             ],
             TotalActiveDemoUsercount: [
-              { $match: { license_type: "1", Type: "license_type" } },
+              { $match: { license_type: "1", ActiveStatus: "1" } },
               { $count: "count" },
             ],
             TotalExpiredDemoUsercount: [
-              { $match: { license_type: "0", Type: "Demo" } },
+              { $match: { license_type: "1", ActiveStatus: "0" } },
               { $count: "count" },
             ],
           },
         },
         {
           $project: {
-            TotalUsercount: { $arrayElemAt: ["$TotalUsercount.count", 0] },
+            TotalUsercount: {
+              $ifNull: [{ $arrayElemAt: ["$TotalUsercount.count", 0] }, 0],
+            },
             TotalActiveUsercount: {
-              $arrayElemAt: ["$TotalActiveUsercount.count", 0],
+              $ifNull: [
+                { $arrayElemAt: ["$TotalActiveUsercount.count", 0] },
+                0,
+              ],
             },
             TotalExpiredUsercount: {
-              $arrayElemAt: ["$TotalExpiredUsercount.count", 0],
+              $ifNull: [
+                { $arrayElemAt: ["$TotalExpiredUsercount.count", 0] },
+                0,
+              ],
             },
-
             TotalLiveUsercount: {
-              $arrayElemAt: ["$TotalLiveUsercount.count", 0],
+              $ifNull: [{ $arrayElemAt: ["$TotalLiveUsercount.count", 0] }, 0],
             },
             TotalActiveLiveUsercount: {
-              $arrayElemAt: ["$TotalActiveLiveUsercount.count", 0],
+              $ifNull: [
+                { $arrayElemAt: ["$TotalActiveLiveUsercount.count", 0] },
+                0,
+              ],
             },
             TotalExpiredLiveUsercount: {
-              $arrayElemAt: ["$TotalExpiredLiveUsercount.count", 0],
+              $ifNull: [
+                { $arrayElemAt: ["$TotalExpiredLiveUsercount.count", 0] },
+                0,
+              ],
             },
-
             TotalTodayUsercount: {
-              $arrayElemAt: ["$TotalTodayUsercount.count", 0],
+              $ifNull: [{ $arrayElemAt: ["$TotalTodayUsercount.count", 0] }, 0],
             },
             TotalActiveTodayUsercount: {
-              $arrayElemAt: ["$TotalActiveTodayUsercount.count", 0],
-            },
-            TotalConvertedTodayUsercount: {
-              $arrayElemAt: ["$TotalConvertedTodayUsercount.count", 0],
+              $ifNull: [
+                { $arrayElemAt: ["$TotalActiveTodayUsercount.count", 0] },
+                0,
+              ],
             },
             TotalExpiredTodayUsercount: {
-              $arrayElemAt: ["$TotalExpiredTodayUsercount.count", 0],
+              $ifNull: [
+                { $arrayElemAt: ["$TotalExpiredTodayUsercount.count", 0] },
+                0,
+              ],
             },
-
             TotalDemoUsercount: {
-              $arrayElemAt: ["$TotalDemoUsercount.count", 0],
+              $ifNull: [{ $arrayElemAt: ["$TotalDemoUsercount.count", 0] }, 0],
             },
             TotalActiveDemoUsercount: {
-              $arrayElemAt: ["$TotalActiveDemoUsercount.count", 0],
+              $ifNull: [
+                { $arrayElemAt: ["$TotalActiveDemoUsercount.count", 0] },
+                0,
+              ],
             },
             TotalExpiredDemoUsercount: {
-              $arrayElemAt: ["$TotalExpiredDemoUsercount.count", 0],
+              $ifNull: [
+                { $arrayElemAt: ["$TotalExpiredDemoUsercount.count", 0] },
+                0,
+              ],
             },
           },
         },
@@ -122,7 +146,7 @@ class Dashboard_Subadmin_Data {
 
       const Count = counts[0];
 
-      console.log("Count",Count)
+      console.log("Count", Count);
       res.send({
         status: true,
         msg: "Dashboard Data Retrieved Successfully",

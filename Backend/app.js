@@ -4,7 +4,6 @@ const mongoConnection = require('./App/Connections/mongo_connection');
 const express = require("express");
 const app = express();
 const http = require('http'); 
-const socketIo = require('socket.io');
 const cors = require('cors');
 const bodyparser = require('body-parser');
 const { Server } = require("socket.io");

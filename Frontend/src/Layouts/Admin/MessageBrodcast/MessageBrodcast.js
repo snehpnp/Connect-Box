@@ -16,7 +16,6 @@ import io from "socket.io-client";
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
-  const socket = io.connect("http://localhost:7000");
 
   const [subadmin, setsubadmin] = useState([]);
   const [selectedSubadmin, setSelectedSubadmin] = useState("");
@@ -29,6 +28,17 @@ function MessageBroadcast() {
   const [refresh, setrefresh] = useState(false);
 
   const datas = JSON.parse(localStorage.getItem("user_details"));
+  const [socket, setSocket] = useState(null);
+
+  
+  useEffect(() => {
+    const newSocket = io.connect("http://localhost:7000");
+    setSocket(newSocket);
+
+    return () => {
+      newSocket.close();
+    };
+  }, []);
 
   const OpenModal = (value) => {
     setModal(value);
