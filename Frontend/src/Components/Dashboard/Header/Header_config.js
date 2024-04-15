@@ -129,7 +129,7 @@ export const subamdin_header = [
     {
         id: 4,
         name: 'Users',
-        Icon: "fe fe-user-plus",
+        Icon: "fe fe-user",
         Data: [
             {
                 id: 41,
@@ -207,7 +207,7 @@ export const subamdin_header = [
         Icon: "fe fe-credit-card",
         Data: []
     },
-   
+
     {
         id: 9,
         name: 'Trades',
@@ -272,14 +272,14 @@ export const User_header = [
     {
         id: 2,
         name: 'Stock List',
-        Icon: "fe fe-home",
+        Icon: "fa-solid fa-arrow-trend-up",
         route: "/user/stock",
         Data: []
     },
     {
         id: 3,
         name: 'Trade',
-        Icon: "fe fe-shopping-cart",
+        Icon: "fa-solid fa-chart-simple",
         Data: [
             {
                 id: 41,
@@ -304,33 +304,33 @@ export const User_header = [
         Icon: "fe fe-credit-card",
         Data: []
     },
-   
+
     {
         id: 6,
         name: 'Open Positions',
         route: "/user/open-positions",
-        Icon: "fe fe-grid",
+        Icon: "fa-regular fa-map",
         Data: []
     },
     {
         id: 7,
         name: 'Broker Response',
         route: "/user/broker-response",
-        Icon: "fe fe-grid",
+        Icon: "fa-brands fa-pied-piper",
         Data: []
     },
     {
         id: 8,
         name: 'Strategies',
         route: "/user/strategy",
-        Icon: "fe fe-grid",
+        Icon: "fa-solid fa-crosshairs",
         Data: []
     },
     {
         id: 5,
         name: 'Help',
         route: "/user/help",
-        Icon: "fe fe-help-circle",
+        Icon: "fa-solid fa-info",
         Data: []
     },
     {

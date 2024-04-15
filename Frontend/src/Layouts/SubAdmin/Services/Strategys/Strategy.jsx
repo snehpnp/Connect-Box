@@ -27,7 +27,7 @@ function Strategy() {
 
     const [refresh, setrefresh] = useState(false);
     const [modalId, setModalId] = useState(null);
- 
+
 
 
 
@@ -250,7 +250,7 @@ function Strategy() {
                 strategy_amount_early: values.strategy_amount_early,
                 maker_id: user_id
             };
-   
+
 
             await dispatch(AddStrategy(data))
                 .unwrap()
@@ -405,7 +405,7 @@ function Strategy() {
                                         </div>
                                     </li>
 
-                                     
+
                                     <li>
                                         <div
                                             className="dropdown dropdown-action"
@@ -450,13 +450,13 @@ function Strategy() {
                                         <div className="package-header d-flex justify-content-between">
                                             <div className="d-flex justify-content-between w-100">
                                                 <div className="">
-                                                <h6>Segment: {stg.strategy_segment}</h6>
-                                                 
-                                                <h2 className="my-2">{stg.strategy_name}</h2>
-                                                    
+                                                    <h6>Segment: {stg.strategy_segment}</h6>
+
+                                                    <h2 className="my-2">{stg.strategy_name}</h2>
+
                                                 </div>
                                                 <span className="icon-frame d-flex align-items-center justify-content-center">
-                                                    <img src= "assets/img/icons/price-01.svg" alt="img" />
+                                                    <img src="assets/img/icons/price-01.svg" alt="img" />
                                                 </span>
                                                 {/* <span className="icon-frame d-flex align-items-center justify-content-center">
                                                     <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
@@ -464,7 +464,7 @@ function Strategy() {
                                             </div>
                                         </div>
                                         <p>{stg.strategy_description}</p>
-                                        
+
                                         <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
                                         <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
@@ -515,7 +515,37 @@ function Strategy() {
 
                         </div>
                     </div>
+
                 ) : (<Loader />)}
+                <nav aria-label="Page navigation example">
+                    <ul className="pagination d-flex justify-content-center">
+                        <li className="page-item">
+                            <a className="page-link" href="#">
+                                Previous
+                            </a>
+                        </li>
+                        <li className="page-item">
+                            <a className="page-link" href="#">
+                                1
+                            </a>
+                        </li>
+                        <li className="page-item">
+                            <a className="page-link" href="#">
+                                2
+                            </a>
+                        </li>
+                        <li className="page-item">
+                            <a className="page-link" href="#">
+                                3
+                            </a>
+                        </li>
+                        <li className="page-item">
+                            <a className="page-link" href="#">
+                                Next
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
 
 
 
@@ -761,6 +791,7 @@ function Strategy() {
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 )}
 
