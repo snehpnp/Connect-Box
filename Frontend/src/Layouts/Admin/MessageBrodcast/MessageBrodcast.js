@@ -11,10 +11,12 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import io from "socket.io-client";
 
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
+  const socket = io.connect("http://localhost:7000");
 
   const [subadmin, setsubadmin] = useState([]);
   const [selectedSubadmin, setSelectedSubadmin] = useState("");
@@ -72,6 +74,7 @@ function MessageBroadcast() {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
+            await socket.emit("send_message", newMessage);
             toast.success(response.msg);
             setSelectedSubadmin("");
             setMessageText("");

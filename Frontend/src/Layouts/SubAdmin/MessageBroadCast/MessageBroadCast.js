@@ -14,6 +14,7 @@ import {
 } from "../../../ReduxStore/Slice/Admin/MessageData";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import io from "socket.io-client";
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
@@ -34,6 +35,18 @@ function MessageBroadcast() {
 
   const [openModalId, setopenModalId] = useState("");
   const [refresh, setrefresh] = useState(false);
+
+  useEffect(() => {
+    const socket = io.connect("http://localhost:7000");
+
+    socket.on("receive_message", (data) => {
+      setPipelineData((list) => [...list, data]);
+    });
+    return () => {
+      socket.off("receive_message");
+      socket.close();
+    };
+  }, []);
 
   const OpenModal = (value) => {
     setModal(value);
@@ -155,7 +168,6 @@ function MessageBroadcast() {
     await dispatch(admin_Msg_Get({ ownerId, key: 1 }))
       .unwrap()
       .then(async (response) => {
-        console.log("getSubadminTableData response: ", response);
         if (response.status) {
           toast.success(response.msg);
           setPipelineData(response.data);
