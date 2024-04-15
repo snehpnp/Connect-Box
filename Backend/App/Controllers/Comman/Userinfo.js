@@ -5,6 +5,9 @@ const User_model = db.user;
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const user_logs = db.user_logs;
+const subadmin_logs = db.subadmin_activity_logs;
+
 
 // Product CLASS
 class Userinfo {
@@ -34,6 +37,92 @@ class Userinfo {
       });
     } catch (error) {
       console.log("Error get UserInfo error -", error);
+    }
+  }
+
+  async TradingOff(req, res) {
+    try {
+      const { id } = req.body
+
+
+
+
+      var Get_User = await User_model.find({ _id: id }).select('TradingStatus parent_id  Role');
+      if (Get_User.length == 0) {
+        return res.send({ status: false, msg: "Id Wrong" });
+      }
+
+
+      if (Get_User[0].TradingStatus != "off") {
+
+
+
+        if (Get_User[0].Role == "USER") {
+
+          let result = await User_model.findByIdAndUpdate(
+            Get_User[0]._id,
+            {
+              access_token: "",
+              TradingStatus: "off"
+            })
+          const user_login = new user_logs({
+            user_Id: Get_User[0]._id,
+            trading_status: "Trading Off",
+            role: Get_User[0].Role,
+            device: "WEB",
+
+          })
+          await user_login.save();
+          return res.send({ status: true, msg: "Trading Off Successfuly" });
+
+
+
+
+        } else {
+
+          {
+
+            let result = await User_model.findByIdAndUpdate(
+              Get_User[0]._id,
+              {
+                access_token: '',
+                TradingStatus: "off"
+              })
+
+            if (result != "") {
+
+              const Subadmin_login = new subadmin_logs({
+                user_Id: Get_User[0]._id,
+                trading_status: "Trading Off",
+                role: Get_User[0].Role,
+                device: "WEB",
+
+              })
+              await Subadmin_login.save();
+              if (Subadmin_login) {
+                return res.send({ status: true, msg: "Trading Off Successfuly" });
+
+
+              }
+            }
+
+          }
+
+        }
+
+
+
+
+
+
+
+      } else {
+        return res.send({ status: false, msg: "Already Trading Off" });
+
+      }
+
+    } catch (error) {
+      console.log("Error Alice Login error-", error)
     }
   }
 

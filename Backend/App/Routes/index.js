@@ -12,6 +12,9 @@ module.exports = function (app) {
     app.use(require("./SubAdmins/OptionChain.routes"))
     app.use(require("./Comman/Userinfo.routes"))
 
+    app.use(require("./Comman/Brokeraccesstoken.routes"))
+
+
 
 
 

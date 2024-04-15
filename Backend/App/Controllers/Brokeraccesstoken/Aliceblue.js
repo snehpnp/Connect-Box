@@ -6,18 +6,13 @@ var dateTime = require('node-datetime');
 const db = require('../../Models');
 const User = db.user;
 const user_logs = db.user_logs;
-const BrokerResponse = db.BrokerResponse;
-const Broker_information = db.Broker_information;
-const live_price = db.live_price;
+const subadmin_logs = db.subadmin_activity_logs;
 
 
 
 
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-
-const { logger, getIPAddress } = require('../../Helper/logger.helper')
-const { Alice_Socket } = require("../../Helper/Alice_Socket");
 
 class AliceBlue {
 
@@ -27,129 +22,131 @@ class AliceBlue {
             const authCode = req.query.authCode;
             var userId = req.query.userId;
 
-            var broker_infor = await Broker_information.find({ broker_name: "Alice Blue" })
-            var apiSecret = broker_infor[0].apiSecret
+            var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role');
 
-            var hosts = req.headers.host;
+            if (Get_User[0].TradingStatus != "on") {
 
-            var redirect = hosts.split(':')[0];
-            var redirect_uri = '';
+                var apiSecret = ''
+              
+                if (Get_User[0].Role == "USER") {
+                    var subadmin = await User.find({ parent_id: Get_User[0].parent_id }).select('TradingStatus parent_id api_secret Role');
+                apiSecret = subadmin[0].api_secret
+                }else{
+                    apiSecret = Get_User[0].api_secret
+                }
+     
 
-            const Get_User = await User.find({ demat_userid: userId })
-
-            if (Get_User.length > 0) {
-
-                if (redirect == "localhost") {
-                    redirect_uri = "http://localhost:3000"
-                } else {
-                    if (Get_User[0].Role == "ADMIN") {
-                        redirect_uri = `https://${redirect}/#/admin/tradehistory?type=admin`
-
+                var hosts = req.headers.host;
+    
+                var redirect = hosts.split(':')[0];
+                var redirect_uri = '';
+    
+    
+                if (Get_User.length > 0) {
+    
+                    if (redirect == "localhost") {
+                        redirect_uri = "http://localhost:3000"
+    
+                        if (Get_User[0].Role == "ADMIN") {
+                            redirect_uri = "http://localhost:3000/#/subadmin/position"
+    
+                        } else {
+                            redirect_uri = "http://localhost:3000"
+    
+                        }
                     } else {
-                        redirect_uri = `https://${redirect}/#/client/dashboard`
-
+                        if (Get_User[0].Role == "ADMIN") {
+                            redirect_uri = `https://${redirect}/#/subadmin/position`
+    
+                        } else {
+                            redirect_uri = `https://${redirect}/#/user/stock`
+    
+                        }
                     }
+    
+                    var Encrypted_data = sha256(userId + authCode + apiSecret);
+                    var data = { "checkSum": Encrypted_data }
+    
+                    var config = {
+                        method: 'post',
+                        url: 'https://ant.aliceblueonline.com/rest/AliceBlueAPIService/sso/getUserDetails',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        data: data
+                    };
+    
+    
+                    axios(config)
+                        .then(async function (response) {
+    
+                            if (response.data.userSession) {
+    
+                                if (Get_User[0].Role == "USER") {
+    
+                                    let result = await User.findByIdAndUpdate(
+                                        Get_User[0]._id,
+                                        {
+                                            access_token: response.data.userSession,
+                                            TradingStatus: "on"
+                                        })
+                                    const user_login = new user_logs({
+                                        user_Id: Get_User[0]._id,
+                                        trading_status: "Trading On",
+                                        role: Get_User[0].Role,
+                                        device: "WEB",
+    
+                                    })
+                                    await user_login.save();
+                                    return res.redirect(redirect_uri);
+    
+                                } else {
+    
+                                    let result = await User.findByIdAndUpdate(
+                                        Get_User[0]._id,
+                                        {
+                                            access_token: response.data.userSession,
+                                            TradingStatus: "on"
+                                        })
+    
+                                    if (result != "") {
+    
+                                        const Subadmin_login = new subadmin_logs({
+                                            user_Id: Get_User[0]._id,
+                                            trading_status: "Trading On",
+                                            role: Get_User[0].Role,
+                                            device: "WEB",
+    
+                                        })
+                                        await Subadmin_login.save();
+                                        if (Subadmin_login) {
+                                            return res.redirect(redirect_uri);
+    
+                                        }
+                                    }
+    
+                                }
+    
+    
+    
+    
+                            } else {
+                                return res.send(redirect_uri);
+                            }
+    
+    
+    
+                        })
+                        .catch(function (error) {
+                        });
+    
                 }
 
 
-                var Encrypted_data = sha256(userId + authCode + apiSecret);
-                var data = { "checkSum": Encrypted_data }
-
-
-
-
-
-                var config = {
-                    method: 'post',
-                    url: 'https://ant.aliceblueonline.com/rest/AliceBlueAPIService/sso/getUserDetails',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    data: data
-                };
-
-
-
-                console.log("config", config)
-                return
-                axios(config)
-                    .then(async function (response) {
-
-                        if (response.data.userSession) {
-
-                            if (Get_User[0].Role == "ADMIN") {
-
-                                const filter = { broker_name: "ALICE_BLUE" };
-                                const updateOperation = {
-                                    $set: {
-                                        user_id: userId,
-                                        access_token: response.data.userSession,
-                                        trading_status: "on",
-                                        Role: "ADMIN"
-
-                                    }
-                                };
-
-                                const result = await live_price.updateOne(filter, updateOperation);
-
-
-
-                                //  For Update Live Token List
-                                // Alice_Socket();
-
-
-                                return res.redirect(redirect_uri);
-
-
-
-                            } else {
-
-                                //  For Client Only
-
-                                let result = await User.findByIdAndUpdate(
-                                    Get_User[0]._id,
-                                    {
-                                        access_token: response.data.userSession,
-                                        TradingStatus: "on"
-                                    })
-
-                                if (result != "") {
-
-                                    const user_login = new user_logs({
-                                        user_Id: Get_User[0]._id,
-                                        login_status: "Trading On",
-                                        role: Get_User[0].Role,
-                                        device: "WEB",
-                                        system_ip: getIPAddress()
-                                    })
-                                    await user_login.save();
-                                    if (user_login) {
-                                        return res.redirect(redirect_uri);
-
-                                    }
-                                }
-
-                            }
-
-
-
-
-                        } else {
-                            return res.send(redirect_uri);
-                        }
-
-
-
-                    })
-                    .catch(function (error) {
-                    });
+            } else {
+                return res.send(redirect_uri);
 
             }
-
-
-
-
-
 
         } catch (error) {
             console.log("Error Alice Login error-", error)
