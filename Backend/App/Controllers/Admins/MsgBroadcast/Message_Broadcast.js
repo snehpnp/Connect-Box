@@ -13,14 +13,15 @@ const ObjectId = mongoose.Types.ObjectId;
 const io = socketIo(server);
 
 class MessageController {
+
   async createMessage(req, res) {
     try {
-      const { Role, ownerId, subAdminId, messageTitle, strategyId, brokerId } =
-        req.body;
+      const { Role, ownerId, subAdminId, messageTitle, strategyId, brokerId } = req.body;
 
       if (!Role || !messageTitle) {
-        return res.status(400).send("Role and messageTitle are required");
+        return res.status(400).json({ error: "Role and messageTitle are required" });
       }
+
       let msg;
       if (Role === "ADMIN") {
         if (Array.isArray(subAdminId) && subAdminId.length > 0) {
@@ -40,37 +41,29 @@ class MessageController {
           });
           await msg.save();
           io.emit("message_updated", msg);
-
         }
       } else if (Role === "SUBADMIN") {
         msg = new msgdata({
           ownerId,
-          strategyId,
-          brokerId,
-          // subAdminId,
+          strategyId :strategyId ? strategyId :null,
+          brokerId :brokerId ? brokerId :null,
           messageTitle,
           Role,
         });
         await msg.save();
-
       }
 
-      return res
-        .status(201)
-        .send({ status: true, message: "Successfully Created!", data: msg });
+      return res.status(201).json({ status: true, message: "Successfully Created!", data: msg });
     } catch (error) {
       console.error("Error saving message:", error);
-      return res.status(500).send({
-        status: false,
-        message: "Error saving message",
-        error: error.message,
-      });
+      return res.status(500).json({ status: false, message: "Error saving message", error: error.message });
     }
   }
 
+
   async getMsgData(req, res) {
     try {
-      const { ownerId, key } = req.body; 
+      const { ownerId, key } = req.body;
 
       if (!ownerId) {
         return res.status(400).json({
@@ -82,14 +75,14 @@ class MessageController {
 
       let matchCondition = {};
 
-      if (key === 1) { 
+      if (key === 1) {
         matchCondition = {
           $or: [
-            { Role: "SUBADMIN", ownerId: new ObjectId(ownerId) }, 
+            { Role: "SUBADMIN", ownerId: new ObjectId(ownerId) },
             { Role: "ADMIN", subAdminId: { $in: [new ObjectId(ownerId)] } }
           ]
         };
-      } else if (key === 2) { 
+      } else if (key === 2) {
         matchCondition = {
           $or: [
             { Role: "SUBADMIN" },
@@ -122,7 +115,7 @@ class MessageController {
         },
         {
           $project: {
-            makerInfo: 0, 
+            makerInfo: 0,
           },
         },
       ];
