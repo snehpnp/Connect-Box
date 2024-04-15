@@ -15,7 +15,6 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import io from "socket.io-client";
-// const socket = io("http://localhost:3000");
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
@@ -28,24 +27,29 @@ function MessageBroadcast() {
   const [selectedBroker, setSelectedBroker] = useState("");
   const [messageText, setMessageText] = useState("");
   const datas = JSON.parse(localStorage.getItem("user_details"));
-  const ownerId=datas.user_id;
+  const ownerId = datas.user_id;
   const [modal, setModal] = useState(0);
   const [msgData, setMsgData] = useState([]);
   const [isSentChecked, setIsSentChecked] = useState(false);
-  const [isReceivedChecked, setIsReceivedChecked] = useState(false);
+  const [isReceivedChecked, setIsReceivedChecked] = useState(true);
 
   const [openModalId, setopenModalId] = useState("");
   const [refresh, setrefresh] = useState(false);
+  const [socket, setSocket] = useState(null);
 
-  // useEffect(() => {
-  //   socket.on("messagesUpdated", (data) => {
-  //     console.log("Received updated messages:", data);
-  //     setPipelineData(data);
-  //   });
-  //   return () => {
-  //     socket.off("messagesUpdated");
-  //   };
-  // }, []);
+  useEffect(() => {
+    const newSocket = io.connect("http://localhost:7000");
+    setSocket(newSocket);
+    newSocket.on("receive_message", (data) => {
+      // setPipelineData((list) => [...list, data]);
+      setrefresh(!refresh)
+    });
+  
+    return () => {
+      newSocket.off("receive_message");
+      newSocket.close();
+    };
+  }, []);
 
   const OpenModal = (value) => {
     setModal(value);
@@ -101,7 +105,6 @@ function MessageBroadcast() {
       toast.error("Failed to dispatch action for fetching strategies");
     }
   };
-  
 
   const fetchBrokers = async () => {
     try {
@@ -139,7 +142,6 @@ function MessageBroadcast() {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
-            // socket.emit("newMessage", newMessage);
             toast.success(response.msg);
           } else {
             toast.error(response.msg);
@@ -166,10 +168,9 @@ function MessageBroadcast() {
   };
 
   const getSubadminTableData = async () => {
-    await dispatch(admin_Msg_Get({ ownerId,key:1 }))
+    await dispatch(admin_Msg_Get({ ownerId, key: 1 }))
       .unwrap()
       .then(async (response) => {
-        console.log("getSubadminTableData response: ", response);
         if (response.status) {
           toast.success(response.msg);
           setPipelineData(response.data);
@@ -186,7 +187,7 @@ function MessageBroadcast() {
     fetchStrategies();
     fetchBrokers();
     getSubadminTableData();
-  }, []);
+  }, [refresh]);
 
   const handleDlt = async (id) => {
     const confirmed = window.confirm(
@@ -222,18 +223,20 @@ function MessageBroadcast() {
     setIsReceivedChecked(!isReceivedChecked);
   };
 
-
   let filteredData = [];
-
   if (isSentChecked && !isReceivedChecked) {
-      filteredData = pipelineData.filter(message => message.ownerId === ownerId);
+    filteredData = pipelineData.filter(
+      (message) => message.ownerId === ownerId
+    );
   } else if (!isSentChecked && isReceivedChecked) {
-      filteredData = pipelineData.filter(message =>
-          (Array.isArray(message.subAdminId) && message.subAdminId.includes(ownerId)) ||
-          (Array.isArray(message.strategyId) && message.strategyId.includes(ownerId))
-      );
+    filteredData = pipelineData.filter(
+      (message) =>
+        (Array.isArray(message.subAdminId) &&
+          message.subAdminId.includes(ownerId)) ||
+        (Array.isArray(message.strategyId) &&
+          message.strategyId.includes(ownerId))
+    );
   }
-  
 
   return (
     <Content
@@ -307,8 +310,6 @@ function MessageBroadcast() {
             Send
           </button>
 
-
-
           <div className="mt-3 ">
             <div className="d-flex">
               <div className="form-check ">
@@ -375,9 +376,6 @@ function MessageBroadcast() {
               </tbody>
             </table>
           </div>
-
-
-
 
           {modal !== 0 && (
             <div
