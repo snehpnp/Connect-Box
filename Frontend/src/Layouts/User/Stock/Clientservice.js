@@ -66,7 +66,7 @@ function Clientservice() {
               checked={getLoginStatus}
               style={{ marginRight: '5px' }}
             />
-            <label htmlFor="1" className="checktoggle checkbox-bg">Toggle</label>
+            <label htmlFor="1" className="checktoggle checkbox-bg"></label>
           </div>
         </div>
 
@@ -157,7 +157,7 @@ function Clientservice() {
                                 <div className="status-toggle">
                                   <input id={`rating_${index}`} className="check" type="checkbox" defaultChecked="" />
                                   <label htmlFor={`rating_${index}`} className="checktoggle checkbox-bg">
-                                    checkbox
+                                    
                                   </label>
                                 </div>
                               </td>

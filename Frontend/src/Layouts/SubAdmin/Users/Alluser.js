@@ -211,7 +211,7 @@ export default function AllUsers() {
             onChange={(event) => handleSwitchChange(event, params.row._id)}
             defaultChecked={params.value == 1}
           />
-          <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg">checkbox</label>
+          <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg"></label>
         </div>
       ),
     },

@@ -18,8 +18,12 @@ const Main_Header = () => {
   // Apply theme based on localStorage value on page load
   useEffect(() => {
     const storedThemeMode = localStorage.getItem('theme_mode');
+    console.log("storedThemeMode",storedThemeMode)
     if (storedThemeMode) {
       setThemeMode(storedThemeMode);
+    }else{
+      localStorage.setItem('theme_mode',"light");
+      setThemeMode('light');
     }
   }, []);
 
@@ -30,6 +34,10 @@ const Main_Header = () => {
     htmlElement.setAttribute('data-layout-mode', themeMode);
     htmlElement.setAttribute('data-topbar', themeMode);
   }, [themeMode]);
+
+
+
+
 
   return (
     <div>
@@ -75,6 +83,8 @@ const Main_Header = () => {
 
 
         {/* Toggle theme switch */}
+
+        
 
         <div className="nav-item  has-arrow dropdown-heads ">
           <DrapDown />
