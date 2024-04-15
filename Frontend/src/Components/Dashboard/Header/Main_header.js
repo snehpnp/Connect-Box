@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import DrapDown from './DrapDown';
+import { Link } from 'react-router-dom';
 
 const Main_Header = () => {
- const [themeMode, setThemeMode] = useState('light');
+  const [themeMode, setThemeMode] = useState('light');
 
   const toggleTheme = () => {
     // Toggle theme mode
@@ -45,36 +46,36 @@ const Main_Header = () => {
 
         <div className="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">
           <div className="logo-white">
-           
-              <img
-                src="assets/img/pnp.png"
-                className="img-fluid logo-blue"
-                alt="Logo"
-              />
 
-           
-              <img
-                src="assets/img/pnp.png"
-                className="img-fluid logo-small"
-                alt="Logo"
-              />
-           
+            <img
+              src="assets/img/pnp.png"
+              className="img-fluid logo-blue"
+              alt="Logo"
+            />
+
+
+            <img
+              src="assets/img/pnp.png"
+              className="img-fluid logo-small"
+              alt="Logo"
+            />
+
           </div>
           <div className="logo-color">
-            <a href="index.html">
+            <Link to="/admin/dashboard">
               <img
                 src="assets/img/pnp.png"
                 className="img-fluid logo-blue"
                 alt="Logo"
               />
-            </a>
-            <a href="index.html">
+            </Link>
+            <Link to="/admin/dashboard">
               <img
                 src="assets/img/pnp.png"
                 className="img-fluid logo-small"
                 alt="Logo"
               />
-            </a>
+            </Link>
           </div>
 
         </div>

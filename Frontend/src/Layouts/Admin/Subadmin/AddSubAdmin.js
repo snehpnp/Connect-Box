@@ -134,7 +134,7 @@ const AddClient = () => {
     },
     {
       name: "fullName",
-      label: "FullName",
+      label: "Full Name",
       type: "text",
       label_size: 6,
       col_size: 6,
@@ -158,8 +158,8 @@ const AddClient = () => {
     },
     {
       name: "phone",
-      label: "Phone No",
-      type: "number",
+      label: "Phone Number",
+      type: "number1",
       label_size: 12,
       col_size: 6,
       disable: false,
@@ -174,7 +174,7 @@ const AddClient = () => {
     },
     {
       name: "password",
-      label: "password",
+      label: "Password",
       type: "password",
       label_size: 12,
       col_size: 6,
@@ -190,7 +190,7 @@ const AddClient = () => {
     },
     {
       name: "subadmin_servic_type",
-      label: "Subadmin Servic Type",
+      label: "Subadmin Service Type",
       type: "select",
       options: [
         { label: "Per Trade", value: "1" },
@@ -214,8 +214,8 @@ const AddClient = () => {
         formik.values.subadmin_servic_type === "1" ||
         formik.values.subadmin_servic_type === "2"
           ? formik.values.subadmin_servic_type === "1"
-            ? "Trade Value"
-            : "Strategies %"
+            ? "Per Trade Value"
+            : "% Per Strategy"
           : "",
       type: "number",
       placeholder:

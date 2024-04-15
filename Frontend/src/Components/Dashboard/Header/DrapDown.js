@@ -192,9 +192,9 @@ const DropDown = () => {
                                 <strong>{profileData && profileData[0].Balance || "-"}</strong>
                             </span>
                         ) : (
-                            <span>
+                            <span className='d-flex align-items-center'>
                                 <i className="fe fe-eye" style={{ fontSize: "24px", marginRight: "10px" }} />
-                                <strong>*****</strong>
+                                 <span>View Fund </span>
                             </span>
                         )}
                         {/* {showFunds && "+"} */}

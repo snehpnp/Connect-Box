@@ -109,3 +109,16 @@ export async function active_Status(data, token) {
         return await err;
     }
   }
+
+  //GET ALL TREADE DETAILS
+  export async function GET_ALL_TRADE_DETAILS(data){
+    try{
+        const res = await axios.post(`${Config.base_url}getall/user/signals`, data,{
+            data: {}
+        })
+        return await res?.data;
+    }
+    catch(err){
+        return await err;
+    }
+  }

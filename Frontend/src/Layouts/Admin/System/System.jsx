@@ -176,7 +176,7 @@ function System() {
                         className="btn btn-primary iconclass"
                         onClick={() => OpenModal(1)}
                       >
-                        Edit Customer Information
+                        Edit Company Information
                       </button>
                     </div>
                   </div>

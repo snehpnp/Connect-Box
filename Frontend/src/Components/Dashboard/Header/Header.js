@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
   const roles = JSON.parse(localStorage.getItem('user_role'))
   const [openSubMenu, setOpenSubMenu] = useState('');
+  const [activeLink, setActiveLink] = useState(null);  
+
 
   const navigate = useNavigate();
 
@@ -58,6 +60,11 @@ const Header = () => {
   }, []);
 
 
+
+  const handleLinkClick = (id) => {
+    setActiveLink(id);  
+  };
+
   return (
     <div>
       {/* NAVBAR */}
@@ -73,8 +80,9 @@ const Header = () => {
                     <li className='submenu' key={data.id} onMouseEnter={() => toggleSubMenu(data.id)} onMouseLeave={() => setOpenSubMenu('')}>
                       <Link
                         to={data.route}
-                        className={openSubMenu === data.id ? 'subdrop' : ''}
-                        style={{ textDecoration: 'none', color: 'inherit' }} // Add inline style to remove underline and retain original color
+                        className={`${openSubMenu === data.id ? 'subdrop' : ''} ${activeLink === data.id ? 'active' : ''}`} 
+                        style={{ textDecoration: 'none', color: 'inherit' }}  
+                        onClick={() => handleLinkClick(data.id)}
                       >
                         <i className={data.Icon} id="animated-icon"></i> <span> {data.name}</span> {data.Data.length > 0 ? <span className="menu-arrow"></span> : ""}
                       </Link>
