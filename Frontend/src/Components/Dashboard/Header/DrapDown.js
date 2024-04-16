@@ -174,7 +174,7 @@ const DropDown = () => {
                         data-bs-dismiss="modal"
                         className="btn btn-primary cancel-btn me-2 mt-2"
                         style={{
-                            backgroundColor: "#1E88E5",
+                            backgroundColor: "#7539FF",
                             color: "white",
                             border: "none",
                             display: "flex",
