@@ -59,7 +59,7 @@ const AddClient = () => {
     },
     {
       name: "fullName",
-      label: "FullName",
+      label: "Full Name",
       type: "text",
       label_size: 6,
       col_size: 6,
@@ -84,7 +84,7 @@ const AddClient = () => {
 
     {
       name: "phone",
-      label: "Phone No",
+      label: "Phone Number",
       type: "number1",
       label_size: 12,
       col_size: 6,
