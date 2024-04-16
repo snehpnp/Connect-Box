@@ -10,8 +10,12 @@ module.exports = function (app) {
     app.use(require("./SubAdmins/User.routes"))
     app.use(require("./Users/Clientservices.routes"))
     app.use(require("./SubAdmins/OptionChain.routes"))
+   
+   
+   
+    // Comman Route
     app.use(require("./Comman/Userinfo.routes"))
-
+    app.use(require("./Comman/Makecall.routes"))
     app.use(require("./Comman/Brokeraccesstoken.routes"))
 
 

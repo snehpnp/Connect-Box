@@ -1,6 +1,351 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+
+import {
+    getAllServices,
+    getCatogries,
+    getexpirymanualtrade,
+    getAllStrikePriceApi
+
+  } from "../../../ReduxStore/Slice/Comman/Makecall/make";
+
+
+
+
 
 const Makecall = () => {
+    const dispatch = useDispatch();
+
+
+
+   
+  const [AllServices, setAllServices] = useState({ loading: true,data: []});
+  const [CatagoryData, setCatagoryData] = useState({ loading: true, data: []});
+  const [expirydateSelect, setExpirydateSelect] = useState({ loading: true, data: []});
+  const [strikePriceAll, setStrikePriceAll] = useState({ loading: true, data: []});
+
+  
+
+
+
+  const [expiryOnChange, setExpiryOnChange] = useState('');
+  const [showstrikePrice, setShowstrikePrice] = useState(0)
+
+  const [selectCatagoryid, SetSelectCatagoryId] = useState('')
+  const [scriptSegment, SetScriptSegment] = useState('')
+  const [selectCatagoryidSegment, SetSelectCatagorySegment] = useState('')
+  
+  const [scriptname, SetScriptname] = useState('')
+  const [scriptnameErr, SetScriptnameErr] = useState('')
+
+
+  
+
+ 
+  const UserLocalDetails = JSON.parse(localStorage.getItem("user_details"));
+  
+//  console.log("get user details ",UserLocalDetails.token)
+ 
+ // console.log("CatagoryData ",CatagoryData.data)
+
+   
+      const getCatogriesFun = async () => {
+        await dispatch(getCatogries(
+            {
+            req :{
+
+             id: "1"
+            },
+           
+            token:UserLocalDetails.token}
+           ))
+          .unwrap()
+          .then((response) => {
+    
+            console.log("response ",response.data)
+            if (response.status) {
+              setCatagoryData({
+                loading: false,
+                data: response.data,
+              });
+            }
+          });
+      };
+
+
+      useEffect(() => {
+        getCatogriesFun();
+      }, []);
+
+      
+      const getAllServicesFun = async () => {
+
+           
+
+            await dispatch(getAllServices(
+                {
+                req :
+                {
+                    category_id: selectCatagoryid
+                },
+            
+                token:UserLocalDetails.token}
+            ))
+            .unwrap()
+            .then((response) => {
+
+                if (response.status) {
+                setAllServices({
+                    loading: false,
+                    data: response.data,
+                });
+                } else {
+                setAllServices({
+                    loading: false,
+                    data: [],
+                });
+                }
+            });
+      };
+
+
+
+  useEffect(() => {
+    setAllServices({loading: false,data: []});
+    getAllServicesFun()
+
+    console.log("CatagoryData.data ",CatagoryData.data)
+   
+    console.log("selectCatagoryid ",selectCatagoryid)
+    
+    let datra = CatagoryData.data && CatagoryData.data.filter((x) => {
+        if ((selectCatagoryid) == x._id) {
+          return x
+        }
+      })
+  
+
+    //  console.log("datra ---- ",datra)
+    // let datra = scriptdata && scriptdata.filter((x) => {
+    //   if ((selectCatagoryid) == parseInt(x.id)) {
+    //     return x
+    //   }
+    // })
+
+
+    // let stExhange = scriptdata && scriptdata.filter((x) => {
+    //   if (onChangeScriptname.includes(x.name)) {
+    //     return x
+    //   }
+    // })
+
+    if(datra.length > 0){
+        SetScriptSegment(datra && datra[0].segment)
+    }
+    // SetScriptExchangeValue(datra && datra[0].name)
+
+    // console.log("datra", datra && datra[0].segment);
+  }, [selectCatagoryid])
+
+
+    const selectCatagoryId = (e) => {
+
+       
+    //     alert(e.target.value)
+    //    return 
+    
+    setShowstrikePrice(0);
+    // previousToken.current = "";
+    // liveToken.current = "";
+    // setLiveprice("");
+    setExpirydateSelect({loading: false,data: []});
+    setStrikePriceAll({loading: false,data: []});
+    SetSelectCatagoryId(e.target.value);
+   
+    }
+
+
+
+    const selectscriptname = (e) => {
+        setShowstrikePrice(0);
+        // previousToken.current = "";
+       //  liveToken.current = "";
+       //  setLiveprice("");
+       
+        setExpirydateSelect({loading: false,data: []});
+        setStrikePriceAll({loading: false,data: []});
+        SetScriptname(e.target.value);
+    //     if(selectCatagoryid == '24'){
+    //     gettoken(selectCatagoryid,e.target.value);
+    //    }
+    
+      }
+
+
+
+
+
+   const getExpirybackend = async (selectCatagoryid,symbol) => {
+     
+     if(selectCatagoryid != '' && symbol != ''){
+        console.log("selectCatagoryid ",selectCatagoryid)
+        console.log("symbol ",symbol)
+
+       
+        await dispatch(getexpirymanualtrade(
+            {
+            req :
+            {
+                category_id: selectCatagoryid,
+                symbol: symbol
+            },
+        
+            token:UserLocalDetails.token
+           }
+        ))
+        .unwrap()
+        .then((response) => {
+            
+            if (response.status) {
+                setExpirydateSelect({
+                loading: false,
+                data: response.data,
+            });
+            } else {
+                setExpirydateSelect({
+                loading: false,
+                data: [],
+            });
+            }
+        });
+
+
+
+
+
+
+     }
+      
+        
+
+    // const data = { categorie_id: selectCatagoryid , symbol : symbol }
+    // const response = await getexpirymanualtrade(data);
+    // setExpirydateSelect(response.data.data);
+
+    }  
+
+
+
+   
+    useEffect(() => {
+        getExpirybackend(selectCatagoryid,scriptname)
+    }, [scriptname]);
+       
+   
+    const selectExpiryFun = (e) => {
+        setStrikePriceAll([]);
+      //  alert(scriptSegment)
+      //  setOptionType('');
+      //  setShowstrikePrice(0);
+         
+        setExpiryOnChange(e.target.value)
+        
+
+            if(scriptSegment ==  'F'){
+           // gettoken(selectCatagoryid,scriptname,e.target.value,scriptSegment);
+            }
+            else if(scriptSegment ==  'MF'){
+
+             // gettoken(selectCatagoryid,scriptname,e.target.value,scriptSegment);
+              }
+            else if(scriptSegment ==  'cF'){
+
+           //   gettoken(selectCatagoryid,scriptname,e.target.value,scriptSegment);
+              }
+            else if(scriptSegment ==  'O'){
+
+              setShowstrikePrice(1);
+              getAllStrikePrice(selectCatagoryid,scriptname,e.target.value,scriptSegment)
+            }
+            else if(scriptSegment ==  'MO'){
+
+              setShowstrikePrice(1);
+              getAllStrikePrice(selectCatagoryid,scriptname,e.target.value,scriptSegment)
+            }
+            else if(scriptSegment ==  'CO'){
+
+              setShowstrikePrice(1);
+              getAllStrikePrice(selectCatagoryid,scriptname,e.target.value,scriptSegment)
+            }
+
+        
+    } 
+    
+    
+
+    const getAllStrikePrice = async (selectCatagoryid,symbol,expiry,segment) => {
+
+       
+        console.log("selectCatagoryid ",selectCatagoryid)
+        console.log("symbol ",symbol)
+        console.log("expiry ",expiry)
+        console.log("segment ",segment)
+        
+
+
+
+     
+    //     const data = { categorie_id: selectCatagoryid , symbol : symbol ,expiry : expiry ,segment : segment}
+    //     const response = await getAllStrikePriceApi(data);
+    //     console.log("response strike price -",response);
+    //    setStrikePriceAll(response.data.data);
+
+    await dispatch(getAllStrikePriceApi(
+        {
+        req :
+        {
+            category_id: selectCatagoryid,
+            symbol: symbol,
+            expiry: expiry,
+            segment: segment
+        },
+    
+        token:UserLocalDetails.token
+       }
+    ))
+    .unwrap()
+    .then((response) => {
+        
+        if (response.status) {
+            setStrikePriceAll({
+            loading: false,
+            data: response.data,
+        });
+        } else {
+            setStrikePriceAll({
+            loading: false,
+            data: [],
+        });
+        }
+    });
+
+
+
+
+
+
+
+
+      }
+       
+   
+
+
+
+
+
+
+
     return (
         <div>
             <div className="content container-fluid">
@@ -24,17 +369,30 @@ const Makecall = () => {
                                                 <div className="col-lg-4 col-md-6 col-sm-12">
                                                     <div className="input-block mb-3">
                                                         <label>Script Type * </label>
-                                                        <select className="form-select">
+
+
+                                                        <select className="form-select" onChange={(e) => {
+                                                        
+                                                        selectCatagoryId(e);
+                                                       // SetonChangeScriptname(e.target.innerText)
+                                                       // setScriptDataErr('')
+                                                         SetScriptname("")
+                                                       // SetForDisabledSubmit(false)
+                                                        }}>
                                                             <option name="none" disabled="">Select Script Type</option>
-                                                            <option name="CASH" value="24">CASH</option>
-                                                            <option name="CASH_BSE" value="40">CASH_BSE</option>
-                                                            <option name="CURRENCY FUTURE" value="37">CURRENCY FUTURE</option>
-                                                            <option name="CURRENCY OPTION" value="36">CURRENCY OPTION</option>
-                                                            <option name="FUTURE" value="25">FUTURE</option>
-                                                            <option name="MCXFUTURE" value="34">MCXFUTURE</option>
-                                                            <option name="MCXOPTION" value="35">MCXOPTION</option>
-                                                            <option name="OPTION" value="26">OPTION</option>
+
+                                                            {CatagoryData.data && CatagoryData.data?.map((x, index) => {
+
+                                                            if (x.segment !== "FO") {
+                                                                return <option key={x._id} name={x.segment} value={x._id}>{x.name}</option>
+                                                            }     
+                                                            
+
+                                                            })}
+                                                            
                                                         </select>
+
+
                                                     </div>
                                                 </div>
                                                 <div className="col-lg-4 col-md-6 col-sm-12">
@@ -42,10 +400,21 @@ const Makecall = () => {
                                                         <label>Script Name</label>
                                                         <ul className="form-group-plus css-equal-heights">
                                                             <li>
-                                                                <select className="form-select">
-                                                                    <option>Customer 1</option>
-                                                                    <option>Customer 2</option>
-                                                                    <option>Customer 3</option>
+                                                             <select className="form-select" onChange={(e) => {        selectscriptname(e);
+                                                              SetScriptnameErr(''); 
+                                                            // selecttype(''); 
+                                                            // dropdownSelect("1") 
+                                                            
+                                                             }}
+                                                                >
+
+                                                                <option name="none" disabled="">Select Script Name</option>
+
+                                                                {
+                                                                AllServices.data && AllServices.data.map((x) => {
+                                                                return <option value={x.name}>{x.name}</option>
+                                                                })
+                                                            }
                                                                 </select>
                                                             </li>
                                                             <li>
@@ -62,6 +431,44 @@ const Makecall = () => {
                                                 <div className="col-lg-4 col-md-6 col-sm-12">
                                                     <div className="input-block mb-3">
                                                         <label>Expiry Date</label>
+                                                        <select className="form-select" name="expiry_date" onChange={(e) => { selectExpiryFun(e) }} selected>
+
+                                                        
+                                                        <option value="">Select Expiry Date</option>
+                                                        {expirydateSelect.data && expirydateSelect.data?.map((sm, i) =>
+                                                        <option value={sm.uniqueExpiryValues}>{sm.uniqueExpiryValues}</option>)}
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                 
+
+                                                 {
+                                                    showstrikePrice == 1 ?
+                                                    <div className="col-lg-4 col-md-6 col-sm-12">
+                                                    <div className="input-block mb-3">
+                                                        <label>Strike Price - -</label>
+                                                        <select className="form-select">
+                                                        <option selected value="">--Select strike price--</option>
+                                                            {
+                                                            strikePriceAll.data && strikePriceAll.data.map((x) => {
+                                                                return <option value={x.strike}>{x.strike}</option>
+                                                            })
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                  </div>
+                                                    : 
+                                                    ""
+                                                 }
+                                               
+                                               
+
+                                               {
+                                                showstrikePrice == 1 ? 
+                                                <div className="col-lg-4 col-md-6 col-sm-12">
+                                                    <div className="input-block mb-3">
+                                                        <label>Option-Type Call/Put -</label>
                                                         <select className="form-select">
                                                             <option>Customer 1</option>
                                                             <option>Customer 2</option>
@@ -69,6 +476,14 @@ const Makecall = () => {
                                                         </select>
                                                     </div>
                                                 </div>
+                                                :
+                                                ""
+
+                                               }
+
+                                                
+
+
                                                 <div className="col-lg-4 col-md-6 col-sm-12">
                                                     <div className="input-block mb-3">
                                                         <label>Select Strategy -</label>
@@ -79,6 +494,9 @@ const Makecall = () => {
                                                         </select>
                                                     </div>
                                                 </div>
+
+
+
 
                                             </div>
                                         </div>
