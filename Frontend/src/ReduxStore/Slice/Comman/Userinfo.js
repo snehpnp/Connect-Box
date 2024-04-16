@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { GetUserInfo } from "../../../Services/Comman/comman";
+import { GetBrokerData } from "../../../Services/Comman/Optionchain";
+
 
 export const Userinfo = createAsyncThunk(
     "get/userinfo",
@@ -15,6 +17,20 @@ export const Userinfo = createAsyncThunk(
 );
 
 
+export const GetBrokerDatas = createAsyncThunk(
+    "get/brokercredentail",
+    async (data) => {
+        
+        try {
+            const res = await GetBrokerData(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+
 
 const Userinfo1Slice = createSlice({
     name: "UserinfoSlice",
@@ -22,9 +38,6 @@ const Userinfo1Slice = createSlice({
         isLoading: false,
         isError: false,
        
-
-
-
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -44,7 +57,20 @@ const Userinfo1Slice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
             })
-          
+            .addCase(GetBrokerDatas.pending, (state, action) => {
+
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(GetBrokerDatas.fulfilled, (state, action) => {
+
+                state.isLoading = false;
+            })
+            .addCase(GetBrokerDatas.rejected, (state, action) => {
+
+                state.isLoading = false;
+                state.isError = true;
+            })
     },
 });
 
