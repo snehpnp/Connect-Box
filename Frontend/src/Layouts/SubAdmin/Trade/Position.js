@@ -4,11 +4,11 @@ import toast from "react-hot-toast";
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast'
 import ExportToExcel from '../../../Utils/ExportCSV'
 
-import { Userinfo } from "../../../ReduxStore/Slice/Comman/Userinfo";
+import { Userinfo , Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/Userinfo";
 
 
 import Loader from "../../../Utils/Loader";
-import {loginWithApi} from "../../../Utils/log_with_api";
+import { loginWithApi } from "../../../Utils/log_with_api";
 
 
 
@@ -31,6 +31,8 @@ function GroupStrategy() {
     const [profileData, setProfileData] = useState([]);
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+
+
 
 
 
@@ -73,6 +75,24 @@ function GroupStrategy() {
         fetchData();
     }, []);
 
+
+    const handleTradingOff = async (id) => {
+        let data = { id: id };
+
+        await dispatch(Trading_Off_Btn(data)).unwrap()
+            .then((response) => {
+                if (response.status) {
+                    toast.success("Trading off successfully");
+                    setrefresh(!refresh);
+                }
+                else {
+                    toast.error("Trading Off Error")
+                }
+            }).catch((error) => {
+                console.log("Trading Off Error", error);
+            })
+
+    }
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
         console.log("check, brokerid, tradingstatus, UserDetails", check, brokerid, tradingstatus, UserDetails)
 
@@ -82,6 +102,9 @@ function GroupStrategy() {
 
         } else {
             console.log("Trading Off")
+            handleTradingOff(user_id);
+
+
         }
 
 
@@ -114,7 +137,7 @@ function GroupStrategy() {
                                                         profileData.data[0].broker,
                                                         profileData.data[0].TradingStatus,
                                                         profileData.data[0])}
-                                                    checked={getLoginStatus}
+                                                    defaultChecked={getLoginStatus}
                                                     style={{ marginRight: '5px' }}
                                                 />
                                                 <label htmlFor="1" className="checktoggle checkbox-bg"></label>

@@ -47,7 +47,7 @@ const AddClient = () => {
       phone: "",
       balance: "",
       password: "",
-      prifix_key: "",
+      prifix_key: null,
       subadmin_servic_type: "0",
       strategy_Percentage: "0",
       Per_trade: "0",
@@ -73,23 +73,22 @@ const AddClient = () => {
       } else if (!/^\d{10}$/.test(values.phone)) {
         errors.phone = "Please enter a valid 10-digit phone number.";
       }
-      if (!values.balance && values.balance != 0) {
+      if (!values.balance) {
         errors.balance = "Balance is required";
     }
       if (!values.password) {
         errors.password = "Password is required";
       }
-      if (!values.Per_trade && values.Per_trade!=0 ) {
+      if (!values.Per_trade ) {
         errors.Per_trade = "Please Enter per trade value";
 
-      } if (!values.strategy_Percentage && values.strategy_Percentage!=0) {
+      } if (!values.strategy_Percentage) {
         errors.strategy_Percentage = "Please Enter strategy percentage value";
       }
+      
       if (!values.prifix_key) {
         errors.prifix_key = "Prefix key is required";
-      } else if (values.prifix_key.length !== 3) {
-        errors.prifix_key = "Key should be exactly 3 characters/number/both";
-      }
+      }  
       return errors;
     },
     onSubmit: async (values, { setSubmitting }) => {
@@ -165,7 +164,7 @@ const AddClient = () => {
     {
       name: "phone",
       label: "Phone Number",
-      type: "number1",
+      type: "text3",
       label_size: 12,
       col_size: 6,
       disable: false,
@@ -173,7 +172,7 @@ const AddClient = () => {
     {
       name: "balance",
       label: "Balance",
-      type: "number",
+      type: "text3",
       label_size: 12,
       col_size: 6,
       disable: false,
@@ -223,7 +222,7 @@ const AddClient = () => {
             ? "Per Trade Value"
             : "% Per Strategy"
           : "",
-      type: "number",
+      type: "text3",
       placeholder:
         formik.values.subadmin_servic_type === "1" ||
         formik.values.subadmin_servic_type === "2"
