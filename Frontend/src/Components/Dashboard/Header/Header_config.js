@@ -6,13 +6,13 @@ export const admin_header = [
         route: "/admin/dashboard",
         Data: []
     },
-    {
-        id: 2,
-        name: 'System',
-        route: "/admin/system",
-        Icon: "fe fe-settings",
-        Data: []
-    },
+    // {
+    //     id: 2,
+    //     name: 'System',
+    //     route: "/admin/system",
+    //     Icon: "fe fe-settings",
+    //     Data: []
+    // },
     {
         id: 3,
         name: 'Research Analysts',
@@ -100,13 +100,13 @@ export const subamdin_header = [
         route: "/subadmin/dashboard",
         Data: []
     },
-    {
-        id: 2,
-        name: 'System',
-        route: "/subadmin/system",
-        Icon: "fe fe-settings",
-        Data: []
-    },
+    // {
+    //     id: 2,
+    //     name: 'System',
+    //     route: "/subadmin/system",
+    //     Icon: "fe fe-settings",
+    //     Data: []
+    // },
     // {
     //     id: 3,
     //     name: 'Employees',

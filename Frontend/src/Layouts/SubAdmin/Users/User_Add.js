@@ -59,7 +59,7 @@ const AddClient = () => {
     },
     {
       name: "fullName",
-      label: "FullName",
+      label: "Full Name",
       type: "text",
       label_size: 6,
       col_size: 6,
@@ -84,7 +84,7 @@ const AddClient = () => {
 
     {
       name: "phone",
-      label: "Phone No",
+      label: "Phone Number",
       type: "number1",
       label_size: 12,
       col_size: 6,
@@ -402,7 +402,7 @@ const AddClient = () => {
                   serviceName.data.map((item) => (
                     <>
                     
-                      <div className={`col-lg-1 `} key={item.serviceId}>
+                      <div className={`col-lg-2 `} key={item.serviceId}>
 
                           <label
                             className="alert alert-primary py-2 "
@@ -416,54 +416,7 @@ const AddClient = () => {
                    
                   ))}
                    </div>
-                <table className="table bg-none mt-5" >
-                  <thead>
-                    <tr>
-                      <th>Strategy Name</th>
-                      <th>Monthly</th>
-                      <th>Quarterly</th>
-                      <th>Halfyearly</th>
-                      <th>Yearly</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>AAA_MCX</td>
-                      <td>
-                       
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value="1"
-                        />
-                      </td>
-                      <td>
-                       
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value="1"
-                        />
-                      </td>
-                      <td>
-                       
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value="1"
-                        />
-                      </td>
-                      <td>
-                       
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value="1"
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                
                 <div className="row mt-4">
                   <div class="input-block ">
                     <label>All Strategy</label>
@@ -501,7 +454,7 @@ const AddClient = () => {
                                         alignItems: "center",
                                       }}
                                     >
-                                      <div className="form-group d-flex justify-content-between m-3">
+                                      <div className="form-group d-flex justify-content-between m-3 border rounded p-2">
                                         <div className="d-flex align-items-center">
                                           <input
                                             type="radio"

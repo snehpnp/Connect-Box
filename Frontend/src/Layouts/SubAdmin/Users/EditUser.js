@@ -474,18 +474,27 @@ const AddClient = () => {
               btn_name1_route={'/subadmin/users'}
               additional_field={
                 <>
-                  {serviceName.data.length > 0 ? <h6>All Group Service</h6> : ''}
-                  {serviceName && serviceName.data.map((item) => (
+                   {serviceName.data.length > 0 ?<div class="input-block "> <label>All Group Service</label> </div>: ""}
+              <div className="row">
+              
+                {serviceName &&
+                  serviceName.data.map((item) => (
                     <>
+                    
                       <div className={`col-lg-2 `} key={item.serviceId}>
-                        <div className="col-lg-12 ">
-                          <label className="form-check-label bg-primary text-white  rounded py-2 px-4" for={item.serviceName}>{`${item.serviceName}[${item.categoryName}]`}</label>
 
-                        </div>
+                          <label
+                            className="alert alert-primary py-2 "
+                            style={{ fontSize: "10px" }}
+                            for={item.serviceName}
+                          >{`${item.serviceName}[${item.categoryName}]`}</label>
+                        
                       </div>
-
+                      
                     </>
+                   
                   ))}
+                   </div>
 
                   <div className="row mt-4">
                     <h6>All Strategy</h6>
@@ -513,8 +522,8 @@ const AddClient = () => {
 
 
                               {formik.values.licence != 1 && selectedCheckboxes.includes(strategy._id) && (
-                                <div className="border rounded" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                  <div className="form-group d-flex justify-content-between m-3">
+                                <div  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                  <div className="form-group d-flex justify-content-between m-3 border rounded p-2">
                                     {planSelect.map((data) => {
                                       const planId = getOneUsers.ClientStrategy && getOneUsers.ClientStrategy.filter((item) => (
                                         item.strategy_id === strategy._id

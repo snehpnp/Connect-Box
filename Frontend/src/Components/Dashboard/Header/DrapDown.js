@@ -10,7 +10,7 @@ import { Minimize } from 'lucide-react';
 const DropDown = () => {
     const navigate = useNavigate();
 
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [showFunds, setShowFunds] = useState(false);
     const [themeMode, setThemeMode] = useState('light');
@@ -21,6 +21,8 @@ const DropDown = () => {
     const [error, setError] = useState(null);
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+
+
 
 
     const fetchData = async () => {
@@ -174,7 +176,7 @@ const DropDown = () => {
                         data-bs-dismiss="modal"
                         className="btn btn-primary cancel-btn me-2 mt-2"
                         style={{
-                           
+
                             color: "white",
                             border: "none",
                             display: "flex",
@@ -194,7 +196,7 @@ const DropDown = () => {
                         ) : (
                             <span className='d-flex align-items-center'>
                                 <i className="fe fe-eye" style={{ fontSize: "24px", marginRight: "10px" }} />
-                                 <span>View Fund </span>
+                                <span>View Fund </span>
                             </span>
                         )}
                         {/* {showFunds && "+"} */}
@@ -265,6 +267,13 @@ const DropDown = () => {
                                             Settings
                                         </Link>
                                     </li>
+                                    {Role == "ADMIN" || Role === "SUBADMIN" ?
+                                        <li>
+                                            <Link className="dropdown-item dev" to={Role==="ADMIN" ?  "/admin/system" :"/subadmin/system" }>
+                                                System
+                                            </Link>
+                                        </li> : ''}
+
                                     <li className='dropdown-item de '>
                                         <label className="theme-switch mb-0">
                                             <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
@@ -283,36 +292,7 @@ const DropDown = () => {
 
                     </div>
 
-                    <div style={{ height: "144px" }} className={`dropdown-menu menu-drop-user ${isDropdownOpen ? 'show' : ''}`}>
-                        <div className="profilemenu table table-hover">
-                            <div className="subscription-menu">
-                                <ul>
-                                    <li onClick={() => ProfilePage()}>
-                                        <Link className="dropdown-item dev" >
-                                            Profile
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/settings">
-                                            Settings
-                                        </Link>
-                                    </li>
-                                    <li className='dropdown-item de nav-item dropdown  dropdown-heads'>
-                                        <label className="theme-switch mb-0">
-                                            <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
-                                            <span className="slider"></span>
-                                        </label>
-                                    </li>
-                                    <li>
-                                        <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
-                                            Log out
-                                        </a>
 
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </li>
             </ul>
         </div>
