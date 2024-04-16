@@ -73,11 +73,17 @@ const AddClient = () => {
       } else if (!/^\d{10}$/.test(values.phone)) {
         errors.phone = "Please enter a valid 10-digit phone number.";
       }
-      if (!values.balance) {
+      if (!values.balance && values.balance != 0) {
         errors.balance = "Balance is required";
-      }
+    }
       if (!values.password) {
         errors.password = "Password is required";
+      }
+      if (!values.Per_trade && values.Per_trade!=0 ) {
+        errors.Per_trade = "Please Enter per trade value";
+
+      } if (!values.strategy_Percentage && values.strategy_Percentage!=0) {
+        errors.strategy_Percentage = "Please Enter strategy percentage value";
       }
       if (!values.prifix_key) {
         errors.prifix_key = "Prefix key is required";
@@ -183,7 +189,7 @@ const AddClient = () => {
     {
       name: "prifix_key",
       label: "Prifix Key",
-      type: "text",
+      type: "text2",
       label_size: 12,
       col_size: 6,
       disable: false,

@@ -33,6 +33,9 @@ const DynamicForm = ({
 
   const [previews, setPreviews] = useState([]);
   const [passwordVisible, setPasswordVisible] = useState({});
+  const [inputValue, setInputValue] = useState('');
+
+
 
   const prifix_key = JSON.parse(
     localStorage.getItem("user_details")
@@ -66,7 +69,19 @@ const DynamicForm = ({
   };
 
 
+  const handleOnchange = (e) => {
+    const newValue = e.target.value.toUpperCase()
+    if (/^[a-zA-Z]{0,3}$/.test(newValue)) {  
+      setInputValue(newValue);
+      formik.handleChange(e);  
+    }
+   
+  }
 
+
+
+
+  console.log("inputValue :", inputValue && inputValue)
 
   return (
     <div className="content container-fluid" data-aos="fade-left">
@@ -160,6 +175,40 @@ const DynamicForm = ({
                                 name={field.name}
                                 {...formik.getFieldProps(field.name)}
                               />
+                            </div>
+                            {formik.touched[field.name] &&
+                              formik.errors[field.name] ? (
+                              <div style={{ color: "red" }}>
+                                {formik.errors[field.name]}
+                              </div>
+                            ) : null}
+                          </div>
+
+                        </>
+                      ) : field.type === "text2" ? (
+                        <>
+                          {console.log("cpppppp")}
+                          <div className={` col-lg-${field.col_size}`}>
+                            <div className="input-block mb-3 flex-column">
+                              <label className={`col-lg-${field.label_size}`}>
+                                {field.label}
+                                <span className="text-danger">*</span>
+                              </label>
+
+                              <input
+                                type="text"
+                                aria-describedby="basic-addon1"
+                                className="form-control"
+                                placeholder={`Enter ${field.label}`}
+                                readOnly={field.disable}
+                                id={field.name}
+                                name={field.name}
+
+                                onChange={handleOnchange}
+                                value={inputValue}
+                              // {...formik.getFieldProps(field.name)}
+                              />
+                              
                             </div>
                             {formik.touched[field.name] &&
                               formik.errors[field.name] ? (
@@ -598,7 +647,7 @@ const DynamicForm = ({
                                     id={field.name}
                                     placeholder={`Enter ${field.label}`}
                                     onKeyDown={(e) => {
-                                      
+
                                       if (
                                         [46, 8, 9, 27, 13, 110, 190].includes(e.keyCode) ||
                                         (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
@@ -647,9 +696,9 @@ const DynamicForm = ({
                                     id={field.name}
                                     placeholder={`Enter ${field.label}`}
                                     {...formik.getFieldProps(field.name)}
-                                    
+
                                     onKeyDown={(e) => {
-                                      
+
                                       if (
                                         [46, 8, 9, 27, 13, 110, 190].includes(e.keyCode) ||
                                         (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
