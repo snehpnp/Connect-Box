@@ -6,6 +6,7 @@ import { GetAllclientDetails } from '../../../ReduxStore/Slice/Users/ClientServi
 
 
 function Clientservice() {
+  
 
   const dispatch = useDispatch()
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
@@ -170,8 +171,7 @@ function Clientservice() {
                               </div>
                             </div>
 
-
-                          </div>
+                          </div>    
                           <ul className="features">
                             <li className="true">Lot Size: 15</li>
                             <li className="true">Max Qty: 500</li>
@@ -183,6 +183,53 @@ function Clientservice() {
                               <option value="2">Limit</option>
                               <option value="3">Stoploss Limit</option>
                             </select></li>
+                            <li>
+                              <div class="dropdown">
+                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Dropdown button
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+
+                                </ul>
+
+                              </div>
+                            </li>
                           </ul>
 
                         </div>
@@ -196,7 +243,7 @@ function Clientservice() {
                           <div className="icon-box">
                             <div className="icon-outer">
                               <i className="fas fa-gem" />
-                            </div>
+                            </div> 
                           </div>
                           <div className="price-box">
                             <div className="title">Nifty</div>
@@ -217,6 +264,53 @@ function Clientservice() {
                               <option value="2">Limit</option>
                               <option value="3">Stoploss Limit</option>
                             </select></li>
+                            <li>
+                              <div class="dropdown">
+                                <button class="btn btn-primary  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Dropdown button
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+
+                                </ul>
+
+                              </div>
+                            </li>
                           </ul>
 
                         </div>
@@ -252,6 +346,53 @@ function Clientservice() {
                               <option value="2">Limit</option>
                               <option value="3">Stoploss Limit</option>
                             </select></li>
+                            <li>
+                              <div class="dropdown">
+                                <button class="btn btn-primary  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Dropdown button
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+
+                                </ul>
+
+                              </div>
+                            </li>
                           </ul>
                         </div>
                       </div>
@@ -285,6 +426,53 @@ function Clientservice() {
                               <option value="2">Limit</option>
                               <option value="3">Stoploss Limit</option>
                             </select></li>
+                            <li>
+                              <div class="dropdown">
+                                <button class="btn btn-primary  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                  Dropdown button
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+                                  <li> <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
+                                    <label class="form-check-label" for="Checkme1">Check me</label>
+                                  </div></li>
+
+                                </ul>
+
+                              </div>
+                            </li>
                           </ul>
                         </div>
                       </div>

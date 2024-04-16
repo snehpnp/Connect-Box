@@ -13,11 +13,13 @@ import { Link } from 'react-router-dom';
 
 
 function Login() {
+
     const dispatch = useDispatch();
     const navigate = useNavigate()
-var theme_mode= localStorage.getItem('theme_mode')
+    var theme_mode = localStorage.getItem('theme_mode')
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-     const [showPassword, setShowPassword] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const [typeOtp, setTypeOtp] = useState("");
 
@@ -30,97 +32,69 @@ var theme_mode= localStorage.getItem('theme_mode')
 
     const togglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
-      };
+    };
 
     const verifyOTP = () => {
-
-        var Otp = getData && getData.mobile.slice(-4)
+        var Otp = getData && getData.mobile.slice(-4);
 
         if (typeOtp.length !== 4) {
-            toast.error('Please Fill Otp');
+            toast.error("Please Fill Otp");
         } else if (Otp !== typeOtp) {
-            toast.error('Otp Is Incorect');
+            toast.error("Otp Is Incorect");
         } else {
             if (getData.Role === "ADMIN") {
-                toast.success('login Successful');
-                localStorage.setItem(
-                    "user_details",
-                    JSON.stringify(getData)
-                );
-                localStorage.setItem(
-                    "user_role",
-                    JSON.stringify(getData.Role)
-                );
+                toast.success("login Successful");
+                localStorage.setItem("user_details", JSON.stringify(getData));
+                localStorage.setItem("user_role", JSON.stringify(getData.Role));
                 // localStorage.setItem("theme_mode", "light");
-                setIsLoading(true)
-                setShowModal(false)
+                setIsLoading(true);
+                setShowModal(false);
                 setTimeout(() => {
-                    navigate("/admin/dashboard")
+                    navigate("/admin/dashboard");
                 }, 1000);
-
             } else if (getData.Role === "SUBADMIN") {
                 toast.success("login Successful");
-                localStorage.setItem(
-                    "user_details",
-                    JSON.stringify(getData)
-                );
+                localStorage.setItem("user_details", JSON.stringify(getData));
                 // localStorage.setItem("theme_mode", "light");
 
-                localStorage.setItem(
-                    "user_role",
-                    JSON.stringify(getData.Role)
-                );
+                localStorage.setItem("user_role", JSON.stringify(getData.Role));
                 // localStorage.setItem("theme_mode", "light");
 
-                setIsLoading(true)
-                setShowModal(false)
+                setIsLoading(true);
+                setShowModal(false);
 
                 setTimeout(() => {
-                    navigate("/subadmin/dashboard")
+                    navigate("/subadmin/dashboard");
                 }, 1000);
-
             } else if (getData.Role === "EMPLOYEE") {
                 toast.success("login Successful");
-                localStorage.setItem(
-                    "user_details",
-                    JSON.stringify(getData)
-                );
-                localStorage.setItem(
-                    "user_role",
-                    JSON.stringify(getData.Role)
-                );
+                localStorage.setItem("user_details", JSON.stringify(getData));
+                localStorage.setItem("user_role", JSON.stringify(getData.Role));
                 // localStorage.setItem("theme_mode", "light");
 
-                setIsLoading(true)
-                setShowModal(false)
+                setIsLoading(true);
+                setShowModal(false);
 
                 setTimeout(() => {
-                    navigate("/employee/dashboard")
+                    navigate("/employee/dashboard");
                 }, 1000);
-
             } else {
                 toast.success("login Successful");
-                localStorage.setItem(
-                    "user_details",
-                    JSON.stringify(getData)
-                );
-                localStorage.setItem(
-                    "user_role",
-                    JSON.stringify(getData.Role)
-                );
+                localStorage.setItem("user_details", JSON.stringify(getData));
+                localStorage.setItem("user_role", JSON.stringify(getData.Role));
                 // localStorage.setItem("theme_mode", "light");
 
-                setIsLoading(true)
-                setShowModal(false)
+                setIsLoading(true);
+                setShowModal(false);
                 setTimeout(() => {
-                    navigate("/user/dashboard")
+                    navigate("/user/dashboard");
                 }, 1000);
-
             }
         }
-
-
-    }
+        if (getData.Role) {
+            setIsLoggedIn(true);
+        }
+    };
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value);
@@ -161,22 +135,25 @@ var theme_mode= localStorage.getItem('theme_mode')
         setTypeOtp(numericValue);
     };
 
-
     useEffect(() => {
-        console.log("theme_mode",theme_mode)
-        const htmlElement = document.querySelector('html');
-        htmlElement.setAttribute('data-sidebar', theme_mode);
-        htmlElement.setAttribute('data-layout-mode', theme_mode);
-        htmlElement.setAttribute('data-topbar', theme_mode);
-    }, [])
-    
+        console.log("theme_mode", theme_mode);
+        const htmlElement = document.querySelector("html");
+        htmlElement.setAttribute("data-sidebar", theme_mode);
+        htmlElement.setAttribute("data-layout-mode", theme_mode);
+        htmlElement.setAttribute("data-topbar", theme_mode);
+        if (isLoggedIn) {
+            setTimeout(() => {
+                navigate(`/${getData.Role.toLowerCase()}/dashboard`);
+            }, 1000);
+        }
+    }, [isLoggedIn, getData.Role, navigate]);
     return (
 
         <>
 
             <>
                 <div className="main-wrapper login-body">
-                    <div className="login-wrapper page-wrapper">
+                    <div className="login-wrapper">
                         <div className="container">
                             <img
                                 className="img-fluid logo-dark mb-2 logo-color"
@@ -217,7 +194,7 @@ var theme_mode= localStorage.getItem('theme_mode')
                                                     />
                                                 </div>
                                             </div>
-                                       
+
 
                                             <button className="btn btn-lg btn-primary w-100" onClick={handleSubmit}>
                                                 Login
@@ -258,7 +235,7 @@ var theme_mode= localStorage.getItem('theme_mode')
                 {showModal ? (
                     <>
                         <Modal
-                            
+
                             isOpen={showModal}
                             handleClose={() => setShowModal(false)}
                             backdrop="static"
@@ -267,7 +244,7 @@ var theme_mode= localStorage.getItem('theme_mode')
                             btn_name="Verify"
                             btn_name1="Verify1"
                             Submit_Function={verifyOTP}
-                          
+
                         >
 
 
@@ -401,6 +378,14 @@ var theme_mode= localStorage.getItem('theme_mode')
                 )}
 
             </>
+            {isLoggedIn && (
+                <div className="overlay">
+                    <div className="overlay-content">
+
+                        <h2>Welcome, {getData.Role}!</h2>
+                    </div>
+                </div>
+            )}
 
         </>
     );
