@@ -1462,7 +1462,6 @@ class Users {
   async DeleteUser(req,res){
    try{
     const { id } = req.body
-    console.log("id", id)
 
      // CHECK IF USER EXIT IN USER MODAL
      const user_Model_ckeck = await User_model.findOne({ _id: id , Role: "USER"});
@@ -1501,7 +1500,6 @@ class Users {
         }
    }
    catch(error){
-    console.log("Delete User Error , ", error);
     return res.send({
       status: false,
       msg:"Id id Not Found",

@@ -421,7 +421,6 @@ const TruncateTable = async () => {
 
 // TOKEN SYMBOL CREATE
 const TokenSymbolUpdate = () => {
-    console.log("OKKKKKKKK")
 
     var d = new Date();
     dformat = [d.getFullYear(),

@@ -92,7 +92,6 @@ class Dashboard {
                 mostOrderedStrategy
             };
     
-            console.log(data);
             return res.json({ status: true, data, msg: "Done" });
         } catch (error) {
             console.log("Error:", error);

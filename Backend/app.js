@@ -34,16 +34,13 @@ const io = new Server(server, {
 
 
 io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
 
 
   socket.on("send_message", (data) => {
-    console.log("data from backend",data)
     io.emit("receive_message", data);
   });
 
   socket.on("disconnect", () => {
-    console.log("User Disconnected", socket.id);
   });
 });
 
@@ -54,7 +51,6 @@ require('./App/Utils/Cron.utils');
 require("./App/Routes")(app);
 
 app.get('/tokenget', (req, res) => {
-  console.log("RUNNNNNN");
   TokenSymbolUpdate();
 });
 

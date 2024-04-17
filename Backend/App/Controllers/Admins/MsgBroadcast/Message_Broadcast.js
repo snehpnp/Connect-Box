@@ -121,7 +121,6 @@ class MessageController {
       ];
 
       const getMessages = await msgdata.aggregate(pipeline);
-      // console.log("Retrieved Messages:", getMessages);
 
       res.send({
         status: true,

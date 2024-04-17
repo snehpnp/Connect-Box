@@ -24,7 +24,6 @@ const config = {
 
 axios(config)
   .then(response => {
-    console.log("Response:", response.data);
     // Handle the response data
   })
   .catch(error => {

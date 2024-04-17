@@ -94,7 +94,6 @@ function GroupStrategy() {
 
     }
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
-        console.log("check, brokerid, tradingstatus, UserDetails", check, brokerid, tradingstatus, UserDetails)
 
         if (check) {
             console.log("Trading On")

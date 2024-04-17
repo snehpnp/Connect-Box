@@ -146,7 +146,6 @@ class Dashboard_Subadmin_Data {
 
       const Count = counts[0];
 
-      console.log("Count", Count);
       res.send({
         status: true,
         msg: "Dashboard Data Retrieved Successfully",

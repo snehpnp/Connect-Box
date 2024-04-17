@@ -31,7 +31,6 @@ const TradeHistory = () => {
     const location = useLocation();
 
 
-    // console.log("hello",location)
 
 
     const token = JSON.parse(localStorage.getItem("user_details")).token;
@@ -795,7 +794,7 @@ const TradeHistory = () => {
     const data = async () => {
 
         const response = await GetAccessToken({ broker_name: "aliceblue" });
-        console.log("cp: ", response)
+
         if (response.status) {
             setUserDetails(response.data && response.data[0]);
         }

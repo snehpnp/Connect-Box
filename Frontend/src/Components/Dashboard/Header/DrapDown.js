@@ -21,6 +21,9 @@ const DropDown = () => {
     const [error, setError] = useState(null);
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+    var Role = JSON.parse(localStorage.getItem("user_details")).Role
+    var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
+    var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
 
 
 
@@ -57,15 +60,9 @@ const DropDown = () => {
     }, []);
 
 
-    var Role = JSON.parse(localStorage.getItem("user_details")).Role
-    var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
-
-
-
     const LogoutUser = (e) => {
         e.stopPropagation(); // Stop event propagation
-        console.log("LogoutUser function is called");
-        // localStorage.clear();
+
 
         localStorage.removeItem('user_details')
         localStorage.removeItem('user_role')
@@ -73,7 +70,6 @@ const DropDown = () => {
         window.location.reload();
     };
 
-    // Define toggleTheme function
     const toggleTheme = () => {
 
         const newThemeMode = themeMode === 'light' ? 'dark' : 'light';
@@ -84,13 +80,7 @@ const DropDown = () => {
         htmlElement.setAttribute('data-topbar', newThemeMode);
         localStorage.setItem('theme_mode', newThemeMode);
 
-        // setTimeout(() => {
-        //     window.location.reload();
-        // }, 200);
     };
-
-
-
 
 
     const toggleFullScreen = () => {
@@ -114,7 +104,6 @@ const DropDown = () => {
         }
         setIsFullScreen(!isFullScreen);
     };
-
 
 
     const walletmodal = () => {
@@ -153,6 +142,9 @@ const DropDown = () => {
         const storedThemeMode = localStorage.getItem('theme_mode');
         if (storedThemeMode) {
             setThemeMode(storedThemeMode);
+        } else {
+            localStorage.setItem('theme_mode', "light");
+            setThemeMode('light');
         }
     }, []);
 
@@ -170,6 +162,14 @@ const DropDown = () => {
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
+
+                {Role == "SUBADMIN" && (<li className="nav-item dropdown  flag-nav dropdown-heads">
+                   {subadmin_service_type == 2 ? "STRATEGY WISE":"PER TRADE"}
+                </li>)}
+
+
+
+
                 {Role !== "USER" ? <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
                     <button
                         type="button"
@@ -269,7 +269,7 @@ const DropDown = () => {
                                     </li>
                                     {Role == "ADMIN" || Role === "SUBADMIN" ?
                                         <li>
-                                            <Link className="dropdown-item dev" to={Role==="ADMIN" ?  "/admin/system" :"/subadmin/system" }>
+                                            <Link className="dropdown-item dev" to={Role === "ADMIN" ? "/admin/system" : "/subadmin/system"}>
                                                 System
                                             </Link>
                                         </li> : ''}

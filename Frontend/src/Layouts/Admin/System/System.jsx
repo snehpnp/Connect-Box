@@ -53,7 +53,6 @@ function System() {
   };
 
   const handleUpdate = async (e) => {
-    console.log("formData", formData);
     e.preventDefault();
     if (formData) {
       var data = {

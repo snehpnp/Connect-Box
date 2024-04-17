@@ -58,7 +58,7 @@ export const AddStrategy = createAsyncThunk("strategy/add",
         
         try {
             const res = await ADD_STRATEGY(data);
-            console.log("resSlice :", res)
+         
             return res;
         } catch (err) {
             throw err;
@@ -71,7 +71,7 @@ export const DELETE_STRATEGY = createAsyncThunk("strategy/delete",
         
         try {
             const res = await Delete_Strategy(data);
-            console.log("resSlice :", res)
+            
             return res;
         } catch (err) {
             throw err;

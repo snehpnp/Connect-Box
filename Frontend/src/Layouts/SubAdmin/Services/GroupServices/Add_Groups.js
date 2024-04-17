@@ -305,12 +305,6 @@ const AddStrategy = () => {
 
 
 
-    console.log("groupName :", groupName)
-
-
-
-
-
     return (
         <>
             <Content Page_title="Add Group " button_title="Back" route="/subadmin/group-service"

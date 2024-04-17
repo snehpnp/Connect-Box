@@ -100,7 +100,7 @@ export default function AllUsers() {
         }
       })
       .catch((error) => {
-        console.log("Broker find Error :", error)
+        console.log("Error Broker find Error :", error)
       })
 
   }
@@ -275,7 +275,7 @@ export default function AllUsers() {
         }
       })
       .catch((error) => {
-        console.log("User Does Not Exit", error)
+        console.log("Error User Does Not Exit", error)
       })
 
 

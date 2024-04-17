@@ -29,7 +29,6 @@ const Routing = () => {
             navigate("/register");
             return;
         }
-        console.log("location.pathname", location.pathname)
 
         // Redirect based on user role
         switch (roles) {
@@ -57,7 +56,6 @@ const Routing = () => {
                 break;
         }
     }, [navigate, location.pathname, roles, user_details]);
-    console.log("location.pathname", location.pathname)
 
     return (
         <Routes>

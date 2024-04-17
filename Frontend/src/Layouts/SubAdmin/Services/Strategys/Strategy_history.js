@@ -143,8 +143,6 @@ function Payment() {
     getCompanyData();
   }, []);
 
-  console.log("companyData.data", companyData.data)
-
   return (
     <>
       {companyData && companyData.loading ? (

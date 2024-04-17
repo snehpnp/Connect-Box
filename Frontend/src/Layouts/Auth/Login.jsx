@@ -129,7 +129,6 @@ function Login() {
   };
 
   useEffect(() => {
-    console.log("theme_mode", theme_mode);
     const htmlElement = document.querySelector("html");
     htmlElement.setAttribute("data-sidebar", theme_mode);
     htmlElement.setAttribute("data-layout-mode", theme_mode);

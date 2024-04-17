@@ -42,9 +42,6 @@ function Strategy() {
         data: [],
     });
 
-    console.log("allStategy :", allStategy)
-
-
 
     // Function to open the modal
     const openModal = () => {

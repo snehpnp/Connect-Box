@@ -257,7 +257,6 @@ export default function Help() {
             return inputSearchMatch;
           })
 
-          console.log("filterData :", filterData)
 
           setAllSubadmins({
             loading: true,

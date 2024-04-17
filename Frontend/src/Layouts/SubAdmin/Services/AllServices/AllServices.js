@@ -28,7 +28,6 @@ const ServicesList = () => {
   const [ForGetCSV, setForGetCSV] = useState([])
 
 
-  console.log("AllServices :", AllServices)
 
   const [CatagoryData, setCatagoryData] = useState({
     loading: true,

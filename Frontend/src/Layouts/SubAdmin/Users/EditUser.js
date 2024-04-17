@@ -363,7 +363,7 @@ const AddClient = () => {
           }
         })
         .catch((error) => {
-          console.log("erorr :", error)
+          console.log("Erorr :", error)
         })
 
     }

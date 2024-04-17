@@ -609,13 +609,12 @@ class strategy {
 
   // Update Add Remove Strategy
   async UpdateAddRemoveStrategy(req, res) {
-    //  console.log("req",req.body)
+  
 
     try {
       if (req.body.clientId.length > 0) {
         req.body.clientId.forEach(async (element) => {
-          console.log("element add", element);
-
+       
           //  ADD  STRATEGY CLIENT
           const strategy_client = new strategy_client_model({
             strategy_id: req.body.strategyId,
@@ -631,7 +630,7 @@ class strategy {
             strategy_id: req.body.strategyId,
             user_id: element,
           });
-          // console.log("element delete",element);
+
         });
       }
 
@@ -640,7 +639,6 @@ class strategy {
         msg: "Startegy Update Successfully....",
       });
     } catch (error) {
-      console.log("Error Get All Strategy Error-", error);
       return res.send({ status: false, msg: "Catch Error" });
     }
   }
