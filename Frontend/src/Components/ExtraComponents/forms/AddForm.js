@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MoveLeft, Plus } from "lucide-react";
 
+
+
 const DynamicForm = ({
   fields,
   ProfileShow,
@@ -36,6 +38,7 @@ const DynamicForm = ({
   const [inputValue, setInputValue] = useState('');
 
 
+  var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
 
   const prifix_key = JSON.parse(
     localStorage.getItem("user_details")
@@ -78,17 +81,18 @@ const DynamicForm = ({
   }
 
 
-
+  const HandelChange = (value) => {
+    console.log("value",value)
+    formik.setFieldValue('service_type', value);
+  }
 
 
   return (
     <div className="content container-fluid" data-aos="fade-left">
       <div className="card mb-0">
-        <div className="card-header">
-
+        {page_title ? <div className="card-header">
           {page_title ? <h5 className="card-title mb-0 w-auto"><i className="fa-regular fa-circle-user pe-2"></i>{page_title} </h5> : ""}
-
-        </div>
+        </div> : ""}
         <form onSubmit={formik.handleSubmit}>
           <div className="card-body ">
             <div className="page-header">
@@ -201,12 +205,12 @@ const DynamicForm = ({
                                 id={field.name}
                                 name={field.name}
                                 value={inputValue}
-                                onChange={(e) => { 
+                                onChange={(e) => {
                                   const newValue = e.target.value.toUpperCase()
                                   if (/^[a-zA-Z]{0,3}$/.test(newValue)) {
                                     setInputValue(newValue);
                                     formik.handleChange(e);
-                                  } 
+                                  }
                                 }}
 
                               />
@@ -609,27 +613,31 @@ const DynamicForm = ({
                         </>
                       ) : field.type === "test" ? (
                         <>
-                          <div className="col-lg-3">
-                            <div className="row d-flex">
-                              <div className="col-lg-12 ">
-                                <div className="form-check custom-checkbox input-block mb-3">
-                                  <input
-                                    type={field.type}
-                                    name={field.name}
-                                    className="form-check-input"
-                                    id={field.name}
-                                    {...formik.getFieldProps(field.name)}
-                                  />
-                                  <label
-                                    className="form-check-label"
-                                    for={field.name}
-                                  >
-                                    {field.name}
-                                  </label>
-                                </div>
+                          {subadmin_service_type == 1 ? <div className={`col-lg-${field.col_size}`}>
+                            <div className="input-block mb-3 flex-column">
+                              <label className={`col-lg-${field.label_size}`}>
+                                {field.label}
+                                <span className="text-danger">*</span>
+                              </label>
+
+                              <ul class="nav nav-pills d-flex border-none" id="pills-tab" role="tablist">
+                                <li class="nav-item d-flex align-items-center" role="presentation"  >
+                                  <button style={{ width: "67px", height: "2.5rem" }} class="nav-link yes p-0" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" tabindex="-1" onClick={(e) => HandelChange(1)}>Fix</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                  <button style={{ width: "72px", height: "2.5rem" }} class="nav-link no active p-0" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onClick={(e) => HandelChange(2)}>Trade</button>
+                                </li>
+                              </ul>
+
+                            </div>
+                          </div> :
+                            <div className={`col-lg-${field.col_size}`}>
+                              <div className="input-block mb-3 flex-column">
+
                               </div>
                             </div>
-                          </div>
+
+                          }
                         </>
                       ) : field.type === "number" ? (
                         <>

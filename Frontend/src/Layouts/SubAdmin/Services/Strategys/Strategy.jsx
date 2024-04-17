@@ -23,7 +23,8 @@ function Strategy() {
     const [showModal, setShowModal] = useState(false);
     const [opneModal, setopneModal] = useState(false);
     const [deleteModal, setdeleteModal] = useState(false);
-    const [editeModal, seteditModal] = useState(false);
+    const [getStgDescription, setStgDescription] = useState('');
+
 
 
 
@@ -134,9 +135,9 @@ function Strategy() {
             disable: false,
         },
         {
-            name: "strategy_description",
-            label: "Strategy description",
-            type: "text",
+            name: "service_type",
+            label: "Service Type",
+            type: "test",
             label_size: 12,
             col_size: 6,
             disable: false,
@@ -173,6 +174,7 @@ function Strategy() {
             col_size: 3,
             disable: false,
         },
+
     ];
 
 
@@ -189,7 +191,8 @@ function Strategy() {
             strategy_amount_quarterly: '',
             strategy_amount_half_early: '',
             strategy_amount_early: '',
-            strategy_demo_days: ''
+            strategy_demo_days: '',
+            service_type: ""
         },
         validate: (values) => {
             let errors = {};
@@ -205,19 +208,7 @@ function Strategy() {
             if (!values.strategy_segment) {
                 errors.strategy_segment = "strategy segment is required";
             }
-            // if (!values.strategy_tester) {
-            //     errors.strategy_tester = "strategy tester is required";
-            // }
-            // if (!values.strategy_indicator) {
-            //     errors.strategy_indicator = "strategy indicator is required";
-            // }
 
-            // if (!values.strategy_image) {
-            //     errors.strategy_image = "strategy image is required";
-            // }
-            if (!values.strategy_description) {
-                errors.strategy_description = "strategy description is required";
-            }
             if (!values.strategy_amount_month) {
                 errors.strategy_amount_month = "amount is required";
             }
@@ -237,7 +228,8 @@ function Strategy() {
 
         },
         onSubmit: async (values, { resetForm }) => {
-
+            console.log("values.serviceType", values.service_type)
+            return
             const data = {
                 strategy_name: values.strategy_name,
                 strategy_category: values.strategy_category,
@@ -246,12 +238,13 @@ function Strategy() {
                 strategy_demo_days: values.strategy_demo_days,
                 strategy_indicator: values.strategy_indicator,
                 strategy_image: values.strategy_image,
-                strategy_description: values.strategy_description,
+                strategy_description: getStgDescription,
                 strategy_amount_month: values.strategy_amount_month,
                 strategy_amount_quarterly: values.strategy_amount_quarterly,
                 strategy_amount_half_early: values.strategy_amount_half_early,
                 strategy_amount_early: values.strategy_amount_early,
-                maker_id: user_id
+                maker_id: user_id,
+                Service_Type: values.service_type == '' ? 0 :values.service_type
             };
 
 
@@ -415,7 +408,7 @@ function Strategy() {
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Download"
-                                        > 
+                                        >
                                             <li>
                                                 <div className="card-body">
                                                     <ExportToExcel
@@ -463,9 +456,7 @@ function Strategy() {
                                                     <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
 
                                                 </span>
-                                                {/* <span className="icon-frame d-flex align-items-center justify-content-center">
-                                                    <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
-                                                </span> */}
+
                                             </div>
                                         </div>
                                         <p>{stg.strategy_description}</p>
@@ -480,27 +471,27 @@ function Strategy() {
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                 <span >Month</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{height:'1rem'}}/>{stg.strategy_amount_month}/month</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_month}/month</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                 <span >Quarterly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{height:'1rem'}}/>{stg.strategy_amount_quarterly}/Quarterly</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_quarterly}/Quarterly</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                 <span >Half Yearly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{height:'1rem'}}/>{stg.strategy_amount_half_early}/half year</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_half_early}/half year</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                 <span >Yearly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{height:'1rem'}}/>{stg.strategy_amount_early}/year</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_early}/year</span>
                                             </li>
                                         </ul>
 
                                         <div className="d-flex justify-content-center package-edit">
-                                            
+
 
                                             <a className="btn-action-icon me-2"  >
                                                 <i className="fe fe-edit" onClick={() => handleEditPackage({ id: stg._id })} />
@@ -575,36 +566,15 @@ function Strategy() {
                                         fields={fields}
                                         formik={formik}
                                         btn_name="Add Strategy"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                        additional_field={
+                                            <>
 
-                )}
+                                                <label>Strategy Description</label>
+                                                <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
+                                                </textarea>
+                                            </>
 
-
-                {/* EDIT STRATEGY */}
-                {editeModal && (
-                    <div className="modal custom-modal custom-lg-modal d-block">
-                        <div className="modal-dialog modal-dialog-centered modal-md">
-                            <div className="modal-content">
-                                <div className="modal-header border-0 mb-0 pb-0 pt-5 mx-3">
-                                    <div className="form-header modal-header-title text-start mb-0">
-                                        <h4 className="mb-0">Edit Strategy</h4>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        className="btn-close"
-                                        onClick={seteditModal(false)}
-                                    ></button>
-                                </div>
-                                <div className="modal-body m-0 p-0">
-                                    <AddForm
-                                        ProfileShow={formik.values.strategy_image}
-                                        fields={fields}
-                                        formik={formik}
-                                        btn_name="Add Strategy"
+                                        }
                                     />
                                 </div>
                             </div>
@@ -657,8 +627,8 @@ function Strategy() {
                                         <h4 className="mb-0">Hello Company Details</h4>
                                     </div>
                                     <div className="d-flex ">
-                                     
-                                        <Link className="modal-edit-link d-flex align-items-center border p-2" to={`/subadmin/edit/strategies/`+StrategyId}>
+
+                                        <Link className="modal-edit-link d-flex align-items-center border p-2" to={`/subadmin/edit/strategies/` + StrategyId}>
                                             <i className="fe fe-edit me-2" />
                                             Edit Strategy
                                         </Link>
@@ -797,7 +767,7 @@ function Strategy() {
 
                 <ToastButton />
 
-            </div>
+            </div >
             < ToastButton />
 
         </>
