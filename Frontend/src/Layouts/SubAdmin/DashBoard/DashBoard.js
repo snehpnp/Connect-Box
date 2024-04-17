@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Subadmin_Dashdata } from "../../../ReduxStore/Slice/Admin/Subadmins";
+
 import {
-  Dashboard_admin,
-  Dashboard_admin1,
-  SubadminsNamesData,
+  Subadmin_Dashdata,
+  Subadmin_DashChartdata,
+  Subadmin_SalesData,
 } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -11,42 +11,49 @@ import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
 
 const DashBoard = () => {
+  //Subadmin_SalesData API For Sales data
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [colors] = useState(["#9423FF"]);
-  const [subadminData, setAdminData] = useState("");
+  const [userData, setUserData] = useState("");
   const userDetails = JSON.parse(localStorage.getItem("user_details"));
   const [chart, setchart] = useState(false);
 
-  const [subadminName, setsubadminName] = useState([]);
+  const [userName, setUserName] = useState([]);
 
-  const [selectedSubadmin, setSelectedSubadmin] = useState("ALL");
-  const [selectedSubadminid, setSelectedSubadminid] = useState("");
+  const [selectedUser, setSelectedUser] = useState("ALL");
+  const [selectedUserId, setSelectedUserId] = useState("");
 
   const [selectedOption, setSelectedOption] = useState("Day");
 
   const handleSelect = (id) => {
-    setSelectedSubadminid(id);
+    console.log("id from Fe", id);
+    setSelectedUserId(id);
+   
   };
 
   const handleSelect1 = (event) => {
     setSelectedOption(event.target.textContent);
   };
 
-  const [options, setOptions] = useState({
-    chart: {
-      id: "basic-bar",
+  const [options, setOptions] = useState(
+    {
+      chart: {
+        id: "basic-bar",
+      },
+      xaxis: {
+        categories: [],
+      },
     },
-    xaxis: {
-      categories: [],
-    },
-  });
+   
+  );
 
   const [series, setSeries] = useState([
     {
       name: "series-1",
-      data: [],
+      userCounts: [],
     },
+    
   ]);
 
   //new
@@ -72,22 +79,26 @@ const DashBoard = () => {
   ];
 
   const cardsData = cardDataList.map(({ key, title }) => {
-    const count = subadminData[key];
-    const percentage = calculatePercentage(count, subadminData.TotalUsercount);
+    const count = userData[key];
+    const percentage = calculatePercentage(count, userData.TotalUsercount);
     return {
       iconClass: "fas fa-users",
       title: title,
       count: count !== undefined ? count : "Loading...",
       progress: percentage !== null ? percentage : 0,
       arrowIcon:
-        count !== undefined && percentage !== null && percentage < 100
-          ? "fas fa-arrow-down"
-          : "fas fa-arrow-up",
+        count !== undefined && percentage !== null
+          ? percentage === 0
+            ? ""
+            : percentage < 100
+            ? "fas fa-arrow-down"
+            : "fas fa-arrow-up"
+          : "",
       percentageChange:
         percentage !== null ? `${Math.round(percentage)}%` : "N/A",
       sinceLastWeek: "since last week",
       progressBarClass:
-        percentage !== null && percentage < 100 ? "bg-6" : "bg-5",
+        percentage !== null ? (percentage < 70 ? "bg-6" : "bg-5") : "",
     };
   });
 
@@ -97,7 +108,7 @@ const DashBoard = () => {
       .then(async (response) => {
         if (response.status) {
           toast.success(response.msg);
-          setAdminData(response.data);
+          setUserData(response.data);
         } else {
           toast.error(response.msg);
         }
@@ -106,25 +117,19 @@ const DashBoard = () => {
         console.log("Error", error);
       });
   };
-
-  useEffect(() => {
-    dashData();
-  }, [dispatch, navigate]);
-
   //
 
   const dashData1 = async () => {
     var data = {
-      SUBADMINS: selectedSubadminid,
+      user_ID: userDetails.user_id,
       selectedOption: selectedOption,
     };
-
-    await dispatch(Dashboard_admin1(data))
+    await dispatch(Subadmin_DashChartdata(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
           const categories = response.data.categories;
-          const data = response.data.data;
+          const userCounts = response.data.userCounts;
           setOptions((prevOptions) => ({
             ...prevOptions,
             xaxis: {
@@ -133,7 +138,7 @@ const DashBoard = () => {
             },
           }));
 
-          setSeries([{ name: "series-1", data: data }]);
+          setSeries([{ name: "series-1", data: userCounts }]);
 
           setchart(true);
         } else {
@@ -145,12 +150,16 @@ const DashBoard = () => {
       });
   };
 
-  const SubadminName = async () => {
-    await dispatch(SubadminsNamesData())
+  const DashDataForUserData = async () => {
+    var data = {
+      user_ID: userDetails.user_id,
+      selectedOption: selectedOption,
+    };
+    await dispatch(Subadmin_SalesData(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          setsubadminName(response.data);
+          setUserName(response.data);
         } else {
           toast.error(response.msg);
         }
@@ -161,13 +170,13 @@ const DashBoard = () => {
   };
 
   useEffect(() => {
-    SubadminName();
+    DashDataForUserData();
     dashData();
-  }, [dispatch, navigate]);
+  }, [dispatch, selectedUser]);
 
   useEffect(() => {
     dashData1();
-  }, [selectedOption, selectedSubadmin]);
+  }, [selectedOption, selectedUser]);
 
   var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
 
@@ -179,12 +188,12 @@ const DashBoard = () => {
             <div className="col-md-3">
               <div className="card">
                 <div className="col card-header">
-                  <h5 className="card-title">Admin Dashboard</h5>
+                  <h5 className="card-title">Subadmin Dashboard</h5>
                 </div>
                 <div
                   data-aos="fade-down"
                   className="gif-div "
-                  style={{ height: "300px" }}
+                  style={{ height: "690px" }}
                 >
                   <iframe src="https://lottie.host/embed/1bc48686-c5b0-401d-ae40-9b241c697e31/qa4LRQq6FD.json"></iframe>
                 </div>
@@ -251,7 +260,7 @@ const DashBoard = () => {
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                           >
-                            {selectedSubadmin ? selectedSubadmin : "SUBADMINS"}
+                            {selectedUser ? selectedUser : "USER"}
                           </button>
                           <ul
                             className="dropdown-menu"
@@ -261,21 +270,21 @@ const DashBoard = () => {
                               <a
                                 className="dropdown-item"
                                 onClick={() => {
-                                  setSelectedSubadminid("");
-                                  setSelectedSubadmin("ALL");
+                                  setSelectedUserId("");
+                                  setSelectedUser(selectedUser);
                                 }}
                               >
                                 ALL
                               </a>
                             </li>
-                            {subadminName &&
-                              subadminName.map((data, index) => (
+                            {userName &&
+                              userName.map((data, index) => (
                                 <li key={index}>
                                   <a
                                     className="dropdown-item iconclass"
                                     onClick={() => {
                                       handleSelect(data._id);
-                                      setSelectedSubadmin(data.UserName);
+                                      setSelectedUser(data.UserName);
                                     }}
                                   >
                                     {data.UserName}
@@ -299,7 +308,7 @@ const DashBoard = () => {
                             className="dropdown-menu"
                             aria-labelledby="planDropdownButton"
                           >
-                            {/* subadminName.map((data, index) => ( */}
+                            {/* userName.map((data, index) => ( */}
                             {dropdown.map((data, index) => (
                               <li key={index}>
                                 <a
