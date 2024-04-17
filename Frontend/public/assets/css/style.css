@@ -33965,7 +33965,8 @@ img {
 
 }
 
-.d-table {
+.d-table,
+.intro-fill {
     display: table;
 }
 
@@ -33975,7 +33976,7 @@ img {
 }
 
 .first-intro {
-    font-family: 'Muli', sans-serif;
+    font-family: "Muli", sans-serif;
     width: 100%;
     height: 100vh;
     position: absolute;
@@ -33990,47 +33991,47 @@ img {
     -webkit-animation: AnimationName 30s ease infinite;
     -moz-animation: AnimationName 30s ease infinite;
     animation: AnimationName 30s ease infinite;
+}
 
-    @-webkit-keyframes AnimationName {
-        0% {
-            background-position: 0% 50%
-        }
-
-        50% {
-            background-position: 100% 50%
-        }
-
-        100% {
-            background-position: 0% 50%
-        }
+@-webkit-keyframes AnimationName {
+    0% {
+        background-position: 0% 50%;
     }
 
-    @-moz-keyframes AnimationName {
-        0% {
-            background-position: 0% 50%
-        }
-
-        50% {
-            background-position: 100% 50%
-        }
-
-        100% {
-            background-position: 0% 50%
-        }
+    50% {
+        background-position: 100% 50%;
     }
 
-    @keyframes AnimationName {
-        0% {
-            background-position: 0% 50%
-        }
+    100% {
+        background-position: 0% 50%;
+    }
+}
 
-        50% {
-            background-position: 100% 50%
-        }
+@-moz-keyframes AnimationName {
+    0% {
+        background-position: 0% 50%;
+    }
 
-        100% {
-            background-position: 0% 50%
-        }
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes AnimationName {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
     }
 }
 
@@ -34045,86 +34046,85 @@ img {
     text-align: center;
     position: absolute;
     font-weight: 200;
-    @extend .d-table;
+}
 
-    span {
-        position: absolute;
-        line-height: 60px;
-        height: 60px;
-        width: 100%;
-        top: 0px;
-        right: 0px;
-        bottom: 0px;
-        left: 0px;
-        margin: auto;
-    }
+.intro-fill span {
+    position: absolute;
+    line-height: 60px;
+    height: 60px;
+    width: 100%;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    margin: auto;
+}
 
-    .welcome-1 {
-        font-size: 32px;
-        width: inherit;
-        text-align: center;
+.intro-fill .welcome-1 {
+    font-size: 32px;
+    width: inherit;
+    text-align: center;
+    opacity: 0;
+    color: white;
+    animation: tans 6s ease;
+    animation-delay: 0s;
+}
+
+.intro-fill .welcome-2 {
+    font-size: 32px;
+    width: inherit;
+    text-align: center;
+    opacity: 0;
+    color: white;
+    animation: tans 6s ease;
+    animation-delay: 2s;
+}
+
+.intro-fill .welcome-3 {
+    font-size: 32px;
+    width: inherit;
+    text-align: center;
+    opacity: 0;
+    color: white;
+    animation: tanss 6s ease;
+    animation-delay: 4s;
+}
+
+@keyframes tans {
+    from {
         opacity: 0;
-        color: rgb(255, 255, 255);
-        animation: tans 6s ease;
-        animation-delay: 0s;
+        transform: translateY(200px) scale(1.8);
     }
 
-    .welcome-2 {
-        font-size: 32px;
-        width: inherit;
-        text-align: center;
+    40% {
+        opacity: 1;
+        transform: translateY(0px) scale(1.4);
+    }
+
+    70% {
         opacity: 0;
-        color: rgb(255, 255, 255);
-        animation: tans 6s ease;
-        animation-delay: 2s;
+        transform: translateY(0px) scale(1);
     }
+}
 
-    .welcome-3 {
-        font-size: 32px;
-        width: inherit;
-        text-align: center;
+@keyframes tanss {
+    from {
         opacity: 0;
-        color: rgb(255, 255, 255);
-        animation: tanss 6s ease;
-        animation-delay: 4s;
+        transform: translateY(200px) scale(1.8);
     }
 
-    @keyframes tans {
-        from {
-            opacity: 0;
-            transform: translateY(200px) scale(1.8);
-        }
-
-        40% {
-            opacity: 1;
-            transform: translateY(0px) scale(1.4);
-        }
-
-        70% {
-            opacity: 0;
-            transform: translateY(0px) scale(1);
-        }
+    40% {
+        opacity: 1;
+        transform: translateY(0px) scale(1.4);
     }
 
-    @keyframes tanss {
-        from {
-            opacity: 0;
-            transform: translateY(200px) scale(1.8);
-        }
+    50% {
+        opacity: 1;
+        transform: translateY(0px) scale(1.4);
+    }
 
-        40% {
-            opacity: 1;
-            transform: translateY(0px) scale(1.4);
-        }
-
-        50% {
-            opacity: 1;
-            transform: translateY(0px) scale(1.4);
-        }
-
-        75% {
-            opacity: 0;
-            transform: translateY(0px) scale(1);
-        }
+    75% {
+        opacity: 0;
+        transform: translateY(0px) scale(1);
     }
 }
