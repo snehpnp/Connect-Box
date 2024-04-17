@@ -18,7 +18,7 @@ const Makecall = () => {
     const dispatch = useDispatch();
 
 
-
+    const [ForDisabledSubmit, SetForDisabledSubmit] = useState(false)
    
   const [AllServices, setAllServices] = useState({ loading: true,data: []});
   const [CatagoryData, setCatagoryData] = useState({ loading: true, data: []});
@@ -548,6 +548,12 @@ const selectMarkettime = (e) => {
   }
 
 
+  const GenerateMakeCall = async (e) => {
+
+    e.preventDefault();
+    alert("Done")
+  }
+
 
 
 
@@ -1018,7 +1024,7 @@ const selectMarkettime = (e) => {
 
                                                 <div className="preview-boxs mt-3">
 
-                                                        <button type="submit" className="btn btn-primary">
+                                                        <button type="submit" onClick={(e) => GenerateMakeCall(e)} disabled={ForDisabledSubmit} className="btn btn-primary">
                                                             Gnenerate
                                                         </button>
                                                    
