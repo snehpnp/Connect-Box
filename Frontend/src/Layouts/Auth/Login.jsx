@@ -47,11 +47,12 @@ function Login() {
                 localStorage.setItem("user_details", JSON.stringify(getData));
                 localStorage.setItem("user_role", JSON.stringify(getData.Role));
                 // localStorage.setItem("theme_mode", "light");
+                setIsLoggedIn(true);
                 setIsLoading(true);
                 setShowModal(false);
                 setTimeout(() => {
                     navigate("/admin/dashboard");
-                }, 1000);
+                }, 9000);
             } else if (getData.Role === "SUBADMIN") {
                 toast.success("login Successful");
                 localStorage.setItem("user_details", JSON.stringify(getData));
@@ -59,41 +60,39 @@ function Login() {
 
                 localStorage.setItem("user_role", JSON.stringify(getData.Role));
                 // localStorage.setItem("theme_mode", "light");
-
+                setIsLoggedIn(true);
                 setIsLoading(true);
                 setShowModal(false);
 
                 setTimeout(() => {
                     navigate("/subadmin/dashboard");
-                }, 1000);
+                }, 9000);
             } else if (getData.Role === "EMPLOYEE") {
                 toast.success("login Successful");
                 localStorage.setItem("user_details", JSON.stringify(getData));
                 localStorage.setItem("user_role", JSON.stringify(getData.Role));
                 // localStorage.setItem("theme_mode", "light");
-
+                setIsLoggedIn(true);
                 setIsLoading(true);
                 setShowModal(false);
 
                 setTimeout(() => {
                     navigate("/employee/dashboard");
-                }, 1000);
+                }, 9000);
             } else {
                 toast.success("login Successful");
                 localStorage.setItem("user_details", JSON.stringify(getData));
                 localStorage.setItem("user_role", JSON.stringify(getData.Role));
                 // localStorage.setItem("theme_mode", "light");
-
+                setIsLoggedIn(true);
                 setIsLoading(true);
                 setShowModal(false);
                 setTimeout(() => {
                     navigate("/user/dashboard");
-                }, 50000);
+                }, 9000);
             }
         }
-        if (getData.Role) {
-            setIsLoggedIn(true);
-        }
+
     };
 
     const handleEmailChange = (event) => {
@@ -144,7 +143,7 @@ function Login() {
         if (isLoggedIn) {
             setTimeout(() => {
                 navigate(`/${getData.Role.toLowerCase()}/dashboard`);
-            }, 500000);
+            }, 9000);
         }
     }, [isLoggedIn, getData.Role, navigate]);
     return (
