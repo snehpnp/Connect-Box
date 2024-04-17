@@ -47,7 +47,15 @@ function Payment() {
 
 
   const columns = [
-    { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
+    {
+      field: "id",
+      headerName: "ID",
+      width: 70,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div> <b>{params.value + 1}</b></div>
+      ),
+    },
 
     {
       field: 'user_id',

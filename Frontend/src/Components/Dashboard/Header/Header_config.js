@@ -330,7 +330,7 @@ export const User_header = [
     {
         id: 7,
         name: 'Broker Response',
-        route: "/user/broker-response",
+        route: "/user/broker",
         Icon: "fa-brands fa-pied-piper",
         Data: []
     },

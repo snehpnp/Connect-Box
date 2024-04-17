@@ -162,6 +162,7 @@ class strategy {
         strategy_amount_half_early,
         strategy_amount_early,
         maker_id,
+        Service_Type
       } = req.body;
 
       if (!_id || _id == "" || _id == null) {
@@ -274,6 +275,7 @@ class strategy {
           strategy_amount_half_early: strategy_amount_half_early,
           strategy_amount_early: strategy_amount_early,
           maker_id: maker_id_find._id,
+          Service_Type:Service_Type
         },
       };
 
@@ -360,7 +362,7 @@ class strategy {
         res.send({ status: false, msg: "Enter Please Id", data: [] });
       }
 
-      const getAllstrategy = await strategy_model.find({ maker_id: id }).sort({ createdAt: -1 }).select('_id strategy_name');
+      const getAllstrategy = await strategy_model.find({ maker_id: id }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
   
  
 

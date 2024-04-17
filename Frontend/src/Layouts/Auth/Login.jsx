@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 import { SignIn } from "../../ReduxStore/Slice/Auth/AuthSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
-import Modal from "../../Components/Dashboard/Models/Model";
+import Modal from '../../Components/Dashboard/Models/Model'
 import OtpInput from "react-otp-input";
-import Lodding from "../../Utils/Loader";
+import Lodding from '../../Utils/Loader';
 
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+
 
 function Login() {
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  var theme_mode = localStorage.getItem("theme_mode");
+  const navigate = useNavigate()
+  var theme_mode = localStorage.getItem('theme_mode')
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -23,9 +26,9 @@ function Login() {
   const [getData, SetData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -39,58 +42,34 @@ function Login() {
     } else if (Otp !== typeOtp) {
       toast.error("Otp Is Incorect");
     } else {
+      toast.success("login Successful");
+      localStorage.setItem("user_details", JSON.stringify(getData));
+      localStorage.setItem("user_role", JSON.stringify(getData.Role));
+      setIsLoggedIn(true);
+      setIsLoading(true);
+      setShowModal(false);
+
+
       if (getData.Role === "ADMIN") {
-        toast.success("login Successful");
-        localStorage.setItem("user_details", JSON.stringify(getData));
-        localStorage.setItem("user_role", JSON.stringify(getData.Role));
-        // localStorage.setItem("theme_mode", "light");
-        setIsLoading(true);
-        setShowModal(false);
         setTimeout(() => {
           navigate("/admin/dashboard");
-        }, 1000);
+        }, 8000);
       } else if (getData.Role === "SUBADMIN") {
-        toast.success("login Successful");
-        localStorage.setItem("user_details", JSON.stringify(getData));
-        // localStorage.setItem("theme_mode", "light");
-
-        localStorage.setItem("user_role", JSON.stringify(getData.Role));
-        // localStorage.setItem("theme_mode", "light");
-
-        setIsLoading(true);
-        setShowModal(false);
-
         setTimeout(() => {
           navigate("/subadmin/dashboard");
-        }, 1000);
+        }, 8000);
       } else if (getData.Role === "EMPLOYEE") {
-        toast.success("login Successful");
-        localStorage.setItem("user_details", JSON.stringify(getData));
-        localStorage.setItem("user_role", JSON.stringify(getData.Role));
-        // localStorage.setItem("theme_mode", "light");
-
-        setIsLoading(true);
-        setShowModal(false);
 
         setTimeout(() => {
           navigate("/employee/dashboard");
-        }, 1000);
+        }, 8000);
       } else {
-        toast.success("login Successful");
-        localStorage.setItem("user_details", JSON.stringify(getData));
-        localStorage.setItem("user_role", JSON.stringify(getData.Role));
-        // localStorage.setItem("theme_mode", "light");
-
-        setIsLoading(true);
-        setShowModal(false);
         setTimeout(() => {
           navigate("/user/dashboard");
-        }, 1000);
+        }, 8000);
       }
     }
-    if (getData.Role) {
-        setIsLoggedIn(true);
-    }
+
   };
 
   const handleEmailChange = (event) => {
@@ -112,46 +91,53 @@ function Login() {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          SetData(response.data);
-          setShowModal(true);
+
+          SetData(response.data)
+          setShowModal(true)
         } else {
           toast.error(response.msg);
         }
+
       })
       .catch((error) => {
         console.log("Error", error);
       });
   };
 
+
+
   const handleChange = (value) => {
-    const numericValue = value.replace(/\D/g, "");
+    const numericValue = value.replace(/\D/g, '');
     setTypeOtp(numericValue);
   };
 
   useEffect(() => {
+    console.log("theme_mode", theme_mode);
     const htmlElement = document.querySelector("html");
     htmlElement.setAttribute("data-sidebar", theme_mode);
     htmlElement.setAttribute("data-layout-mode", theme_mode);
     htmlElement.setAttribute("data-topbar", theme_mode);
     if (isLoggedIn) {
-        setTimeout(() => {
-            navigate(`/${getData.Role.toLowerCase()}/dashboard`);
-        }, 1000);
+      setTimeout(() => {
+        navigate(`/${getData.Role.toLowerCase()}/dashboard`);
+      }, 9000);
     }
   }, [isLoggedIn, getData.Role, navigate]);
-
   return (
+
     <>
+
       <>
         <div className="main-wrapper login-body">
-          <div className="login-wrapper ">
+          <div className="login-wrapper">
             <div className="container">
               <img
                 className="img-fluid logo-dark mb-2 logo-color"
-                src="/assets/img/pnp-logo.png"
+                src="https://www.pnpuniverse.com/images/logo/pnp.png"
                 alt="Logo"
                 style={{ width: "25rem" }}
               />
+
 
               <div className="loginbox">
                 <div className="login-right">
@@ -161,26 +147,13 @@ function Login() {
 
                     <div>
                       <div className="mb-3">
-                        <label
-                          className="form-control-label d-flex justify-content-start"
-                          htmlFor="email"
-                        >
-                          Email Address
-                        </label>
-                        <input
-                          type="email"
-                          id="email"
-                          className="form-control"
-                          value={email}
-                          onChange={handleEmailChange}
-                        />
+                        <label className="form-control-label d-flex justify-content-start" htmlFor="email">Email Address</label>
+                        <input type="email" id="email" className="form-control" value={email} onChange={handleEmailChange} />
                       </div>
 
+
                       <div className="input-block mb-3">
-                        <label
-                          className="form-control-label d-flex justify-content-start"
-                          htmlFor="password"
-                        >
+                        <label className="form-control-label d-flex justify-content-start" htmlFor="password">
                           Password
                         </label>
                         <div className="pass-group">
@@ -192,20 +165,14 @@ function Login() {
                             onChange={handlePasswordChange}
                           />
                           <span
-                            className={
-                              showPassword
-                                ? "fas fa-eye-slash toggle-password"
-                                : "fas fa-eye toggle-password"
-                            }
+                            className={showPassword ? "fas fa-eye-slash toggle-password" : "fas fa-eye toggle-password"}
                             onClick={togglePasswordVisibility}
                           />
                         </div>
                       </div>
 
-                      <button
-                        className="btn btn-lg btn-primary w-100"
-                        onClick={handleSubmit}
-                      >
+
+                      <button className="btn btn-lg btn-primary w-100" onClick={handleSubmit}>
                         Login
                       </button>
                     </div>
@@ -216,8 +183,8 @@ function Login() {
                     </div>
 
                     <div className="social-login mb-5">
-                      <span>Login with</span>
-                      <div className="mt-2">
+                      <span >Login with</span>
+                      <div className='mt-2'>
                         <a href="/" className="facebook">
                           <i className="fab fa-facebook-f" />
                         </a>
@@ -240,20 +207,26 @@ function Login() {
           <ToastButton />
         </div>
 
+
         {/* For Varify OTP Modal */}
         {showModal ? (
           <>
             <Modal
+
               isOpen={showModal}
               handleClose={() => setShowModal(false)}
               backdrop="static"
-              size="md"
+              size="sm"
               title="Verify OTP"
               btn_name="Verify"
               btn_name1="Verify1"
               Submit_Function={verifyOTP}
+
             >
-              <section onSubmit={verifyOTP} className="section1 text-center">
+
+
+
+              <section onSubmit={verifyOTP} className='section1'>
                 <svg
                   width={250}
                   height={200}
@@ -305,14 +278,7 @@ function Login() {
                   </g>
                   <circle cx={220} cy={15} r={5} fill="#FFC691" />
                   <circle cx="119.606" cy={5} r={5} fill="#91FFAF" />
-                  <rect
-                    x="250.606"
-                    y={163}
-                    width={10}
-                    height={10}
-                    rx={1}
-                    fill="#E991FF"
-                  />
+                  <rect x="250.606" y={163} width={10} height={10} rx={1} fill="#E991FF" />
                   <rect
                     x={274}
                     y="47.0925"
@@ -354,11 +320,9 @@ function Login() {
                   </defs>
                 </svg>
                 <div className="title text-center">Verification Code</div>
-                <p className="para w-100 text-center">
-                  We have sent a verification code to your registered email
-                  address
-                </p>
-                <form onSubmit={verifyOTP} className="text-center">
+                <p className='para w-100 text-center'>We have sent a verification code to your registered email address</p>
+                <form onSubmit={verifyOTP} className='text-center'>
+
                   <OtpInput
                     containerStyle="otp-div"
                     value={typeOtp}
@@ -366,13 +330,12 @@ function Login() {
                     numInputs={4}
                     renderSeparator={<span></span>}
                     renderInput={(props, index) => (
-                      <input
-                        className="text1"
+                      <input className='text1'
                         {...props}
                         type="text"
                         autoFocus={index === 0}
                         onKeyPress={(event) => {
-                          if (event.key === "Enter") {
+                          if (event.key === 'Enter') {
                             event.preventDefault();
                             verifyOTP();
                           }
@@ -380,24 +343,38 @@ function Login() {
                       />
                     )}
                   />
+
                 </form>
+
               </section>
             </Modal>
+
           </>
         ) : (
           ""
         )}
+
       </>
       {isLoggedIn && (
-                <div className="overlay">
-                    <div className="overlay-content">
-                        
-                        <h2>Welcome, {getData.Role}!</h2>
-                    </div>
-                </div>
-            )}
+        <div className="overlay">
+          <div className="overlay-content">
+            <div class="first-intro">
+              <div class="intro-fill">
+                <span class="tf-user-welcome welcome-1">Hi `{getData.Role}!`</span>
+                <span class="tf-user-welcome welcome-2">Welcome to Connect Box</span>
+                <span class="tf-user-welcome welcome-3">We’re delighted to be at your Service</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </>
   );
 }
+
+
+
 
 export default Login;
