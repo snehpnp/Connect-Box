@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const { firstOptPass, disclaimer } = require("../../Helpers/Email_formate/first_login");
 
 const db = require('../../Models');
+const SignUpUser = db.SignUpUser;
 const User = db.user;
 const company_information = db.company_information;
 
@@ -379,6 +380,81 @@ class Auth {
         } catch (error) {
 
         }
+    }
+
+    async SignUpUser(req, res) {
+        try {
+            const { UserName, Email, PhoneNo , ReferralCode } = req.body;
+            const searchQuery = {
+                $or: [
+                    { UserName: UserName },
+                    { Email: Email },
+                    { PhoneNo: PhoneNo }
+                ]
+            }
+
+            const find_In_UserDB = await User.findOne(searchQuery);
+            const find_In_SignUpDB = await SignUpUser.findOne(searchQuery);
+
+            if (find_In_UserDB) {
+                const errorMsg = [];
+                if (find_In_UserDB.UserName === UserName) {
+                    errorMsg.push("Username already exists");
+                }
+                if (find_In_UserDB.Email === Email) {
+                    errorMsg.push("Email already exists");
+                }
+                if (find_In_UserDB.PhoneNo === PhoneNo) {
+                    errorMsg.push("Phone Number already exists");
+                }
+
+                if (errorMsg.length > 0) {
+                    return res.status(400).json({
+                        status: false,
+                        msg: errorMsg.join(', '),
+                        data: errorMsg,
+                    })
+                }
+            }
+
+            if (find_In_SignUpDB) {
+                const errorMsg = [];
+
+                if (find_In_SignUpDB.UserName === UserName) {
+                    errorMsg.push("UserName already exists");
+                }
+                if (find_In_SignUpDB.Email === Email) {
+                    errorMsg.push("Email ID already exitss")
+                }
+                if (find_In_SignUpDB.PhoneNo === PhoneNo) {
+                    errorMsg.push("Phone Number already exists")
+                }
+                if (errorMsg.length > 0) {
+                    return res.ststus(400).json({
+                        status: false,
+                        msg: errorMsg.join(', '),
+                        data: errorMsg,
+                    })
+                }
+            }
+            const today = new Date();
+            const newUser = new SignUpUser({
+                UserName: req.body.UserName,
+                FullName: req.body.FullName,
+                Email: req.body.Email,
+                PhoneNo: req.body.PhoneNo,
+                ReferralCode : req.body.ReferralCode,
+                End_Date: new Date(today.setDate(today.getDate() + 8))
+            });
+            await newUser.save();
+            return res.send({status: true, msg : "User SignUp successfully", data : []});
+        } catch(error){
+
+            console.log("Error in Saving Users", error);
+            return res.send({status :false,msg : "Error in Saving User", data : []})
+
+        }
+
     }
 
 

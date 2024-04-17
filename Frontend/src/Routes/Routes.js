@@ -20,10 +20,10 @@ const Routing = () => {
 
     useEffect(() => {
         // Check if user details exist
-        if (!user_details || !roles || user_details === "null" || roles === "null" || location.pathname === "/login") {
-            navigate("/login");
-            return;
-        }
+        // if (!user_details || !roles || user_details === "null" || roles === "null" || location.pathname === "/login") {
+        //     navigate("/login");
+        //     return;
+        // }
 
         if (location.pathname === "/register") {
             navigate("/register");

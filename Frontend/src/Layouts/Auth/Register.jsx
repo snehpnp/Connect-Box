@@ -1,110 +1,157 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import ToastButton from '../../Components/ExtraComponents/Alert_Toast'
+import { Link, useNavigate } from 'react-router-dom'
+import { useFormik } from "formik";
+import toast from "react-hot-toast";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import {SignUpUser} from '../../ReduxStore/Slice/Auth/AuthSlice'
 
-const Register = () => {
+
+import AddForm from "../../Components/ExtraComponents/forms/LoginForm";
+
+
+
+
+const SignUp = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+
+
+    const formik = useFormik({
+        initialValues: {
+            fullName: "",
+            username: "",
+            PhoneNo: "",
+            email: "",
+            referral: "",
+
+        },
+        validate: (values) => {
+            const errors = {};
+
+
+            return errors;
+        },
+        onSubmit: async (values) => {
+            let req = {
+                FullName: values.fullName,
+                UserName: values.username,
+                Email: values.email,
+                PhoneNo: values.PhoneNo,
+                ReferralCode: values.referral,
+            };
+
+            console.log("req :", req)
+ 
+            await dispatch(SignUpUser(req))
+                .unwrap()
+                .then((response) => {
+                    if (response.status) {
+                        toast.success(response.msg);
+                        setTimeout(() => {
+                            navigate('/login')
+
+                        }, 2000)
+                    }
+                    else {
+                        response.data.map((data, index) => {
+                            toast.error(data);
+                        })
+                    }
+                })
+                .catch((error) => {
+                    console.log("Error", error);
+                });
+
+        },
+    });
+
+    const fields = [
+
+        {
+            name: "fullName",
+            label: "Full Name",
+            type: "text",
+            label_size: 6,
+            col_size: 12,
+            disable: false,
+        },
+        {
+            name: "username",
+            label: "Username",
+            type: "text",
+            label_size: 12,
+            col_size: 12,
+            disable: false,
+        },
+        {
+            name: "email",
+            label: "Email",
+            type: "text",
+            label_size: 12,
+            col_size: 12,
+            disable: false,
+        },
+        {
+            name: "PhoneNo",
+            label: "Phone Number",
+            type: "text3",
+            label_size: 12,
+            col_size: 12,
+            disable: false,
+        },
+        {
+            name: "referral",
+            label: "Referral Code",
+            type: "text",
+            label_size: 12,
+            col_size: 12,
+            disable: false,
+        },
+    ];
+
+
     return (
-        <div>
-            <div className="main-wrapper login-body">
-                <div className="login-wrapper page-wrapper">
-                    <div className="container">
-                        <img
-                            className="img-fluid logo-dark mb-2 logo-color"
-                            src="https://www.pnpuniverse.com/images/logo/pnp.png"
-                            alt="Logo"
-                            style={{ width: "25rem" }}
-                        />
-
-
-                        <div className="loginbox">
-                            <div className="login-right">
-                                <div className="login-right-wrap">
-                                    <h1>Register</h1>
-                                    <p className="account-subtitle">Access to our dashboard</p>
-
-                                    <div>
-                                        <div className="mb-3">
-                                            <label className="form-control-label d-flex justify-content-start" htmlFor="email">Name</label>
-                                            <input type="email" id="email" className="form-control" />
-                                        </div>
-                                        <div className="input-block mb-3">
-                                            <label className="form-control-label d-flex justify-content-start" htmlFor="password">
-                                                Email
-                                            </label>
-                                            <div className="pass-group">
-                                                <input
-                                                    type="Email"
-
-                                                    className="form-control pass-input"
-
+        <>
+            <div class="vh-100">
+                <div className="authincation h-100">
+                    <div className="container h-100">
+                        <div className="row justify-content-center h-100 align-items-center">
+                            <div className="col-md-6">
+                                <div className="authincation-content">
+                                    <div className="row no-gutters">
+                                        <div className="col-xl-12">
+                                            <div className="auth-form">
+                                                <div className="text-center mb-3">
+                                                    <span className="brand-logo">
+                                                        <img
+                                                            className="img-fluid logo-dark mb-2 logo-color"
+                                                            src="/assets/img/pnp-logo.png"
+                                                            alt="Logo"
+                                                            style={{ width: "25rem" }}
+                                                        />
+                                                    </span>
+                                                </div>
+                                                <h4 className="text-center mb-4">Sign Up your account</h4>
+                                                <AddForm
+                                                    fields={fields}
+                                                    formik={formik}
+                                                    btn_name="Sign Up"
+                                                    btn_name1="Sign In"
+                                                    btn_name1_route="/login"
                                                 />
-
                                             </div>
-                                        </div>
-
-
-                                        <div className="input-block mb-3">
-                                            <label className="form-control-label d-flex justify-content-start" htmlFor="password">
-                                                Password
-                                            </label>
-                                            <div className="pass-group">
-                                                <input
-                                                    type="password"
-
-                                                    className="form-control pass-input"
-
-                                                />
-
-                                            </div>
-                                        </div>
-                                        <div className="input-block mb-3">
-                                            <label className="form-control-label d-flex justify-content-start" htmlFor="password">
-                                                Confirm Password
-                                            </label>
-                                            <div className="pass-group">
-                                                <input
-                                                    type="password"
-
-                                                    className="form-control pass-input"
-
-                                                />
-
-                                            </div>
-                                        </div>
-
-
-                                        <button className="btn btn-lg btn-primary w-100">
-                                            Login
-                                        </button>
-                                    </div>
-
-                                    <div className="login-or">
-                                        <span className="or-line" />
-                                        <span className="span-or">or</span>
-                                    </div>
-
-                                    <div className="social-login mb-5">
-                                        <span >Login with</span>
-                                        <div className='mt-2'>
-                                            <a href="/" className="facebook">
-                                                <i className="fab fa-facebook-f" />
-                                            </a>
-                                            <a href="/" className="google">
-                                                <i className="fab fa-google" />
-                                            </a>
+                                            <ToastButton />
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </div>
-
-        </div>
+        </>
     )
 }
-
-export default Register
+export default SignUp

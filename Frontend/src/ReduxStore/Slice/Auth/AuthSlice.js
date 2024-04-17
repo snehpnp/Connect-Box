@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { SIGN_IN_USER} from "../../../Services/Auth/Auth.service";
+import { SIGN_IN_USER , SIGN_UP_USER} from "../../../Services/Auth/Auth.service";
 
 
 
@@ -14,15 +14,15 @@ export const SignIn = createAsyncThunk("DispatchLogin", async (data) => {
   }
 });
 
-// export const SignUpUser = createAsyncThunk("DispatchSignUp", async (data) => {
-//   try {
-//     const res = await SIGN_UP_USER(data);
+export const SignUpUser = createAsyncThunk("signup", async (data) => {
+  try {
+    const res = await SIGN_UP_USER(data);
      
-//     return await res;
-//   } catch (err) {
-//     return err;
-//   }
-// });
+    return await res;
+  } catch (err) {
+    return err;
+  }
+});
 
 // // for check status
 // export const Verify_User_Device = createAsyncThunk("DispatchDeviceLogin", async (data) => {
@@ -135,33 +135,30 @@ const AuthSlice = createSlice({
     isLoading: false,
     isError: false,
     signIn : [],
+    signup_user : null,
      
   },
 
-   
-
-  
-  reducers: {}, // Reducers object is empty
+  reducers: {},  
   extraReducers: (builder) => {
-    // Use builder callback to define extra reducers
     builder
       .addCase(SignIn.pending, (state, action) => {
-        // Handle pending action
         state.isLoading = true;
       })
       .addCase(SignIn.fulfilled, (state, action) => {
-        // Handle fulfilled action
         state.isLoading = false;
         state.signIn = action.payload;
       })
       .addCase(SignIn.rejected, (state, action) => {
-        // Handle rejected action
         state.isLoading = false;
         state.isError = true;
-      });
+      })
+      .addCase(SignUpUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.signup_user = action.payload;
+      })
   },
    
 });
 
-// export const {ganpat} = HomeScreenSlice.actions
 export default AuthSlice;

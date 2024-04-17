@@ -21,8 +21,8 @@ module.exports = {
     Signals:require('./Signals.model'),
     user_activity_logs:require('./user_logs.model'),
     subadmin_activity_logs:require('./Subadmin_logs.model'),
-
     get_option_chain_symbols: require('./Get_Option_Chain_Symboll.model'),
     live_price :require('./Live_price.model'),
     MainSignals: require('./Main_signals.model'),
+    SignUpUser :require('./Signup_User.model')
 };
