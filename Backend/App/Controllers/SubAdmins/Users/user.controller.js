@@ -33,7 +33,7 @@ class Users {
   // USER ADD
   async AddUser(req, res) {
     try {
-      const { FullName, UserName, Email, PhoneNo, license_type, licence, fromdate, Strategies, broker, parent_id, api_secret, app_id, client_code, api_key, app_key, api_type, demat_userid, group_service } = req.body;
+      const { FullName, UserName, Email, PhoneNo, license_type, licence, fromdate, Strategies, broker, parent_id, api_secret, app_id, client_code, api_key, app_key, api_type, demat_userid, group_service,Service_Type } = req.body;
 
       var Role = "USER";
       var StartDate1 = "";
@@ -224,6 +224,7 @@ class Users {
           broker: broker == null ? 0 : broker,
           api_type: api_type,
           demat_userid: demat_userid,
+          Service_Type:Service_Type
         },
 
       ])
@@ -1121,7 +1122,7 @@ class Users {
   
       // GET ALL CLIENTS
       const AdminMatch = { Role: "USER", parent_id: user_ID };
-      const getAllClients = await User_model.find(AdminMatch).sort({ CreateDate: -1 });
+      const getAllClients = await User_model.find(AdminMatch).sort({ Create_Date: -1 });
       const totalCount= getAllClients.length;
 
 
@@ -1134,13 +1135,6 @@ class Users {
       }).length;
 
 
- 
-
-
-
-  
- 
- 
   
       // IF NO DATA EXIST
       if (getAllClients.length === 0) {

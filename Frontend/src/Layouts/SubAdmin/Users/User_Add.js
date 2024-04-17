@@ -18,8 +18,8 @@ const AddClient = () => {
 
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
-  var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
-  console.log("subadmin_service_type", subadmin_service_type)
+  var subadmin_service_type1 = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
+  console.log("subadmin_service_type", subadmin_service_type1)
 
   const [serviceName, setServiceName] = useState({
     loading: true,
@@ -106,7 +106,7 @@ const AddClient = () => {
         { label: "Per Trade", value: "2" },
 
       ],
-      showWhen: (values) => subadmin_service_type == 1,
+      showWhen: (values) => subadmin_service_type1 == 1,
       label_size: 12,
       col_size: 6,
       disable: false,
@@ -175,6 +175,7 @@ const AddClient = () => {
       parent_role: null,
       demat_userid: null,
       api_key: null,
+      Service_Type:0
     },
     validate: (values) => {
       let errors = {};
@@ -228,6 +229,8 @@ const AddClient = () => {
         demat_userid: values.demat_userid,
         group_service: values.groupservice,
         broker: values.broker,
+        Service_Type: values.Service_Type,
+
       };
 
       await dispatch(AddUsers(req))
@@ -426,7 +429,7 @@ const AddClient = () => {
 
                     ))}
                 </div>
-                {subadmin_service_type == 2 ?
+                {subadmin_service_type1 == 2 ?
                   (<div className="row mt-4">
                     <div class="input-block ">
                       <label>All Strategy</label>
