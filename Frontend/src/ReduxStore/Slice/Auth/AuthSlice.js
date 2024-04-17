@@ -14,7 +14,7 @@ export const SignIn = createAsyncThunk("DispatchLogin", async (data) => {
   }
 });
 
-export const SignUpUser = createAsyncThunk("DispatchSignUp", async (data) => {
+export const SignUpUser = createAsyncThunk("signup", async (data) => {
   try {
     const res = await SIGN_UP_USER(data);
      

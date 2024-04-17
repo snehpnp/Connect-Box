@@ -20,11 +20,11 @@ const SignUp = () => {
 
     const formik = useFormik({
         initialValues: {
-            fullname: "",
+            fullName: "",
             username: "",
-            phone: "",
+            PhoneNo: "",
             email: "",
-            ReferralCode: "",
+            referral: "",
 
         },
         validate: (values) => {
@@ -35,13 +35,15 @@ const SignUp = () => {
         },
         onSubmit: async (values) => {
             let req = {
-                FullName: values.fullname,
+                FullName: values.fullName,
                 UserName: values.username,
                 Email: values.email,
-                PhoneNo: values.phone,
-                ReferralCode: values.ReferralCode,
+                PhoneNo: values.PhoneNo,
+                ReferralCode: values.referral,
             };
 
+            console.log("req :", req)
+ 
             await dispatch(SignUpUser(req))
                 .unwrap()
                 .then((response) => {
@@ -53,7 +55,7 @@ const SignUp = () => {
                         }, 2000)
                     }
                     else {
-                        response.response.data.data.map((data, index) => {
+                        response.data.map((data, index) => {
                             toast.error(data);
                         })
                     }
