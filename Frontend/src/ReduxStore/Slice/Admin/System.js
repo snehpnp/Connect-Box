@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetCompanyInfo,ProfileData,EditCompanyInfo,Subadminhelp, getSubadminhelp ,postuserhelpdata, gethelpdata,deleteuserhelpdata,deletesubadmindata } from "../../../Services/Admin/System.service";
+import { GetCompanyInfo,ProfileData,EditCompanyInfo,Subadminhelp, getSubadminhelp ,postuserhelpdata, gethelpdata,deleteuserhelpdata,deletesubadmindata,ComparePrefix_key} from "../../../Services/Admin/System.service";
 
 export const GetCompany_info = createAsyncThunk(
     "get/company",
@@ -104,7 +104,7 @@ export const deleteuserdata = createAsyncThunk(
     }
 )
 
-//  
+//   delet subadmin data
 
 
 
@@ -113,6 +113,21 @@ export const deletesubadminhelpdata = createAsyncThunk(
     async (data)=>{
         try {
             const res = await deletesubadmindata(data);
+              return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+)
+
+
+/// Prefix_key  data 
+
+export const userprifix_key = createAsyncThunk(
+    "userdataByPrefix",
+    async (data)=>{
+        try {
+            const res = await ComparePrefix_key(data);
               return res;
         } catch (err) {
             throw err;
@@ -135,6 +150,7 @@ const SystemSlice = createSlice({
         userdataforhelp:null,
         deleteuser_data:null,
         deletesubadminhelpdata:null,
+        userprifix_key:null,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -237,6 +253,15 @@ const SystemSlice = createSlice({
             }).addCase(deletesubadminhelpdata.fulfilled,(state,action)=>{
                 state.isLoading = false;
                 state.deletesubadminhelpdata = action.payload;
+            }).addCase(userprifix_key.pending,(state,action)=>{
+                state.isLoading = true;
+                state.isError = false;
+            }).addCase(userprifix_key.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+            }).addCase(userprifix_key.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.userprifix_key = action.payload;
             })
     },
 });

@@ -7,6 +7,7 @@ import {
   getsubadmintable,
   deletesubadminhelpdata,
   userdataforhelp,
+  userprifix_key,
 } from "../../ReduxStore/Slice/Admin/System";
 import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
 import IconButton from "@mui/material/IconButton";
@@ -20,7 +21,7 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 const Helpsubadmin = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user_details"));
-  const userprifix_key = JSON.parse(
+  const userdataprifix_key = JSON.parse(
     localStorage.getItem("user_details")
   ).prifix_key;
 
@@ -206,26 +207,27 @@ const Helpsubadmin = () => {
       });
   };
 
-  // get subadmin table
-  const getusertable = async () => {
-    await dispatch(userdataforhelp({}))
+  
+
+  const userprefixBydata = async () => {
+    var data = {prifix_key: userdataprifix_key};
+    console.log("userprifix_key",data)
+    await dispatch(userprifix_key(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          // console.log("userprifix_key",userprifix_key)
-          const userData = response.data;
-          // console.log("userData", response.data);
-          const filteredData = userData.filter(
-            (user1) => user1.prifix_key === userprifix_key
-          );
-
-          setGetuserdata(filteredData);
+          toast.success("Message is deleted");
+          setRefresh(!refresh);
+          gettable();
         }
       })
       .catch((error) => {
         console.log("error", error);
       });
   };
+
+
+
 
   const handleDropdownSelect = async (eventKey) => {
     setSelectedItem(eventKey);
@@ -234,7 +236,7 @@ const Helpsubadmin = () => {
         await gettable(); // Call a function to fetch subadmin data
         break;
       case "User":
-        await getusertable();
+        await userprefixBydata();
         break;
       default:
         // Handle other cases if necessary

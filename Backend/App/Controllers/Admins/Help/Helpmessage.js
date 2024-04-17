@@ -108,6 +108,36 @@ class Helpmessage {
       console.error("internal error:", error);
     }
   }
+
+  // for comapre to prefic compare   userdataByPrefix
+
+  async userdataByPrefix(req, res) {
+    try {
+        const {prifix_key } = req.body;
+
+        if (!prifix_key) {
+            return res.status(400).send({ status: false, msg: "Prefix key not provided" });
+        }
+
+        let messagedata = await help.find({ Role: "USER",prifix_key: prifix_key });
+
+        if (!messagedata || messagedata.length === 0) {
+            return res.send({ status: false, msg: "No messages found", data: [] });
+        }
+
+        return res.send({
+            status: true,
+            msg: "Messages retrieved successfully.",
+            data: messagedata,
+        });
+    } catch (error) {
+        console.error("Internal error:", error);
+        return res.status(500).send({ status: false, msg: "Internal server error" });
+    }
+}
+
+
+
     
   // delete id by user data 
    

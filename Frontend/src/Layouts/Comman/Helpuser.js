@@ -313,22 +313,22 @@ const Helpuser = () => {
               <h1
                 className="col-lg-4 col-md-4"
                 data-aos="fade-left"
-                style={{ color: "black" }}
+                style={{ color: "black",width:"76rem" }}
+                
               >
                 <div className="content-page-header">
-                  <h1 style={{ fontSize: "2rem", marginTop: "1rem" }}>
+                  <h1 style={{ fontSize: "2rem", marginTop: "1rem"}}>
                     User Detail
                   </h1>
                 </div>
-              </h1>
-
-              {
+                {
                 <FullDataTable
                   styles={styles}
                   columns={columns2}
                   rows={getuserdata}
                 />
               }
+              </h1> 
             </div>
           </div>
         </div>

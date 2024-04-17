@@ -160,3 +160,19 @@ export async function  deletesubadmindata(data,token){
     }
 }
 
+// api for prefix compare to 
+
+export async function  ComparePrefix_key(data,token){
+    try {
+
+        const res = await axios.post(`${Config.base_url}userdataByPrefix`,data,{
+            data:{},
+            
+        })
+   
+           return await res?.data;
+        
+    } catch (err) {
+        return await err;
+    }
+}
