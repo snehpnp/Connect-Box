@@ -164,7 +164,7 @@ const DropDown = () => {
             <ul className="nav nav-tabs user-menu">
 
                 {Role == "SUBADMIN" && (<li className="nav-item dropdown  flag-nav dropdown-heads">
-                   {subadmin_service_type == 2 ? "STRATEGY WISE":"PER TRADE"}
+                    {subadmin_service_type == 2 ? "STRATEGY WISE" : "PER TRADE"}
                 </li>)}
 
 
@@ -177,6 +177,7 @@ const DropDown = () => {
                         className="btn btn-primary cancel-btn me-2 mt-2"
                         style={{
 
+                            backgroundColor: "#7539FF",
                             color: "white",
                             border: "none",
                             display: "flex",
