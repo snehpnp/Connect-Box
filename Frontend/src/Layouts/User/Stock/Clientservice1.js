@@ -47,6 +47,10 @@ function Clientservice() {
   useState(() => {
     GetAllClientServiceDetails();
   }, []);
+  const colorTog= (e)=>{
+    console.log(e.target)
+
+  }
 
 
   return (
@@ -155,7 +159,7 @@ function Clientservice() {
                               </td>
                               <td>
                                 <div className="status-toggle">
-                                  <input id={`rating_${index}`} className="check" type="checkbox" defaultChecked="" />
+                                  <input id={`rating_${index}`} className="check" type="checkbox" defaultChecked="" onClick={colorTog} />
                                   <label htmlFor={`rating_${index}`} className="checktoggle checkbox-bg">
                                     
                                   </label>

@@ -57,10 +57,11 @@ export default function Help() {
       width: "auto",
     },
     boldHeader: {
-      fontWeight: "bold",
+      fontWeight: 800,
     },
     headerButton: {
       marginRight: 8,
+
     },
   };
 
@@ -96,7 +97,7 @@ export default function Help() {
     },
     {
       field: "prifix_key",
-      headerName: "prifixkey",
+      headerName: "Prefix Key",
       width: 120,
       headerClassName: styles.boldHeader,
     },
@@ -257,7 +258,7 @@ export default function Help() {
             return inputSearchMatch;
           })
 
-          console.log("filterData :", filterData)
+         
 
           setAllSubadmins({
             loading: true,
