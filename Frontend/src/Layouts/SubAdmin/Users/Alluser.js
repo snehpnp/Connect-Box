@@ -136,6 +136,9 @@ export default function AllUsers() {
       headerName: "ID",
       width: 70,
       headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div> <b>{params.value + 1}</b></div>
+      ),
     },
     {
       field: "FullName",
@@ -182,20 +185,7 @@ export default function AllUsers() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => showLicenceName(params.row),
     },
-    // {
-    //   field: "Balance",
-    //   headerName: "Balance",
-    //   width: 120,
-    //   headerClassName: styles.boldHeader,
-    //   renderCell: (params) => (
-    //     <div onClick={() => { setmodal(true); setInitialRowData(params.row); }}>
-    //       <span className="text-success-light">
-    //         <IndianRupee style={{ height: "19px" }} />
-    //         {params.value || '-'}
-    //       </span>
-    //     </div>
-    //   ),
-    // },
+
 
     {
       field: "ActiveStatus",
@@ -488,7 +478,7 @@ export default function AllUsers() {
               </div>
             </div>
 
-            <div className="super-admin-list-head">
+            {/* <div className="super-admin-list-head">
               <div className="row">
                 {getAllUsers &&
                   getAllUsers.data1.map((data, index) => (
@@ -509,7 +499,7 @@ export default function AllUsers() {
                     </div>
                   ))}
               </div>
-            </div>
+            </div> */}
 
             <FullDataTable
               styles={styles}

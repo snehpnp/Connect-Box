@@ -84,7 +84,7 @@ const DynamicForm = ({
   const HandelChange = (value) => {
     console.log("value", value.target.checked)
 
-    formik.setFieldValue('Service_Type', value.target.checked == true ? 1 : 2);
+    formik.setFieldValue('Service_Type', value.target.checked == true ? "1" : "2");
   }
 
 
@@ -614,25 +614,32 @@ const DynamicForm = ({
                         </>
                       ) : field.type === "test" ? (
                         <>
-                          {subadmin_service_type == 1 ? <div className={`col-lg-${field.col_size}`}>
-                            <div className="input-block mb-3 flex-column">
-                              <label className={`col-lg-${field.label_size}`}>
-                                {field.label}
-                                <span className="text-danger">*</span>
-                              </label>
-                              <div className="status-toggle">
-                                <input
-                                  id={`rating_`}
-                                  className="check"
-                                  type="checkbox"
-                                  onChange={(event) => HandelChange(event)}
-                                  defaultChecked={formik.values['Service_Type'] == 1 ? true : false}
-                                />
-                                <label htmlFor={`rating_`} className="checktoggle checkbox-bg"></label>
+                          {subadmin_service_type == 1 ?
+
+                            <div className={`col-lg-${field.col_size}`}>
+                              <div className="input-block mb-3 flex-column">
+                                <label className={`col-lg-${field.label_size}`}>
+                                  {field.label}
+                                  <span className="text-danger">*</span>
+                                </label>
+
+                                <div className="status-toggle">
+                                  <input
+                                    id="rating"
+                                    className="check"
+                                    type="checkbox"
+                                    onChange={(event) => HandelChange(event)}
+                                    defaultChecked={formik.values['Service_Type'] === "1"}
+                                  />
+                                  <label htmlFor="rating" className="checktoggle checkbox-bg"></label>
+                                </div>
+
+
+                                {formik.values['Service_Type'] === "1" ? "PER TRADE" : "FIXED"}
                               </div>
-                              {formik.values['Service_Type'] == 1 ?"PER TRADE" : "FIXED"}
                             </div>
-                          </div> :
+
+                            :
                             <div className={`col-lg-${field.col_size}`}>
                               <div className="input-block mb-3 flex-column">
 
