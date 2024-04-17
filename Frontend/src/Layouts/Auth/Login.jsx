@@ -229,7 +229,7 @@ function Login() {
 
                     <div className="text-center dont-have">
                       Don't have an account yet?{" "}
-                      <Link to="./Register.jsx">Register</Link>
+                      <Link to="/register">Register</Link>
                     </div>
                   </div>
                 </div>
