@@ -179,3 +179,39 @@ export async function broker_All(data, token) {
     return await err;
   }
 }
+
+//Subadmin DashBoard
+export async function subadmin_dashboard(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}data/dashboard`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
+
+//subadmin dash data chart
+export async function chartData_Subadmin(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}subadmin/userdata`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
+
+//Subadmin Dashboard Sales API
+export async function SalesData_Subadmin(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}subadmin/user/balance`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
