@@ -88,7 +88,7 @@ function Login() {
                 setShowModal(false);
                 setTimeout(() => {
                     navigate("/user/dashboard");
-                }, 1000);
+                }, 50000);
             }
         }
         if (getData.Role) {
@@ -144,7 +144,7 @@ function Login() {
         if (isLoggedIn) {
             setTimeout(() => {
                 navigate(`/${getData.Role.toLowerCase()}/dashboard`);
-            }, 1000);
+            }, 500000);
         }
     }, [isLoggedIn, getData.Role, navigate]);
     return (
@@ -381,8 +381,14 @@ function Login() {
             {isLoggedIn && (
                 <div className="overlay">
                     <div className="overlay-content">
+                        <div class="first-intro">
+                            <div class="intro-fill">
+                                <span class="tf-user-welcome welcome-1">Hi `{getData.Role}!`</span>
+                                <span class="tf-user-welcome welcome-2">Welcome to Connect Box</span>
+                                <span class="tf-user-welcome welcome-3">We’re delighted to be at your Service</span>
+                            </div>
+                        </div>
 
-                        <h2>Welcome, {getData.Role}!</h2>
                     </div>
                 </div>
             )}
