@@ -57,27 +57,27 @@ const AddClient = () => {
     validate: (values) => {
       let errors = {};
       if (!values.fullName) {
-        errors.fullName = "Full Name is required";
+        errors.fullName = "Please Enter Full Name";
       }
       if (!values.username) {
-        errors.username = "Username is required";
+        errors.username = "Please Enter Username";
       }
       if (!values.email) {
-        errors.email = "Please enter your email address.";
+        errors.email = "Please Enter Email Address";
       } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
         errors.email = "Please enter a valid email address.";
       }
 
       if (!values.phone) {
-        errors.phone = "Please enter your phone number.";
+        errors.phone = "Please Enter Phone Number";
       } else if (!/^\d{10}$/.test(values.phone)) {
         errors.phone = "Please enter a valid 10-digit phone number.";
       }
       if (!values.balance) {
-        errors.balance = "Balance is required";
+        errors.balance = "Please Enter Balance";
     }
       if (!values.password) {
-        errors.password = "Password is required";
+        errors.password = "Please Enter Password";
       }
       if (!values.Per_trade ) {
         errors.Per_trade = "Please Enter per trade value";
@@ -87,7 +87,7 @@ const AddClient = () => {
       }
       
       if (!values.prifix_key) {
-        errors.prifix_key = "Prefix key is required";
+        errors.prifix_key = "Please Enter Prefix Key";
       }  
       return errors;
     },
@@ -248,7 +248,7 @@ const AddClient = () => {
           (field) => !field.showWhen || field.showWhen(formik.values)
         )}
         ProfileShow={formik.values.profile_img}
-        page_title="Add Subadmin"
+        page_title="Add New Subadmin"
         btn_name="Add Subadmin"
         btn_name1="Cancel"
         formik={formik}

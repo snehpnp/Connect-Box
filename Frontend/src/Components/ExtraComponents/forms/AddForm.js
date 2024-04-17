@@ -518,7 +518,7 @@ const DynamicForm = ({
                                       ? "text"
                                       : field.type
                                   }
-                                  placeholder={field.label}
+                                  placeholder={`Enter ${field.label}`}
                                   {...formik.getFieldProps(field.name)}
                                   className={` form-control`}
                                 />

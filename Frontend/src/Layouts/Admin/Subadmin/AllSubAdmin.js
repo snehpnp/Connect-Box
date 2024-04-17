@@ -57,10 +57,11 @@ export default function Help() {
       width: "auto",
     },
     boldHeader: {
-      fontWeight: "bold",
+      fontWeight: 800,
     },
     headerButton: {
       marginRight: 8,
+
     },
   };
 
@@ -96,7 +97,7 @@ export default function Help() {
     },
     {
       field: "prifix_key",
-      headerName: "prifixkey",
+      headerName: "Prefix Key",
       width: 120,
       headerClassName: styles.boldHeader,
     },
@@ -256,8 +257,6 @@ export default function Help() {
 
             return inputSearchMatch;
           })
-
-
           setAllSubadmins({
             loading: true,
             data: inputSearch ? filterData : formattedData,
@@ -318,8 +317,8 @@ export default function Help() {
           "UserName": item.UserName,
           "PhoneNo": item.PhoneNo,
           "Prifix Key": item.prifix_key,
-          "Service Type" : item.subadmin_service_type ==1 ? "Per Trade" : "Per Strategy",
-          "Balance" : item.Balance
+          "Service Type": item.subadmin_service_type == 1 ? "Per Trade" : "Per Strategy",
+          "Balance": item.Balance
         })
       })
 
