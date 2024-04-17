@@ -9,8 +9,11 @@ module.exports = function (app) {
     app.use(require("./SubAdmins/Strategy.routes"));
     app.use(require("./SubAdmins/GroupServices.routes"));
     app.use(require("./SubAdmins/User.routes"))
+
+    //helpmessage
     
 
+    
 
 
 };
