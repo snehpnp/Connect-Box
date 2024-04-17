@@ -82,8 +82,9 @@ const DynamicForm = ({
 
 
   const HandelChange = (value) => {
-    console.log("value",value)
-    formik.setFieldValue('service_type', value);
+    console.log("value", value.target.checked)
+
+    formik.setFieldValue('Service_Type', value.target.checked == true ? 1 : 2);
   }
 
 
@@ -619,16 +620,17 @@ const DynamicForm = ({
                                 {field.label}
                                 <span className="text-danger">*</span>
                               </label>
-
-                              <ul class="nav nav-pills d-flex border-none" id="pills-tab" role="tablist">
-                                <li class="nav-item d-flex align-items-center" role="presentation"  >
-                                  <button style={{ width: "67px", height: "2.5rem" }} class="nav-link yes p-0" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true" tabindex="-1" onClick={(e) => HandelChange(1)}>Fix</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                  <button style={{ width: "72px", height: "2.5rem" }} class="nav-link no active p-0" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" onClick={(e) => HandelChange(2)}>Trade</button>
-                                </li>
-                              </ul>
-
+                              <div className="status-toggle">
+                                <input
+                                  id={`rating_`}
+                                  className="check"
+                                  type="checkbox"
+                                  onChange={(event) => HandelChange(event)}
+                                  defaultChecked={formik.values['Service_Type'] == 1 ? true : false}
+                                />
+                                <label htmlFor={`rating_`} className="checktoggle checkbox-bg"></label>
+                              </div>
+                              {formik.values['Service_Type'] == 1 ?"PER TRADE" : "FIXED"}
                             </div>
                           </div> :
                             <div className={`col-lg-${field.col_size}`}>

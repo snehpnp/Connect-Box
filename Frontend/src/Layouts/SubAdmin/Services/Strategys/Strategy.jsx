@@ -135,7 +135,7 @@ function Strategy() {
             disable: false,
         },
         {
-            name: "service_type",
+            name: "Service_Type",
             label: "Service Type",
             type: "test",
             label_size: 12,
@@ -192,7 +192,7 @@ function Strategy() {
             strategy_amount_half_early: '',
             strategy_amount_early: '',
             strategy_demo_days: '',
-            service_type: ""
+            Service_Type: ""
         },
         validate: (values) => {
             let errors = {};
@@ -243,7 +243,7 @@ function Strategy() {
                 strategy_amount_half_early: values.strategy_amount_half_early,
                 strategy_amount_early: values.strategy_amount_early,
                 maker_id: user_id,
-                Service_Type: values.service_type == '' ? 0 :values.service_type
+                Service_Type: values.Service_Type == '' ? 0 :values.Service_Type
             };
 
 
