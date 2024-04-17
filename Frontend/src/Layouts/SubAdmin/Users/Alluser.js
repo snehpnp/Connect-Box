@@ -36,10 +36,10 @@ export default function AllUsers() {
   const [searchInput, setSearchInput] = useState('');
   const [ForGetCSV, setForGetCSV] = useState([])
   const [getAllBroker, setAllBroker] = useState([]);
-  const [activateUser, setActiveUser] = useState(0);
-  const [inActivateUser, setInActiveUser] = useState(0);
-  const [ShowDeleteModal, setShowDeleteModal] = useState(false );
-  const [deleteUser, setDeleteUser] = useState(false)
+  
+  const [ShowDeleteModal, setShowDeleteModal] = useState(false);
+  
+
 
 
   const [modalId, setmodalId] = useState('');
@@ -51,11 +51,10 @@ export default function AllUsers() {
   });
 
 
-  console.log("getAllUsers :", getAllUsers)
+
 
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
-
 
 
   const styles = {
@@ -75,10 +74,6 @@ export default function AllUsers() {
       marginRight: 8,
     },
   };
-
-
-
-
 
 
   const showLicenceName = (row) => {
@@ -105,7 +100,7 @@ export default function AllUsers() {
         }
       })
       .catch((error) => {
-        console.log("Broker find Error :", error)
+        console.log("Error Broker find Error :", error)
       })
 
   }
@@ -216,7 +211,7 @@ export default function AllUsers() {
             onChange={(event) => handleSwitchChange(event, params.row._id)}
             defaultChecked={params.value == 1}
           />
-          <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg">checkbox</label>
+          <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg"></label>
         </div>
       ),
     },
@@ -248,7 +243,7 @@ export default function AllUsers() {
       ),
       headerClassName: styles.boldHeader,
     },
-    
+
     {
       field: "Create_Date",
       headerName: "createdAt",
@@ -261,15 +256,13 @@ export default function AllUsers() {
 
 
   const handleEdit = (row) => {
-    console.log("row.id :", row._id)
     navigate('/subadmin/user/edit/' + row._id)
   };
 
   const handleDelete = async (row) => {
-   
+
     var data = { id: modalId }
-    
-      await dispatch(DeleteUser(data)).unwrap()
+    await dispatch(DeleteUser(data)).unwrap()
       .then((response) => {
         if (response.status) {
           toast.success(response.msg)
@@ -282,11 +275,11 @@ export default function AllUsers() {
         }
       })
       .catch((error) => {
-        console.log("User Does Not Exit", error)
+        console.log("Error User Does Not Exit", error)
       })
 
-    
-  
+
+
 
   };
 
@@ -295,20 +288,14 @@ export default function AllUsers() {
   const handleSwitchChange = async (event, id) => {
     const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
 
-
-
     await dispatch(Show_Status({ id, user_active_status }))
       .unwrap()
       .then(async (response) => {
-
         if (response.status) {
-
           toast.success(response.msg);
           setrefresh(!refresh)
-
         } else {
           toast.error(response.msg);
-
         }
       })
       .catch((error) => {
@@ -318,34 +305,9 @@ export default function AllUsers() {
 
   };
 
+ 
 
-  const handleSubmit = async () => {
-
-    await dispatch(update_Balance({ id: initialRowData._id, Balance: balanceValue, admin_id }))
-      .unwrap()
-      .then(async (response) => {
-
-        if (response.status) {
-          toast.success(response.msg);
-          setrefresh(!refresh)
-
-        } else {
-          toast.error(response.msg);
-
-        }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-
-      });
-
-    setBalanceValue("")
-    setmodal(false);
-
-  };
-
-
-
+ 
 
 
   const getUsersData = async () => {
@@ -371,21 +333,22 @@ export default function AllUsers() {
             return searchInputMatch
 
           })
+         
           setAllUsers({
             loading: true,
             data: searchInput ? filterData : formattedData,
             data1: [
-              { name: "Total Users", count: response.data.length || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
-              { name: "Active Users", count: activateUser || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
+              { name: "Total Users", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
+              { name: "Active Users", count: response.activeClientsCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
               {
                 name: "InActive Users",
-                count: response.inActivateUser || 0
+                count: response.inActiveCount || 0
                 , Icon: "fe fe-x-circle",
                 color: "#ed3a3a"
               },
               {
                 name: "Live Users",
-                count: response.ActiveUseBalance || 0
+                count: response.liveUser || 0
                 , Icon: "fas fa-dollar-sign"
                 , color: "#1d8147"
 
@@ -394,6 +357,7 @@ export default function AllUsers() {
           });
 
         } else {
+         
           setAllUsers({
             loading: true,
             data: [],
@@ -403,6 +367,7 @@ export default function AllUsers() {
       })
       .catch((error) => {
         console.log("Error", error);
+     
         setAllUsers({
           loading: false,
           data: [],
@@ -412,32 +377,10 @@ export default function AllUsers() {
   };
 
 
-  const TotalActiveUser = () => {
-    var countActive = 0;
-    var countInActive = 0;
-    const filter = getAllUsers.data.map((item) => {
-      if (item.ActiveStatus == '0') {
-        countInActive++;
-      }
-      else {
-        countActive++;
-      }
-
-    })
-    setActiveUser(countActive);
-    setInActiveUser(countInActive)
-  }
-
-  useEffect(() => {
-    TotalActiveUser();
-  }, [])
-
-
-
-
   useEffect(() => {
     getUsersData();
   }, [refresh, searchInput]);
+
 
   const RefreshHandle = () => {
     setrefresh(!refresh)
@@ -473,7 +416,7 @@ export default function AllUsers() {
     <>
       {getAllUsers.loading ? (
         <>
-          <div className="content container-fluid">
+          <div className="content container-fluid" data-aos="fade-left">
             <div className="page-header">
               <div className="content-page-header">
                 <h5>All Users</h5>
@@ -581,46 +524,7 @@ export default function AllUsers() {
       )}
 
 
-      {
-        modal && (
-          <div className="modal custom-modal d-block">
-            <div className="modal-dialog modal-dialog-centered modal-md">
-              <div className="modal-content">
-                <div className="modal-header border-0 pb-0">
-                  <div className="form-header modal-header-title text-start mb-0">
-                    <h4 className="mb-0">Update</h4>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                    onClick={() => setmodal(false)}
-                  ></button>
-                </div>
-                <div className="modal-body">
-                  <input
-                    type="number"
-                    value={balanceValue}
-                    onChange={(e) => setBalanceValue(e.target.value)}
-                    placeholder="Enter Balance You want to add"
-                  />
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={handleSubmit}
-                  >
-                    Submit
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )
-      }
-
+    
       {ShowDeleteModal &&
         (
           <div className="modal custom-modal modal-delete d-block" >
@@ -638,7 +542,7 @@ export default function AllUsers() {
                   </div>
                   <div className="modal-btn delete-action">
                     <div className="modal-footer justify-content-center p-0">
-                      <button type="submit" onClick={()=>handleDelete()} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
+                      <button type="submit" onClick={() => handleDelete()} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
                       <button type="button" onClick={() => setShowDeleteModal(false)} className="btn btn-back cancel-btn">No, Cancel</button>
                     </div>
                   </div>

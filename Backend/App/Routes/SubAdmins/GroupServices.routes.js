@@ -4,7 +4,7 @@
 const router = require("express").Router()
 const { verifyToken } = require('../../Middlewares/autt.middleware')
 
-const { Addgroupservice,getAllSubgroupServices,GetAllServicesGiven ,GetAllServices, GetAllCatagory, allServicesSymboll, GetServicesByGroupId1, getServiceByCatagory, getAllgroupServices, GetAllServicesName, DELETEGROUPSERVICES, GetAllServicesUserNAme, GetServicesByGroupId, Editgroupservice } = require('../../Controllers/SubAdmins/GroupServices/servicegroup.controller')
+const { Addgroupservice,getAllSubgroupServices,GetAllServicesGiven ,GetAllServices, GetAllCatagory, allServicesSymboll, GetServicesByGroupId1, getServiceByCatagory, getAllgroupServices, GetAllServicesName, DELETEGROUPSERVICES, GetAllServicesUserNAme, GetServicesByGroupId, Editgroupservice,GetAllServicesGivengroupId } = require('../../Controllers/SubAdmins/GroupServices/servicegroup.controller')
 
 
 router.post('/groupservice/add', Addgroupservice)
@@ -24,6 +24,7 @@ router.post('/services/bygroupid1/get', GetServicesByGroupId1)
 router.post('/groupServices/delete', DELETEGROUPSERVICES)
  
 
+router.post('/groupservice/name', GetAllServicesGivengroupId)
 
 
 

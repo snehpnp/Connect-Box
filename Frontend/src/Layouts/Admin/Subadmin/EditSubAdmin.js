@@ -48,6 +48,39 @@ const EditClient = () => {
 
     validate: (values) => {
       let errors = {};
+      if (!values.fullName) {
+        errors.fullName = "Full Name is required";
+      }
+      if (!values.username) {
+        errors.username = "Username is required";
+      }
+      if (!values.email) {
+        errors.email = "Please enter your email address.";
+      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
+        errors.email = "Please enter a valid email address.";
+      }
+
+      if (!values.phone) {
+        errors.phone = "Please enter your phone number.";
+      } else if (!/^\d{10}$/.test(values.phone)) {
+        errors.phone = "Please enter a valid 10-digit phone number.";
+      }
+      if (!values.balance) {
+        errors.balance = "Balance is required";
+    }
+      if (!values.password) {
+        errors.password = "Password is required";
+      }
+      if (!values.Per_trade ) {
+        errors.Per_trade = "Please Enter per trade value";
+
+      } if (!values.strategy_Percentage) {
+        errors.strategy_Percentage = "Please Enter strategy percentage value";
+      }
+    
+      if (!values.prifix_key || values.prifix_key=='') {
+        errors.prifix_key = "Prefix key is required";
+      }  
       return errors;
     },
     onSubmit: async (values) => {
@@ -84,6 +117,14 @@ const EditClient = () => {
 
 
   const fields = [
+    {
+      name: "profile_img",
+      label: "Profile Image",
+      type: "file",
+      label_size: 6,
+      col_size: 12,
+      disable: false,
+    },
     {
       name: "username",
       label: "Username",
@@ -153,7 +194,7 @@ const EditClient = () => {
             ? "Trade Value"
             : "Strategies %"
           : "",
-      type: "number",
+      type: "text3",
       placeholder:
         formik.values.subadmin_servic_type === "1" ||
           formik.values.subadmin_servic_type === "2"

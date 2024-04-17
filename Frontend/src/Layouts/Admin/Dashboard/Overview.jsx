@@ -39,10 +39,10 @@ const Overview = () => {
   const maxPercentage = adminData.Totalcount;
   const maxPercentageforUser = adminData.TotalUsercount;
 
-  const [selectedSubadmin, setSelectedSubadmin] = useState("");
+  const [selectedSubadmin, setSelectedSubadmin] = useState("ALL");
   const [selectedSubadminid, setSelectedSubadminid] = useState("");
 
-  const [selectedOption, setSelectedOption] = useState("Monthly");
+  const [selectedOption, setSelectedOption] = useState("Day");
 
   const handleSelect = (id) => {
     setSelectedSubadminid(id);
@@ -89,8 +89,8 @@ const Overview = () => {
       progress: percentage !== null ? percentage : 0,
       arrowIcon:
         adminData.Totalcount !== undefined &&
-        percentage !== null &&
-        percentage < 100
+          percentage !== null &&
+          percentage < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -100,7 +100,7 @@ const Overview = () => {
         percentage !== null && percentage < 100 ? "bg-5" : "bg-6",
     },
     {
-      iconClass: "fas fa-users",
+      iconClass: "fas fa-users ",
       title: "Active Subadmins",
       count:
         adminData.TotalActivecount !== undefined
@@ -109,8 +109,8 @@ const Overview = () => {
       progress: percentage1 !== null ? percentage1 : 0,
       arrowIcon:
         adminData.TotalActivecount !== undefined &&
-        percentage1 !== null &&
-        percentage1 < 100
+          percentage1 !== null &&
+          percentage1 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -129,8 +129,8 @@ const Overview = () => {
       progress: percentage3 !== null ? percentage3 : 0,
       arrowIcon:
         adminData.TotalActivecount !== undefined &&
-        percentage3 !== null &&
-        percentage3 < 100
+          percentage3 !== null &&
+          percentage3 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -149,8 +149,8 @@ const Overview = () => {
       progress: percentage4 !== null ? percentage4 : 0,
       arrowIcon:
         adminData.TotalUsercount !== undefined &&
-        percentage4 !== null &&
-        percentage4 < 100
+          percentage4 !== null &&
+          percentage4 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -169,8 +169,8 @@ const Overview = () => {
       progress: percentage5 !== null ? percentage5 : 0,
       arrowIcon:
         adminData.TotalActiveUsercount !== undefined &&
-        percentage5 !== null &&
-        percentage5 < 100
+          percentage5 !== null &&
+          percentage5 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -189,8 +189,8 @@ const Overview = () => {
       progress: percentage6 !== null ? percentage6 : 0,
       arrowIcon:
         adminData.TotalInActiveUsercount !== undefined &&
-        percentage6 !== null &&
-        percentage6 < 100
+          percentage6 !== null &&
+          percentage6 < 100
           ? "fas fa-arrow-down"
           : "fas fa-arrow-up",
       percentageChange:
@@ -224,12 +224,15 @@ const Overview = () => {
       SUBADMINS: selectedSubadminid,
       selectedOption: selectedOption,
     };
+
     await dispatch(Dashboard_admin1(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
           const categories = response.data.categories;
           const data = response.data.data;
+
+
 
           setOptions((prevOptions) => ({
             ...prevOptions,
@@ -303,14 +306,17 @@ const Overview = () => {
                   <div className="col-xl-4 col-sm-6 col-12" key={index}>
                     <div className="card">
                       <div className="card-body">
-                        <div className="dash-widget-header">
+                        <div className="dash-widget-header ">
+
                           <span
-                            className={`dash-widget-icon ${data.progressBarClass}`}
+                            className={`dash-widget-icon ${data.title === 'Active Subadmins' || data.title === 'Active Users' ? "bg-success" : ''} ${data.progressBarClass} `}
                           >
-                            <i className={data.iconClass} />
+
+                            <i className={`${data.iconClass}`} id="animated" />
                           </span>
                           <div className="dash-count">
-                            <div className="dash-title">{data.title}</div>
+                          <div className="dash-title" style={{fontWeight:'600'}}>{data.title}</div>
+
                             <div className="dash-counts">
                               <p>{data.count}</p>
                             </div>
@@ -347,7 +353,7 @@ const Overview = () => {
                 <div className="card flex-fill">
                   <div className="card-header">
                     <div className="d-flex justify-content-between align-items-center">
-                      <h5 className="card-title">Sales Analytics</h5>
+                      <h5 className="card-title">Subadmin Sales Analytics</h5>
                       <div className="d-flex">
                         <div className="dropdown main me-3">
                           <button
@@ -371,14 +377,14 @@ const Overview = () => {
                                   setSelectedSubadmin("ALL");
                                 }}
                               >
-                                Admin
+                                ALL
                               </a>
                             </li>
                             {subadminName &&
                               subadminName.map((data, index) => (
                                 <li key={index}>
                                   <a
-                                    className="dropdown-item"
+                                    className="dropdown-item iconclass"
                                     onClick={() => {
                                       handleSelect(data._id);
                                       setSelectedSubadmin(data.UserName);
@@ -393,7 +399,7 @@ const Overview = () => {
 
                         <div className="dropdown main">
                           <button
-                            className="btn btn-white btn-sm dropdown-toggle"
+                            className="btn btn-white btn-sm dropdown-toggle iconclass"
                             type="button"
                             id="planDropdownButton"
                             data-bs-toggle="dropdown"
@@ -405,18 +411,18 @@ const Overview = () => {
                             className="dropdown-menu"
                             aria-labelledby="planDropdownButton"
                           >
-                            {dropdown.map((data) => {
-                              return (
-                                <li>
-                                  <a
-                                    className="dropdown-item"
-                                    onClick={handleSelect1}
-                                  >
-                                    {data}
-                                  </a>
-                                </li>
-                              );
-                            })}
+                            {/* subadminName.map((data, index) => ( */}
+                            {dropdown.map((data, index) => (
+                              <li key={index}>
+                                <a
+                                  className="dropdown-item"
+                                  onClick={handleSelect1}
+                                >
+                                  {data}
+                                </a>
+                              </li>
+                            ))
+                            }
                           </ul>
                         </div>
                       </div>
@@ -452,10 +458,10 @@ const Overview = () => {
                 <div className="card flex-fill">
                   <div className="card-header">
                     <div className="d-flex justify-content-between align-items-center">
-                      <h5 className="card-title">Invoice 1 Analytics</h5>
+                      <h5 className="card-title">Top 5 Subadmins </h5>
                       <div className="dropdown main">
                         <button
-                          className="btn btn-white btn-sm dropdown-toggle"
+                          className="btn btn-white btn-sm dropdown-toggle iconclass"
                           type="button"
                           id="dropdownMenuButton1"
                           data-bs-toggle="dropdown"

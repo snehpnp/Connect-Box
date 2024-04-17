@@ -6,13 +6,13 @@ export const admin_header = [
         route: "/admin/dashboard",
         Data: []
     },
-    {
-        id: 2,
-        name: 'System',
-        route: "/admin/system",
-        Icon: "fe fe-settings",
-        Data: []
-    },
+    // {
+    //     id: 2,
+    //     name: 'System',
+    //     route: "/admin/system",
+    //     Icon: "fe fe-settings",
+    //     Data: []
+    // },
     {
         id: 3,
         name: 'Research Analysts',
@@ -100,13 +100,13 @@ export const subamdin_header = [
         route: "/subadmin/dashboard",
         Data: []
     },
-    {
-        id: 2,
-        name: 'System',
-        route: "/subadmin/system",
-        Icon: "fe fe-settings",
-        Data: []
-    },
+    // {
+    //     id: 2,
+    //     name: 'System',
+    //     route: "/subadmin/system",
+    //     Icon: "fe fe-settings",
+    //     Data: []
+    // },
     // {
     //     id: 3,
     //     name: 'Employees',
@@ -129,7 +129,7 @@ export const subamdin_header = [
     {
         id: 4,
         name: 'Users',
-        Icon: "fe fe-user-plus",
+        Icon: "fe fe-user",
         Data: [
             {
                 id: 41,
@@ -163,6 +163,7 @@ export const subamdin_header = [
                 Icon: "fe fe-list",
                 route: "/subadmin/strategys",
             },
+           
             {
                 'id': 53,
                 name: 'All Services',
@@ -180,14 +181,14 @@ export const subamdin_header = [
             {
                 id: 61,
                 name: 'Orders',
-                route: "/subadmin/strategys",
+                route: "/subadmin/orders",
                 Icon: "fe fe-list",
                 Data: []
             },
             {
                 id: 62,
                 name: 'Position',
-                route: "/subadmin/strategys",
+                route: "/subadmin/position",
                 Icon: "fe fe-map-pin",
                 Data: []
             }
@@ -195,18 +196,19 @@ export const subamdin_header = [
     },
     {
         id: 7,
+        name: 'Strategy History',
+        route: "/subadmin/strategys/history",
+        Icon: "fe fe-credit-card",
+        Data: []
+    },
+    {
+        id: 17,
         name: 'Strategy Transaction',
         route: "/subadmin/strategys/transaction",
         Icon: "fe fe-credit-card",
         Data: []
     },
-    {
-        id: 8,
-        name: 'Open Position',
-        route: "/subadmin/open-position",
-        Icon: "fe fe-grid",
-        Data: []
-    },
+
     {
         id: 9,
         name: 'Trades',
@@ -233,6 +235,13 @@ export const subamdin_header = [
                 Icon: "fe fe-clipboard",
                 Data: []
             },
+            {
+                id: 94,
+                name: 'Open Position',
+                route: "/subadmin/open-position",
+                Icon: "fe fe-grid",
+                Data: []
+            },
         ]
     },
     {
@@ -246,6 +255,13 @@ export const subamdin_header = [
         id: 11,
         name: 'Help',
         route: "/subadmin/help",
+        Icon: "fe fe-help-circle",
+        Data: []
+    },
+    {
+        id: 9,
+        name: 'FAQs',
+        route: "/admin/faqs",
         Icon: "fe fe-help-circle",
         Data: []
     }
@@ -264,14 +280,21 @@ export const User_header = [
     {
         id: 2,
         name: 'Stock List',
-        Icon: "fe fe-home",
+        Icon: "fa-solid fa-arrow-trend-up",
         route: "/user/stock",
+        Data: []
+    },
+    {
+        id: 2,
+        name: 'Stock List 1',
+        Icon: "fa-solid fa-arrow-trend-up",
+        route: "/user/stock1",
         Data: []
     },
     {
         id: 3,
         name: 'Trade',
-        Icon: "fe fe-shopping-cart",
+        Icon: "fa-solid fa-chart-simple",
         Data: [
             {
                 id: 41,
@@ -296,32 +319,33 @@ export const User_header = [
         Icon: "fe fe-credit-card",
         Data: []
     },
-    {
-        id: 5,
-        name: 'Help',
-        route: "/user/help",
-        Icon: "fe fe-help-circle",
-        Data: []
-    },
+
     {
         id: 6,
         name: 'Open Positions',
         route: "/user/open-positions",
-        Icon: "fe fe-grid",
+        Icon: "fa-regular fa-map",
         Data: []
     },
     {
         id: 7,
         name: 'Broker Response',
         route: "/user/broker-response",
-        Icon: "fe fe-grid",
+        Icon: "fa-brands fa-pied-piper",
         Data: []
     },
     {
         id: 8,
         name: 'Strategies',
         route: "/user/strategy",
-        Icon: "fe fe-grid",
+        Icon: "fa-solid fa-crosshairs",
+        Data: []
+    },
+    {
+        id: 5,
+        name: 'Help',
+        route: "/user/help",
+        Icon: "fa-solid fa-info",
         Data: []
     },
     {

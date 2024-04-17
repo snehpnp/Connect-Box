@@ -8,8 +8,14 @@ import Dashboards from '../Layouts/User/Dashboard/Dashboards';
 
 import Help from '../Layouts/Comman/Help';
 import Stocklist from '../Layouts/User/Stock/Clientservice';
+import Stocklist1 from '../Layouts/User/Stock/Clientservice1';
+
 import Strategies from '../Layouts/User/Strategy/Strategies';
 
+
+import Profile from '../Layouts/Comman/Profile/Profile';
+
+import Orders from '../Layouts/User/Trade/Order';
 
 
 
@@ -31,8 +37,20 @@ const User_Routing = () => {
                     <Route path="/faqs" element={<Faqs />} />
                     <Route path="/help" element={<Help />} />
                     <Route path="/stock" element={<Stocklist />} />
-                    <Route path="/payment" element={<Stocklist />} />
+                    <Route path="/stock" element={<Stocklist />} />
+                    <Route path="/stock1" element={<Stocklist1 />} />
+
                     <Route path="/strategy" element={<Strategies />} />
+
+                    <Route exact path="/profile" element={<Profile />} />
+                    <Route exact path="/orders" element={<Orders />} />
+                    <Route exact path="/positions" element={<Orders />} />
+                    <Route exact path="/open-positions" element={<Orders />} />
+                    <Route exact path="/broker-response" element={<Orders />} />
+                    <Route path="/payment" element={<Orders />} />
+
+
+
 
 
 

@@ -4,6 +4,7 @@ const db = require("../../../Models");
 const User_model = db.user;
 const Role_model = db.role;
 const SubAdminCompanyInfo = db.SubAdminCompanyInfo;
+const strategy_transaction = db.strategy_transaction;
 
 
 var dateTime = require("node-datetime");
@@ -118,7 +119,7 @@ class Subadmin {
         Role: "SUBADMIN",
         admin_id: parent_id,
         Balance,
-        Mode:"CASH"
+        Mode: "CASH"
       });
       await count_licenses_add.save();
 
@@ -317,7 +318,7 @@ class Subadmin {
             _id: 1,
             Balance: 1,
             Role: 1,
-            Mode:1,
+            Mode: 1,
             createdAt: 1,
 
             username: "$user.UserName",
@@ -335,6 +336,192 @@ class Subadmin {
       res.send({ status: false, msg: "Internal Server Error" });
     }
   }
+
+
+
+
+  async GetAllRechargeDetailsById(req, res) {
+    try {
+      const { id, subadmin_service_type } = req.body;
+
+      if (!id) {
+        return res.send({
+          status: false,
+          msg: "id is required in the request body",
+        });
+      }
+
+      // GET ALL CLIENTS
+      var AdminMatch;
+      AdminMatch = { admin_id: new ObjectId(id) };
+
+      const rechargeDetails = await count_licenses.aggregate([
+        {
+          $match: { user_id: new ObjectId(id) },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "user_id",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $unwind: "$user",
+        },
+        {
+          $project: {
+            _id: 1,
+            Balance: 1,
+            Role: 1,
+            Mode: 1,
+            createdAt: 1,
+
+            username: "$user.UserName",
+          },
+        },
+      ]);
+
+      const TotalBalance = await User_model.find({ _id: id }).select('Balance')
+
+      if (subadmin_service_type == 2) {
+
+
+        const getAllClients = await strategy_transaction.aggregate([
+          {
+            $match: AdminMatch
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'user_id',
+              foreignField: '_id',
+              as: 'userData'
+            }
+          },
+          {
+            $lookup: {
+              from: 'strategies',
+              localField: 'strategy_id',
+              foreignField: '_id',
+              as: 'strategyData'
+            }
+          },
+          {
+            $addFields: {
+              username: { $arrayElemAt: ['$userData.UserName', 0] },
+              strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] },
+              Balance: "$Admin_charge" // Renaming Admin_charge to Balance
+            }
+          },
+          {
+            $project: {
+              _id: 1,
+              username: 1,
+              strategy_id: 1,
+              stg_charge: 1,
+              Balance: 1, // Including Balance instead of Admin_charge
+              plan_id: 1,
+              Start_Date: 1,
+              End_Date: 1,
+              createdAt: 1,
+            }
+          }
+        ]);
+
+
+        const UsedBalance = await strategy_transaction.aggregate([
+          {
+            $match: AdminMatch
+          },
+          {
+            $lookup: {
+              from: 'users',
+              localField: 'user_id',
+              foreignField: '_id',
+              as: 'userData'
+            }
+          },
+          {
+            $lookup: {
+              from: 'strategies',
+              localField: 'strategy_id',
+              foreignField: '_id',
+              as: 'strategyData'
+            }
+          },
+          {
+            $addFields: {
+              username: { $arrayElemAt: ['$userData.UserName', 0] },
+              strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] },
+              Balance: { $toDouble: "$Admin_charge" } // Convert Admin_charge to number
+            }
+          },
+          {
+            $project: {
+              _id: 1,
+              username: 1,
+              strategy_id: 1,
+              stg_charge: 1,
+              Balance: 1, // Including Balance instead of Admin_charge
+              plan_id: 1,
+              Start_Date: 1,
+              End_Date: 1,
+              createdAt: 1,
+            }
+          },
+          {
+            $group: {
+              _id: null,
+              totalBalance: { $sum: "$Balance" } // Calculate the sum of Balance
+            }
+          }
+        ]);
+
+
+        const mergedArray = [...getAllClients, ...rechargeDetails];
+        mergedArray.sort((a, b) => {
+          return new Date(a.createdAt) - new Date(b.createdAt);
+        });
+
+
+        var Count = {
+          TotalBalance: TotalBalance[0].Balance,
+          UsedBalance: UsedBalance[0].totalBalance,
+          RemainingBalance: Number(TotalBalance[0].Balance || 0) - Number(UsedBalance[0].totalBalance || 0)
+        }
+
+
+        return res.send({
+          status: true,
+          msg: "Recharge details fetched successfully",
+          data: mergedArray,
+          Count: Count
+        });
+      } else {
+
+        var Count = {
+          TotalBalance: TotalBalance[0].Balance,
+          UsedBalance: "0",
+          RemainingBalance: Number(TotalBalance[0].Balance || 0) - Number(0)
+        }
+        return res.send({
+          status: true,
+          msg: "Recharge details fetched successfully",
+          data: rechargeDetails,
+          Count: Count
+        });
+      }
+
+
+    } catch (error) {
+      console.error("Error while fetching recharge details:", error);
+      return res.send({ status: false, msg: "Internal Server Error", data: [], Count: "" });
+    }
+  }
+
+
 
   async UpdateActiveStatusSubadmin(req, res) {
     try {
@@ -392,7 +579,7 @@ class Subadmin {
         $set: { Balance: updatedBalance },
       };
 
-     
+
       const result = await User_model.updateOne(filter, updateOperation);
 
       if (result) {
@@ -400,8 +587,8 @@ class Subadmin {
           user_id: get_user[0],
           Role: "SUBADMIN",
           admin_id: parent_id,
-          Balance:Balance,
-          Mode:"CASH"
+          Balance: Balance,
+          Mode: "CASH"
         });
         await count_licenses_add.save();
 
@@ -441,7 +628,7 @@ class Subadmin {
         status: true,
         msg: "Get All Subadmins",
         data: getAllSubAdmins,
-    
+
       });
     } catch (error) {
       console.log("Error getallSubadmin error -", error);

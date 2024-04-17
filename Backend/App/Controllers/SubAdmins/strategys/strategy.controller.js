@@ -323,13 +323,15 @@ class strategy {
   // GET ALL STRATEGYS
   async GetAllStrategy(req, res) {
     try {
-      const { page, limit } = req.body;
-      const skip = (page - 1) * limit;
+      const { page, id } = req.body;
+      
 
       // var getAllTheme = await strategy_model.find()
       const getAllstrategy = await strategy_model
-        .find({})
-        .sort({ createdAt: -1 });
+        .find({maker_id : id})
+        .sort({ createdAt: -1 })
+        .select('_id strategy_name strategy_description strategy_demo_days strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early strategy_category strategy_segment strategy_image maker_id createdAt updatedAt __v');
+ 
       // IF DATA NOT EXIST
       if (getAllstrategy.length == 0) {
         res.send({ status: false, msg: "Empty data", data: getAllstrategy });
@@ -356,12 +358,9 @@ class strategy {
         res.send({ status: false, msg: "Enter Please Id", data: [] });
       }
 
-      const getAllstrategy = await strategy_model
-      .find({ maker_id: id })
-      .sort({ createdAt: -1 })
-      .select('_id strategy_name');
+      const getAllstrategy = await strategy_model.find({ maker_id: id }).sort({ createdAt: -1 }).select('_id strategy_name');
   
-       console.log("getAllstrategy :", getAllstrategy)
+ 
 
       // IF DATA NOT EXIST
       if (getAllstrategy.length == 0) {
@@ -610,13 +609,12 @@ class strategy {
 
   // Update Add Remove Strategy
   async UpdateAddRemoveStrategy(req, res) {
-    //  console.log("req",req.body)
+  
 
     try {
       if (req.body.clientId.length > 0) {
         req.body.clientId.forEach(async (element) => {
-          console.log("element add", element);
-
+       
           //  ADD  STRATEGY CLIENT
           const strategy_client = new strategy_client_model({
             strategy_id: req.body.strategyId,
@@ -632,7 +630,7 @@ class strategy {
             strategy_id: req.body.strategyId,
             user_id: element,
           });
-          // console.log("element delete",element);
+
         });
       }
 
@@ -641,7 +639,6 @@ class strategy {
         msg: "Startegy Update Successfully....",
       });
     } catch (error) {
-      console.log("Error Get All Strategy Error-", error);
       return res.send({ status: false, msg: "Catch Error" });
     }
   }

@@ -18,7 +18,7 @@ const FAQs = () => {
         <div className="" onMouseMove={handleMouseMove}>
 
 
-            <div className="content container-fluid">
+            <div className="content container-fluid" data-aos="fade-left">
 
 
                 <div className='card-body'>
@@ -26,19 +26,19 @@ const FAQs = () => {
 
                     <div className="row">
 
-                        <div className="col">
+                        <div className="col-5">
 
                             <img src="/assets/img/gif/FAQ.png" />
 
                         </div>
 
-                        <div className="col">
+                        <div className="col-7">
 
                             {faqData.map((faq, index) => (
                                 <div className="faq-item" key={index}>
                                     <div className={`question ${activeIndex === index ? 'active' : ''}`} onClick={() => toggleAccordion(index)}>
                                         <span className="question-text">{faq.question}</span>
-                                        <span className="icon">{activeIndex === index ? '-' : '+'}</span>
+                                        <span className="icon">{activeIndex === index ? '-  ' : '+'}</span>
                                     </div>
                                     <div className={`answer ${activeIndex === index ? 'show' : ''}`}>
                                         <p><b>{faq.answer}</b></p>

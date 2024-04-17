@@ -5,11 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import { Minimize } from 'lucide-react';
 
 const DropDown = () => {
     const navigate = useNavigate();
 
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [showFunds, setShowFunds] = useState(false);
     const [themeMode, setThemeMode] = useState('light');
@@ -20,6 +21,11 @@ const DropDown = () => {
     const [error, setError] = useState(null);
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+    var Role = JSON.parse(localStorage.getItem("user_details")).Role
+    var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
+    var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
+
+
 
 
     const fetchData = async () => {
@@ -54,33 +60,27 @@ const DropDown = () => {
     }, []);
 
 
-    var Role = JSON.parse(localStorage.getItem("user_details")).Role
-    var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
-
-
-
     const LogoutUser = (e) => {
         e.stopPropagation(); // Stop event propagation
-        console.log("LogoutUser function is called");
-        localStorage.clear();
+
+
+        localStorage.removeItem('user_details')
+        localStorage.removeItem('user_role')
+
         window.location.reload();
     };
 
-    // Define toggleTheme function
     const toggleTheme = () => {
 
         const newThemeMode = themeMode === 'light' ? 'dark' : 'light';
         setThemeMode(newThemeMode);
-
+        const htmlElement = document.querySelector('html');
+        htmlElement.setAttribute('data-sidebar', newThemeMode);
+        htmlElement.setAttribute('data-layout-mode', newThemeMode);
+        htmlElement.setAttribute('data-topbar', newThemeMode);
         localStorage.setItem('theme_mode', newThemeMode);
 
-        setTimeout(() => {
-            window.location.reload();
-        }, 200);
     };
-
-
-
 
 
     const toggleFullScreen = () => {
@@ -106,7 +106,6 @@ const DropDown = () => {
     };
 
 
-
     const walletmodal = () => {
         if (Role == "ADMIN") {
             // navigate('/admin/wallet')
@@ -116,6 +115,19 @@ const DropDown = () => {
 
     }
 
+
+    const ProfilePage = () => {
+        if (Role == "ADMIN") {
+            navigate('/admin/profile')
+        } else if (Role == "SUBADMIN") {
+            navigate('/subadmin/profile')
+        } else if (Role == "USER") {
+            navigate('/user/profile')
+        } else if (Role == "EMPLOYEE") {
+            navigate('/employee/profile')
+        }
+
+    }
 
     const toggleFundsVisibility = () => {
         setShowFunds(!showFunds);
@@ -130,6 +142,9 @@ const DropDown = () => {
         const storedThemeMode = localStorage.getItem('theme_mode');
         if (storedThemeMode) {
             setThemeMode(storedThemeMode);
+        } else {
+            localStorage.setItem('theme_mode', "light");
+            setThemeMode('light');
         }
     }, []);
 
@@ -147,12 +162,21 @@ const DropDown = () => {
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
-              {Role !== "USER" ?   <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
+
+                {Role == "SUBADMIN" && (<li className="nav-item dropdown  flag-nav dropdown-heads">
+                   {subadmin_service_type == 2 ? "STRATEGY WISE":"PER TRADE"}
+                </li>)}
+
+
+
+
+                {Role !== "USER" ? <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
                     <button
                         type="button"
+                        data-bs-dismiss="modal"
                         className="btn btn-primary cancel-btn me-2 mt-2"
                         style={{
-                            backgroundColor: "#1E88E5",
+
                             color: "white",
                             border: "none",
                             display: "flex",
@@ -162,33 +186,28 @@ const DropDown = () => {
                             boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
                             cursor: "pointer"
                         }}
-                        
+
                     >
                         {showFunds ? (
                             <span>
                                 <IndianRupee style={{ height: "24px", marginRight: "10px" }} />
-                                <strong>{profileData &&  profileData[0].Balance || "-"}</strong>
+                                <strong>{profileData && profileData[0].Balance || "-"}</strong>
                             </span>
                         ) : (
-                            <span>
+                            <span className='d-flex align-items-center'>
                                 <i className="fe fe-eye" style={{ fontSize: "24px", marginRight: "10px" }} />
-                                <strong>*****</strong>
+                                <span>View Fund </span>
                             </span>
                         )}
                         {/* {showFunds && "+"} */}
                     </button>
-                </li> :""}
-              
+                </li> : ""}
 
 
 
 
-                <li className='nav-item dropdown  dropdown-heads'>
-                    <label className="theme-switch mb-0">
-                        <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
-                        <span className="slider"></span>
-                    </label>
-                </li>
+
+
 
 
 
@@ -198,11 +217,12 @@ const DropDown = () => {
                     </a>
                 </li>
 
-                <li className="nav-item  has-arrow dropdown-heads ">
+                <li className="nav-item has-arrow dropdown-heads">
                     <a onClick={toggleFullScreen} className="win-maximize">
-                        <i className="fe fe-maximize" />
+                        {isFullScreen ? <Minimize /> : <i className="fe fe-maximize" />}
                     </a>
                 </li>
+
 
                 <li className="nav-item dropdown mt-3">
 
@@ -236,9 +256,9 @@ const DropDown = () => {
                         </a>
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="subscription-menu">
-                                <ul>
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/profile">
+                                <ul className="list-unstyled">
+                                    <li onClick={() => ProfilePage()}>
+                                        <Link className="dropdown-item dev" >
                                             Profile
                                         </Link>
                                     </li>
@@ -247,41 +267,32 @@ const DropDown = () => {
                                             Settings
                                         </Link>
                                     </li>
-                                    <li>
-                                        <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
-                                            Log out
-                                        </a>
+                                    {Role == "ADMIN" || Role === "SUBADMIN" ?
+                                        <li>
+                                            <Link className="dropdown-item dev" to={Role === "ADMIN" ? "/admin/system" : "/subadmin/system"}>
+                                                System
+                                            </Link>
+                                        </li> : ''}
 
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                                    <li className='dropdown-item de '>
+                                        <label className="theme-switch mb-0">
+                                            <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
+                                            <span className="slider"></span>
+                                        </label>
 
-                    <div style={{ height: "144px" }} className={`dropdown-menu menu-drop-user ${isDropdownOpen ? 'show' : ''}`}>
-                        <div className="profilemenu table table-hover">
-                            <div className="subscription-menu">
-                                <ul>
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/profile">
-                                            Profile
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/settings">
-                                            Settings
-                                        </Link>
                                     </li>
                                     <li>
                                         <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
                                             Log out
                                         </a>
-
                                     </li>
                                 </ul>
                             </div>
                         </div>
+
                     </div>
+
+
                 </li>
             </ul>
         </div>

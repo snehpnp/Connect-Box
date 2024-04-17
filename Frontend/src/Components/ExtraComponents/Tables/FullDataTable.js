@@ -19,33 +19,33 @@ const FullDataTable = ({
 
   return (
     <>
-      <div style={{ height: "100%", backgroundColor: backgroundColor }}>
-        <DataGrid
-          rows={rowsWithIds}
-          columns={columns}
-          pageSize={10}
-          rowsPerPageOptions={[5, 10, 20]}
-          pagination={true}
-          disableSelectionOnClick
-          checkboxSelection={checkboxSelection}
-          disableColumnFilter={true}
-          disableColumnMenu={true}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 10 },
-            },
-          }}
-          pageSizeOptions={[10, 20]}
-          className="custom-data-grid"
-          style={{
-            border: "none",
-            fontFamily: "none",
-            fontWeight: "400",
-            fontSize: "14px",
-            color: Color,
-          }}
-        />
-      </div>
+      {/* <div style={{ height: "100%", backgroundColor: backgroundColor }}> */}
+      <DataGrid
+        rows={rowsWithIds}
+        columns={columns}
+        pageSize={10}
+        rowsPerPageOptions={[5, 10, 20]}
+        pagination={true}
+        disableSelectionOnClick
+        checkboxSelection={checkboxSelection}
+        disableColumnFilter={true}
+        disableColumnMenu={true}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 10 },
+          },
+        }}
+        pageSizeOptions={[10, 20]}
+        className="custom-data-grid"
+        style={{
+          border: "none",
+          fontFamily: "none",
+          fontWeight: "400",
+          fontSize: "14px",
+          // color: Color,
+        }}
+      />
+      {/* </div> */}
     </>
   );
 };

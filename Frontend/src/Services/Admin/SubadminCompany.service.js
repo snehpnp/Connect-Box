@@ -35,6 +35,21 @@ export async function RechargeDetailsGet(data, token) {
     
 }
 
+export async function RechargeDetailsGetById(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}recharge/id/get`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+    
+}
+
 
 export async function SubadminDetails(data, token) {
     try {

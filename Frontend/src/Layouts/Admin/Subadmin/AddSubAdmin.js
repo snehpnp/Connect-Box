@@ -47,7 +47,7 @@ const AddClient = () => {
       phone: "",
       balance: "",
       password: "",
-      prifix_key: "",
+      prifix_key: null,
       subadmin_servic_type: "0",
       strategy_Percentage: "0",
       Per_trade: "0",
@@ -75,15 +75,20 @@ const AddClient = () => {
       }
       if (!values.balance) {
         errors.balance = "Balance is required";
-      }
+    }
       if (!values.password) {
         errors.password = "Password is required";
       }
+      if (!values.Per_trade ) {
+        errors.Per_trade = "Please Enter per trade value";
+
+      } if (!values.strategy_Percentage) {
+        errors.strategy_Percentage = "Please Enter strategy percentage value";
+      }
+      
       if (!values.prifix_key) {
         errors.prifix_key = "Prefix key is required";
-      } else if (values.prifix_key.length !== 3) {
-        errors.prifix_key = "Key should be exactly 3 characters/number/both";
-      }
+      }  
       return errors;
     },
     onSubmit: async (values, { setSubmitting }) => {
@@ -129,12 +134,12 @@ const AddClient = () => {
       label: "Profile Image",
       type: "file",
       label_size: 6,
-      col_size: 6,
+      col_size: 12,
       disable: false,
     },
     {
       name: "fullName",
-      label: "FullName",
+      label: "Full Name",
       type: "text",
       label_size: 6,
       col_size: 6,
@@ -158,8 +163,8 @@ const AddClient = () => {
     },
     {
       name: "phone",
-      label: "Phone No",
-      type: "number",
+      label: "Phone Number",
+      type: "text3",
       label_size: 12,
       col_size: 6,
       disable: false,
@@ -167,14 +172,14 @@ const AddClient = () => {
     {
       name: "balance",
       label: "Balance",
-      type: "number",
+      type: "text3",
       label_size: 12,
       col_size: 6,
       disable: false,
     },
     {
       name: "password",
-      label: "password",
+      label: "Password",
       type: "password",
       label_size: 12,
       col_size: 6,
@@ -183,14 +188,14 @@ const AddClient = () => {
     {
       name: "prifix_key",
       label: "Prifix Key",
-      type: "text",
+      type: "text2",
       label_size: 12,
       col_size: 6,
       disable: false,
     },
     {
       name: "subadmin_servic_type",
-      label: "Subadmin Servic Type",
+      label: "Subadmin Service Type",
       type: "select",
       options: [
         { label: "Per Trade", value: "1" },
@@ -214,10 +219,10 @@ const AddClient = () => {
         formik.values.subadmin_servic_type === "1" ||
         formik.values.subadmin_servic_type === "2"
           ? formik.values.subadmin_servic_type === "1"
-            ? "Trade Value"
-            : "Strategies %"
+            ? "Per Trade Value"
+            : "% Per Strategy"
           : "",
-      type: "number",
+      type: "text3",
       placeholder:
         formik.values.subadmin_servic_type === "1" ||
         formik.values.subadmin_servic_type === "2"

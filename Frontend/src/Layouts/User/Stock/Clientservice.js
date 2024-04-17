@@ -1,17 +1,63 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { GetAllclientDetails } from '../../../ReduxStore/Slice/Users/ClientServiceSlice'
+
+
+
 
 function Clientservice() {
+
+  const dispatch = useDispatch()
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+  const [getAllClientService, setAllClientService] = useState({
+    loading: false,
+    data: []
+  })
+
+
+  const GetAllClientServiceDetails = async () => {
+
+    var data = { user_Id: user_id };
+    await dispatch(GetAllclientDetails(data)).unwrap()
+      .then((response) => {
+
+        if (response.status) {
+
+          setAllClientService({
+            loading: true,
+            data: response
+          })
+        }
+        else {
+          setAllClientService({
+            loading: false,
+            data: []
+          })
+
+        }
+      })
+      .catch((error) => {
+        console.log("Error is found in finding client service detail", error)
+      })
+
+  }
+
+  useState(() => {
+    GetAllClientServiceDetails();
+  }, []);
+
+
   return (
-    <>
-      <div className="content-page-header mt-2">
+    <div className="content container-fluid">
+      <div className="content-page-header">
         <h5>Stock List</h5>
       </div>
       <div className="form-group-item">
         <div className="card-table">
           <div className="card-body">
-            <div className="table-responsive">
-              <table className="table table-center table-hover datatable">
-                <thead className="thead-light">
+            <div>
+              {/* <table className="table table-center table-hover datatable">
+                <thead style={{ position: "sticky", top: "0", zIndex: "1", backgroundColor: "#fff", height: "50px" }}>
                   <tr>
                     <th>#</th>
                     <th>Symbol</th>
@@ -26,435 +72,232 @@ function Clientservice() {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>ABB[O]</td>
-                    <td>250</td>
-                    <td>500</td>
-                    <td>
-                      <input
-                        type="number"
-                        className="form-control"
-                        defaultValue={1}
-                      />
-                    </td>
-
-                    <td>
-                      250
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">jhg</option>
-                        <option value="2">RSI</option>
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Stoploss Market</option>
-                        <option value="1">Market</option>
-                        <option value="2">Limit</option>
-                        <option value="3">Stoploss Limit</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>MIS</option>
-                        <option value="1">CNC</option>
-                        <option value="2">BO</option>
-                        <option value="3">So</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <div className="status-toggle">
-                        <input id="rating_1" className="check" type="checkbox" defaultChecked="" />
-                        <label htmlFor="rating_1" className="checktoggle checkbox-bg">
-                          checkbox
-                        </label>
-                      </div>
-
-                    </td>
-
-
-
-
-
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>AXISBANK[O]</td>
-                    <td>625</td>
-                    <td>625</td>
-                    <td>
-                      <input
-                        type="number"
-                        className="form-control"
-                        defaultValue={1}
-                      />
-                    </td>
-
-                    <td>
-                      625
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">jhg</option>
-                        <option value="2">RSI</option>
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Stoploss Market</option>
-                        <option value="1">Market</option>
-                        <option value="2">Limit</option>
-                        <option value="3">Stoploss Limit</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>MIS</option>
-                        <option value="1">CNC</option>
-                        <option value="2">BO</option>
-                        <option value="3">So</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <div className="status-toggle">
-                        <input id="rating_2" className="check" type="checkbox" defaultChecked="" />
-                        <label htmlFor="rating_2" className="checktoggle checkbox-bg">
-                          checkbox
-                        </label>
-                      </div>
-
-                    </td>
-
-
-
-
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>BANKNIFTY[O]</td>
-                    <td>15</td>
-                    <td>150</td>
-                    <td>
-                      <input
-                        type="number"
-                        className="form-control"
-                        defaultValue={1}
-                      />
-                    </td>
-
-                    <td>
-                      15
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">jhg</option>
-                        <option value="2">RSI</option>
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Stoploss Market</option>
-                        <option value="1">Market</option>
-                        <option value="2">Limit</option>
-                        <option value="3">Stoploss Limit</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>MIS</option>
-                        <option value="1">CNC</option>
-                        <option value="2">BO</option>
-                        <option value="3">So</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <div className="status-toggle">
-                        <input id="rating_3" className="check" type="checkbox" defaultChecked="" />
-                        <label htmlFor="rating_3" className="checktoggle checkbox-bg">
-                          checkbox
-                        </label>
-                      </div>
-
-                    </td>
-
-
-
-
-
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>CRUDEOIL[MO]</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>
-                      <input
-                        type="number"
-                        className="form-control"
-                        defaultValue={1}
-                      />
-                    </td>
-
-                    <td>
-                      100
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">jhg</option>
-                        <option value="2">RSI</option>
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Stoploss Market</option>
-                        <option value="1">Market</option>
-                        <option value="2">Limit</option>
-                        <option value="3">Stoploss Limit</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>MIS</option>
-                        <option value="1">CNC</option>
-                        <option value="2">BO</option>
-                        <option value="3">So</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <div className="status-toggle">
-                        <input id="rating_4" className="check" type="checkbox" defaultChecked="" />
-                        <label htmlFor="rating_4" className="checktoggle checkbox-bg">
-                          checkbox
-                        </label>
-                      </div>
-
-                    </td>
-
-
-
-
-
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>CRUDEOIL[MO]</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>
-                      <input
-                        type="number"
-                        className="form-control"
-                        defaultValue={1}
-                      />
-                    </td>
-
-                    <td>
-                      100
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">jhg</option>
-                        <option value="2">RSI</option>
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Stoploss Market</option>
-                        <option value="1">Market</option>
-                        <option value="2">Limit</option>
-                        <option value="3">Stoploss Limit</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>MIS</option>
-                        <option value="1">CNC</option>
-                        <option value="2">BO</option>
-                        <option value="3">So</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <div className="status-toggle">
-                        <input id="rating_5" className="check" type="checkbox" defaultChecked="" />
-                        <label htmlFor="rating_5" className="checktoggle checkbox-bg">
-                          checkbox
-                        </label>
-                      </div>
-
-                    </td>
-
-
-
-
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>CRUDEOIL[MO]</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>
-                      <input
-                        type="number"
-                        className="form-control"
-                        defaultValue={1}
-                      />
-                    </td>
-
-                    <td>
-                      100
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">jhg</option>
-                        <option value="2">RSI</option>
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Stoploss Market</option>
-                        <option value="1">Market</option>
-                        <option value="2">Limit</option>
-                        <option value="3">Stoploss Limit</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>MIS</option>
-                        <option value="1">CNC</option>
-                        <option value="2">BO</option>
-                        <option value="3">So</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <div className="status-toggle">
-                        <input id="rating_6" className="check" type="checkbox" defaultChecked="" />
-                        <label htmlFor="rating_6" className="checktoggle checkbox-bg">
-                          checkbox
-                        </label>
-                      </div>
-
-                    </td>
-
-
-
-
-
-                  </tr>
-                  <tr>
-                    <td>7</td>
-                    <td>CRUDEOIL[MO]</td>
-                    <td>100</td>
-                    <td>100</td>
-                    <td>
-                      <input
-                        type="number"
-                        className="form-control"
-                        defaultValue={1}
-                      />
-                    </td>
-
-                    <td>
-                      100
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Open this select menu</option>
-                        <option value="1">jhg</option>
-                        <option value="2">RSI</option>
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>Stoploss Market</option>
-                        <option value="1">Market</option>
-                        <option value="2">Limit</option>
-                        <option value="3">Stoploss Limit</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <select className="form-select" aria-label="Default select example">
-                        <option selected>MIS</option>
-                        <option value="1">CNC</option>
-                        <option value="2">BO</option>
-                        <option value="3">So</option>
-
-
-                      </select>
-                    </td>
-                    <td>
-                      <div className="status-toggle">
-                        <input id="rating_7" className="check" type="checkbox" defaultChecked="" />
-                        <label htmlFor="rating_7" className="checktoggle checkbox-bg">
-                          checkbox
-                        </label>
-                      </div>
-
-                    </td>
-
-
-
-
-                  </tr>
-
-
-
-
-
-
+                  {
+                    getAllClientService.data.services && getAllClientService.data.services.map((item, index) => (
+                      <>
+                        <tr>
+                          <td>{index}</td>
+                          <td>{item.service.name}</td>
+                          <td>{item.service.lotsize}</td>
+                          <td>500</td>
+                          <td>
+                            <input
+                              type="number"
+                              className="form-control"
+                              defaultValue={1}
+                            />
+                          </td>
+                          <td>250</td>
+                          <td>
+                            <select className="form-select" aria-label="Default select example">
+                              <option
+                                value={getAllClientService.data.strategy.map((data) => { if (data.result._id.includes(item.strategy_id[0])) return data.result._id })}
+                                className="text-success h6"
+                                selected
+
+                              >
+                                {getAllClientService.data.strategy.map((data) => { if (data.result._id.includes(item.strategy_id[0])) return data.result.strategy_name })}
+                              </option>
+
+                              {
+                                getAllClientService.data.strategy.map((data, index) => {
+                                  if (data.result._id.includes(item.strategy_id[0])) {
+
+                                  }
+                                  else {
+                                    return <option value={index} className='text-danger'>{data.result.strategy_name}</option>
+
+                                  }
+
+
+                                })}
+
+
+
+                            </select>
+                          </td>
+                          <td>
+                            <select className="form-select" aria-label="Default select example">
+                              <option selected>Stoploss Market</option>
+                              <option value="1">Market</option>
+                              <option value="2">Limit</option>
+                              <option value="3">Stoploss Limit</option>
+                            </select>
+                          </td>
+                          <td>
+                            <select className="form-select" aria-label="Default select example">
+                              <option selected>MIS</option>
+                              <option value="1">CNC</option>
+                              <option value="2">BO</option>
+                              <option value="3">So</option>
+                            </select>
+                          </td>
+                          <td>
+                            <div className="status-toggle">
+                              <input id={`rating_${index}`} className="check" type="checkbox" defaultChecked="" />
+                              <label htmlFor={`rating_${index}`} className="checktoggle checkbox-bg">
+                                checkbox
+                              </label>
+                            </div>
+                          </td>
+                        </tr>
+                      </>
+
+                    ))}
                 </tbody>
-                <div className='ms-2 mt-2 mb-2'>
+              </table> */}
+              <section className="pricing-section p-0">
+                <div className="container">
+                  <div className="sec-title mb-4">
+                    <h3></h3>
+                  </div>
+                  <div className="outer-box">
+                    <div className="row">
+                      {/* Pricing Block */}
+                      <div className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
+                        <div className="inner-box">
+                          <div className="icon-box">
+                            <div className="icon-outer">
+                              <i className="fas fa-paper-plane" />
+                            </div>
+                          </div>
+                          <div className="price-box">
+                            <div className="title">BANKNIFTY</div>
+                            <div className="d-flex justify-content-center price">
+                              <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
 
-                  <button className='btn btn-primary'>Update</button>
+                              </div>
+                            </div>
+
+
+                          </div>
+                          <ul className="features">
+                            <li className="true">Lot Size: 15</li>
+                            <li className="true">Max Qty: 500</li>
+                            <li className="true">Lot Size: 1</li>
+                            <li className="true">Quantity: 250</li>
+                            <li className="true"> <select className="form-select" aria-label="Default select example">
+                              <option selected>Stoploss Market</option>
+                              <option value="1">Market</option>
+                              <option value="2">Limit</option>
+                              <option value="3">Stoploss Limit</option>
+                            </select></li>
+                          </ul>
+
+                        </div>
+                      </div>
+                      {/* Pricing Block */}
+                      <div
+                        className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp"
+                        data-wow-delay="400ms"
+                      >
+                        <div className="inner-box">
+                          <div className="icon-box">
+                            <div className="icon-outer">
+                              <i className="fas fa-gem" />
+                            </div>
+                          </div>
+                          <div className="price-box">
+                            <div className="title">Nifty</div>
+                            <div className="d-flex justify-content-center price">
+                              <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
+                              </div>
+                            </div>
+                          </div>
+                          <ul className="features">
+                            <li className="true">Lot Size: 15</li>
+                            <li className="true">Max Qty: 500</li>
+                            <li className="true">Lot Size: 1</li>
+                            <li className="true">Quantity: 250</li>
+                            <li className="true"> <select className="form-select" aria-label="Default select example">
+                              <option selected>Stoploss Market</option>
+                              <option value="1">Market</option>
+                              <option value="2">Limit</option>
+                              <option value="3">Stoploss Limit</option>
+                            </select></li>
+                          </ul>
+
+                        </div>
+                      </div>
+                      {/* Pricing Block */}
+                      <div
+                        className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp"
+                        data-wow-delay="800ms"
+                      >
+                        <div className="inner-box">
+                          <div className="icon-box">
+                            <div className="icon-outer">
+                              <i className="fas fa-rocket" />
+                            </div>
+                          </div>
+                          <div className="price-box">
+                            <div className="title">Nifty 50</div>
+                            <div className="d-flex justify-content-center price">
+                              <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
+
+                              </div>
+                            </div>
+                          </div>
+                          <ul className="features">
+                            <li className="true">Lot Size: 15</li>
+                            <li className="true">Max Qty: 500</li>
+                            <li className="true">Lot Size: 1</li>
+                            <li className="true">Quantity: 250</li>
+                            <li className="true"> <select className="form-select" aria-label="Default select example">
+                              <option selected>Stoploss Market</option>
+                              <option value="1">Market</option>
+                              <option value="2">Limit</option>
+                              <option value="3">Stoploss Limit</option>
+                            </select></li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div
+                        className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp"
+                        data-wow-delay="800ms"
+                      >
+                        <div className="inner-box">
+                          <div className="icon-box">
+                            <div className="icon-outer">
+                              <i className="fas fa-rocket" />
+                            </div>
+                          </div>
+                          <div className="price-box">
+                            <div className="title">Nifty 50</div>
+                            <div className="d-flex justify-content-center price">
+                              <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
+
+                              </div>
+                            </div>
+                          </div>
+                          <ul className="features">
+                            <li className="true">Lot Size: 15</li>
+                            <li className="true">Max Qty: 500</li>
+                            <li className="true">Lot Size: 1</li>
+                            <li className="true">Quantity: 250</li>
+                            <li className="true"> <select className="form-select" aria-label="Default select example">
+                              <option selected>Stoploss Market</option>
+                              <option value="1">Market</option>
+                              <option value="2">Limit</option>
+                              <option value="3">Stoploss Limit</option>
+                            </select></li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </table>
+              </section>
             </div>
           </div>
         </div>
       </div>
-
-    </>
-  )
+    </div>
+  );
 }
 
-export default Clientservice
+export default Clientservice;

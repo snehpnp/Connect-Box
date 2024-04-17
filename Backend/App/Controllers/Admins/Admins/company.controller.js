@@ -35,12 +35,14 @@ class Company {
     // GET COMPANY DETALIS
     async GetCompanyInfo(req, res) {
         try {
+        
 
             var compantInfo = await company_information.find()
             if (!compantInfo) {
                 return res.send({ status: false, msg: 'Server issue Not find Company information.', data: [] });
             }
             return res.send({ status: true, msg: 'Done', data: compantInfo });
+
         } catch (error) {
             console.log("Error Company Information Get -", error);
         }

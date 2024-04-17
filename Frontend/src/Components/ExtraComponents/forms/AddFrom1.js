@@ -39,8 +39,6 @@ const DynamicForm = ({
   const prifix_key = JSON.parse(localStorage.getItem("user_details")).prifix_key;
 
 
-  console.log("prifix_key :", prifix_key)
-
 
 
   const handleFileChange = (event, index, name) => {
@@ -52,7 +50,6 @@ const DynamicForm = ({
       const file = event.target.files[0];
       const newPreviews = [...previews];
       newPreviews[index] = URL.createObjectURL(file);
-      console.log("newPreviews[index]", newPreviews[index]);
       setPreviews(newPreviews);
       const reader = new FileReader();
       reader.onload = () => {
@@ -74,10 +71,9 @@ const DynamicForm = ({
     // Update selectedImage state with the selected file
     setSelectedImage(file);
   };
-  console.log("fields :", fields)
 
   return (
-    <div className="content container-fluid">
+    <div className="content container-fluid" data-aos="fade-left">
       <div className="card mb-0 p-0 ">
         <form onSubmit={formik.handleSubmit}>
           <div className="card-body p-0">
@@ -211,7 +207,6 @@ const DynamicForm = ({
                                     disabled={field.disable}
                                     onChange={(event) => {
                                       const selectedValue = event.target.value;
-                                      console.log("Selected value:", selectedValue);
                                     }}
                                   >
                                     <option value="" disabled={field.disable} >

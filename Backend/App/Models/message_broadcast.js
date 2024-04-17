@@ -9,10 +9,13 @@ const newMessage = new mongoose.Schema({
   strategyId: {
     type: ObjectId,
     ref: "strategies",
+    default:null
+
   },
   brokerId: {
     type: ObjectId,
-    ref: "",
+    ref: "api_create_infos",
+    default:null
   },
   subAdminId: [{
     type: ObjectId,
@@ -24,7 +27,7 @@ const newMessage = new mongoose.Schema({
   },
   Role: {
     type: String,
-    // required: true
+    required: true
   },
   createdAt: {
     type: Date,

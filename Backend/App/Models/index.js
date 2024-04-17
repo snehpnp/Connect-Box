@@ -9,28 +9,20 @@ module.exports = {
     Strategies: require("./strategy.model"),
     strategy_client: require("./strategy_client.model"),
     Alice_token: require("./Alice_token.model"),
-
-
-
     serviceGroupName: require('./serviceGroupName.model'),
     serviceGroup_services_id: require('./serviceGroup_services_id.model'),
-
-
     group_services: require("./group_services_client.model"),
-
     client_service: require("./client_service.model"),
-
-
-
     api_create_info: require('./api_create_info.model'),
     SubAdminCompanyInfo: require('./SubAdminCompany.model'),
-
     strategy_transaction: require('./Strategy_transaction'),
-
     msgdata:require('./message_broadcast'),
     help:require('./HelpService.model'),
-
-
-
-
+    Plan:require('./Plan.model'),
+    Signals:require('./Signals.model'),
+    user_activity_logs:require('./user_logs.model'),
+    subadmin_activity_logs:require('./Subadmin_logs.model'),
+    get_option_chain_symbols: require('./Get_Option_Chain_Symboll.model'),
+    live_price :require('./Live_price.model'),
+    MainSignals: require('./Main_signals.model'),
 };

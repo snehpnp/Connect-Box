@@ -18,3 +18,32 @@ export async function GetProfile(data, token) {
     }
 
 }
+
+
+export async function GetUserInfo(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}get/userinfo`, data, {
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}
+
+export async function TRADING_OFF_BTN(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}tradingoff`, data, {
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}
