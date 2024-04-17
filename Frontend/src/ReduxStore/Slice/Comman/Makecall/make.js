@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_SERVICS ,GET_ALL_Catagory ,GET_EXPIRY_BY_SCRIPT,GET_ALL_STRIKE_PRICE} from "../../../../Services/Comman/Makecall/make.service";
+import { GET_ALL_SERVICS ,GET_ALL_Catagory ,GET_EXPIRY_BY_SCRIPT,GET_ALL_STRIKE_PRICE ,GET_STRATEGY_DATA} from "../../../../Services/Comman/Makecall/make.service";
 
 export const getAllServices = createAsyncThunk(
   "make/ServiceByCatagory",
@@ -63,6 +63,22 @@ export const getexpirymanualtrade = createAsyncThunk(
     }
   );
 
+  export const getStrategyData = createAsyncThunk(
+    "make/getStrategyData",
+    async (data) => {
+      try {
+        const {req,token} = data
+
+      //  console.log("req ",req)
+       // console.log("token ",token)
+        const res = await GET_STRATEGY_DATA(req,token);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
+
 
 
 const GrouoServicesSlice = createSlice({
@@ -74,6 +90,7 @@ const GrouoServicesSlice = createSlice({
     Allcategaory: null,
     AllGetScriptExpiry: null,
     AllGetStrikePrice: null,
+    AllStrategyData: null,
 
   },
   reducers: {},
@@ -129,6 +146,20 @@ const GrouoServicesSlice = createSlice({
         state.AllGetStrikePrice = action.payload;
       })
       .addCase(getAllStrikePriceApi.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+
+
+      .addCase(getStrategyData.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(getStrategyData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.AllStrategyData = action.payload;
+      })
+      .addCase(getStrategyData.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });

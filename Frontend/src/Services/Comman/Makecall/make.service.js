@@ -66,6 +66,21 @@ export async function GET_ALL_STRIKE_PRICE(data, token) {
     }
 }
 
+//GET_STRATEGY_DATA data 
+export async function GET_STRATEGY_DATA(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}make/getStrategyData`, data, {  
+            // data: {},
+            headers: header(token),
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
 
 
 
