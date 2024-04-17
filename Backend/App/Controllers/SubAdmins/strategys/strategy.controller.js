@@ -26,6 +26,7 @@ class strategy {
         strategy_amount_half_early,
         strategy_amount_early,
         maker_id,
+        Service_Type
       } = req.body;
 
       if (!maker_id || maker_id == "" || maker_id == null) {
@@ -113,6 +114,7 @@ class strategy {
         strategy_amount_half_early: strategy_amount_half_early,
         strategy_amount_early: strategy_amount_early,
         maker_id: maker_id_find._id,
+        Service_Type:Service_Type
       });
 
       strategy_Data
