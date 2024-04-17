@@ -7,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch } from "react-redux";
 import ExportToExcel from '../../../Utils/ExportCSV'
+import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
 import {
   update_Balance,
@@ -36,9 +37,9 @@ export default function AllUsers() {
   const [searchInput, setSearchInput] = useState('');
   const [ForGetCSV, setForGetCSV] = useState([])
   const [getAllBroker, setAllBroker] = useState([]);
-  
+
   const [ShowDeleteModal, setShowDeleteModal] = useState(false);
-  
+
 
 
 
@@ -295,9 +296,9 @@ export default function AllUsers() {
 
   };
 
- 
 
- 
+
+
 
 
   const getUsersData = async () => {
@@ -323,7 +324,7 @@ export default function AllUsers() {
             return searchInputMatch
 
           })
-         
+
           setAllUsers({
             loading: true,
             data: searchInput ? filterData : formattedData,
@@ -347,7 +348,7 @@ export default function AllUsers() {
           });
 
         } else {
-         
+
           setAllUsers({
             loading: true,
             data: [],
@@ -357,7 +358,7 @@ export default function AllUsers() {
       })
       .catch((error) => {
         console.log("Error", error);
-     
+
         setAllUsers({
           loading: false,
           data: [],
@@ -400,7 +401,26 @@ export default function AllUsers() {
   }, [getAllUsers.data])
 
 
-
+  const handleDeleteConfirmation = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success"
+        });
+      }
+      setShowDeleteModal(false);  
+    });
+  };
 
   return (
     <>
@@ -514,34 +534,12 @@ export default function AllUsers() {
       )}
 
 
-    
-      {ShowDeleteModal &&
-        (
-          <div className="modal custom-modal modal-delete d-block" >
-            <div className="modal-dialog modal-dialog-centered modal-md">
-              <div className="modal-content">
-                <div className="modal-body">
-                  <div className="form-header">
-                    <div className="delete-modal-icon">
-                      <span>
-                        <i className="fe fe-check-circle" />
-                      </span>
-                    </div>
-                    <h3>Are You Sure?</h3>
-                    <p>You want delete company</p>
-                  </div>
-                  <div className="modal-btn delete-action">
-                    <div className="modal-footer justify-content-center p-0">
-                      <button type="submit" onClick={() => handleDelete()} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
-                      <button type="button" onClick={() => setShowDeleteModal(false)} className="btn btn-back cancel-btn">No, Cancel</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
+      {ShowDeleteModal && (
+        <div>
+          {handleDeleteConfirmation()}
+        </div>
+      )}
 
 
 
