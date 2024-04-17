@@ -199,7 +199,7 @@ export default function AllUsers() {
             id={`rating_${params.row.id}`}
             className="check"
             type="checkbox"
-            onChange={(event) => handleSwitchChange(event, params.row._id)}
+            onClick={(event) => handleSwitchChange(event, params.row._id)}
             defaultChecked={params.value == 1}
           />
           <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg"></label>
@@ -224,8 +224,9 @@ export default function AllUsers() {
             aria-label="delete"
             size="small"
             onClick={() => {
-              setShowDeleteModal(true);
-              setmodalId(params.row._id);
+
+
+              handleDeleteConfirmation(params.row._id)
             }}
           >
             <DeleteIcon />
@@ -250,51 +251,44 @@ export default function AllUsers() {
     navigate('/subadmin/user/edit/' + row._id)
   };
 
-  const handleDelete = async (row) => {
-
-    var data = { id: modalId }
-    await dispatch(DeleteUser(data)).unwrap()
-      .then((response) => {
-        if (response.status) {
-          toast.success(response.msg)
-          setShowDeleteModal(false)
-          setmodalId('')
-          setrefresh(!refresh);
-        }
-        else {
-          toast.error(response.msg);
-        }
-      })
-      .catch((error) => {
-        console.log("Error User Does Not Exit", error)
-      })
 
 
-
-
-  };
 
 
 
   const handleSwitchChange = async (event, id) => {
-    const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
+    const user_active_status = event.target.checked ? 1 : 0;
 
-    await dispatch(Show_Status({ id, user_active_status }))
-      .unwrap()
-      .then(async (response) => {
+    const result = await Swal.fire({
+      title: "Do you want to save the changes?",
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      cancelButtonText: "Cancel",
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await dispatch(Show_Status({ id, user_active_status })).unwrap();
         if (response.status) {
-          toast.success(response.msg);
-          setrefresh(!refresh)
+          Swal.fire("Saved!", "", "success");
+          setrefresh(!refresh);
         } else {
-          toast.error(response.msg);
+          setrefresh(!refresh);
         }
-      })
-      .catch((error) => {
-        console.log("Error", error);
+      } catch (error) {
+        console.error("Error", error);
+        Swal.fire("Error", "There was an error processing your request.", "error");
+      }
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      window.refresh()
+      Swal.fire("Changes canceled", "", "info");
+      setrefresh(!refresh);
 
-      });
-
+    }
   };
+
+
+
 
 
 
@@ -401,8 +395,9 @@ export default function AllUsers() {
   }, [getAllUsers.data])
 
 
-  const handleDeleteConfirmation = () => {
-    Swal.fire({
+  // DELETE SWEET ALERT 2
+  const handleDeleteConfirmation = async (id) => {
+    const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
       icon: "warning",
@@ -410,17 +405,43 @@ export default function AllUsers() {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success"
-        });
-      }
-      setShowDeleteModal(false);  
     });
+
+    if (result.isConfirmed) {
+      var data = { id: id };
+      try {
+        const response = await dispatch(DeleteUser(data)).unwrap();
+        if (response.status) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+            timer: 1000,
+            timerProgressBar: true,
+            onClose: () => {
+              setShowDeleteModal(false);
+            }
+          });
+          setmodalId('');
+          setrefresh(!refresh);
+        } else {
+        }
+      } catch (error) {
+        console.error('There was a problem with the API request:', error);
+        Swal.fire({
+          title: "Error!",
+          text: "There was an error processing your request.",
+          icon: "error"
+        });
+      } finally {
+        setShowDeleteModal(false);
+      }
+    } else {
+      setShowDeleteModal(false);
+    }
   };
+
+
 
   return (
     <>
@@ -535,11 +556,6 @@ export default function AllUsers() {
 
 
 
-      {ShowDeleteModal && (
-        <div>
-          {handleDeleteConfirmation()}
-        </div>
-      )}
 
 
 
