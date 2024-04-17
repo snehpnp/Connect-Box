@@ -228,8 +228,7 @@ function Strategy() {
 
         },
         onSubmit: async (values, { resetForm }) => {
-            console.log("values.serviceType", values.service_type)
-            return
+          
             const data = {
                 strategy_name: values.strategy_name,
                 strategy_category: values.strategy_category,
