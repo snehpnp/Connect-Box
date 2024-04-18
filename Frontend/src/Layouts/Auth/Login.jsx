@@ -63,6 +63,11 @@ function Login() {
         setTimeout(() => {
           navigate("/employee/dashboard");
         }, 8000);
+      } else if (getData.Role === "RESEARCH") {
+
+        setTimeout(() => {
+          navigate("/research/dashboard");
+        }, 8000);
       } else {
         setTimeout(() => {
           navigate("/user/dashboard");
@@ -123,6 +128,14 @@ function Login() {
       }, 9000);
     }
   }, [isLoggedIn, getData.Role, navigate]);
+
+
+
+
+
+
+
+
   return (
 
     <>

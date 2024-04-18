@@ -358,3 +358,69 @@ export const User_header = [
 ];
 
 
+export const employee_header = [
+    {
+        id: 1,
+        name: 'Dashboard',
+        Icon: "fe fe-home",
+        route: "/employee/dashboard",
+        Data: []
+    },
+
+    {
+        id: 4,
+        name: 'Users',
+        Icon: "fe fe-user",
+        Data: [
+            {
+                id: 41,
+                name: 'Add User',
+                Icon: "fe fe-user-plus",
+                route: "/employee/User/add",
+            },
+            {
+                id: 42,
+                name: 'All Users',
+                Icon: "fe fe-users",
+                route: "/employee/users",
+            },
+        ]
+    },
+    {
+        id: 61,
+        name: 'Signal',
+        route: "/employee/orders",
+        Icon: "fe fe-list",
+        Data: []
+    },
+    {
+        id: 62,
+        name: 'Trade History',
+        route: "/employee/position",
+        Icon: "fe fe-map-pin",
+        Data: []
+    },
+  
+ 
+    {
+        id: 10,
+        name: 'Message Broadcast',
+        route: "/employee/message-broadcast",
+        Icon: "fe fe-message-circle",
+        Data: []
+    },
+    {
+        id: 11,
+        name: 'Help',
+        route: "/employee/help",
+        Icon: "fe fe-help-circle",
+        Data: []
+    },
+    {
+        id: 9,
+        name: 'FAQs',
+        route: "/employee/faqs",
+        Icon: "fe fe-help-circle",
+        Data: []
+    }
+];

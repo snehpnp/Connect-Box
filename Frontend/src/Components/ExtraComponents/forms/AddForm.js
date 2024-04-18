@@ -630,6 +630,7 @@ const DynamicForm = ({
                                     type="checkbox"
                                     onChange={(event) => HandelChange(event)}
                                     defaultChecked={formik.values['Service_Type'] === "1"}
+                                    disabled={field.disable}
                                   />
                                   <label htmlFor="rating" className="checktoggle checkbox-bg"></label>
                                 </div>

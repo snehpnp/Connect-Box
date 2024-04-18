@@ -21,6 +21,9 @@ const DropDown = () => {
     const [error, setError] = useState(null);
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+    const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
+    var Role = JSON.parse(localStorage.getItem("user_details")).Role
+    var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
 
 
     const fetchData = async () => {
@@ -55,8 +58,6 @@ const DropDown = () => {
     }, []);
 
 
-    var Role = JSON.parse(localStorage.getItem("user_details")).Role
-    var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
 
 
 
@@ -168,6 +169,13 @@ const DropDown = () => {
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
+
+                {Role == "SUBADMIN" && (<li className="nav-item dropdown flag-nav dropdown-heads">
+
+                    {subadmin_service_type == 2 ? "STRATEGY WISE" : "PER TRADE"}
+
+                </li>)}
+
                 {Role !== "USER" ? <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
                     <button
                         type="button"
