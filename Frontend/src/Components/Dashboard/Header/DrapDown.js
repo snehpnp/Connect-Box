@@ -258,14 +258,16 @@ const DropDown = () => {
                         <div className="dropdown-menu dropdown-menu-right">
                             <div className="subscription-menu">
                                 <ul className="list-unstyled">
+                                <li className='dropdown-item de togel'>
+                                        <label className="theme-switch mb-0">
+                                            <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
+                                            <span className="slider"></span>
+                                        </label>
+
+                                    </li>
                                     <li onClick={() => ProfilePage()}>
                                         <Link className="dropdown-item dev" >
                                             Profile
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/settings">
-                                            Settings
                                         </Link>
                                     </li>
                                     {Role == "ADMIN" || Role === "SUBADMIN" ?
@@ -274,14 +276,14 @@ const DropDown = () => {
                                                 System
                                             </Link>
                                         </li> : ''}
-
-                                    <li className='dropdown-item de '>
-                                        <label className="theme-switch mb-0">
-                                            <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
-                                            <span className="slider"></span>
-                                        </label>
-
+                                    <li>
+                                        <Link className="dropdown-item dev" to="/settings">
+                                            Settings
+                                        </Link>
                                     </li>
+                                  
+
+                                    
                                     <li>
                                         <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
                                             Log out
