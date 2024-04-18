@@ -360,7 +360,7 @@ function Login() {
           <div className="overlay-content">
             <div class="first-intro">
               <div class="intro-fill">
-                <span class="tf-user-welcome welcome-1">Hi `{getData.Role}!`</span>
+                <span class="tf-user-welcome welcome-1">Hi `{getData.UserName}!`</span>
                 <span class="tf-user-welcome welcome-2">Welcome to Connect Box</span>
                 <span class="tf-user-welcome welcome-3">We’re delighted to be at your Service</span>
               </div>
