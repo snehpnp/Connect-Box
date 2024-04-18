@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-
+import { ProfilImage } from "../../../ReduxStore/Slice/Comman/Userinfo";
 
 import Toaster from "../../../Components/ExtraComponents/Alert_Toast";
 
@@ -22,20 +22,24 @@ const style = {
   boxShadow: 24,
   p: 4,
   height: 600,
-  borderRadius:"3rem"
+  borderRadius: "3rem",
 };
-
-
 
 const Profile = () => {
   const dispatch = useDispatch();
 
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   const [profileData, setProfileData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+
   const [error, setError] = useState(null);
-  const [open, setOpen] = React.useState(false);
-  const [profileImage, setProfileImage] = useState("assets/img/profiles/ProfileAvataar/kangaroo.png");
-  const [avatarImages] = useState([
+  const [open, setOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState("");
+  const [editbtn, setEditbtn] = useState(false);
+  
+
+  const avatarImages = [
     "hacker.png",
     "gamer (1).png",
     "character.png",
@@ -71,23 +75,29 @@ const Profile = () => {
     "squirrel.png",
     "tiger.png",
     "wolf (1).png",
+  ];
 
+  const handleAvatarClick = async (avatarUrl) => {
+    // console.log("avatarUrl", avatarUrl);
 
-  ])
+    try {
+      var data = { user_id: user_id, profile_img: avatarUrl };
+      const response = await dispatch(ProfilImage(data)).unwrap();
 
-   
-  
-  useEffect(() => {
-    localStorage.setItem('profileImage', profileImage)
-  }, [profileImage]);
+      if (response.status) {
+        setRefresh(!refresh);
+      }
+    } catch (error) {
+      console.error("Error", error);
+      toast.error("Failed to update profile");
+    }
 
-  const handleAvatarClick = (avatarUrl) => {
-    
-    setProfileImage(avatarUrl);
-    setOpen(false); // Close the modal after selecting an avatar
+    setOpen(false);
   };
 
-  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+
+
+
 
   const fetchData = async () => {
     try {
@@ -98,6 +108,7 @@ const Profile = () => {
         .then(async (response) => {
           if (response.status) {
             setProfileData(response.data);
+            setProfileImage(response.data[0].profile_img);
             setLoading(true);
           } else {
             toast.error(response.msg);
@@ -115,7 +126,7 @@ const Profile = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <div>
@@ -127,7 +138,7 @@ const Profile = () => {
                 <div className="profile-cover-wrap">
                   <img
                     className="profile-cover-img"
-                    src="assets/img/profiles/ProfileAvataar/gamer.png"
+                    src="assets/img/profiles/ProfileAvataar/—Pngtree—abstract geometric poster cover hexagon_9008888.png"
                     alt="Profile Cover"
                     id="cover-image"
                   />
@@ -158,7 +169,11 @@ const Profile = () => {
                 >
                   <img
                     className="avatar-img"
-                    src={profileImage}
+                    src={
+                      profileImage
+                        ? profileImage
+                        : "assets/img/profiles/ProfileAvataar/hacker.png"
+                    }
                     alt="Profile Image"
                     id="blah"
                   />
@@ -171,8 +186,6 @@ const Profile = () => {
                   >
                     <i className="fe fe-edit avatar-uploader-icon shadow-soft" />
                   </span>
-
-                  
 
                   <Modal
                     open={open}
@@ -199,16 +212,12 @@ const Profile = () => {
                           alignItems: "center",
                           gap: "2.5rem",
                           flexWrap: "wrap",
-                          
-                          
                         }}
                       >
-                        
-
                         {avatarImages.map((avatar, index) => (
                           <img
                             key={index}
-                            className="avatar-img grow" 
+                            className="avatar-img grow"
                             src={`assets/img/profiles/ProfileAvataar/${avatar}`}
                             alt={`Profile Image ${index + 1}`}
                             onClick={() =>
@@ -219,8 +228,6 @@ const Profile = () => {
                             style={{ width: "5rem", cursor: "pointer" }}
                           />
                         ))}
-
-
                       </Typography>
                     </Box>
                   </Modal>
@@ -275,11 +282,112 @@ const Profile = () => {
                         <span>Profile</span>
                         <a
                           className="btn btn-sm btn-white"
-                          href="settings.html"
+                          onClick={() => {
+                            setEditbtn(!editbtn);
+                          }}
                         >
                           Edit
                         </a>
                       </h5>
+                      {editbtn && (
+                        <div
+                          className="modal custom-modal d-block kk"
+                          id="add_vendor"
+                          role="dialog"
+                        >
+                          <div className="modal-dialog modal-dialog-centered modal-md">
+                            <div className="modal-content">
+                              <div className="modal-header border-0 pb-0">
+                                <div className="form-header modal-header-title text-start mb-0">
+                                  <h4 className="mb-0">Edit</h4>
+                                </div>
+
+                                <button
+                                  type="button"
+                                  className="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                  onClick={()=>setEditbtn(!editbtn)}
+                                ></button>
+                              </div>
+
+                              <form action="#">
+                                <div className="modal-body">
+                                  <div className="row">
+                                    <div className="col-lg-12 col-sm-12">
+                                      <div className="input-block mb-3">
+                                        <label>FullName</label>
+
+                                        <input
+                                          type="text"
+                                          className="form-control"
+                                          placeholder="Enter Name"
+                                         
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-lg-12 col-sm-12">
+                                      <div className="input-block mb-3">
+                                        <label>UserName</label>
+
+                                        <input
+                                          type="text"
+                                          className="form-control"
+                                          placeholder="Enter UserName "
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-lg-12 col-sm-12">
+                                      <div className="input-block mb-3">
+                                        <label>Email</label>
+
+                                        <input
+                                          type="text"
+                                          className="form-control"
+                                          placeholder="Enter Email"
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-lg-12 col-sm-12">
+                                      <div className="input-block mb-0">
+                                        <label>Phone No</label>
+
+                                        <input
+                                          type="number"
+                                          className="form-control"
+                                          placeholder="Enter number"
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="modal-footer">
+                                  <button
+                                    type="button"
+                                    data-bs-dismiss="modal"
+                                    className="btn btn-back cancel-btn me-2"
+                                    onClick={()=>{setEditbtn(!editbtn)}}
+                                  >
+                                    Cancel
+                                  </button>
+
+                                  <button
+                                    type="submit"
+                                    data-bs-dismiss="modal"
+                                    className="btn btn-primary paid-continue-btn"
+                                  >
+                                    Update
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                     <div className="card-body">
                       <ul className="list-unstyled mb-0">

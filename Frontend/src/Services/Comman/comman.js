@@ -47,3 +47,21 @@ export async function TRADING_OFF_BTN(data, token) {
     }
 
 }
+
+
+   ///  profile 
+
+
+export async function ProfileData(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}ProfileImagedata`, data, {
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}

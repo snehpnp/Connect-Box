@@ -41,6 +41,7 @@ import Profile from '../Layouts/Comman/Profile/Profile';
 import Openposition from '../Layouts/SubAdmin/Option/Open_Positions.js';
 
 
+
 // strategydesc
 const SubAdmin_Routing = () => {
 
@@ -75,6 +76,8 @@ const SubAdmin_Routing = () => {
           <Route exact path="/position" element={<Position />} />
 
           <Route exact path="/open-position" element={<Openposition />} />
+          
+
 
 
 

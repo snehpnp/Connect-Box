@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { GetBrokerData } from "../../../Services/Comman/Optionchain";
 
-import { GetUserInfo, TRADING_OFF_BTN } from "../../../Services/Comman/comman";
+import { GetUserInfo, TRADING_OFF_BTN ,ProfileData} from "../../../Services/Comman/comman";
 
 export const Userinfo = createAsyncThunk(
     "get/userinfo",
@@ -42,6 +42,25 @@ export const GetBrokerDatas = createAsyncThunk(
 
 
 
+
+// profile 
+
+export const ProfilImage = createAsyncThunk(
+    "ProfileImagedata",
+    async (data) => {
+        
+        try {
+            const res = await ProfileData(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+
+
+
 const Userinfo1Slice = createSlice({
     name: "UserinfoSlice",
     initialState: {
@@ -49,6 +68,7 @@ const Userinfo1Slice = createSlice({
         isError: false,
         userInfo: null,
         tradingoff: null,
+        ProfilImage:null,
 
     },
     reducers: {},
@@ -86,8 +106,18 @@ const Userinfo1Slice = createSlice({
             .addCase(Trading_Off_Btn.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.tradingoff = action.payload
-            })
+            }).addCase(ProfilImage.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.ProfilImage = action.payload
+            }).addCase(ProfilImage.pending, (state, action) => {
 
+                state.isLoading = true;
+                state.isError = false;
+            }).addCase(ProfilImage.rejected, (state, action) => {
+
+                state.isLoading = false;
+                state.isError = true;
+            })
 
     },
 });
