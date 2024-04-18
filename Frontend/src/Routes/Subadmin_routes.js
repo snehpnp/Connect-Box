@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Overview from "../Layouts/Admin/Dashboard/Overview";
+
 import Header from "../Components/Dashboard/Header/Header";
 import MainHeader from "../Components/Dashboard/Header/Main_header";
 import System from "../Layouts/SubAdmin/Systems/System.js";
@@ -35,6 +35,8 @@ import Strategyhistory from '../Layouts/SubAdmin/Services/Strategys/Strategy_his
 
 import Profile from '../Layouts/Comman/Profile/Profile';
 
+import Subdash from '../Layouts/SubAdmin/Dashboard/Subdash.js';
+
 
 
 // strategydesc
@@ -46,7 +48,7 @@ const SubAdmin_Routing = () => {
       <Header />
       <div className="page-wrapper">
         <Routes>
-          <Route exact path="/dashboard" element={<Overview />} />
+          <Route exact path="/dashboard" element={<Subdash />} />
           <Route exact path="/system" element={<System />} />
           <Route exact path="/help" element={<Help />} />
           <Route exact path="/message-broadcast" element={<MessageBroadcast />} />

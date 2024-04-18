@@ -16,7 +16,7 @@ const Bresponse = () => {
                                 <div className="entry-title">
 
                                     <div className="price">
-                                        <i class="fa-solid fa-eye"></i>
+                                        <a href="#"><i class="fa-solid fa-eye" style={{ color: "#fff" }}></i></a>
                                     </div>
                                 </div>
                                 <div className="entry-content">
@@ -36,7 +36,7 @@ const Bresponse = () => {
                                         </li>
                                     </ul>
 
-                                   
+
                                 </div>
 
                             </div>
@@ -49,7 +49,7 @@ const Bresponse = () => {
                                 <div className="entry-title">
 
                                     <div className="price">
-                                        <a href="#"><i class="fa-solid fa-eye"></i></a>
+                                        <a href="#"><i class="fa-solid fa-eye" style={{ color: "#fff" }}></i></a>
                                     </div>
                                 </div>
                                 <div className="entry-content">
@@ -69,7 +69,7 @@ const Bresponse = () => {
                                         </li>
                                     </ul>
 
-                                    
+
                                 </div>
 
                             </div>
@@ -81,7 +81,7 @@ const Bresponse = () => {
                                 <div className="entry-title">
 
                                     <div className="price">
-                                        <i class="fa-solid fa-eye"></i>
+                                        <i class="fa-solid fa-eye" style={{ color: "#fff" }}></i>
                                     </div>
                                 </div>
                                 <div className="entry-content">
@@ -100,7 +100,7 @@ const Bresponse = () => {
                                             <strong>Order Status : </strong>Entry not exist
                                         </li>
                                     </ul>
-                                   
+
                                 </div>
 
 
@@ -112,7 +112,7 @@ const Bresponse = () => {
                             <div className="plan-inner">
                                 <div className="entry-title">
                                     <div className="price">
-                                        <i class="fa-solid fa-eye"></i>
+                                        <i class="fa-solid fa-eye" style={{ color: "#fff" }}></i>
                                     </div>
                                 </div>
                                 <div className="entry-content">

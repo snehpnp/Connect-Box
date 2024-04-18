@@ -3793,7 +3793,9 @@ div.dataTables_wrapper div.dataTables_filter label i {
 .user-menu .dropdown-menu .dropdown-item:hover {
     color: #fff;
     text-decoration: none;
-    background-color: #7539ff
+    background-color: #7539ff;
+
+    border-radius: 10px;
 }
 
 .user-menu .dropdown-menu .dropdown-item img {
@@ -33273,6 +33275,10 @@ li.submenu {
     animation: bounce 1s infinite;
 }
 
+button :hover{
+    animation: bounce 1s infinite;
+}
+
 nav.greedys.sidebar-horizantal {
     background-color: #7539FF;
 }
@@ -33733,6 +33739,7 @@ img {
 }
 
 .plan {
+    border: 1px solid #E5E5E5;
     display: inline-block;
     margin: 10px 1%;
     font-family: 'Lato', Arial, sans-serif;
@@ -33748,7 +33755,7 @@ img {
 
 .entry-title {
     background: #53CFE9;
-    height: 140px;
+    height: 50px;
     position: relative;
     text-align: center;
     color: #fff;
@@ -33768,15 +33775,15 @@ img {
     position: absolute;
     bottom: -25px;
     background: #20BADA;
-    height: 95px;
-    width: 95px;
+    height: 54px;
+    width: 80px;
     margin: 0 auto;
     left: 0;
     right: 0;
     overflow: hidden;
     border-radius: 50px;
     border: 5px solid #fff;
-    line-height: 80px;
+    line-height: 50px;
     font-size: 28px;
     font-weight: 700;
 }
@@ -34038,4 +34045,9 @@ img {
         opacity: 0;
         transform: translateY(0px) scale(1);
     }
+}
+
+.toggledrop:hover{
+background: none !important;
+
 }

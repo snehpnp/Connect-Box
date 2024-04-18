@@ -52,7 +52,7 @@ function Login() {
                 setShowModal(false);
                 setTimeout(() => {
                     navigate("/admin/dashboard");
-                }, 9000);
+                }, 8000);
             } else if (getData.Role === "SUBADMIN") {
                 toast.success("login Successful");
                 localStorage.setItem("user_details", JSON.stringify(getData));
@@ -66,7 +66,7 @@ function Login() {
 
                 setTimeout(() => {
                     navigate("/subadmin/dashboard");
-                }, 9000);
+                }, 8000);
             } else if (getData.Role === "EMPLOYEE") {
                 toast.success("login Successful");
                 localStorage.setItem("user_details", JSON.stringify(getData));
@@ -78,7 +78,7 @@ function Login() {
 
                 setTimeout(() => {
                     navigate("/employee/dashboard");
-                }, 9000);
+                }, 8000);
             } else {
                 toast.success("login Successful");
                 localStorage.setItem("user_details", JSON.stringify(getData));
@@ -89,7 +89,7 @@ function Login() {
                 setShowModal(false);
                 setTimeout(() => {
                     navigate("/user/dashboard");
-                }, 9000);
+                }, 8000);
             }
         }
 
