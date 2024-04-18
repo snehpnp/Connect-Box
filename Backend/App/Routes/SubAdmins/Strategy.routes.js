@@ -5,6 +5,7 @@ const { verifyToken } = require('../../Middlewares/autt.middleware')
 
 const { AddStragegy, GetOneStragegy, EditStragegy, GetAllStrategy, DeleteStragegy, GetAllStrategyForClient, ClientsAccordingToStrategy, GetAddRemoveStrategy, UpdateAddRemoveStrategy,GetAllSubadminStrategy } = require('../../Controllers/SubAdmins/strategys/strategy.controller')
 
+const { GetDashboardData } = require('../../Controllers/SubAdmins/DashBoardData/DashboardData')
 
 
 
@@ -19,7 +20,8 @@ router.post('/strategy/client/get', ClientsAccordingToStrategy);
 router.post('/sub/strategy/getall', GetAllSubadminStrategy);
  
 
-
+//DashBoard Route
+router.post('/data/dashboard', GetDashboardData);
 
 
 

@@ -42,7 +42,7 @@ const FullDataTable = ({
           fontFamily: "none",
           fontWeight: "400",
           fontSize: "14px",
-          color: Color,
+          // color: Color,
         }}
       />
       {/* </div> */}

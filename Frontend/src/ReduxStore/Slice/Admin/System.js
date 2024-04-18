@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetCompanyInfo,ProfileData,EditCompanyInfo } from "../../../Services/Admin/System.service";
+import { GetCompanyInfo,ProfileData,EditCompanyInfo,Subadminhelp, getSubadminhelp ,postuserhelpdata, gethelpdata,deleteuserhelpdata,deletesubadmindata,ComparePrefix_key} from "../../../Services/Admin/System.service";
 
 export const GetCompany_info = createAsyncThunk(
     "get/company",
@@ -41,6 +41,102 @@ export const ProfileInfo = createAsyncThunk(
     }
 );
 
+
+export const SubadminHelpmessage = createAsyncThunk(
+    "subadminhelpmessage",
+    async (data)=>{
+        try {
+            const res = await Subadminhelp(data);
+              return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+)
+
+
+export const getsubadmintable = createAsyncThunk(
+    "getsubadminhelpmessage",
+    async (data)=>{
+        try {
+            const res = await getSubadminhelp(data);
+              return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+)
+
+export const postuserhelp = createAsyncThunk(
+    "userhelpmessage",
+    async (data)=>{
+        try {
+            const res = await postuserhelpdata(data);
+              return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+)
+
+export const userdataforhelp = createAsyncThunk(
+    "getuserhelpdata",
+    async (data)=>{
+        try {
+            const res = await gethelpdata(data);
+              return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+)
+
+
+export const deleteuserdata = createAsyncThunk(
+    "getuserdelete",
+    async (data)=>{
+        try {
+            const res = await deleteuserhelpdata(data);
+              return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+)
+
+//   delet subadmin data
+
+
+
+export const deletesubadminhelpdata = createAsyncThunk(
+    "getsubadmindelete",
+    async (data)=>{
+        try {
+            const res = await deletesubadmindata(data);
+              return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+)
+
+
+/// Prefix_key  data 
+
+export const userprifix_key = createAsyncThunk(
+    "userdataByPrefix",
+    async (data)=>{
+        try {
+            const res = await ComparePrefix_key(data);
+              return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+)
+
+
+
 const SystemSlice = createSlice({
     name: "SystemSlice",
     initialState: {
@@ -48,7 +144,13 @@ const SystemSlice = createSlice({
         isError: false,
         companyInfo: null,
         profileInfo: null,
-
+        SubadminHelpmessage:null,
+        getsubadmintable:null,
+        postuserhelp:null,
+        userdataforhelp:null,
+        deleteuser_data:null,
+        deletesubadminhelpdata:null,
+        userprifix_key:null,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -97,7 +199,70 @@ const SystemSlice = createSlice({
 
                 state.isLoading = false;
                 state.isError = true;
-            });
+            }).addCase(SubadminHelpmessage.pending,(state,action)=>{
+                state.isLoading = true;
+                state.isError = false;
+            }).addCase(SubadminHelpmessage.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+            }).addCase(SubadminHelpmessage.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.SubadminHelpmessage = action.payload;
+            }).addCase(getsubadmintable.pending,(state,action)=>{
+                state.isLoading = true;
+                state.isError = false;
+            }).addCase(getsubadmintable.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+            }).addCase(getsubadmintable.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.getsubadmintable = action.payload;
+            }).addCase(postuserhelp.pending,(state,action)=>{
+                state.isLoading = true;
+                state.isError = false;
+            }).addCase(postuserhelp.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+            }).addCase(postuserhelp.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.postuserhelp = action.payload;
+            }).addCase(userdataforhelp.pending,(state,action)=>{
+                state.isLoading = true;
+                state.isError = false;
+            }).addCase(userdataforhelp.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+            }).addCase(userdataforhelp.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.userdataforhelp = action.payload;
+            }).addCase(deleteuserdata.pending,(state,action)=>{
+                state.isLoading = true;
+                state.isError = false;
+            }).addCase(deleteuserdata.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+            }).addCase(deleteuserdata.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.deleteuser_data = action.payload;
+            }).addCase(deletesubadminhelpdata.pending,(state,action)=>{
+                state.isLoading = true;
+                state.isError = false;
+            }).addCase(deletesubadminhelpdata.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+            }).addCase(deletesubadminhelpdata.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.deletesubadminhelpdata = action.payload;
+            }).addCase(userprifix_key.pending,(state,action)=>{
+                state.isLoading = true;
+                state.isError = false;
+            }).addCase(userprifix_key.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+            }).addCase(userprifix_key.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.userprifix_key = action.payload;
+            })
     },
 });
 

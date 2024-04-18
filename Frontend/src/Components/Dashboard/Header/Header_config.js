@@ -6,13 +6,13 @@ export const admin_header = [
         route: "/admin/dashboard",
         Data: []
     },
-    {
-        id: 2,
-        name: 'System',
-        route: "/admin/system",
-        Icon: "fe fe-settings",
-        Data: []
-    },
+    // {
+    //     id: 2,
+    //     name: 'System',
+    //     route: "/admin/system",
+    //     Icon: "fe fe-settings",
+    //     Data: []
+    // },
     {
         id: 3,
         name: 'Research Analysts',
@@ -100,13 +100,13 @@ export const subamdin_header = [
         route: "/subadmin/dashboard",
         Data: []
     },
-    {
-        id: 2,
-        name: 'System',
-        route: "/subadmin/system",
-        Icon: "fe fe-settings",
-        Data: []
-    },
+    // {
+    //     id: 2,
+    //     name: 'System',
+    //     route: "/subadmin/system",
+    //     Icon: "fe fe-settings",
+    //     Data: []
+    // },
     // {
     //     id: 3,
     //     name: 'Employees',
@@ -163,6 +163,7 @@ export const subamdin_header = [
                 Icon: "fe fe-list",
                 route: "/subadmin/strategys",
             },
+           
             {
                 'id': 53,
                 name: 'All Services',
@@ -256,6 +257,13 @@ export const subamdin_header = [
         route: "/subadmin/help",
         Icon: "fe fe-help-circle",
         Data: []
+    },
+    {
+        id: 9,
+        name: 'FAQs',
+        route: "/admin/faqs",
+        Icon: "fe fe-help-circle",
+        Data: []
     }
 ];
 
@@ -274,6 +282,13 @@ export const User_header = [
         name: 'Stock List',
         Icon: "fa-solid fa-arrow-trend-up",
         route: "/user/stock",
+        Data: []
+    },
+    {
+        id: 2,
+        name: 'Stock List 1',
+        Icon: "fa-solid fa-arrow-trend-up",
+        route: "/user/stock1",
         Data: []
     },
     {

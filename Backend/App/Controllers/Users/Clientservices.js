@@ -171,7 +171,6 @@ class Clientservice {
                 service_name: item.service.name + " [ " + item.categories.segment + " ]",
             }));
 
-            console.log("GetServiceStrategy", GetServiceStrategy)
 
             // DATA GET SUCCESSFULLY
             res.send({
@@ -217,7 +216,7 @@ class Clientservice {
                     const matchingObject = GetServiceStrategy.find(obj => obj._id === inputId);
                     // Getting the service_name if a match is found
                     const serviceName = matchingObject ? matchingObject.service_name : null;
-                    //console.log("serviceName",serviceName);
+
 
 
                     const isEmptyStartegyArray = Object.keys(result).length === 0;
@@ -364,7 +363,6 @@ class Clientservice {
                     }
 
                 } else {
-                    // console.log("No match found for Service ID:", key);
                 }
             }
 

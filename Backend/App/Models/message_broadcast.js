@@ -9,10 +9,13 @@ const newMessage = new mongoose.Schema({
   strategyId: {
     type: ObjectId,
     ref: "strategies",
+    default:null
+
   },
   brokerId: {
     type: ObjectId,
     ref: "api_create_infos",
+    default:null
   },
   subAdminId: [{
     type: ObjectId,

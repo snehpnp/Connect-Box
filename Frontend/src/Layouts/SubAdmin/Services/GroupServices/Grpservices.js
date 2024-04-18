@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import ToastButton from '../../../../Components/ExtraComponents/Alert_Toast'
 import ExportToExcel from '../../../../Utils/ExportCSV'
 import Modal from '../../../../Components/Dashboard/Models/Model'
+import { IndianRupee } from 'lucide-react';
+
 
 
 
@@ -36,7 +38,6 @@ function GroupStrategy() {
         data: [],
     });
 
-    console.log("allGroupService :", allGroupService)
 
     const [showModal, setShowModal] = useState(false)
     const [showModal1, setShowModal1] = useState(false)
@@ -93,7 +94,7 @@ function GroupStrategy() {
                 }
             })
             .catch((error) => {
-                console.log(error)
+                console.log("Error in Delete Group",error)
             })
 
 
@@ -192,10 +193,12 @@ function GroupStrategy() {
 
 
     const GetAllServicesName = async (row) => {
+
+
         setShowModal(true);
 
         await dispatch(GET_ALL_SERVICES_NAMES({
-            data: row.row.result
+            data: row.result
 
         })).unwrap()
             .then((response) => {
@@ -232,12 +235,12 @@ function GroupStrategy() {
                     ...row,
                     id: index + 1,
                 }));
-                
+
 
                 const filteredData = formattedData.filter((item) => {
                     const searchTermMatch =
                         inputSearch === '' ||
-                        item.name.toLowerCase().includes(inputSearch.toLowerCase()) || 
+                        item.name.toLowerCase().includes(inputSearch.toLowerCase()) ||
                         item.description.toLowerCase().includes(inputSearch.toLowerCase())
 
                     return searchTermMatch;
@@ -346,6 +349,7 @@ function GroupStrategy() {
         },
     ]
 
+ 
 
 
 
@@ -425,13 +429,87 @@ function GroupStrategy() {
                 </div>
                 {
                     allGroupService.loading ? (
-                        <FullDataTable
-                            styles={styles}
-                            columns={columns}
-                            rows={allGroupService.data}
-                            checkboxSelection={false}
+                        <>
 
-                        />) : <Loader />
+                            {/* <FullDataTable
+                                styles={styles}
+                                columns={columns}
+                                rows={allGroupService.data}
+                                checkboxSelection={false}
+                            /> */}
+                            <div className="content container-fluid pb-0">
+                                <div className="row d-flex align-items-center justify-content-center">
+
+                                    {allGroupService.data.map((stg) => {
+                                        return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                            <div className="packages card" data-aos="fade-down">
+                                                <div className="package-header  ">
+                                                    <div className="d-flex w-100">
+
+                                                        <span className="icon-frame d-flex align-items-center justify-content-center">
+
+                                                            <img src={stg.strategy_image ? stg.strategy_image : `assets/img/icons/price-0${Math.floor(Math.random() * 4) + 1}.svg`} alt="img" />
+
+                                                        </span>
+
+                                                    </div>
+                                                    <div className="">
+
+                                                        <h2 className="my-2">{stg.name}</h2>
+                                                        <p>{stg.description}</p>
+
+                                                    </div>
+                                                </div>
+
+
+                                                {/* <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6> */}
+                                                <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+
+                                                        <i className=" " style={{ marginRight: '10px' }}></i>
+                                                        <span >Serivce Count</span>
+                                                        <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.resultCount}</span>
+                                                    </li>
+                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                        <i className="" style={{ marginRight: '10px' }}></i>
+                                                        <span >Serivce</span>
+                                                        <span style={{ marginLeft: 'auto', color: '#999' }}><GanttChartSquare size={20} onClick={(e) => GetAllServicesName(stg)} color="#198754" strokeWidth={2} className="mx-1" /></span>
+                                                    </li>
+                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                        <i className="" style={{ marginRight: '10px' }}></i>
+                                                        <span >Client Using</span>
+                                                        <span style={{ marginLeft: 'auto', color: '#999' }}><GanttChartSquare size={20} onClick={(e) => GetAllServicesUserName(stg)} color="#198754" strokeWidth={2} className="mx-1" /></span>
+                                                    </li>
+                                                     
+                                                </ul>
+
+                                                <div className="d-flex justify-content-center package-edit">
+
+
+                                                    <a className="btn-action-icon me-2"  >
+                                                        <i className="fe fe-edit"
+                                                        onClick={() => handleEdit(stg)}
+                                                       
+                                                        />
+                                                    </a>
+
+                                                    <a className="btn-action-icon"
+                                                     onClick={() => { setShowDeleteModal(true); setModalId(stg._id) }}
+                                                    >
+                                                        <i className="fe fe-trash-2" />
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    })}
+
+
+
+                                </div>
+                            </div>
+                        </>
+
+                    ) : <Loader />
                 }
 
                 {showModal ?

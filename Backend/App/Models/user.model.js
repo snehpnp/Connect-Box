@@ -144,7 +144,7 @@ const userModel = Schema({
     },
     broker: {
         type: String,
-        enum: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',], //1 = Market Hub,2=Alice Blue,3=Master Trust , 4 = Motilal Oswal
+        enum: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19',], //1 = Alice Blue Hub,2=Alice Blue,3=Master Trust , 4 = Motilal Oswal
         default: '0'
     },
     access_token: {
@@ -215,7 +215,12 @@ const userModel = Schema({
     Per_trade: {
         type: Number,
         default: '0'
-    }
+    },
+    Service_Type: {
+        type: String,
+        enum: ['0','1', '2'], // 0 = No Use , 1= Fixed , 2= per trade
+        default: '0'
+    },
 
 },
     {

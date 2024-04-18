@@ -88,7 +88,7 @@ function System() {
           console.log("Error", error);
         });
     } else {
-      console.log("formData is null, undefined, empty string, or falsey value");
+      console.log("Error formData is null, undefined, empty string, or falsey value");
     }
   };
 
@@ -132,18 +132,10 @@ function System() {
 
         <div className="col-lg-8 col-md-8" data-aos="fade-right">
           <ul className="nav nav-tabs nav-tabs-solid horizontal-tab d-flex justify-content-center ">
-            <li className="nav-item">
-              <a
-                className="nav-link active"
-                href="#solid-tab1"
-                data-bs-toggle="tab"
-              >
-                <i className="fa-solid fa-landmark pe-2"></i>
-                Company Information
-              </a>
-            </li>
+       
+              
             <li className="nav-item mx-md-5">
-              <a className="nav-link" href="#solid-tab2" data-bs-toggle="tab">
+              <a className="nav-link active" href="#solid-tab2" data-bs-toggle="tab">
                 <i className="fa-solid fa-envelope pe-2"></i>
                 Email Information
               </a>
@@ -176,47 +168,9 @@ function System() {
             <div className="card-body">
               <div className="tab-content">
                 {/* Tab panes */}
-                <div className="tab-pane show active" id="solid-tab1">
-                  <div className="card-header d-flex justify-content-between align-items-center border-bottom">
-                    <h5 className="card-title mb-0 w-auto">
-                      <i className="fa-solid fa-landmark pe-2"></i> Company
-                      Information
-                    </h5>
-                    {/* <div className="pay-btn text-end w-auto">
-                      <button
-                        className="btn btn-primary"
-                        onClick={() => OpenModal(1)}
-                      >
-                        Edit Customer Information
-                      </button>
-                    </div> */}
-                  </div>
-                  <div className="invoice-total-box px-3 border">
-                    <div className="invoice-total-inner">
-                      {getCompanyData && getCompanyData[0] ? (
-                        <>
-                          <p>
-                            Company Name{" "}
-                            <span>{getCompanyData[0]?.panel_name}</span>
-                          </p>
-                          <p>
-                            Company Short Name{" "}
-                            <span>{getCompanyData[0]?.prifix_key}</span>
-                          </p>
-                          <p>
-                            Panel Key{" "}
-                            <span>{getCompanyData[0]?.client_key}</span>
-                          </p>
-
-                        </>
-                      ) : (
-                        <p>Data not found</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
+               
                 {/* Tab panes */}
-                <div className="tab-pane" id="solid-tab2">
+                <div className="tab-pane active" id="solid-tab2">
                   <div className="card-header d-flex justify-content-between align-items-center border-bottom">
                     <h5 className="card-title mb-0 w-auto">
                       <i className="fa-solid fa-envelope pe-2"></i> Email

@@ -14,10 +14,19 @@ export async function GetSubStrategy(data, token) {
     }
     catch (err) {
         return await err;
-
     }
+}
 
-
+export async function GET_ALL_STRETGY_WITH_IMG(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}strategy/getall`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+    }
 }
 
 export async function ADD_STRATEGY(data) {
@@ -25,7 +34,6 @@ export async function ADD_STRATEGY(data) {
         const res = await axios.post(`${Config.base_url}strategy/add`, data, {  
             data: {},
         })
-        console.log("res service :", res)
         return await res?.data;
     }
     catch (err) {
@@ -40,7 +48,6 @@ export async function Delete_Strategy(data) {
         const res = await axios.post(`${Config.base_url}strategy/delete`, data, {  
             data: {},
         })
-        console.log("res service :", res)
         return await res?.data;
     }
     catch (err) {
@@ -55,7 +62,6 @@ export async function EDIT_STRATEGY(data) {
         const res = await axios.post(`${Config.base_url}strategy/edit`, data, {  
             data: {},
         })
-        console.log("res service :", res)
         return await res?.data;
     }
     catch (err) {

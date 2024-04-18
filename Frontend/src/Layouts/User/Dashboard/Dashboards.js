@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
 import { GetUserDashboardData } from '../../../ReduxStore/Slice/Users/Userdashboard.Slice'
 import { fDateTime } from "../../../Utils/Date_formet";
-
+import { Link } from "react-router-dom"
 
 const Dashboards = () => {
 
@@ -64,7 +64,6 @@ const Dashboards = () => {
       .then((response) => {
 
         if (response.status) {
-          console.log("response.data", response.data)
           setDashboardData({
             loading: true,
             data: response.data
@@ -234,12 +233,12 @@ const Dashboards = () => {
                       </h5>
                     </div>
                     <div className="col-auto">
-                      <a
-                        href="/#/user/dashboard"
+                      <Link
+                        to="/user/strategy"
                         className="btn-right btn btn-sm btn-outline-primary mt-2 me-2"
                       >
                         View All
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -296,341 +295,51 @@ const Dashboards = () => {
                   <div className="d-flex justify-content-between align-items-center">
                     <h5 className="card-title mt-2 ms-2">Your Orders </h5>
                     <div className="d-flex align-center">
-                      <span className="earning-income-text">
-                        <i />
-                        Income
-                      </span>
-                      <div className="dropdown main">
-                        <button
-                          className="btn btn-white btn-sm dropdown-toggle mt-2 me-2"
-                          type="button"
-                          id="dropdownMenuButton"
-                          data-bs-toggle="dropdown"
-                          aria-expanded="false"
+                      <div className="col-auto">
+                        <Link
+                          to="/user/orders"
+                          className="btn-right btn btn-sm btn-outline-primary mt-2 me-2"
                         >
-                          2024
-                        </button>
-                        <ul
-                          className="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <li>
-                            <a
-                              href="javascript:void(0);"
-                              className="dropdown-item"
-                            >
-                              2023
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href="javascript:void(0);"
-                              className="dropdown-item"
-                            >
-                              2022
-                            </a>
-                          </li>
-                          <li>
-                            <a
-                              href="javascript:void(0);"
-                              className="dropdown-item"
-                            >
-                              2021
-                            </a>
-                          </li>
-                        </ul>
+                          View All
+                        </Link>
                       </div>
+
                     </div>
                   </div>
                 </div>
 
                 <div className="card-body p-0 mr-2" style={{ maxHeight: "300px", overflowY: "auto" }}>
                   <div className="table-responsive">
-                    <table className="table table-stripped table-hover">
+                    <table className="table table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th>Stock Symbol</th>
+                          <th>Company Name</th>
+                          <th>Quantity</th>
+                          <th>Average Price</th>
+                          <th>Total Investment</th>
+                          <th>Current Price</th>
+                          <th>Market Value</th>
+                        </tr>
+                      </thead>
                       <tbody>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a
-                                href="profile.html"
-                                className="company-avatar avatar-md me-2 companies company-icon"
-                              >
-                                <img
-                                  className="avatar-img rounded-circle company"
-                                  src="assets/img/companies/company-01.svg"
-                                  alt="Company Image"
-                                />
-                              </a>
-                              <a href="companies.html">
-                                Hermann Groups{" "}
-                                <span className="plane-type">
-                                  Basic (Monthly)
-                                </span>
-                              </a>
-                            </h2>
-                          </td>
-                          <td>24 Feb 2024</td>
-                          <td className="text-end">
-                            <a
-                              href="companies.html"
-                              className="view-companies btn"
-                            >
-                              View
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a
-                                href="profile.html"
-                                className="company-avatar avatar-md me-2 companies company-icon"
-                              >
-                                <img
-                                  className="avatar-img rounded-circle company"
-                                  src="assets/img/companies/company-02.svg"
-                                  alt="Company Image"
-                                />
-                              </a>
-                              <a href="companies.html">
-                                Skiles LLC{" "}
-                                <span className="plane-type">
-                                  Enterprise (Yearly)
-                                </span>
-                              </a>
-                            </h2>
-                          </td>
-                          <td>23 Feb 2024</td>
-                          <td className="text-end">
-                            <a
-                              href="companies.html"
-                              className="view-companies btn"
-                            >
-                              View
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a
-                                href="profile.html"
-                                className="company-avatar avatar-md me-2 companies company-icon"
-                              >
-                                <img
-                                  className="avatar-img rounded-circle company"
-                                  src="assets/img/companies/company-03.svg"
-                                  alt="Company Image"
-                                />
-                              </a>
-                              <a href="companies.html">
-                                Kerluke Group{" "}
-                                <span className="plane-type">
-                                  Advanced (Monthly)
-                                </span>
-                              </a>
-                            </h2>
-                          </td>
-                          <td>22 Feb 2024</td>
-                          <td className="text-end">
-                            <a
-                              href="companies.html"
-                              className="view-companies btn"
-                            >
-                              View
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a
-                                href="profile.html"
-                                className="company-avatar avatar-md me-2 companies company-icon"
-                              >
-                                <img
-                                  className="avatar-img rounded-circle company"
-                                  src="assets/img/companies/company-04.svg"
-                                  alt="Company Image"
-                                />
-                              </a>
-                              <a href="companies.html">
-                                Schowalter Group{" "}
-                                <span className="plane-type">
-                                  Basic (Yearly)
-                                </span>
-                              </a>
-                            </h2>
-                          </td>
-                          <td>21 Feb 2024</td>
-                          <td className="text-end">
-                            <a
-                              href="companies.html"
-                              className="view-companies btn"
-                            >
-                              View
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a
-                                href="profile.html"
-                                className="company-avatar avatar-md me-2 companies company-icon"
-                              >
-                                <img
-                                  className="avatar-img rounded-circle company"
-                                  src="assets/img/companies/company-05.svg"
-                                  alt="Company Image"
-                                />
-                              </a>
-                              <a href="companies.html">
-                                Accentric Global{" "}
-                                <span className="plane-type">
-                                  Basic (Monthly)
-                                </span>
-                              </a>
-                            </h2>
-                          </td>
-                          <td>20 Feb 2024</td>
-                          <td className="text-end">
-                            <a
-                              href="companies.html"
-                              className="view-companies btn"
-                            >
-                              View
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a
-                                href="profile.html"
-                                className="company-avatar avatar-md me-2 companies company-icon"
-                              >
-                                <img
-                                  className="avatar-img rounded-circle company"
-                                  src="assets/img/companies/company-02.svg"
-                                  alt="Company Image"
-                                />
-                              </a>
-                              <a href="companies.html">
-                                Skiles LLC{" "}
-                                <span className="plane-type">
-                                  Enterprise (Yearly)
-                                </span>
-                              </a>
-                            </h2>
-                          </td>
-                          <td>23 Feb 2024</td>
-                          <td className="text-end">
-                            <a
-                              href="companies.html"
-                              className="view-companies btn"
-                            >
-                              View
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a
-                                href="profile.html"
-                                className="company-avatar avatar-md me-2 companies company-icon"
-                              >
-                                <img
-                                  className="avatar-img rounded-circle company"
-                                  src="assets/img/companies/company-03.svg"
-                                  alt="Company Image"
-                                />
-                              </a>
-                              <a href="companies.html">
-                                Kerluke Group{" "}
-                                <span className="plane-type">
-                                  Advanced (Monthly)
-                                </span>
-                              </a>
-                            </h2>
-                          </td>
-                          <td>22 Feb 2024</td>
-                          <td className="text-end">
-                            <a
-                              href="companies.html"
-                              className="view-companies btn"
-                            >
-                              View
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a
-                                href="profile.html"
-                                className="company-avatar avatar-md me-2 companies company-icon"
-                              >
-                                <img
-                                  className="avatar-img rounded-circle company"
-                                  src="assets/img/companies/company-04.svg"
-                                  alt="Company Image"
-                                />
-                              </a>
-                              <a href="companies.html">
-                                Schowalter Group{" "}
-                                <span className="plane-type">
-                                  Basic (Yearly)
-                                </span>
-                              </a>
-                            </h2>
-                          </td>
-                          <td>21 Feb 2024</td>
-                          <td className="text-end">
-                            <a
-                              href="companies.html"
-                              className="view-companies btn"
-                            >
-                              View
-                            </a>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            <h2 className="table-avatar">
-                              <a
-                                href="profile.html"
-                                className="company-avatar avatar-md me-2 companies company-icon"
-                              >
-                                <img
-                                  className="avatar-img rounded-circle company"
-                                  src="assets/img/companies/company-05.svg"
-                                  alt="Company Image"
-                                />
-                              </a>
-                              <a href="companies.html">
-                                Accentric Global{" "}
-                                <span className="plane-type">
-                                  Basic (Monthly)
-                                </span>
-                              </a>
-                            </h2>
-                          </td>
-                          <td>20 Feb 2024</td>
-                          <td className="text-end">
-                            <a
-                              href="companies.html"
-                              className="view-companies btn"
-                            >
-                              View
-                            </a>
-                          </td>
-                        </tr>
+                        {/* JavaScript loop */}
+                        {[...Array(50)].map((_, index) => (
+                          <tr key={index}>
+                            <td>AAPL</td>
+                            <td>Apple Inc.</td>
+                            <td>100</td>
+                            <td>$120.50</td>
+                            <td>$12,050.00</td>
+                            <td>$130.00</td>
+                            <td>$13,000.00</td>
+                          </tr>
+                        ))}
                       </tbody>
                     </table>
                   </div>
                 </div>
+
 
 
               </div>
@@ -641,46 +350,7 @@ const Dashboards = () => {
                 <div className="card-header">
                   <div className="d-flex justify-content-between align-items-center">
                     <h5 className="card-title mt-2 ms-2">Most Ordered Strategy</h5>
-                    <div className="dropdown main">
-                      <button
-                        className="btn btn-white btn-sm dropdown-toggle mt-2 me-2"
-                        type="button"
-                        id="dropdownMenuButton2"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        This Month
-                      </button>
-                      <ul
-                        className="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton2"
-                      >
-                        <li>
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-item"
-                          >
-                            Today
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-item"
-                          >
-                            This Week
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-item"
-                          >
-                            This Year
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
+
                   </div>
                 </div>
                 <div className="card-body p-0">
@@ -709,46 +379,7 @@ const Dashboards = () => {
                     <h5 className="card-title mt-2 ms-2">
                       Top Plan
                     </h5>
-                    <div className="dropdown main">
-                      <button
-                        className="btn btn-white btn-sm dropdown-toggle mt-2 me-2"
-                        type="button"
-                        id="dropdownMenuButton3"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        Today
-                      </button>
-                      <ul
-                        className="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton3"
-                      >
-                        <li>
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-item"
-                          >
-                            This Month
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-item"
-                          >
-                            This Week
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-item"
-                          >
-                            This Year
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
+
                   </div>
                 </div>
                 <div className="card-body p-0">
@@ -769,47 +400,7 @@ const Dashboards = () => {
                 <div className="card-header">
                   <div className="d-flex justify-content-between align-items-center">
                     <h5 className="card-title mt-2 ms-2">Most Profitabel Strategies</h5>
-                    <div className="dropdown main">
-                      <button
-                        className="btn btn-white btn-sm dropdown-toggle mt-2 me-2"
-                        type="button"
-                        id="dropdownMenuButton4"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                      
-                        This Week
-                      </button>
-                      <ul
-                        className="dropdown-menu"
-                        aria-labelledby="dropdownMenuButton4"
-                      >
-                        <li>
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-item"
-                          >
-                            This Month
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-item"
-                          >
-                            Today
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="javascript:void(0);"
-                            className="dropdown-item"
-                          >
-                            This Year
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
+
                   </div>
                 </div>
                 <div className="card-body p-0">
@@ -819,7 +410,7 @@ const Dashboards = () => {
                         <img src="assets/img/companies/company-04.svg" alt="" />
                       </span>
                       <div className="plane-name">
-                        <span>{getDashboardData.data.mostOrderedStrategy && getDashboardData.data.mostOrderedStrategy.strategy_name}</span> 
+                        <span>{getDashboardData.data.mostOrderedStrategy && getDashboardData.data.mostOrderedStrategy.strategy_name}</span>
                         {/* <h6>sk.example.com</h6> */}
                       </div>
                     </div>
