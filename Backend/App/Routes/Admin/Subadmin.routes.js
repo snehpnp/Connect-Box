@@ -5,7 +5,7 @@ const router = require("express").Router()
 
 const { AddSubadmin,EditSubadmin,getallSubadmin,getallSubadminClients,getOneSubadmin,GetAllRechargeDetails,UpdateActiveStatusSubadmin,AddBalanceSubadmin,getallSubadminName,GetAllRechargeDetailsById} = require('../../Controllers/Admins/Subadmins/subadmin.controller')
 
-
+const {DashboardChartData,DashboardBalanceData} =require('../../Controllers/SubAdmins/DashBoardData/DashboardData')
 
 router.post('/subadmin/add', AddSubadmin);
 router.post('/subadmin/edit', EditSubadmin);
@@ -23,7 +23,8 @@ router.post('/recharge/id/get', GetAllRechargeDetailsById);
 router.post('/activestatus/update', UpdateActiveStatusSubadmin);
 router.post('/balance/add', AddBalanceSubadmin);
 
-
+router.post("/subadmin/userdata",DashboardChartData)
+router.post("/subadmin/user/balance",DashboardBalanceData)
 
 
 

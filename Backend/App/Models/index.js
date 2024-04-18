@@ -17,6 +17,7 @@ module.exports = {
     SubAdminCompanyInfo: require('./SubAdminCompany.model'),
     strategy_transaction: require('./Strategy_transaction'),
     msgdata:require('./message_broadcast'),
+    help:require('./HelpService.model'),
     Plan:require('./Plan.model'),
     Signals:require('./Signals.model'),
     user_activity_logs:require('./user_logs.model'),
