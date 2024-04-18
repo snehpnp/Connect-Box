@@ -7,6 +7,8 @@ import MainHeader from '../Components/Dashboard/Header/Main_header';
 import System from '../Layouts/Admin/System/System';
 
 import Profile from '../Layouts/Comman/Profile/Profile';
+import Faqs from '../Layouts/Comman/Faqs';
+
 
 
 
@@ -24,6 +26,7 @@ const Employee_Routing = () => {
                     <Route exact path="/dashboard" element={<Overview />} />
                     <Route exact path="/system" element={<System />} />
                     <Route exact path="/profile" element={<Profile />} />
+                    <Route exact path="/faqs" element={<Faqs />} />
 
                 </Routes>
             </div>

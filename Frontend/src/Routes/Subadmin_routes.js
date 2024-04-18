@@ -40,6 +40,7 @@ import Profile from '../Layouts/Comman/Profile/Profile';
 
 import Openposition from '../Layouts/SubAdmin/Option/Open_Positions.js';
 
+import Faqs from '../Layouts/Comman/Faqs';
 
 // strategydesc
 const SubAdmin_Routing = () => {
@@ -55,7 +56,6 @@ const SubAdmin_Routing = () => {
           <Route exact path="/help" element={<Help />} />
           <Route exact path="/message-broadcast" element={<MessageBroadcast />} />
           <Route exact path="/strategys" element={<Strategy />} />
-
           <Route exact path="/group-service" element={<Grpservices />} />
           <Route exact path="/group_service/add" element={<Add_Group />} />
           <Route exact path="/servicesAll" element={<AllServices />} />
@@ -73,13 +73,9 @@ const SubAdmin_Routing = () => {
           <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/orders" element={<OrderDetails />} />
           <Route exact path="/position" element={<Position />} />
-
           <Route exact path="/open-position" element={<Openposition />} />
 
-
-
-
-          
+          <Route exact path="/faqs" element={<Faqs />} />
 
 
 

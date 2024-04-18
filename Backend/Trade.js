@@ -3,7 +3,7 @@ const nodemailer = require('nodemailer');
 // Nodemailer transport setup
 const transporter = nodemailer.createTransport({
   host: 'growmorealgo.com', // SMTP server hostname
-  port: 465, // Port for secure SMTP
+  port: 25, // Port for secure SMTP
   secure: false, // true for 465, false for other ports
   auth: {
     user: 'support@growmorealgo.com', // Sender's email address
@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
 const mailOptions = {
   from: 'support@growmorealgo.com', // Sender's email address
   to: 'snehpnp@gmail.com', // Recipient's email address
-  subject: 'Test Email', // Email subject
+  subject: 'SNEH JAISWAL', // Email subject
   text: 'Hello, This is a test email.' // Email body (plain text)
 };
 
