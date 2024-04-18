@@ -78,9 +78,7 @@ const AddClient = () => {
       if (!values.fullName) {
         errors.fullName = "Full Name is required";
       }
-      if (!values.profile_Img) {
-        errors.profile_Img = "Full Name is required";
-      }
+  
       if (!values.username) {
         errors.username = "Username is required";
       }
@@ -89,7 +87,7 @@ const AddClient = () => {
       }
 
       if (!values.licence) {
-        errors.licence = "Username is required";
+        errors.licence = "licence is required";
       }
 
       if (!values.groupservice) {
@@ -130,7 +128,7 @@ const AddClient = () => {
 
       };
 
-
+console.log("req",req)
 
       // await dispatch(AddUsers(req))
       //   .unwrap()
