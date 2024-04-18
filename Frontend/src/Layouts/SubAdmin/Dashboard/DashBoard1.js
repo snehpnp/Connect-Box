@@ -29,7 +29,7 @@ const DashBoard = () => {
   const handleSelect = (id) => {
     console.log("id from Fe", id);
     setSelectedUserId(id);
-   
+
   };
 
   const handleSelect1 = (event) => {
@@ -45,7 +45,7 @@ const DashBoard = () => {
         categories: [],
       },
     },
-   
+
   );
 
   const [series, setSeries] = useState([
@@ -53,7 +53,7 @@ const DashBoard = () => {
       name: "series-1",
       userCounts: [],
     },
-    
+
   ]);
 
   //new
@@ -91,8 +91,8 @@ const DashBoard = () => {
           ? percentage === 0
             ? ""
             : percentage < 100
-            ? "fas fa-arrow-down"
-            : "fas fa-arrow-up"
+              ? "fas fa-arrow-down"
+              : "fas fa-arrow-up"
           : "",
       percentageChange:
         percentage !== null ? `${Math.round(percentage)}%` : "N/A",
@@ -185,28 +185,22 @@ const DashBoard = () => {
       <div>
         <div className="content container-fluid">
           <div className="row">
-            <div className="col-md-3">
+            <div className="col-md-12">
               <div className="card">
-                <div className="col card-header">
+                {/* <div className="col card-header">
                   <h5 className="card-title">Subadmin Dashboard</h5>
-                </div>
-                <div
-                  data-aos="fade-down"
-                  className="gif-div "
-                  style={{ height: "690px" }}
-                >
-                  <iframe src="https://lottie.host/embed/1bc48686-c5b0-401d-ae40-9b241c697e31/qa4LRQq6FD.json"></iframe>
-                </div>
+                </div> */}
+
               </div>
             </div>
 
-            <div className="col-md-9">
+            <div className="col-md-12">
               <div className="row" data-aos="fade-down">
                 {cardsData.map((data, index) => (
-                  <div className="col-xl-4 col-sm-6 col-12" key={index}>
+                  <div className="col-xl-3 col-sm-3 col-12" key={index}>
                     <div className="card">
-                      <div className="card-body">
-                        <div className="dash-widget-header">
+                      <div className="card-body moving-border">
+                        <div className="dash-widget-header crad-widget">
                           <span
                             className={`dash-widget-icon ${data.progressBarClass}`}
                           >
@@ -229,13 +223,13 @@ const DashBoard = () => {
                             aria-valuemax={100}
                           />
                         </div>
-                        <p className="text-muted mt-3 mb-0">
+                        {/* <p className="text-muted mt-3 mb-0">
                           <span className="text-success me-1">
                             <i className={data.arrowIcon} />
                             {data.percentageChange}
                           </span>{" "}
                           {data.sinceLastWeek}
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                   </div>
