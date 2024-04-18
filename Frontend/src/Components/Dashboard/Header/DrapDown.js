@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { Minimize } from 'lucide-react';
 
+
 const DropDown = () => {
     const navigate = useNavigate();
 
@@ -19,7 +20,7 @@ const DropDown = () => {
 
     const [profileData, setProfileData] = useState([]);
     const [error, setError] = useState(null);
-
+    const [profileImage, setProfileImage] = useState("");
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
     const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
     var Role = JSON.parse(localStorage.getItem("user_details")).Role
@@ -36,6 +37,7 @@ const DropDown = () => {
                 .then(async (response) => {
                     if (response.status) {
                         setProfileData(response.data)
+                        setProfileImage(response.data[0].profile_img);
                     } else {
                         toast.error(response.msg);
                     }
@@ -244,9 +246,14 @@ const DropDown = () => {
                         <a className="user-a nav-a d-flex" data-bs-toggle="dropdown" aria-expanded="false" >
                             <span className="user-img">
                                 <img
-                                    src="assets/img/profiles/avatar-07.jpg"
+                                    src={
+                                        profileImage
+                                          ? profileImage
+                                          : "assets/img/profiles/ProfileAvataar/hacker.png"
+                                      }
                                     alt="img"
                                     className="profilesidebar"
+
                                 />
                                 <span className="animate-circle" />
                             </span>
