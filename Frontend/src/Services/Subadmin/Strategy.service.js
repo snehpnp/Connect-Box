@@ -34,7 +34,6 @@ export async function ADD_STRATEGY(data) {
         const res = await axios.post(`${Config.base_url}strategy/add`, data, {  
             data: {},
         })
-        console.log("res service :", res)
         return await res?.data;
     }
     catch (err) {
@@ -49,7 +48,6 @@ export async function Delete_Strategy(data) {
         const res = await axios.post(`${Config.base_url}strategy/delete`, data, {  
             data: {},
         })
-        console.log("res service :", res)
         return await res?.data;
     }
     catch (err) {
@@ -64,7 +62,6 @@ export async function EDIT_STRATEGY(data) {
         const res = await axios.post(`${Config.base_url}strategy/edit`, data, {  
             data: {},
         })
-        console.log("res service :", res)
         return await res?.data;
     }
     catch (err) {

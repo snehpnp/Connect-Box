@@ -3,6 +3,8 @@ import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { MoveLeft, Plus } from "lucide-react";
 
+
+
 const DynamicForm = ({
   fields,
   ProfileShow,
@@ -33,6 +35,10 @@ const DynamicForm = ({
 
   const [previews, setPreviews] = useState([]);
   const [passwordVisible, setPasswordVisible] = useState({});
+  const [inputValue, setInputValue] = useState('');
+
+
+  var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
 
   const prifix_key = JSON.parse(
     localStorage.getItem("user_details")
@@ -47,7 +53,6 @@ const DynamicForm = ({
       const file = event.target.files[0];
       const newPreviews = [...previews];
       newPreviews[index] = URL.createObjectURL(file);
-      console.log("newPreviews[index]", newPreviews[index]);
       setPreviews(newPreviews);
       const reader = new FileReader();
       reader.onload = () => {
@@ -66,16 +71,29 @@ const DynamicForm = ({
   };
 
 
+  const handleOnchange = (e) => {
+    const newValue = e.target.value.toUpperCase()
+    if (/^[a-zA-Z]{0,3}$/.test(newValue)) {
+      setInputValue(newValue);
+      formik.handleChange(newValue);
+    }
+
+  }
+
+
+  const HandelChange = (value) => {
+    console.log("value", value.target.checked)
+
+    formik.setFieldValue('Service_Type', value.target.checked == true ? "1" : "2");
+  }
 
 
   return (
     <div className="content container-fluid" data-aos="fade-left">
       <div className="card mb-0">
-        <div className="card-header">
-
+        {page_title ? <div className="card-header">
           {page_title ? <h5 className="card-title mb-0 w-auto"><i className="fa-regular fa-circle-user pe-2"></i>{page_title} </h5> : ""}
-
-        </div>
+        </div> : ""}
         <form onSubmit={formik.handleSubmit}>
           <div className="card-body ">
             <div className="page-header">
@@ -163,6 +181,44 @@ const DynamicForm = ({
                             </div>
                             {formik.touched[field.name] &&
                               formik.errors[field.name] ? (
+                              <div style={{ color: "red" }}>
+                                {formik.errors[field.name]}
+                              </div>
+                            ) : null}
+                          </div>
+
+                        </>
+                      ) : field.type === "text2" ? (
+                        <>
+                          <div className={` col-lg-${field.col_size}`}>
+                            <div className="input-block mb-3 flex-column">
+                              <label className={`col-lg-${field.label_size}`}>
+                                {field.label}
+                                <span className="text-danger">*</span>
+                              </label>
+
+                              <input
+                                type="text"
+                                aria-describedby="basic-addon1"
+                                className="form-control"
+                                placeholder={`Enter ${field.label}`}
+                                readOnly={field.disable}
+                                id={field.name}
+                                name={field.name}
+                                value={inputValue}
+                                onChange={(e) => {
+                                  const newValue = e.target.value.toUpperCase()
+                                  if (/^[a-zA-Z]{0,3}$/.test(newValue)) {
+                                    setInputValue(newValue);
+                                    formik.handleChange(e);
+                                  }
+                                }}
+
+                              />
+
+                            </div>
+
+                            {inputValue == '' ? (
                               <div style={{ color: "red" }}>
                                 {formik.errors[field.name]}
                               </div>
@@ -467,7 +523,7 @@ const DynamicForm = ({
                                       ? "text"
                                       : field.type
                                   }
-                                  placeholder={field.label}
+                                  placeholder={`Enter ${field.label}`}
                                   {...formik.getFieldProps(field.name)}
                                   className={` form-control`}
                                 />
@@ -558,27 +614,39 @@ const DynamicForm = ({
                         </>
                       ) : field.type === "test" ? (
                         <>
-                          <div className="col-lg-3">
-                            <div className="row d-flex">
-                              <div className="col-lg-12 ">
-                                <div className="form-check custom-checkbox input-block mb-3">
+                          {subadmin_service_type == 1 ?
+
+                            <div className={`col-lg-${field.col_size}`}>
+                              <div className="input-block mb-3 flex-column">
+                                <label className={`col-lg-${field.label_size}`}>
+                                  {field.label}
+                                  <span className="text-danger">*</span>
+                                </label>
+
+                                <div className="status-toggle">
                                   <input
-                                    type={field.type}
-                                    name={field.name}
-                                    className="form-check-input"
-                                    id={field.name}
-                                    {...formik.getFieldProps(field.name)}
+                                    id="rating"
+                                    className="check"
+                                    type="checkbox"
+                                    onChange={(event) => HandelChange(event)}
+                                    defaultChecked={formik.values['Service_Type'] === "1"}
                                   />
-                                  <label
-                                    className="form-check-label"
-                                    for={field.name}
-                                  >
-                                    {field.name}
-                                  </label>
+                                  <label htmlFor="rating" className="checktoggle checkbox-bg"></label>
                                 </div>
+
+
+                                {formik.values['Service_Type'] === "1" ? "PER TRADE" : "FIXED"}
                               </div>
                             </div>
-                          </div>
+
+                            :
+                            <div className={`col-lg-${field.col_size}`}>
+                              <div className="input-block mb-3 flex-column">
+
+                              </div>
+                            </div>
+
+                          }
                         </>
                       ) : field.type === "number" ? (
                         <>
@@ -597,24 +665,7 @@ const DynamicForm = ({
                                     className="form-control"
                                     id={field.name}
                                     placeholder={`Enter ${field.label}`}
-                                    onKeyDown={(e) => {
-                                      
-                                      if (
-                                        [46, 8, 9, 27, 13, 110, 190].includes(e.keyCode) ||
-                                        (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
-                                        (e.keyCode === 67 && (e.ctrlKey === true || e.metaKey === true)) ||
-                                        (e.keyCode === 86 && (e.ctrlKey === true || e.metaKey === true)) ||
-                                        (e.keyCode === 88 && (e.ctrlKey === true || e.metaKey === true))
-                                      ) {
-                                        return;
-                                      }
-                                      if (
-                                        (e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
-                                        (e.keyCode < 96 || e.keyCode > 105)
-                                      ) {
-                                        e.preventDefault();
-                                      }
-                                    }}
+
                                     {...formik.getFieldProps(field.name)}
                                   />
 
@@ -629,7 +680,7 @@ const DynamicForm = ({
                             </div>
                           </div>
                         </>
-                      ) : field.type === "number1" ? (
+                      ) : field.type === "text3" ? (
                         <>
                           <div className={`col-lg-${field.col_size}`}>
                             <div className="row d-flex">
@@ -640,42 +691,21 @@ const DynamicForm = ({
                                   </label>
 
                                   <input
-                                    type="number"
+                                    type="text"
                                     name={field.name}
                                     aria-describedby="basic-addon1"
                                     className="form-control"
                                     id={field.name}
                                     placeholder={`Enter ${field.label}`}
                                     {...formik.getFieldProps(field.name)}
-                                    
-                                    onKeyDown={(e) => {
-                                      
-                                      if (
-                                        [46, 8, 9, 27, 13, 110, 190].includes(e.keyCode) ||
-                                        (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
-                                        (e.keyCode === 67 && (e.ctrlKey === true || e.metaKey === true)) ||
-                                        (e.keyCode === 86 && (e.ctrlKey === true || e.metaKey === true)) ||
-                                        (e.keyCode === 88 && (e.ctrlKey === true || e.metaKey === true))
-                                      ) {
-                                        return;
-                                      }
-                                      if (
-                                        (e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) &&
-                                        (e.keyCode < 96 || e.keyCode > 105)
-                                      ) {
-                                        e.preventDefault();
-                                      }
-                                    }}
-                                    {...formik.getFieldProps(field.name)}
                                     onChange={(e) => {
-                                      const value = e.target.value
-                                      if (value.length > 10) {
-                                        e.target.value = value.slice(0, 10);
-                                      } else {
-                                        formik.handleChange(e);
-                                      }
+                                      const value = e.target.value;
+                                      const newValue = value.replace(/\D/g, '').slice(0, 10);
+                                      e.target.value = newValue;
+                                      formik.handleChange(e);
                                     }}
                                   />
+
 
                                   {formik.touched[field.name] &&
                                     formik.errors[field.name] ? (

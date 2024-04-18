@@ -130,8 +130,6 @@ class OptionChain {
     async update_option_symbols_status(req, res) {
 
 
-        // console.log("okkk - ",req.body.symbol)
-
 
         try {
             const symbol = req.body.symbol;
@@ -341,7 +339,6 @@ class OptionChain {
 
             ]);
 
-            // console.log("GetTrade ",GetTrade.length)
 
 
 

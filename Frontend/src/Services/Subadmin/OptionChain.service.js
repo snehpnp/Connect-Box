@@ -9,18 +9,16 @@ export async function GET_OPTION_SYMBOLS(data, token) {
         const res = await axios.post(`${Config.base_url}get/option_symbols`, data, {
             data: {},
         })
-        console.log("res service:", res)
         return await res?.data;
     }
     catch (err) {
-        console.log("error 1", err);
         return await err;
     }
 
 }
 
 export async function GET_OPTION_ALL_ROUND_TOKEN(data, token) {
-    console.log("data service :", data)
+  
     try {
         const res = await axios.post(`${Config.base_url}get/all_round_token`, data, {
             data: {},
@@ -28,7 +26,6 @@ export async function GET_OPTION_ALL_ROUND_TOKEN(data, token) {
         return await res?.data
     }
     catch (err) {
-        console.log("error", err);
         return await err;
     }
 }
@@ -43,7 +40,6 @@ export async function GET_SYMBOL_EXPRIY(data) {
 
     }
     catch (err) {
-        console.log("error", err)
         return await err;
     }
 }
@@ -57,7 +53,6 @@ export async function GET_COMPANY_INFOS(data) {
 
     }
     catch (err) {
-        console.log("Error ", err)
         return await err
     }
 }
@@ -72,7 +67,6 @@ export async function GET_ALL_STRETGY_NAME_FOR_CLIENT(data) {
 
     }
     catch (err) {
-        console.log("Error", err)
         return await err;
     }
 }

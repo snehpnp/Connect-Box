@@ -48,7 +48,6 @@ const Header = () => {
         setTimeout(() => {
           navigate("/");
         }, 1000);
-        console.log('Expired token cleared.');
       }
     }
 

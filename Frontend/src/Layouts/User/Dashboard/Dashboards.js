@@ -64,7 +64,6 @@ const Dashboards = () => {
       .then((response) => {
 
         if (response.status) {
-          console.log("response.data", response.data)
           setDashboardData({
             loading: true,
             data: response.data

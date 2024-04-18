@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Overview from "../Layouts/Admin/Dashboard/Overview";
+import DashBoard from "../Layouts/SubAdmin/DashBoard/DashBoard";
 import Header from "../Components/Dashboard/Header/Header";
 import MainHeader from "../Components/Dashboard/Header/Main_header";
 import System from "../Layouts/SubAdmin/Systems/System.js";
@@ -38,7 +38,9 @@ import Position from '../Layouts/SubAdmin/Trade/Position.js'
 
 import Profile from '../Layouts/Comman/Profile/Profile';
 
+import Openposition from '../Layouts/SubAdmin/Option/Open_Positions.js';
 
+import Faqs from '../Layouts/Comman/Faqs';
 
 // strategydesc
 const SubAdmin_Routing = () => {
@@ -49,12 +51,11 @@ const SubAdmin_Routing = () => {
       <Header />
       <div className="page-wrapper">
         <Routes>
-          <Route exact path="/dashboard" element={<Overview />} />
+          <Route exact path="/dashboard" element={<DashBoard />} />
           <Route exact path="/system" element={<System />} />
           <Route exact path="/help" element={<Help />} />
           <Route exact path="/message-broadcast" element={<MessageBroadcast />} />
           <Route exact path="/strategys" element={<Strategy />} />
-
           <Route exact path="/group-service" element={<Grpservices />} />
           <Route exact path="/group_service/add" element={<Add_Group />} />
           <Route exact path="/servicesAll" element={<AllServices />} />
@@ -72,10 +73,9 @@ const SubAdmin_Routing = () => {
           <Route exact path="/profile" element={<Profile />} />
           <Route exact path="/orders" element={<OrderDetails />} />
           <Route exact path="/position" element={<Position />} />
+          <Route exact path="/open-position" element={<Openposition />} />
 
-
-
-          
+          <Route exact path="/faqs" element={<Faqs />} />
 
 
 

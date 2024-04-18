@@ -47,7 +47,7 @@ const AddClient = () => {
       phone: "",
       balance: "",
       password: "",
-      prifix_key: "",
+      prifix_key: null,
       subadmin_servic_type: "0",
       strategy_Percentage: "0",
       Per_trade: "0",
@@ -57,33 +57,38 @@ const AddClient = () => {
     validate: (values) => {
       let errors = {};
       if (!values.fullName) {
-        errors.fullName = "Full Name is required";
+        errors.fullName = "Please Enter Full Name";
       }
       if (!values.username) {
-        errors.username = "Username is required";
+        errors.username = "Please Enter Username";
       }
       if (!values.email) {
-        errors.email = "Please enter your email address.";
+        errors.email = "Please Enter Email Address";
       } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
         errors.email = "Please enter a valid email address.";
       }
 
       if (!values.phone) {
-        errors.phone = "Please enter your phone number.";
+        errors.phone = "Please Enter Phone Number";
       } else if (!/^\d{10}$/.test(values.phone)) {
         errors.phone = "Please enter a valid 10-digit phone number.";
       }
       if (!values.balance) {
-        errors.balance = "Balance is required";
-      }
+        errors.balance = "Please Enter Balance";
+    }
       if (!values.password) {
-        errors.password = "Password is required";
+        errors.password = "Please Enter Password";
       }
+      if (!values.Per_trade ) {
+        errors.Per_trade = "Please Enter per trade value";
+
+      } if (!values.strategy_Percentage) {
+        errors.strategy_Percentage = "Please Enter strategy percentage value";
+      }
+      
       if (!values.prifix_key) {
-        errors.prifix_key = "Prefix key is required";
-      } else if (values.prifix_key.length !== 3) {
-        errors.prifix_key = "Key should be exactly 3 characters/number/both";
-      }
+        errors.prifix_key = "Please Enter Prefix Key";
+      }  
       return errors;
     },
     onSubmit: async (values, { setSubmitting }) => {
@@ -159,7 +164,7 @@ const AddClient = () => {
     {
       name: "phone",
       label: "Phone Number",
-      type: "number1",
+      type: "text3",
       label_size: 12,
       col_size: 6,
       disable: false,
@@ -167,7 +172,7 @@ const AddClient = () => {
     {
       name: "balance",
       label: "Balance",
-      type: "number",
+      type: "text3",
       label_size: 12,
       col_size: 6,
       disable: false,
@@ -183,7 +188,7 @@ const AddClient = () => {
     {
       name: "prifix_key",
       label: "Prifix Key",
-      type: "text",
+      type: "text2",
       label_size: 12,
       col_size: 6,
       disable: false,
@@ -217,7 +222,7 @@ const AddClient = () => {
             ? "Per Trade Value"
             : "% Per Strategy"
           : "",
-      type: "number",
+      type: "text3",
       placeholder:
         formik.values.subadmin_servic_type === "1" ||
         formik.values.subadmin_servic_type === "2"
@@ -243,7 +248,7 @@ const AddClient = () => {
           (field) => !field.showWhen || field.showWhen(formik.values)
         )}
         ProfileShow={formik.values.profile_img}
-        page_title="Add Subadmin"
+        page_title="Add New Subadmin"
         btn_name="Add Subadmin"
         btn_name1="Cancel"
         formik={formik}

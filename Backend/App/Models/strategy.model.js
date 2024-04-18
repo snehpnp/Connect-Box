@@ -59,6 +59,11 @@ const strategySchema = Schema({
         ref: "USER",
         default: null
     },
+    Service_Type: {
+        type: String,
+        enum: ['0','1', '2'], // 0 = No Use , 1= Fixed , 2= per trade
+        default: '0'
+    },
     createdAt: {
         type: Date,
         default: Date.now

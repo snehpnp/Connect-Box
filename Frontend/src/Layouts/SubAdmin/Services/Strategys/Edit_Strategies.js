@@ -14,6 +14,7 @@ function Edit_Strategies() {
   const { id } = useParams();
   const [makerId, setMakerId] = useState("");
   const [allStrategy, setAllStrategy] = useState(null);
+  const [getStgDescription, setStgDescription] = useState('');
 
 
   useEffect(() => {
@@ -42,109 +43,104 @@ function Edit_Strategies() {
 
   const fields = [
     {
-      name: "strategy_name",
-      label: "Strategy Name",
-      type: "text1",
-      label_size: 6,
-      col_size: 6,
-      disable: false,
+        name: "strategy_name",
+        label: "Strategy Name",
+        type: "text1",
+        label_size: 6,
+        col_size: 6,
+        disable: false,
     },
 
     {
-      name: "strategy_category",
-      label: "Catagory",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
+        name: "strategy_category",
+        label: "Catagory",
+        type: "text",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_demo_days",
-      label: "Strategy demo days",
-      type: "number",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
+        name: "strategy_demo_days",
+        label: "Strategy demo days",
+        type: "number",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_segment",
-      label: "Strategy Segment",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
+        name: "strategy_segment",
+        label: "Strategy Segment",
+        type: "text",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_indicator",
-      label: "Indicator",
-      type: "file1",
-      label_size: 12,
-      col_size: 6,
-      onChange: (event) =>
-        formik.setFieldValue("strategy_indicator", event.currentTarget.files[0]),
-      disable: false,
+        name: "strategy_indicator",
+        label: "Indicator",
+        type: "file1",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_tester",
-      label: "Strategy Tester",
-      type: "file1",
-      label_size: 12,
-      col_size: 6,
-      onChange: (event) =>
-        formik.setFieldValue("strategy_tester", event.currentTarget.files[0]),
-      disable: false,
+        name: "strategy_tester",
+        label: "Strategy Tester",
+        type: "file1",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_image",
-      label: "Strategy Logo",
-      type: "file1",
-      label_size: 12,
-      col_size: 6,
-      onChange: (event) =>
-        formik.setFieldValue("strategy_image", event.currentTarget.files[0]),
-      disable: false,
+        name: "strategy_image",
+        label: "Strategy Logo",
+        type: "file1",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_description",
-      label: "Strategy description",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
+        name: "Service_Type",
+        label: "Service Type",
+        type: "test",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_amount_month",
-      label: "Monthly",
-      type: "number",
-      label_size: 3,
-      col_size: 3,
-      disable: false,
+        name: "strategy_amount_month",
+        label: "Monthly",
+        type: "number",
+        label_size: 3,
+        col_size: 3,
+        disable: false,
     },
     {
-      name: "strategy_amount_quarterly",
-      label: "Quaterly",
-      type: "number",
-      label_size: 3,
-      col_size: 3,
-      disable: false,
+        name: "strategy_amount_quarterly",
+        label: "Quaterly",
+        type: "number",
+        label_size: 3,
+        col_size: 3,
+        disable: false,
     },
     {
-      name: "strategy_amount_half_early",
-      label: "Half Yearly",
-      type: "number",
-      label_size: 3,
-      col_size: 3,
-      disable: false,
+        name: "strategy_amount_half_early",
+        label: "Half Yearly",
+        type: "number",
+        label_size: 3,
+        col_size: 3,
+        disable: false,
     },
     {
-      name: "strategy_amount_early",
-      label: "Yearly",
-      type: "number",
-      label_size: 3,
-      col_size: 3,
-      disable: false,
+        name: "strategy_amount_early",
+        label: "Yearly",
+        type: "number",
+        label_size: 3,
+        col_size: 3,
+        disable: false,
     },
-  ];
+
+];
 
   const formik = useFormik({
     initialValues: {
@@ -160,6 +156,8 @@ function Edit_Strategies() {
       strategy_amount_half_early: "",
       strategy_amount_early: "",
       strategy_demo_days: "",
+      Service_Type: ""
+
     },
     validate: (values) => {
       let errors = {};
@@ -210,6 +208,7 @@ function Edit_Strategies() {
         strategy_amount_half_early: values.strategy_amount_half_early,
         strategy_amount_early: values.strategy_amount_early,
         maker_id: makerId.user_id,
+        Service_Type: values.Service_Type == '' ? 0 :values.Service_Type
       };
 
       await dispatch(EditSubStrategys(data))
@@ -237,6 +236,8 @@ function Edit_Strategies() {
       formik.setFieldValue("strategy_segment", allStrategy.strategy_segment);
       formik.setFieldValue("strategy_tester", allStrategy.strategy_tester);
       formik.setFieldValue("strategy_description", allStrategy.strategy_description);
+      formik.setFieldValue("Service_Type", allStrategy.Service_Type);
+
 
       formik.setFieldValue(
         "strategy_indicator",
@@ -273,6 +274,15 @@ function Edit_Strategies() {
       formik={formik}
       btn_name="Update"
       btn_name1="Cancel" btn_name1_route="/subadmin/strategys"
+      additional_field={
+        <>
+
+            <label>Strategy Description</label>
+            <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
+            </textarea>
+        </>
+
+    }
     />
   );
 }

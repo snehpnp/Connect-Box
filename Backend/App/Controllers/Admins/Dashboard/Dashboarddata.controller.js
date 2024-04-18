@@ -246,7 +246,6 @@ class Dashboard {
         var data = await count_licenses.aggregate(pipeline);
         results.push(data);
       }
-      console.log("results", results);
 
       let sortedResults = [];
       results.forEach((data) => {

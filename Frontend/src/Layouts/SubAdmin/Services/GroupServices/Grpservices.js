@@ -38,7 +38,6 @@ function GroupStrategy() {
         data: [],
     });
 
-    console.log("allGroupService :", allGroupService)
 
     const [showModal, setShowModal] = useState(false)
     const [showModal1, setShowModal1] = useState(false)
@@ -95,7 +94,7 @@ function GroupStrategy() {
                 }
             })
             .catch((error) => {
-                console.log(error)
+                console.log("Error in Delete Group",error)
             })
 
 

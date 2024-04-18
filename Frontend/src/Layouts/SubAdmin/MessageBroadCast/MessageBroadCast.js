@@ -351,7 +351,7 @@ function MessageBroadcast() {
       <div className="container-fluid" >
         <div className="page-header">
           <div className="content-page-header">
-            <h5>All Users</h5>
+            <h6>Message Broadcast</h6>
           </div>
         </div>
 

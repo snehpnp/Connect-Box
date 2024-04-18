@@ -3,40 +3,6 @@ import DrapDown from './DrapDown';
 import { Link } from 'react-router-dom';
 
 const Main_Header = () => {
-  const [themeMode, setThemeMode] = useState('light');
-
-  const toggleTheme = () => {
-    // Toggle theme mode
-    const newThemeMode = themeMode === 'light' ? 'dark' : 'light';
-    setThemeMode(newThemeMode);
-
-    // Update localStorage
-    localStorage.setItem('theme_mode', newThemeMode);
-    window.location.reload()
-  };
-
-  // Apply theme based on localStorage value on page load
-  useEffect(() => {
-    const storedThemeMode = localStorage.getItem('theme_mode');
-    console.log("storedThemeMode",storedThemeMode)
-    if (storedThemeMode) {
-      setThemeMode(storedThemeMode);
-    }else{
-      localStorage.setItem('theme_mode',"light");
-      setThemeMode('light');
-    }
-  }, []);
-
-  // Update theme-related attributes on HTML element
-  useEffect(() => {
-    const htmlElement = document.querySelector('html');
-    htmlElement.setAttribute('data-sidebar', themeMode);
-    htmlElement.setAttribute('data-layout-mode', themeMode);
-    htmlElement.setAttribute('data-topbar', themeMode);
-  }, [themeMode]);
-
-
-
 
 
   return (
@@ -84,7 +50,7 @@ const Main_Header = () => {
 
         {/* Toggle theme switch */}
 
-        
+
 
         <div className="nav-item  has-arrow dropdown-heads ">
           <DrapDown />

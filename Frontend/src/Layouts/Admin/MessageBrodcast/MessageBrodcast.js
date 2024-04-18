@@ -71,9 +71,12 @@ function MessageBroadcast() {
   const columns = [
     {
       field: "id",
-      headerName: "S.No",
+      headerName: "ID",
       width: 70,
       headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div> <b>{params.value + 1}</b></div>
+      ),
     },
     {
       field: "UserName",

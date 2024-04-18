@@ -33351,13 +33351,11 @@ table.table:before,
 .custom-data-grid:before {
     content: ' ';
     display: block;
-    position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     opacity: 0.1;
-    background-image: url('/assets/img/pnp-logo.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 50%;
@@ -33605,10 +33603,10 @@ img {
     height: 100px;
     width: 97px;
     line-height: 91px;
-    border: 5px solid #40cbb4;
+    border: 5px solid #7539ff;
     border-radius: 50%;
     font-size: 50px;
-    color: #40cbb4;
+    color: #7539ff;
     -webkit-transition: all 600ms ease;
     -ms-transition: all 600ms ease;
     -o-transition: all 600ms ease;
@@ -33659,8 +33657,9 @@ img {
     color: #848484;
     font-weight: 500;
     padding: 5px 0;
-    padding-left: 30px;
+    /* padding-left: 30px; */
     border-bottom: 1px dashed #dddddd;
+    text-align: center;
 }
 
 .pricing-block .features li:before {
@@ -33771,4 +33770,361 @@ img {
     background: none;
     border-radius: 0px;
     border-color: #ffc20b;
+}
+
+[data-layout-mode=dark] .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #16191c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+
+[data-layout-mode=dark] .overlay-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+[data-layout-mode=light] .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+
+[data-layout-mode=light] .overlay-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+
+
+
+#price {
+    text-align: center;
+}
+
+.plan {
+    display: inline-block;
+    margin: 10px 1%;
+    font-family: 'Lato', Arial, sans-serif;
+}
+
+.plan-inner {
+    background: #fff;
+    margin: 0 auto;
+    min-width: 280px;
+    max-width: 100%;
+    position: relative;
+}
+
+.entry-title {
+    background: #53CFE9;
+    height: 140px;
+    position: relative;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.entry-title>h3 {
+    background: #20BADA;
+    font-size: 20px;
+    padding: 5px 0;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0;
+}
+
+.entry-title .price {
+    position: absolute;
+    bottom: -25px;
+    background: #20BADA;
+    height: 95px;
+    width: 95px;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    border-radius: 50px;
+    border: 5px solid #fff;
+    line-height: 80px;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.price span {
+    position: absolute;
+    font-size: 9px;
+    bottom: -10px;
+    left: 30px;
+    font-weight: 400;
+}
+
+.entry-content {
+    color: #323232;
+}
+
+.entry-content ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: center;
+}
+
+.entry-content li {
+    border-bottom: 1px solid #E5E5E5;
+    padding: 10px 0;
+}
+
+.entry-content li:last-child {
+    border: none;
+}
+
+
+
+.btn a {
+    background: #7539FF;
+    padding: 10px 30px;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-decoration: none
+}
+
+.hot {
+    position: absolute;
+    top: -7px;
+    background: #F80;
+    color: #fff;
+    text-transform: uppercase;
+    z-index: 2;
+    padding: 2px 5px;
+    font-size: 9px;
+    border-radius: 2px;
+    right: 10px;
+    font-weight: 700;
+}
+
+.basic .entry-title {
+    background: #75DDD9;
+}
+
+.basic .entry-title>h3 {
+    background: #44CBC6;
+}
+
+.basic .price {
+    background: #44CBC6;
+}
+
+.standard .entry-title {
+    background: #4484c1;
+}
+
+.standard .entry-title>h3 {
+    background: #3772aa;
+}
+
+.standard .price {
+    background: #3772aa;
+}
+
+.ultimite .entry-title>h3 {
+    background: #DD4B5E;
+}
+
+.ultimite .entry-title {
+    background: #F75C70;
+}
+
+.ultimite .price {
+    background: #DD4B5E;
+}
+
+[data-layout-mode=dark] .pricing-block .inner-box,
+[data-layout-mode=dark] .pricing-block .icon-box:before {
+    background-color: #2a2b2f;
+
+}
+
+.d-table,
+.intro-fill {
+    display: table;
+}
+
+.d-tablecell {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.first-intro {
+    font-family: "Muli", sans-serif;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    overflow: hidden;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    z-index: 99999;
+    background: linear-gradient(20deg, #214289, #D61A62);
+    background-size: 400% 400%;
+    -webkit-animation: AnimationName 30s ease infinite;
+    -moz-animation: AnimationName 30s ease infinite;
+    animation: AnimationName 30s ease infinite;
+}
+
+@-webkit-keyframes AnimationName {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@-moz-keyframes AnimationName {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes AnimationName {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.intro-fill {
+    width: 980px;
+    height: 100%;
+    left: 0%;
+    top: 0%;
+    right: 0%;
+    bottom: 0px;
+    margin: auto;
+    text-align: center;
+    position: absolute;
+    font-weight: 200;
+}
+
+.intro-fill span {
+    position: absolute;
+    line-height: 60px;
+    height: 60px;
+    width: 100%;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    margin: auto;
+}
+
+.intro-fill .welcome-1 {
+    font-size: 32px;
+    width: inherit;
+    text-align: center;
+    opacity: 0;
+    color: white;
+    animation: tans 6s ease;
+    animation-delay: 0s;
+}
+
+.intro-fill .welcome-2 {
+    font-size: 32px;
+    width: inherit;
+    text-align: center;
+    opacity: 0;
+    color: white;
+    animation: tans 6s ease;
+    animation-delay: 2s;
+}
+
+.intro-fill .welcome-3 {
+    font-size: 32px;
+    width: inherit;
+    text-align: center;
+    opacity: 0;
+    color: white;
+    animation: tanss 6s ease;
+    animation-delay: 4s;
+}
+
+@keyframes tans {
+    from {
+        opacity: 0;
+        transform: translateY(200px) scale(1.8);
+    }
+
+    40% {
+        opacity: 1;
+        transform: translateY(0px) scale(1.4);
+    }
+
+    70% {
+        opacity: 0;
+        transform: translateY(0px) scale(1);
+    }
+}
+
+@keyframes tanss {
+    from {
+        opacity: 0;
+        transform: translateY(200px) scale(1.8);
+    }
+
+    40% {
+        opacity: 1;
+        transform: translateY(0px) scale(1.4);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(0px) scale(1.4);
+    }
+
+    75% {
+        opacity: 0;
+        transform: translateY(0px) scale(1);
+    }
 }

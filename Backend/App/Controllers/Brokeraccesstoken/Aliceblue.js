@@ -210,7 +210,6 @@ class AliceBlue {
 
 
     //                     } else {
-    //                         // console.log("NO DATA FOUND");
     //                     }
     //                 })
     //                 .catch(async (error) => {

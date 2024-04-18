@@ -4,15 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 import AddForm from "../../../Components/ExtraComponents/forms/AddForm";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
-import {
-  GetAll_Group_Servics,
-  GET_ALL_SERVICES_GIVEN,
-} from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
+import {  GetAll_Group_Servics,  GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
-import {
-  AddUsers,
-  Get_All_Broker,
-} from "../../../ReduxStore/Slice/Subadmin/UsersSlice";
+import {  AddUsers,  Get_All_Broker, } from "../../../ReduxStore/Slice/Subadmin/UsersSlice";
 import Loader from "../../../Utils/Loader";
 
 import { useFormik } from "formik";
@@ -24,8 +18,8 @@ const AddClient = () => {
 
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
-
-  const [refresh, setrefresh] = useState(false);
+  var subadmin_service_type1 = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
+  console.log("subadmin_service_type", subadmin_service_type1)
 
   const [serviceName, setServiceName] = useState({
     loading: true,
@@ -59,7 +53,7 @@ const AddClient = () => {
     },
     {
       name: "fullName",
-      label: "FullName",
+      label: "Full Name",
       type: "text",
       label_size: 6,
       col_size: 6,
@@ -84,8 +78,8 @@ const AddClient = () => {
 
     {
       name: "phone",
-      label: "Phone No",
-      type: "number1",
+      label: "Phone Number",
+      type: "text3",
       label_size: 12,
       col_size: 6,
       disable: false,
@@ -99,6 +93,20 @@ const AddClient = () => {
         { label: "2 Day Live", value: "0" },
         { label: "Live", value: "2" },
       ],
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "Service_Type",
+      label: "Service Type",
+      type: "select",
+      options: [
+        { label: "Fixed", value: "1" },
+        { label: "Per Trade", value: "2" },
+
+      ],
+      showWhen: (values) => subadmin_service_type1 == 1,
       label_size: 12,
       col_size: 6,
       disable: false,
@@ -167,6 +175,7 @@ const AddClient = () => {
       parent_role: null,
       demat_userid: null,
       api_key: null,
+      Service_Type:0
     },
     validate: (values) => {
       let errors = {};
@@ -220,6 +229,8 @@ const AddClient = () => {
         demat_userid: values.demat_userid,
         group_service: values.groupservice,
         broker: values.broker,
+        Service_Type: values.Service_Type,
+
       };
 
       await dispatch(AddUsers(req))
@@ -240,6 +251,8 @@ const AddClient = () => {
     },
   });
 
+
+  console.log(formik.values.Service_Type)
   const getAllGroupService = async () => {
     try {
       var data = { id: user_id };
@@ -271,7 +284,7 @@ const AddClient = () => {
 
   useEffect(() => {
     getAllGroupService();
-  }, [refresh]);
+  }, []);
 
   const getAllGroupServicesName = async () => {
     if (formik.values.groupservice) {
@@ -300,7 +313,7 @@ const AddClient = () => {
   };
   useEffect(() => {
     getAllGroupServicesName();
-  }, [refresh, formik.values.groupservice]);
+  }, [formik.values.groupservice]);
 
   const GetAllStrategy = async () => {
     var data = { id: user_id };
@@ -388,110 +401,63 @@ const AddClient = () => {
             fields={fields.filter(
               (field) => !field.showWhen || field.showWhen(formik.values)
             )}
-             page_title="Add User"
+            page_title="Add User"
             btn_name="Add User"
             btn_name1="Cancel"
             formik={formik}
             btn_name1_route={"/subadmin/users"}
             additional_field={
               <>
-                {serviceName.data.length > 0 ?<div class="input-block "> <label>All Group Service</label> </div>: ""}
-              <div className="row">
-              
-                {serviceName &&
-                  serviceName.data.map((item) => (
-                    <>
-                    
-                      <div className={`col-lg-1 `} key={item.serviceId}>
+                {serviceName.data.length > 0 ? <div class="input-block "> <label>All Group Service</label> </div> : ""}
+                <div className="row">
+
+                  {serviceName &&
+                    serviceName.data.map((item) => (
+                      <>
+
+                        <div className={`col-lg-2 `} key={item.serviceId}>
 
                           <label
                             className="alert alert-primary py-2 "
                             style={{ fontSize: "10px" }}
                             for={item.serviceName}
                           >{`${item.serviceName}[${item.categoryName}]`}</label>
-                        
-                      </div>
-                      
-                    </>
-                   
-                  ))}
-                   </div>
-                <table className="table bg-none mt-5" >
-                  <thead>
-                    <tr>
-                      <th>Strategy Name</th>
-                      <th>Monthly</th>
-                      <th>Quarterly</th>
-                      <th>Halfyearly</th>
-                      <th>Yearly</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>AAA_MCX</td>
-                      <td>
-                       
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value="1"
-                        />
-                      </td>
-                      <td>
-                       
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value="1"
-                        />
-                      </td>
-                      <td>
-                       
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value="1"
-                        />
-                      </td>
-                      <td>
-                       
-                        <input
-                          className="form-check-input"
-                          type="radio"
-                          value="1"
-                        />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div className="row mt-4">
-                  <div class="input-block ">
-                    <label>All Strategy</label>
-                  </div>
-                  {getAllStategy.data.map((strategy) => (
-                    <div className={`col-lg-3 mt-2`} key={strategy._id}>
-                      <div className="row">
-                        <div className="col-lg-12">
-                          <div className="form-check custom-checkbox mb-3">
-                            <input
-                              type="checkbox"
-                              className="form-check-input"
-                              name={strategy.strategy_name}
-                              value={strategy._id}
-                              onChange={() =>
-                                handleStrategyChange(strategy._id)
-                              }
-                            />
-                            <label
-                              className="form-check-label"
-                              htmlFor={strategy.strategy_name}
-                            >
-                              {strategy.strategy_name}
-                            </label>
 
-                            {formik.values.licence == 1
-                              ? ""
-                              : selectedCheckboxes.includes(strategy._id) && (
+                        </div>
+
+                      </>
+
+                    ))}
+                </div>
+                {subadmin_service_type1 == 2 ?
+                  (<div className="row mt-4">
+                    <div class="input-block ">
+                      <label>All Strategy</label>
+                    </div>
+                    {getAllStategy.data.map((strategy) => (
+                      <div className={`col-lg-3 mt-2`} key={strategy._id}>
+                        <div className="row">
+                          <div className="col-lg-12">
+                            <div className="form-check custom-checkbox mb-3">
+                              <input
+                                type="checkbox"
+                                className="form-check-input"
+                                name={strategy.strategy_name}
+                                value={strategy._id}
+                                onChange={() =>
+                                  handleStrategyChange(strategy._id)
+                                }
+                              />
+                              <label
+                                className="form-check-label"
+                                htmlFor={strategy.strategy_name}
+                              >
+                                {strategy.strategy_name}
+                              </label>
+
+                              {formik.values.licence == 1
+                                ? ""
+                                : selectedCheckboxes.includes(strategy._id) && (
                                   <>
                                     <div
                                       className=""
@@ -501,7 +467,7 @@ const AddClient = () => {
                                         alignItems: "center",
                                       }}
                                     >
-                                      <div className="form-group d-flex justify-content-between m-3">
+                                      <div className="form-group d-flex justify-content-between m-3 border rounded p-2">
                                         <div className="d-flex align-items-center">
                                           <input
                                             type="radio"
@@ -583,12 +549,132 @@ const AddClient = () => {
                                     </div>
                                   </>
                                 )}
+                            </div>
                           </div>
                         </div>
                       </div>
+                    ))}
+                  </div>) : formik.values.Service_Type ? (<div className="row mt-4">
+                    <div class="input-block ">
+                      <label>All Strategy</label>
                     </div>
-                  ))}
-                </div>
+                    {getAllStategy.data.map((strategy) => (
+                      strategy.Service_Type === formik.values.Service_Type && (
+                        <div className={`col-lg-3 mt-2`} key={strategy._id}>
+                          <div className="row">
+                            <div className="col-lg-12">
+                              <div className="form-check custom-checkbox mb-3">
+                                <input
+                                  type="checkbox"
+                                  className="form-check-input"
+                                  name={strategy.strategy_name}
+                                  value={strategy._id}
+                                  onChange={() => handleStrategyChange(strategy._id)}
+                                />
+                                <label
+                                  className="form-check-label"
+                                  htmlFor={strategy.strategy_name}
+                                >
+                                  {strategy.strategy_name}
+                                </label>
+
+                                {formik.values.licence == 1 ? (
+                                  ""
+                                ) : (
+                                  selectedCheckboxes.includes(strategy._id) && (
+                                    <>
+                                      <div
+                                        className=""
+                                        style={{
+                                          display: "flex",
+                                          flexDirection: "column",
+                                          alignItems: "center",
+                                        }}
+                                      >
+                                        <div className="form-group d-flex justify-content-between m-3 border rounded p-2">
+                                          <div className="d-flex align-items-center">
+                                            <input
+                                              type="radio"
+                                              name={`option_${strategy._id}`}
+                                              value="1"
+                                              defaultChecked
+                                              id={`${strategy._id}_1`}
+                                              onChange={(e) => PlanSetinState(e.target.id)}
+                                            />
+                                            <label
+                                              style={{
+                                                margin: "0 10px 0 5px",
+                                                fontSize: "1rem",
+                                              }}
+                                            >
+                                              monthly{" "}
+                                            </label>
+                                          </div>
+                                          <div className="d-flex align-items-center">
+                                            <input
+                                              type="radio"
+                                              name={`option_${strategy._id}`}
+                                              value="2"
+                                              id={`${strategy._id}_2`}
+                                              onChange={(e) => PlanSetinState(e.target.id)}
+                                            />
+                                            <label
+                                              style={{
+                                                margin: "0 10px 0 5px",
+                                                fontSize: "1rem",
+                                              }}
+                                            >
+                                              quarterly{" "}
+                                            </label>
+                                          </div>
+                                          <div className="d-flex align-items-center">
+                                            <input
+                                              type="radio"
+                                              name={`option_${strategy._id}`}
+                                              value="3"
+                                              id={`${strategy._id}_3`}
+                                              onChange={(e) => PlanSetinState(e.target.id)}
+                                            />
+                                            <label
+                                              style={{
+                                                margin: "0 10px 0 5px",
+                                                fontSize: "1rem",
+                                              }}
+                                            >
+                                              halfyearly{" "}
+                                            </label>
+                                          </div>
+                                          <div className="d-flex align-items-center">
+                                            <input
+                                              type="radio"
+                                              name={`option_${strategy._id}`}
+                                              value="3"
+                                              id={`${strategy._id}_4`}
+                                              onChange={(e) => PlanSetinState(e.target.id)}
+                                            />
+                                            <label
+                                              style={{
+                                                margin: "0 10px 0 5px",
+                                                fontSize: "1rem",
+                                              }}
+                                            >
+                                              yearly{" "}
+                                            </label>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </>
+                                  )
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    ))}
+
+                  </div>) : ""}
+
               </>
             }
           />

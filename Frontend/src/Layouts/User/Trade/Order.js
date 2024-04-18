@@ -46,20 +46,15 @@ function Payment() {
 
 
   const columns = [
-    { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
-    // {
-    //   field: 'profile',
-    //   headerName: 'Profile',
-    //   width: 120,
-    //   headerClassName: styles.boldHeader,
-    //   renderCell: (params) => (
-    //     <div>
-    //       <a href="profile.html" className="company-avatar avatar-md me-2 companies company-icon">
-    //         <img className="avatar-img rounded-circle company" src="assets/img/companies/company-05.svg" alt="Company Image" />
-    //       </a>
-    //     </div>
-    //   )
-    // },
+    {
+      field: "id",
+      headerName: "ID",
+      width: 70,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div> <b>{params.value + 1}</b></div>
+      ),
+    },
     {
       field: 'username',
       headerName: 'User Name',

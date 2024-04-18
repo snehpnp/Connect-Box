@@ -324,7 +324,6 @@ class GroupService {
 
       //       })
       //     } else {
-      //       console.log("Error User Not Available in this group");
       //     }
 
 
@@ -656,7 +655,6 @@ class GroupService {
 
       }
     } catch (error) {
-      console.log("Error:", error);
 
       return res.json({ status: false, msg: 'server error delete group service-', data: error });
     }
@@ -700,7 +698,6 @@ class GroupService {
     try {
       const { data } = req.body
 
-      // console.log(data)
 
       var ServicesArr = []
       if (!data || data.length == 0 || data == '') {
