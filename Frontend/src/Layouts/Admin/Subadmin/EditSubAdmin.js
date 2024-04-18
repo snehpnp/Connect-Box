@@ -47,6 +47,7 @@ const EditClient = () => {
     },
 
     validate: (values) => {
+      console.log("Value from error",values)
       let errors = {};
       if (!values.fullName) {
         errors.fullName = "Full Name is required";
@@ -59,22 +60,19 @@ const EditClient = () => {
       } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
         errors.email = "Please enter a valid email address.";
       }
-
       if (!values.phone) {
         errors.phone = "Please enter your phone number.";
       } else if (!/^\d{10}$/.test(values.phone)) {
         errors.phone = "Please enter a valid 10-digit phone number.";
       }
-      if (!values.balance) {
-        errors.balance = "Balance is required";
-    }
       if (!values.password) {
         errors.password = "Password is required";
       }
       if (!values.Per_trade ) {
         errors.Per_trade = "Please Enter per trade value";
 
-      } if (!values.strategy_Percentage) {
+      } 
+      if (!values.strategy_Percentage) {
         errors.strategy_Percentage = "Please Enter strategy percentage value";
       }
     
@@ -84,6 +82,7 @@ const EditClient = () => {
       return errors;
     },
     onSubmit: async (values) => {
+      console.log("ThisValueComming From Submit ")
       const req = {
         id: id,
         UserName: values.username,
@@ -214,14 +213,19 @@ const EditClient = () => {
   ];
 
 
+
   useEffect(() => {
+
+    // console.log("s -",rowData !== undefined && rowData[0].subadmin_service_type)
+    // console.log("s typeof-",typeof rowData !== undefined && rowData[0].subadmin_service_type)
+
     formik.setFieldValue("username", rowData !== undefined && rowData[0].UserName);
     formik.setFieldValue("fullName", rowData !== undefined && rowData[0].FullName);
     formik.setFieldValue("email", rowData !== undefined && rowData[0].Email);
     formik.setFieldValue("mobile", rowData !== undefined && rowData[0].PhoneNo);
     formik.setFieldValue("Per_trade", rowData !== undefined && rowData[0].Per_trade);
     formik.setFieldValue("strategy_Percentage", rowData !== undefined && rowData[0].strategy_Percentage);
-    formik.setFieldValue("subadmin_servic_type", rowData !== undefined && rowData[0].subadmin_servic_type == 1 ? "1" : "2");
+    formik.setFieldValue("subadmin_servic_type", rowData !== undefined && rowData[0].subadmin_service_type == 1 ? "1" : "2");
     formik.setFieldValue("prifix_key", rowData !== undefined && rowData[0].prifix_key);
 
 
