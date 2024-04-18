@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-
+import axios from "axios";
 import {
     getAllServices,
     getCatogries,
@@ -31,7 +31,7 @@ const Makecall = () => {
   const [strikePrice, setStrikePrice] = useState('')
   const [strikePriceErr, setStrikePriceErr] = useState('')
 
-  const [optionType, setOptionType] = useState('')
+  const [optionType, setOptionType] = useState('CALL')
   const [optionTypeErr, setOptionTypeErr] = useState('')
 
 
@@ -244,7 +244,36 @@ console.log(
     // })
 
     if(datra.length > 0){
+        console.log("SSSS",datra && datra[0].segment)
         SetScriptSegment(datra && datra[0].segment)
+
+        switch (datra && datra[0].segment) {
+            case "C":
+            case "O":
+            case "F":
+            setselectedTimeExit('15:25')
+            setselectedTimeNoTrade('15:25')
+                break;
+            case "CF":
+            case "CO":
+            setselectedTimeExit('16:55')
+            setselectedTimeNoTrade('16:55')
+                break;
+            case "MF":
+            case "MO":
+            setselectedTimeExit('23:25')
+            setselectedTimeNoTrade('23:25')
+                break;
+            default:
+                // Handle the case where datra or datra[0].segment is undefined or doesn't match any of the cases
+                break;
+        }
+        
+        // console.log("selectedTimeExi switch",selectedTimeExit)
+        // console.log("selectedTimeNoTrade switch",selectedTimeNoTrade)
+
+
+
     }
     // SetScriptExchangeValue(datra && datra[0].name)
     // console.log("datra", datra && datra[0].segment);
@@ -508,13 +537,16 @@ const selectMarkettime = (e) => {
     if(e.target.value == "2"){
       if(EntryPriceBA == 'at'){
         SetEntryPriceBA('above')
+        setShowhideAtBelow(0)
       }else{
         SetEntryPriceBA('above')
+        setShowhideAtBelow(0)
       }
       setShowMarkettime(0)
     }else{
       setShowMarkettime(1)
       SetEntryPriceBA('at')
+      setShowhideAtBelow(0)
     }
     setMarkettime(e.target.value)
   }
@@ -551,7 +583,178 @@ const selectMarkettime = (e) => {
   const GenerateMakeCall = async (e) => {
 
     e.preventDefault();
+    
+    if (selectCatagoryid == "") {
+        alert("Please Select a Script  Type")
+        return
+    }
+    
+    if (scriptname == "") {
+        alert("Please Select a Script Name")
+        return
+    }
+
+    if(scriptSegment != 'C'){ 
+        if (expiryOnChange == "") {
+          alert("Please Select a Expiry")
+          return
+        }
+    }
+
+    if(scriptSegment == 'O' || scriptSegment == 'MO' || scriptSegment == 'CO'){ 
+        if (strikePrice == "") {
+          alert("Please Select a strike price")
+          return
+        }
+        if (optionType == "") {
+          alert("Please Select a Option Type")
+          return
+        }
+      }
+
+      if (selectStrategy == "") {
+        alert("Please Select a Strategy")
+        return
+      }
+
+
+      if (tradeType == '') {
+        alert("Please Select a Trade Type")
+        return
+       }
+
+
+      if (EntryPriceBA == '') {
+        alert("Please Select a  Above/Below/Range")
+        return
+      }
+
+
+      if(EntryPriceBA == 'range'){
+        if(EntryPriceRange_one == ''){
+         alert("Please Select a price from")
+           return
+        }
+        if(EntryPriceRange_two == ''){
+         alert("Please Select a price to")
+           return
+        }
+     
+           
+       }else{
+         if (EntryPrice == '') {
+           alert("Please Select a Entry Price")
+           return
+         }
+       }
+
+
+    if(IntradayDelivery == '1'){
+      
+        if(EntryPriceBA == "at"){
+          if(selectedTimeExit == ''){
+            alert("Please Select a Intraday Time Exit")
+            return
+            }
+        }else{
+          if(selectedTimeExit == ''){
+            alert("Please Select a Intraday Time Exit")
+            return
+            }
+  
+            if(selectedTimeNoTrade == ''){
+              alert("Please Select a Intraday No Trade Time")
+              return
+            }
+        }
+
+    }
+
+    if(IntradayDelivery == '2'){
+      if(selectedTimeNoTrade == ''){
+        alert("Please Select a Delivery No Trade Time")
+        return
+       }
+    }
+
+    // if (WiseTypeDropdown == '') {
+    //   alert("Please Select wisetype")
+    //   return
+    // }
+
+    // if (persentage == '') {
+    //   alert("Please Select  a Persentage")
+    //   return
+    // }
+
+    // if (target1 == '') {
+    //   alert("Please Set Target1 Value")
+    //   return
+    // }
+
+    // if (target1persentage == '') {
+    //   alert("Please Set Target1 Per. Value")
+    //   return
+    // }
+    // if (target1perWise == '') {
+    //   alert("Please Set Target1 Persentage Wise Value")
+    //   return
+    // }
+    // if (target2 == '') {
+    //   alert("Please Set Target2 Value")
+    //   return
+    // }
+    // if (target2perWise == '') {
+    //   alert("Please Set Target2 Persentage Wise Value")
+    //   return
+    // }
+    
     alert("Done")
+     let price = 0;
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+        let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice==''?'100':strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${target1}|StopLoss:${stoploss}|ExitTime:${selectedTimeExit}|Demo:demo`
+           
+
+        console.log("req ",req) 
+       // console.log("process.env.BROKER_URL ",process.env.BROKER_URL)
+        
+        let config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: 'https://trade.pandpinfotech.com/signal/broker-signals',
+         // url: `${process.env.BROKER_URL}`,
+          headers: {
+            'Content-Type': 'text/plain'
+          },
+          data: req
+        };
+        axios.request(config)
+        .then(async(response) => {
+            
+            console.log("response ",response);
+            // let tradeSymbol;
+            // if(item.segment.toLowerCase() == 'o' || item.segment.toLowerCase() == 'co' || item.segment.toLowerCase() == 'fo' || item.segment.toLowerCase() == 'mo')
+            // {
+            // tradeSymbol = item.symbol+"  "+item.expiry+"  "+item.strike+"  "+item.option_type+"  "+" [ "+item.segment+" ] ";
+            // }
+            // else if(item.segment.toLowerCase() == 'f' || item.segment.toLowerCase() == 'cf' || item.segment.toLowerCase() == 'mf')
+            // {
+            // tradeSymbol = item.symbol+"  "+item.expiry+"  "+" [ "+item.segment+" ] ";
+            // }
+            // else{
+            // tradeSymbol = item.symbol+"  "+" [ "+item.segment+" ] ";
+            // }
+            // const io = await getIO();
+            // io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
+
+            // console.log("response Trade Excuted - ", response.data)
+
+        })
+        .catch((error) => {
+          // console.log(error.response.data);
+        });
+
+
   }
 
 
@@ -677,8 +880,8 @@ const selectMarkettime = (e) => {
                                                         <label>Option-Type Call/Put -</label>
                                                         <select className="form-select" onChange={(e) => { selectOptionType(e) ;setOptionTypeErr(''); }}>
                                                         <option selected value="" >--Select--</option>
-                                                        <option value="CE">CALL</option>
-                                                        <option value="PE">PUT</option>
+                                                        <option value="CALL">CALL</option>
+                                                        <option value="PUT">PUT</option>
         
                                                         </select>
                                                     </div>
@@ -735,7 +938,8 @@ const selectMarkettime = (e) => {
 
                                                     </div>
                                                 </div>
-                                                <div className="col-lg-4 col-md-6 col-sm-12">
+
+                                                {/* <div className="col-lg-4 col-md-6 col-sm-12">
                                                     <div className="input-block mb-3">
                                                         <label>Market Time -</label>
                                                         <ul className="form-group-plus css-equal-heights">
@@ -750,7 +954,10 @@ const selectMarkettime = (e) => {
                                                             </li>
                                                         </ul>
                                                     </div>
-                                                </div>
+                                                </div> */}
+
+                                                  
+
                                                 <div className="col-lg-4 col-md-6 col-sm-12">
                                                     <div className="input-block mb-3">
                                                         <label>Entry Price :</label>
@@ -873,6 +1080,11 @@ const selectMarkettime = (e) => {
                                                     </div>
 
                                                 </div>
+
+                                                <div className="col-lg-4 col-md-6 col-sm-12">
+                                                </div> 
+
+
                                                 <div className="col-lg-4">
 
                                                 <div className="input-block mb-3">
