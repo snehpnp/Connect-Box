@@ -88,28 +88,7 @@ export default function AllUsers() {
   };
 
 
-  const AllBroker = async () => {
-    await dispatch(Get_All_Broker()).unwrap()
-      .then((response) => {
-        if (response.status) {
 
-
-          setAllBroker(response.data);
-        }
-        else {
-          setAllBroker([]);
-        }
-      })
-      .catch((error) => {
-        console.log("Error Broker find Error :", error)
-      })
-
-  }
-
-
-  useState(() => {
-    AllBroker();
-  }, [])
 
 
 
@@ -199,7 +178,7 @@ export default function AllUsers() {
             id={`rating_${params.row.id}`}
             className="check"
             type="checkbox"
-            onClick={(event) => handleSwitchChange(event, params.row._id)}
+            onChange={(event) => handleSwitchChange(event, params.row._id)}
             defaultChecked={params.value == 1}
           />
           <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg"></label>
@@ -246,10 +225,35 @@ export default function AllUsers() {
   ];
 
 
+  const handleEdit = async (row) => {
+    const result = await Swal.fire({
+        title: "Are you sure?",
+    
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, edit it!",
+        cancelButtonText: "Cancel"
+    });
 
-  const handleEdit = (row) => {
-    navigate('/subadmin/user/edit/' + row._id)
-  };
+    if (result.isConfirmed) {
+        navigate('/subadmin/user/edit/' + row._id);
+    } else {
+        Swal.fire({
+            title: "Action canceled",
+            text: "Your edit operation was canceled",
+            icon: "info",
+            timer: 1000,
+            timerProgressBar: true
+        });
+        setTimeout(() => {
+            Swal.close(); // Close the modal
+            setrefresh(!refresh);
+        }, 1000);
+    }
+};
+
 
 
 
@@ -260,111 +264,76 @@ export default function AllUsers() {
     const user_active_status = event.target.checked ? 1 : 0;
 
     const result = await Swal.fire({
-      title: "Do you want to save the changes?",
-      showCancelButton: true,
-      confirmButtonText: "Save",
-      cancelButtonText: "Cancel",
+        title: "Do you want to save the changes?",
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        cancelButtonText: "Cancel",
+        timer: 2000,
+        allowOutsideClick: false, // Prevents closing modal by clicking outside or pressing Esc key
     });
 
     if (result.isConfirmed) {
-      try {
-        const response = await dispatch(Show_Status({ id, user_active_status })).unwrap();
-        if (response.status) {
-          Swal.fire("Saved!", "", "success");
-          setrefresh(!refresh);
-        } else {
-          setrefresh(!refresh);
+        try {
+            const response = await dispatch(Show_Status({ id, user_active_status })).unwrap();
+            if (response.status) {
+                Swal.fire({
+                    title: "Saved!",
+                    icon: "success",
+                    timer: 1000,
+                    
+                    timerProgressBar:true
+                });
+                setTimeout(() => {
+                    Swal.close(); // Close the modal
+                    setrefresh(!refresh);
+                }, 1000);
+            } else {
+                setrefresh(!refresh);
+            }
+        } catch (error) {
+            console.error("Error", error);
+            Swal.fire("Error", "There was an error processing your request.", "error");
         }
-      } catch (error) {
-        console.error("Error", error);
-        Swal.fire("Error", "There was an error processing your request.", "error");
-      }
     } else if (result.dismiss === Swal.DismissReason.cancel) {
-      window.refresh()
-      Swal.fire("Changes canceled", "", "info");
-      setrefresh(!refresh);
-
+        window.location.reload();
     }
-  };
+};
 
 
 
 
 
+  const AllBroker = async () => {
 
-
-
-
-  const getUsersData = async () => {
-    var data = { user_ID: user_id }
-    await dispatch(GetAllUsers(data))
-      .unwrap()
+    await dispatch(Get_All_Broker()).unwrap()
       .then((response) => {
-
         if (response.status) {
-          const formattedData = response.data && response.data.map((row, index) => ({
-            ...row,
-            id: index + 1,
-          }));
 
-          const filterData = formattedData.filter((item) => {
-            const searchInputMatch =
-              searchInput == '' ||
-              item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
-              item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
-              item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
-              item.prifix_key.toLowerCase().includes(searchInput.toLowerCase())
 
-            return searchInputMatch
-
-          })
-
-          setAllUsers({
-            loading: true,
-            data: searchInput ? filterData : formattedData,
-            data1: [
-              { name: "Total Users", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
-              { name: "Active Users", count: response.activeClientsCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
-              {
-                name: "InActive Users",
-                count: response.inActiveCount || 0
-                , Icon: "fe fe-x-circle",
-                color: "#ed3a3a"
-              },
-              {
-                name: "Live Users",
-                count: response.liveUser || 0
-                , Icon: "fas fa-dollar-sign"
-                , color: "#1d8147"
-
-              },
-            ],
-          });
-
-        } else {
-
-          setAllUsers({
-            loading: true,
-            data: [],
-            data1: [],
-          });
+          setAllBroker(response.data);
+        }
+        else {
+          setAllBroker([]);
         }
       })
       .catch((error) => {
-        console.log("Error", error);
+        console.log("Error Broker find Error :", error)
+      })
 
-        setAllUsers({
-          loading: false,
-          data: [],
-          data1: [],
-        });
-      });
-  };
+  }
 
 
-  useEffect(() => {
-    getUsersData();
-  }, [refresh, searchInput]);
+  useState(() => {
+    AllBroker();
+  }, [])
+
+
+
+
+
+
+
+
 
 
   const RefreshHandle = () => {
@@ -441,6 +410,61 @@ export default function AllUsers() {
     }
   };
 
+
+  const getUsersData = async () => {
+    var data = { user_ID: user_id }
+    await dispatch(GetAllUsers(data))
+      .unwrap()
+      .then((response) => {
+
+        if (response.status) {
+          const formattedData = response.data && response.data.map((row, index) => ({
+            ...row,
+            id: index + 1,
+          }));
+
+          const filterData = formattedData.filter((item) => {
+            const searchInputMatch =
+              searchInput == '' ||
+              item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.prifix_key.toLowerCase().includes(searchInput.toLowerCase())
+
+            return searchInputMatch
+
+          })
+
+          setAllUsers({
+            loading: true,
+            data: searchInput ? filterData : formattedData,
+          
+          });
+
+        } else {
+
+          setAllUsers({
+            loading: true,
+            data: [],
+            data1: [],
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+
+        setAllUsers({
+          loading: false,
+          data: [],
+          data1: [],
+        });
+      });
+  };
+
+
+  useEffect(() => {
+    getUsersData();
+  }, [refresh, searchInput ]);
 
 
   return (
