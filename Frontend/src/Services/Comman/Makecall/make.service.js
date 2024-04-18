@@ -81,6 +81,21 @@ export async function GET_STRATEGY_DATA(data, token) {
     }
 }
 
+//Get Token By socket data 
+export async function GET_TOKEN_BY_SOCKET(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}make/gettokenbysocket`, data, {  
+            // data: {},
+            headers: header(token),
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
 
 
 

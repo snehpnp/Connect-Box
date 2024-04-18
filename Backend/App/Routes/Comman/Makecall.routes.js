@@ -4,7 +4,7 @@ const router = require("express").Router()
 
 const { verifyToken } = require('../../Middlewares/autt.middleware')
 
-const { GetallCatagory , GetServiceByCatagory ,Getgetexpirymanualtrade ,GetgetAllStrikePriceApi ,GetgetStrategyData} = require('../../Controllers/Comman/Makecall')
+const { GetallCatagory , GetServiceByCatagory ,Getgetexpirymanualtrade ,GetgetAllStrikePriceApi ,GetgetStrategyData , Getgettokenbysocket} = require('../../Controllers/Comman/Makecall')
 
 
 
@@ -18,6 +18,8 @@ router.post('/make/getexpirymanualtrade', verifyToken ,Getgetexpirymanualtrade);
 router.post('/make/getAllStrikePriceApi', verifyToken ,GetgetAllStrikePriceApi);
 
 router.post('/make/getStrategyData', verifyToken ,GetgetStrategyData);
+
+router.post('/make/gettokenbysocket', verifyToken ,Getgettokenbysocket);
 
 
 

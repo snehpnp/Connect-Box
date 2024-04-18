@@ -313,12 +313,6 @@ class Makecall {
     }
 
 
-
-
-
-
-
-
   }
 
 
@@ -346,7 +340,77 @@ class Makecall {
 
   }
 
+  
+   //get token by socket Data
+   async Getgettokenbysocket(req, res) {
 
+
+    try {
+      console.log("req body",req.body)
+      console.log("req body",req.body)
+
+      let segment = req.body.segment
+      let symbol = req.body.symbol
+
+      //Cash Token get
+      if(req.body.segment == "C"){
+
+        const result = await services.findOne({ name: symbol }).select('instrument_token exch_seg');
+       // console.log("result",result)
+        if (result != null) {
+        return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
+        } else {
+        return res.send({ status: false, msg: "Data not found", token: "" })
+        }
+
+      }
+
+     
+      //Futer Token get
+      else if(req.body.segment == "F" || req.body.segment == "MF" || req.body.segment == "CF"){
+        
+        let expiry = req.body.expiry;
+
+        const result = await Alice_token.findOne({ symbol : symbol , segment : segment , expiry : expiry }).select('instrument_token exch_seg');
+       // console.log("result",result)
+        if (result != null) {
+        return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
+        } else {
+        return res.send({ status: false, msg: "Data not found", token: "" })
+        }
+ 
+      }
+      
+      
+      //Option Token get
+      else if(req.body.segment == "O" || req.body.segment == "MO" || req.body.segment == "CO"){
+
+      let expiry = req.body.expiry;
+      let strike_price = req.body.strike_price;
+      let option_type = "CE";
+      
+      if(req.body.option_type.toUpperCase() == "PUT"){
+        option_type = "PE"
+      }
+        
+        const result = await Alice_token.findOne({ symbol : symbol , segment : segment , expiry : expiry , strike : strike_price , option_type : option_type }).select('instrument_token exch_seg');
+       // console.log("result",result)
+        if (result != null) {
+        return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
+        } else {
+        return res.send({ status: false, msg: "Data not found", token: "" })
+        }
+
+      }
+
+
+
+    } catch (error) {
+      console.log("Error Get token by socket Error-", error);
+    }
+
+
+  }
 
 
 

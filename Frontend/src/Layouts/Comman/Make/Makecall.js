@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState ,useRef} from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import CryptoJS from "crypto-js";
+import $ from "jquery";
 import {
     getAllServices,
     getCatogries,
     getexpirymanualtrade,
     getAllStrikePriceApi,
-    getStrategyData
+    getStrategyData,
+    gettokenbysocket
 
   } from "../../../ReduxStore/Slice/Comman/Makecall/make";
+
+import { GetBrokerDatas } from "../../../ReduxStore/Slice/Comman/Userinfo";
+import { CreateSocketSession, ConnctSocket, GetAccessToken,ConnctSocket_user } from "../../../Utils/Alice_Socket";
 
 
 
@@ -18,7 +24,9 @@ const Makecall = () => {
     const dispatch = useDispatch();
 
 
-    const [ForDisabledSubmit, SetForDisabledSubmit] = useState(false)
+ const [ForDisabledSubmit, SetForDisabledSubmit] = useState(false)
+
+ const [UserDetails, seUserDetails] = useState('')
    
   const [AllServices, setAllServices] = useState({ loading: true,data: []});
   const [CatagoryData, setCatagoryData] = useState({ loading: true, data: []});
@@ -118,11 +126,142 @@ console.log(
  
   const UserLocalDetails = JSON.parse(localStorage.getItem("user_details"));
   
-//  console.log("get user details ",UserLocalDetails.token)
- 
+ //  console.log("get user details ",UserLocalDetails.token)
  // console.log("CatagoryData ",CatagoryData.data)
+  const [sockets, setSockets] = useState(null);
+  const previousToken = useRef("")
+  const liveToken = useRef("");
+  const [liveprice, setLiveprice] = useState("");
+  const [stockBuyPrice, setStockBuyPrice] = useState("");
+  const [stockSellPrice, setStockSellPrice] = useState("");
 
- const getAllSteategyApiFun = async () => {
+ let socket;
+    const GetBrokerData = async () => {
+        var data = { id: UserLocalDetails.user_id }
+        await dispatch(GetBrokerDatas(data))
+
+            .unwrap()
+            .then(async(response) => {
+                //console.log("GetBrokerData ",response.data)
+                if (response.status) {
+                    seUserDetails(response.data)
+                    if (response.data && response.data[0].demat_userid !== undefined && response.data && response.data[0].access_token !== undefined  && response.data[0].TradingStatus == "on") {
+
+                        let type = { loginType: "API" };
+                        const res = await CreateSocketSession(type, response.data[0].demat_userid, response.data[0].access_token);
+
+                        console.log("res ",res.data.stat)
+                        if (res.data.stat) {
+
+                            const url = "wss://ws1.aliceblueonline.com/NorenWS/"
+                            
+                            socket = new WebSocket(url)
+                            socket.onopen = function () {
+                                // var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession21).toString()).toString();
+                                let userSession1 = response.data[0].access_token;
+                                let userId1 = response.data[0].demat_userid;
+                                var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession1).toString()).toString();
+                                var initCon = {
+                                    susertoken: encrcptToken,
+                                    t: "c",
+                                    // actid: userId + "_" + "API",
+                                    // uid: userId + "_" + "API",
+                                    actid: userId1 + "_" + "API",
+                                    uid: userId1 + "_" + "API",
+                                    source: "API"
+                                }
+
+                                setSockets(socket)
+                            // console.log("initCon",initCon)
+                                socket.send(JSON.stringify(initCon))
+                            // console.log("inside ",socket)
+
+                                socket.onmessage = async function (msg) {
+                                    var response = JSON.parse(msg.data)
+                                    
+                                    console.log("response ",response)
+
+                                    if (response.tk) {
+                                        if (response.lp != undefined) {
+                                        //  console.log('response token', response.lp)
+                                
+                                       //   console.log("response -soket ", response);
+                                          // setLiveprice(response.lp);
+                                          if (response.tk == liveToken.current) {
+
+                                            if (response.pc != undefined) {
+                                                
+                                                console.log('response.pc inside', response.pc)
+                                                if (parseFloat(response.pc) > 0) {
+    
+                                                  $('.liveprice'+response.tk).css({ "color": "green" });
+                                      
+                                                }
+                                                else if (parseFloat(response.pc) < 0) {
+                                                    
+                                                  $('.liveprice'+response.tk).css({ "color": "red" });
+                                      
+                                                }
+                                                else if (parseFloat(response.pc) == 0) {
+                                                  
+                                                  $('.liveprice'+response.tk).css({ "color": "black" });
+                                      
+                                                }
+                                              }
+
+
+                                
+                                            setLiveprice(response.lp);
+                                
+                                            //  SetEntryPrice
+                                
+                                            if (response.sp1 != undefined) {
+                                              setStockSellPrice(response.sp1)
+                                            } if (response.bp1 != undefined) {
+                                              setStockBuyPrice(response.bp1);
+                                            }
+
+                                          } else {
+                                
+                                            setLiveprice("")
+                                          }
+                                
+                                          $(".liveprice" + response.tk).html(response.lp);
+                                          
+
+                                        }
+
+                                        
+                                
+                                        
+                                      }
+
+
+                                    if (response.s === 'OK') {
+                                        console.log("response.s ",response.s)
+                                        // var channel = await channelList;
+                                        // let json = {
+                                        //     k: channelList,
+                                        //     t: 't'
+                                        // };
+                                        // await socket.send(JSON.stringify(json))
+                            
+                            
+                                    }
+                                }
+                            
+                            }
+
+
+
+                    }
+                    }
+                }
+            });
+    };
+
+
+     const getAllSteategyApiFun = async () => {
     await dispatch(getStrategyData(
         {
         req :{
@@ -135,7 +274,7 @@ console.log(
       .unwrap()
       .then((response) => {
 
-        console.log("response ",response.data)
+       // console.log("response ",response.data)
         if (response.status) {
             setStrategyDataAll({
             loading: false,
@@ -149,7 +288,7 @@ console.log(
 
         }
       });
-  };
+     };
 
    
       const getCatogriesFun = async () => {
@@ -178,7 +317,8 @@ console.log(
 
       useEffect(() => {
         getCatogriesFun();
-        getAllSteategyApiFun()
+        getAllSteategyApiFun();
+        GetBrokerData();
       }, []);
 
       
@@ -219,9 +359,8 @@ console.log(
    
     setAllServices({loading: false,data: []});
     getAllServicesFun()
-    console.log("CatagoryData.data ",CatagoryData.data)
-   
-    console.log("selectCatagoryid ",selectCatagoryid)
+   // console.log("CatagoryData.data ",CatagoryData.data)
+   // console.log("selectCatagoryid ",selectCatagoryid)
     
     let datra = CatagoryData.data && CatagoryData.data.filter((x) => {
         if ((selectCatagoryid) == x._id) {
@@ -283,17 +422,27 @@ console.log(
 
 
 const selectCatagoryId = (e) => {
+
+
+  // alert("okkk")
+
+//    let json = {
+//     //k: response.data.exchange + "|" + response.data.token,
+//     k: "NFO|67506",
+//     t: "t",
+//   };
+//   sockets.send(JSON.stringify(json));
+
     setStrikePrice('');
     setOptionType('');
     setExpiryOnChange('')
        
-    //     alert(e.target.value)
-    //    return 
+
     
-    setShowstrikePrice(0);
-    // previousToken.current = "";
-    // liveToken.current = "";
-    // setLiveprice("");
+     setShowstrikePrice(0);
+     previousToken.current = "";
+     liveToken.current = "";
+     setLiveprice("");
     setExpirydateSelect({loading: false,data: []});
     setStrikePriceAll({loading: false,data: []});
     SetSelectCatagoryId(e.target.value);
@@ -307,16 +456,21 @@ const selectCatagoryId = (e) => {
         setOptionType('');
         setExpiryOnChange('')
         setShowstrikePrice(0);
-        // previousToken.current = "";
-       //  liveToken.current = "";
-       //  setLiveprice("");
+
+
+        previousToken.current = "";
+        liveToken.current = "";
+        setLiveprice("");
        
         setExpirydateSelect({loading: false,data: []});
         setStrikePriceAll({loading: false,data: []});
         SetScriptname(e.target.value);
-    //     if(selectCatagoryid == '24'){
-    //     gettoken(selectCatagoryid,e.target.value);
-    //    }
+       
+        
+
+         if(scriptSegment == 'C'){
+         gettoken(selectCatagoryid,e.target.value,scriptSegment);
+        }
     
       }
 
@@ -385,61 +539,31 @@ const selectCatagoryId = (e) => {
         setStrikePrice('');
         setOptionType('');
         setStrikePriceAll([]);
-      //  alert(scriptSegment)
-      //  setShowstrikePrice(0);
+     
+        setShowstrikePrice(0);
          
         setExpiryOnChange(e.target.value)
         
 
-            if(scriptSegment ==  'F'){
-           // gettoken(selectCatagoryid,scriptname,e.target.value,scriptSegment);
+            if(scriptSegment ==  'F' || scriptSegment ==  'MF' || scriptSegment ==  'CF'){
+            gettoken(selectCatagoryid,scriptname,scriptSegment,e.target.value,scriptSegment);
             }
-            else if(scriptSegment ==  'MF'){
-
-             // gettoken(selectCatagoryid,scriptname,e.target.value,scriptSegment);
-              }
-            else if(scriptSegment ==  'cF'){
-
-           //   gettoken(selectCatagoryid,scriptname,e.target.value,scriptSegment);
-              }
-            else if(scriptSegment ==  'O'){
-
-              setShowstrikePrice(1);
+            
+            else if(scriptSegment ==  'O' || scriptSegment ==  'MO' || scriptSegment ==  'CO'){
+               
+                previousToken.current = "";
+                liveToken.current = "";
+                setLiveprice("");
+               setShowstrikePrice(1);
               getAllStrikePrice(selectCatagoryid,scriptname,e.target.value,scriptSegment)
             }
-            else if(scriptSegment ==  'MO'){
+           
 
-              setShowstrikePrice(1);
-              getAllStrikePrice(selectCatagoryid,scriptname,e.target.value,scriptSegment)
-            }
-            else if(scriptSegment ==  'CO'){
-
-              setShowstrikePrice(1);
-              getAllStrikePrice(selectCatagoryid,scriptname,e.target.value,scriptSegment)
-            }
-
-        
     } 
     
     
 
     const getAllStrikePrice = async (selectCatagoryid,symbol,expiry,segment) => {
-
-       
-        console.log("selectCatagoryid ",selectCatagoryid)
-        console.log("symbol ",symbol)
-        console.log("expiry ",expiry)
-        console.log("segment ",segment)
-        
-
-
-
-     
-    //     const data = { categorie_id: selectCatagoryid , symbol : symbol ,expiry : expiry ,segment : segment}
-    //     const response = await getAllStrikePriceApi(data);
-    //     console.log("response strike price -",response);
-    //    setStrikePriceAll(response.data.data);
-
     await dispatch(getAllStrikePriceApi(
         {
         req :
@@ -478,21 +602,15 @@ const selectCatagoryId = (e) => {
     if(e.target.value != ""){
       setStrikePrice(e.target.value)
       if(optionType != ''){
-        if(selectCatagoryid == '26'){
-        let segment = 'O' 
-      //  gettoken(selectCatagoryid,scriptname,expiryOnChange,segment,e.target.value,optionType);
-        }
-       else if(selectCatagoryid == '35'){
-          let segment = 'MO' 
-        //  gettoken(selectCatagoryid,scriptname,expiryOnChange,segment,e.target.value,optionType);
-          }
-        else if(selectCatagoryid == '36'){
-            let segment = 'CO' 
-           // gettoken(selectCatagoryid,scriptname,expiryOnChange,segment,e.target.value,optionType);
-         }
+
+       if(scriptSegment == 'O' || scriptSegment == 'CO' || scriptSegment == 'MO'){ 
+        gettoken(selectCatagoryid,scriptname,scriptSegment,expiryOnChange,scriptSegment,e.target.value,optionType);
+       }
+       
       }
 
     }else{
+
       setStrikePrice('')
       setOptionType('')
     }
@@ -501,25 +619,29 @@ const selectCatagoryId = (e) => {
        
    
   const selectOptionType = (e) => {
-     
-    if(strikePrice == ''){
-     alert('please alert select strike price');
-     return
+
+    if(e.target.value != ''){
+
+        if(strikePrice == ''){
+            alert('please alert select strike price');
+            return
+           }
+           setOptionType(e.target.value);
+       
+           if(scriptSegment == 'O' || scriptSegment == 'MO' || scriptSegment == 'CO'){
+             gettoken(selectCatagoryid,scriptname,scriptSegment,expiryOnChange,scriptSegment,strikePrice,e.target.value);
+           }
+
+    }else{
+        previousToken.current = "";
+        liveToken.current = "";
+        setLiveprice("");
+        setOptionType("");
     }
-    setOptionType(e.target.value);
-    if(selectCatagoryid == '26'){
-      let segment = 'O' 
-     // gettoken(selectCatagoryid,scriptname,expiryOnChange,segment,strikePrice,e.target.value);
-      }
-     else if(selectCatagoryid == '35'){
-        let segment = 'MO' 
-        //gettoken(selectCatagoryid,scriptname,expiryOnChange,segment,strikePrice,e.target.value);
-        }
-      else if(selectCatagoryid == '36'){
-          let segment = 'CO' 
-        //  gettoken(selectCatagoryid,scriptname,expiryOnChange,segment,strikePrice,e.target.value);
-       }
-}
+     
+   
+
+ }
 
 
 
@@ -580,6 +702,161 @@ const selectMarkettime = (e) => {
   }
 
 
+ 
+
+  const gettoken = async (selectCatagoryid="",symbol="",scriptSegment="",expiry = "",segment="",strike_price="",option_type="") => {
+
+    if (scriptSegment != "") {
+      
+      if (scriptSegment == "C") {
+           
+        const data = { symbol: symbol, categorie_id: selectCatagoryid ,segment : scriptSegment }
+       
+        await dispatch(gettokenbysocket(
+            {
+            req :data,
+            token:UserLocalDetails.token}
+        ))
+        .unwrap()
+        .then((response) => {
+            console.log("cash token", response);
+
+            if (response.status) {
+              
+                  if (sockets != null) {
+                    console.log("previousToken.current", previousToken.current);
+                    let json1 = {
+                      k: previousToken.current,
+                      t: "u",
+                    };
+                    sockets.send(JSON.stringify(json1));
+                    previousToken.current = response.exchange + "|" + response.token;
+                   
+                    liveToken.current = response.token;
+                    let json = {
+                      k: response.exchange + "|" + response.token,
+                      t: "t",
+                    };
+                    sockets.send(JSON.stringify(json));
+        
+                  } else {
+        
+                    console.log("sockets closeeee");
+        
+                  }
+    
+            } else {
+            
+            }
+        });
+
+        
+
+      } 
+      else if(scriptSegment == "F" || scriptSegment == "MF" || scriptSegment == "CF"){
+        
+        const data = { symbol: symbol, categorie_id: selectCatagoryid, expiry: expiry, segment: segment }
+
+        await dispatch(gettokenbysocket(
+            {
+            req :data,
+            token:UserLocalDetails.token}
+        ))
+        .unwrap()
+        .then((response) => {
+
+            console.log("FUTURE token", response);
+            if (response.status) {
+              
+                if (sockets != null) {
+                  console.log("previousToken.current", previousToken.current);
+                  let json1 = {
+                    k: previousToken.current,
+                    t: "u",
+                  };
+                  sockets.send(JSON.stringify(json1));
+                  previousToken.current = response.exchange + "|" + response.token;
+                 
+                  liveToken.current = response.token;
+                  let json = {
+                    k: response.exchange + "|" + response.token,
+                    t: "t",
+                  };
+                  sockets.send(JSON.stringify(json));
+      
+                } else {
+      
+                  console.log("sockets closeeee");
+      
+                }
+  
+          } else {
+          
+          }
+        });
+
+      }
+      else if(scriptSegment == "O" || scriptSegment == "MO" || scriptSegment == "CO"){
+        
+        const data = { symbol: symbol, categorie_id: selectCatagoryid, expiry: expiry, segment: segment ,strike_price:strike_price, option_type : option_type}
+        await dispatch(gettokenbysocket(
+            {
+            req :data,
+            token:UserLocalDetails.token}
+        ))
+        .unwrap()
+        .then((response) => {
+
+            console.log("Option token", response);
+
+            if (response.status) {
+              
+                if (sockets != null) {
+                  console.log("previousToken.current", previousToken.current);
+                  let json1 = {
+                    k: previousToken.current,
+                    t: "u",
+                  };
+                  sockets.send(JSON.stringify(json1));
+                  previousToken.current = response.exchange + "|" + response.token;
+                 
+                  liveToken.current = response.token;
+                  let json = {
+                    k: response.exchange + "|" + response.token,
+                    t: "t",
+                  };
+                  sockets.send(JSON.stringify(json));
+      
+                } else {
+      
+                  console.log("sockets closeeee");
+      
+                }
+  
+          } else {
+          
+          }
+        });
+
+      }
+
+
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const GenerateMakeCall = async (e) => {
 
     e.preventDefault();
@@ -629,22 +906,39 @@ const selectMarkettime = (e) => {
         return
       }
 
+       
 
-      if(EntryPriceBA == 'range'){
+      let price = "0";
+      // set price
+      if(EntryPriceBA == 'at'){
+        const get_price_live = $(".liveprice" + liveToken.current).html();
+     
+        if(get_price_live == '' || get_price_live == undefined){
+         if (EntryPrice == '') {
+             alert("Please Enter a Entry Price")
+             return
+           }else{
+              price = EntryPrice
+           }
+        }else{
+         price = get_price_live
+        }
+      }
+      else if(EntryPriceBA == 'range'){
         if(EntryPriceRange_one == ''){
-         alert("Please Select a price from")
+         alert("Please Enter a price from")
            return
         }
         if(EntryPriceRange_two == ''){
-         alert("Please Select a price to")
+         alert("Please Enter a price to")
            return
-        }
-     
-           
-       }else{
+        }    
+       }else if(EntryPriceBA == 'above' || EntryPriceBA == 'below'){
          if (EntryPrice == '') {
-           alert("Please Select a Entry Price")
+           alert("Please Enter a Entry Price")
            return
+         }else{
+            price = EntryPrice
          }
        }
 
@@ -710,14 +1004,14 @@ const selectMarkettime = (e) => {
     // }
     
     alert("Done")
-     let price = 0;
+
     const currentTimestamp = Math.floor(Date.now() / 1000);
         let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice==''?'100':strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${target1}|StopLoss:${stoploss}|ExitTime:${selectedTimeExit}|Demo:demo`
            
 
         console.log("req ",req) 
        // console.log("process.env.BROKER_URL ",process.env.BROKER_URL)
-        
+        return
         let config = {
           method: 'post',
           maxBodyLength: Infinity,
@@ -961,6 +1255,7 @@ const selectMarkettime = (e) => {
                                                 <div className="col-lg-4 col-md-6 col-sm-12">
                                                     <div className="input-block mb-3">
                                                         <label>Entry Price :</label>
+                                                        <span className={'liveprice'+liveToken.current}>{liveprice}</span>
                                                         
 
                                                         {
