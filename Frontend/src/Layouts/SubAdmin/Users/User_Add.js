@@ -11,6 +11,7 @@ import Loader from "../../../Utils/Loader";
 
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
+import Swal from 'sweetalert2';
 
 const AddClient = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ const AddClient = () => {
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   var subadmin_service_type1 = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
-  console.log("subadmin_service_type", subadmin_service_type1)
+ 
 
   const [serviceName, setServiceName] = useState({
     loading: true,
@@ -237,10 +238,16 @@ const AddClient = () => {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
-            toast.success(response.msg);
+            Swal.fire({
+              title: "Create Successful!",
+              text: response.msg,
+              icon: "success",
+              timer: 1500,
+              timerProgressBar: true
+          });
             setTimeout(() => {
               navigate("/subadmin/users");
-            }, 1000);
+            }, 1500);
           } else {
             toast.error(response.msg);
           }

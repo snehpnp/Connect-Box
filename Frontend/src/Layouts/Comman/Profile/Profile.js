@@ -75,6 +75,7 @@ const Profile = () => {
     "squirrel.png",
     "tiger.png",
     "wolf (1).png",
+    
   ];
 
   const handleAvatarClick = async (avatarUrl) => {
@@ -143,7 +144,7 @@ const Profile = () => {
                     id="cover-image"
                   />
                   <div className="cover-content">
-                    <div className="custom-file-btn">
+                    {/* <div className="custom-file-btn">
                       <input
                         type="file"
                         className="custom-file-btn-input"
@@ -158,7 +159,7 @@ const Profile = () => {
                           Update Cover
                         </span>
                       </label>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>

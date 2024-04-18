@@ -84,7 +84,7 @@ const DynamicForm = ({
   const HandelChange = (value) => {
     console.log("value", value.target.checked)
 
-    formik.setFieldValue('Service_Type', value.target.checked == true ? "1" : "2");
+    formik.setFieldValue('Service_Type', value.target.checked == true ? "2" : "1");
   }
 
 
@@ -629,14 +629,14 @@ const DynamicForm = ({
                                     className="check"
                                     type="checkbox"
                                     onChange={(event) => HandelChange(event)}
-                                    defaultChecked={formik.values['Service_Type'] === "1"}
+                                    defaultChecked={formik.values['Service_Type'] == "2"}
                                     disabled={field.disable}
                                   />
                                   <label htmlFor="rating" className="checktoggle checkbox-bg"></label>
                                 </div>
 
 
-                                {formik.values['Service_Type'] === "1" ? "PER TRADE" : "FIXED"}
+                                {formik.values['Service_Type'] == "2" ? "PER TRADE" : "FIXED"}
                               </div>
                             </div>
 

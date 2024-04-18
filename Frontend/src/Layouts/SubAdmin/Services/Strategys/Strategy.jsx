@@ -10,7 +10,7 @@ import ToastButton from '../../../../Components/ExtraComponents/Alert_Toast'
 import { Link, useNavigate } from "react-router-dom";
 import Loader from '../../../../Utils/Loader'
 import { IndianRupee } from 'lucide-react';
-
+import Swal from 'sweetalert2';
 
 
 function Strategy() {
@@ -33,6 +33,7 @@ function Strategy() {
     const [StrategyId, setStrategyId] = useState('')
 
 
+    var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
 
 
 
@@ -56,22 +57,49 @@ function Strategy() {
 
 
 
-    const handleDelete = async () => {
-        var req = {
-            _id: modalId,
-        };
-        await dispatch(DELETE_STRATEGY(req))
-            .unwrap()
-            .then((response) => {
-                if (response.status) {
-                    toast.success(response.msg);
-                    setrefresh(!refresh)
-                    setdeleteModal(false)
-                } else {
-                    toast.error(response.msg);
+    const handleDelete = async (id) => {
+        console.log("stg._id", id)
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your Strategy has been deleted.",
+                    icon: "success",
+                    timer: 1500,
+                    timerProgressBar: true
+                });
 
-                }
-            });
+                var req = {
+                    _id: id,
+                };
+                await dispatch(DELETE_STRATEGY(req))
+                    .unwrap()
+                    .then((response) => {
+                        if (response.status) {
+                            toast.success(response.msg);
+                            setrefresh(!refresh)
+                            setdeleteModal(false)
+                        } else {
+                            toast.error(response.msg);
+
+                        }
+                    });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+
+            }
+        });
+
+        return
+
+
     };
 
 
@@ -228,7 +256,7 @@ function Strategy() {
 
         },
         onSubmit: async (values, { resetForm }) => {
-          
+            console.log("values.Service_Type", values.Service_Type)
             const data = {
                 strategy_name: values.strategy_name,
                 strategy_category: values.strategy_category,
@@ -243,26 +271,42 @@ function Strategy() {
                 strategy_amount_half_early: values.strategy_amount_half_early,
                 strategy_amount_early: values.strategy_amount_early,
                 maker_id: user_id,
-                Service_Type: values.Service_Type == '' ? 0 :values.Service_Type
+                Service_Type: values.Service_Type != '' ? values.Service_Type : subadmin_service_type == 1 ? 1 : 0
             };
+
 
 
             await dispatch(AddStrategy(data))
                 .unwrap()
                 .then(async (response) => {
                     if (response.status) {
-                        toast.success(response.msg);
+                        Swal.fire({
+                            title: "Create Successful!",
+                            text: response.msg,
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true
+                        });
                         setShowModal(false)
                         setrefresh(!refresh)
                         resetForm();
+                        setStgDescription('')
 
                     } else {
-                        toast.error(response.msg);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: response.msg,
+                            timer: 1500,
+                            timerProgressBar: true
+                        });
+                        setStgDescription('')
                     }
 
                 })
                 .catch((error) => {
                     console.log("Error", error);
+                    setStgDescription('')
                 });
         },
     });
@@ -323,6 +367,7 @@ function Strategy() {
 
     useEffect(() => {
         getAllStrategy();
+        setStgDescription('')
     }, [refresh, searchInput]);
 
 
@@ -496,7 +541,7 @@ function Strategy() {
                                                 <i className="fe fe-edit" onClick={() => handleEditPackage({ id: stg._id })} />
                                             </a>
 
-                                            <a className="btn-action-icon" onClick={() => { setdeleteModal(true); setModalId(stg._id); }}  >
+                                            <a className="btn-action-icon" onClick={() => { handleDelete(stg._id); }}  >
                                                 <i className="fe fe-trash-2" />
                                             </a>
                                         </div>
@@ -582,34 +627,6 @@ function Strategy() {
 
                 )}
 
-
-
-                {/* CONFIRM BOX */}
-                {deleteModal && (
-                    <div className="modal custom-modal modal-delete d-block" >
-                        <div className="modal-dialog modal-dialog-centered modal-md">
-                            <div className="modal-content">
-                                <div className="modal-body">
-                                    <div className="form-header">
-                                        <div className="delete-modal-icon">
-                                            <span>
-                                                <i className="fe fe-check-circle" />
-                                            </span>
-                                        </div>
-                                        <h3>Are You Sure?</h3>
-                                        <p>You want delete company</p>
-                                    </div>
-                                    <div className="modal-btn delete-action">
-                                        <div className="modal-footer justify-content-center p-0">
-                                            <button type="submit" onClick={handleDelete} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
-                                            <button type="button" onClick={() => setdeleteModal(false)} className="btn btn-back cancel-btn">No, Cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
 
 
                 {/* STRATEGY VIEW */}
