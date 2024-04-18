@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import DashBoard from "../Layouts/SubAdmin/DashBoard/DashBoard";
+import DashBoard from "../Layouts/SubAdmin/Dashboard/DashBoard1.js";
+
 import Header from "../Components/Dashboard/Header/Header";
 import MainHeader from "../Components/Dashboard/Header/Main_header";
 import System from "../Layouts/SubAdmin/Systems/System.js";
@@ -52,6 +53,7 @@ const SubAdmin_Routing = () => {
       <div className="page-wrapper">
         <Routes>
           <Route exact path="/dashboard" element={<DashBoard />} />
+
           <Route exact path="/system" element={<System />} />
           <Route exact path="/help" element={<Help />} />
           <Route exact path="/message-broadcast" element={<MessageBroadcast />} />

@@ -257,16 +257,6 @@ const DropDown = () => {
                         }}>
                             <div className="subscription-menu">
                                 <ul className="list-unstyled">
-                                    <li onClick={() => ProfilePage()}>
-                                        <Link className="dropdown-item dev" >
-                                            <i class="fa-solid fa-user p-2"></i>Profile
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/settings">
-                                            <i class="fa-solid fa-gear p-2"></i>   Settings
-                                        </Link>
-                                    </li>
                                     <li className='dropdown-item de '>
                                         <label className="theme-switch mb-0">
                                             <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
@@ -274,6 +264,23 @@ const DropDown = () => {
                                         </label>
 
                                     </li>
+                                    <li onClick={() => ProfilePage()}>
+                                        <Link className="dropdown-item dev" >
+                                            <i class="fa-solid fa-user p-2"></i>Profile
+                                        </Link>
+                                    </li>
+                                    {Role == "ADMIN" || Role === "SUBADMIN" ?
+                                        <li>
+                                            <Link className="dropdown-item dev" to={Role === "ADMIN" ? "/admin/system" : "/subadmin/system"}>
+                                                <i class="fa-solid fa-gear p-2"></i> System
+                                            </Link>
+                                        </li> : ''}
+                                    <li>
+                                        <Link className="dropdown-item dev" to="/settings">
+                                            <i class="fa-solid fa-gear p-2"></i>   Settings
+                                        </Link>
+                                    </li>
+
                                     <li>
                                         <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
                                             <i class="fa-solid fa-right-to-bracket p-2"></i>  Log out
@@ -285,37 +292,7 @@ const DropDown = () => {
 
                     </div>
 
-                    <div style={{ height: "144px" }} className={`dropdown-menu menu-drop-user ${isDropdownOpen ? 'show' : ''}`}>
-                        <div className="profilemenu table table-hover">
-                            <div className="subscription-menu">
-                                <ul>
-                                    <li className='dropdown-item de nav-item dropdown dropdown-heads toggledrop'>
-                                        <label className="theme-switch mb-0">
-                                            <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
-                                            <span className="slider"></span>
-                                        </label>
-                                    </li>
-                                    <li onClick={() => ProfilePage()}>
-                                        <Link className="dropdown-item dev" >
-                                            Profile122
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/settings">
-                                            Settings
-                                        </Link>
-                                    </li>
 
-                                    <li>
-                                        <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
-                                            Log out
-                                        </a>
-
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </li>
             </ul>
         </div>
