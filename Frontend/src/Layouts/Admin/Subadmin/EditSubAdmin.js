@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import EditForm from "../../../Components/ExtraComponents/forms/AddForm";
 import { useFormik } from "formik";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
-import {editSubadmin,getSubAdminById} from "../../../ReduxStore/Slice/Admin/Subadmins";
+import {
+  editSubadmin,
+  getSubAdminById,
+} from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
-
-
 
 const EditClient = () => {
   const dispatch = useDispatch();
@@ -15,13 +16,12 @@ const EditClient = () => {
   const [rowData, setRowData] = useState();
   const { id } = useParams();
 
-
   const GetSubadminDataById = async () => {
     await dispatch(getSubAdminById({ id: id }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          setRowData(response.data)
+          setRowData(response.data);
         } else {
           toast.error(response.msg);
         }
@@ -29,9 +29,7 @@ const EditClient = () => {
       .catch((error) => {
         console.log("Error", error);
       });
-  }
-
-
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -47,42 +45,23 @@ const EditClient = () => {
     },
 
     validate: (values) => {
-      console.log("Value from error",values)
       let errors = {};
       if (!values.fullName) {
         errors.fullName = "Full Name is required";
       }
-      if (!values.username) {
-        errors.username = "Username is required";
+      const editingContext = formik.initialValues.editingContext;
+      if (editingContext === "strategy_Percentage") {
+        if (!values.strategy_Percentage) {
+          errors.strategy_Percentage = "strategy_Percentage is required";
+        }
+      } else if (editingContext === "Per_trade") {
+        if (!values.Per_trade) {
+          errors.Per_trade = "Per_trade is required";
+        }
       }
-      if (!values.email) {
-        errors.email = "Please enter your email address.";
-      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
-        errors.email = "Please enter a valid email address.";
-      }
-      if (!values.phone) {
-        errors.phone = "Please enter your phone number.";
-      } else if (!/^\d{10}$/.test(values.phone)) {
-        errors.phone = "Please enter a valid 10-digit phone number.";
-      }
-      if (!values.password) {
-        errors.password = "Password is required";
-      }
-      if (!values.Per_trade ) {
-        errors.Per_trade = "Please Enter per trade value";
-
-      } 
-      if (!values.strategy_Percentage) {
-        errors.strategy_Percentage = "Please Enter strategy percentage value";
-      }
-    
-      if (!values.prifix_key || values.prifix_key=='') {
-        errors.prifix_key = "Prefix key is required";
-      }  
       return errors;
     },
     onSubmit: async (values) => {
-      console.log("ThisValueComming From Submit ")
       const req = {
         id: id,
         UserName: values.username,
@@ -112,8 +91,6 @@ const EditClient = () => {
         });
     },
   });
-
-
 
   const fields = [
     {
@@ -175,20 +152,20 @@ const EditClient = () => {
       label_size: 12,
       col_size: 6,
       disable: true,
- 
+
       value: formik.values["subadmin_servic_type"],
     },
     {
       name:
         formik.values.subadmin_servic_type === "1" ||
-          formik.values.subadmin_servic_type === "2"
+        formik.values.subadmin_servic_type === "2"
           ? formik.values.subadmin_servic_type === "1"
             ? "Per_trade"
             : "strategy_Percentage"
           : "",
       label:
         formik.values.subadmin_servic_type === "1" ||
-          formik.values.subadmin_servic_type === "2"
+        formik.values.subadmin_servic_type === "2"
           ? formik.values.subadmin_servic_type === "1"
             ? "Trade Value"
             : "Strategies %"
@@ -196,7 +173,7 @@ const EditClient = () => {
       type: "text3",
       placeholder:
         formik.values.subadmin_servic_type === "1" ||
-          formik.values.subadmin_servic_type === "2"
+        formik.values.subadmin_servic_type === "2"
           ? formik.values.subadmin_servic_type === "1"
             ? "Please Enter Trade Value"
             : "Please enter % between 1 to 100"
@@ -208,38 +185,43 @@ const EditClient = () => {
       col_size: 6,
       disable: false,
     },
-
-
   ];
 
-
-
   useEffect(() => {
-
     // console.log("s -",rowData !== undefined && rowData[0].subadmin_service_type)
     // console.log("s typeof-",typeof rowData !== undefined && rowData[0].subadmin_service_type)
 
-    formik.setFieldValue("username", rowData !== undefined && rowData[0].UserName);
-    formik.setFieldValue("fullName", rowData !== undefined && rowData[0].FullName);
+    formik.setFieldValue(
+      "username",
+      rowData !== undefined && rowData[0].UserName
+    );
+    formik.setFieldValue(
+      "fullName",
+      rowData !== undefined && rowData[0].FullName
+    );
     formik.setFieldValue("email", rowData !== undefined && rowData[0].Email);
     formik.setFieldValue("mobile", rowData !== undefined && rowData[0].PhoneNo);
-    formik.setFieldValue("Per_trade", rowData !== undefined && rowData[0].Per_trade);
-    formik.setFieldValue("strategy_Percentage", rowData !== undefined && rowData[0].strategy_Percentage);
-    formik.setFieldValue("subadmin_servic_type", rowData !== undefined && rowData[0].subadmin_service_type == 1 ? "1" : "2");
-    formik.setFieldValue("prifix_key", rowData !== undefined && rowData[0].prifix_key);
-
-
-
+    formik.setFieldValue(
+      "Per_trade",
+      rowData !== undefined && rowData[0].Per_trade
+    );
+    formik.setFieldValue(
+      "strategy_Percentage",
+      rowData !== undefined && rowData[0].strategy_Percentage
+    );
+    formik.setFieldValue(
+      "subadmin_servic_type",
+      rowData !== undefined && rowData[0].subadmin_service_type == 1 ? "1" : "2"
+    );
+    formik.setFieldValue(
+      "prifix_key",
+      rowData !== undefined && rowData[0].prifix_key
+    );
   }, [rowData]);
 
-
-
   useEffect(() => {
-    GetSubadminDataById()
+    GetSubadminDataById();
   }, []);
-
-
-
 
   return (
     <>
@@ -260,6 +242,3 @@ const EditClient = () => {
   );
 };
 export default EditClient;
-
-
-
