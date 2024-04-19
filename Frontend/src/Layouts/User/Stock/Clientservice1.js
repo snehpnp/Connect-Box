@@ -47,7 +47,7 @@ function Clientservice() {
   useState(() => {
     GetAllClientServiceDetails();
   }, []);
-  const colorTog= (e)=>{
+  const colorTog = (e) => {
     console.log(e.target)
 
   }
@@ -73,9 +73,6 @@ function Clientservice() {
             <label htmlFor="1" className="checktoggle checkbox-bg"></label>
           </div>
         </div>
-
-
-
         {getAllClientService.loading ?
           <div className="form-group-item">
             <div className="card-table">
@@ -161,7 +158,7 @@ function Clientservice() {
                                 <div className="status-toggle">
                                   <input id={`rating_${index}`} className="check" type="checkbox" defaultChecked="" onClick={colorTog} />
                                   <label htmlFor={`rating_${index}`} className="checktoggle checkbox-bg">
-                                    
+
                                   </label>
                                 </div>
                               </td>
