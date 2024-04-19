@@ -261,7 +261,7 @@ export const subamdin_header = [
     {
         id: 9,
         name: 'FAQs',
-        route: "/admin/faqs",
+        route: "/subadmin/faqs",
         Icon: "fe fe-help-circle",
         Data: []
     }

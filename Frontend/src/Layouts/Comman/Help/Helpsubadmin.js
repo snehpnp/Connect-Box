@@ -30,12 +30,8 @@ const Helpsubadmin = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [getsubadmin, setGetsubadmin] = useState([]);
   const [getuserdata, setGetuserdata] = useState([]);
-  const [help, setHelp] = useState({
-    UserName: "",
-    Email: "",
-    mobile: "",
-    Message: "",
-  });
+  const [help, setHelp] = useState({ UserName: "", Email: "", mobile: "", Message: "" });
+
 
   const styles = {
     container: {
@@ -188,8 +184,6 @@ const Helpsubadmin = () => {
       });
   };
 
-  //delete subadmin help data
-
   const deletesubadmindata = async (userId) => {
     var data = { id: userId };
     await dispatch(deletesubadminhelpdata(data))
@@ -206,11 +200,11 @@ const Helpsubadmin = () => {
       });
   };
 
-  
+
 
   const userprefixBydata = async () => {
-    var data = {prifix_key: userdataprifix_key};
-    console.log("userprifix_key",data)
+    var data = { prifix_key: userdataprifix_key };
+    console.log("userprifix_key", data)
     await dispatch(userprifix_key(data))
       .unwrap()
       .then(async (response) => {
@@ -352,8 +346,8 @@ const Helpsubadmin = () => {
                                         });
                                       }}
                                     ></textarea>
-                                    { !help.Message ?<div><p style={{color:"red"}}>Please Enter Message</p></div>:""}
-                                    
+                                    {!help.Message ? <div><p style={{ color: "red" }}>Please Enter Message</p></div> : ""}
+
                                   </div>
                                 </div>
                                 <div
