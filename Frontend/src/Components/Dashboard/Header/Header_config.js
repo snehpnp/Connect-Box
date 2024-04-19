@@ -16,7 +16,7 @@ export const admin_header = [
     {
         id: 3,
         name: 'Research Analysts',
-        Icon: "fe fe-users",
+        Icon: "fa-solid fa-user",
         Data: [
             {
                 id: 31,
@@ -129,7 +129,7 @@ export const subamdin_header = [
     {
         id: 4,
         name: 'Users',
-        Icon: "fe fe-user-plus",
+        Icon: "fe fe-user",
         Data: [
             {
                 id: 41,

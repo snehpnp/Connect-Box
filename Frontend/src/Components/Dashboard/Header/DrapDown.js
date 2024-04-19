@@ -201,14 +201,6 @@ const DropDown = () => {
                     </button>
                 </li> : ""}
 
-
-
-
-
-
-
-
-
                 <li className="nav-item dropdown  flag-nav dropdown-heads">
                     <a className="nav-link" data-bs-toggle="dropdown" href="#" role="button">
                         <i className="fe fe-bell" /> <span className="badge rounded-pill" />
