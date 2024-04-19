@@ -13,7 +13,18 @@ function Clientservice() {
 
   const [modal, setModal] = useState(false)
   const [modalData, setModalData] = useState({});
-  console.log("modalData :", modalData)
+  const [strategyId, SetStrategyId] = useState([]);
+  const [maxQty, setMaxQty] = useState('1');
+  const [orderType, setOrderType] = useState('');
+  const [productType, setProductType] = useState('');
+  const [showstrategy, setShowStretgy] = useState(false)
+
+
+
+
+
+
+
   const GetAllClientServiceDetails = async () => {
 
     var data = { user_Id: user_id };
@@ -44,6 +55,42 @@ function Clientservice() {
   useState(() => {
     GetAllClientServiceDetails();
   }, []);
+
+
+  const handleCheckboxChange = (id) => {
+    SetStrategyId(prevIds => {
+      if (prevIds.includes(id)) {
+        return prevIds.filter(item => item !== id);
+      } else {
+        return [...prevIds, id];
+      }
+    });
+  };
+
+  const handleOnSubmit = () => {
+    const req = {
+      strategyId: strategyId,
+      maxQty: maxQty,
+      orderType: orderType,
+      productType: productType,
+      userId: user_id,
+      id: modalData && modalData._id,
+      seriveId: modalData && modalData.service._id
+    }
+
+    console.log("req :", req)
+
+  }
+
+
+
+  console.log("modalData :", strategyId)
+
+
+
+
+
+
 
 
   return (
@@ -111,10 +158,6 @@ function Clientservice() {
 
                     </>)
                   }
-
-
-
-
                 </div>
               </div>
             </div>
@@ -143,7 +186,7 @@ function Clientservice() {
                 <div className="modal-body">
                   <div className="row">
                     <div className="col-lg-12 col-sm-12 mb-3">
-                      <h6 style={{fontWeight:600, color:'black'}}>Symbol Name : {modalData.service.name}</h6>
+                      <h6 style={{ fontWeight: 600, color: 'black' }}>Symbol Name : {modalData.service.name}</h6>
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex">
                       <div className="col-lg-6 col-sm-12">
@@ -151,33 +194,42 @@ function Clientservice() {
                       </div>
                       <div className="col-lg-6 col-sm-12 d-flex">
                         <h6 className='col-lg-4'>Max Qty	 :</h6>
-                        <input type="text" className='col-lg-8 rounded px-2' defaultValue={1} />
+                        <input type="text" className='col-lg-8 rounded px-2' defaultValue={1} value={maxQty} onChange={(e) => setMaxQty(e.target.value)} />
                       </div>
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex mb-3 mt-3">
-                      <h6 className='col-lg-6'>Strategy :</h6>
-                      <select className="col-lg-6 rounded" >
-                        
-                        <option
-                          value={getAllClientService.data.strategy.map((data) => { if (data.result._id.includes(modalData.strategy_id[0])) return data.result._id })}
-                          className="text-success "
-                          selected
-                        >
-                          {getAllClientService.data.strategy.map((data) => { if (data.result._id.includes(modalData.strategy_id[0])) return data.result.strategy_name })}
-                        </option>
+                      <div className="col-lg-6 col-sm-12">
+                        <h6 className='col-lg-6'>Strategy :</h6>
+                      </div>
+                      <div className='col-lg-6'>
+                        <button onClick={(e) => setShowStretgy(!showstrategy)} className="p-1 rounded col-lg-12">
+                          Select Strategy
+                        </button>
                         {
-                          getAllClientService.data.strategy.map((data, index) => {
-                            if (data.result._id.includes(modalData.strategy_id[0])) {
-                            }
-                            else {
-                              return <option value={index} className='text-danger'>{data.result.strategy_name}</option>
-                            }
-                          })}
-                      </select>
+                          showstrategy && <div id="myDropdown" class="dropdown-content">
+                            {
+                              getAllClientService.data.strategy.map((data, index) => {
+                                return (
+                                  <>
+                                    <div key={index} className={modalData.strategy_id.includes(data.result._id) ? "text-success" : "text-danger"}>
+                                      <input
+                                        type="checkbox"
+                                        defaultChecked={modalData.strategy_id.includes(data.result._id)}
+                                        onChange={(e) => handleCheckboxChange(data.result._id)}
+                                      />
+                                      {data.result.strategy_name}
+                                    </div>
+
+                                  </>
+                                )
+                              })}
+                          </div>
+                        }
+                      </div>
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex mb-3">
                       <h6 className='col-lg-6'>Order Type :</h6>
-                      <select className="col-lg-6 rounded">
+                      <select className="col-lg-6 rounded" value={orderType} onChange={(e) => { setOrderType(e.target.value) }}>
                         <option selected>Stoploss Market</option>
                         <option value="1">Market</option>
                         <option value="2">Limit</option>
@@ -186,7 +238,7 @@ function Clientservice() {
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex mb-3">
                       <h6 className='col-lg-6'>Product Type :</h6>
-                      <select className="col-lg-6 rounded">
+                      <select className="col-lg-6 rounded " value={productType} onChange={(e) => { setProductType(e.target.value) }}>
                         <option selected>MIS</option>
                         <option value="1">CNC</option>
                         <option value="2">BO</option>
@@ -209,7 +261,7 @@ function Clientservice() {
                     type="submit"
                     data-bs-dismiss="modal"
                     className="btn btn-primary paid-continue-btn"
-                    // onClick={}
+                    onClick={handleOnSubmit}
                   >
                     Update
                   </button>
@@ -218,8 +270,9 @@ function Clientservice() {
             </div>
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 
