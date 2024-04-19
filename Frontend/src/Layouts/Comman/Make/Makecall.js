@@ -17,9 +17,6 @@ import { GetBrokerDatas } from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { CreateSocketSession, ConnctSocket, GetAccessToken, ConnctSocket_user } from "../../../Utils/Alice_Socket";
 
 
-
-
-
 const Makecall = () => {
     const dispatch = useDispatch();
     const [ForDisabledSubmit, SetForDisabledSubmit] = useState(false)
