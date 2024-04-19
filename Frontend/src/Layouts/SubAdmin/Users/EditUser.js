@@ -548,7 +548,7 @@ console.log("req",req)
                                     {strategy.strategy_name}
                                   </label>
 
-                                  {formik.values.licence == 1
+                                  {formik.values.licence == 1 || formik.values.licence == 0
                                     ? ""
                                     : selectedCheckboxes.includes(strategy._id) && (
                                       <>
