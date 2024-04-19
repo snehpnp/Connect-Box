@@ -207,16 +207,12 @@ const Makecall = () => {
                                                 } if (response.bp1 != undefined) {
                                                     setStockBuyPrice(response.bp1);
                                                 }
-
                                             } else {
-
                                                 // setLiveprice("")
                                             }
-
                                             $(".liveprice" + response.tk).html(response.lp);
                                         }
                                     }
-
                                     if (response.s === 'OK') {
                                         console.log("response.s ", response.s)
                                         // var channel = await channelList;
