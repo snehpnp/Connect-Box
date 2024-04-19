@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 
-import AdminRouting from './Admin_routes';
-import EmployeeRouting from './Employee_routes';
-import SubadminRouting from './Subadmin_routes';
-import UserRouting from './User_routes';
-import ResearchRouting from './Research_route';
+import AdminRouting from './Admin.routes';
+import EmployeeRouting from './Employee.routes';
+import SubadminRouting from './Subadmin.routes';
+import UserRouting from './User.routes';
+import ResearchRouting from './Research.routes';
+import SuperadminRouting from './Superadmin.routes';
 
 
 
@@ -30,7 +31,7 @@ const Routing = () => {
             return;
         }
 
-       
+
         // Redirect based on user role and route prefix
         switch (roles) {
             case "ADMIN":
@@ -53,16 +54,23 @@ const Routing = () => {
                     navigate("/employee/dashboard");
                 }
                 break;
-                case "RESEARCH":
-                    if (location.pathname === "/login" || location.pathname === "/" || !location.pathname.startsWith("/research")) {
-                        navigate("/research/dashboard");
-                    }
-                    break;
+            case "RESEARCH":
+                if (location.pathname === "/login" || location.pathname === "/" || !location.pathname.startsWith("/research")) {
+                    navigate("/research/dashboard");
+                }
+                break;
+            case "SUPERADMIN":
+                if (location.pathname === "/login" || location.pathname === "/" || !location.pathname.startsWith("/superadmin")) {
+                    navigate("/superadmin/dashboard");
+                }
+                break;
             default:
                 break;
         }
     }, [navigate, location.pathname, roles, user_details]);
 
+
+    
     return (
         <Routes>
             {/* Use wildcard (*) in the paths to capture all routes starting with a specific prefix */}
@@ -71,6 +79,8 @@ const Routing = () => {
             <Route path="/user/*" element={(roles === "USER") ? <UserRouting /> : <Login />} />
             <Route path="/employee/*" element={(roles === "EMPLOYEE") ? <EmployeeRouting /> : <Login />} />
             <Route path="/research/*" element={(roles === "RESEARCH") ? <ResearchRouting /> : <Login />} />
+            <Route path="/superadmin/*" element={(roles === "SUPERADMIN") ? <SuperadminRouting /> : <Login />} />
+
 
 
             {/* Add other routes here */}

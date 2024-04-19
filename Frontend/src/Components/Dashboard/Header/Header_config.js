@@ -424,3 +424,174 @@ export const employee_header = [
         Data: []
     }
 ];
+
+
+
+export const superadmin_header = [
+    {
+        id: 1,
+        name: 'Dashboard',
+        Icon: "fe fe-home",
+        route: "/superadmin/dashboard",
+        Data: []
+    },
+
+    {
+        id: 18,
+        name: 'Panel',
+        route: "/superadmin/panel",
+        Icon: "fe fe-message-circle",
+        Data: []
+    },
+ 
+    {
+        id: 10,
+        name: 'Message Broadcast',
+        route: "/superadmin/message-broadcast",
+        Icon: "fe fe-message-circle",
+        Data: []
+    },
+    {
+        id: 11,
+        name: 'Help',
+        route: "/superadmin/help",
+        Icon: "fe fe-help-circle",
+        Data: []
+    },
+    {
+        id: 9,
+        name: 'FAQs',
+        route: "/superadmin/faqs",
+        Icon: "fe fe-help-circle",
+        Data: []
+    }
+];
+
+
+
+
+export const research_header = [
+    {
+        id: 1,
+        name: 'Dashboard',
+        Icon: "fe fe-home",
+        route: "/research/dashboard",
+        Data: []
+    },
+
+  
+    {
+        id: 5,
+        name: 'Services',
+        Icon: "fe fe-target",
+        Data: [
+          
+            {
+                id: 52,
+                name: 'Strategy',
+                Icon: "fe fe-list",
+                route: "/research/strategys",
+            },
+           
+            {
+                'id': 53,
+                name: 'All Services',
+                Icon: "fe fe-list",
+                route: "/research/servicesAll",
+
+            },
+        ]
+    },
+    {
+        id: 6,
+        name: 'Trade',
+        Icon: "fe fe-shopping-cart",
+        Data: [
+            {
+                id: 61,
+                name: 'Orders',
+                route: "/research/orders",
+                Icon: "fe fe-list",
+                Data: []
+            },
+            {
+                id: 62,
+                name: 'Position',
+                route: "/research/position",
+                Icon: "fe fe-map-pin",
+                Data: []
+            }
+        ]
+    },
+    {
+        id: 7,
+        name: 'Strategy History',
+        route: "/research/strategys/history",
+        Icon: "fe fe-credit-card",
+        Data: []
+    },
+    {
+        id: 17,
+        name: 'Strategy Transaction',
+        route: "/research/strategys/transaction",
+        Icon: "fe fe-credit-card",
+        Data: []
+    },
+
+    {
+        id: 9,
+        name: 'Trades',
+        Icon: "fe fe-layers",
+        Data: [
+            {
+                id: 91,
+                name: 'Option Chain',
+                route: "/research/option-chain",
+                Icon: "fe fe-list",
+                Data: []
+            },
+            {
+                id: 92,
+                name: 'Make Call',
+                route: "/research/make-call",
+                Icon: "fe fe-phone",
+                Data: []
+            },
+            {
+                id: 93,
+                name: 'Make Strategy',
+                route: "/research/make-strategy",
+                Icon: "fe fe-clipboard",
+                Data: []
+            },
+            {
+                id: 94,
+                name: 'Open Position',
+                route: "/research/open-position",
+                Icon: "fe fe-grid",
+                Data: []
+            },
+        ]
+    },
+    {
+        id: 10,
+        name: 'Message Broadcast',
+        route: "/research/message-broadcast",
+        Icon: "fe fe-message-circle",
+        Data: []
+    },
+    {
+        id: 11,
+        name: 'Help',
+        route: "/research/help",
+        Icon: "fe fe-help-circle",
+        Data: []
+    },
+    {
+        id: 9,
+        name: 'FAQs',
+        route: "/research/faqs",
+        Icon: "fe fe-help-circle",
+        Data: []
+    }
+];

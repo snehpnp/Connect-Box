@@ -1,21 +1,20 @@
 import React from 'react';
 import { Route, Routes } from "react-router-dom";
 
-import Overview from '../Layouts/Admin/Dashboard/Overview';
 import Header from '../Components/Dashboard/Header/Header';
 import MainHeader from '../Components/Dashboard/Header/Main_header';
-import System from '../Layouts/Admin/System/System';
+
 
 import Profile from '../Layouts/Comman/Profile/Profile';
 import Faqs from '../Layouts/Comman/Faqs';
 
-import Empdashboard from '../Layouts/Employee/Dashboard/Empdashboard';
+import Dashboard from '../Layouts/SuperAdmin/Dashboard/Dashboard';
 
 
 
 // strategydesc
 
-const Employee_Routing = () => {
+const Superadmin = () => {
 
 
     return (
@@ -24,7 +23,7 @@ const Employee_Routing = () => {
             <Header />
             <div className='page-wrapper' >
                 <Routes>
-                    <Route exact path="/dashboard" element={<Empdashboard />} />
+                    <Route exact path="/dashboard" element={<Dashboard />} />
 
                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/faqs" element={<Faqs />} />
@@ -37,4 +36,4 @@ const Employee_Routing = () => {
     )
 }
 
-export default Employee_Routing
+export default Superadmin
