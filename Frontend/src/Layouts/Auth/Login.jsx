@@ -53,25 +53,25 @@ function Login() {
       if (getData.Role === "ADMIN") {
         setTimeout(() => {
           navigate("/admin/dashboard");
-        }, 8000);
+        }, 3300);
       } else if (getData.Role === "SUBADMIN") {
         setTimeout(() => {
           navigate("/subadmin/dashboard");
-        }, 8000);
+        }, 3300);
       } else if (getData.Role === "EMPLOYEE") {
 
         setTimeout(() => {
           navigate("/employee/dashboard");
-        }, 8000);
+        }, 3300);
       } else if (getData.Role === "RESEARCH") {
 
         setTimeout(() => {
           navigate("/research/dashboard");
-        }, 8000);
+        }, 3300);
       } else {
         setTimeout(() => {
           navigate("/user/dashboard");
-        }, 8000);
+        }, 3300);
       }
     }
 
@@ -128,10 +128,6 @@ function Login() {
       }, 9000);
     }
   }, [isLoggedIn, getData.Role, navigate]);
-
-
-
-
 
 
 

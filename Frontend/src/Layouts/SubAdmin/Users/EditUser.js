@@ -228,18 +228,28 @@ console.log("req",req)
     },
 
     {
+
       name: "Service_Type",
       label: "Service Type",
-      type: "select",
-      options: [
-        { label: "Fixed", value: "1" },
-        { label: "Per Trade", value: "2" },
-
-      ],
-      showWhen: (values) => subadmin_service_type1 == 1,
+      type: "test",
       label_size: 12,
       col_size: 6,
+      disable: true,
+      showWhen: (values) => subadmin_service_type1 == 1,
       disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type == 0 ? false :true,
+
+      // name: "Service_Type",
+      // label: "Service Type",
+      // type: "select",
+      // options: [
+      //   { label: "Fixed", value: "1" },
+      //   { label: "Per Trade", value: "2" },
+
+      // ],
+      // showWhen: (values) => subadmin_service_type1 == 1,
+      // label_size: 12,
+      // col_size: 6,
+      // disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type == 0 ? false :true,
     },
     {
       name: 'broker',

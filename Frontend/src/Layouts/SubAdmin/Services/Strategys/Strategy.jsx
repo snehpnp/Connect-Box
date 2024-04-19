@@ -69,13 +69,7 @@ function Strategy() {
             confirmButtonText: "Yes, delete it!"
         }).then(async (result) => {
             if (result.isConfirmed) {
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your Strategy has been deleted.",
-                    icon: "success",
-                    timer: 1500,
-                    timerProgressBar: true
-                });
+
 
                 var req = {
                     _id: id,
@@ -84,12 +78,21 @@ function Strategy() {
                     .unwrap()
                     .then((response) => {
                         if (response.status) {
-                            toast.success(response.msg);
                             setrefresh(!refresh)
                             setdeleteModal(false)
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: response.msg,
+                                icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true
+                            });
                         } else {
-                            toast.error(response.msg);
-
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: response.msg,
+                            });
                         }
                     });
             } else if (result.dismiss === Swal.DismissReason.cancel) {

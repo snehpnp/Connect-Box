@@ -99,18 +99,28 @@ const AddClient = () => {
       disable: false,
     },
     {
+
+
       name: "Service_Type",
       label: "Service Type",
-      type: "select",
-      options: [
-        { label: "Fixed", value: "1" },
-        { label: "Per Trade", value: "2" },
-
-      ],
-      showWhen: (values) => subadmin_service_type1 == 1,
+      type: "test",
       label_size: 12,
       col_size: 6,
       disable: false,
+      showWhen: (values) => subadmin_service_type1 == 1,
+
+      // name: "Service_Type",
+      // label: "Service Type",
+      // type: "select",
+      // options: [
+      //   { label: "Fixed", value: "1" },
+      //   { label: "Per Trade", value: "2" },
+
+      // ],
+      // label_size: 12,
+      // col_size: 6,
+      // disable: false,
+      // showWhen: (values) => subadmin_service_type1 == 1,
     },
 
     {
