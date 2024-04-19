@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { admin_header, subamdin_header, User_header } from './Header_config'; 
+import { admin_header, subamdin_header, User_header } from './Header_config';
 
 import { useNavigate } from "react-router-dom";
 
@@ -32,7 +32,7 @@ const Header = () => {
 
 
   const ClearSession = async () => {
- 
+
     if (token) {
       const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode JWT token
       const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
@@ -83,7 +83,11 @@ const Header = () => {
                         {data.Data.map((item) => (
                           <li key={item.id}>
                             <Link to={item.route} className="active">
-                              <i className={item.Icon} id="animated-icon"></i> <span> {item.name}</span>
+
+                              <i className={item.Icon}></i> <span> {item.name}</span>
+
+                             
+
                             </Link>
                           </li>
                         ))}

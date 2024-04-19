@@ -51,34 +51,35 @@ function Payment() {
 
 
   const columns = [
-    { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
+    { field: 'pid', headerName: '#', width: 70, headerClassName: styles.boldHeader },
     {
       field: 'logo',
       headerName: 'RA Name',
       width: 220,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>
-
-          <a href="profile.html" className="company-avatar avatar-md me-2 companies company-icon">
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div className="company-avatar avatar-md me-2 companies company-icon">
             <img className="avatar-img rounded-circle company" src={params.value ? params.value : "assets/img/companies/company-05.svg"} alt="Company Image" />
-          </a>
-          <a href="#">  {params.row.makerInfo.FullName}</a>
-
+          </div>
+          <div>
+            <a href="#">{params.row.makerInfo.FullName}</a>
+          </div>
         </div>
       )
     },
-    // {
-    //   field: 'makerInfo',
-    //   headerName: 'Subadmin Name',
-    //   width: 200,
-    //   headerClassName: styles.boldHeader,
-    //   renderCell: (params) => (
-    //     <div>
-    //       {params.row.makerInfo.FullName}
-    //     </div>
-    //   )
-    // },
+    
+    {
+      field: 'panel_name',
+      headerName: 'Company Name',
+      width: 200,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+         {params.value || '-'}
+        </div>
+      )
+    },
     {
       field: 'email',
       headerName: 'email',
@@ -165,7 +166,7 @@ function Payment() {
       if (response.status) {
         const formattedData = response.data.map((row, index) => ({
           ...row,
-          id: index + 1,
+          pid: index + 1,
         }));
         setCompanyData({
           loading: true,
@@ -186,11 +187,11 @@ function Payment() {
   }, [refresh]);
 
 
-  console.log("companyData", companyData);
 
   return (
     <>
       {companyData.loading ? (
+        <div  data-aos="fade-left">
         <Content
           Card_title="Subadmin Details"
           Card_title_icon="fa-solid fa-users-gear pe-2"
@@ -204,6 +205,7 @@ function Payment() {
             />
           }
         />
+        </div>
       ) : (
         <Loader />
       )}

@@ -10,6 +10,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import Switch from "@mui/material/Switch";
 import { useDispatch } from "react-redux";
+import ExportToExcel from '../../../Utils/ExportCSV'
 import { useNavigate } from "react-router-dom";
 import {
   GetAllSubAdmin,
@@ -33,11 +34,14 @@ export default function Help() {
   const [balanceValue, setBalanceValue] = useState("");
   const [refresh, setrefresh] = useState(false);
   const [modal, setmodal] = useState(false);
+  const [inputSearch, setInputSearch] = useState('');
+  const [ForGetCSV, setForGetCSV] = useState([])
 
 
-  const admin_id = JSON.parse(
-    localStorage.getItem("user_details")
-  )?.user_id;
+
+
+
+  const admin_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
 
 
@@ -172,9 +176,6 @@ export default function Help() {
   const handleEdit = (row) => {
     setInitialRowData(row);
     navigate('/admin/subadmin/edit/' + row._id)
-    // navigate("/admin/subadmin/edit", {
-    //   state: { rowData: { ...row, _id: row._id } },
-    // });
   };
 
 
@@ -205,8 +206,8 @@ export default function Help() {
 
 
   const handleSubmit = async () => {
-
-    await dispatch(update_Balance({ id: initialRowData._id, Balance: balanceValue, admin_id }))
+    var data = { id: initialRowData._id, Balance: balanceValue, admin_id: admin_id }
+    await dispatch(update_Balance(data))
       .unwrap()
       .then(async (response) => {
 
@@ -243,9 +244,25 @@ export default function Help() {
             id: index + 1,
           }));
 
+          const filterData = formattedData.filter((item) => {
+
+            const inputSearchMatch =
+              inputSearch == '' ||
+              item.UserName.toLowerCase().includes(inputSearch.toLowerCase()) ||
+              item.FullName.toLowerCase().includes(inputSearch.toLowerCase()) ||
+              item.PhoneNo.toLowerCase().includes(inputSearch.toLowerCase()) ||
+              item.prifix_key.toLowerCase().includes(inputSearch.toLowerCase()) ||
+              item.Email.toLowerCase().includes(inputSearch.toLowerCase()) ||
+              item.Balance.toLowerCase().includes(inputSearch.toLowerCase())
+
+            return inputSearchMatch;
+          })
+
+          console.log("filterData :", filterData)
+
           setAllSubadmins({
             loading: true,
-            data: formattedData,
+            data: inputSearch ? filterData : formattedData,
             data1: [
               { name: "Total Subadmins", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
               { name: "Active Subadmins", count: response.ActiveCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
@@ -287,62 +304,76 @@ export default function Help() {
 
   useEffect(() => {
     getSubadminData();
-  }, [refresh]);
+  }, [refresh, inputSearch]);
 
+  const handleRefresh = () => {
+    setInputSearch('')
+    setrefresh(!refresh)
+  }
+
+  const forCSVdata = () => {
+    let csvArr = []
+    if (getAllSubadmins.data.length > 0) {
+      getAllSubadmins.data.map((item) => {
+        return csvArr.push({
+          "FullName": item.FullName,
+          "UserName": item.UserName,
+          "PhoneNo": item.PhoneNo,
+          "Prifix Key": item.prifix_key,
+          "Service Type" : item.subadmin_service_type ==1 ? "Per Trade" : "Per Strategy",
+          "Balance" : item.Balance
+        })
+      })
+
+      setForGetCSV(csvArr)
+    }
+
+  }
+
+  useEffect(() => {
+    forCSVdata()
+  }, [getAllSubadmins.data])
 
 
   return (
     <>
       {getAllSubadmins.loading ? (
         <>
-          <div className="content container-fluid">
+          <div className="content container-fluid" data-aos="fade-left">
             <div className="page-header">
               <div className="content-page-header">
                 <h5>Subadmins</h5>
                 <div className="page-content">
                   <div className="list-btn">
                     <ul className="filter-list">
-                      <li>
-                        <a
+                      <li className="mt-3">
+                        <p
                           className="btn-filters"
-                          href="javascript:void(0);"
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
                           title="Refresh"
+                          onClick={handleRefresh}
                         >
                           <span>
                             <i className="fe fe-refresh-ccw" />
                           </span>
-                        </a>
+                        </p>
                       </li>
                       <li>
-                        <div className="input-group">
+                        <div className="input-group input-block">
                           <input
                             type="text"
                             className="form-control"
                             placeholder="Search..."
                             aria-label="Search"
                             aria-describedby="search-addon"
+                            onChange={(e) => setInputSearch(e.target.value)}
+                            value={inputSearch}
                           />
                         </div>
                       </li>
 
-                      <li>
-                        <a
-                          className="btn btn-filters w-auto popup-toggle"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Filter"
-                        >
-                          <span className="me-2">
-                            <img
-                              src="assets/img/icons/filter-icon.svg"
-                              alt="filter"
-                            />
-                          </span>
-                          Filter
-                        </a>
-                      </li>
+
 
                       <li>
                         <div
@@ -351,57 +382,17 @@ export default function Help() {
                           data-bs-placement="bottom"
                           title="Download"
                         >
-                          <a
-                            href="/"
-                            className="btn btn-filters"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                          >
-                            <span className="me-2">
-                              <i className="fe fe-download" />
-                            </span>
-                            Export
-                          </a>
-                          <div className="dropdown-menu dropdown-menu-end">
-                            <ul className="d-block">
-                              <li>
-                                <a
-                                  className="d-flex align-items-center download-item"
-                                  href="javascript:void(0);"
-                                  download=""
-                                >
-                                  <i className="far fa-file-pdf me-2" />
-                                  Export as PDF
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="d-flex align-items-center download-item"
-                                  href="javascript:void(0);"
-                                  download=""
-                                >
-                                  <i className="far fa-file-text me-2" />
-                                  Export as Excel
-                                </a>
-                              </li>
-                            </ul>
+
+                          <div className="card-body">
+                            <ExportToExcel
+                              className="btn btn-primary "
+                              apiData={ForGetCSV}
+                              fileName={'All Strategy'} />
                           </div>
+
                         </div>
                       </li>
-                      <li>
-                        <a
-                          className="btn btn-filters"
-                          href="javascript:void(0);"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Print"
-                        >
-                          <span className="me-2">
-                            <i className="fe fe-printer" />
-                          </span>{" "}
-                          Print
-                        </a>
-                      </li>
+
                       <li>
                         <Link
                           to={"/admin/subadmin/add"}

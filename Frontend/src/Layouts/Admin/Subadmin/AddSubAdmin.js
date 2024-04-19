@@ -23,8 +23,7 @@ const AddClient = () => {
   const [inputPerStrategy, setInputPerStrategy] = useState(false);
 
   const handleSelectChange = (e) => {
-    console.log("handleSelectChange function called");
-    console.log("Selected value:", e.target.value);
+ 
     const selectedValue = e.target.value;
     formik.handleChange(e);
     if (selectedValue === "1") {
@@ -130,7 +129,7 @@ const AddClient = () => {
       label: "Profile Image",
       type: "file",
       label_size: 6,
-      col_size: 6,
+      col_size: 12,
       disable: false,
     },
     {
@@ -235,8 +234,7 @@ const AddClient = () => {
     },
   ];
 
-  // console.log("Formik values:", formik.values);
-  // console.log("Formik errors:", formik.errors);
+
 
   return (
     <>

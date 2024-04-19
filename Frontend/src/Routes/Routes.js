@@ -5,12 +5,10 @@ import AdminRouting from './Admin_routes';
 import EmployeeRouting from './Employee_routes';
 import SubadminRouting from './Subadmin_routes';
 import UserRouting from './User_routes';
-import Profile from '../Layouts/Comman/Profile/Profile';
 
-import Header from '../Components/Dashboard/Header/Header';
-import MainHeader from '../Components/Dashboard/Header/Main_header';
 import Login from '../Layouts/Auth/Login';
 import EditSubAdmin from '../Layouts/Admin/Subadmin/EditSubAdmin'
+import Register from '../Layouts/Auth/Register';
 
 
 const Routing = () => {
@@ -22,14 +20,16 @@ const Routing = () => {
 
     useEffect(() => {
         // Check if user details exist
-        if (!user_details || !roles || user_details === "null" || roles === "null") {
+        if (!user_details || !roles || user_details === "null" || roles === "null" || location.pathname === "/login") {
             navigate("/login");
             return;
         }
 
-        if (location.pathname === "/profile") {
-            navigate("/profile");
+        if (location.pathname === "/register") {
+            navigate("/register");
+            return;
         }
+        console.log("location.pathname", location.pathname)
 
         // Redirect based on user role
         switch (roles) {
@@ -57,6 +57,7 @@ const Routing = () => {
                 break;
         }
     }, [navigate, location.pathname, roles, user_details]);
+    console.log("location.pathname", location.pathname)
 
     return (
         <Routes>
@@ -66,13 +67,8 @@ const Routing = () => {
             <Route path="/subadmin/*" element={(roles === "SUBADMIN") ? <SubadminRouting /> : <Login />} />
             <Route path="/user/*" element={(roles === "USER") ? <UserRouting /> : <Login />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/profile" element={
-                <>     <MainHeader />
-                    <Header />
-                    <div className="page-wrapper">
-                        <Profile />
-                    </div>
-                </>} />
+            <Route path="/register" element={<Register />} />
+
         </Routes>
     );
 }
