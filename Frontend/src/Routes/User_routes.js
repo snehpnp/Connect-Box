@@ -6,7 +6,7 @@ import MainHeader from '../Components/Dashboard/Header/Main_header';
 import Faqs from '../Layouts/Comman/Faqs';
 import Dashboards from '../Layouts/User/Dashboard/Dashboards';
 
-import Help from '../Layouts/Comman/Help';
+import Help from '../Layouts/Comman/Help/Helpuser';
 import Stocklist from '../Layouts/User/Stock/Clientservice';
 import Stocklist1 from '../Layouts/User/Stock/Clientservice1';
 
@@ -14,7 +14,7 @@ import Strategies from '../Layouts/User/Strategy/Strategies';
 
 
 import Profile from '../Layouts/Comman/Profile/Profile';
-import Bresponse from '../Layouts/User/Broker/Bresponse';
+import Bresponse from '../Layouts/User/Brokerresponse/Bresponse';
 
 import Orders from '../Layouts/User/Trade/Order';
 
