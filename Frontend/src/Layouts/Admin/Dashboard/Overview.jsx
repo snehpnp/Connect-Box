@@ -281,9 +281,6 @@ const Overview = () => {
   var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
 
 
-console.log("series",series)
-console.log("options",options)
-
 
   return (
     <div className="main-wrapper">

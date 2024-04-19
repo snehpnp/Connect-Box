@@ -183,8 +183,6 @@ const DashBoard = () => {
     dashData();
   }, [dispatch]);
 
-  console.log("series", series)
-  console.log("options", options)
 
   return (
     <div className="main-wrapper">
