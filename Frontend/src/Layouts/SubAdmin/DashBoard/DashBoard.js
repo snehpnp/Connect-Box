@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-
 import {
   Subadmin_Dashdata,
   Subadmin_DashChartdata,
@@ -11,52 +10,103 @@ import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
 
 const DashBoard = () => {
-  //Subadmin_SalesData API For Sales data
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [colors] = useState(["#9423FF"]);
   const [userData, setUserData] = useState("");
   const userDetails = JSON.parse(localStorage.getItem("user_details"));
   const [chart, setchart] = useState(false);
-
-  const [userName, setUserName] = useState([]);
-
-  const [selectedUser, setSelectedUser] = useState("ALL");
-  const [selectedUserId, setSelectedUserId] = useState("");
-
+  const [selectedUser, setSelectedUser] = useState("USERS");
+  var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
   const [selectedOption, setSelectedOption] = useState("Day");
-
-  const handleSelect = (id) => {
-    console.log("id from Fe", id);
-    setSelectedUserId(id);
-   
-  };
-
-  const handleSelect1 = (event) => {
-    setSelectedOption(event.target.textContent);
-  };
-
-  const [options, setOptions] = useState(
-    {
-      chart: {
-        id: "basic-bar",
-      },
-      xaxis: {
-        categories: [],
-      },
+  const [options, setOptions] = useState({
+    chart: {
+      id: "basic-bar",
     },
-   
-  );
-
+    xaxis: {
+      userDetails: [],
+      timeSpam: [],
+    },
+  });
   const [series, setSeries] = useState([
     {
       name: "series-1",
-      userCounts: [],
+      data: [],
     },
-    
   ]);
 
-  //new
+  const handleSelect1 = (data) => {
+    setSelectedOption(data);
+  };
+
+  const handleUserSales = (e) => {
+    setSelectedUser(e.target.textContent);
+    
+  };
+
+  const totalUserdata = async (options, user) => {
+    var data = {
+      user_ID: userDetails.user_id,
+      selectedOption: selectedOption,
+    };
+    await dispatch(Subadmin_DashChartdata(data))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          const userDetails = response.data.categories;
+          const counts = response.data.userCounts;
+          setOptions((prevOptions) => ({
+            ...prevOptions,
+            xaxis: {
+              ...prevOptions.xaxis,
+              userDetails: userDetails,
+            },
+          }));
+
+          setSeries([{ name: "series-1", data: counts }]);
+
+          setchart(true);
+        } else {
+          toast.error(response.msg);
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
+
+  const totalSalesdata = async (options, user) => {
+    var data = {
+      user_ID: userDetails.user_id,
+      selectedOption: selectedOption,
+    };
+    await dispatch(Subadmin_SalesData(data))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          const timeSpam = response.data[0].date;
+          const amount = response.data[0].strategy_transactions;
+          console.log("timeSpam",timeSpam)
+          console.log("amount",amount)
+          setOptions((prevOptions) => ({
+            ...prevOptions,
+            xaxis: {
+              ...prevOptions.xaxis,
+              timeSpam: timeSpam,
+            },
+          }));
+
+          setSeries([{ name: "series-1", data: amount }]);
+
+          setchart(true);
+        } else {
+          toast.error(response.msg);
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
 
   const calculatePercentage = (count, total) =>
     count !== undefined && count !== null && total > 0
@@ -117,69 +167,13 @@ const DashBoard = () => {
         console.log("Error", error);
       });
   };
-  //
-
-  const dashData1 = async () => {
-    var data = {
-      user_ID: userDetails.user_id,
-      selectedOption: selectedOption,
-    };
-    await dispatch(Subadmin_DashChartdata(data))
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          const categories = response.data.categories;
-          const userCounts = response.data.userCounts;
-          setOptions((prevOptions) => ({
-            ...prevOptions,
-            xaxis: {
-              ...prevOptions.xaxis,
-              categories: categories,
-            },
-          }));
-
-          setSeries([{ name: "series-1", data: userCounts }]);
-
-          setchart(true);
-        } else {
-          toast.error(response.msg);
-        }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  const DashDataForUserData = async () => {
-    var data = {
-      user_ID: userDetails.user_id,
-      selectedOption: selectedOption,
-    };
-    await dispatch(Subadmin_SalesData(data))
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          setUserName(response.data);
-        } else {
-          toast.error(response.msg);
-        }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
 
   useEffect(() => {
-    DashDataForUserData();
+    totalUserdata(selectedOption, selectedUser);
     dashData();
-  }, [dispatch, selectedUser]);
-
-  useEffect(() => {
-    dashData1();
-  }, [selectedOption, selectedUser]);
-
-  var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
-
+  }, [dispatch]);
+  
+ 
   return (
     <div className="main-wrapper">
       <div>
@@ -260,7 +254,7 @@ const DashBoard = () => {
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                           >
-                            {selectedUser ? selectedUser : "USER"}
+                            {selectedUser}
                           </button>
                           <ul
                             className="dropdown-menu"
@@ -269,28 +263,25 @@ const DashBoard = () => {
                             <li>
                               <a
                                 className="dropdown-item"
-                                onClick={() => {
-                                  setSelectedUserId("");
-                                  setSelectedUser(selectedUser);
+                                onClick={(e) => {
+                                  handleUserSales(e);
+                                  totalUserdata(selectedOption,"USERS");
                                 }}
                               >
-                                ALL
+                                USERS
                               </a>
                             </li>
-                            {userName &&
-                              userName.map((data, index) => (
-                                <li key={index}>
-                                  <a
-                                    className="dropdown-item iconclass"
-                                    onClick={() => {
-                                      handleSelect(data._id);
-                                      setSelectedUser(data.UserName);
-                                    }}
-                                  >
-                                    {data.UserName}
-                                  </a>
-                                </li>
-                              ))}
+                            <li>
+                              <a
+                                className="dropdown-item"
+                                onClick={(e) => {
+                                  handleUserSales(e);
+                                  totalSalesdata(selectedOption, selectedUser);
+                                }}
+                              >
+                                SALES
+                              </a>
+                            </li>
                           </ul>
                         </div>
 
@@ -308,12 +299,11 @@ const DashBoard = () => {
                             className="dropdown-menu"
                             aria-labelledby="planDropdownButton"
                           >
-                            {/* userName.map((data, index) => ( */}
                             {dropdown.map((data, index) => (
                               <li key={index}>
                                 <a
                                   className="dropdown-item"
-                                  onClick={handleSelect1}
+                                  onClick={() => handleSelect1(data)}
                                 >
                                   {data}
                                 </a>
