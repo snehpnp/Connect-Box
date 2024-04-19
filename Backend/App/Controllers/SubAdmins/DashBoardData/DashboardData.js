@@ -390,6 +390,9 @@ class Dashboard_Subadmin_Data {
       ];
 
       const results = await strategy_transaction.aggregate(pipeline);
+
+      console.log("results", results)
+
       // const dummyData = {
       //   categories:results.,
       //   data: [],
