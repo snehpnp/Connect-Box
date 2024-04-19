@@ -234,7 +234,7 @@ const Makecall = () => {
                     }
                 }
             });
-    };
+        };
 
 
     const getAllSteategyApiFun = async () => {
