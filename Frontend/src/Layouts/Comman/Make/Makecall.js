@@ -22,48 +22,32 @@ import { CreateSocketSession, ConnctSocket, GetAccessToken, ConnctSocket_user } 
 
 const Makecall = () => {
     const dispatch = useDispatch();
-
-
     const [ForDisabledSubmit, SetForDisabledSubmit] = useState(false)
-
     const [UserDetails, seUserDetails] = useState('')
-
     const [AllServices, setAllServices] = useState({ loading: true, data: [] });
     const [CatagoryData, setCatagoryData] = useState({ loading: true, data: [] });
     const [expirydateSelect, setExpirydateSelect] = useState({ loading: true, data: [] });
     const [strikePriceAll, setStrikePriceAll] = useState({ loading: true, data: [] });
     const [strategyDataAll, setStrategyDataAll] = useState({ loading: true, data: [] });
-
     const [selectStrategy, setSelectStrategy] = useState("");
-
     const [strikePrice, setStrikePrice] = useState('')
     const [strikePriceErr, setStrikePriceErr] = useState('')
-
     const [optionType, setOptionType] = useState('CALL')
     const [optionTypeErr, setOptionTypeErr] = useState('')
-
-
     const [expiryOnChange, setExpiryOnChange] = useState('');
     const [showstrikePrice, setShowstrikePrice] = useState(0)
-
     const [selectCatagoryid, SetSelectCatagoryId] = useState('')
     const [scriptSegment, SetScriptSegment] = useState('')
     const [selectCatagoryidSegment, SetSelectCatagorySegment] = useState('')
-
     const [scriptname, SetScriptname] = useState('')
     const [scriptnameErr, SetScriptnameErr] = useState('')
-
     const [tradeType, setTradeType] = useState('LE')
     const [tradeTypeErr, setTradeTypeErr] = useState('')
     const [changeDropdown, setChangeDropdown] = useState(0)
-
-
-
     const [markettime, setMarkettime] = useState("1")
     const [EntryPriceBA, SetEntryPriceBA] = useState('at')
     const [showmarkettime, setShowMarkettime] = useState(1)
     const [showhideAtBelow, setShowhideAtBelow] = useState(0)
-
     const [EntryPrice, SetEntryPrice] = useState('')
     const [EntryPriceErr, SetEntryPriceErr] = useState('')
     const [EntryPriceBAErr, SetEntryPriceBAErr] = useState('')
@@ -71,15 +55,11 @@ const Makecall = () => {
     const [EntryPriceRange_oneErr, SetEntryPriceRange_oneErr] = useState('')
     const [EntryPriceRange_two, SetEntryPriceRange_two] = useState('')
     const [EntryPriceRange_twoErr, SetEntryPriceRange_twoErr] = useState('')
-
     const [IntradayDelivery, setIntradayDelivery] = useState("1")
-
     const [selectedTimeExit, setselectedTimeExit] = useState('');
     const [selectedTimeNoTrade, setselectedTimeNoTrade] = useState('');
-
     const [showhideTargetStoploss, setShowhideTargetStoploss] = useState(0)
     const [WiseTypeDropdown, setWiseTypeDropdown] = useState("")
-
     const [target1, setTarget1] = useState(0)
     const [stoploss, setStopLoss] = useState(0)
     const [targetStoplossDropdown, setTargetStoplossDropdown] = useState('')
@@ -94,8 +74,6 @@ const Makecall = () => {
     const handleTimeChangeNoTrade = (event) => {
         setselectedTimeNoTrade(event.target.value);
     };
-
-
 
     console.log(
 
@@ -118,10 +96,7 @@ const Makecall = () => {
         " target1 ", target1, "\n",
         " stoploss ", stoploss, "\n",
         " targetStoplossDropdown ", targetStoplossDropdown, "\n",
-
-
     )
-
 
 
     const UserLocalDetails = JSON.parse(localStorage.getItem("user_details"));
