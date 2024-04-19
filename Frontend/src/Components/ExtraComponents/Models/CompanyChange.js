@@ -11,7 +11,6 @@ const StockOutModal = ({ rowData, onClose }) => {
   const dispatch = useDispatch();
 
 
-  // console.log("rowData", rowData)
 
   const formik = useFormik({
     initialValues: {
@@ -75,7 +74,6 @@ const StockOutModal = ({ rowData, onClose }) => {
         }
       };
 
-      // console.log("updatedData", updatedData);
 
 
       setSubmitting(false);
@@ -194,7 +192,6 @@ const StockOutModal = ({ rowData, onClose }) => {
 
   useEffect(() => {
 
-    // console.log("==>", rowData !== undefined && rowData.email)
 
     formik.setFieldValue("profile_img", rowData !== undefined && rowData.logo);
 

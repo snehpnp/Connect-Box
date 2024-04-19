@@ -74,7 +74,6 @@ export const GET_ALL_SERVICES_GIVEN = createAsyncThunk('servicesGiven/getall',
 );
 export const Delete_GroupServices = createAsyncThunk('groupServices/delete',
     async (data) => {
-        console.log("data :", data)
 
         try {
             const res = await DELETE_GROUP_SERVICE(data);
@@ -87,7 +86,6 @@ export const Delete_GroupServices = createAsyncThunk('groupServices/delete',
 
 export const Get_Group_Data = createAsyncThunk('services/bygroupid1/get',
     async (data) => {
-        console.log("data :", data)
 
         try {
             const res = await GET_GROUP_DATA(data);
@@ -101,7 +99,6 @@ export const Edit_Group_Service = createAsyncThunk('groupservice/edit',
 
  
     async (data) => {
-        console.log("data cp :", data)
 
         try {
             const res = await EDIT_GROUP_SERVICE(data);

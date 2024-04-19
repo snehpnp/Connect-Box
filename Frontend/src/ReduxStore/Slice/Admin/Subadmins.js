@@ -10,8 +10,52 @@ import {
   admin_dashData1,
   SubadminsName,
   strategy_All,
-  broker_All
+  broker_All,
+  subadmin_dashboard,
+  SalesData_Subadmin,
+  chartData_Subadmin
 } from "../../../Services/Admin/Subadmins.service";
+
+
+//Subadmin Sales Data
+export const Subadmin_SalesData = createAsyncThunk(
+  "subadmin/userdata",
+  async (data) => {
+    try {
+      const res = await SalesData_Subadmin(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
+//subadmin userCount Bar data
+export const Subadmin_DashChartdata = createAsyncThunk(
+  "subadmin/userdata",
+  async (data) => {
+    try {
+      const res = await chartData_Subadmin(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
+//subadmin dashboard
+export const Subadmin_Dashdata = createAsyncThunk(
+  "strategy_for_add_client/getall",
+  async (data) => {
+    try {
+      const res = await subadmin_dashboard(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
 
 export const allStrategy_subAd = createAsyncThunk(
   "strategy_for_add_client/getall",
@@ -267,6 +311,44 @@ const SubAdminSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(get_allBroker.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+
+      .addCase(Subadmin_Dashdata.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(Subadmin_Dashdata.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(Subadmin_Dashdata.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+
+      .addCase(Subadmin_DashChartdata.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(Subadmin_DashChartdata.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+      })
+      .addCase(Subadmin_DashChartdata.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+
+      .addCase(Subadmin_SalesData.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(Subadmin_SalesData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+      })
+      .addCase(Subadmin_SalesData.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });

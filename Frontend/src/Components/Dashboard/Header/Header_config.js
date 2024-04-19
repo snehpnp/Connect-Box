@@ -6,13 +6,13 @@ export const admin_header = [
         route: "/admin/dashboard",
         Data: []
     },
-    {
-        id: 2,
-        name: 'System',
-        route: "/admin/system",
-        Icon: "fe fe-settings",
-        Data: []
-    },
+    // {
+    //     id: 2,
+    //     name: 'System',
+    //     route: "/admin/system",
+    //     Icon: "fe fe-settings",
+    //     Data: []
+    // },
     {
         id: 3,
         name: 'Research Analysts',
@@ -100,13 +100,13 @@ export const subamdin_header = [
         route: "/subadmin/dashboard",
         Data: []
     },
-    {
-        id: 2,
-        name: 'System',
-        route: "/subadmin/system",
-        Icon: "fe fe-settings",
-        Data: []
-    },
+    // {
+    //     id: 2,
+    //     name: 'System',
+    //     route: "/subadmin/system",
+    //     Icon: "fe fe-settings",
+    //     Data: []
+    // },
     // {
     //     id: 3,
     //     name: 'Employees',
@@ -163,6 +163,7 @@ export const subamdin_header = [
                 Icon: "fe fe-list",
                 route: "/subadmin/strategys",
             },
+           
             {
                 'id': 53,
                 name: 'All Services',
@@ -207,7 +208,7 @@ export const subamdin_header = [
         Icon: "fe fe-credit-card",
         Data: []
     },
-   
+
     {
         id: 9,
         name: 'Trades',
@@ -256,6 +257,13 @@ export const subamdin_header = [
         route: "/subadmin/help",
         Icon: "fe fe-help-circle",
         Data: []
+    },
+    {
+        id: 9,
+        name: 'FAQs',
+        route: "/admin/faqs",
+        Icon: "fe fe-help-circle",
+        Data: []
     }
 ];
 
@@ -272,14 +280,21 @@ export const User_header = [
     {
         id: 2,
         name: 'Stock List',
-        Icon: "fe fe-home",
+        Icon: "fa-solid fa-arrow-trend-up",
         route: "/user/stock",
+        Data: []
+    },
+    {
+        id: 2,
+        name: 'Stock List 1',
+        Icon: "fa-solid fa-arrow-trend-up",
+        route: "/user/stock1",
         Data: []
     },
     {
         id: 3,
         name: 'Trade',
-        Icon: "fe fe-shopping-cart",
+        Icon: "fa-solid fa-chart-simple",
         Data: [
             {
                 id: 41,
@@ -304,33 +319,33 @@ export const User_header = [
         Icon: "fe fe-credit-card",
         Data: []
     },
-   
+
     {
         id: 6,
         name: 'Open Positions',
         route: "/user/open-positions",
-        Icon: "fe fe-grid",
+        Icon: "fa-regular fa-map",
         Data: []
     },
     {
         id: 7,
         name: 'Broker Response',
-        route: "/user/broker-response",
-        Icon: "fe fe-grid",
+        route: "/user/broker",
+        Icon: "fa-brands fa-pied-piper",
         Data: []
     },
     {
         id: 8,
         name: 'Strategies',
         route: "/user/strategy",
-        Icon: "fe fe-grid",
+        Icon: "fa-solid fa-crosshairs",
         Data: []
     },
     {
         id: 5,
         name: 'Help',
         route: "/user/help",
-        Icon: "fe fe-help-circle",
+        Icon: "fa-solid fa-info",
         Data: []
     },
     {
@@ -343,3 +358,69 @@ export const User_header = [
 ];
 
 
+export const employee_header = [
+    {
+        id: 1,
+        name: 'Dashboard',
+        Icon: "fe fe-home",
+        route: "/employee/dashboard",
+        Data: []
+    },
+
+    {
+        id: 4,
+        name: 'Users',
+        Icon: "fe fe-user",
+        Data: [
+            {
+                id: 41,
+                name: 'Add User',
+                Icon: "fe fe-user-plus",
+                route: "/employee/User/add",
+            },
+            {
+                id: 42,
+                name: 'All Users',
+                Icon: "fe fe-users",
+                route: "/employee/users",
+            },
+        ]
+    },
+    {
+        id: 61,
+        name: 'Signal',
+        route: "/employee/orders",
+        Icon: "fe fe-list",
+        Data: []
+    },
+    {
+        id: 62,
+        name: 'Trade History',
+        route: "/employee/position",
+        Icon: "fe fe-map-pin",
+        Data: []
+    },
+  
+ 
+    {
+        id: 10,
+        name: 'Message Broadcast',
+        route: "/employee/message-broadcast",
+        Icon: "fe fe-message-circle",
+        Data: []
+    },
+    {
+        id: 11,
+        name: 'Help',
+        route: "/employee/help",
+        Icon: "fe fe-help-circle",
+        Data: []
+    },
+    {
+        id: 9,
+        name: 'FAQs',
+        route: "/employee/faqs",
+        Icon: "fe fe-help-circle",
+        Data: []
+    }
+];

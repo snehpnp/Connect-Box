@@ -1,12 +1,14 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Overview from "../Layouts/Admin/Dashboard/Overview";
+import DashBoard from "../Layouts/SubAdmin/Dashboard/DashBoard1.js";
+
 import Header from "../Components/Dashboard/Header/Header";
 import MainHeader from "../Components/Dashboard/Header/Main_header";
 import System from "../Layouts/SubAdmin/Systems/System.js";
 import Adduser from "../Layouts/SubAdmin/Users/User_Add.js";
 import ALLUSER from "../Layouts/SubAdmin/Users/Alluser.js";
 import Strategy from "../Layouts/SubAdmin/Services/Strategys/Strategy.jsx";
+
 
 import Grpservices from "../Layouts/SubAdmin/Services/GroupServices/Grpservices";
 import AllServices from "../Layouts/SubAdmin/Services/AllServices/AllServices.js";
@@ -29,12 +31,17 @@ import Edit_User from '../Layouts/SubAdmin/Users/EditUser.js'
 import Wallets from '../Layouts/Comman/Wallet/Wallets';
 
 import Strategyhistory from '../Layouts/SubAdmin/Services/Strategys/Strategy_history.js'
+import OrderDetails from '../Layouts/SubAdmin/Trade/Order.js'
 
 
+import Position from '../Layouts/SubAdmin/Trade/Position.js'
 
 
 import Profile from '../Layouts/Comman/Profile/Profile';
 
+import Openposition from '../Layouts/SubAdmin/Option/Open_Positions.js';
+
+import Faqs from '../Layouts/Comman/Faqs';
 
 
 // strategydesc
@@ -46,7 +53,8 @@ const SubAdmin_Routing = () => {
       <Header />
       <div className="page-wrapper">
         <Routes>
-          <Route exact path="/dashboard" element={<Overview />} />
+          <Route exact path="/dashboard" element={<DashBoard />} />
+
           <Route exact path="/system" element={<System />} />
           <Route exact path="/help" element={<Help />} />
           <Route exact path="/message-broadcast" element={<MessageBroadcast />} />
@@ -60,14 +68,19 @@ const SubAdmin_Routing = () => {
           <Route exact path="/user/add" element={<Adduser />} />
           <Route exact path="/make-call" element={<Makecall />} />
           <Route exact path="/edit/strategies/:id" element={<Edit_Strategies />} />
-
           <Route exact path="/strategys/transaction" element={<Strategytransaction />} />
           <Route exact path="/group-service/edit/:id" element={<Edit_Group_Service />} />
           <Route exact path="/user/edit/:id" element={<Edit_User />} />
-          
           <Route exact path="/wallet" element={<Wallets />} />
           <Route exact path="/strategys/history" element={<Strategyhistory />} />
           <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/orders" element={<OrderDetails />} />
+          <Route exact path="/position" element={<Position />} />
+          <Route exact path="/open-position" element={<Openposition />} />
+          
+
+
+          <Route exact path="/faqs" element={<Faqs />} />
 
 
 

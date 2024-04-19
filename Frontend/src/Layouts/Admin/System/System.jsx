@@ -53,7 +53,6 @@ function System() {
   };
 
   const handleUpdate = async (e) => {
-    console.log("formData", formData);
     e.preventDefault();
     if (formData) {
       var data = {
@@ -176,7 +175,7 @@ function System() {
                         className="btn btn-primary iconclass"
                         onClick={() => OpenModal(1)}
                       >
-                        Edit Customer Information
+                        Edit Company Information
                       </button>
                     </div>
                   </div>

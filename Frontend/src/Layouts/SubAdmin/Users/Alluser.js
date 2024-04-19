@@ -7,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch } from "react-redux";
 import ExportToExcel from '../../../Utils/ExportCSV'
+import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
 import {
   update_Balance,
@@ -36,9 +37,9 @@ export default function AllUsers() {
   const [searchInput, setSearchInput] = useState('');
   const [ForGetCSV, setForGetCSV] = useState([])
   const [getAllBroker, setAllBroker] = useState([]);
-  
+
   const [ShowDeleteModal, setShowDeleteModal] = useState(false);
-  
+
 
 
 
@@ -87,28 +88,7 @@ export default function AllUsers() {
   };
 
 
-  const AllBroker = async () => {
-    await dispatch(Get_All_Broker()).unwrap()
-      .then((response) => {
-        if (response.status) {
 
-
-          setAllBroker(response.data);
-        }
-        else {
-          setAllBroker([]);
-        }
-      })
-      .catch((error) => {
-        console.log("Broker find Error :", error)
-      })
-
-  }
-
-
-  useState(() => {
-    AllBroker();
-  }, [])
 
 
 
@@ -136,6 +116,9 @@ export default function AllUsers() {
       headerName: "ID",
       width: 70,
       headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div> <b>{params.value + 1}</b></div>
+      ),
     },
     {
       field: "FullName",
@@ -182,20 +165,7 @@ export default function AllUsers() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => showLicenceName(params.row),
     },
-    // {
-    //   field: "Balance",
-    //   headerName: "Balance",
-    //   width: 120,
-    //   headerClassName: styles.boldHeader,
-    //   renderCell: (params) => (
-    //     <div onClick={() => { setmodal(true); setInitialRowData(params.row); }}>
-    //       <span className="text-success-light">
-    //         <IndianRupee style={{ height: "19px" }} />
-    //         {params.value || '-'}
-    //       </span>
-    //     </div>
-    //   ),
-    // },
+
 
     {
       field: "ActiveStatus",
@@ -211,7 +181,7 @@ export default function AllUsers() {
             onChange={(event) => handleSwitchChange(event, params.row._id)}
             defaultChecked={params.value == 1}
           />
-          <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg">checkbox</label>
+          <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg"></label>
         </div>
       ),
     },
@@ -233,8 +203,9 @@ export default function AllUsers() {
             aria-label="delete"
             size="small"
             onClick={() => {
-              setShowDeleteModal(true);
-              setmodalId(params.row._id);
+
+
+              handleDeleteConfirmation(params.row._id)
             }}
           >
             <DeleteIcon />
@@ -254,132 +225,115 @@ export default function AllUsers() {
   ];
 
 
+  const handleEdit = async (row) => {
+    const result = await Swal.fire({
+        title: "Are you sure?",
+    
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, edit it!",
+        cancelButtonText: "Cancel"
+    });
 
-  const handleEdit = (row) => {
-    navigate('/subadmin/user/edit/' + row._id)
-  };
-
-  const handleDelete = async (row) => {
-
-    var data = { id: modalId }
-    await dispatch(DeleteUser(data)).unwrap()
-      .then((response) => {
-        if (response.status) {
-          toast.success(response.msg)
-          setShowDeleteModal(false)
-          setmodalId('')
-          setrefresh(!refresh);
-        }
-        else {
-          toast.error(response.msg);
-        }
-      })
-      .catch((error) => {
-        console.log("User Does Not Exit", error)
-      })
+    if (result.isConfirmed) {
+        navigate('/subadmin/user/edit/' + row._id);
+    } else {
+        Swal.fire({
+            title: "Action canceled",
+            text: "Your edit operation was canceled",
+            icon: "info",
+            timer: 1000,
+            timerProgressBar: true
+        });
+        setTimeout(() => {
+            Swal.close(); // Close the modal
+            setrefresh(!refresh);
+        }, 1000);
+    }
+};
 
 
 
 
-  };
 
 
 
   const handleSwitchChange = async (event, id) => {
-    const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
+    const user_active_status = event.target.checked ? 1 : 0;
 
-    await dispatch(Show_Status({ id, user_active_status }))
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          toast.success(response.msg);
-          setrefresh(!refresh)
-        } else {
-          toast.error(response.msg);
+    const result = await Swal.fire({
+        title: "Do you want to save the changes?",
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        cancelButtonText: "Cancel",
+        timer: 2000,
+        allowOutsideClick: false, // Prevents closing modal by clicking outside or pressing Esc key
+    });
+
+    if (result.isConfirmed) {
+        try {
+            const response = await dispatch(Show_Status({ id, user_active_status })).unwrap();
+            if (response.status) {
+                Swal.fire({
+                    title: "Saved!",
+                    icon: "success",
+                    timer: 1000,
+                    
+                    timerProgressBar:true
+                });
+                setTimeout(() => {
+                    Swal.close(); // Close the modal
+                    setrefresh(!refresh);
+                }, 1000);
+            } else {
+                setrefresh(!refresh);
+            }
+        } catch (error) {
+            console.error("Error", error);
+            Swal.fire("Error", "There was an error processing your request.", "error");
         }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-
-      });
-
-  };
-
- 
-
- 
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+        window.location.reload();
+    }
+};
 
 
-  const getUsersData = async () => {
-    var data = { user_ID: user_id }
-    await dispatch(GetAllUsers(data))
-      .unwrap()
+
+
+
+  const AllBroker = async () => {
+
+    await dispatch(Get_All_Broker()).unwrap()
       .then((response) => {
-
         if (response.status) {
-          const formattedData = response.data && response.data.map((row, index) => ({
-            ...row,
-            id: index + 1,
-          }));
 
-          const filterData = formattedData.filter((item) => {
-            const searchInputMatch =
-              searchInput == '' ||
-              item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
-              item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
-              item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
-              item.prifix_key.toLowerCase().includes(searchInput.toLowerCase())
 
-            return searchInputMatch
-
-          })
-         
-          setAllUsers({
-            loading: true,
-            data: searchInput ? filterData : formattedData,
-            data1: [
-              { name: "Total Users", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
-              { name: "Active Users", count: response.activeClientsCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
-              {
-                name: "InActive Users",
-                count: response.inActiveCount || 0
-                , Icon: "fe fe-x-circle",
-                color: "#ed3a3a"
-              },
-              {
-                name: "Live Users",
-                count: response.liveUser || 0
-                , Icon: "fas fa-dollar-sign"
-                , color: "#1d8147"
-
-              },
-            ],
-          });
-
-        } else {
-         
-          setAllUsers({
-            loading: true,
-            data: [],
-            data1: [],
-          });
+          setAllBroker(response.data);
+        }
+        else {
+          setAllBroker([]);
         }
       })
       .catch((error) => {
-        console.log("Error", error);
-     
-        setAllUsers({
-          loading: false,
-          data: [],
-          data1: [],
-        });
-      });
-  };
+        console.log("Error Broker find Error :", error)
+      })
+
+  }
 
 
-  useEffect(() => {
-    getUsersData();
-  }, [refresh, searchInput]);
+  useState(() => {
+    AllBroker();
+  }, [])
+
+
+
+
+
+
+
+
 
 
   const RefreshHandle = () => {
@@ -410,6 +364,107 @@ export default function AllUsers() {
   }, [getAllUsers.data])
 
 
+  // DELETE SWEET ALERT 2
+  const handleDeleteConfirmation = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    });
+
+    if (result.isConfirmed) {
+      var data = { id: id };
+      try {
+        const response = await dispatch(DeleteUser(data)).unwrap();
+        if (response.status) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+            timer: 1000,
+            timerProgressBar: true,
+            onClose: () => {
+              setShowDeleteModal(false);
+            }
+          });
+          setmodalId('');
+          setrefresh(!refresh);
+        } else {
+        }
+      } catch (error) {
+        console.error('There was a problem with the API request:', error);
+        Swal.fire({
+          title: "Error!",
+          text: "There was an error processing your request.",
+          icon: "error"
+        });
+      } finally {
+        setShowDeleteModal(false);
+      }
+    } else {
+      setShowDeleteModal(false);
+    }
+  };
+
+
+  const getUsersData = async () => {
+    var data = { user_ID: user_id }
+    await dispatch(GetAllUsers(data))
+      .unwrap()
+      .then((response) => {
+
+        if (response.status) {
+          const formattedData = response.data && response.data.map((row, index) => ({
+            ...row,
+            id: index + 1,
+          }));
+
+          const filterData = formattedData.filter((item) => {
+            const searchInputMatch =
+              searchInput == '' ||
+              item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.prifix_key.toLowerCase().includes(searchInput.toLowerCase())
+
+            return searchInputMatch
+
+          })
+
+          setAllUsers({
+            loading: true,
+            data: searchInput ? filterData : formattedData,
+          
+          });
+
+        } else {
+
+          setAllUsers({
+            loading: true,
+            data: [],
+            data1: [],
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+
+        setAllUsers({
+          loading: false,
+          data: [],
+          data1: [],
+        });
+      });
+  };
+
+
+  useEffect(() => {
+    getUsersData();
+  }, [refresh, searchInput ]);
 
 
   return (
@@ -488,7 +543,7 @@ export default function AllUsers() {
               </div>
             </div>
 
-            <div className="super-admin-list-head">
+            {/* <div className="super-admin-list-head">
               <div className="row">
                 {getAllUsers &&
                   getAllUsers.data1.map((data, index) => (
@@ -509,7 +564,7 @@ export default function AllUsers() {
                     </div>
                   ))}
               </div>
-            </div>
+            </div> */}
 
             <FullDataTable
               styles={styles}
@@ -524,33 +579,6 @@ export default function AllUsers() {
       )}
 
 
-    
-      {ShowDeleteModal &&
-        (
-          <div className="modal custom-modal modal-delete d-block" >
-            <div className="modal-dialog modal-dialog-centered modal-md">
-              <div className="modal-content">
-                <div className="modal-body">
-                  <div className="form-header">
-                    <div className="delete-modal-icon">
-                      <span>
-                        <i className="fe fe-check-circle" />
-                      </span>
-                    </div>
-                    <h3>Are You Sure?</h3>
-                    <p>You want delete company</p>
-                  </div>
-                  <div className="modal-btn delete-action">
-                    <div className="modal-footer justify-content-center p-0">
-                      <button type="submit" onClick={() => handleDelete()} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
-                      <button type="button" onClick={() => setShowDeleteModal(false)} className="btn btn-back cancel-btn">No, Cancel</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
 
 

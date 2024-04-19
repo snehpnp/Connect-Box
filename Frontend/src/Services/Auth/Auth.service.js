@@ -7,7 +7,7 @@ import * as Config from "../../Utils/Config";
 // LOGIN-USER
 export async function SIGN_IN_USER(data, token) {
     try {
-        const res = await axios.post(`${Config.base_url}login`, data, {  
+        const res = await axios.post(`${Config.base_url}login`, data, {
             data: {},
         })
         return await res?.data;
@@ -19,26 +19,21 @@ export async function SIGN_IN_USER(data, token) {
 
 }
 
-// // SIGNUP USER
+// SIGNUP USER
+export async function SIGN_UP_USER(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}signup`, data, {
+            data: {},
+        })
 
-// export async function SIGN_UP_USER(data, token) {
-    
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
 
+    }
 
-//     try {
-//         const res = await axios.post(`${Config.base_url}signup`, data, {
-//             // headers: header(token),
-//             data: {},
-//         })
-       
-//         return await res?.data;
-//     }
-//     catch (err) {
-//         return await err;
-
-//     }
-
-// }
+}
 
 
 // // VARIFY DEVICE OF A USER

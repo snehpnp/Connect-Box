@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
 import { IndianRupee } from 'lucide-react';
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
@@ -58,10 +57,11 @@ export default function Help() {
       width: "auto",
     },
     boldHeader: {
-      fontWeight: "bold",
+      fontWeight: 800,
     },
     headerButton: {
       marginRight: 8,
+
     },
   };
 
@@ -97,7 +97,7 @@ export default function Help() {
     },
     {
       field: "prifix_key",
-      headerName: "prifixkey",
+      headerName: "Prefix Key",
       width: 120,
       headerClassName: styles.boldHeader,
     },
@@ -140,7 +140,7 @@ export default function Help() {
             onChange={(event) => handleSwitchChange(event, params.row._id)}
             defaultChecked={params.value == 1}
           />
-          <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg">checkbox</label>
+          <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg"></label>
         </div>
       ),
     },
@@ -257,9 +257,6 @@ export default function Help() {
 
             return inputSearchMatch;
           })
-
-          console.log("filterData :", filterData)
-
           setAllSubadmins({
             loading: true,
             data: inputSearch ? filterData : formattedData,
@@ -320,8 +317,8 @@ export default function Help() {
           "UserName": item.UserName,
           "PhoneNo": item.PhoneNo,
           "Prifix Key": item.prifix_key,
-          "Service Type" : item.subadmin_service_type ==1 ? "Per Trade" : "Per Strategy",
-          "Balance" : item.Balance
+          "Service Type": item.subadmin_service_type == 1 ? "Per Trade" : "Per Strategy",
+          "Balance": item.Balance
         })
       })
 

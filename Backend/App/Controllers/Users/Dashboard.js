@@ -39,7 +39,8 @@ class Dashboard {
             // Get latest strategies for the parent user
             const Latest_Strategies = await Strategies.find({ maker_id: parent_id })
                 .sort({ createdAt: -1 })
-                .select('strategy_name strategy_segment createdAt strategy_image');
+                .select('strategy_name strategy_segment createdAt strategy_image')
+                .limit(5);
     
             // Get the most ordered strategy
             const mostOrderedStrategyResult = await strategy_client.aggregate([
@@ -91,7 +92,6 @@ class Dashboard {
                 mostOrderedStrategy
             };
     
-            console.log(data);
             return res.json({ status: true, data, msg: "Done" });
         } catch (error) {
             console.log("Error:", error);

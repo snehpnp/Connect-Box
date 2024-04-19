@@ -2,26 +2,29 @@ import React, { useState, useEffect } from "react";
 import Content from "../../../Components/Dashboard/Content/Content";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-
-
-import {
-  allStrategy_subAd,
-  get_allBroker,
-} from "../../../ReduxStore/Slice/Admin/Subadmins";
-import {
-  admin_Msg_Delete,
-  add_message,
-  admin_Msg_Get,
-  admin_Msg_Edit,
-} from "../../../ReduxStore/Slice/Admin/MessageData";
+import { allStrategy_subAd, get_allBroker } from "../../../ReduxStore/Slice/Admin/Subadmins";
+import { admin_Msg_Delete, add_message, admin_Msg_Get, admin_Msg_Edit } from "../../../ReduxStore/Slice/Admin/MessageData";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import io from "socket.io-client";
-// const socket = io("http://localhost:3000");
+import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
+import IconButton from "@mui/material/IconButton";
+import { fDateTime } from "../../../Utils/Date_formet";
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import * as Config from "../../../Utils/Config";
+
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Loader from "../../../Utils/Loader";
+
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
-
+  const [deleteModal, setdeleteModal] = useState(false);
+  const [getModalId, setModalId] = useState(false);
   const [messages, setMessages] = useState([]);
   const [strategies, setStrategies] = useState([]);
   const [brokers, setBrokers] = useState([]);
@@ -29,38 +32,161 @@ function MessageBroadcast() {
   const [pipelineData, setPipelineData] = useState([]);
   const [selectedBroker, setSelectedBroker] = useState("");
   const [messageText, setMessageText] = useState("");
-  const datas = JSON.parse(localStorage.getItem("user_details"));
-  const ownerId=datas.user_id;
   const [modal, setModal] = useState(0);
   const [msgData, setMsgData] = useState([]);
-  const [isSentChecked, setIsSentChecked] = useState(false);
-  const [isReceivedChecked, setIsReceivedChecked] = useState(false);
-
   const [openModalId, setopenModalId] = useState("");
   const [refresh, setrefresh] = useState(false);
+  const [socket, setSocket] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [value, setValue] = React.useState(0);
 
-  // useEffect(() => {
-  //   socket.on("messagesUpdated", (data) => {
-  //     console.log("Received updated messages:", data);
-  //     setPipelineData(data);
-  //   });
-  //   return () => {
-  //     socket.off("messagesUpdated");
-  //   };
-  // }, []);
+  const ownerId = JSON.parse(localStorage.getItem("user_details")).user_id
+  const ownerRole = JSON.parse(localStorage.getItem("user_details")).Role
 
-  const OpenModal = (value) => {
-    setModal(value);
+
+
+
+
+  // CONNECT SOCKET
+  useEffect(() => {
+    const newSocket = io.connect(Config.base_url);
+    setSocket(newSocket);
+    newSocket.on("receive_message", (data) => {
+      setrefresh(!refresh)
+    });
+
+    return () => {
+      newSocket.off("receive_message");
+      newSocket.close();
+    };
+  }, []);
+
+
+  function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+
+  CustomTabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
   };
 
-  const CloseModal = () => {
-    setModal(0);
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
-  const handleInputChange = (e) => {
-    const { value } = e.target;
-    setMsgData(value);
+
+  const styles = {
+    container: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "80vh",
+    },
+    card: {
+      width: "auto",
+    },
+    boldHeader: {
+      fontWeight: "bold",
+    },
+    headerButton: {
+      marginRight: 8,
+    },
   };
+
+  const label = { inputProps: { "aria-label": "Switch demo" } };
+  const columns = [
+    {
+      field: "id",
+      headerName: "ID",
+      width: 70,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div> <b>{params.value + 1}</b></div>
+      ),
+    },
+
+    {
+      field: "Role",
+      headerName: "From",
+      width: 200,
+      headerClassName: styles.boldHeader,
+    },
+
+    {
+      field: "messageTitle",
+      headerName: "Message",
+      width: 350,
+      headerClassName: styles.boldHeader,
+    },
+
+
+    {
+      field: "createdAt",
+      headerName: "createdAt",
+      width: 250,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => <div>{fDateTime(params.value)}</div>,
+    },
+
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 130,
+      renderCell: (params) => (
+        <div>
+          <IconButton
+            aria-label="edit"
+            size="small"
+            onClick={() => {
+              // setopenModalId(message._id);
+              setModal(1);
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+         {value == 1 ?  <IconButton
+            aria-label="delete"
+            size="small"
+            onClick={() => {
+              setdeleteModal(true); setModalId(params.row._id);
+            }}
+          >
+            <DeleteIcon />
+          </IconButton> :""
+
+         }
+        </div>
+      ),
+      headerClassName: styles.boldHeader,
+    }
+  ];
+
 
   const handleUpdate = async () => {
     var data = { id: openModalId, messageTitle: msgData };
@@ -70,7 +196,7 @@ function MessageBroadcast() {
       .then(async (response) => {
         if (response.status) {
           toast.success(response.msg);
-          OpenModal(0);
+          setModal(0)
           setopenModalId("");
           setrefresh(!refresh);
         } else {
@@ -103,7 +229,6 @@ function MessageBroadcast() {
       toast.error("Failed to dispatch action for fetching strategies");
     }
   };
-  
 
   const fetchBrokers = async () => {
     try {
@@ -129,20 +254,26 @@ function MessageBroadcast() {
 
   const sendMessage = async () => {
     try {
+
+      if (!selectedStrategy && !selectedBroker) {
+        alert("Please Select any Strategy Or Broker")
+        return
+      }
+
       const newMessage = {
-        Role: datas.Role,
+        Role: ownerRole,
         ownerId: ownerId,
         strategyId: selectedStrategy,
         brokerId: selectedBroker,
-        // subAdminId: ownerId,
         messageTitle: messageText,
       };
       await dispatch(add_message(newMessage))
         .unwrap()
         .then(async (response) => {
           if (response.status) {
-            // socket.emit("newMessage", newMessage);
-            toast.success(response.msg);
+            toast.success(response.message);
+            setrefresh(!refresh)
+
           } else {
             toast.error(response.msg);
           }
@@ -155,26 +286,48 @@ function MessageBroadcast() {
     }
   };
 
-  const handleStrategyChange = (e) => {
-    setSelectedStrategy(e.target.value);
-  };
 
-  const handleBrokerChange = (e) => {
-    setSelectedBroker(e.target.value);
-  };
-
-  const handleMessageChange = (e) => {
-    setMessageText(e.target.value);
-  };
 
   const getSubadminTableData = async () => {
-    await dispatch(admin_Msg_Get({ ownerId,key:1 }))
+    try {
+      // Show loader
+      setLoading(true);
+
+      const response = await dispatch(admin_Msg_Get({ ownerId, key: 1 })).unwrap();
+
+      if (response.status) {
+        let filteredData = [];
+        if (value === 1) {
+          filteredData = response.data.filter(item => item.ownerId === ownerId);
+        } else if (value === 2) {
+          filteredData = response.data.filter(item =>
+            (Array.isArray(item.subAdminId) && item.subAdminId.includes(ownerId)) ||
+            (Array.isArray(item.strategyId) && item.strategyId.includes(ownerId))
+          );
+        }
+        setPipelineData(filteredData);
+      } else {
+        toast.error(response.msg);
+      }
+    } catch (error) {
+      console.log("Error", error);
+    } finally {
+      // Hide loader
+      setLoading(false);
+    }
+  };
+
+
+
+  const handleDlt = async () => {
+
+    await dispatch(admin_Msg_Delete({ id: getModalId }))
       .unwrap()
       .then(async (response) => {
-        console.log("getSubadminTableData response: ", response);
         if (response.status) {
           toast.success(response.msg);
-          setPipelineData(response.data);
+          setrefresh(!refresh);
+          setdeleteModal(false)
         } else {
           toast.error(response.msg);
         }
@@ -182,255 +335,224 @@ function MessageBroadcast() {
       .catch((error) => {
         console.log("Error", error);
       });
+
   };
+
 
   useEffect(() => {
     fetchStrategies();
     fetchBrokers();
     getSubadminTableData();
-  }, []);
+  }, [refresh, value]);
 
-  const handleDlt = async (id) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this message?"
-    );
-    if (confirmed) {
-      await dispatch(admin_Msg_Delete({ id }))
-        .unwrap()
-        .then(async (response) => {
-          if (response.status) {
-            toast.success(response.msg);
-            setrefresh(!refresh);
-          } else {
-            toast.error(response.msg);
-          }
-        })
-        .catch((error) => {
-          console.log("Error", error);
-        });
-    }
-  };
-  const handleIdCheck = (id) => {
-    console.log("id from check", id);
-    setopenModalId(id);
-    OpenModal(1);
-  };
-
-  const handleSentChange = () => {
-    setIsSentChecked(!isSentChecked);
-  };
-
-  const handleReceivedChange = () => {
-    setIsReceivedChecked(!isReceivedChecked);
-  };
-
-
-  let filteredData = [];
-
-  if (isSentChecked && !isReceivedChecked) {
-      filteredData = pipelineData.filter(message => message.ownerId === ownerId);
-  } else if (!isSentChecked && isReceivedChecked) {
-      filteredData = pipelineData.filter(message =>
-          (Array.isArray(message.subAdminId) && message.subAdminId.includes(ownerId)) ||
-          (Array.isArray(message.strategyId) && message.strategyId.includes(ownerId))
-      );
-  }
-  
 
   return (
-    <Content
-      // Page_title=""
-      Card_title="Message Boardcast"
-      Card_title_icon="fas fa-message pe-3"
-      Content={
-        <>
-          <div>
-            <div className="mt-3">
-              <label className="form-label" htmlFor="strategy-select">
-                Strategy
-              </label>
-              <div className="input-group">
-                <select
-                  id="strategy-select"
-                  className="form-control"
-                  value={selectedStrategy}
-                  onChange={handleStrategyChange}
-                >
-                  <option value="">Select Strategy</option>
-                  {strategies &&
-                    strategies.map((strategy) => (
-                      <option key={strategy._id} value={strategy._id}>
-                        {strategy.strategy_name}
-                      </option>
-                    ))}
-                </select>
-              </div>
-            </div>
-            <div className="mt-3">
-              <label className="form-label" htmlFor="broker-select">
-                Broker
-              </label>
-              <div className="input-group">
-                <select
-                  id="broker-select"
-                  className="form-control"
-                  value={selectedBroker}
-                  onChange={handleBrokerChange}
-                >
-                  <option value="">Select Broker</option>
-                  {brokers &&
-                    brokers.map((broker) => (
-                      <option key={broker._id} value={broker._id}>
-                        {broker.title}
-                      </option>
-                    ))}
-                </select>
-              </div>
-            </div>
+    <>
+      <div className="container-fluid" >
+        <div className="page-header">
+          <div className="content-page-header">
+            <h6>Message Broadcast</h6>
           </div>
+        </div>
 
-          <div className="mt-3">
-            <label className="form-label" htmlFor="message">
-              Message
-            </label>
-            <textarea
-              id="message"
-              className="form-control"
-              rows="4"
-              value={messageText}
-              onChange={handleMessageChange}
-            ></textarea>
-          </div>
-          <button
-            type="button"
-            className="btn btn-primary mt-3"
-            onClick={sendMessage}
-          >
-            Send
-          </button>
+        <div className="mt-3 ">
+          <Box sx={{ width: '100%' }}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
+              <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                <Tab label="Send" {...a11yProps(0)} />
+                <Tab label="Sent Messages" {...a11yProps(1)} />
+                <Tab label=" Recieved Messages" {...a11yProps(2)} />
 
+              </Tabs>
+            </Box>
+            <CustomTabPanel value={value} index={0}>
+              <>
 
-
-          <div className="mt-3 ">
-            <div className="d-flex">
-              <div className="form-check ">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="sent"
-                  id="sent"
-                  checked={isSentChecked}
-                  onChange={handleSentChange}
-                />
-                <label className="form-check-label" for="sent">
-                  Sent Messages
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="checkbox"
-                  value="sent"
-                  id="sent"
-                  checked={isReceivedChecked}
-                  onChange={handleReceivedChange}
-                />
-                <label className="form-check-label" for="recieve">
-                  Recieved Messages
-                </label>
-              </div>
-            </div>
-
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">S.No</th>
-                  <th scope="col">from</th>
-                  <th scope="col">Message</th>
-                  <th scope="col">Date & Time Sent</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredData.map((message, index) => (
-                  <tr key={message._id}>
-                    <th scope="row">{index + 1}</th>
-                    <td>{message.Role}</td>
-                    <td>{message.messageTitle}</td>
-                    <td>{message.createdAt}</td>
-                    <td>
-                      <button
-                        onClick={() => handleIdCheck(message._id)}
-                        style={{ backgroundColor: "greenyellow" }}
-                      >
-                        <EditIcon />
-                      </button>
-                      <button
-                        onClick={() => handleDlt(message._id)}
-                        style={{ backgroundColor: "firebrick" }}
-                      >
-                        <DeleteOutlineOutlinedIcon />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-
-
-
-          {modal !== 0 && (
-            <div
-              className="modal fade show"
-              tabIndex="-1"
-              style={{ display: "block" }}
-            >
-              <div className="modal custom-modal d-block">
-                <div className="modal-dialog modal-dialog-centered modal-md">
-                  <div className="modal-content">
-                    <div className="modal-header border-0 pb-0">
-                      <div className="form-header modal-header-title text-start mb-0">
-                        <h4 className="mb-0">Update Message</h4>
+                <div className="row align-items-center">
+                  <div className="col-md-5">
+                    <img
+                      src="/assets/img/gif/Email-campaign.png"
+                      alt="Investment data"
+                      className="w-75"
+                    />
+                  </div>
+                  <div className="col-md-7">
+                    <div>
+                      <div className="mt-3">
+                        <label className="form-label" htmlFor="strategy-select">
+                          Strategy
+                        </label>
+                        <div className="input-group">
+                          <select
+                            id="strategy-select"
+                            className="form-control"
+                            value={selectedStrategy}
+                            onChange={(e) => setSelectedStrategy(e.target.value)}
+                          >
+                            <option value="">Select Strategy</option>
+                            {strategies &&
+                              strategies.map((strategy) => (
+                                <option key={strategy._id} value={strategy._id}>
+                                  {strategy.strategy_name}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
                       </div>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                        onClick={CloseModal}
-                      ></button>
+                      <div className="mt-3">
+                        <label className="form-label" htmlFor="broker-select">
+                          Broker
+                        </label>
+                        <div className="input-group">
+                          <select
+                            id="broker-select"
+                            className="form-control"
+                            value={selectedBroker}
+                            onChange={(e) => setSelectedBroker(e.target.value)}
+                          >
+                            <option value="">Select Broker</option>
+                            {brokers &&
+                              brokers.map((broker) => (
+                                <option key={broker._id} value={broker._id}>
+                                  {broker.title}
+                                </option>
+                              ))}
+                          </select>
+                        </div>
+                      </div>
                     </div>
-                    {modal === 1 && (
-                      <form onSubmit={handleUpdate}>
-                        <div className="modal-body">
-                          <div className="row">
-                            <div className="input-block mb-3">
-                              <label>Message Title*</label>
-                              <textarea
-                                type="text"
-                                className="form-control"
-                                onChange={handleInputChange}
-                              />
-                            </div>
+
+                    <div className="mt-3">
+                      <label className="form-label" htmlFor="message">
+                        Message
+                      </label>
+                      <textarea
+                        id="message"
+                        className="form-control"
+                        rows="4"
+                        value={messageText}
+                        onChange={(e) => setMessageText(e.target.value)}
+                      ></textarea>
+                    </div>
+                    <button
+                      type="button"
+                      className="btn btn-primary mt-3"
+                      onClick={sendMessage}
+                    >
+                      Send
+                    </button>
+                  </div>
+                </div>
+
+
+              </>
+
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={1}>
+              {loading ? (
+                <Loader /> // Show loader while loading
+              ) : (<FullDataTable
+                styles={styles}
+                label={label}
+                columns={columns}
+                rows={pipelineData}
+              />)}
+
+            </CustomTabPanel>
+            <CustomTabPanel value={value} index={2}>
+              {loading ? (
+                <Loader /> // Show loader while loading
+              ) : (<FullDataTable
+                styles={styles}
+                label={label}
+                columns={columns}
+                rows={pipelineData}
+              />)}
+
+
+            </CustomTabPanel>
+          </Box>
+        </div>
+
+
+        {modal !== 0 && (
+          <div
+            className="modal fade show"
+            tabIndex="-1"
+            style={{ display: "block" }}
+          >
+            <div className="modal custom-modal d-block">
+              <div className="modal-dialog modal-dialog-centered modal-md">
+                <div className="modal-content">
+                  <div className="modal-header border-0 pb-0">
+                    <div className="form-header modal-header-title text-start mb-0">
+                      <h4 className="mb-0">Update Message</h4>
+                    </div>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                      onClick={() => setModal(0)}
+                    ></button>
+                  </div>
+                  {modal === 1 && (
+                    <form onSubmit={handleUpdate}>
+                      <div className="modal-body">
+                        <div className="row">
+                          <div className="input-block mb-3">
+                            <label>Message Title*</label>
+                            <textarea
+                              type="text"
+                              className="form-control"
+                              onChange={(e) => setMsgData(e.target.value)}
+                            />
                           </div>
                         </div>
-                        <div className="modal-footer border-0 pt-0">
-                          <button type="submit" className="btn btn-primary">
-                            Update
-                          </button>
-                        </div>
-                      </form>
-                    )}
+                      </div>
+                      <div className="modal-footer border-0 pt-0">
+                        <button type="submit" className="btn btn-primary">
+                          Update
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {deleteModal && (
+          <div className="modal custom-modal modal-delete d-block" >
+            <div className="modal-dialog modal-dialog-centered modal-md">
+              <div className="modal-content">
+                <div className="modal-body">
+                  <div className="form-header">
+                    <div className="delete-modal-icon">
+                      <span>
+                        <i className="fe fe-check-circle" />
+                      </span>
+                    </div>
+                    <h3>Are You Sure?</h3>
+                    <p>You want delete Message</p>
+                  </div>
+                  <div className="modal-btn delete-action">
+                    <div className="modal-footer justify-content-center p-0">
+                      <button type="submit" onClick={() => handleDlt()} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
+                      <button type="button" onClick={() => setdeleteModal(false)} className="btn btn-back cancel-btn">No, Cancel</button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          )}
-        </>
-      }
-    />
+          </div>
+        )}
+
+
+      </div>
+    </>
+
   );
 }
 

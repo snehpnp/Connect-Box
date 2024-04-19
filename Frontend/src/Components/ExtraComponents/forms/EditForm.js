@@ -6,7 +6,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 const ReusableForm = ({ initialValues, validationSchema, onSubmit, btn_name_signUp, btn_name_login, fromDate, fieldtype, formik, btn_name, forlogin, title, additional_field }) => {
 
 
-    console.log('title :', title)
     const location = useLocation()
     const navigate = useNavigate()
 

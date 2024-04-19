@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { Minimize } from 'lucide-react';
 
+
 const DropDown = () => {
     const navigate = useNavigate();
 
@@ -19,8 +20,11 @@ const DropDown = () => {
 
     const [profileData, setProfileData] = useState([]);
     const [error, setError] = useState(null);
-
+    const [profileImage, setProfileImage] = useState("");
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+    const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
+    var Role = JSON.parse(localStorage.getItem("user_details")).Role
+    var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
 
 
     const fetchData = async () => {
@@ -33,6 +37,7 @@ const DropDown = () => {
                 .then(async (response) => {
                     if (response.status) {
                         setProfileData(response.data)
+                        setProfileImage(response.data[0].profile_img);
                     } else {
                         toast.error(response.msg);
                     }
@@ -55,8 +60,6 @@ const DropDown = () => {
     }, []);
 
 
-    var Role = JSON.parse(localStorage.getItem("user_details")).Role
-    var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
 
 
 
@@ -168,13 +171,20 @@ const DropDown = () => {
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
+
+                {Role == "SUBADMIN" && (<li className="nav-item dropdown flag-nav dropdown-heads">
+
+                    {subadmin_service_type == 2 ? "STRATEGY WISE" : "PER TRADE"}
+
+                </li>)}
+
                 {Role !== "USER" ? <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
                     <button
                         type="button"
                         data-bs-dismiss="modal"
-                        className="btn btn-primary cancel-btn me-2 mt-2"
+                        className="btn btn-primary cancel-btn me-2 mt-2 iconclass"
                         style={{
-                           
+                            backgroundColor: "#7539FF",
                             color: "white",
                             border: "none",
                             display: "flex",
@@ -193,7 +203,7 @@ const DropDown = () => {
                             </span>
                         ) : (
                             <span>
-                                <i className="fe fe-eye" style={{ fontSize: "24px", marginRight: "10px" }} />
+                                <i className="fe fe-eye " style={{ fontSize: "24px", marginRight: "10px" }} />
                                 <strong>*****</strong>
                             </span>
                         )}
@@ -201,13 +211,21 @@ const DropDown = () => {
                     </button>
                 </li> : ""}
 
-                <li className="nav-item dropdown  flag-nav dropdown-heads">
+
+
+
+
+
+
+
+
+                <li className="nav-item dropdown  flag-nav dropdown-heads iconclass">
                     <a className="nav-link" data-bs-toggle="dropdown" href="#" role="button">
                         <i className="fe fe-bell" /> <span className="badge rounded-pill" />
                     </a>
                 </li>
 
-                <li className="nav-item has-arrow dropdown-heads">
+                <li className="nav-item has-arrow dropdown-heads iconclass">
                     <a onClick={toggleFullScreen} className="win-maximize">
                         {isFullScreen ? <Minimize /> : <i className="fe fe-maximize" />}
                     </a>
@@ -228,9 +246,14 @@ const DropDown = () => {
                         <a className="user-a nav-a d-flex" data-bs-toggle="dropdown" aria-expanded="false" >
                             <span className="user-img">
                                 <img
-                                    src="assets/img/profiles/avatar-07.jpg"
+                                    src={
+                                        profileImage
+                                          ? profileImage
+                                          : "assets/img/profiles/ProfileAvataar/hacker.png"
+                                      }
                                     alt="img"
                                     className="profilesidebar"
+
                                 />
                                 <span className="animate-circle" />
                             </span>
@@ -244,19 +267,11 @@ const DropDown = () => {
                             </span>
 
                         </a>
-                        <div className="dropdown-menu dropdown-menu-right">
+                        <div className="dropdown-menu dropdown-menu-right mt-1 ms-2" style={{
+                            borderRadius: 20
+                        }}>
                             <div className="subscription-menu">
                                 <ul className="list-unstyled">
-                                    <li onClick={() => ProfilePage()}>
-                                        <Link className="dropdown-item dev" >
-                                            Profile
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/settings">
-                                            Settings
-                                        </Link>
-                                    </li>
                                     <li className='dropdown-item de '>
                                         <label className="theme-switch mb-0">
                                             <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
@@ -264,47 +279,35 @@ const DropDown = () => {
                                         </label>
 
                                     </li>
-                                    <li>
-                                        <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
-                                            Log out
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div style={{ height: "144px" }} className={`dropdown-menu menu-drop-user ${isDropdownOpen ? 'show' : ''}`}>
-                        <div className="profilemenu table table-hover">
-                            <div className="subscription-menu">
-                                <ul>
                                     <li onClick={() => ProfilePage()}>
                                         <Link className="dropdown-item dev" >
-                                            Profile
+                                            <i class="fa-solid fa-user p-2"></i>Profile
                                         </Link>
                                     </li>
+                                    {Role == "ADMIN" || Role === "SUBADMIN" ?
+                                        <li>
+                                            <Link className="dropdown-item dev" to={Role === "ADMIN" ? "/admin/system" : "/subadmin/system"}>
+                                                <i class="fa-solid fa-gear p-2"></i> System
+                                            </Link>
+                                        </li> : ''}
                                     <li>
                                         <Link className="dropdown-item dev" to="/settings">
-                                            Settings
+                                            <i class="fa-solid fa-gear p-2"></i>   Settings
                                         </Link>
                                     </li>
-                                    <li className='dropdown-item de nav-item dropdown  dropdown-heads'>
-                                        <label className="theme-switch mb-0">
-                                            <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
-                                            <span className="slider"></span>
-                                        </label>
-                                    </li>
+
                                     <li>
                                         <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
-                                            Log out
+                                            <i class="fa-solid fa-right-to-bracket p-2"></i>  Log out
                                         </a>
-
                                     </li>
                                 </ul>
                             </div>
                         </div>
+
                     </div>
+
+
                 </li>
             </ul>
         </div>
