@@ -19,15 +19,17 @@ const DashBoard = () => {
   const [selectedUser, setSelectedUser] = useState("USERS");
   var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
   const [selectedOption, setSelectedOption] = useState("Day");
+
+
   const [options, setOptions] = useState({
     chart: {
       id: "basic-bar",
     },
     xaxis: {
-      userDetails: [],
-      timeSpam: [],
+      categories: [],
     },
   });
+
   const [series, setSeries] = useState([
     {
       name: "series-1",
@@ -41,7 +43,7 @@ const DashBoard = () => {
 
   const handleUserSales = (e) => {
     setSelectedUser(e.target.textContent);
-    
+
   };
 
   const totalUserdata = async (options, user) => {
@@ -53,17 +55,20 @@ const DashBoard = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          const userDetails = response.data.categories;
-          const counts = response.data.userCounts;
+          const categories = response.data.categories;
+          const data = response.data.userCounts;
+
+          console.log("categories", categories)
+
           setOptions((prevOptions) => ({
             ...prevOptions,
             xaxis: {
               ...prevOptions.xaxis,
-              userDetails: userDetails,
+              categories: categories,
             },
           }));
 
-          setSeries([{ name: "series-1", data: counts }]);
+          setSeries([{ name: "series-1", data: data }]);
 
           setchart(true);
         } else {
@@ -84,19 +89,24 @@ const DashBoard = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          const timeSpam = response.data[0].date;
-          const amount = response.data[0].strategy_transactions;
-          console.log("timeSpam",timeSpam)
-          console.log("amount",amount)
+ 
+
+          const categories = response.data[0].data;
+          const data = response.data[0].strategy_transactions;
+
+          console.log("categories---", response.data[0].date)
+
           setOptions((prevOptions) => ({
             ...prevOptions,
             xaxis: {
               ...prevOptions.xaxis,
-              timeSpam: timeSpam,
+              categories: response.data[0].date,
             },
           }));
 
-          setSeries([{ name: "series-1", data: amount }]);
+          setSeries([{ name: "series-1", data: data }]);
+
+
 
           setchart(true);
         } else {
@@ -172,8 +182,10 @@ const DashBoard = () => {
     totalUserdata(selectedOption, selectedUser);
     dashData();
   }, [dispatch]);
-  
- 
+
+  console.log("series", series)
+  console.log("options", options)
+
   return (
     <div className="main-wrapper">
       <div>
@@ -259,7 +271,7 @@ const DashBoard = () => {
                                 className="dropdown-item"
                                 onClick={(e) => {
                                   handleUserSales(e);
-                                  totalUserdata(selectedOption,"USERS");
+                                  totalUserdata(selectedOption, "USERS");
                                 }}
                               >
                                 USERS
