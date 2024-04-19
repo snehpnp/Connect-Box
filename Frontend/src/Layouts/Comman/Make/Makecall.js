@@ -139,22 +139,17 @@ const Makecall = () => {
     const GetBrokerData = async () => {
         var data = { id: UserLocalDetails.user_id }
         await dispatch(GetBrokerDatas(data))
-
             .unwrap()
             .then(async (response) => {
                 //console.log("GetBrokerData ",response.data)
                 if (response.status) {
                     seUserDetails(response.data)
                     if (response.data && response.data[0].demat_userid !== undefined && response.data && response.data[0].access_token !== undefined && response.data[0].TradingStatus == "on") {
-
                         let type = { loginType: "API" };
                         const res = await CreateSocketSession(type, response.data[0].demat_userid, response.data[0].access_token);
-
-                        console.log("res ", res.data.stat)
+                        //console.log("res ", res.data.stat)
                         if (res.data.stat) {
-
                             const url = "wss://ws1.aliceblueonline.com/NorenWS/"
-
                             socket = new WebSocket(url)
                             socket.onopen = function () {
                                 // var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession21).toString()).toString();
@@ -170,31 +165,23 @@ const Makecall = () => {
                                     uid: userId1 + "_" + "API",
                                     source: "API"
                                 }
-
                                 setSockets(socket)
                                 // console.log("initCon",initCon)
                                 socket.send(JSON.stringify(initCon))
                                 // console.log("inside ",socket)
-
                                 socket.onmessage = async function (msg) {
                                     var response = JSON.parse(msg.data)
-
-                                    console.log("response ", response)
-
+                                  //  console.log("response ", response)
                                     if (response.tk) {
                                         if (response.lp != undefined) {
-                                            console.log('response token', response.lp)
-
+                                            //console.log('response token', response.lp)
                                             //   console.log("response -soket ", response);
                                             // setLiveprice(response.lp);
                                             if (response.tk == liveToken.current) {
                                                 setLiveprice(response.lp);
-
                                                 if (response.pc != undefined) {
-
-                                                    console.log('response.pc inside', response.pc)
+                                                    //console.log('response.pc inside', response.pc)
                                                     if (parseFloat(response.pc) > 0) {
-
                                                         $('.liveprice' + response.tk).css({ "color": "green" });
 
                                                     }
@@ -210,11 +197,8 @@ const Makecall = () => {
                                                     }
                                                 }
 
-
-
                                                 setLiveprice(response.lp);
                                                 $(".liveprice" + response.tk).html(response.lp);
-
 
                                                 //  SetEntryPrice
 
@@ -230,15 +214,8 @@ const Makecall = () => {
                                             }
 
                                             $(".liveprice" + response.tk).html(response.lp);
-
-
                                         }
-
-
-
-
                                     }
-
 
                                     if (response.s === 'OK') {
                                         console.log("response.s ", response.s)
@@ -252,11 +229,7 @@ const Makecall = () => {
 
                                     }
                                 }
-
                             }
-
-
-
                         }
                     }
                 }
@@ -414,14 +387,8 @@ const Makecall = () => {
                     break;
             }
 
-            // console.log("selectedTimeExi switch",selectedTimeExit)
-            // console.log("selectedTimeNoTrade switch",selectedTimeNoTrade)
-
-
-
         }
-        // SetScriptExchangeValue(datra && datra[0].name)
-        // console.log("datra", datra && datra[0].segment);
+       
 
 
     }, [selectCatagoryid])
@@ -429,22 +396,9 @@ const Makecall = () => {
 
     const selectCatagoryId = (e) => {
 
-
-        // alert("okkk")
-
-        //    let json = {
-        //     //k: response.data.exchange + "|" + response.data.token,
-        //     k: "NFO|67506",
-        //     t: "t",
-        //   };
-        //   sockets.send(JSON.stringify(json));
-
         setStrikePrice('');
         setOptionType('');
         setExpiryOnChange('')
-
-
-
         setShowstrikePrice(0);
         previousToken.current = "";
         liveToken.current = "";
@@ -455,24 +409,17 @@ const Makecall = () => {
 
     }
 
-
-
     const selectscriptname = (e) => {
         setStrikePrice('');
         setOptionType('');
         setExpiryOnChange('')
         setShowstrikePrice(0);
-
-
         previousToken.current = "";
         liveToken.current = "";
         setLiveprice("");
-
         setExpirydateSelect({ loading: false, data: [] });
         setStrikePriceAll({ loading: false, data: [] });
         SetScriptname(e.target.value);
-
-
 
         if (scriptSegment == 'C') {
             gettoken(selectCatagoryid, e.target.value, scriptSegment);
@@ -480,17 +427,11 @@ const Makecall = () => {
 
     }
 
-
-
-
-
     const getExpirybackend = async (selectCatagoryid, symbol) => {
 
         if (selectCatagoryid != '' && symbol != '') {
-            console.log("selectCatagoryid ", selectCatagoryid)
-            console.log("symbol ", symbol)
-
-
+            // console.log("selectCatagoryid ", selectCatagoryid)
+            // console.log("symbol ", symbol)
             await dispatch(getexpirymanualtrade(
                 {
                     req:
@@ -504,7 +445,6 @@ const Makecall = () => {
             ))
                 .unwrap()
                 .then((response) => {
-
                     if (response.status) {
                         setExpirydateSelect({
                             loading: false,
@@ -533,23 +473,16 @@ const Makecall = () => {
 
     }
 
-
-
-
     useEffect(() => {
         getExpirybackend(selectCatagoryid, scriptname)
     }, [scriptname]);
-
 
     const selectExpiryFun = (e) => {
         setStrikePrice('');
         setOptionType('');
         setStrikePriceAll([]);
-
         setShowstrikePrice(0);
-
         setExpiryOnChange(e.target.value)
-
 
         if (scriptSegment == 'F' || scriptSegment == 'MF' || scriptSegment == 'CF') {
             gettoken(selectCatagoryid, scriptname, scriptSegment, e.target.value, scriptSegment);
@@ -566,8 +499,6 @@ const Makecall = () => {
 
 
     }
-
-
 
     const getAllStrikePrice = async (selectCatagoryid, symbol, expiry, segment) => {
         await dispatch(getAllStrikePriceApi(
@@ -598,9 +529,6 @@ const Makecall = () => {
                     });
                 }
             });
-
-
-
     }
 
 
@@ -608,32 +536,24 @@ const Makecall = () => {
         if (e.target.value != "") {
             setStrikePrice(e.target.value)
             if (optionType != '') {
-
                 if (scriptSegment == 'O' || scriptSegment == 'CO' || scriptSegment == 'MO') {
                     gettoken(selectCatagoryid, scriptname, scriptSegment, expiryOnChange, scriptSegment, e.target.value, optionType);
                 }
-
             }
 
         } else {
-
             setStrikePrice('')
             setOptionType('')
         }
-
     }
 
-
     const selectOptionType = (e) => {
-
         if (e.target.value != '') {
-
             if (strikePrice == '') {
                 alert('please alert select strike price');
                 return
             }
             setOptionType(e.target.value);
-
             if (scriptSegment == 'O' || scriptSegment == 'MO' || scriptSegment == 'CO') {
                 gettoken(selectCatagoryid, scriptname, scriptSegment, expiryOnChange, scriptSegment, strikePrice, e.target.value);
             }
@@ -645,11 +565,7 @@ const Makecall = () => {
             setOptionType("");
         }
 
-
-
     }
-
-
 
     const dropdownSelect = (num) => {
         if (num == "1") {
@@ -658,8 +574,6 @@ const Makecall = () => {
             return setChangeDropdown(0)
         }
     }
-
-
 
     const selectMarkettime = (e) => {
         if (e.target.value == "2") {
@@ -691,7 +605,6 @@ const Makecall = () => {
 
     }
 
-
     const selectWiseTypeDropdown = (e) => {
         if (e.target.value == '') {
             setTarget1(0)
@@ -706,27 +619,17 @@ const Makecall = () => {
     }
 
 
-
-
-
-
     const selectTargetStoplossDropdown = (e) => {
         setTargetStoplossDropdown(e.target.value)
     }
 
-
-
-
-
     const gettoken = async (selectCatagoryid = "", symbol = "", scriptSegment = "", expiry = "", segment = "", strike_price = "", option_type = "") => {
 
         if (scriptSegment != "") {
-
             if (scriptSegment == "C") {
-
-                const data = { symbol: symbol, categorie_id: selectCatagoryid, segment: scriptSegment }
-
-                await dispatch(gettokenbysocket(
+        
+            const data = { symbol: symbol, categorie_id: selectCatagoryid, segment: scriptSegment }
+             await dispatch(gettokenbysocket(
                     {
                         req: data,
                         token: UserLocalDetails.token
@@ -734,12 +637,11 @@ const Makecall = () => {
                 ))
                     .unwrap()
                     .then((response) => {
-                        console.log("cash token", response);
-
+                        //console.log("cash token", response);
                         if (response.status) {
 
                             if (sockets != null) {
-                                console.log("previousToken.current", previousToken.current);
+                                //console.log("previousToken.current", previousToken.current);
                                 let json1 = {
                                     k: previousToken.current,
                                     t: "u",
@@ -755,17 +657,13 @@ const Makecall = () => {
                                 sockets.send(JSON.stringify(json));
 
                             } else {
-
                                 console.log("sockets closeeee");
-
                             }
 
                         } else {
 
                         }
                     });
-
-
 
             }
             else if (scriptSegment == "F" || scriptSegment == "MF" || scriptSegment == "CF") {
@@ -778,14 +676,12 @@ const Makecall = () => {
                         token: UserLocalDetails.token
                     }
                 ))
-                    .unwrap()
-                    .then((response) => {
-
-                        console.log("FUTURE token", response);
+                 .unwrap()
+                 .then((response) => {
+                 // console.log("FUTURE token", response);
                         if (response.status) {
-
                             if (sockets != null) {
-                                console.log("previousToken.current", previousToken.current);
+                               // console.log("previousToken.current", previousToken.current);
                                 let json1 = {
                                     k: previousToken.current,
                                     t: "u",
@@ -801,9 +697,7 @@ const Makecall = () => {
                                 sockets.send(JSON.stringify(json));
 
                             } else {
-
                                 console.log("sockets closeeee");
-
                             }
 
                         } else {
@@ -813,7 +707,6 @@ const Makecall = () => {
 
             }
             else if (scriptSegment == "O" || scriptSegment == "MO" || scriptSegment == "CO") {
-
                 const data = { symbol: symbol, categorie_id: selectCatagoryid, expiry: expiry, segment: segment, strike_price: strike_price, option_type: option_type }
                 await dispatch(gettokenbysocket(
                     {
@@ -823,13 +716,11 @@ const Makecall = () => {
                 ))
                     .unwrap()
                     .then((response) => {
-
-                        console.log("Option token", response);
-
+                       // console.log("Option token", response);
                         if (response.status) {
 
                             if (sockets != null) {
-                                console.log("previousToken.current", previousToken.current);
+                              //  console.log("previousToken.current", previousToken.current);
                                 let json1 = {
                                     k: previousToken.current,
                                     t: "u",
@@ -845,9 +736,7 @@ const Makecall = () => {
                                 sockets.send(JSON.stringify(json));
 
                             } else {
-
                                 console.log("sockets closeeee");
-
                             }
 
                         } else {
@@ -862,18 +751,6 @@ const Makecall = () => {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     const GenerateMakeCall = async (e) => {
 
         e.preventDefault();
@@ -882,19 +759,16 @@ const Makecall = () => {
             alert("Please Select a Script  Type")
             return
         }
-
         if (scriptname == "") {
             alert("Please Select a Script Name")
             return
         }
-
         if (scriptSegment != 'C') {
             if (expiryOnChange == "") {
                 alert("Please Select a Expiry")
                 return
             }
         }
-
         if (scriptSegment == 'O' || scriptSegment == 'MO' || scriptSegment == 'CO') {
             if (strikePrice == "") {
                 alert("Please Select a strike price")
@@ -905,24 +779,18 @@ const Makecall = () => {
                 return
             }
         }
-
         if (selectStrategy == "") {
             alert("Please Select a Strategy")
             return
         }
-
-
         if (tradeType == '') {
             alert("Please Select a Trade Type")
             return
         }
-
-
         if (EntryPriceBA == '') {
             alert("Please Select a  Above/Below/Range")
             return
         }
-
 
 
         let price = "0";
@@ -961,7 +829,6 @@ const Makecall = () => {
 
 
         if (IntradayDelivery == '1') {
-
             if (EntryPriceBA == "at") {
                 if (selectedTimeExit == '') {
                     alert("Please Select a Intraday Time Exit")
@@ -978,7 +845,6 @@ const Makecall = () => {
                     return
                 }
             }
-
         }
 
         if (IntradayDelivery == '2') {
@@ -987,44 +853,6 @@ const Makecall = () => {
                 return
             }
         }
-
-        // if (WiseTypeDropdown == '') {
-        //   alert("Please Select wisetype")
-        //   return
-        // }
-
-        // if (persentage == '') {
-        //   alert("Please Select  a Persentage")
-        //   return
-        // }
-
-        // if (target1 == '') {
-        //   alert("Please Set Target1 Value")
-        //   return
-        // }
-
-        // if (target1persentage == '') {
-        //   alert("Please Set Target1 Per. Value")
-        //   return
-        // }
-        // if (target1perWise == '') {
-        //   alert("Please Set Target1 Persentage Wise Value")
-        //   return
-        // }
-        // if (target2 == '') {
-        //   alert("Please Set Target2 Value")
-        //   return
-        // }
-        // if (target2perWise == '') {
-        //   alert("Please Set Target2 Persentage Wise Value")
-        //   return
-        // }
-
-        alert("Done")
-
-        // const currentTimestamp = Math.floor(Date.now() / 1000);
-        //     let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice==''?'100':strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${target1}|StopLoss:${stoploss}|ExitTime:${selectedTimeExit}|sl_status:1|Demo:demo`
-
 
         let sl_status = 0
         let Target = 0
@@ -1077,13 +905,14 @@ const Makecall = () => {
 
         }
 
+       
+        alert("Done")
 
-
+        // const currentTimestamp = Math.floor(Date.now() / 1000);
+        //     let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice==''?'100':strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${target1}|StopLoss:${stoploss}|ExitTime:${selectedTimeExit}|sl_status:1|Demo:demo`
 
         const currentTimestamp = Math.floor(Date.now() / 1000);
         let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice == '' ? '100' : strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${Target == 0 ? 0 : Target.toFixed(2)}|StopLoss:${StopLoss == 0 ? 0 : StopLoss.toFixed(2)}|ExitTime:0|sl_status:${sl_status}|Demo:demo`
-
-
         console.log("req ", req)
         // console.log("process.env.BROKER_URL ",process.env.BROKER_URL)
 
@@ -1100,32 +929,13 @@ const Makecall = () => {
         };
         axios.request(config)
             .then(async (response) => {
-
-                console.log("response ", response);
-                // let tradeSymbol;
-                // if(item.segment.toLowerCase() == 'o' || item.segment.toLowerCase() == 'co' || item.segment.toLowerCase() == 'fo' || item.segment.toLowerCase() == 'mo')
-                // {
-                // tradeSymbol = item.symbol+"  "+item.expiry+"  "+item.strike+"  "+item.option_type+"  "+" [ "+item.segment+" ] ";
-                // }
-                // else if(item.segment.toLowerCase() == 'f' || item.segment.toLowerCase() == 'cf' || item.segment.toLowerCase() == 'mf')
-                // {
-                // tradeSymbol = item.symbol+"  "+item.expiry+"  "+" [ "+item.segment+" ] ";
-                // }
-                // else{
-                // tradeSymbol = item.symbol+"  "+" [ "+item.segment+" ] ";
-                // }
-                // const io = await getIO();
-                // io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
-
-                // console.log("response Trade Excuted - ", response.data)
-
+                //console.log("response ", response);
             })
             .catch((error) => {
                 // console.log(error.response.data);
             });
 
-
-    }
+       }
 
 
 
@@ -1158,8 +968,6 @@ const Makecall = () => {
                                                         <select className="form-select" onChange={(e) => {
 
                                                             selectCatagoryId(e);
-                                                            // SetonChangeScriptname(e.target.innerText)
-                                                            // setScriptDataErr('')
                                                             SetScriptname("")
                                                             // SetForDisabledSubmit(false)
                                                         }}>
@@ -1170,15 +978,12 @@ const Makecall = () => {
                                                                 if (x.segment !== "FO") {
                                                                     return <option key={x._id} name={x.segment} value={x._id}>{x.name}</option>
                                                                 }
-
-
                                                             })}
 
                                                         </select>
-
-
                                                     </div>
                                                 </div>
+
                                                 <div className="col-lg-4 col-md-6 col-sm-12">
                                                     <div className="input-block mb-3">
                                                         <label>Script Name</label>
@@ -1192,11 +997,9 @@ const Makecall = () => {
 
                                                                 }}
                                                                 >
-
                                                                     <option name="none" disabled="">Select Script Name</option>
-
                                                                     {
-                                                                        AllServices.data && AllServices.data.map((x) => {
+                                                                    AllServices.data && AllServices.data.map((x) => {
                                                                             return <option value={x.name}>{x.name}</option>
                                                                         })
                                                                     }
@@ -1212,8 +1015,6 @@ const Makecall = () => {
                                                     <div className="input-block mb-3">
                                                         <label>Expiry Date</label>
                                                         <select className="form-select" name="expiry_date" onChange={(e) => { selectExpiryFun(e) }} selected>
-
-
                                                             <option value="">Select Expiry Date</option>
                                                             {expirydateSelect.data && expirydateSelect.data?.map((sm, i) =>
                                                                 <option value={sm.uniqueExpiryValues}>{sm.uniqueExpiryValues}</option>)}
@@ -1272,13 +1073,9 @@ const Makecall = () => {
                                                             <option value="">-- Select Strategy Tag--</option>
                                                             {strategyDataAll.data && strategyDataAll.data.map((sm, i) =>
                                                                 <option value={sm.strategy_name}>{sm.strategy_name}</option>)}
-
-
                                                         </select>
                                                     </div>
                                                 </div>
-
-
 
 
                                             </div>
@@ -1302,7 +1099,6 @@ const Makecall = () => {
                                                     <div className="input-block mb-3">
                                                         <label>Type -</label>
                                                         <select className="form-select" onChange={(e) => { setTradeType(e.target.value); setTradeTypeErr(''); dropdownSelect("0") }}>
-
                                                             <option selected={tradeType == "LE"} value="LE">Buy</option>
                                                             <option selected={tradeType == "SE"} value="SE">Sell</option>
                                                         </select>
@@ -1326,7 +1122,6 @@ const Makecall = () => {
                                                         </ul>
                                                     </div>
                                                 </div> */}
-
 
 
                                                 <div className="col-lg-4 col-md-6 col-sm-12">
@@ -1364,26 +1159,14 @@ const Makecall = () => {
                                                                             }} value={EntryPriceRange_two} />
                                                                         </div>
                                                                     </div>
-
-
-
                                                                 </>
-
-
-
                                                         }
-
-
-
-
-
 
                                                     </div>
 
                                                     <div className="row mt-2">
-
                                                         {
-                                                            showmarkettime == 1 ?
+                                                           showmarkettime == 1 ?
                                                                 <div className="col-sm-4 col-lg-3">
                                                                     <div className="radio">
                                                                         <label htmlFor="at_check">
@@ -1401,10 +1184,7 @@ const Makecall = () => {
                                                                 </div>
                                                                 :
                                                                 ""
-
                                                         }
-
-
 
                                                         <div className="col-sm-4 col-lg-3">
                                                             <div className="radio">
@@ -1458,9 +1238,7 @@ const Makecall = () => {
                                                 <div className="col-lg-4 col-md-6 col-sm-12">
                                                 </div>
 
-
                                                 <div className="col-lg-4">
-
                                                     <div className="input-block mb-3">
                                                         <label>Intraday / Delivery -</label>
                                                         <select className="form-select" onChange={(e) => { setIntradayDelivery(e.target.value) }}>
@@ -1468,47 +1246,35 @@ const Makecall = () => {
                                                             <option selected={IntradayDelivery == "2"} value="2">Delivery</option>
                                                         </select>
                                                     </div>
-
-
-
                                                 </div>
 
                                                 {IntradayDelivery == "1" ?
-
                                                     EntryPriceBA == "at" ? <>
                                                         <div className="col-lg-4">
                                                             <label for="exampleFormControlSelect1" > Exit Time  :  &nbsp; </label>
-                                                            {/* <input type="text" className="form-control" onChange={(e) => { setStopLoss(e.target.value); setStopLossErr('') }} /> */}
                                                             <input type="time" id="appt" className="form-control" name="appt"
                                                                 min="09:15"
                                                                 max="15:15"
                                                                 value={selectedTimeExit}
                                                                 onChange={handleTimeChangeExit} />
-
                                                         </div>
 
                                                         <div className="col-lg-4 col-md-4 col-sm-12">
-
                                                         </div>
-
                                                     </> :
                                                         <>
                                                             <div className="col-lg-4">
                                                                 <label for="exampleFormControlSelect1" > Exit Time  :  &nbsp; </label>
-                                                                {/* <input type="text" className="form-control" onChange={(e) => { setStopLoss(e.target.value); setStopLossErr('') }} /> */}
                                                                 <input type="time" id="appt" className="form-control" name="appt"
                                                                     min="09:15"
                                                                     max="15:15"
                                                                     value={selectedTimeExit}
                                                                     onChange={handleTimeChangeExit} />
-
                                                             </div>
-
 
                                                             <div className="col-lg-4 col-md-4 col-sm-12">
                                                                 <label for="exampleFormControlSelect1" > No Trade Time : &nbsp; </label>
-                                                                {/* <input type="text" className="form-control" onChange={(e) => { setStopLoss(e.target.value); setStopLossErr('') }} /> */}
-
+                                                                
                                                                 <input type="time" id="appt" className="form-control" name="appt"
                                                                     min="09:15"
                                                                     max="15:15"
@@ -1521,27 +1287,19 @@ const Makecall = () => {
                                                     : IntradayDelivery == "2" ? <>
                                                         <div className="col-lg-4 col-md-4 col-sm-12">
                                                             <label for="exampleFormControlSelect1" > No Trade Time : &nbsp; </label>
-                                                            {/* <input type="text" className="form-control" onChange={(e) => { setStopLoss(e.target.value); setStopLossErr('') }} /> */}
-
                                                             <input type="time" id="appt" className="form-control" name="appt"
                                                                 min="09:15"
                                                                 max="15:15"
                                                                 value={selectedTimeNoTrade}
                                                                 onChange={handleTimeChangeNoTrade} />
-
                                                         </div>
 
                                                         <div className="col-lg-4 col-md-4 col-sm-12">
-
                                                         </div>
-
                                                     </> :
                                                         ""
 
                                                 }
-
-
-
 
                                                 <div className="col-lg-3 col-md-6 col-sm-12 mt-3">
                                                     <div className="input-block mb-3 ">
@@ -1554,17 +1312,13 @@ const Makecall = () => {
                                                     </div>
                                                 </div>
 
-
                                                 {
                                                     showhideTargetStoploss == 1 ?
-
                                                         <>
                                                             <div className="col-lg-3 col-md-6 col-sm-12 mt-3">
                                                                 <div className="input-block mb-3">
                                                                     <label>Target -</label>
-
                                                                     <input type="number" className="form-control" onChange={(e) => { setTarget1(e.target.value); setTarget1Err("") }} />
-
                                                                     {target1Err ? <p style={{ color: "#ff8888", fontSize: '10px' }}> *{target1Err}</p> : ''}
                                                                 </div>
                                                             </div>
@@ -1604,18 +1358,11 @@ const Makecall = () => {
                                                 }
 
 
-
-
-
-
                                                 <div className="preview-boxs mt-3">
-
                                                     <button type="submit" onClick={(e) => GenerateMakeCall(e)} disabled={ForDisabledSubmit} className="btn btn-primary">
                                                         Gnenerate
                                                     </button>
-
                                                 </div>
-
                                             </div>
                                         </div>
 
@@ -1628,7 +1375,6 @@ const Makecall = () => {
                 <div className='card'>
                     <div className='card-body'>
                         <div className="col-lg-12 col-md-12" data-aos="fade-right">
-
                             <ul className="nav nav-tabs nav-tabs-solid d-flex justify-content-center">
                                 <li className="nav-item">
                                     <a
