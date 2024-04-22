@@ -6,16 +6,9 @@ export const admin_header = [
         route: "/admin/dashboard",
         Data: []
     },
-    // {
-    //     id: 2,
-    //     name: 'System',
-    //     route: "/admin/system",
-    //     Icon: "fe fe-settings",
-    //     Data: []
-    // },
     {
         id: 3,
-        name: 'Research Analysts',
+        name: 'Sub Admin',
         Icon: "fe fe-users",
         Data: [
             {
@@ -31,6 +24,25 @@ export const admin_header = [
                 Icon: "fe fe-users",
                 route: "/admin/allsubadmin",
             },
+        ]
+    },
+    {
+        id: 4,
+        name: 'Researcher',
+        Icon: "fe fe-users",
+        Data: [
+            {
+                id: 41,
+                name: 'Add Researcher',
+                Icon: "fe fe-user-plus",
+                route: "/admin/research/add",
+            },
+            {
+                id: 42,
+                name: 'All Researcher',
+                Icon: "fe fe-user-plus",
+                route: "/admin/allresearch",
+            }, 
         ]
     },
     // {
