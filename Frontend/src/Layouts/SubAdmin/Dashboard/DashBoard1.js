@@ -141,6 +141,24 @@ const DashBoard = () => {
   const cardsData = cardDataList.map(({ key, title }) => {
     const count = userData[key];
     const percentage = calculatePercentage(count, userData.TotalUsercount);
+    let progressBarClass = "";
+    switch (true) {
+      case title.toLowerCase().includes("active"):
+        progressBarClass = "bg-success";
+        break;
+      case title.toLowerCase().includes("total"):
+        progressBarClass = "bg-5";
+        break;
+      case title.toLowerCase().includes("expired") ||
+        title.toLowerCase().includes("converted"):
+        progressBarClass = "bg-6";
+        break;
+      case title.toLowerCase().includes("demo"):
+        progressBarClass = "bg-5";
+        break;
+      default:
+        break;
+    }
     return {
       iconClass: "fas fa-users",
       title: title,
@@ -151,16 +169,16 @@ const DashBoard = () => {
           ? percentage === 0
             ? ""
             : percentage < 100
-              ? "fas fa-arrow-down"
-              : "fas fa-arrow-up"
+            ? "fas fa-arrow-down"
+            : "fas fa-arrow-up"
           : "",
       percentageChange:
         percentage !== null ? `${Math.round(percentage)}%` : "N/A",
       sinceLastWeek: "since last week",
-      progressBarClass:
-        percentage !== null ? (percentage < 70 ? "bg-6" : "bg-5") : "",
+      progressBarClass: progressBarClass,
     };
   });
+
 
   const dashData = async () => {
     await dispatch(Subadmin_Dashdata({ subadminId: userDetails.user_id }))
@@ -194,50 +212,58 @@ const DashBoard = () => {
                 {/* <div className="col card-header">
                   <h5 className="card-title">Subadmin Dashboard</h5>
                 </div> */}
-
               </div>
             </div>
 
             <div className="col-md-12">
-              <div className="row" data-aos="fade-down">
-                {cardsData.map((data, index) => (
-                  <div className="col-xl-3 col-sm-3 col-12" key={index}>
-                    <div className="card">
-                      <div className="card-body moving-border">
-                        <div className="dash-widget-header crad-widget">
-                          <span
-                            className={`dash-widget-icon ${data.progressBarClass}`}
-                          >
-                            <i className={data.iconClass} id="animated" />
-                          </span>
-                          <div className="dash-count">
-                            <div className="dash-title">{data.title}</div>
-                            <div className="dash-counts">
-                              <p>{data.count}</p>
+              <div className="container">
+                <div className="row" data-aos="fade-down">
+                  {cardsData
+                    .reduce((acc, card, index) => {
+                      const columnIndex = Math.floor(index / 3);
+                      if (!acc[columnIndex]) {
+                        acc[columnIndex] = [];
+                      }
+                      acc[columnIndex].push(card);
+                      return acc;
+                    }, [])
+                    .map((cardGroup, index) => (
+                      <div className="col-md-3" key={index}>
+                        {cardGroup.map((data, idx) => (
+                          <div className="card mb-4" key={idx}>
+                            <div className="card-body moving-border">
+                              <div className="dash-widget-header crad-widget">
+                                <span
+                                  className={`dash-widget-icon ${data.progressBarClass}`}
+                                >
+                                  <i
+                                    className={data.iconClass}
+                                    id="animated"
+                                  ></i>
+                                </span>
+                                <div className="dash-count">
+                                  <div className="dash-title">{data.title}</div>
+                                  <div className="dash-counts">
+                                    <p>{data.count}</p>
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="progress progress-sm mt-3">
+                                <div
+                                  className={`progress-bar ${data.progressBarClass}`}
+                                  role="progressbar"
+                                  style={{ width: `${data.progress}%` }}
+                                  aria-valuenow={data.progress}
+                                  aria-valuemin={0}
+                                  aria-valuemax={100}
+                                ></div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="progress progress-sm mt-3">
-                          <div
-                            className={`progress-bar ${data.progressBarClass}`}
-                            role="progressbar"
-                            style={{ width: `${data.progress}%` }}
-                            aria-valuenow={data.progress}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          />
-                        </div>
-                        {/* <p className="text-muted mt-3 mb-0">
-                          <span className="text-success me-1">
-                            <i className={data.arrowIcon} />
-                            {data.percentageChange}
-                          </span>{" "}
-                          {data.sinceLastWeek}
-                        </p> */}
+                        ))}
                       </div>
-                    </div>
-                  </div>
-                ))}
+                    ))}
+                </div>
               </div>
             </div>
           </div>
