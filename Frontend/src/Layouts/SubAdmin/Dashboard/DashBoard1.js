@@ -19,7 +19,9 @@ const DashBoard = () => {
   const [selectedUser, setSelectedUser] = useState("USERS");
   var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
   const [selectedOption, setSelectedOption] = useState("Day");
+  const storedTheme = localStorage.getItem("theme_mode") ;
 
+  
 
   const [options, setOptions] = useState({
     chart: {
@@ -164,21 +166,20 @@ const DashBoard = () => {
       title: title,
       count: count !== undefined ? count : "Loading...",
       progress: percentage !== null ? percentage : 0,
-      arrowIcon:
-        count !== undefined && percentage !== null
+      arrowIcon:count !== undefined && percentage !== null
           ? percentage === 0
             ? ""
             : percentage < 100
             ? "fas fa-arrow-down"
             : "fas fa-arrow-up"
           : "",
-      percentageChange:
-        percentage !== null ? `${Math.round(percentage)}%` : "N/A",
-      sinceLastWeek: "since last week",
+      percentageChange:percentage !== null ? `${Math.round(percentage)}%` : "N/A",
+      sinceLastWeek:"since-last-week",
       progressBarClass: progressBarClass,
     };
   });
 
+  
 
   const dashData = async () => {
     await dispatch(Subadmin_Dashdata({ subadminId: userDetails.user_id }))
@@ -248,6 +249,7 @@ const DashBoard = () => {
                                   </div>
                                 </div>
                               </div>
+
                               <div className="progress progress-sm mt-3">
                                 <div
                                   className={`progress-bar ${data.progressBarClass}`}
@@ -258,6 +260,21 @@ const DashBoard = () => {
                                   aria-valuemax={100}
                                 ></div>
                               </div>
+                              <p className="text-muted mt-3 mb-0">
+                                <span className="text-success me-1">
+                                  <i className={data.arrowIcon} />
+                                  {data.percentageChange}
+                                </span>{" "}
+                                <span
+                                  className={`since-last-week ${
+                                    storedTheme == "dark"
+                                      ? "text-white"
+                                      : "text-black"
+                                  }`}
+                                >
+                                  {data.sinceLastWeek}
+                                </span>
+                              </p>
                             </div>
                           </div>
                         ))}
