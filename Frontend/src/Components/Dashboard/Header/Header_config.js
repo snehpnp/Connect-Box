@@ -186,6 +186,13 @@ export const subamdin_header = [
                 Data: []
             },
             {
+                id: 63,
+                name: 'Client Orders',
+                route: "/subadmin/client/orders",
+                Icon: "fe fe-list",
+                Data: []
+            },
+            {
                 id: 62,
                 name: 'Position',
                 route: "/subadmin/position",

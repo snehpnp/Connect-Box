@@ -20,7 +20,6 @@ const DashBoard = () => {
   var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
   const [selectedOption, setSelectedOption] = useState("Day");
   const storedTheme = localStorage.getItem("theme_mode") ;
-
   
 
   const [options, setOptions] = useState({
@@ -91,13 +90,8 @@ const DashBoard = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
- 
-
           const categories = response.data[0].data;
           const data = response.data[0].strategy_transactions;
-
-          console.log("categories---", response.data[0].date)
-
           setOptions((prevOptions) => ({
             ...prevOptions,
             xaxis: {
@@ -105,11 +99,7 @@ const DashBoard = () => {
               categories: response.data[0].date,
             },
           }));
-
           setSeries([{ name: "series-1", data: data }]);
-
-
-
           setchart(true);
         } else {
           toast.error(response.msg);
@@ -202,7 +192,6 @@ const DashBoard = () => {
     dashData();
   }, [dispatch]);
 
-
   return (
     <div className="main-wrapper">
       <div>
@@ -217,7 +206,6 @@ const DashBoard = () => {
             </div>
 
             <div className="col-md-12">
-              <div className="container">
                 <div className="row" data-aos="fade-down">
                   {cardsData
                     .reduce((acc, card, index) => {
@@ -280,7 +268,6 @@ const DashBoard = () => {
                         ))}
                       </div>
                     ))}
-                </div>
               </div>
             </div>
           </div>

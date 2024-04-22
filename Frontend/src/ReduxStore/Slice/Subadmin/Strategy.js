@@ -1,5 +1,28 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG} from "../../../Services/Subadmin/Strategy.service";
+import { GetClientsOrderBy_Prefix,GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG,getOrders_data} from "../../../Services/Subadmin/Strategy.service";
+
+export const ClientsOrders_Details = createAsyncThunk(
+    "client/Order",
+    async (data) => {
+        try {
+            const res = await GetClientsOrderBy_Prefix(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+export const Orders_Details = createAsyncThunk(
+    "orders/data",
+    async (data) => {
+        try {
+            const res = await getOrders_data(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
 
 
 export const EditSubStrategys = createAsyncThunk(
@@ -131,6 +154,13 @@ const StrategySlice = createSlice({
             .addCase(GetStretgyWithImg.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.get_stretgy_with_img = action.payload;
+            })
+            
+            .addCase(Orders_Details.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(ClientsOrders_Details.fulfilled, (state, action) => {
+                state.isLoading = false;
             })
          
     },
