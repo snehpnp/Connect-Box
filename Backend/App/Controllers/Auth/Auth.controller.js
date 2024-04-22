@@ -9,7 +9,7 @@ const db = require('../../Models');
 const SignUpUser = db.SignUpUser;
 const User = db.user;
 const company_information = db.company_information;
-const user_logs = db.user_logs;
+const user_logs = db.user_activity_logs;
 const subadmin_logs = db.subadmin_activity_logs;
 
 
