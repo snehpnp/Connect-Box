@@ -558,19 +558,7 @@ class Users {
       const ParentData = await User_model.findOne({ _id: PID }).select('Balance subadmin_service_type')
 
       console.log("ParentData", ParentData)
-
-      console.log("run")
-      // IF USER ALEARDY EXIST
-      const existingUsername = await User_model.findOne({
-        UserName: req.UserName,
-      });
-      if (!existingUsername) {
-        return res.send({
-          status: false,
-          msg: "Username Not exists",
-          data: [],
-        });
-      }
+      console.log("req", req)
 
       // IF CHECK STRATEGY NULL
       if (req.Strategies.length == 0) {
@@ -647,21 +635,15 @@ class Users {
 
 
 
-
-      return
       if (
         Number(ParentData.Balance) >=
-        Number(TotalLicense) + Number(new_licence)
+        Number(totalLicense) + Number(req.Balance)
       ) {
 
-        // console.log("existingUsername.license_type ",existingUsername.license_type)
         // PREVIOS CLIENT IS LIVE
         if (existingUsername.license_type != "2") {
           console.log("ssss ")
           // USER 2 DAYS LICENSE USE
-
-
-
 
           if (req.license_type == "0") {
 
@@ -1106,7 +1088,7 @@ class Users {
       } else {
         return res.send({
           status: false,
-          msg: "You Dont Have License",
+          msg: "You Dont Have Balance",
           data: [],
         });
       }

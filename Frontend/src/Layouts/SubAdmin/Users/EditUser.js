@@ -73,7 +73,9 @@ const AddClient = () => {
       parent_role: null,
       demat_userid: null,
       api_key: null,
-      per_trade_value: null
+      Service_Type: 0,
+      balance: 0,
+      per_trade_value: null,
     },
     validate: (values) => {
       let errors = {};
@@ -90,6 +92,10 @@ const AddClient = () => {
 
       if (!values.licence) {
         errors.licence = "licence is required";
+      }
+
+      if (selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.length == 0) {
+        toast.error("Strategiese is required")
       }
 
       if (!values.groupservice) {
@@ -109,16 +115,15 @@ const AddClient = () => {
       return errors;
     },
     onSubmit: async (values) => {
+
       const req = {
         ProfileImg: ".",
         FullName: values.fullName,
-        UserName: values.username,
-        Email: values.email,
+        // UserName: values.username,
+        // Email: values.email,
+        // PhoneNo: values.phone,
         license_type: values.licence,
-        PhoneNo: values.phone,
-        Balance: null,
-        subadmin_service_type: null,
-        strategy_Percentage: null,
+        Balance: values.balance || 0,
         Per_trade: null,
         Strategies: selectedCheckboxesAndPlan,
         parent_id: user_id,
@@ -126,7 +131,9 @@ const AddClient = () => {
         demat_userid: values.demat_userid,
         group_service: values.groupservice,
         broker: values.broker,
-
+        Per_trade: null,
+        Service_Type: values.Service_Type,
+        per_trade_value: values.per_trade_value || 0
       };
 
       console.log("req", req)
@@ -241,18 +248,15 @@ const AddClient = () => {
       showWhen: (values) => subadmin_service_type1 == 1,
       disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type == 0 ? false : true,
 
-      // name: "Service_Type",
-      // label: "Service Type",
-      // type: "select",
-      // options: [
-      //   { label: "Fixed", value: "1" },
-      //   { label: "Per Trade", value: "2" },
-
-      // ],
-      // showWhen: (values) => subadmin_service_type1 == 1,
-      // label_size: 12,
-      // col_size: 6,
-      // disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type == 0 ? false :true,
+    },
+    {
+      name: "balance",
+      label: "Balance",
+      type: "text3",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+      showWhen: (values) => subadmin_service_type1 == 1 && values.licence === "2" && formik.values.Service_Type == 2,
     },
     {
       name: 'broker',
@@ -319,6 +323,10 @@ const AddClient = () => {
     formik.setFieldValue('groupservice', getOneUsers.getClients !== undefined && getOneUsers.ClientGroupName[0].groupService_id);
     formik.setFieldValue('Service_Type', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type);
     formik.setFieldValue('per_trade_value', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].per_trade_value);
+    formik.setFieldValue('balance', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Balance);
+    formik.setFieldValue('demat_userid', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].demat_userid);
+
+
 
 
 
@@ -478,16 +486,6 @@ const AddClient = () => {
 
 
 
-
-
-
-
-
-
-
-
-  console.log("selectedCheckboxes", selectedCheckboxes)
-  console.log("selectedCheckboxesAndPlan", selectedCheckboxesAndPlan)
 
 
 

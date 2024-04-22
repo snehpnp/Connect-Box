@@ -184,7 +184,8 @@ const AddClient = () => {
       api_key: null,
       Service_Type: 0,
       balance: 0,
-      per_trade_value: null
+      per_trade_value: null,
+    
     },
     validate: (values) => {
       let errors = {};
