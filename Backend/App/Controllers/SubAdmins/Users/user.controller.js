@@ -609,7 +609,21 @@ class Users {
           },
         ]);
       } else {
-        totalLicense = 0
+        totalLicense = await strategy_transaction.aggregate([
+          { $match: { admin_id: PID } }, 
+          {
+            $group: {
+              _id: null, // Group all documents together
+              totalAdminCharge: { $sum: { $toDouble: "$Admin_charge" } } 
+            }
+          },
+          {
+            $project: {
+              _id: 0,
+              totalAdminCharge: 1 
+            }
+          }
+        ]);
       }
 
 
