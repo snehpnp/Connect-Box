@@ -9,12 +9,14 @@ import {
     getexpirymanualtrade,
     getAllStrikePriceApi,
     getStrategyData,
-    gettokenbysocket
+    gettokenbysocket,
+    GetBrokerLiveDatas,
 
 } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
-import { GetBrokerDatas } from "../../../ReduxStore/Slice/Comman/Userinfo";
+import { GetBrokerDatas} from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { CreateSocketSession, ConnctSocket, GetAccessToken, ConnctSocket_user } from "../../../Utils/Alice_Socket";
+
 
 
 const Makecall = () => {
@@ -96,6 +98,9 @@ const Makecall = () => {
     )
 
 
+    //console.log("UserDetails ",UserDetails[0].client_key)
+
+
     const UserLocalDetails = JSON.parse(localStorage.getItem("user_details"));
 
     //  console.log("get user details ",UserLocalDetails.token)
@@ -106,14 +111,28 @@ const Makecall = () => {
     const [liveprice, setLiveprice] = useState("");
     const [stockBuyPrice, setStockBuyPrice] = useState("");
     const [stockSellPrice, setStockSellPrice] = useState("");
+    
+    const [userIdSocketRun, setUserIdSocketRun] = useState("none");
 
     let socket;
-    const GetBrokerData = async () => {
-        var data = { id: UserLocalDetails.user_id }
-        await dispatch(GetBrokerDatas(data))
+
+
+
+    useEffect(() => {
+        GetBrokerLiveData(userIdSocketRun)
+     }, [userIdSocketRun]);
+
+
+    const GetBrokerLiveData = async (userIdSocketRun) => {
+
+        alert(userIdSocketRun)
+        var data = { id: UserLocalDetails.user_id , exist_user : userIdSocketRun }
+        await dispatch(GetBrokerLiveDatas(data))
             .unwrap()
             .then(async (response) => {
-                //console.log("GetBrokerData ",response.data)
+                console.log("GetBrokerData ",response.data)
+
+                return
                 if (response.status) {
                     seUserDetails(response.data)
                     if (response.data && response.data[0].demat_userid !== undefined && response.data && response.data[0].access_token !== undefined && response.data[0].TradingStatus == "on") {
@@ -202,8 +221,104 @@ const Makecall = () => {
                     }
                 }
             });
-        };
+    };
 
+
+    // const GetBrokerData = async () => {
+    //     var data = { id: UserLocalDetails.user_id }
+    //     await dispatch(GetBrokerDatas(data))
+    //         .unwrap()
+    //         .then(async (response) => {
+    //             //console.log("GetBrokerData ",response.data)
+    //             if (response.status) {
+    //                 seUserDetails(response.data)
+    //                 if (response.data && response.data[0].demat_userid !== undefined && response.data && response.data[0].access_token !== undefined && response.data[0].TradingStatus == "on") {
+    //                     let type = { loginType: "API" };
+    //                     const res = await CreateSocketSession(type, response.data[0].demat_userid, response.data[0].access_token);
+    //                     //console.log("res ", res.data.stat)
+    //                     if (res.data.stat) {
+    //                         const url = "wss://ws1.aliceblueonline.com/NorenWS/"
+    //                         socket = new WebSocket(url)
+    //                         socket.onopen = function () {
+    //                             // var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession21).toString()).toString();
+    //                             let userSession1 = response.data[0].access_token;
+    //                             let userId1 = response.data[0].demat_userid;
+    //                             var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession1).toString()).toString();
+    //                             var initCon = {
+    //                                 susertoken: encrcptToken,
+    //                                 t: "c",
+    //                                 // actid: userId + "_" + "API",
+    //                                 // uid: userId + "_" + "API",
+    //                                 actid: userId1 + "_" + "API",
+    //                                 uid: userId1 + "_" + "API",
+    //                                 source: "API"
+    //                             }
+    //                             setSockets(socket)
+    //                             // console.log("initCon",initCon)
+    //                             socket.send(JSON.stringify(initCon))
+    //                             // console.log("inside ",socket)
+    //                             socket.onmessage = async function (msg) {
+    //                                 var response = JSON.parse(msg.data)
+    //                               //  console.log("response ", response)
+    //                                 if (response.tk) {
+    //                                     if (response.lp != undefined) {
+    //                                         //console.log('response token', response.lp)
+    //                                         //   console.log("response -soket ", response);
+    //                                         // setLiveprice(response.lp);
+    //                                         if (response.tk == liveToken.current) {
+    //                                             setLiveprice(response.lp);
+    //                                             if (response.pc != undefined) {
+    //                                                 //console.log('response.pc inside', response.pc)
+    //                                                 if (parseFloat(response.pc) > 0) {
+    //                                                     $('.liveprice' + response.tk).css({ "color": "green" });
+
+    //                                                 }
+    //                                                 else if (parseFloat(response.pc) < 0) {
+
+    //                                                     $('.liveprice' + response.tk).css({ "color": "red" });
+
+    //                                                 }
+    //                                                 else if (parseFloat(response.pc) == 0) {
+
+    //                                                     $('.liveprice' + response.tk).css({ "color": "black" });
+
+    //                                                 }
+    //                                             }
+
+    //                                             setLiveprice(response.lp);
+    //                                             $(".liveprice" + response.tk).html(response.lp);
+
+    //                                             //  SetEntryPrice
+
+    //                                             if (response.sp1 != undefined) {
+    //                                                 setStockSellPrice(response.sp1)
+    //                                             } if (response.bp1 != undefined) {
+    //                                                 setStockBuyPrice(response.bp1);
+    //                                             }
+    //                                         } else {
+    //                                             // setLiveprice("")
+    //                                         }
+    //                                         $(".liveprice" + response.tk).html(response.lp);
+    //                                     }
+    //                                 }
+    //                                 if (response.s === 'OK') {
+    //                                     console.log("response.s ", response.s)
+    //                                     // var channel = await channelList;
+    //                                     // let json = {
+    //                                     //     k: channelList,
+    //                                     //     t: 't'
+    //                                     // };
+    //                                     // await socket.send(JSON.stringify(json))
+
+
+    //                                 }
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         });
+    // };
 
     const getAllSteategyApiFun = async () => {
         await dispatch(getStrategyData(
@@ -235,7 +350,6 @@ const Makecall = () => {
             });
     };
 
-
     const getCatogriesFun = async () => {
         await dispatch(getCatogries(
             {
@@ -264,7 +378,7 @@ const Makecall = () => {
     useEffect(() => {
         getCatogriesFun();
         getAllSteategyApiFun();
-        GetBrokerData();
+        //GetBrokerData();
     }, []);
 
 
@@ -880,14 +994,14 @@ const Makecall = () => {
         //     let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice==''?'100':strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${target1}|StopLoss:${stoploss}|ExitTime:${selectedTimeExit}|sl_status:1|Demo:demo`
 
         const currentTimestamp = Math.floor(Date.now() / 1000);
-        let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice == '' ? '100' : strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${Target == 0 ? 0 : Target.toFixed(2)}|StopLoss:${StopLoss == 0 ? 0 : StopLoss.toFixed(2)}|ExitTime:0|sl_status:${sl_status}|Demo:demo`
+        let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice == '' ? '100' : strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:${UserDetails && UserDetails[0].client_key}|TradeType:MAKECALL|Target:${Target == 0 ? 0 : Target.toFixed(2)}|StopLoss:${StopLoss == 0 ? 0 : StopLoss.toFixed(2)}|ExitTime:0|sl_status:${sl_status}|Demo:demo`
         console.log("req ", req)
         // console.log("process.env.BROKER_URL ",process.env.BROKER_URL)
 
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'http://localhost:8000/broker-signals',
+            url: 'http://localhost:8800/broker-signals',
             //url: 'https://trade.pandpinfotech.com/signal/broker-signals',
             // url: `${process.env.BROKER_URL}`,
             headers: {

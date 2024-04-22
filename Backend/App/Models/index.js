@@ -24,6 +24,7 @@ module.exports = {
     subadmin_activity_logs:require('./Subadmin_logs.model'),
     get_option_chain_symbols: require('./Get_Option_Chain_Symboll.model'),
     live_price :require('./Live_price.model'),
+    live_price_token :require('./Live_price_token.model'),
     MainSignals: require('./Main_signals.model'),
     SignUpUser :require('./Signup_User.model')
 };

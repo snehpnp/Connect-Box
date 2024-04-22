@@ -96,6 +96,21 @@ export async function GET_TOKEN_BY_SOCKET(data, token) {
     }
 }
 
+//Get Token By socket data 
+export async function GET_LIVE_DATA_SESSION(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}make/LiveDataSession`, data, {  
+            // data: {},
+            headers: header(token),
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
 
 
 

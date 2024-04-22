@@ -541,7 +541,7 @@ function Option_Chain() {
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'http://localhost:8000/broker-signals',
+                url: 'http://localhost:8800/broker-signals',
                 // url: `${getBrokerUrl && getBrokerUrl}`,
                 headers: {
                     'Content-Type': 'text/plain'

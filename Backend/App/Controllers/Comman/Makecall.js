@@ -15,6 +15,7 @@ const categorie = db.categorie;
 const group_services = db.group_services;
 const Alice_token = db.Alice_token;
 const strategy_model = db.Strategies;
+const live_price_token = db.live_price_token;
 
 
 const User = db.user;
@@ -402,6 +403,29 @@ class Makecall {
         }
 
       }
+
+
+
+    } catch (error) {
+      console.log("Error Get token by socket Error-", error);
+    }
+
+
+  }
+
+   //get token by socket Data
+   async GetLiveDataSession(req, res) {
+
+    console.log("req - ",req.body)
+    try {
+              return
+            var result = await live_price_token.find({ _id: id }).select('');
+
+            if (result.length > 0) {
+              return res.send({ status: true, msg: "Data Get", data: result });
+            }else{
+              return res.send({ status: false, msg: "Id Wrong" });
+            }
 
 
 

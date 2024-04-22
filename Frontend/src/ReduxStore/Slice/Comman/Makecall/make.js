@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_SERVICS ,GET_ALL_Catagory ,GET_EXPIRY_BY_SCRIPT,GET_ALL_STRIKE_PRICE ,GET_STRATEGY_DATA ,GET_TOKEN_BY_SOCKET} from "../../../../Services/Comman/Makecall/make.service";
+import { GET_ALL_SERVICS ,GET_ALL_Catagory ,GET_EXPIRY_BY_SCRIPT,GET_ALL_STRIKE_PRICE ,GET_STRATEGY_DATA ,GET_TOKEN_BY_SOCKET ,GET_LIVE_DATA_SESSION} from "../../../../Services/Comman/Makecall/make.service";
 
 export const getAllServices = createAsyncThunk(
   "make/ServiceByCatagory",
@@ -95,6 +95,22 @@ export const getexpirymanualtrade = createAsyncThunk(
     }
   );
 
+  export const GetBrokerLiveDatas = createAsyncThunk(
+    "make/LiveDataSession",
+    async (data) => {
+      try {
+        const {req,token} = data
+
+        console.log("req ",req)
+       // console.log("token ",token)
+        const res = await GET_LIVE_DATA_SESSION(req,token);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
+
 
 
 const GrouoServicesSlice = createSlice({
@@ -108,6 +124,7 @@ const GrouoServicesSlice = createSlice({
     AllGetStrikePrice: null,
     AllStrategyData: null,
     AllGetTokenBySocket: null,
+    AllBrokerLiveData: null,
 
   },
   reducers: {},
@@ -190,6 +207,19 @@ const GrouoServicesSlice = createSlice({
         state.AllGetTokenBySocket = action.payload;
       })
       .addCase(gettokenbysocket.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+
+      .addCase(GetBrokerLiveDatas.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(GetBrokerLiveDatas.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.AllBrokerLiveData = action.payload;
+      })
+      .addCase(GetBrokerLiveDatas.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });
