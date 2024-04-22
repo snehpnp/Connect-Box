@@ -86,6 +86,16 @@ function Login() {
   };
 
   const handleSubmit = async () => {
+    let trimmedEmail = email.trim();
+    let trimmedPassword = password.trim();
+    if (!trimmedEmail || !trimmedPassword) {
+      toast.error("Please enter the credentials to login.");
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(trimmedEmail)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
     let req = {
       Email: email,
       Password: password,
@@ -96,20 +106,16 @@ function Login() {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-
-          SetData(response.data)
-          setShowModal(true)
+          SetData(response.data);
+          setShowModal(true);
         } else {
           toast.error(response.msg);
         }
-
       })
       .catch((error) => {
         console.log("Error", error);
       });
   };
-
-
 
   const handleChange = (value) => {
     const numericValue = value.replace(/\D/g, '');
