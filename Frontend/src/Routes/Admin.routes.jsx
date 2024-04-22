@@ -35,6 +35,12 @@ import Tabe from '../Layouts/Admin/Tabe/Tabe';
 import Tabes from '../Layouts/Admin/Tabe/Tabes';
 import Wallets from '../Layouts/Comman/Wallet/Wallets';
 
+//Researcher
+import AddResearcher from '../Layouts/Admin/Researcher/AddResearcher'
+import EditResearcher from '../Layouts/Admin/Researcher/EditResearcher'
+import AllResearcher from '../Layouts/Admin/Researcher/AllResearcher'
+
+
 
 
 import SubAdCompanyInfo from '../Layouts/Admin/SubAdminCompany/SubAdCompanyInfo';
@@ -56,29 +62,21 @@ const Admin_Routing = () => {
                     <Route exact path="/message-broadcast" element={<MessageBrodcast />} />
                     <Route exact path="/sub" element={<Sub />} />
                     <Route path="/login" element={<Login />} />
-
                     <Route exact path="/subadmin/company" element={<SubAdCompanyInfo />} />
                     <Route exact path="/orders" element={<Orders />} />
                     <Route exact path="/position" element={<Positions />} />
-
                     <Route exact path="/test" element={<Test />} />
-
-
                     <Route exact path="/tabe" element={<Tabe />} />
                     <Route exact path="/tabes" element={<Tabes />} />
                     <Route exact path="/dummyform" element={<Dummyform />} />
-
-
-
-
                     <Route exact path="/dashboard" element={<Overview />} />
                     <Route exact path="/system" element={<System />} />
                     <Route exact path="/payment" element={<Payment />} />
-
                     <Route exact path="/wallet" element={<Wallets />} />
                     <Route exact path="/profile" element={<Profile />} />
-
-
+                    <Route exact path="/research/add" element={<AddResearcher />} />
+                    <Route exact path="/research/edit/:id" element={<EditResearcher />} />
+                    <Route exact path="/allresearch" element={<AllResearcher />} />
 
                 </Routes>
             </div>

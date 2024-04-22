@@ -180,13 +180,14 @@ const DynamicForm = ({
                                 name={field.name}
                                 {...formik.getFieldProps(field.name)}
                               />
+                              {formik.touched[field.name] &&
+                                formik.errors[field.name] ? (
+                                <div style={{ color: "red" }}>
+                                  {formik.errors[field.name]}
+                                </div>
+                              ) : null}
                             </div>
-                            {formik.touched[field.name] &&
-                              formik.errors[field.name] ? (
-                              <div style={{ color: "red" }}>
-                                {formik.errors[field.name]}
-                              </div>
-                            ) : null}
+
                           </div>
 
                         </>
@@ -217,14 +218,15 @@ const DynamicForm = ({
                                 }}
 
                               />
-
-                            </div>
-
-                            {inputValue == '' ? (
+                              {inputValue == '' ? (
                               <div style={{ color: "red" }}>
                                 {formik.errors[field.name]}
                               </div>
                             ) : null}
+
+                            </div>
+
+                            
                           </div>
 
                         </>

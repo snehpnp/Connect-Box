@@ -216,6 +216,10 @@ const userModel = Schema({
         type: Number,
         default: '0'
     },
+    Strategy_percentage_to_researcher: {
+        type: Number,
+        default: '0'
+    },
     Service_Type: {
         type: String,
         enum: ['0','1', '2'], // 0 = No Use , 1= Fixed , 2= per trade
