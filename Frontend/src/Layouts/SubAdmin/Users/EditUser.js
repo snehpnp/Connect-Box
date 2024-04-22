@@ -119,9 +119,6 @@ const AddClient = () => {
       const req = {
         ProfileImg: ".",
         FullName: values.fullName,
-        // UserName: values.username,
-        // Email: values.email,
-        // PhoneNo: values.phone,
         license_type: values.licence,
         Balance: values.balance || 0,
         Per_trade: null,
@@ -133,7 +130,9 @@ const AddClient = () => {
         broker: values.broker,
         Per_trade: null,
         Service_Type: values.Service_Type,
-        per_trade_value: values.per_trade_value || 0
+        per_trade_value: values.per_trade_value || 0,
+        _id: getOneUsers.getClients[0]._id,
+
       };
 
       console.log("req", req)
@@ -190,7 +189,7 @@ const AddClient = () => {
       type: "text",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      disable: true,
     },
     {
       name: "email",
@@ -198,7 +197,7 @@ const AddClient = () => {
       type: "text",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      disable: true,
     },
 
     {
@@ -207,11 +206,8 @@ const AddClient = () => {
       type: "number",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      disable: true,
     },
-
-
-
 
     {
       name: "licence",

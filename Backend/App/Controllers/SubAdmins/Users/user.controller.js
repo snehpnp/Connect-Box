@@ -557,8 +557,9 @@ class Users {
       var PID = new ObjectId(req.parent_id);
       const ParentData = await User_model.findOne({ _id: PID }).select('Balance subadmin_service_type')
 
-      console.log("ParentData", ParentData)
-      console.log("req", req)
+      const existingUsername = await User_model.findOne({ _id: req._id })
+
+
 
       // IF CHECK STRATEGY NULL
       if (req.Strategies.length == 0) {
