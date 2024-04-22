@@ -1,7 +1,7 @@
 const {createMessage,getMsgData,deleteMsgData,editMsgData}=require("../../Controllers/Admins/MsgBroadcast/Message_Broadcast");
 const router = require("express").Router()
 const {subadminhelpmessage,getsubadminhelpmessage,userhelpmessage,getuserhelpdata,getuserdelete,getsubadmindelete,userdataByPrefix} =require("../../Controllers/Admins/Help/Helpmessage")
-const {ProfileImagedata}=require("../../Controllers//Admins/Profile/ProfileImage")
+
 
 
 router.post("/messageData",createMessage)

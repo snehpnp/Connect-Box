@@ -113,7 +113,7 @@ class Helpmessage {
 
   async userdataByPrefix(req, res) {
     try {
-        const {prifix_key } = req.body;
+        const {prifix_key} = req.body;
 
         if (!prifix_key) {
             return res.status(400).send({ status: false, msg: "Prefix key not provided" });
