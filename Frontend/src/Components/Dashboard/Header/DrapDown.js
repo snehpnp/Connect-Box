@@ -64,14 +64,12 @@ const DropDown = () => {
 
 
     const LogoutUser = (e) => {
-        e.stopPropagation(); // Stop event propagation
-        console.log("LogoutUser function is called");
-        // localStorage.clear();
+        // e.stopPropagation(); // Stop event propagation
+   
 
         localStorage.removeItem('user_details')
         localStorage.removeItem('user_role')
-
-        window.location.reload();
+        navigate('/login')
     };
 
     // Define toggleTheme function

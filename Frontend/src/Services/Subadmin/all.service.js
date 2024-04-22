@@ -56,6 +56,20 @@ export async function ADD_USERS(data) {
     }
 }
 
+export async function UPDATE_USERS(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}user/update`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+
 
 export async function GET_ALL_BROKER() {
     try {

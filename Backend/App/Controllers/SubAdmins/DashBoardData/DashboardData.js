@@ -9,6 +9,7 @@ var dateTime = require("node-datetime");
 var dt = dateTime.create();
 
 class Dashboard_Subadmin_Data {
+
   async GetDashboardData(req, res) {
     try {
       const { subadminId } = req.body;
@@ -273,7 +274,6 @@ class Dashboard_Subadmin_Data {
         dummyData.data.push(item.users);
         dummyData.userCounts.push(item.userCount);
       });
-
       res.send({
         status: true,
         msg: "Data retrieved successfully",
@@ -289,9 +289,9 @@ class Dashboard_Subadmin_Data {
     }
   }
 
-  //ThisApiisnot working Properley For Now
   async DashboardBalanceData(req, res) {
     try {
+      const selectedOption = req.body.selectedOption;
       const { user_ID } = req.body;
 
       if (!user_ID) {
@@ -301,48 +301,109 @@ class Dashboard_Subadmin_Data {
           data: [],
         });
       }
-      const adminIdObj = new ObjectId(user_ID);
+      const obJUserId = new ObjectId(user_ID);
 
-      const pipeline = [
-        {
-          $match: {
-            admin_id: adminIdObj,
-          },
+      const matchStage = {
+        $match: {
+          admin_id: obJUserId,
         },
-        {
-          $lookup: {
-            from: "users",
-            let: { adminId: "$admin_id" },
-            pipeline: [
+      };
+
+      let groupFormat;
+      switch (selectedOption) {
+        case "Day":
+          groupFormat = "%Y-%m-%d";
+          break;
+        case "Monthly":
+          groupFormat = "%Y-%m";
+          break;
+        case "Yearly":
+          groupFormat = "%Y";
+          break;
+        case "Quarterly":
+          groupFormat = {
+            $concat: [
+              { $substr: [{ $year: "$createdAt" }, 0, -1] },
+              "-Q",
               {
-                $match: {
-                  $expr: {
-                    $eq: ["$parent_id", { $toString: "$$adminId" }],
+                $cond: [
+                  { $lte: [{ $month: "$createdAt" }, 3] },
+                  "1",
+                  {
+                    $cond: [
+                      { $lte: [{ $month: "$createdAt" }, 6] },
+                      "2",
+                      {
+                        $cond: [
+                          { $lte: [{ $month: "$createdAt" }, 9] },
+                          "3",
+                          "4",
+                        ],
+                      },
+                    ],
                   },
-                },
+                ],
               },
             ],
-            as: "transactionsResult",
-          },
-        },
+          };
+          break;
+        case "Half-Yearly":
+          groupFormat = {
+            $concat: [
+              { $substr: [{ $year: "$createdAt" }, 0, -1] },
+              "-HY",
+              { $cond: [{ $lte: [{ $month: "$createdAt" }, 6] }, "1", "2"] },
+            ],
+          };
+          break;
+        default:
+          groupFormat = "%Y-%m-%d";
+      }
+
+      const pipeline = [
+        matchStage,
         {
-          $unwind: {
-            path: "$transactionsResult",
-            preserveNullAndEmptyArrays: false,
+          $addFields: {
+            converted_stg_charge: { $toDouble: "$stg_charge" },
           },
         },
         {
           $group: {
-            _id: "$transactionsResult._id",
-            UserName: { $first: "$transactionsResult.UserName" },
-            stg_charge: { $first: "$stg_charge" },
-            createdAt: { $first: "$createdAt" },
-            Start_Date: { $first: "$Start_Date" },
+            _id: null,
+            strategy_transactions: { $push: "$converted_stg_charge" },
+            date: {
+              $addToSet: {
+                $dateToString: { format: "%Y-%m-%d", date: "$createdAt" },
+              },
+            },
+            Totalcount: { $sum: "$converted_stg_charge" },
+          },
+        },
+        {
+          $project: {
+            _id: 0,
+            strategy_transactions: 1,
+            Totalcount: 1,
+            date: 1,
           },
         },
       ];
 
       const results = await strategy_transaction.aggregate(pipeline);
+
+      console.log("results", results)
+
+      // const dummyData = {
+      //   categories:results.,
+      //   data: [],
+      //   userCounts: [],
+      // };
+
+      // results.forEach((item) => {
+      //   dummyData.categories.push(item.data.date);
+      //   dummyData.data.push(item.data);
+      //   dummyData.userCounts.push(item.data.strategy_transactions);
+      // });
       res.send({
         status: true,
         msg: "Data retrieved successfully",
@@ -357,5 +418,6 @@ class Dashboard_Subadmin_Data {
       });
     }
   }
+
 }
 module.exports = new Dashboard_Subadmin_Data();

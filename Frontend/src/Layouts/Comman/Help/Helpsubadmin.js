@@ -1,15 +1,15 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState, useEffect } from "react";
-import FullDataTable from "../../Components/ExtraComponents/Tables/FullDataTable";
+import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import {
   SubadminHelpmessage,
   getsubadmintable,
   deletesubadminhelpdata,
   userdataforhelp,
   userprifix_key,
-} from "../../ReduxStore/Slice/Admin/System";
-import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
+} from "../../../ReduxStore/Slice/Admin/System";
+import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -25,18 +25,13 @@ const Helpsubadmin = () => {
     localStorage.getItem("user_details")
   ).prifix_key;
 
-  // console.log(user,"user");
 
   const [refresh, setRefresh] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [getsubadmin, setGetsubadmin] = useState([]);
   const [getuserdata, setGetuserdata] = useState([]);
-  const [help, setHelp] = useState({
-    UserName: "",
-    Email: "",
-    mobile: "",
-    Message: "",
-  });
+  const [help, setHelp] = useState({ UserName: "", Email: "", mobile: "", Message: "" });
+
 
   const styles = {
     container: {
@@ -189,8 +184,6 @@ const Helpsubadmin = () => {
       });
   };
 
-  //delete subadmin help data
-
   const deletesubadmindata = async (userId) => {
     var data = { id: userId };
     await dispatch(deletesubadminhelpdata(data))
@@ -207,11 +200,11 @@ const Helpsubadmin = () => {
       });
   };
 
-  
+
 
   const userprefixBydata = async () => {
-    var data = {prifix_key: userdataprifix_key};
-    console.log("userprifix_key",data)
+    var data = { prifix_key: userdataprifix_key };
+    console.log("userprifix_key", data)
     await dispatch(userprifix_key(data))
       .unwrap()
       .then(async (response) => {
@@ -353,8 +346,8 @@ const Helpsubadmin = () => {
                                         });
                                       }}
                                     ></textarea>
-                                    { !help.Message ?<div><p style={{color:"red"}}>Please Enter Message</p></div>:""}
-                                    
+                                    {!help.Message ? <div><p style={{ color: "red" }}>Please Enter Message</p></div> : ""}
+
                                   </div>
                                 </div>
                                 <div

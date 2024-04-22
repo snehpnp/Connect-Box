@@ -280,6 +280,8 @@ const Overview = () => {
 
   var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
 
+
+
   return (
     <div className="main-wrapper">
       <div>
@@ -315,7 +317,7 @@ const Overview = () => {
                             <i className={`${data.iconClass}`} id="animated" />
                           </span>
                           <div className="dash-count">
-                          <div className="dash-title" style={{fontWeight:'600'}}>{data.title}</div>
+                            <div className="dash-title" style={{ fontWeight: '600' }}>{data.title}</div>
 
                             <div className="dash-counts">
                               <p>{data.count}</p>
@@ -518,12 +520,14 @@ const Overview = () => {
                           </div>
                         </div>
                       </div>
-                      <div
-                        className="gif-div"
-                        style={{ height: "400px", marginTop: "-60px" }}
-                      >
-                        <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
+
+
+                      <div className="row">
+                        <div className="donut">
+                          <Chart options={options} series={[44, 55, 41, 17, 15]} type="donut" width="380" />
+                        </div>
                       </div>
+
                     </div>
                   </div>
                 </div>

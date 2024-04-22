@@ -5327,7 +5327,12 @@ span.select2-container.select2-container--default.select2-container--open {
     color: #455560;
     border-radius: 4px
 }
-
+#pills-tab .nav-link {
+    color: #252525 !important;
+    font-size: 12px !important;
+    padding: 10px 10px !important;
+    border: none !important;
+}
 .nav-link {
     color: #888 !important;
     font-size: 16px !important;
@@ -11632,7 +11637,7 @@ table .badge {
 
 .recurring-tab ul li button {
     padding: 10px;
-    width: 45px
+    /* width: 45px */
 }
 
 .recurring-tab ul li button.active {
@@ -14240,7 +14245,7 @@ body[data-layout-mode=dark] .alertify .ajs-header {
     text-align: center;
     width: 4rem;
     border-radius: 10px;
-    margin-top: -50px;
+
 }
 
 .dash-widget-header .dash-count {
@@ -34092,7 +34097,8 @@ img {
     text-align: center;
     opacity: 0;
     color: white;
-    animation: tans 6s ease;
+    animation: tans 2s ease;
+    /* Reduced duration to 2s */
     animation-delay: 0s;
 }
 
@@ -34102,8 +34108,10 @@ img {
     text-align: center;
     opacity: 0;
     color: white;
-    animation: tans 6s ease;
-    animation-delay: 2s;
+    animation: tans 2s ease;
+    /* Reduced duration to 2s */
+    animation-delay: 1s;
+    /* Adjusted delay to start 1s later */
 }
 
 .intro-fill .welcome-3 {
@@ -34112,9 +34120,12 @@ img {
     text-align: center;
     opacity: 0;
     color: white;
-    animation: tanss 6s ease;
-    animation-delay: 4s;
+    animation: tanss 2s ease;
+    /* Reduced duration to 2s */
+    animation-delay: 2s;
+    /* Adjusted delay to start 2s later */
 }
+
 
 @keyframes tans {
     from {

@@ -3,10 +3,6 @@ import { useDispatch } from "react-redux";
 import { GetAllclientDetails } from '../../../ReduxStore/Slice/Users/ClientServiceSlice'
 import { SquarePen } from 'lucide-react';
 
-
-
-
-
 function Clientservice() {
   const dispatch = useDispatch()
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
@@ -16,6 +12,19 @@ function Clientservice() {
   })
 
   const [modal, setModal] = useState(false)
+  const [modalData, setModalData] = useState({});
+  const [strategyId, SetStrategyId] = useState([]);
+  const [maxQty, setMaxQty] = useState('1');
+  const [orderType, setOrderType] = useState('');
+  const [productType, setProductType] = useState('');
+  const [showstrategy, setShowStretgy] = useState(false)
+
+
+
+
+
+
+
   const GetAllClientServiceDetails = async () => {
 
     var data = { user_Id: user_id };
@@ -46,6 +55,42 @@ function Clientservice() {
   useState(() => {
     GetAllClientServiceDetails();
   }, []);
+
+
+  const handleCheckboxChange = (id) => {
+    SetStrategyId(prevIds => {
+      if (prevIds.includes(id)) {
+        return prevIds.filter(item => item !== id);
+      } else {
+        return [...prevIds, id];
+      }
+    });
+  };
+
+  const handleOnSubmit = () => {
+    const req = {
+      strategyId: strategyId,
+      maxQty: maxQty,
+      orderType: orderType,
+      productType: productType,
+      userId: user_id,
+      id: modalData && modalData._id,
+      seriveId: modalData && modalData.service._id
+    }
+
+    console.log("req :", req)
+
+  }
+
+
+
+  console.log("modalData :", strategyId)
+
+
+
+
+
+
 
 
   return (
@@ -89,10 +134,6 @@ function Clientservice() {
                                 <p>250</p>
                               </div>
                             </li>
-
-
-
-
                             <li className="true">
                               <div className='d-flex justify-content-between'>
                                 <p>Order Type:</p>
@@ -106,9 +147,8 @@ function Clientservice() {
                               </div>
 
                             </li>
-
                           </ul>
-                          <div className="d-flex justify-content-center" onClick={(e) => setModal(!modal)}>
+                          <div className="d-flex justify-content-center" onClick={(e) => { setModal(!modal); setModalData(item) }}>
                             <SquarePen />
                           </div>
 
@@ -118,10 +158,6 @@ function Clientservice() {
 
                     </>)
                   }
-
-
-
-
                 </div>
               </div>
             </div>
@@ -136,48 +172,80 @@ function Clientservice() {
             <div className="modal-content">
               <div className="modal-header border-0 pb-0">
                 <div className="form-header modal-header-title text-start mb-0">
-                  <h4 className="mb-0">Add Vendor</h4>
+                  <h4 className="mb-0">Edit Stock List</h4>
                 </div>
                 <button
                   type="button"
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
+                  onClick={(e) => setModal(!modal)}
                 ></button>
               </div>
-              <form action="#">
+              <div>
                 <div className="modal-body">
                   <div className="row">
-                    <div className="col-lg-12 col-sm-12">
-                      <div className="input-block mb-3">
-                        <label>Name</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Enter Name"
-                        />
+                    <div className="col-lg-12 col-sm-12 mb-3">
+                      <h6 style={{ fontWeight: 600, color: 'black' }}>Symbol Name : {modalData.service.name}</h6>
+                    </div>
+                    <div className="col-lg-12 col-sm-12 d-flex">
+                      <div className="col-lg-6 col-sm-12">
+                        <h6>Lot Size : {modalData.quantity}</h6>
+                      </div>
+                      <div className="col-lg-6 col-sm-12 d-flex">
+                        <h6 className='col-lg-4'>Max Qty	 :</h6>
+                        <input type="text" className='col-lg-8 rounded px-2' defaultValue={1} value={maxQty} onChange={(e) => setMaxQty(e.target.value)} />
                       </div>
                     </div>
-                    <div className="col-lg-12 col-sm-12">
-                      <div className="input-block mb-3">
-                        <label>Email</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Enter Email Address"
-                        />
+                    <div className="col-lg-12 col-sm-12 d-flex mb-3 mt-3">
+                      <div className="col-lg-6 col-sm-12">
+                        <h6 className='col-lg-6'>Strategy :</h6>
+                      </div>
+                      <div className='col-lg-6'>
+                        <button onClick={(e) => setShowStretgy(!showstrategy)} className="p-1 rounded col-lg-12">
+                          Select Strategy
+                        </button>
+                        {
+                          showstrategy && <div id="myDropdown" class="dropdown-content">
+                            {
+                              getAllClientService.data.strategy.map((data, index) => {
+                                return (
+                                  <>
+                                    <div key={index} className={modalData.strategy_id.includes(data.result._id) ? "text-success" : "text-danger"}>
+                                      <input
+                                        type="checkbox"
+                                        defaultChecked={modalData.strategy_id.includes(data.result._id)}
+                                        onChange={(e) => handleCheckboxChange(data.result._id)}
+                                      />
+                                      {data.result.strategy_name}
+                                    </div>
+
+                                  </>
+                                )
+                              })}
+                          </div>
+                        }
                       </div>
                     </div>
-                    <div className="col-lg-12 col-sm-12">
-                      <div className="input-block mb-0">
-                        <label>Closing Balance</label>
-                        <input
-                          type="number"
-                          className="form-control"
-                          placeholder="Enter Closing Balance Amount"
-                        />
-                      </div>
+                    <div className="col-lg-12 col-sm-12 d-flex mb-3">
+                      <h6 className='col-lg-6'>Order Type :</h6>
+                      <select className="col-lg-6 rounded" value={orderType} onChange={(e) => { setOrderType(e.target.value) }}>
+                        <option selected>Stoploss Market</option>
+                        <option value="1">Market</option>
+                        <option value="2">Limit</option>
+                        <option value="3">Stoploss Limit</option>
+                      </select>
                     </div>
+                    <div className="col-lg-12 col-sm-12 d-flex mb-3">
+                      <h6 className='col-lg-6'>Product Type :</h6>
+                      <select className="col-lg-6 rounded " value={productType} onChange={(e) => { setProductType(e.target.value) }}>
+                        <option selected>MIS</option>
+                        <option value="1">CNC</option>
+                        <option value="2">BO</option>
+                        <option value="3">So</option>
+                      </select>
+                    </div>
+
                   </div>
                 </div>
                 <div className="modal-footer">
@@ -185,6 +253,7 @@ function Clientservice() {
                     type="button"
                     data-bs-dismiss="modal"
                     className="btn btn-back cancel-btn me-2"
+                    onClick={(e) => setModal(!modal)}
                   >
                     Cancel
                   </button>
@@ -192,16 +261,18 @@ function Clientservice() {
                     type="submit"
                     data-bs-dismiss="modal"
                     className="btn btn-primary paid-continue-btn"
+                    onClick={handleOnSubmit}
                   >
-                    Add Vendor
+                    Update
                   </button>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 

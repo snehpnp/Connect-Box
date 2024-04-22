@@ -15,7 +15,7 @@ import AllServices from "../Layouts/SubAdmin/Services/AllServices/AllServices.js
 import Edit_Strategies from "../Layouts/SubAdmin/Services/Strategys/Edit_Strategies"
 
 
-import Help from '../Layouts/Comman/Help';
+import Help from '../Layouts/Comman/Help/Helpsubadmin.js';
 import MessageBroadcast from '../Layouts/SubAdmin/MessageBroadCast/MessageBroadCast';
 
 

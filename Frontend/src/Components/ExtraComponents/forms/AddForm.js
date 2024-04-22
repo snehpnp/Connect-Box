@@ -82,9 +82,11 @@ const DynamicForm = ({
 
 
   const HandelChange = (value) => {
-    console.log("value", value.target.checked)
+    formik.setFieldValue('Service_Type', value);
+  }
 
-    formik.setFieldValue('Service_Type', value.target.checked == true ? "1" : "2");
+  const PerTradeValueset = (value) => {
+    formik.setFieldValue('per_trade_value', value.target.value);
   }
 
 
@@ -623,20 +625,64 @@ const DynamicForm = ({
                                   <span className="text-danger">*</span>
                                 </label>
 
-                                <div className="status-toggle">
-                                  <input
-                                    id="rating"
-                                    className="check"
-                                    type="checkbox"
-                                    onChange={(event) => HandelChange(event)}
-                                    defaultChecked={formik.values['Service_Type'] === "1"}
-                                    disabled={field.disable}
-                                  />
-                                  <label htmlFor="rating" className="checktoggle checkbox-bg"></label>
+                                <div className="row">
+                                  <div className="w-auto">
+                                    <div className="input-block mb-3 recurring-tab">
+                                      <ul className="nav nav-pills d-flex" id="pills-tab" role="tablist">
+                                        <li className="nav-item" role="presentation">
+                                          <button
+                                            className={`nav-link yes ${formik.values[field.name] == 2 ? "active show" : ""}`}
+                                            onClick={() => HandelChange(2)}
+                                            type="button"
+                                            disabled={field.disable}
+
+                                          >
+                                            Per Trade
+                                          </button>
+                                        </li>
+                                        <li className="nav-item" role="presentation">
+                                          <button
+                                            className={`nav-link no ${formik.values[field.name] == 1 ? "active show" : ""}`}
+                                            onClick={() => HandelChange(1)}
+                                            type="button"
+                                            disabled={field.disable}
+
+                                          >
+                                            Fixed
+                                          </button>
+                                        </li>
+                                          
+                                      </ul>
+                                    </div>
+                                  </div>
+                                  {formik.values[field.name] == 2 && formik.values['licence'] == "2" ?
+                                    (<div className="col-md-6">
+                                      <div className="tab-content pt-0" id="pills-tabContent">
+                                        <div
+                                          id="pills-home"
+                                          role="tabpanel"
+                                        >
+                                          <div className="input-block">
+                                            <input
+                                              type="text"
+                                              className="form-control"
+                                              placeholder="Per Trade"
+                                              // disabled={field.disable}
+                                              defaultValue={formik.values['per_trade_value']}
+                                              onChange={(e) => PerTradeValueset(e)}
+                                            />
+                                          </div>
+                                        </div>
+
+                                      </div>
+                                    </div>)
+
+
+                                    : ""}
+
                                 </div>
 
 
-                                {formik.values['Service_Type'] === "1" ? "PER TRADE" : "FIXED"}
                               </div>
                             </div>
 
