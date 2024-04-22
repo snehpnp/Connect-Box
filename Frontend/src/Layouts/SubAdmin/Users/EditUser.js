@@ -13,7 +13,7 @@ import Loader from '../../../Utils/Loader';
 
 import { useFormik } from 'formik';
 import { useState, useEffect } from "react";
-
+import Swal from 'sweetalert2';
 
 
 
@@ -54,6 +54,8 @@ const AddClient = () => {
 
 
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
+  const [stgDiseble, setStgDiseble] = useState([]);
+
   const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
   const [getAllBroker, setAllBroker] = useState([]);
 
@@ -94,9 +96,7 @@ const AddClient = () => {
         errors.licence = "licence is required";
       }
 
-      if (selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.length == 0) {
-        toast.error("Strategiese is required")
-      }
+
 
       if (!values.groupservice) {
         errors.groupservice = "Username is required";
@@ -135,7 +135,28 @@ const AddClient = () => {
 
       };
 
-      console.log("req", req)
+      console.log("selectedCheckboxesAndPlan",selectedCheckboxesAndPlan)
+
+      var stg_error = 0
+      if (selectedCheckboxesAndPlan.length > 0) {
+        selectedCheckboxesAndPlan.forEach((stg) => {
+          if (stg.plan_id == "0") {
+            stg_error = 1
+            return
+          }
+        })
+      }
+
+      if(stg_error == 1){
+        Swal.fire({
+          title: "Error!",
+          text: "Please Select A Plan ",
+          icon: "error",
+          timer: 1200,
+          timerProgressBar: true
+        });
+        return
+      }
 
       await dispatch(UpdateUsers(req))
         .unwrap()
@@ -143,15 +164,25 @@ const AddClient = () => {
 
           console.log("response", response)
 
-          return
           if (response.status) {
-            // toast.success(response.msg);
-            // setTimeout(() => {
-            //   navigate("/subadmin/users")
-            // }, 1000);
+
+            Swal.fire({
+              title: "Update Successful!",
+              text: response.msg,
+              icon: "success",
+              timer: 1200,
+              timerProgressBar: true
+            });
+            setTimeout(() => {
+              navigate("/subadmin/users")
+            }, 1200);
 
           } else {
-            toast.error(response.msg);
+            Swal.fire({
+              title: "Error!",
+              text: response.msg,
+              icon: "error"
+            });
           }
 
         })
@@ -292,8 +323,14 @@ const AddClient = () => {
       .then((response) => {
         if (response.status) {
           setOneUsers(response.data);
+
           setSelectedCheckboxes(response.data.ClientStrategy.map((stg) => stg.strategy_id))
           setSelectedCheckboxesAndPlan(response.data.ClientStrategy.map((stg) => ({ id: stg.strategy_id, plan_id: stg.plan_id })));
+
+          if (response.data.getClients[0].license_type == 2) {
+
+            setStgDiseble(response.data.ClientStrategy.map((stg) => stg.strategy_id))
+          }
 
         }
         else {
@@ -556,12 +593,14 @@ const AddClient = () => {
                                     value={strategy._id}
                                     checked={selectedCheckboxes && selectedCheckboxes.includes(strategy._id)}
                                     onChange={() => handleStrategyChange(strategy._id)}
+                                    disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                   />
                                   <label
                                     className="form-check-label"
                                     htmlFor={strategy._id}
                                   >
                                     {strategy.strategy_name}
+
                                   </label>
 
 
