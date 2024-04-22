@@ -65,3 +65,54 @@ export async function ProfileData(data, token) {
     }
 
 }
+
+
+//update api for profile
+
+export async function updateprofiledata(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}updateProfile`, data, {
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}
+
+
+
+// match profileinfo data
+export async function ProfileuserId(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}profileId`, data, {
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}
+
+//profile for status 
+
+
+export async function ProfileActive(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}Profilestatus`, data, {
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}
