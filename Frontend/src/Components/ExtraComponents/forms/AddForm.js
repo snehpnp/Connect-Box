@@ -82,9 +82,11 @@ const DynamicForm = ({
 
 
   const HandelChange = (value) => {
-    console.log("value", value)
-
     formik.setFieldValue('Service_Type', value);
+  }
+
+  const PerTradeValueset = (value) => {
+    formik.setFieldValue('per_trade_value', value.target.value);
   }
 
 
@@ -629,63 +631,60 @@ const DynamicForm = ({
                                       <ul className="nav nav-pills d-flex" id="pills-tab" role="tablist">
                                         <li className="nav-item" role="presentation">
                                           <button
-                                            className={`nav-link yes ${formik.values[field.name] === 2 ? "active show" : ""}`}
+                                            className={`nav-link yes ${formik.values[field.name] == 2 ? "active show" : ""}`}
                                             onClick={() => HandelChange(2)}
                                             type="button"
-                                            disabled={field.disable} // Disable button if status is true
+                                            disabled={field.disable}
+
                                           >
                                             Per Trade
                                           </button>
                                         </li>
                                         <li className="nav-item" role="presentation">
                                           <button
-                                            className={`nav-link no ${formik.values[field.name] === 1 ? "active show" : ""}`}
+                                            className={`nav-link no ${formik.values[field.name] == 1 ? "active show" : ""}`}
                                             onClick={() => HandelChange(1)}
                                             type="button"
-                                            disabled={field.disable} // Disable button if status is true
+                                            disabled={field.disable}
+
                                           >
                                             Fixed
                                           </button>
                                         </li>
+                                          
                                       </ul>
                                     </div>
                                   </div>
-                                  <div className="col-md-6">
-                                    <div className="tab-content pt-0" id="pills-tabContent">
-                                      <div
-                                        className={`tab-pane fade ${formik.values[field.name] === 2 ? "show active" : ""}`}
-                                        id="pills-home"
-                                        role="tabpanel"
-                                      >
-                                        <div className="input-block">
-                                          <input
-                                            type="text"
-                                            className="form-control"
-                                            placeholder="Per Trade"
-                                            disabled={true} // Disable input if status is true
-                                          />
+                                  {formik.values[field.name] == 2 && formik.values['licence'] == "2" ?
+                                    (<div className="col-md-6">
+                                      <div className="tab-content pt-0" id="pills-tabContent">
+                                        <div
+                                          id="pills-home"
+                                          role="tabpanel"
+                                        >
+                                          <div className="input-block">
+                                            <input
+                                              type="text"
+                                              className="form-control"
+                                              placeholder="Per Trade"
+                                              // disabled={field.disable}
+                                              defaultValue={formik.values['per_trade_value']}
+                                              onChange={(e) => PerTradeValueset(e)}
+                                            />
+                                          </div>
                                         </div>
-                                      </div>
-                                      <div
-                                        className={`tab-pane fade ${formik.values[field.name] === 1 ? "show active" : ""}`}
-                                        id="pills-profile"
-                                        role="tabpanel"
-                                      >
-                                        {/* Content for the Fixed tab */}
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
 
+                                      </div>
+                                    </div>)
+
+
+                                    : ""}
+
+                                </div>
 
 
                               </div>
                             </div>
-
-
-
-
-
 
                             :
                             <div className={`col-lg-${field.col_size}`}>

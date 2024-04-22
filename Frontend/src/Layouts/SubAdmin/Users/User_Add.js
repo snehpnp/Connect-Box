@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 import AddForm from "../../../Components/ExtraComponents/forms/AddForm";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
-import {  GetAll_Group_Servics,  GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
+import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
-import {  AddUsers,  Get_All_Broker, } from "../../../ReduxStore/Slice/Subadmin/UsersSlice";
+import { AddUsers, Get_All_Broker, } from "../../../ReduxStore/Slice/Subadmin/UsersSlice";
 import Loader from "../../../Utils/Loader";
 
 import { useFormik } from "formik";
@@ -20,7 +20,7 @@ const AddClient = () => {
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   var subadmin_service_type1 = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
- 
+
 
   const [serviceName, setServiceName] = useState({
     loading: true,
@@ -109,20 +109,16 @@ const AddClient = () => {
       disable: false,
       showWhen: (values) => subadmin_service_type1 == 1,
 
-      // name: "Service_Type",
-      // label: "Service Type",
-      // type: "select",
-      // options: [
-      //   { label: "Fixed", value: "1" },
-      //   { label: "Per Trade", value: "2" },
-
-      // ],
-      // label_size: 12,
-      // col_size: 6,
-      // disable: false,
-      // showWhen: (values) => subadmin_service_type1 == 1,
     },
-
+    {
+      name: "balance",
+      label: "Balance",
+      type: "text3",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+      showWhen: (values) => subadmin_service_type1 == 1 && values.licence === "2" && formik.values.Service_Type == 2,
+    },
     {
       name: "broker",
       label: "Broker",
@@ -186,7 +182,9 @@ const AddClient = () => {
       parent_role: null,
       demat_userid: null,
       api_key: null,
-      Service_Type:0
+      Service_Type: 0,
+      balance: 0,
+      per_trade_value: null
     },
     validate: (values) => {
       let errors = {};
@@ -229,11 +227,10 @@ const AddClient = () => {
         Email: values.email,
         license_type: values.licence,
         PhoneNo: values.phone,
-        Balance: null,
+        Balance: values.balance || null,
         subadmin_service_type: null,
         strategy_Percentage: null,
         Per_trade: null,
-        password: null,
         Strategies: selectedCheckboxesAndPlan,
         parent_id: user_id,
         parent_role: Role || "SUBADMIN",
@@ -241,7 +238,7 @@ const AddClient = () => {
         group_service: values.groupservice,
         broker: values.broker,
         Service_Type: values.Service_Type,
-
+        per_trade_value: values.per_trade_value || null
       };
 
       await dispatch(AddUsers(req))
@@ -254,7 +251,7 @@ const AddClient = () => {
               icon: "success",
               timer: 1500,
               timerProgressBar: true
-          });
+            });
             setTimeout(() => {
               navigate("/subadmin/users");
             }, 1500);
@@ -269,7 +266,6 @@ const AddClient = () => {
   });
 
 
-  console.log(formik.values.Service_Type)
   const getAllGroupService = async () => {
     try {
       var data = { id: user_id };
@@ -408,6 +404,12 @@ const AddClient = () => {
     AllBroker();
   }, []);
 
+  console.log("subadmin_service_type1 ", subadmin_service_type1)
+  console.log("formik.values.licence ", formik.values.licence)
+  console.log("formik.values.Service_Type ", formik.values.Service_Type)
+
+
+
   return (
     <>
       {getAllStategy.data.length == 0 ? (
@@ -446,6 +448,11 @@ const AddClient = () => {
 
                     ))}
                 </div>
+
+
+
+
+
                 {subadmin_service_type1 == 2 ?
                   (<div className="row mt-4">
                     <div class="input-block ">
@@ -571,12 +578,19 @@ const AddClient = () => {
                         </div>
                       </div>
                     ))}
-                  </div>) : formik.values.Service_Type ? (<div className="row mt-4">
+                  </div>)
+                  
+                   :
+                  
+                  
+                  
+                  (<div className="row mt-4">
                     <div class="input-block ">
                       <label>All Strategy</label>
                     </div>
                     {getAllStategy.data.map((strategy) => (
-                      strategy.Service_Type === formik.values.Service_Type && (
+
+                      strategy.Service_Type == formik.values.Service_Type && (
                         <div className={`col-lg-3 mt-2`} key={strategy._id}>
                           <div className="row">
                             <div className="col-lg-12">
@@ -586,6 +600,7 @@ const AddClient = () => {
                                   className="form-check-input"
                                   name={strategy.strategy_name}
                                   value={strategy._id}
+                                  // defaultChecked={}
                                   onChange={() => handleStrategyChange(strategy._id)}
                                 />
                                 <label
@@ -595,7 +610,7 @@ const AddClient = () => {
                                   {strategy.strategy_name}
                                 </label>
 
-                                {formik.values.licence == 1 ? (
+                                {formik.values.licence == 1 || formik.values.licence == 0 ? (
                                   ""
                                 ) : (
                                   selectedCheckboxes.includes(strategy._id) && (
@@ -690,7 +705,7 @@ const AddClient = () => {
                       )
                     ))}
 
-                  </div>) : ""}
+                  </div>)}
 
               </>
             }

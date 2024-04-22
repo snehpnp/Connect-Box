@@ -8,7 +8,7 @@ import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
 import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
-import { GetOneUser, Get_All_Broker, } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
+import { GetOneUser, Get_All_Broker, UpdateUsers } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 import Loader from '../../../Utils/Loader';
 
 import { useFormik } from 'formik';
@@ -26,6 +26,7 @@ const AddClient = () => {
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
   var subadmin_service_type1 = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
+
 
 
   const [refresh, setrefresh] = useState(false)
@@ -72,13 +73,14 @@ const AddClient = () => {
       parent_role: null,
       demat_userid: null,
       api_key: null,
+      per_trade_value: null
     },
     validate: (values) => {
       let errors = {};
       if (!values.fullName) {
         errors.fullName = "Full Name is required";
       }
-  
+
       if (!values.username) {
         errors.username = "Username is required";
       }
@@ -118,7 +120,6 @@ const AddClient = () => {
         subadmin_service_type: null,
         strategy_Percentage: null,
         Per_trade: null,
-        password: null,
         Strategies: selectedCheckboxesAndPlan,
         parent_id: user_id,
         parent_role: Role || "SUBADMIN",
@@ -128,27 +129,29 @@ const AddClient = () => {
 
       };
 
-console.log("req",req)
+      console.log("req", req)
 
-      // await dispatch(AddUsers(req))
-      //   .unwrap()
-      //   .then(async (response) => {
+      await dispatch(UpdateUsers(req))
+        .unwrap()
+        .then(async (response) => {
 
+          console.log("response", response)
 
-      //     if (response.status) {
-      //       toast.success(response.msg);
-      //       setTimeout(() => {
-      //         navigate("/subadmin/users")
-      //       }, 1000);
+          return
+          if (response.status) {
+            // toast.success(response.msg);
+            // setTimeout(() => {
+            //   navigate("/subadmin/users")
+            // }, 1000);
 
-      //     } else {
-      //       toast.error(response.msg);
-      //     }
+          } else {
+            toast.error(response.msg);
+          }
 
-      //   })
-      //   .catch((error) => {
-      //     console.log("Error", error);
-      //   });
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
 
     },
   });
@@ -236,7 +239,7 @@ console.log("req",req)
       col_size: 6,
       disable: true,
       showWhen: (values) => subadmin_service_type1 == 1,
-      disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type == 0 ? false :true,
+      disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type == 0 ? false : true,
 
       // name: "Service_Type",
       // label: "Service Type",
@@ -290,7 +293,7 @@ console.log("req",req)
         if (response.status) {
           setOneUsers(response.data);
           setSelectedCheckboxes(response.data.ClientStrategy.map((stg) => stg.strategy_id))
-
+          setSelectedCheckboxesAndPlan(response.data.ClientStrategy.map((stg) => ({ id: stg.strategy_id, plan_id: stg.plan_id })));
 
         }
         else {
@@ -303,9 +306,6 @@ console.log("req",req)
       })
   }
 
-  useEffect(() => {
-    getAllUsers()
-  }, [])
 
 
 
@@ -318,6 +318,8 @@ console.log("req",req)
     formik.setFieldValue('licence', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].license_type);
     formik.setFieldValue('groupservice', getOneUsers.getClients !== undefined && getOneUsers.ClientGroupName[0].groupService_id);
     formik.setFieldValue('Service_Type', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type);
+    formik.setFieldValue('per_trade_value', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].per_trade_value);
+
 
 
 
@@ -357,9 +359,6 @@ console.log("req",req)
 
   };
 
-  useEffect(() => {
-    getAllGroupService();
-  }, [refresh]);
 
 
 
@@ -392,9 +391,6 @@ console.log("req",req)
 
     }
   }
-  useEffect(() => {
-    getAllGroupServicesName();
-  }, [refresh, formik.values.groupservice])
 
 
   const GetAllStrategy = async () => {
@@ -419,9 +415,6 @@ console.log("req",req)
         console.log("Error Stategy finding Error", error)
       })
   }
-  useState(() => {
-    GetAllStrategy();
-  }, [])
 
 
   const AllBroker = async () => {
@@ -481,7 +474,36 @@ console.log("req",req)
   }, [])
 
 
-  var planSelect = [1, 2, 3, 4]
+
+
+
+
+
+
+
+
+
+
+
+
+  console.log("selectedCheckboxes", selectedCheckboxes)
+  console.log("selectedCheckboxesAndPlan", selectedCheckboxesAndPlan)
+
+
+
+  useEffect(() => {
+    getAllUsers()
+    GetAllStrategy();
+  }, [])
+
+  useEffect(() => {
+    getAllGroupServicesName();
+  }, [refresh, formik.values.groupservice])
+  useEffect(() => {
+    getAllGroupService();
+  }, [refresh]);
+
+
 
 
   return (
@@ -521,7 +543,7 @@ console.log("req",req)
                   </div>
 
                   <div className="row mt-4">
-                    <h6>All Strategy</h6>
+                    {/* STRATEGY CODE */}
                     {subadmin_service_type1 == 2 ?
                       (<div className="row mt-4">
                         <div class="input-block ">
@@ -535,18 +557,19 @@ console.log("req",req)
                                   <input
                                     type="checkbox"
                                     className="form-check-input"
+                                    id={strategy._id}
                                     name={strategy.strategy_name}
                                     value={strategy._id}
-                                    onChange={() =>
-                                      handleStrategyChange(strategy._id)
-                                    }
+                                    checked={selectedCheckboxes && selectedCheckboxes.includes(strategy._id)}
+                                    onChange={() => handleStrategyChange(strategy._id)}
                                   />
                                   <label
                                     className="form-check-label"
-                                    htmlFor={strategy.strategy_name}
+                                    htmlFor={strategy._id}
                                   >
                                     {strategy.strategy_name}
                                   </label>
+
 
                                   {formik.values.licence == 1 || formik.values.licence == 0
                                     ? ""
@@ -566,11 +589,9 @@ console.log("req",req)
                                                 type="radio"
                                                 name={`option_${strategy._id}`}
                                                 value="1"
-                                                defaultChecked
                                                 id={`${strategy._id}_1`}
-                                                onChange={(e) =>
-                                                  PlanSetinState(e.target.id)
-                                                }
+                                                checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 1)}
+                                                onChange={(e) => PlanSetinState(e.target.id)}
                                               />
                                               <label
                                                 style={{
@@ -578,7 +599,7 @@ console.log("req",req)
                                                   fontSize: "1rem",
                                                 }}
                                               >
-                                                monthly{" "}
+                                                Monthly
                                               </label>
                                             </div>
                                             <div className="d-flex align-items-center">
@@ -587,9 +608,8 @@ console.log("req",req)
                                                 name={`option_${strategy._id}`}
                                                 value="2"
                                                 id={`${strategy._id}_2`}
-                                                onChange={(e) =>
-                                                  PlanSetinState(e.target.id)
-                                                }
+                                                checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 2)}
+                                                onChange={(e) => PlanSetinState(e.target.id)}
                                               />
                                               <label
                                                 style={{
@@ -597,7 +617,7 @@ console.log("req",req)
                                                   fontSize: "1rem",
                                                 }}
                                               >
-                                                quarterly{" "}
+                                                Quarterly
                                               </label>
                                             </div>
                                             <div className="d-flex align-items-center">
@@ -606,9 +626,8 @@ console.log("req",req)
                                                 name={`option_${strategy._id}`}
                                                 value="3"
                                                 id={`${strategy._id}_3`}
-                                                onChange={(e) =>
-                                                  PlanSetinState(e.target.id)
-                                                }
+                                                checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 3)}
+                                                onChange={(e) => PlanSetinState(e.target.id)}
                                               />
                                               <label
                                                 style={{
@@ -616,18 +635,17 @@ console.log("req",req)
                                                   fontSize: "1rem",
                                                 }}
                                               >
-                                                halfyearly{" "}
+                                                Halfyearly
                                               </label>
                                             </div>
                                             <div className="d-flex align-items-center">
                                               <input
                                                 type="radio"
                                                 name={`option_${strategy._id}`}
-                                                value="3"
+                                                value="4"
                                                 id={`${strategy._id}_4`}
-                                                onChange={(e) =>
-                                                  PlanSetinState(e.target.id)
-                                                }
+                                                checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 4)}
+                                                onChange={(e) => PlanSetinState(e.target.id)}
                                               />
                                               <label
                                                 style={{
@@ -635,10 +653,12 @@ console.log("req",req)
                                                   fontSize: "1rem",
                                                 }}
                                               >
-                                                yearly{" "}
+                                                Yearly
                                               </label>
                                             </div>
                                           </div>
+
+
                                         </div>
                                       </>
                                     )}
@@ -647,7 +667,17 @@ console.log("req",req)
                             </div>
                           </div>
                         ))}
-                      </div>) : formik.values.Service_Type ? (<div className="row mt-4">
+                      </div>)
+
+
+
+
+
+
+
+
+                      // Per Trade Code 
+                      : formik.values.Service_Type ? (<div className="row mt-4">
                         <div class="input-block ">
                           <label>All Strategy</label>
                         </div>
@@ -660,21 +690,23 @@ console.log("req",req)
                                     <input
                                       type="checkbox"
                                       className="form-check-input"
+                                      id={strategy._id}
                                       name={strategy.strategy_name}
                                       value={strategy._id}
+                                      checked={selectedCheckboxes && selectedCheckboxes.includes(strategy._id)}
                                       onChange={() => handleStrategyChange(strategy._id)}
                                     />
                                     <label
                                       className="form-check-label"
-                                      htmlFor={strategy.strategy_name}
+                                      htmlFor={strategy._id}
                                     >
                                       {strategy.strategy_name}
                                     </label>
 
-                                    {formik.values.licence == 1 ? (
-                                      ""
-                                    ) : (
-                                      selectedCheckboxes.includes(strategy._id) && (
+
+                                    {formik.values.licence == 1 || formik.values.licence == 0
+                                      ? ""
+                                      : selectedCheckboxes.includes(strategy._id) && (
                                         <>
                                           <div
                                             className=""
@@ -690,8 +722,8 @@ console.log("req",req)
                                                   type="radio"
                                                   name={`option_${strategy._id}`}
                                                   value="1"
-                                                  defaultChecked
                                                   id={`${strategy._id}_1`}
+                                                  checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 1)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
                                                 />
                                                 <label
@@ -700,7 +732,7 @@ console.log("req",req)
                                                     fontSize: "1rem",
                                                   }}
                                                 >
-                                                  monthly{" "}
+                                                  Monthly
                                                 </label>
                                               </div>
                                               <div className="d-flex align-items-center">
@@ -709,6 +741,7 @@ console.log("req",req)
                                                   name={`option_${strategy._id}`}
                                                   value="2"
                                                   id={`${strategy._id}_2`}
+                                                  checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 2)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
                                                 />
                                                 <label
@@ -717,7 +750,7 @@ console.log("req",req)
                                                     fontSize: "1rem",
                                                   }}
                                                 >
-                                                  quarterly{" "}
+                                                  Quarterly
                                                 </label>
                                               </div>
                                               <div className="d-flex align-items-center">
@@ -726,6 +759,7 @@ console.log("req",req)
                                                   name={`option_${strategy._id}`}
                                                   value="3"
                                                   id={`${strategy._id}_3`}
+                                                  checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 3)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
                                                 />
                                                 <label
@@ -734,15 +768,16 @@ console.log("req",req)
                                                     fontSize: "1rem",
                                                   }}
                                                 >
-                                                  halfyearly{" "}
+                                                  Halfyearly
                                                 </label>
                                               </div>
                                               <div className="d-flex align-items-center">
                                                 <input
                                                   type="radio"
                                                   name={`option_${strategy._id}`}
-                                                  value="3"
+                                                  value="4"
                                                   id={`${strategy._id}_4`}
+                                                  checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 4)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
                                                 />
                                                 <label
@@ -751,14 +786,15 @@ console.log("req",req)
                                                     fontSize: "1rem",
                                                   }}
                                                 >
-                                                  yearly{" "}
+                                                  Yearly
                                                 </label>
                                               </div>
                                             </div>
+
+
                                           </div>
                                         </>
-                                      )
-                                    )}
+                                      )}
                                   </div>
                                 </div>
                               </div>

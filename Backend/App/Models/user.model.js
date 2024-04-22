@@ -221,7 +221,10 @@ const userModel = Schema({
         enum: ['0','1', '2'], // 0 = No Use , 1= Fixed , 2= per trade
         default: '0'
     },
-
+    per_trade_value: {
+        type: String,
+        default: null
+    },
 },
     {
         timestamps: true
