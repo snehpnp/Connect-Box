@@ -226,7 +226,7 @@ class Users {
           demat_userid: demat_userid,
           Service_Type: Service_Type,
           per_trade_value: per_trade_value,
-          Balance:Balance ||0
+          Balance:Balance || 0
         },
 
       ])
