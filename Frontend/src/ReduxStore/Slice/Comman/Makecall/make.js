@@ -100,8 +100,6 @@ export const getexpirymanualtrade = createAsyncThunk(
     async (data) => {
       try {
         const {req,token} = data
-
-        console.log("req ",req)
        // console.log("token ",token)
         const res = await GET_LIVE_DATA_SESSION(req,token);
         return res;

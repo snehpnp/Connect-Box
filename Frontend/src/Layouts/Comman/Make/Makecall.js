@@ -111,7 +111,7 @@ const Makecall = () => {
     const [liveprice, setLiveprice] = useState("");
     const [stockBuyPrice, setStockBuyPrice] = useState("");
     const [stockSellPrice, setStockSellPrice] = useState("");
-    
+    const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
     const [userIdSocketRun, setUserIdSocketRun] = useState("none");
 
     let socket;
@@ -125,27 +125,39 @@ const Makecall = () => {
 
     const GetBrokerLiveData = async (userIdSocketRun) => {
 
-        alert(userIdSocketRun)
-        var data = { id: UserLocalDetails.user_id , exist_user : userIdSocketRun }
-        await dispatch(GetBrokerLiveDatas(data))
+        //alert(userIdSocketRun)
+        await dispatch(GetBrokerLiveDatas(
+
+            {
+                req:
+                {
+                    id: UserLocalDetails.user_id,
+                    exist_user : userIdSocketRun,
+                    exist_user_details : livePriceDataDetails
+                },
+
+                token: UserLocalDetails.token
+            }
+        ))
             .unwrap()
             .then(async (response) => {
-                console.log("GetBrokerData ",response.data)
-
-                return
+                // console.log("demate_user_id ",response.data.demate_user_id)
+                // console.log("access_token ",response.data.access_token)
+                // console.log("trading_status ",response.data.trading_status
+                
                 if (response.status) {
-                    seUserDetails(response.data)
-                    if (response.data && response.data[0].demat_userid !== undefined && response.data && response.data[0].access_token !== undefined && response.data[0].TradingStatus == "on") {
+                    setLivePriceDataDetails(response.data)
+                    if (response.data && response.data.demate_user_id !== undefined && response.data && response.data.access_token !== undefined && response.data.trading_status == "on") {
                         let type = { loginType: "API" };
-                        const res = await CreateSocketSession(type, response.data[0].demat_userid, response.data[0].access_token);
+                        const res = await CreateSocketSession(type, response.data.demate_user_id, response.data.access_token);
                         //console.log("res ", res.data.stat)
                         if (res.data.stat) {
                             const url = "wss://ws1.aliceblueonline.com/NorenWS/"
                             socket = new WebSocket(url)
                             socket.onopen = function () {
                                 // var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession21).toString()).toString();
-                                let userSession1 = response.data[0].access_token;
-                                let userId1 = response.data[0].demat_userid;
+                                let userSession1 = response.data.access_token;
+                                let userId1 = response.data.demate_user_id;
                                 var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession1).toString()).toString();
                                 var initCon = {
                                     susertoken: encrcptToken,
@@ -216,7 +228,25 @@ const Makecall = () => {
 
                                     }
                                 }
+                                socket.onclose = async function (event) {
+                                    if (event.wasClean) {
+                                        setUserIdSocketRun('DONE')
+
+                                    } else {
+                                        setUserIdSocketRun('DONE')
+                                        
+                                    }
+                                  };
+              
+                                  socket.onerror = function (error) {
+                                    setUserIdSocketRun('DONE')
+                                     
+                                  };
+
+
                             }
+                        }else{
+                         setSockets(null)
                         }
                     }
                 }
@@ -477,6 +507,10 @@ const Makecall = () => {
 
 
     const selectCatagoryId = (e) => {
+
+        
+        
+
 
         setStrikePrice('');
         setOptionType('');

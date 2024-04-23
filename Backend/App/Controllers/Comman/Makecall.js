@@ -416,12 +416,27 @@ class Makecall {
    //get token by socket Data
    async GetLiveDataSession(req, res) {
 
-    console.log("req - ",req.body)
+   // console.log("req - ",req.body)
     try {
-              return
-            var result = await live_price_token.find({ _id: id }).select('');
 
-            if (result.length > 0) {
+
+             let result = null
+
+            if(req.body.exist_user == "none"){
+              result = await live_price_token.findOne().limit(1).select('demate_user_id access_token trading_status');
+            }else{
+              // result = await live_price_token.findOne({demate_user_id:req.body.exist_user}).limit(1).select('demate_user_id access_token');
+
+             result = await live_price_token.findOne({ _id: { $gt: req.body.exist_user_details._id } // Assuming result is the previously found document
+             }).select('demate_user_id access_token trading_status').limit(1);
+             
+       
+             }
+             
+              console.log("result - ",result)
+
+         
+            if (result != null) {
               return res.send({ status: true, msg: "Data Get", data: result });
             }else{
               return res.send({ status: false, msg: "Id Wrong" });
