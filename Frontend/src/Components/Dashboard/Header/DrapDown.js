@@ -138,6 +138,19 @@ const DropDown = () => {
         }
 
     }
+     
+    const SettingPage = () => {
+        if (Role == "ADMIN") {
+            navigate('/admin/setting')
+        } else if (Role == "SUBADMIN") {
+            navigate('/subadmin/setting')
+        } else if (Role == "USER") {
+            navigate('/user/setting')
+        } else if (Role == "EMPLOYEE") {
+            navigate('/employee/setting')
+        }
+
+    }
 
     const toggleFundsVisibility = () => {
         setShowFunds(!showFunds);
@@ -288,9 +301,9 @@ const DropDown = () => {
                                                 <i class="fa-solid fa-gear p-2"></i> System
                                             </Link>
                                         </li> : ''}
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/settings">
-                                            <i class="fa-solid fa-gear p-2"></i>   Settings
+                                    <li onClick={() => SettingPage()}>
+                                        <Link className="dropdown-item dev" to="/setting">
+                                            <i class="fa-solid fa-gear p-2"></i>Settings
                                         </Link>
                                     </li>
 
