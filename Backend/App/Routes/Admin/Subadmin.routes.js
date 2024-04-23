@@ -9,6 +9,8 @@ const {DashboardChartData,DashboardBalanceData} =require('../../Controllers/SubA
 const {ProfileImagedata,updateProfile,profileId,Profilestatus }=require("../../Controllers//Admins/Profile/ProfileImage")
 
 
+
+
 router.post('/subadmin/add', AddSubadmin);
 router.post('/subadmin/edit', EditSubadmin);
 
@@ -35,6 +37,7 @@ router.post("/ProfileImagedata",ProfileImagedata)
 router.post("/updateProfile",updateProfile)
 router.post("/profileId",profileId)
 router.post("/Profilestatus",Profilestatus)
+
 
 
 

@@ -143,3 +143,14 @@ export const dateFormate = (date) => {
   const ccdate = dt.format('Y-m-d');
   return ccdate
 }
+
+
+export const isToday =(date) =>{
+  const today = new Date();
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  );
+}
+
