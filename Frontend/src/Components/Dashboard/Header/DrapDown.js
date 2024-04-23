@@ -288,7 +288,7 @@ const DropDown = () => {
                                                 <i class="fa-solid fa-gear p-2"></i> System
                                             </Link>
                                         </li> : ''}
-                                    <li>
+                                    <li onClick={() => ProfilePage()}>
                                         <Link className="dropdown-item dev" to="/settings">
                                             <i class="fa-solid fa-gear p-2"></i>   Settings
                                         </Link>
