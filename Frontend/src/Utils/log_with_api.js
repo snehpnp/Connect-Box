@@ -14,11 +14,12 @@ export const loginWithApi = async (broker_id, UserDetails) => {
     }
     else if (broker_id === "1" || broker_id === 1) {   
         // const res = await GET_BROKER_INFORMATION();
-        // window.location.href = `https://ant.aliceblueonline.com/?appcode=${res.data[0].app_code}`;
+        // window.location.href = `https://ant.aliceblueonline.com/?appcode=${UserDetails.api_key}`;
+
     }
     else if (broker_id === "3" || broker_id === 3) {
         alert("broker-3")
-    }
+    }       
     else if (broker_id === "4" || broker_id === 4) {
         alert("broker-4")
     }
