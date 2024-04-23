@@ -1,62 +1,98 @@
 import React from 'react'
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik'
+import { Add_Researcher } from '../../../ReduxStore/Slice/Researcher/ResearcherSlice'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
+import Swal from 'sweetalert2'
 
 const AddResearcher = () => {
-
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user_id = JSON.parse(localStorage.getItem('user_details')).user_id
   const formik = useFormik({
     initialValues: {
-      fullName : '',
-      userName : '',
-      PhoneNo : '',
-      email : '',
-      password : '',
+      fullName: '',
+      userName: '',
+      PhoneNo: '',
+      email: '',
+      password: '',
       strategy_percentage: '',
-      prifix_key :''
+      prifix_key: ''
     },
-    validate: (value)=>{
-      let errors={}
-      if(!value.fullName){
-        errors.fullName="Please Enter fullName"
+    validate: (values) => {
+      let errors = {}
+      if (!values.fullName) {
+        errors.fullName = "Please Enter fullName"
       }
-      if(!value.userName){
-        errors.userName="Please Enter userName"
+      if (!values.userName) {
+        errors.userName = "Please Enter userName"
       }
-      if(!value.PhoneNo){
-        errors.PhoneNo="Please Enter Phone Number"
+      if (!values.email) {
+        errors.email = "Please Enter Email Address";
+      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
+        errors.email = "Please enter a valid email address.";
       }
-      if(!value.email){
-        errors.email="Please Enter email"
+      if (!values.PhoneNo) {
+        errors.PhoneNo = "Please Enter Phone Number";
+      } else if (!/^\d{10}$/.test(values.PhoneNo)) {
+        errors.PhoneNo = "Please enter a valid 10-digit phone number.";
       }
-      if(!value.password){
-        errors.password="Please Enter password"
+      if (!values.password) {
+        errors.password = "Please Enter password"
       }
-      if(!value.strategy_percentage){
-        errors.strategy_percentage="Please Enter strategy percentage"
+      if (!values.strategy_percentage) {
+        errors.strategy_percentage = "Please Enter strategy percentage"
       }
-      if(!value.prifix_key){
-        errors.prifix_key="Please Enter Unique Prifx key"
+      if (!values.prifix_key) {
+        errors.prifix_key = "Please Enter Unique Prifx key"
       }
-      
-
-      return errors
-
+      return errors;
     },
-    onSubmit: async(value)=>{
-      const data={
-        FullName : value.fullName,
-        UserName : value.userName,
-        Email : value.email,
-        PhoneNo : value.PhoneNo,
-        Password : value.password,
-        Strategy_percentage_to_researcher : value.strategy_percentage,
-        prifix_key : value.prifix_key
-      }
-      console.log("data :", data)
+    onSubmit: async (values) => {
+      try {
+        const data = {
+          profile_img: '',
+          FullName: values.fullName,
+          UserName: values.userName,
+          Email: values.email,
+          PhoneNo: values.PhoneNo,
+          Password: values.password,
+          Strategy_percentage_to_researcher: values.strategy_percentage,
+          prifix_key: values.prifix_key,
+          user_id: user_id,
+        };
+        const response = await dispatch(Add_Researcher(data)).unwrap();
 
+        if (response.status) {
+          Swal.fire({
+            title: "Added Successfully",
+            text: "New Researcher Added Successfully",
+            icon: "success",
+            timer: 1500,
+            timerProgressBar: true,
+            didClose: () => {
+              navigate("/admin/allresearch");
+            }
+          });
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: response.msg,
+            icon: "error",
+            timer: 1500,
+            timerProgressBar: true,
+
+          });
+
+        }
+
+      } catch (error) {
+        console.log("Error in Adding Researcher", error);
+      }
     }
-
-  })
+  });
 
   const fields = [
     {
@@ -83,7 +119,7 @@ const AddResearcher = () => {
       col_size: 6,
       disable: false,
     },
-    
+
     {
       name: "email",
       label: "Email",
@@ -91,7 +127,7 @@ const AddResearcher = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
-    }, 
+    },
     {
       name: "PhoneNo",
       label: "Phone Number ",
@@ -107,7 +143,7 @@ const AddResearcher = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
-    }, 
+    },
     {
       name: "prifix_key",
       label: "Prifix key",
@@ -115,7 +151,7 @@ const AddResearcher = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
-    }, 
+    },
     {
       name: "strategy_percentage",
       label: "Strategy Percentage",
@@ -126,6 +162,8 @@ const AddResearcher = () => {
     },
 
   ]
+
+
 
 
 

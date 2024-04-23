@@ -211,6 +211,7 @@ const DynamicForm = ({
                                 value={inputValue}
                                 onChange={(e) => {
                                   const newValue = e.target.value.toUpperCase()
+                              
                                   if (/^[a-zA-Z]{0,3}$/.test(newValue)) {
                                     setInputValue(newValue);
                                     formik.handleChange(e);
