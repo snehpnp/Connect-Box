@@ -87,6 +87,36 @@ export async function Get_Strategy_By_Id(data, token) {
 }
 
 
+//Orders From SubAdmin
+export async function getOrders_data(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}orders/data`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+
+}
+
+export async function GetClientsOrderBy_Prefix(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}client/Order`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+
 
 
 

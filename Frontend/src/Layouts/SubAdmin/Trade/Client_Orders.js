@@ -2,22 +2,26 @@ import React, { useState, useEffect } from "react";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import toast from "react-hot-toast";
-import { Orders_Details } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { ClientsOrders_Details } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { useDispatch } from "react-redux";
 
-function GroupStrategy() {
+function Client_Orders() {
   const dispatch = useDispatch();
   const userDetails = JSON.parse(localStorage.getItem("user_details"));
   const [tableData, setTableData] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
+
 
   const userDataRes = async () => {
-    const subadminId= userDetails.user_id 
-    await dispatch(Orders_Details({ subadminId }))
+    const subadminId = userDetails.user_id;
+    await dispatch(ClientsOrders_Details({ subadminId }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
           toast.success(response.msg);
           setTableData(response.data);
+          setFilteredData(response.data);
         } else {
           toast.error(response.msg);
         }
@@ -27,18 +31,45 @@ function GroupStrategy() {
       });
   };
 
-  useEffect(()=>{
-    userDataRes()
-  },[])
+  useEffect(() => {
+    userDataRes();
+  }, []);
 
+  const handleSearchInputChange = (event) => {
+    setSearchInput(event.target.value.toLowerCase());
+    filterDataBySearch(event.target.value.toLowerCase());
+  };
+
+  const filterDataBySearch = (input) => {
+    const filtered = tableData.filter((item) =>
+      item.type.toLowerCase().includes(input) ||
+      item.symbol.toLowerCase().includes(input) ||
+      item.fullName.toLowerCase().includes(input)
+
+    );
+    setFilteredData(filtered);
+  };
+
+  const renderTableRows = () => {
+    return filteredData.map((data, index) => (
+        <tr key={index}>
+        <td>{data.fullName}</td>
+          <td>{data.symbol}</td>
+          <td>{data.type}</td>
+          <td>{data.qty_percent}</td>
+          <td>{data.strategy}</td>
+          <td>{data.tr_price}</td>
+          <td>{data.segment}</td>
+        </tr>
+    ));
+  };
 
   return (
     <>
       <div className="content container-fluid">
-        {/* PAGE HEADER */}
         <div className="page-header">
           <div className="content-page-header">
-            <h5>All Trades</h5>
+            <h5>Clients Orders</h5>
             <div className="page-content">
               <div className="list-btn">
                 <ul className="filter-list">
@@ -48,7 +79,6 @@ function GroupStrategy() {
                       data-bs-toggle="tooltip"
                       data-bs-placement="bottom"
                       title="Refresh"
-                      // onClick={RefreshHandle}
                     >
                       <span>
                         <i className="fe fe-refresh-ccw" />
@@ -60,11 +90,11 @@ function GroupStrategy() {
                       <input
                         type="text"
                         className="form-control"
-                        placeholder="Search..."
+                        placeholder="Search by type or symbol..."
                         aria-label="Search"
                         aria-describedby="search-addon"
-                        // onChange={(e) => SetInputSearch(e.target.value || '')}
-                        // value={inputSearch}
+                        value={searchInput}
+                      onChange={handleSearchInputChange} 
                       />
                     </div>
                   </li>
@@ -79,7 +109,6 @@ function GroupStrategy() {
                         <div className="card-body">
                           <ExportToExcel
                             className="btn btn-primary "
-                            // apiData={ForGetCSV}
                             fileName={"All Strategy"}
                           />
                         </div>
@@ -100,8 +129,9 @@ function GroupStrategy() {
             <table className="table table-striped table-hover">
               <thead>
                 <tr>
+                <th>Client Name</th>
                   <th>Stock Symbol</th>
-                  <th>Trade Type</th>
+                  <th>Type</th>
                   <th>Quantity</th>
                   <th>Strategy</th>
                   <th>Target Price</th>
@@ -109,18 +139,12 @@ function GroupStrategy() {
                 </tr>
               </thead>
               <tbody>
-                {/* JavaScript loop */}
-                {tableData && tableData.map((data, index) => (
-                  <tr key={index}>
-                    <td>{data.symbol}</td>
-                    <td>{data.TradeType}</td>
-                    <td>{data.qty_percent}</td>
-                    <td>{data.strategy}</td>
-                    <td>{data.tr_price}</td>
-                    <td>{data.segment}</td>
-                  </tr>
-                ))}
-              </tbody>
+            {filteredData.length > 0 ? renderTableRows() : (
+              <tr>
+                <td colSpan="2">No matching data found</td>
+              </tr>
+            )}
+          </tbody>
             </table>
           </div>
         </div>
@@ -131,4 +155,4 @@ function GroupStrategy() {
   );
 }
 
-export default GroupStrategy;
+export default Client_Orders;
