@@ -112,7 +112,7 @@ function Payment() {
 
   const getCompanyData = async () => {
     try {
-      var data = { id: admin_id, subadmin_service_type:subadmin_service_type}
+      var data = { id: admin_id, subadmin_service_type:subadmin_service_type || 0}
       const response = await dispatch(BalanceGetbyId(data)).unwrap();
 
       if (response.status) {

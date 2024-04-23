@@ -7,6 +7,7 @@ const User_model = db.user;
 const Role_modal = db.role;
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
+const count_licenses = db.count_licenses;
 
 
 
@@ -33,7 +34,6 @@ class Researcher {
                 ]
             };
 
-            console.log("prefix_key :", prifix_key)
             const existingUser = await User_model.findOne(searchQuery);
 
             if (existingUser) {
@@ -108,10 +108,30 @@ class Researcher {
 
         try {
             const AllData = await User_model.find({ parent_id: id, Role: "RESEARCH" })
+            const aggregateResult = await User_model.aggregate([
+                { $match: { parent_id: id, Role: "RESEARCH" } }, // Match all users
+                {
+                    $group: {
+                        _id: null,
+                        totalBalance: { $sum: { $toDouble: "$Balance" } },
+                        totalCount: { $sum: 1 }, // Count total users
+                        activeCount: {
+                            $sum: {
+                                $cond: { if: { $eq: ["$ActiveStatus", "1"] }, then: 1, else: 0 }
+                            }
+                        }
+                    }
+                }
+            ]);
+
+
+
+
             return res.send({
                 status: true,
                 msg: "Get All Data Successfully",
-                data: AllData
+                data: AllData,
+                count: aggregateResult[0]
             })
 
         }
@@ -126,6 +146,57 @@ class Researcher {
         }
 
     }
+    async addResearcherupdate(req, res) {
+        try {
+           const {_id,Balance,parent_id} = req.body
+
+
+           const get_user = await User_model.find({ _id: _id, Role: "RESEARCH" });
+
+           if (get_user.length == 0) {
+             return res.send({
+               status: false,
+               msg: "Empty data",
+               data: [],
+             });
+           }
+           const filter = { _id: _id };
+           const updatedBalance =
+             isNaN(get_user[0].Balance) || get_user[0].Balance === ""
+               ? Number(Balance)
+               : Number(Balance) + Number(get_user[0].Balance);
+     
+           const updateOperation = {
+             $set: { Balance: updatedBalance },
+           };
+     
+     
+           const result = await User_model.updateOne(filter, updateOperation);
+
+          
+          const count_licenses_add = new count_licenses({
+            user_id: _id,
+            Role: "RESEARCH",
+            admin_id: parent_id,
+            Balance:Balance,
+            Mode: "CASH"
+          });
+          await count_licenses_add.save();
+      
+          if (!result) {
+            return res.send({ status: false, msg: "Data not updated", data: [] });
+          }
+      
+          return res.send({
+            status: true,
+            msg: "Data updated",
+            data: result,
+          });
+        } catch (error) {
+          console.error("Internal error:", error);
+          return res.status(500).send({ status: false, msg: "Internal server error" });
+        }
+      }
 
 
 }

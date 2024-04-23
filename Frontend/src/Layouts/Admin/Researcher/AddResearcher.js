@@ -19,7 +19,8 @@ const AddResearcher = () => {
       email: '',
       password: '',
       strategy_percentage: '',
-      prifix_key: ''
+      prifix_key: '',
+      Balance : '',
     },
     validate: (values) => {
       let errors = {}
@@ -48,6 +49,9 @@ const AddResearcher = () => {
       if (!values.prifix_key) {
         errors.prifix_key = "Please Enter Unique Prifx key"
       }
+      if (!values.Balance) {
+        errors.Balance = "Please Enter Balance"
+      }
       return errors;
     },
     onSubmit: async (values) => {
@@ -62,6 +66,7 @@ const AddResearcher = () => {
           Strategy_percentage_to_researcher: values.strategy_percentage,
           prifix_key: values.prifix_key,
           user_id: user_id,
+          Balance : values.Balance,
         };
         const response = await dispatch(Add_Researcher(data)).unwrap();
 
@@ -148,6 +153,14 @@ const AddResearcher = () => {
       name: "prifix_key",
       label: "Prifix key",
       type: "text2",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "Balance",
+      label: "Balance",
+      type: "text3",
       label_size: 12,
       col_size: 6,
       disable: false,

@@ -10,6 +10,7 @@ import Profile from '../Layouts/Comman/Profile/Profile';
 import Faqs from '../Layouts/Comman/Faqs';
 
 import Empdashboard from '../Layouts/Employee/Dashboard/Empdashboard';
+import Wallets from '../Layouts/Comman/Wallet/Wallets';
 
 
 
@@ -25,6 +26,7 @@ const Research = () => {
             <div className='page-wrapper' >
                 <Routes>
                     <Route exact path="/dashboard" element={<Empdashboard />} />
+                    <Route exact path="/wallet" element={<Wallets />} />
 
                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/faqs" element={<Faqs />} />
