@@ -107,41 +107,22 @@ class profile {
         return res.status(400).send({ status: false, msg: "ID NOT FOUND" });
       }
 
-      if (role === "USER") {
-        let messagedata = await user_logs.find({ role: "USER", user_Id: _id });
+      let messagedata = await user_logs.find({ user_Id: _id });
 
-        if (!messagedata || messagedata.length === 0) {
-          return res.send({
-            status: false,
-            msg: "No messages found",
-            data: [],
-          });
-        }
-
+      if (!messagedata || messagedata.length === 0) {
         return res.send({
-          status: true,
-          msg: " DATA FOUND .",
-          data: messagedata,
+          status: false,
+          msg: "No messages found",
+          data: [],
         });
-      } else if (role === "SUBADMIN") {
-        let messagedata = await user_logs
-          .find({ role: "SUBADMIN", user_Id: _id })
-          .sort({ createdAt: -1 });
-
-        if (!messagedata || messagedata.length === 0) {
-          return res.send({ status: false, msg: "data not  found", data: [] });
-        }
-
-        return res.send({
-          status: true,
-          msg: "data found",
-          data: messagedata,
-        });
-      } else {
-        return res
-          .status(403)
-          .send({ status: false, msg: "Unauthorized Role" });
       }
+
+      return res.send({
+        status: true,
+        msg: " DATA FOUND .",
+        data: messagedata,
+      }); cd
+
     } catch (error) {
       console.error("Internal error:", error);
       return res

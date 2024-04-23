@@ -135,7 +135,7 @@ const AddClient = () => {
 
       };
 
-      console.log("selectedCheckboxesAndPlan",selectedCheckboxesAndPlan)
+      console.log("selectedCheckboxesAndPlan", selectedCheckboxesAndPlan)
 
       var stg_error = 0
       if (selectedCheckboxesAndPlan.length > 0) {
@@ -147,7 +147,7 @@ const AddClient = () => {
         })
       }
 
-      if(stg_error == 1){
+      if (stg_error == 1 && values.licence == 2) {
         Swal.fire({
           title: "Error!",
           text: "Please Select A Plan ",
@@ -158,37 +158,52 @@ const AddClient = () => {
         return
       }
 
-      await dispatch(UpdateUsers(req))
-        .unwrap()
-        .then(async (response) => {
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        denyButtonText: `Don't save`
+      }).then(async (result) => {
+        if (result.isConfirmed) {
 
-          console.log("response", response)
+          await dispatch(UpdateUsers(req))
+            .unwrap()
+            .then(async (response) => {
+              console.log("response", response)
+              if (response.status) {
 
-          if (response.status) {
+                Swal.fire({
+                  title: "Update Successful!",
+                  text: response.msg,
+                  icon: "success",
+                  timer: 1200,
+                  timerProgressBar: true
+                });
+                setTimeout(() => {
+                  navigate("/subadmin/users")
+                }, 1200);
 
-            Swal.fire({
-              title: "Update Successful!",
-              text: response.msg,
-              icon: "success",
-              timer: 1200,
-              timerProgressBar: true
+              } else {
+                Swal.fire({
+                  title: "Error!",
+                  text: response.msg,
+                  icon: "error"
+                });
+              }
+
+            })
+            .catch((error) => {
+              console.log("Error", error);
             });
-            setTimeout(() => {
-              navigate("/subadmin/users")
-            }, 1200);
+        } else if (result.isDenied) {
+    
+            navigate("/subadmin/users")
+      
+        }
+      });
 
-          } else {
-            Swal.fire({
-              title: "Error!",
-              text: response.msg,
-              icon: "error"
-            });
-          }
 
-        })
-        .catch((error) => {
-          console.log("Error", error);
-        });
 
     },
   });
