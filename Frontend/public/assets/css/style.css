@@ -9388,10 +9388,9 @@ table .badge {
 
 [data-layout=horizontal] body ul.hidden-links>li a {
     display: block;
-    padding: 5px 15px
-}
+    padding: 5px 15px;
 
-[data-layout=horizontal] body ul.hidden-links>li a:hover {
+[data-layout=horizontal] body ul.hidden-links>li a:hover{
     background: 0 0
 }
 
