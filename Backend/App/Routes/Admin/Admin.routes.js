@@ -14,6 +14,8 @@ const { EditCompany, GetCompanyInfo, GetCompany_logo, EditEmailInfo } = require(
 const { EditSubAdminCompany, GetAllCompanyInfo,GetCompanyInfoById} = require('../../Controllers/Admins/Admins/SubadminCompany.controller')
 
 
+
+
 // USER ADD EDIT
 router.post('/admin/add', AddAdmin);
 

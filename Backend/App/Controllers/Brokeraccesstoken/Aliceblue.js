@@ -82,53 +82,32 @@ class AliceBlue {
     
                             if (response.data.userSession) {
     
-                                if (Get_User[0].Role == "USER") {
-    
-                                    let result = await User.findByIdAndUpdate(
-                                        Get_User[0]._id,
-                                        {
-                                            access_token: response.data.userSession,
-                                            TradingStatus: "on"
-                                        })
-                                    const user_login = new user_logs({
+
+
+                                let result = await User.findByIdAndUpdate(
+                                    Get_User[0]._id,
+                                    {
+                                        access_token: response.data.userSession,
+                                        TradingStatus: "on"
+                                    })
+
+                                if (result != "") {
+
+                                    const Subadmin_login = new user_logs({
                                         user_Id: Get_User[0]._id,
                                         trading_status: "Trading On",
                                         role: Get_User[0].Role,
                                         device: "WEB",
-    
+
                                     })
-                                    await user_login.save();
-                                    return res.redirect(redirect_uri);
-    
-                                } else {
-    
-                                    let result = await User.findByIdAndUpdate(
-                                        Get_User[0]._id,
-                                        {
-                                            access_token: response.data.userSession,
-                                            TradingStatus: "on"
-                                        })
-    
-                                    if (result != "") {
-    
-                                        const Subadmin_login = new subadmin_logs({
-                                            user_Id: Get_User[0]._id,
-                                            trading_status: "Trading On",
-                                            role: Get_User[0].Role,
-                                            device: "WEB",
-    
-                                        })
-                                        await Subadmin_login.save();
-                                        if (Subadmin_login) {
-                                            return res.redirect(redirect_uri);
-    
-                                        }
+                                    await Subadmin_login.save();
+                                    if (Subadmin_login) {
+                                        return res.redirect(redirect_uri);
+
                                     }
-    
                                 }
-    
-    
-    
+
+
     
                             } else {
                                 return res.send(redirect_uri);

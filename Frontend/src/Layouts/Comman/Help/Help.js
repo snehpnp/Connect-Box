@@ -1,10 +1,10 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react";
-import FullDataTable from "../../Components/ExtraComponents/Tables/FullDataTable";
+import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import {
   getsubadmintable,
   userdataforhelp,
-} from "../../ReduxStore/Slice/Admin/System";
+} from "../../../ReduxStore/Slice/Admin/System";
 
 import { useDispatch } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";

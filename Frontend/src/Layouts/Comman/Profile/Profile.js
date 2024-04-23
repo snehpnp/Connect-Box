@@ -7,7 +7,16 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { fDateTime } from "../../../Utils/Date_formet";
+import { fDate } from "../../../Utils/Date_formet";
+import { isToday } from "../../../Utils/Date_formet";
 
+import {
+  ProfilImage,
+  ProfileUpdatedata,
+  profiledatauserId,
+  ActiveProfile,
+} from "../../../ReduxStore/Slice/Comman/Userinfo";
 
 import Toaster from "../../../Components/ExtraComponents/Alert_Toast";
 
@@ -22,20 +31,35 @@ const style = {
   boxShadow: 24,
   p: 4,
   height: 600,
-  borderRadius:"3rem"
+  borderRadius: "3rem",
 };
-
-
 
 const Profile = () => {
   const dispatch = useDispatch();
 
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+  const user = JSON.parse(localStorage.getItem("user_details"));
+
   const [profileData, setProfileData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [active, setActive] = useState([]);
   const [error, setError] = useState(null);
-  const [open, setOpen] = React.useState(false);
-  const [profileImage, setProfileImage] = useState("assets/img/profiles/ProfileAvataar/kangaroo.png");
-  const [avatarImages] = useState([
+  const [open, setOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState("");
+  const [editbtn, setEditbtn] = useState(false);
+  const [info, setInfo] = useState([]);
+  const [update, setUpdate] = useState({
+    user_Id: "",
+    Address: "",
+    Country: "",
+    State: "",
+    Location: "",
+    DOB: "",
+    CompanyName: "",
+  });
+
+  const avatarImages = [
     "hacker.png",
     "gamer (1).png",
     "character.png",
@@ -71,23 +95,95 @@ const Profile = () => {
     "squirrel.png",
     "tiger.png",
     "wolf (1).png",
+  ];
 
+ 
 
-  ])
+  const handleAvatarClick = async (avatarUrl) => {
+    try {
+      var data = { user_id: user_id, profile_img: avatarUrl };
+      const response = await dispatch(ProfilImage(data)).unwrap();
 
-   
-  
-  useEffect(() => {
-    localStorage.setItem('profileImage', profileImage)
-  }, [profileImage]);
+      if (response.status) {
+        setRefresh(!refresh);
+      }
+    } catch (error) {
+      console.error("Error", error);
+      toast.error("Failed to update profile");
+    }
 
-  const handleAvatarClick = (avatarUrl) => {
-    
-    setProfileImage(avatarUrl);
-    setOpen(false); // Close the modal after selecting an avatar
+    setOpen(false);
   };
 
-  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+  // update profile data
+
+  const Updateprofile = async () => {
+    await dispatch(
+      ProfileUpdatedata({
+        user_Id: user_id,
+        Address: update.Address,
+        Country: update.Country,
+        State: update.State,
+        Location: update.Location,
+        DOB: update.DOB,
+        CompanyName: update.CompanyName,
+      })
+    )
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          setEditbtn(!editbtn);
+          toast.success("Infomation added");
+          setRefresh(!refresh);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+        toast.error("error to add info");
+      });
+  };
+
+  //  profile information
+
+  const profiledata = async () => {
+    var data = { user_id: user_id };
+    await dispatch(profiledatauserId(data))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          setInfo(response.data);
+          setRefresh(!refresh);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+  useEffect(() => {
+    profiledata();
+  }, []);
+
+  ///active status
+
+  const profilestatus = async () => {
+    var data = { _id: user_id, role: user.Role };
+    await dispatch(ActiveProfile(data))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          setActive(response.data);
+          setRefresh(!refresh);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+  useEffect(() => {
+    profilestatus();
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -98,6 +194,7 @@ const Profile = () => {
         .then(async (response) => {
           if (response.status) {
             setProfileData(response.data);
+            setProfileImage(response.data[0].profile_img);
             setLoading(true);
           } else {
             toast.error(response.msg);
@@ -115,7 +212,7 @@ const Profile = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refresh]);
 
   return (
     <div>
@@ -127,12 +224,12 @@ const Profile = () => {
                 <div className="profile-cover-wrap">
                   <img
                     className="profile-cover-img"
-                    src="assets/img/profiles/ProfileAvataar/gamer.png"
+                    src="assets/img/profiles/ProfileAvataar/—Pngtree—abstract geometric poster cover hexagon_9008888.png"
                     alt="Profile Cover"
                     id="cover-image"
                   />
                   <div className="cover-content">
-                    <div className="custom-file-btn">
+                    {/* <div className="custom-file-btn">
                       <input
                         type="file"
                         className="custom-file-btn-input"
@@ -147,7 +244,7 @@ const Profile = () => {
                           Update Cover
                         </span>
                       </label>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -158,7 +255,11 @@ const Profile = () => {
                 >
                   <img
                     className="avatar-img"
-                    src={profileImage}
+                    src={
+                      profileImage
+                        ? profileImage
+                        : "assets/img/profiles/ProfileAvataar/hacker.png"
+                    }
                     alt="Profile Image"
                     id="blah"
                   />
@@ -171,8 +272,6 @@ const Profile = () => {
                   >
                     <i className="fe fe-edit avatar-uploader-icon shadow-soft" />
                   </span>
-
-                  
 
                   <Modal
                     open={open}
@@ -199,16 +298,12 @@ const Profile = () => {
                           alignItems: "center",
                           gap: "2.5rem",
                           flexWrap: "wrap",
-                          
-                          
                         }}
                       >
-                        
-
                         {avatarImages.map((avatar, index) => (
                           <img
                             key={index}
-                            className="avatar-img grow" 
+                            className="avatar-img grow"
                             src={`assets/img/profiles/ProfileAvataar/${avatar}`}
                             alt={`Profile Image ${index + 1}`}
                             onClick={() =>
@@ -219,8 +314,6 @@ const Profile = () => {
                             style={{ width: "5rem", cursor: "pointer" }}
                           />
                         ))}
-
-
                       </Typography>
                     </Box>
                   </Modal>
@@ -237,19 +330,25 @@ const Profile = () => {
                     data-original-title="Verified"
                   />
                 </h2>
-                <ul className="list-inline">
-                  <li className="list-inline-item">
-                    <i className="far fa-building" />{" "}
-                    <span>Hafner Pvt Ltd.</span>
-                  </li>
-                  <li className="list-inline-item">
-                    <i className="fas fa-map-marker-alt" /> West Virginia, US
-                  </li>
-                  <li className="list-inline-item">
-                    <i className="far fa-calendar-alt" />{" "}
-                    <span>Joined November 2017</span>
-                  </li>
-                </ul>
+                {info &&
+                  info.map((item, index) => {
+                    return (
+                      <ul className="list-inline">
+                        <li className="list-inline-item">
+                          <i className="far fa-building" />{" "}
+                          <span>{item.CompanyName}</span>
+                        </li>
+                        <li className="list-inline-item">
+                          <i className="fas fa-map-marker-alt" />
+                          {item.Country}
+                        </li>
+                        <li className="list-inline-item">
+                          <i className="far fa-calendar-alt" />{" "}
+                          <span>{fDate(item.DOB)}</span>
+                        </li>
+                      </ul>
+                    );
+                  })}
               </div>
               <div className="row">
                 <div className="col-lg-4">
@@ -275,43 +374,221 @@ const Profile = () => {
                         <span>Profile</span>
                         <a
                           className="btn btn-sm btn-white"
-                          href="settings.html"
+                          onClick={() => {
+                            setEditbtn(!editbtn);
+                          }}
                         >
-                          Edit
+                          Add Info
                         </a>
                       </h5>
+                      {editbtn && (
+                        <div
+                          className="modal custom-modal d-block kk"
+                          role="dialog"
+                        >
+                          <div className="modal-dialog modal-dialog-centered modal-md">
+                            <div className="modal-content">
+                              <div className="modal-header border-0 pb-0">
+                                <div className="form-header modal-header-title text-start mb-0">
+                                  <h4 className="mb-0">Information</h4>
+                                </div>
+
+                                <button
+                                  type="button"
+                                  className="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                  onClick={() => setEditbtn(!editbtn)}
+                                ></button>
+                              </div>
+
+                              <form>
+                                <div className="modal-body">
+                                  <div className="row">
+                                    <div className="col-lg-12 col-sm-12">
+                                      <div className="input-block mb-3">
+                                        <label>Address</label>
+
+                                        <input
+                                          type="text"
+                                          className="form-control"
+                                          placeholder="Enter Address"
+                                          value={update.Address}
+                                          onChange={(e) => {
+                                            setUpdate({
+                                              ...update,
+                                              Address: e.target.value,
+                                            });
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-lg-12 col-sm-12">
+                                      <div className="input-block mb-3">
+                                        <label>Country</label>
+
+                                        <input
+                                          type="text"
+                                          className="form-control"
+                                          placeholder="Enter Country"
+                                          value={update.Country}
+                                          onChange={(e) => {
+                                            setUpdate({
+                                              ...update,
+                                              Country: e.target.value,
+                                            });
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-lg-12 col-sm-12">
+                                      <div className="input-block mb-3">
+                                        <label>State</label>
+
+                                        <input
+                                          type="text"
+                                          className="form-control"
+                                          placeholder="Enter State"
+                                          value={update.State}
+                                          onChange={(e) => {
+                                            setUpdate({
+                                              ...update,
+                                              State: e.target.value,
+                                            });
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-lg-12 col-sm-12">
+                                      <div className="input-block mb-3">
+                                        <label>Location</label>
+
+                                        <input
+                                          type="text"
+                                          className="form-control"
+                                          placeholder="Enter current Location"
+                                          value={update.Location}
+                                          onChange={(e) => {
+                                            setUpdate({
+                                              ...update,
+                                              Location: e.target.value,
+                                            });
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-lg-12 col-sm-12">
+                                      <div className="input-block mb-0">
+                                        <label>DOB</label>
+
+                                        <input
+                                          type="Date"
+                                          className="form-control"
+                                          placeholder="Enter birth date"
+                                          value={update.DOB}
+                                          onChange={(e) => {
+                                            setUpdate({
+                                              ...update,
+                                              DOB: e.target.value,
+                                            });
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+
+                                    <div className="col-lg-12 col-sm-12">
+                                      <div className="input-block mb-0">
+                                        <label>Company Name</label>
+
+                                        <input
+                                          type="text"
+                                          className="form-control"
+                                          placeholder="Enter Company Name"
+                                          value={update.CompanyName}
+                                          onChange={(e) => {
+                                            setUpdate({
+                                              ...update,
+                                              CompanyName: e.target.value,
+                                            });
+                                          }}
+                                        />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div className="modal-footer">
+                                  <button
+                                    type="button"
+                                    data-bs-dismiss="modal"
+                                    className="btn btn-back cancel-btn me-2"
+                                    onClick={() => {
+                                      setEditbtn(!editbtn);
+                                    }}
+                                  >
+                                    Cancel
+                                  </button>
+
+                                  <button
+                                    type="submit"
+                                    // data-bs-dismiss="modal"
+                                    className="btn btn-primary paid-continue-btn"
+                                    onClick={Updateprofile}
+                                  >
+                                    Update
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                     <div className="card-body">
-                      <ul className="list-unstyled mb-0">
-                        <li className="py-0">
-                          <h6>About</h6>
-                        </li>
-                        <li>Charles Hafner</li>
-                        <li>Hafner Pvt Ltd.</li>
-                        <li className="pt-2 pb-0">
-                          <h6>Contacts</h6>
-                        </li>
-                        <li>
-                          <a
-                            href="https://kanakku.dreamstechnologies.com/cdn-cgi/l/email-protection"
-                            className="__cf_email__"
-                            data-cfemail="f4979c95869891879c95929a9186b4918c9599849891da979b99"
-                          ></a>
-                        </li>
-                        <li>+91 123-456-7890</li>
-                        <li className="pt-2 pb-0">
-                          <h6>Address</h6>
-                        </li>
-                        <li>
-                          4663 Agriculture Lane,
-                          <br />
-                          Miami,
-                          <br />
-                          Florida - 33165,
-                          <br />
-                          United States.
-                        </li>
-                      </ul>
+                      {info &&
+                        info.map((item, index) => (
+                          <ul key={index} className="list-unstyled mb-0">
+                            <li className="pt-2 pb-0">
+                              <h6>Company Name</h6>
+                              <li> {item.CompanyName} </li>
+                            </li>
+                            <br />
+
+                            <li></li>
+                            <li className="pt-2 pb-0">
+                              <h6>Address</h6>
+                              <li> {item.Address} </li>
+                            </li>
+                            <br />
+
+                            <li className="pt-2 pb-0">
+                              <h6>DOB</h6>
+                              <li> {fDate(item.DOB)} </li>
+                            </li>
+                            <br />
+
+                            <li className="pt-2 pb-0">
+                              <h6>Location</h6>
+                              <li> {item.Location} </li>
+                            </li>
+                            <br />
+
+                            <li className="pt-2 pb-0">
+                              <h6>State</h6>
+                              <li> {item.State} </li>
+                            </li>
+                            <br />
+
+                            <li className="pt-2 pb-0">
+                              <h6>Country</h6>
+                              <li> {item.Country} </li>
+                            </li>
+                          </ul>
+                        ))}
                     </div>
                   </div>
                 </div>
@@ -322,57 +599,19 @@ const Profile = () => {
                     </div>
                     <div className="card-body card-body-height">
                       <ul className="activity-feed">
-                        <li className="feed-item">
-                          <div className="feed-date">Nov 16</div>
-                          <span className="feed-text">
-                            <a href="profile.html" style={{ color: "blue" }}>
-                              Brian Johnson
-                            </a>{" "}
-                            has paid the invoice
-                          </span>
-                        </li>
-                        <li className="feed-item">
-                          <div className="feed-date">Nov 7</div>
-                          <span className="feed-text">
-                            <a href="profile.html" style={{ color: "blue" }}>
-                              Marie Canales
-                            </a>{" "}
-                            has accepted your estimate
-                          </span>
-                        </li>
-
-                        <li className="feed-item">
-                          <div className="feed-date">Oct 24</div>
-                          <span className="feed-text">New expenses added</span>
-                        </li>
-                        <li className="feed-item">
-                          <div className="feed-date">Oct 24</div>
-                          <span className="feed-text">New expenses added</span>
-                        </li>
-                        <li className="feed-item">
-                          <div className="feed-date">Jan 27</div>
-                          <span className="feed-text">
-                            <a href="profile.html" style={{ color: "blue" }}>
-                              Robert Martin
-                            </a>{" "}
-                            gave a review for{" "}
-                            <a
-                              href="product-details.html"
-                              style={{ color: "blue" }}
-                            >
-                              "Dell Laptop"
-                            </a>
-                          </span>
-                        </li>
-                        <li className="feed-item">
-                          <div className="feed-date">Jan 14</div>
-                          <span className="feed-text">
-                            New customer registered{" "}
-                            <a href="profile.html" style={{ color: "blue" }}>
-                              "Tori Carter"
-                            </a>
-                          </span>
-                        </li>
+                        {active
+                          .filter((item) => isToday(new Date(item.createdAt)))
+                          .map((item, index) => (
+                            <li key={index} className="feed-item">
+                              <div className="feed-date">
+                                {fDateTime(item.createdAt)}
+                              </div>
+                              <span className="feed-text">
+                                <a style={{ color: "blue" }}>{item.role}</a>{" "}
+                                {item.trading_status}
+                              </span>
+                            </li>
+                          ))}
                       </ul>
                     </div>
                   </div>

@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import FullDataTable from "../../Components/ExtraComponents/Tables/FullDataTable";
+import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 
-import {
-  postuserhelp,
-  userdataforhelp,
-  deleteuserdata,
-} from "../../ReduxStore/Slice/Admin/System";
-
-import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
+import {postuserhelp,userdataforhelp,deleteuserdata} from "../../../ReduxStore/Slice/Admin/System";
+  
+import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -281,7 +277,7 @@ const Helpuser = () => {
                                         });
                                       }}
                                     ></textarea>
-                                     { !help.Message ?<div><p style={{color:"red"}}>Please Enter Message</p></div>:""}
+                                    {!help.Message ? <div><p style={{ color: "red" }}>Please Enter Message</p></div> : ""}
                                   </div>
                                 </div>
                                 <div
@@ -313,22 +309,22 @@ const Helpuser = () => {
               <h1
                 className="col-lg-4 col-md-4"
                 data-aos="fade-left"
-                style={{ color: "black",width:"76rem" }}
-                
+                style={{ color: "black", width: "76rem" }}
+
               >
                 <div className="content-page-header">
-                  <h1 style={{ fontSize: "2rem", marginTop: "1rem"}}>
+                  <h1 style={{ fontSize: "2rem", marginTop: "1rem" }}>
                     User Detail
                   </h1>
                 </div>
                 {
-                <FullDataTable
-                  styles={styles}
-                  columns={columns2}
-                  rows={getuserdata}
-                />
-              }
-              </h1> 
+                  <FullDataTable
+                    styles={styles}
+                    columns={columns2}
+                    rows={getuserdata}
+                  />
+                }
+              </h1>
             </div>
           </div>
         </div>

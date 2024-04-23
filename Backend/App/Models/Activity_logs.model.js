@@ -1,23 +1,24 @@
 const mongoose = require('mongoose');
 
-const subadminActivitySchema = new mongoose.Schema({
+const ActivitySchema = new mongoose.Schema({
     user_Id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "USER"
     },
-    login_status: {
+    admin_Id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "USER"
+    },
+    category: {
         type: String,
         default: null
     },
-    trading_status: {
-        type: String,
-        default: null
-    },
+   
     message: {
         type: String,
         default: null
     },
-    role: {
+    maker_role: {
         type: String,
         default: null
     },
@@ -38,5 +39,5 @@ const subadminActivitySchema = new mongoose.Schema({
     _id: true,
 });
 
-const subadmin_logs = mongoose.model('subadmin_logs', subadminActivitySchema);
-module.exports = subadmin_logs;
+const activity_logs = mongoose.model('activity_logs', ActivitySchema);
+module.exports = activity_logs;

@@ -36,12 +36,8 @@ const Overview = () => {
   const [adminData, setAdminData] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const maxPercentage = adminData.Totalcount;
-  const maxPercentageforUser = adminData.TotalUsercount;
-
   const [selectedSubadmin, setSelectedSubadmin] = useState("ALL");
   const [selectedSubadminid, setSelectedSubadminid] = useState("");
-
   const [selectedOption, setSelectedOption] = useState("Day");
 
   const handleSelect = (id) => {
@@ -52,154 +48,37 @@ const Overview = () => {
     setSelectedOption(event.target.textContent);
   };
 
-  const calculatePercentage = (count) =>
-    count !== undefined && count !== null
-      ? (count / maxPercentage) * 100
-      : null;
+const { Totalcount, TotalUsercount, TotalActivecount, TotalInActivecount, TotalActiveUsercount, TotalInActiveUsercount } = adminData;
 
-  const calculateUser = (count) =>
-    count !== undefined && count !== null
-      ? (count / maxPercentageforUser) * 100
-      : null;
-  const percentages = {
-    percentage: calculatePercentage(adminData.Totalcount),
-    percentage1: calculatePercentage(adminData.TotalActivecount),
-    percentage3: calculatePercentage(adminData.TotalInActivecount),
-    percentage4: calculateUser(adminData.TotalUsercount),
-    percentage5: calculateUser(adminData.TotalActiveUsercount),
-    percentage6: calculateUser(adminData.TotalInActiveUsercount),
-  };
-  const {
-    percentage,
-    percentage1,
-    percentage3,
-    percentage4,
-    percentage5,
-    percentage6,
-  } = percentages;
+const calculatePercentage = (count, base) => {
+  return (count !== undefined && count !== null && base) ? (count / base) * 100 : null;
+};
 
-  const cardsData = [
-    {
-      iconClass: "fas fa-users",
-      title: "Total Subadmins",
-      count:
-        adminData.Totalcount !== undefined
-          ? adminData.Totalcount
-          : "Loading...",
-      progress: percentage !== null ? percentage : 0,
-      arrowIcon:
-        adminData.Totalcount !== undefined &&
-          percentage !== null &&
-          percentage < 100
-          ? "fas fa-arrow-down"
-          : "fas fa-arrow-up",
-      percentageChange:
-        percentage !== null ? `${Math.round(percentage)}%` : "N/A",
-      sinceLastWeek: "since last week",
-      progressBarClass:
-        percentage !== null && percentage < 100 ? "bg-5" : "bg-6",
-    },
-    {
-      iconClass: "fas fa-users ",
-      title: "Active Subadmins",
-      count:
-        adminData.TotalActivecount !== undefined
-          ? adminData.TotalActivecount
-          : "Loading...",
-      progress: percentage1 !== null ? percentage1 : 0,
-      arrowIcon:
-        adminData.TotalActivecount !== undefined &&
-          percentage1 !== null &&
-          percentage1 < 100
-          ? "fas fa-arrow-down"
-          : "fas fa-arrow-up",
-      percentageChange:
-        percentage1 !== null ? `${Math.round(percentage1)}%` : "N/A",
-      sinceLastWeek: "since last week",
-      progressBarClass:
-        percentage1 !== null && percentage1 < 100 ? "bg-5" : "bg-6",
-    },
-    {
-      iconClass: "fas fa-users",
-      title: "Inactive Subadmins",
-      count:
-        adminData.TotalInActivecount !== undefined
-          ? adminData.TotalInActivecount
-          : "Loading...",
-      progress: percentage3 !== null ? percentage3 : 0,
-      arrowIcon:
-        adminData.TotalActivecount !== undefined &&
-          percentage3 !== null &&
-          percentage3 < 100
-          ? "fas fa-arrow-down"
-          : "fas fa-arrow-up",
-      percentageChange:
-        percentage3 !== null ? `${Math.round(percentage3)}%` : "N/A",
-      sinceLastWeek: "since last week",
-      progressBarClass:
-        percentage3 !== null && percentage3 < 100 ? "bg-5" : "bg-6",
-    },
-    {
-      iconClass: "fas fa-users",
-      title: "Total Users",
-      count:
-        adminData.TotalUsercount !== undefined
-          ? adminData.TotalUsercount
-          : "Loading...",
-      progress: percentage4 !== null ? percentage4 : 0,
-      arrowIcon:
-        adminData.TotalUsercount !== undefined &&
-          percentage4 !== null &&
-          percentage4 < 100
-          ? "fas fa-arrow-down"
-          : "fas fa-arrow-up",
-      percentageChange:
-        percentage4 !== null ? `${Math.round(percentage4)}%` : "N/A",
-      sinceLastWeek: "since last week",
-      progressBarClass:
-        percentage4 !== null && percentage4 < 100 ? "bg-5" : "bg-6",
-    },
-    {
-      iconClass: "fas fa-users",
-      title: "Active Users",
-      count:
-        adminData.TotalActiveUsercount !== undefined
-          ? adminData.TotalActiveUsercount
-          : "Loading...",
-      progress: percentage5 !== null ? percentage5 : 0,
-      arrowIcon:
-        adminData.TotalActiveUsercount !== undefined &&
-          percentage5 !== null &&
-          percentage5 < 100
-          ? "fas fa-arrow-down"
-          : "fas fa-arrow-up",
-      percentageChange:
-        percentage5 !== null ? `${Math.round(percentage5)}%` : "N/A",
-      sinceLastWeek: "since last week",
-      progressBarClass:
-        percentage5 !== null && percentage5 < 100 ? "bg-5" : "bg-6",
-    },
-    {
-      iconClass: "fas fa-users",
-      title: "Inactive Users",
-      count:
-        adminData.TotalInActiveUsercount !== undefined
-          ? adminData.TotalInActiveUsercount
-          : "Loading...",
-      progress: percentage6 !== null ? percentage6 : 0,
-      arrowIcon:
-        adminData.TotalInActiveUsercount !== undefined &&
-          percentage6 !== null &&
-          percentage6 < 100
-          ? "fas fa-arrow-down"
-          : "fas fa-arrow-up",
-      percentageChange:
-        percentage6 !== null ? `${Math.round(percentage6)}%` : "N/A",
-      sinceLastWeek: "since last week",
-      progressBarClass:
-        percentage6 !== null && percentage6 < 100 ? "bg-5" : "bg-6",
-    },
-  ];
+const formatCardData = (title, count, percentage, base) => ({
+  iconClass: "fas fa-users",
+  title,
+  count: count !== undefined ? count : "Loading...",
+  progress: percentage !== null ? percentage : 0,
+  arrowIcon:
+    count !== undefined && percentage !== null && percentage < 100
+      ? "fas fa-arrow-down"
+      : "fas fa-arrow-up",
+  percentageChange:
+    percentage !== null ? `${Math.round(percentage)}%` : "N/A",
+  sinceLastWeek: "since last week",
+  progressBarClass:
+    percentage !== null && percentage < 100 ? "bg-5" : "bg-6",
+});
+
+const cardsData = [
+  formatCardData("Total Subadmins", Totalcount, calculatePercentage(Totalcount, Totalcount)),
+  formatCardData("Active Subadmins", TotalActivecount, calculatePercentage(TotalActivecount, Totalcount)),
+  formatCardData("Inactive Subadmins", TotalInActivecount, calculatePercentage(TotalInActivecount, Totalcount)),
+  formatCardData("Total Users", TotalUsercount, calculatePercentage(TotalUsercount, TotalUsercount)),
+  formatCardData("Active Users", TotalActiveUsercount, calculatePercentage(TotalActiveUsercount, TotalUsercount)),
+  formatCardData("Inactive Users", TotalInActiveUsercount, calculatePercentage(TotalInActiveUsercount, TotalUsercount)),
+];
+
 
   const dashData = async () => {
     await dispatch(Dashboard_admin())
@@ -280,6 +159,8 @@ const Overview = () => {
 
   var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
 
+
+
   return (
     <div className="main-wrapper">
       <div>
@@ -315,7 +196,7 @@ const Overview = () => {
                             <i className={`${data.iconClass}`} id="animated" />
                           </span>
                           <div className="dash-count">
-                          <div className="dash-title" style={{fontWeight:'600'}}>{data.title}</div>
+                            <div className="dash-title" style={{ fontWeight: '600' }}>{data.title}</div>
 
                             <div className="dash-counts">
                               <p>{data.count}</p>
@@ -518,12 +399,14 @@ const Overview = () => {
                           </div>
                         </div>
                       </div>
-                      <div
-                        className="gif-div"
-                        style={{ height: "400px", marginTop: "-60px" }}
-                      >
-                        <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
+
+
+                      <div className="row">
+                        <div className="donut">
+                          <Chart options={options} series={[44, 55, 41, 17, 15]} type="donut" width="380" />
+                        </div>
                       </div>
+
                     </div>
                   </div>
                 </div>

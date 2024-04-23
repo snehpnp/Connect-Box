@@ -24,6 +24,8 @@ function Edit_Strategies() {
         if (response.payload && response.payload.data) {
      
           setAllStrategy(response.payload.data);
+          setStgDescription(response.payload.data.strategy_description)
+
         }
       } catch (error) {
         console.error("Error fetching strategy data:", error);
@@ -105,7 +107,7 @@ function Edit_Strategies() {
         type: "test",
         label_size: 12,
         col_size: 6,
-        disable: false,
+        disable: true,
     },
     {
         name: "strategy_amount_month",
@@ -174,9 +176,6 @@ function Edit_Strategies() {
         errors.strategy_segment = "strategy segment is required";
       }
 
-      if (!values.strategy_description) {
-        errors.strategy_description = "strategy description is required";
-      }
       if (!values.strategy_amount_month) {
         errors.strategy_amount_month = "amount is required";
       }
@@ -193,6 +192,7 @@ function Edit_Strategies() {
       return errors;
     },
     onSubmit: async (values) => {
+      console.log("values",values)
       const data = {
         _id: id,
         strategy_name: values.strategy_name,
@@ -202,7 +202,7 @@ function Edit_Strategies() {
         strategy_demo_days: values.strategy_demo_days,
         strategy_indicator: values.strategy_indicator,
         strategy_image: values.strategy_image,
-        strategy_description: values.strategy_description,
+        strategy_description: getStgDescription,
         strategy_amount_month: values.strategy_amount_month,
         strategy_amount_quarterly: values.strategy_amount_quarterly,
         strategy_amount_half_early: values.strategy_amount_half_early,

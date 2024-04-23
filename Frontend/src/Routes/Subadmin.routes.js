@@ -15,7 +15,7 @@ import AllServices from "../Layouts/SubAdmin/Services/AllServices/AllServices.js
 import Edit_Strategies from "../Layouts/SubAdmin/Services/Strategys/Edit_Strategies"
 
 
-import Help from '../Layouts/Comman/Help';
+import Help from '../Layouts/Comman/Help/Helpsubadmin.js';
 import MessageBroadcast from '../Layouts/SubAdmin/MessageBroadCast/MessageBroadCast';
 
 
@@ -42,6 +42,8 @@ import Profile from '../Layouts/Comman/Profile/Profile';
 import Openposition from '../Layouts/SubAdmin/Option/Open_Positions.js';
 
 import Faqs from '../Layouts/Comman/Faqs';
+
+import Client_Orders from '../Layouts/SubAdmin/Trade/Client_Orders'
 
 // strategydesc
 const SubAdmin_Routing = () => {
@@ -76,8 +78,11 @@ const SubAdmin_Routing = () => {
           <Route exact path="/orders" element={<OrderDetails />} />
           <Route exact path="/position" element={<Position />} />
           <Route exact path="/open-position" element={<Openposition />} />
+          <Route exact path="/client/orders" element={<Client_Orders/>}/>
+
 
           <Route exact path="/faqs" element={<Faqs />} />
+
 
 
 

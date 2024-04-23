@@ -20,7 +20,6 @@ const FullDataTable = ({ tableData, TableColumns, tableoptions, selectRow, keyFi
 
 
 
-
     return <>
         <div className=''>
 

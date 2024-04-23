@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_USERS, ADD_USERS, GET_ALL_BROKER, active_Status, GET_ONE_USER, DELETE_USER } from "../../../Services/Subadmin/all.service";
+import { GET_ALL_USERS, ADD_USERS, UPDATE_USERS, GET_ALL_BROKER, active_Status, GET_ONE_USER, DELETE_USER } from "../../../Services/Subadmin/all.service";
 
 
 export const GetAllUsers = createAsyncThunk("user/getAll",
@@ -27,11 +27,24 @@ export const AddUsers = createAsyncThunk("user/add",
     }
 );
 
+export const UpdateUsers = createAsyncThunk("user/update",
+    async (data) => {
+
+        try {
+            const res = await UPDATE_USERS(data);
+
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
 export const Get_All_Broker = createAsyncThunk("broker/get",
     async () => {
         try {
             const res = await GET_ALL_BROKER();
-        
+
             return res;
         }
         catch (err) {
@@ -48,27 +61,27 @@ export const Show_Status = createAsyncThunk("user/status_update", async (data) =
     }
 });
 
-export const GetOneUser = createAsyncThunk('user/get', 
-   async (data)=>{
-    try{
-        const res = await GET_ONE_USER(data);
-        return res;
+export const GetOneUser = createAsyncThunk('user/get',
+    async (data) => {
+        try {
+            const res = await GET_ONE_USER(data);
+            return res;
+        }
+        catch (err) {
+            throw err
+        }
     }
-    catch(err){
-        throw err
-    }
-   }
 )
-export const DeleteUser = createAsyncThunk('user/delete', 
-async (data)=>{
-    try{
-        const res = await DELETE_USER(data);
-        return res;
-    }
-    catch(err){
-        throw err;
-    }
-})
+export const DeleteUser = createAsyncThunk('user/delete',
+    async (data) => {
+        try {
+            const res = await DELETE_USER(data);
+            return res;
+        }
+        catch (err) {
+            throw err;
+        }
+    })
 
 
 
@@ -81,7 +94,7 @@ const StrategySlice = createSlice({
         userslice: null,
         add_users: null,
         get_all_broker: null,
-        show_status:null,
+        show_status: null,
         findone_user: null,
         delete_user: null,
 
@@ -132,8 +145,20 @@ const StrategySlice = createSlice({
                 state.delete_user = action.payload;
             })
 
+            .addCase(UpdateUsers.pending, (state, action) => {
 
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(UpdateUsers.fulfilled, (state, action) => {
 
+                state.isLoading = false;
+            })
+            .addCase(UpdateUsers.rejected, (state, action) => {
+
+                state.isLoading = false;
+                state.isError = true;
+            })
     },
 });
 
