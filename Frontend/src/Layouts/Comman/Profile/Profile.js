@@ -7,7 +7,9 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { fDateTime,fDate } from "../../../Utils/Date_formet";
+import { fDateTime } from "../../../Utils/Date_formet";
+import { fDate } from "../../../Utils/Date_formet";
+import { isToday } from "../../../Utils/Date_formet";
 
 import {
   ProfilImage,
@@ -36,12 +38,12 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
-  const user = JSON.parse(localStorage.getItem("user_details"))
- 
+  const user = JSON.parse(localStorage.getItem("user_details"));
+
   const [profileData, setProfileData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const [active,setActive] = useState([])
+  const [active, setActive] = useState([]);
   const [error, setError] = useState(null);
   const [open, setOpen] = useState(false);
   const [profileImage, setProfileImage] = useState("");
@@ -93,11 +95,11 @@ const Profile = () => {
     "squirrel.png",
     "tiger.png",
     "wolf (1).png",
-    
   ];
 
-  const handleAvatarClick = async (avatarUrl) => {
+ 
 
+  const handleAvatarClick = async (avatarUrl) => {
     try {
       var data = { user_id: user_id, profile_img: avatarUrl };
       const response = await dispatch(ProfilImage(data)).unwrap();
@@ -130,7 +132,7 @@ const Profile = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          setEditbtn(!editbtn)
+          setEditbtn(!editbtn);
           toast.success("Infomation added");
           setRefresh(!refresh);
         }
@@ -143,15 +145,12 @@ const Profile = () => {
 
   //  profile information
 
-
-
   const profiledata = async () => {
-    var data = {user_id:user_id};
+    var data = { user_id: user_id };
     await dispatch(profiledatauserId(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-        
           setInfo(response.data);
           setRefresh(!refresh);
         }
@@ -165,17 +164,15 @@ const Profile = () => {
     profiledata();
   }, []);
 
-
-  ///active status 
+  ///active status
 
   const profilestatus = async () => {
-    var data = {_id:user_id,role:user.Role};
+    var data = { _id: user_id, role: user.Role };
     await dispatch(ActiveProfile(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-        
-          setActive(response.data)
+          setActive(response.data);
           setRefresh(!refresh);
         }
       })
@@ -187,8 +184,6 @@ const Profile = () => {
   useEffect(() => {
     profilestatus();
   }, []);
-
-
 
   const fetchData = async () => {
     try {
@@ -335,25 +330,25 @@ const Profile = () => {
                     data-original-title="Verified"
                   />
                 </h2>
-                  {info && info.map((item,index)=>{
-                      return (
-
-                        <ul className="list-inline"  >
+                {info &&
+                  info.map((item, index) => {
+                    return (
+                      <ul className="list-inline">
                         <li className="list-inline-item">
                           <i className="far fa-building" />{" "}
                           <span>{item.CompanyName}</span>
                         </li>
                         <li className="list-inline-item">
-                          <i className="fas fa-map-marker-alt" />{item.Country}
+                          <i className="fas fa-map-marker-alt" />
+                          {item.Country}
                         </li>
                         <li className="list-inline-item">
                           <i className="far fa-calendar-alt" />{" "}
                           <span>{fDate(item.DOB)}</span>
                         </li>
                       </ul>
-                      )
+                    );
                   })}
-               
               </div>
               <div className="row">
                 <div className="col-lg-4">
@@ -557,41 +552,42 @@ const Profile = () => {
                       {info &&
                         info.map((item, index) => (
                           <ul key={index} className="list-unstyled mb-0">
-                          <li className="pt-2 pb-0">
-                            <h6>Company Name</h6>
-                            <li> {item.CompanyName}  </li>
-                          </li><br/>
+                            <li className="pt-2 pb-0">
+                              <h6>Company Name</h6>
+                              <li> {item.CompanyName} </li>
+                            </li>
+                            <br />
 
-                         
-                          <li>
-                          </li>
-                          <li className="pt-2 pb-0">
-                            <h6>Address</h6>
-                            <li> {item.Address}  </li>
-                          </li><br/>
+                            <li></li>
+                            <li className="pt-2 pb-0">
+                              <h6>Address</h6>
+                              <li> {item.Address} </li>
+                            </li>
+                            <br />
 
-                          <li className="pt-2 pb-0">
-                            <h6>DOB</h6>
-                            <li> {fDate(item.DOB)}  </li>
-                          </li><br/>
-                          
+                            <li className="pt-2 pb-0">
+                              <h6>DOB</h6>
+                              <li> {fDate(item.DOB)} </li>
+                            </li>
+                            <br />
 
-                          <li className="pt-2 pb-0">
-                            <h6>Location</h6>
-                            <li> {item.Location}  </li>
-                          </li><br/>
+                            <li className="pt-2 pb-0">
+                              <h6>Location</h6>
+                              <li> {item.Location} </li>
+                            </li>
+                            <br />
 
-                          <li className="pt-2 pb-0">
-                            <h6>State</h6>
-                            <li> {item.State}  </li>
-                          </li><br/>
+                            <li className="pt-2 pb-0">
+                              <h6>State</h6>
+                              <li> {item.State} </li>
+                            </li>
+                            <br />
 
-                          <li className="pt-2 pb-0">
-                            <h6>Country</h6>
-                            <li> {item.Country}  </li>
-                          </li>
-                          
-                        </ul>
+                            <li className="pt-2 pb-0">
+                              <h6>Country</h6>
+                              <li> {item.Country} </li>
+                            </li>
+                          </ul>
                         ))}
                     </div>
                   </div>
@@ -603,20 +599,19 @@ const Profile = () => {
                     </div>
                     <div className="card-body card-body-height">
                       <ul className="activity-feed">
-                       {active && active.map((item,index)=>{
-                             return (
-                              <li key={index} className="feed-item">
-                              <div className="feed-date">{fDateTime(item.createdAt)}</div>
+                        {active
+                          .filter((item) => isToday(new Date(item.createdAt)))
+                          .map((item, index) => (
+                            <li key={index} className="feed-item">
+                              <div className="feed-date">
+                                {fDateTime(item.createdAt)}
+                              </div>
                               <span className="feed-text">
-                                <a  style={{ color: "blue" }}>
-                                  {item.role}
-                                </a>{" "}
+                                <a style={{ color: "blue" }}>{item.role}</a>{" "}
                                 {item.trading_status}
                               </span>
                             </li>
-                             )     
-                       })}
-                       
+                          ))}
                       </ul>
                     </div>
                   </div>

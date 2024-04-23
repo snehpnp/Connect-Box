@@ -9,7 +9,7 @@ const db = require('../../Models');
 const SignUpUser = db.SignUpUser;
 const User = db.user;
 const company_information = db.company_information;
-const user_logs = db.user_logs;
+const user_logs = db.user_activity_logs;
 const subadmin_logs = db.subadmin_activity_logs;
 
 
@@ -98,7 +98,7 @@ class Auth {
                 { new: true }
             )
 
-            if (EmailCheck.Role == "USER") {
+            // if (EmailCheck.Role == "USER") {
                 const user_login = new user_logs({
                     user_Id: EmailCheck._id,
                     trading_status: "Panel On",
@@ -107,16 +107,16 @@ class Auth {
 
                 })
                 await user_login.save();
-            } else if (EmailCheck.Role == "SUBADMIN") {
-                const Subadmin_login = new subadmin_logs({
-                    user_Id: EmailCheck._id,
-                    trading_status: "Panle On",
-                    role: EmailCheck.Role,
-                    device: "WEB",
+            // } else if (EmailCheck.Role == "SUBADMIN") {
+            //     const Subadmin_login = new subadmin_logs({
+            //         user_Id: EmailCheck._id,
+            //         trading_status: "Panle On",
+            //         role: EmailCheck.Role,
+            //         device: "WEB",
 
-                })
-                await Subadmin_login.save();
-            }
+            //     })
+            //     await Subadmin_login.save();
+            // }
 
 
             try {
