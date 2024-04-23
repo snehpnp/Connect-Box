@@ -18,3 +18,15 @@ import * as Config from "../../Utils/Config";
 
     }
  }
+
+ export async function GET_ALL_RESEARCHER(data){
+    try{
+        const res= await axios.post(`${Config.base_url}researcher/getall`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch(error){
+        return await error
+    }
+ }

@@ -54,7 +54,7 @@ class Researcher {
                 }
             }
 
-            
+
 
             let hashedPassword;
             if (Password) {
@@ -100,6 +100,29 @@ class Researcher {
         } catch (error) {
             console.log(error, "Server side Error");
             return res.send({ status: false, msg: "Server side error" });
+        }
+
+    }
+    async GetAllResearcher(req, res) {
+        const { id } = req.body
+
+        try {
+            const AllData = await User_model.find({ parent_id: id, Role: "RESEARCH" })
+            return res.send({
+                status: true,
+                msg: "Get All Data Successfully",
+                data: AllData
+            })
+
+        }
+        catch (error) {
+            console.log("Error to fetch data", error)
+            return res.send({
+                status: false,
+                msg: "Error to fetch data",
+                data: []
+            })
+
         }
 
     }
