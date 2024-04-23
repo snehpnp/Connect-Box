@@ -41,27 +41,15 @@ const Settings = () => {
                                                 <span>Payment Methods</span>
                                             </a>
                                         </li>
-                                        <li className="nav-item">
-                                            <a href="bank-account.html" className="nav-link">
-                                                <i className="fe fe-aperture" /> <span>Bank Settings</span>
-                                            </a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a href="tax-rats.html" className="nav-link">
-                                                <i className="fe fe-file-text" /> <span>Tax Rates</span>
-                                            </a>
-                                        </li>
+                                     
+                                    
                                         <li className="nav-item">
                                             <a href="plan-billing.html" className="nav-link">
                                                 <i className="fe fe-credit-card" />{" "}
                                                 <span>Plan &amp; Billing</span>
                                             </a>
                                         </li>
-                                        <li className="nav-item">
-                                            <a href="two-factor.html" className="nav-link">
-                                                <i className="fe fe-aperture" /> <span>Two Factor</span>
-                                            </a>
-                                        </li>
+                                       
                                         <li className="nav-item">
                                             <a href="custom-filed.html" className="nav-link">
                                                 <i className="fe fe-file-text" /> <span>Custom Fields</span>
@@ -83,16 +71,7 @@ const Settings = () => {
                                                 <i className="fe fe-airplay" /> <span>Email Templates</span>
                                             </a>
                                         </li>
-                                        <li className="nav-item">
-                                            <a href="seo-settings.html" className="nav-link">
-                                                <i className="fe fe-send" /> <span>SEO Settings</span>
-                                            </a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a href="saas-settings.html" className="nav-link">
-                                                <i className="fe fe-target" /> <span>SaaS Settings</span>
-                                            </a>
-                                        </li>
+                                 
                                     </ul>
                                 </div>
                             </div>

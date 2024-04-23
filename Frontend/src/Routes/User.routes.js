@@ -17,7 +17,7 @@ import Profile from '../Layouts/Comman/Profile/Profile';
 import Bresponse from '../Layouts/User/Brokerresponse/Bresponse';
 
 import Orders from '../Layouts/User/Trade/Order';
-import Settings from '../Layouts/Admin/Setting/Settings';
+import Settings from '../Layouts/Comman/Setting_Page/Settings';
 
 
 // strategydesc

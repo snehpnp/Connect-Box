@@ -41,7 +41,7 @@ import EditResearcher from '../Layouts/Admin/Researcher/EditResearcher'
 import AllResearcher from '../Layouts/Admin/Researcher/AllResearcher'
 
 import SubAdCompanyInfo from '../Layouts/Admin/SubAdminCompany/SubAdCompanyInfo';
-import Settings from '../Layouts/Admin/Setting/Settings';
+import Settings from '../Layouts/Comman/Setting_Page/Settings';
 
 
 

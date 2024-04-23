@@ -44,7 +44,7 @@ import Openposition from '../Layouts/SubAdmin/Option/Open_Positions.js';
 import Faqs from '../Layouts/Comman/Faqs';
 
 import Client_Orders from '../Layouts/SubAdmin/Trade/Client_Orders'
-import Settings from '../Layouts/Admin/Setting/Settings';
+import Settings from '../Layouts/Comman/Setting_Page/Settings.js';
 
 // strategydesc
 const SubAdmin_Routing = () => {
