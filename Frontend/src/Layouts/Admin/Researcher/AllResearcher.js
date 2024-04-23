@@ -123,7 +123,6 @@ const AllResearcher = () => {
         </div>
       ),
     },
-
     {
       field: "actions",
       headerName: "Actions",
