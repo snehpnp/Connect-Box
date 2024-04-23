@@ -9,6 +9,7 @@ const Role_model = db.role;
 const Strategie_modal = db.Strategies;
 const strategy_client = db.strategy_client;
 const strategy_transaction = db.strategy_transaction;
+const Activity_logs = db.Activity_logs;
 
 
 
@@ -559,10 +560,43 @@ class Users {
 
       const existingUsername = await User_model.findOne({ _id: req._id })
 
-      const ExistStrategy = await strategy_client.find({
-        user_id: existingUsername._id,
-        ActiveStatus: "1"
-      });
+      const ExistStrategy = await strategy_client.aggregate([
+        {
+          $match: {
+            user_id: existingUsername._id,
+            ActiveStatus: "1"
+          }
+        },
+        {
+          $lookup: {
+            from: 'strategies',
+            localField: 'strategy_id',
+            foreignField: '_id',
+            as: 'strategyData'
+          }
+        },
+        {
+          $addFields: {
+            strategy_name: { $arrayElemAt: ['$strategyData.strategy_name', 0] }
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            admin_id: 1,
+            strategy_id: 1,
+            user_id: 1,
+            ActiveStatus: 1,
+            plan_id: 1,
+            Start_Date: 1,
+            End_Date: 1,
+            createdAt: 1,
+            strategy_name: 1 // Include strategy_name in the projection
+          }
+        }
+      ]);
+
+
 
       // IF CHECK STRATEGY NULL
       if (req.Strategies.length == 0) {
@@ -630,16 +664,13 @@ class Users {
             }
           }
         ]);
-        console.log("stg_count", stg_count)
+        // console.log("stg_count", stg_count)
         totalLicense = stg_count[0].totalAdminCharge;
-
       }
 
 
-      console.log("totalLicense", totalLicense)
+      // console.log("totalLicense", totalLicense)
       // console.log("ExistStrategy", ExistStrategy)
-
-
       // console.log("Req Strategy", req.Strategies)
 
 
@@ -663,26 +694,43 @@ class Users {
 
 
 
-      console.log("add_startegy", add_startegy)
-
-
+      // console.log("add_startegy", add_startegy)
 
 
       var delete_startegy = [];
       ExistStrategy.forEach(function (strategy, index) {
-        if (!req.Strategies.some((existingStrategy) => existingStrategy.id == strategy.strategy_id)) {
+
+        if (!req.Strategies.some(existingStrategy => existingStrategy.id === strategy.strategy_id.toString())) {
           delete_startegy.push(strategy);
         }
       });
+
       // console.log("delete_startegy", delete_startegy);
+
 
 
       if (req.license_type != "2") {
         if (delete_startegy.length > 0) {
           delete_startegy.forEach(async (data) => {
+
+            
             var deleteStrategy = await strategy_client.deleteOne({
               _id: data._id,
             });
+
+            // console.log("deleteStrategy",deleteStrategy.acknowledged)
+
+            const Activity_logsData = new Activity_logs({
+              user_Id: existingUsername._id,
+              admin_Id: ParentData._id,
+              category: "EDIT-USER",
+              message: data.strategy_name + " Strategy Remove",
+              maker_role: "SUBADMIN",
+              device: "web",
+              system_ip: ""
+            });
+            Activity_logsData.save();
+
           })
         }
 
@@ -720,7 +768,7 @@ class Users {
           // USER 2 DAYS LICENSE USEcd cd   
           if (req.license_type == "0") {
 
-            console.log("ssss 2")
+            // console.log("ssss 2")
             // if (existingUsername.license_type != "0") {
             var currentDate = new Date();
             var start_date_2days = dateTime.create(currentDate);
@@ -759,6 +807,19 @@ class Users {
                   End_Date: EndDate1
                 });
                 User_strategy_client.save();
+
+
+                const Activity_logsData = new Activity_logs({
+                  user_Id: existingUsername._id,
+                  admin_Id: ParentData._id,
+                  category: "EDIT-USER",
+                  message: data.strategy_name + " Strategy Add",
+                  maker_role: "SUBADMIN",
+                  device: "web",
+                  system_ip: ""
+                });
+                Activity_logsData.save();
+
               });
             }
 
@@ -805,6 +866,17 @@ class Users {
                 });
                 // console.log("User_strategy_client", User_strategy_client)
                 User_strategy_client.save();
+
+                const Activity_logsData = new Activity_logs({
+                  user_Id: existingUsername._id,
+                  admin_Id: ParentData._id,
+                  category: "EDIT-USER",
+                  message: data.strategy_name + " Strategy Add",
+                  maker_role: "SUBADMIN",
+                  device: "web",
+                  system_ip: ""
+                });
+                Activity_logsData.save();
               });
             }
 
@@ -875,6 +947,16 @@ class Users {
                 });
                 User_strategy_client.save();
 
+                const Activity_logsData = new Activity_logs({
+                  user_Id: existingUsername._id,
+                  admin_Id: ParentData._id,
+                  category: "EDIT-USER",
+                  message: data.strategy_name + " Strategy Add",
+                  maker_role: "SUBADMIN",
+                  device: "web",
+                  system_ip: ""
+                });
+                Activity_logsData.save();
 
                 const Admin_charge_percentage = Number(ParentData.strategy_Percentage) / 100;
                 const Admin_charge1 = Admin_charge_percentage * Number(price_stg);
@@ -964,6 +1046,19 @@ class Users {
                 User_strategy_client.save();
 
 
+                const Activity_logsData = new Activity_logs({
+                  user_Id: existingUsername._id,
+                  admin_Id: ParentData._id,
+                  category: "EDIT-USER",
+                  message: data.strategy_name + " Strategy Add",
+                  maker_role: "SUBADMIN",
+                  device: "web",
+                  system_ip: ""
+                });
+                Activity_logsData.save();
+
+
+
                 const Admin_charge_percentage = Number(ParentData.strategy_Percentage) / 100;
                 const Admin_charge1 = Admin_charge_percentage * Number(price_stg);
 
@@ -1020,15 +1115,17 @@ class Users {
 
             const GroupclientNAme = await serviceGroupName.find({ _id: GrpId });
 
-            const user_activity = new user_activity_logs({
-              user_id: existingUsername._id,
-              message: "Update Group ",
-              Strategy: GroupclientNAme[0].name,
-              role: req.Editor_role.toUpperCase(),
-              system_ip: getIPAddress(),
-              device: req.device,
+
+            const Activity_logsData = new Activity_logs({
+              user_Id: existingUsername._id,
+              admin_Id: ParentData._id,
+              category: "EDIT-USER",
+              message: GroupclientNAme[0].name + " Strategy Remove",
+              maker_role: "SUBADMIN",
+              device: "web",
+              system_ip: ""
             });
-            await user_activity.save();
+            Activity_logsData.save();
 
 
             const GroupServices = await serviceGroup_services_id.aggregate([
@@ -1107,7 +1204,6 @@ class Users {
           FullName: req.FullName,
           license_type: req.license_type,
           licence: TotalMonth,
-
           broker: req.broker,
           parent_id: req.parent_id,
           parent_role: existingUsername.Role,
@@ -1121,6 +1217,13 @@ class Users {
           service_given_month: req.service_given_month,
           multiple_strategy_select: req.multiple_strategy_select,
         };
+
+
+        
+
+
+
+
 
         const User_Update = await User_model.updateOne(
           { _id: existingUsername._id },
@@ -1408,7 +1511,7 @@ class Users {
           }
         }
       ]);
-      
+
 
 
 
@@ -1510,7 +1613,7 @@ class Users {
           }
         }
       ]);
-      
+
 
 
 

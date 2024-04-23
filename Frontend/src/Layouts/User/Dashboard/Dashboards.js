@@ -9,6 +9,8 @@ const Dashboards = () => {
   const dispatch = useDispatch()
 
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
+  var user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
   const [getDashboardData, setDashboardData] = useState({
@@ -59,7 +61,7 @@ const Dashboards = () => {
 
   const UserdashboardDATA = async () => {
 
-    var data = { "id": "661624d4d2e6f70e7a879cf6" };
+    var data = { "id": user_id};
     await dispatch(GetUserDashboardData(data)).unwrap()
       .then((response) => {
 

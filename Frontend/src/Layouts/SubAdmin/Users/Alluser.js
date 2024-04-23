@@ -226,32 +226,33 @@ export default function AllUsers() {
 
 
   const handleEdit = async (row) => {
-    const result = await Swal.fire({
-        title: "Are you sure?",
+    navigate('/subadmin/user/edit/' + row._id);
+    // const result = await Swal.fire({
+    //     title: "Are you sure?",
     
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, edit it!",
-        cancelButtonText: "Cancel"
-    });
+    //     icon: "warning",
+    //     showCancelButton: true,
+    //     confirmButtonColor: "#3085d6",
+    //     cancelButtonColor: "#d33",
+    //     confirmButtonText: "Yes, edit it!",
+    //     cancelButtonText: "Cancel"
+    // });
 
-    if (result.isConfirmed) {
-        navigate('/subadmin/user/edit/' + row._id);
-    } else {
-        Swal.fire({
-            title: "Action canceled",
-            text: "Your edit operation was canceled",
-            icon: "info",
-            timer: 1000,
-            timerProgressBar: true
-        });
-        setTimeout(() => {
-            Swal.close(); // Close the modal
-            setrefresh(!refresh);
-        }, 1000);
-    }
+    // if (result.isConfirmed) {
+    //     navigate('/subadmin/user/edit/' + row._id);
+    // } else {
+    //     Swal.fire({
+    //         title: "Action canceled",
+    //         text: "Your edit operation was canceled",
+    //         icon: "info",
+    //         timer: 1000,
+    //         timerProgressBar: true
+    //     });
+    //     setTimeout(() => {
+    //         Swal.close(); // Close the modal
+    //         setrefresh(!refresh);
+    //     }, 1000);
+    // }
 };
 
 
