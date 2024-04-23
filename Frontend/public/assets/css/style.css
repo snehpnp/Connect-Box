@@ -5327,12 +5327,14 @@ span.select2-container.select2-container--default.select2-container--open {
     color: #455560;
     border-radius: 4px
 }
+
 #pills-tab .nav-link {
     color: #252525 !important;
     font-size: 12px !important;
     padding: 10px 10px !important;
     border: none !important;
 }
+
 .nav-link {
     color: #888 !important;
     font-size: 16px !important;
@@ -9393,9 +9395,10 @@ table .badge {
 
 [data-layout=horizontal] body ul.hidden-links>li a {
     display: block;
-    padding: 5px 15px;
+    padding: 5px 15px
+}
 
-[data-layout=horizontal] body ul.hidden-links>li a:hover{
+[data-layout=horizontal] body ul.hidden-links>li a:hover {
     background: 0 0
 }
 
