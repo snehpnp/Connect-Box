@@ -42,3 +42,15 @@ export async function UPDATE_BALANCE(data) {
         return await err
     }
 }
+
+export async function DELETE_RESEARCHER(data){
+    try{
+        const res= await axios.post(`${Config.base_url}researcher/delete`, data,{
+            data:{}
+        })
+        return await res?.data
+    }
+    catch(err){
+        return await err;
+    }
+}

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable'
-import { Get_All_Researcher , Update_Balance } from '../../../ReduxStore/Slice/Researcher/ResearcherSlice'
+import { Get_All_Researcher , Update_Balance, Delete_Researcher } from '../../../ReduxStore/Slice/Researcher/ResearcherSlice'
 import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
 import IconButton from "@mui/material/IconButton";
@@ -25,7 +25,7 @@ const AllResearcher = () => {
   const [refresh, setrefresh] = useState(false)
   const [showBalanceModal, setShowBalanceModal] = useState(false)
   const [updateBalance, setUpdateBalance] = useState([])
-  const [inputBalance, setInputBalance] = useState('')
+  const [inputBalance, setInputBalance] = useState('0')
 
  
   const user_id = JSON.parse(localStorage.getItem('user_details')).user_id
@@ -163,9 +163,44 @@ const AllResearcher = () => {
     console.log("cpp")
   }
 
-  const handleDelete = () => {
-    console.log("cpp 2")
-  }
+  
+  const handleDelete = async (row) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    });
+  
+    if (result.isConfirmed) {
+      let data = { id: row._id }; // Assuming `row._id` holds the ID of the record to delete
+      try {
+        const response = await dispatch(Delete_Researcher(data)).unwrap();
+        if (response.status) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+            timer: 1000,
+            timerProgressBar: true,
+          });
+          
+          setrefresh(!refresh);
+        }
+      } catch (error) {
+        console.error('There was a problem with the API request:', error);
+        Swal.fire({
+          title: "Error!",
+          text: "There was an error processing your request.",
+          icon: "error"
+        });
+      }
+    }
+  };
+  
 
   const handleOnClick = (row) => {
     
@@ -296,7 +331,7 @@ const AllResearcher = () => {
     .then((response) => {
       if (response.status) {
         setShowBalanceModal(false)
-        setInputBalance('')
+        setInputBalance('0')
         Swal.fire({
           title: "Status Updated!",
           text: "Status updated successfully",
@@ -309,7 +344,7 @@ const AllResearcher = () => {
     })
     .catch((error) => {
       setShowBalanceModal(false)
-      setInputBalance('')
+      setInputBalance('0')
       console.error("Error updating balance:", error);
       Swal.fire({
         title: "Error!",
@@ -435,7 +470,7 @@ const AllResearcher = () => {
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
-                  onClick={(e) => {setShowBalanceModal(false)  ;  setInputBalance('')}}
+                  onClick={(e) => {setShowBalanceModal(false)  ;  setInputBalance('0')}}
                 ></button>
               </div>
               <div>

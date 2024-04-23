@@ -228,7 +228,6 @@ export default function AllUsers() {
   const handleEdit = async (row) => {
     const result = await Swal.fire({
         title: "Are you sure?",
-    
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

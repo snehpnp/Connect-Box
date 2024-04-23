@@ -12,6 +12,7 @@ const count_licenses = db.count_licenses;
 
 
 class Researcher {
+
     async AddResearcher(req, res) {
         try {
             const { prifix_key, PhoneNo, Email, UserName, Password } = req.body;
@@ -148,57 +149,84 @@ class Researcher {
     }
     async addResearcherupdate(req, res) {
         try {
-           const {_id,Balance,parent_id} = req.body
+            const { _id, Balance, parent_id } = req.body
 
 
-           const get_user = await User_model.find({ _id: _id, Role: "RESEARCH" });
+            const get_user = await User_model.find({ _id: _id, Role: "RESEARCH" });
 
-           if (get_user.length == 0) {
-             return res.send({
-               status: false,
-               msg: "Empty data",
-               data: [],
-             });
-           }
-           const filter = { _id: _id };
-           const updatedBalance =
-             isNaN(get_user[0].Balance) || get_user[0].Balance === ""
-               ? Number(Balance)
-               : Number(Balance) + Number(get_user[0].Balance);
-     
-           const updateOperation = {
-             $set: { Balance: updatedBalance },
-           };
-     
-     
-           const result = await User_model.updateOne(filter, updateOperation);
+            if (get_user.length == 0) {
+                return res.send({
+                    status: false,
+                    msg: "Empty data",
+                    data: [],
+                });
+            }
+            const filter = { _id: _id };
+            const updatedBalance =
+                isNaN(get_user[0].Balance) || get_user[0].Balance === ""
+                    ? Number(Balance)
+                    : Number(Balance) + Number(get_user[0].Balance);
 
-          
-          const count_licenses_add = new count_licenses({
-            user_id: _id,
-            Role: "RESEARCH",
-            admin_id: parent_id,
-            Balance:Balance,
-            Mode: "CASH"
-          });
-          await count_licenses_add.save();
-      
-          if (!result) {
-            return res.send({ status: false, msg: "Data not updated", data: [] });
-          }
-      
-          return res.send({
-            status: true,
-            msg: "Data updated",
-            data: result,
-          });
+            const updateOperation = {
+                $set: { Balance: updatedBalance },
+            };
+
+
+            const result = await User_model.updateOne(filter, updateOperation);
+
+
+            const count_licenses_add = new count_licenses({
+                user_id: _id,
+                Role: "RESEARCH",
+                admin_id: parent_id,
+                Balance: Balance,
+                Mode: "CASH"
+            });
+            await count_licenses_add.save();
+
+            if (!result) {
+                return res.send({ status: false, msg: "Data not updated", data: [] });
+            }
+
+            return res.send({
+                status: true,
+                msg: "Data updated",
+                data: result,
+            });
         } catch (error) {
-          console.error("Internal error:", error);
-          return res.status(500).send({ status: false, msg: "Internal server error" });
+            console.error("Internal error:", error);
+            return res.status(500).send({ status: false, msg: "Internal server error" });
         }
-      }
-
-
+    }
+    async DeleteResearcher(req, res) {
+        try {
+            const { id } = req.body
+            const findData = await User_model.findOne({ _id: id })
+            if (!findData) {
+                return res.send({
+                    status: false,
+                    msg: "Researcher not found",
+                    data: []
+                })
+            }
+            const DeleteResearcher = await User_model.deleteOne({ _id: id });
+            const deletelicenseCount = await count_licenses.deleteMany({ _id: id });
+            if (DeleteResearcher.deletedCount === 1) {
+                return res.send({
+                    status: true,
+                    msg: "Researcher delete successfully",
+                    data: [],
+                })
+            }
+        }
+        catch(err) {
+            return res.send({
+                status: false,
+                msg: "Id not found",
+                data: [],
+            })
+        }
+    }
 }
 
 module.exports = new Researcher();

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE } from '../../../Services/Researcher/researcher.service'
+import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER } from '../../../Services/Researcher/researcher.service'
 
 
 export const Add_Researcher = createAsyncThunk("researcher/add",
@@ -35,6 +35,18 @@ export const Update_Balance = createAsyncThunk('researcher/updatebalance',
     }
   })
 
+  export const Delete_Researcher= createAsyncThunk('researcher/delete',
+async(data)=>{
+  try{
+    const res= await DELETE_RESEARCHER(data);
+    return await res;
+  }
+  catch(err){
+    return await err
+  }
+
+})
+
 
 
 
@@ -46,6 +58,7 @@ const ResearcherSlice = createSlice({
     add_researcher: null,
     get_all_researcher: null,
     update_balance: null,
+    delete_researcher:null,
 
   },
   reducers: {},
@@ -70,6 +83,10 @@ const ResearcherSlice = createSlice({
       .addCase(Update_Balance.fulfilled, (state, action) => {
         state.isLoading = false;
         state.update_balance = action.payload;
+      })
+      .addCase(Delete_Researcher.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.delete_researcher = action.payload;
       })
 
   },
