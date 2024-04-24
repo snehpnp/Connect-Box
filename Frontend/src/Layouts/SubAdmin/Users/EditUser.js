@@ -88,8 +88,12 @@ const AddClient = () => {
       if (!values.username) {
         errors.username = "Username is required";
       }
-      if (!values.broker) {
-        errors.broker = "Username is required";
+      if (!values.broker ) {
+        errors.broker = "broker is required";
+      }
+
+      if (values.broker == 0 && values.licence ==2 ) {
+        errors.broker = "broker is required";
       }
 
       if (!values.licence) {
@@ -116,6 +120,8 @@ const AddClient = () => {
     },
     onSubmit: async (values) => {
 
+      console.log("licence",values.licence)
+
       const req = {
         ProfileImg: ".",
         FullName: values.fullName,
@@ -135,7 +141,6 @@ const AddClient = () => {
 
       };
 
-      console.log("selectedCheckboxesAndPlan", selectedCheckboxesAndPlan)
 
       var stg_error = 0
       if (selectedCheckboxesAndPlan.length > 0) {
