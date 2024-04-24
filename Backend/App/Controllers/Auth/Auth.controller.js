@@ -78,7 +78,7 @@ class Auth {
                 "type": EmailCheck.license_type,
                 "UserName": EmailCheck.UserName,
                 "prifix_key": EmailCheck.prifix_key,
-                "subadmin_service_type": EmailCheck.subadmin_service_type
+                "subadmin_service_type": EmailCheck.Role =="RESEARCH" ? "0" : EmailCheck.subadmin_service_type
 
             };
 

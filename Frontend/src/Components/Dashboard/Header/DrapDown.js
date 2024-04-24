@@ -26,12 +26,13 @@ const DropDown = () => {
     var Role = JSON.parse(localStorage.getItem("user_details")).Role
     var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
 
+    console.log("Role :", Role)
+
 
     const fetchData = async () => {
 
         try {
             let data = { "id": user_id }
-
             await dispatch(ProfileInfo(data))
                 .unwrap()
                 .then(async (response) => {
@@ -121,6 +122,8 @@ const DropDown = () => {
             // navigate('/admin/wallet')
         } else if (Role == "SUBADMIN") {
             navigate('/subadmin/wallet')
+        } else if (Role == "RESEARCH") {
+            navigate('/research/wallet')
         }
 
     }
@@ -135,7 +138,11 @@ const DropDown = () => {
             navigate('/user/profile')
         } else if (Role == "EMPLOYEE") {
             navigate('/employee/profile')
+        } else if (Role == "RESEARCH") {
+            navigate('/research/profile')
         }
+
+
 
     }
      

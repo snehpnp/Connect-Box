@@ -185,11 +185,8 @@ class Subadmin {
   async getallSubadmin(req, res) {
     try {
       // GET LOGIN CLIENTS
-      const getAllSubAdmins = await User_model.find({
-        Role: "SUBADMIN",
-      }).select(
-        "profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key subadmin_service_type strategy_Percentage Per_trade Create_Date"
-      ).sort({ Create_Date: -1 });
+      const getAllSubAdmins = await User_model.find({ Role: "SUBADMIN"})
+      .select("profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key subadmin_service_type strategy_Percentage Per_trade Create_Date").sort({ Create_Date: -1 });
 
       const totalCount = getAllSubAdmins.length;
       const ActiveCount = getAllSubAdmins.filter(
@@ -499,7 +496,7 @@ class Subadmin {
           data: mergedArray,
           Count: Count
         });
-      } else {
+      } else if (subadmin_service_type == 1){
 
         var Count = {
           TotalBalance: TotalBalance[0].Balance,
@@ -511,6 +508,19 @@ class Subadmin {
           msg: "Recharge details fetched successfully",
           data: rechargeDetails,
           Count: Count
+        });
+      }else if (subadmin_service_type == 0){
+
+        // var Count = {
+        //   TotalBalance: TotalBalance[0].Balance,
+        //   UsedBalance: "0",
+        //   RemainingBalance: Number(TotalBalance[0].Balance || 0) - Number(0)
+        // }
+        return res.send({
+          status: true,
+          msg: "Recharge details fetched successfully",
+          data: rechargeDetails,
+          // Count: Count
         });
       }
 
