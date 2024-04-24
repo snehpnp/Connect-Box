@@ -334,9 +334,6 @@ class Subadmin {
     }
   }
 
-
-
-
   async GetAllRechargeDetailsById(req, res) {
     try {
       const { id, subadmin_service_type } = req.body;
@@ -530,7 +527,6 @@ class Subadmin {
       return res.send({ status: false, msg: "Internal Server Error", data: [], Count: "" });
     }
   }
-
 
 
   async UpdateActiveStatusSubadmin(req, res) {

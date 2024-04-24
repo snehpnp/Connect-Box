@@ -483,6 +483,13 @@ export const superadmin_header = [
         route: "/superadmin/faqs",
         Icon: "fe fe-help-circle",
         Data: []
+    },{
+        id: 9,
+        name: 'History',
+        route: "/superadmin/history",
+        Icon: "fe fe-help-circle",
+        Data: []
+
     }
 ];
 

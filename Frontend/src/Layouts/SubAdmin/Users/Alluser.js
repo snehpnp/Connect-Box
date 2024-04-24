@@ -519,9 +519,7 @@ export default function AllUsers() {
               </div>
             </div>
 
-        
-
-            <FullDataTable
+       <FullDataTable
               styles={styles}
               label={label}
               columns={columns}

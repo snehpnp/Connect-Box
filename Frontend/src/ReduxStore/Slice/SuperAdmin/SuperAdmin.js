@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { admindata } from "../../../Services/SuperAdmin/SuperadminPanel";
+import { admindata,addadminandupdate,History } from "../../../Services/SuperAdmin/SuperadminPanel";
 
 
 
@@ -18,12 +18,45 @@ export const getadmindata = createAsyncThunk(
   );
 
 
+  // update a balance 
+   
+  export const updateBalance = createAsyncThunk(
+    "addAdminandupdate",
+    async (data) => {
+      try {
+        const res = await addadminandupdate(data);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
+
+  // admin History for superadmin page 
+
+
+export const Adminhistory = createAsyncThunk(
+    "AdminHistory",
+    async (data) => {
+      try {
+        const res = await History(data);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
+
+
+
   const GrouoServicesSlice = createSlice({
     name: "SystemSlice",
     initialState: {
       isLoading: false,
       isError: false,
       getadmindata:null,
+      updateBalance:null,
+      Adminhistory:null,
   
     },
     reducers: {},
@@ -39,6 +72,28 @@ export const getadmindata = createAsyncThunk(
             state.getadmindata = action.payload;
           })
           .addCase(getadmindata.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+          }) .addCase(updateBalance.pending, (state, action) => {
+            state.isLoading = true;
+            state.isError = false;
+          })
+          .addCase(updateBalance.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.updateBalance = action.payload;
+          })
+          .addCase(updateBalance.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+          }).addCase(Adminhistory.pending, (state, action) => {
+            state.isLoading = true;
+            state.isError = false;
+          })
+          .addCase(Adminhistory.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.Adminhistory = action.payload;
+          })
+          .addCase(Adminhistory.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
           })
