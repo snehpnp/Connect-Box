@@ -24,6 +24,12 @@ export const getCatogries = createAsyncThunk(
     }
   );
 
+ 
+
+
+
+
+
 const GrouoServicesSlice = createSlice({
   name: "SystemSlice",
   initialState: {
@@ -31,8 +37,15 @@ const GrouoServicesSlice = createSlice({
     isError: false,
     AllgroupService: null,
     Allcategaory: null,
+   
 
   },
+
+  
+  
+  
+
+
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -59,7 +72,7 @@ const GrouoServicesSlice = createSlice({
       .addCase(getCatogries.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-      });
+      })
   },
 });
 

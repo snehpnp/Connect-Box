@@ -5,6 +5,10 @@ const userActivitySchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "USER"
     },
+    admin_Id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "USER"
+    },
     login_status: {
         type: String,
         default: null

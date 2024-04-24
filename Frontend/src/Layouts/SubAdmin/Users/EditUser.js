@@ -88,8 +88,12 @@ const AddClient = () => {
       if (!values.username) {
         errors.username = "Username is required";
       }
-      if (!values.broker) {
-        errors.broker = "Username is required";
+      if (!values.broker ) {
+        errors.broker = "broker is required";
+      }
+
+      if (values.broker == 0 && values.licence ==2 ) {
+        errors.broker = "broker is required";
       }
 
       if (!values.licence) {
@@ -116,6 +120,7 @@ const AddClient = () => {
     },
     onSubmit: async (values) => {
 
+
       const req = {
         ProfileImg: ".",
         FullName: values.fullName,
@@ -135,7 +140,6 @@ const AddClient = () => {
 
       };
 
-      console.log("selectedCheckboxesAndPlan", selectedCheckboxesAndPlan)
 
       var stg_error = 0
       if (selectedCheckboxesAndPlan.length > 0) {
@@ -170,7 +174,6 @@ const AddClient = () => {
           await dispatch(UpdateUsers(req))
             .unwrap()
             .then(async (response) => {
-              console.log("response", response)
               if (response.status) {
 
                 Swal.fire({
@@ -286,9 +289,9 @@ const AddClient = () => {
       type: "test",
       label_size: 12,
       col_size: 6,
-      disable: true,
+      // disable: false,
       showWhen: (values) => subadmin_service_type1 == 1,
-      disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type == 0 ? false : true,
+      disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].license_type == 2 ? true : false,
 
     },
     {
@@ -551,7 +554,6 @@ const AddClient = () => {
 
 
 
-
   return (
     <>
       {
@@ -730,7 +732,7 @@ const AddClient = () => {
                           <label>All Strategy</label>
                         </div>
                         {getAllStategy.data.map((strategy) => (
-                          strategy.Service_Type === formik.values.Service_Type && (
+                          strategy.Service_Type == formik.values.Service_Type && (
                             <div className={`col-lg-3 mt-2`} key={strategy._id}>
                               <div className="row">
                                 <div className="col-lg-12">
@@ -743,6 +745,7 @@ const AddClient = () => {
                                       value={strategy._id}
                                       checked={selectedCheckboxes && selectedCheckboxes.includes(strategy._id)}
                                       onChange={() => handleStrategyChange(strategy._id)}
+                                      disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                     />
                                     <label
                                       className="form-check-label"

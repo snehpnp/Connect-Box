@@ -281,7 +281,7 @@ export default function Help() {
 
         } else {
           setAllSubadmins({
-            loading: false,
+            loading: true,
             data: [],
             data1: [],
           });
@@ -290,7 +290,7 @@ export default function Help() {
       .catch((error) => {
         console.log("Error", error);
         setAllSubadmins({
-          loading: false,
+          loading: true,
           data: [],
         });
       });

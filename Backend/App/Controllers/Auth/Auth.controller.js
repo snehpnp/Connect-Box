@@ -73,7 +73,8 @@ class Auth {
                 'Email': EmailCheck.Email,
                 'user_id': EmailCheck._id,
                 'token': token,
-                'mobile': EmailCheck.PhoneNo, Role: EmailCheck.Role,
+                'mobile': EmailCheck.PhoneNo, 
+                Role: EmailCheck.Role,
                 "broker": EmailCheck.broker,
                 "type": EmailCheck.license_type,
                 "UserName": EmailCheck.UserName,
@@ -99,7 +100,8 @@ class Auth {
 
                 const user_login = new user_logs({
                     user_Id: EmailCheck._id,
-                    trading_status: "Panel On",
+                    admin_Id: EmailCheck.parent_id,
+                    login_status: "Panel On",
                     role: EmailCheck.Role,
                     device: "WEB",
 
@@ -204,6 +206,7 @@ class Auth {
             // ADD USER LOGS COLLECTION DATA
             const user_login = new user_logs({
                 user_Id: EmailCheck._id,
+                admin_Id: EmailCheck.parent_id,
                 login_status: "Panel On",
                 role: EmailCheck.Role,
                 device: Device,
@@ -261,6 +264,7 @@ class Auth {
 
             const user_login = new user_logs({
                 user_Id: EmailCheck._id,
+                admin_Id: EmailCheck.parent_id,
                 login_status: "Panel off",
                 role: EmailCheck.Role
             })

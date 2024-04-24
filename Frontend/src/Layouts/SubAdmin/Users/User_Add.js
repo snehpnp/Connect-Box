@@ -405,9 +405,6 @@ const AddClient = () => {
     AllBroker();
   }, []);
 
-  console.log("subadmin_service_type1 ", subadmin_service_type1)
-  console.log("formik.values.licence ", formik.values.licence)
-  console.log("formik.values.Service_Type ", formik.values.Service_Type)
 
 
 

@@ -303,13 +303,13 @@ export const User_header = [
         route: "/user/stock",
         Data: []
     },
-    {
-        id: 2,
-        name: 'Stock List 1',
-        Icon: "fa-solid fa-arrow-trend-up",
-        route: "/user/stock1",
-        Data: []
-    },
+    // {
+    //     id: 2,
+    //     name: 'Stock List 1',
+    //     Icon: "fa-solid fa-arrow-trend-up",
+    //     route: "/user/stock1",
+    //     Data: []
+    // },
     {
         id: 3,
         name: 'Trade',
@@ -483,6 +483,13 @@ export const superadmin_header = [
         route: "/superadmin/faqs",
         Icon: "fe fe-help-circle",
         Data: []
+    },{
+        id: 9,
+        name: 'History',
+        route: "/superadmin/history",
+        Icon: "fe fe-help-circle",
+        Data: []
+
     }
 ];
 

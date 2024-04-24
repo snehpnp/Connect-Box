@@ -6,21 +6,15 @@ import MainHeader from '../Components/Dashboard/Header/Main_header';
 
 import Profile from '../Layouts/Comman/Profile/Profile';
 import Faqs from '../Layouts/Comman/Faqs';
-
 import Empdashboard from '../Layouts/Employee/Dashboard/Empdashboard';
 import Wallets from '../Layouts/Comman/Wallet/Wallets';
 
+import Companies from '../Layouts/Comman/Company/Companies';
 
-//Strategy 
 import AllStrategy from '../Layouts/Researcher/Service/Strategys/Strategy'
 import Edit_Strategies from '../Layouts/Researcher/Service/Strategys/Edit_Strategies'
 
 
-
-
-
-
-// strategyde
 const Research = () => {
 
 
@@ -34,8 +28,10 @@ const Research = () => {
                     <Route exact path="/wallet" element={<Wallets />} />
                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/faqs" element={<Faqs />} />
+                    <Route exact path="/company" element={<Companies />} />
                     <Route exact path="/strategys" element={<AllStrategy />} />
                     <Route exact path="/edit/strategies/:id" element={<Edit_Strategies />} />
+
 
 
                 </Routes>

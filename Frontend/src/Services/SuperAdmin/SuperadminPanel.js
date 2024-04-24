@@ -22,16 +22,32 @@ export async function admindata(data) {
 }
 
 
-// // add admin and update 
-// export async function addadminandupdate(data) {
-//     try {
-//         const res = await axios.post(`${Config.base_url}addAdminandupdate`, data, {  
-//             data: {},
-//         })
-//         return await res?.data;
-//     }
-//     catch (err) {
-//         return await err;
+// add admin and update 
+export async function addadminandupdate(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}addAdminandupdate`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
 
-//     }
-// }
+    }
+}
+
+
+// admin history for superadmin page AdminHistory
+
+export async function History(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}AdminHistory`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}

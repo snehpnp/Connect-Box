@@ -2,10 +2,11 @@
 
 const router = require("express").Router()
 
-const  {superadminPanel,addAdminandupdate}  = require("../../Controllers/Admins/Superadmin/Superadmin")
+const  {superadminPanel,addAdminandupdate,AdminHistory}  = require("../../Controllers/Superadmin/Superadmin")
 
 router.get("/superadminPanel",superadminPanel)
 router.post("/addAdminandupdate",addAdminandupdate)
+router.post("/AdminHistory",AdminHistory)
 
 
 

@@ -192,7 +192,6 @@ function Edit_Strategies() {
       return errors;
     },
     onSubmit: async (values) => {
-      console.log("values", values)
       const data = {
         _id: id,
         strategy_name: values.strategy_name,

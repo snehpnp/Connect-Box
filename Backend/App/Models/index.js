@@ -26,5 +26,7 @@ module.exports = {
     live_price :require('./Live_price.model'),
     MainSignals: require('./Main_signals.model'),
     SignUpUser :require('./Signup_User.model'),
-    ProfileInfo:require("./ProfileInformation.model")
+    ProfileInfo:require("./ProfileInformation.model"),
+    Activity_category:require("./Activity_category.model"),
+
 };
