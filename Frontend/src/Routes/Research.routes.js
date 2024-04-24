@@ -11,6 +11,8 @@ import Faqs from '../Layouts/Comman/Faqs';
 
 import Empdashboard from '../Layouts/Employee/Dashboard/Empdashboard';
 
+import Companies from '../Layouts/Comman/Company/Companies';
+
 
 
 // strategydesc
@@ -28,6 +30,9 @@ const Research = () => {
 
                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/faqs" element={<Faqs />} />
+                    <Route exact path="/company" element={<Companies/>} />
+                      
+                    
 
                 </Routes>
             </div>
