@@ -238,14 +238,15 @@ const Makecall = () => {
                                     }
                                   };
               
-                                  socket.onerror = function (error) {
+                                 socket.onerror = function (error) {
                                     setUserIdSocketRun('DONE')
                                      
-                                  };
+                                 };
 
 
                             }
                         }else{
+                         setUserIdSocketRun('DONE')
                          setSockets(null)
                         }
                     }

@@ -72,7 +72,7 @@ export async function ConnctSocket(onResponse, channelList, userId1, userSession
     }
     socket.onmessage = async function (msg) {
         var response = JSON.parse(msg.data)
-        await onResponse(response)
+        await onResponse(response,socket)
 
         if (response.s === 'OK') {
             // var channel = await channelList;
