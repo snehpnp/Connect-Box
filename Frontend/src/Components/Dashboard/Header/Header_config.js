@@ -303,13 +303,13 @@ export const User_header = [
         route: "/user/stock",
         Data: []
     },
-    {
-        id: 2,
-        name: 'Stock List 1',
-        Icon: "fa-solid fa-arrow-trend-up",
-        route: "/user/stock1",
-        Data: []
-    },
+    // {
+    //     id: 2,
+    //     name: 'Stock List 1',
+    //     Icon: "fa-solid fa-arrow-trend-up",
+    //     route: "/user/stock1",
+    //     Data: []
+    // },
     {
         id: 3,
         name: 'Trade',
