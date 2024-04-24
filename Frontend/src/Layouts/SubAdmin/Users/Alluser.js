@@ -544,28 +544,7 @@ export default function AllUsers() {
               </div>
             </div>
 
-            {/* <div className="super-admin-list-head">
-              <div className="row">
-                {getAllUsers &&
-                  getAllUsers.data1.map((data, index) => (
-                    <div className="col-xl-3 col-md-6 d-flex" key={index}>
-                      <div className="card w-100">
-                        <div className="card-body">
-                          <div className="grid-info-item total-items">
-                            <div className="grid-info">
-                              <span>{data.name}</span>
-                              <h4 style={{ color: data.color }} >{data.count}</h4>
-                            </div>
-                            <div className="grid-head-icon">
-                              <i className={data.Icon} style={{ color: data.color }} />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div> */}
+        
 
             <FullDataTable
               styles={styles}

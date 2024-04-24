@@ -33603,7 +33603,7 @@ img {
 .pricing-block .icon-box {
     position: relative;
     padding: 50px 30px 0;
-    background-color: #7539FF;
+    /* background-color: #7539FF; */
     text-align: center;
 }
 
@@ -33635,7 +33635,7 @@ img {
     height: 100px;
     width: 97px;
     line-height: 91px;
-    border: 5px solid #7539ff;
+    /* border: 5px solid #7539ff; */
     border-radius: 50%;
     font-size: 50px;
     color: #7539ff;
