@@ -24,19 +24,7 @@ export const getCatogries = createAsyncThunk(
     }
   );
 
-  /////getalluserActivity
  
-  export const getActivity = createAsyncThunk(
-    "find/activity/category",
-    async (data) => {
-      try {
-        const res = await getalluserActivity(data);
-        return res;
-      } catch (err) {
-        throw err;
-      }
-    }
-  );
 
 
 
