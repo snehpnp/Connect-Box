@@ -82,33 +82,31 @@ const Header = () => {
             <ul className="list-inline-item list-unstyled links">
               {HeaderData.flat() && HeaderData.flat().map((data) => {
 
-                const showItem = !(subadmin_service_type == 1 && data.route == '/subadmin/strategys/transaction');
+     
+                  return (
+                    <li className='submenu' key={data.id} onMouseEnter={() => toggleSubMenu(data.id)} onMouseLeave={() => setOpenSubMenu('')}>
+                      <Link
+                        to={data.route}
+                        className={`${openSubMenu === data.id ? 'subdrop' : ''} ${activeLink === data.id ? 'active' : ''}`}
+                        style={{ textDecoration: 'none', color: 'inherit' }}
+                        onClick={() => handleLinkClick(data.id)}
+                      >
+                        <i className={data.Icon} id="animated-icon"></i> <span> {data.name}</span> {data.Data.length > 0 ? <span className="menu-arrow"></span> : ""}
+                      </Link>
 
-                if (showItem) {
+                      <ul style={{ display: openSubMenu === data.id ? 'block' : 'none' }}>
+                        {data.Data.map((item) => (
+                          <li key={item.id}>
+                            <Link to={item.route} className="active">
+                              <i className={item.Icon} id="animated1-icon"></i> <span> {item.name}</span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </li>
+                  );
+                
 
-                }
-                return (
-                  <li className='submenu' key={data.id} onMouseEnter={() => toggleSubMenu(data.id)} onMouseLeave={() => setOpenSubMenu('')}>
-                    <Link
-                      to={data.route}
-                      className={`${openSubMenu === data.id ? 'subdrop' : ''} ${activeLink === data.id ? 'active' : ''}`}
-                      style={{ textDecoration: 'none', color: 'inherit' }}
-                      onClick={() => handleLinkClick(data.id)}
-                    >
-                      <i className={data.Icon} id="animated-icon"></i> <span> {data.name}</span> {data.Data.length > 0 ? <span className="menu-arrow"></span> : ""}
-                    </Link>
-
-                    <ul style={{ display: openSubMenu === data.id ? 'block' : 'none' }}>
-                      {data.Data.map((item) => (
-                        <li key={item.id}>
-                          <Link to={item.route} className="active">
-                            <i className={item.Icon} id="animated1-icon"></i> <span> {item.name}</span>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                );
 
 
 

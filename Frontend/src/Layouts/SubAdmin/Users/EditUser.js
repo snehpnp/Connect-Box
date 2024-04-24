@@ -286,9 +286,9 @@ const AddClient = () => {
       type: "test",
       label_size: 12,
       col_size: 6,
-      disable: true,
+      disable: false,
       showWhen: (values) => subadmin_service_type1 == 1,
-      disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type == 0 ? false : true,
+      // disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type == 0 ? false : true,
 
     },
     {
@@ -730,7 +730,7 @@ const AddClient = () => {
                           <label>All Strategy</label>
                         </div>
                         {getAllStategy.data.map((strategy) => (
-                          strategy.Service_Type === formik.values.Service_Type && (
+                          strategy.Service_Type == formik.values.Service_Type && (
                             <div className={`col-lg-3 mt-2`} key={strategy._id}>
                               <div className="row">
                                 <div className="col-lg-12">
