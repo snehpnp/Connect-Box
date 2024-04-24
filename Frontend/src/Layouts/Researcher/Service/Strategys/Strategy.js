@@ -1,106 +1,40 @@
-import React, { useState, useEffect } from "react";
-import { GetStretgyWithImg, AddStrategy, DELETE_STRATEGY } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
-import { useDispatch } from "react-redux";
-
+import React, { useState,useEffect } from 'react'
 import AddForm from '../../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
-import toast from "react-hot-toast";
-import ExportToExcel from '../../../../Utils/ExportCSV'
-import ToastButton from '../../../../Components/ExtraComponents/Alert_Toast'
-import { Link, useNavigate } from "react-router-dom";
-import Loader from '../../../../Utils/Loader'
-import { IndianRupee } from 'lucide-react';
+import { GetStretgyWithImg, AddStrategy, DELETE_STRATEGY } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
+ 
 import Swal from 'sweetalert2';
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { IndianRupee } from 'lucide-react';
+import Loader from '../../../../Utils/Loader'
 
 
-function Strategy() {
+
+
+
+
+
+const Strategy = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+
+    const [showCreateStrategyModal, setShowCreateStrategyModal] = useState(false)
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
-    const [searchInput, setSearchInput] = useState("");
-    const [showModal, setShowModal] = useState(false);
-    const [opneModal, setopneModal] = useState(false);
-    const [deleteModal, setdeleteModal] = useState(false);
+
     const [getStgDescription, setStgDescription] = useState('');
-
-
-
-
-    const [refresh, setrefresh] = useState(false);
-    const [modalId, setModalId] = useState(null);
-    const [StrategyId, setStrategyId] = useState('')
-
-
-    var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
-
-
-
-    const [ForGetCSV, setForGetCSV] = useState([])
-
+    const [searchInput, setSearchInput] = useState("");
+    const [deleteModal, setdeleteModal] = useState(false);
+    const [refresh, setrefresh] = useState(false)
     const [allStategy, setAllStategy] = useState({
         loading: false,
         data: [],
     });
 
 
-    // Function to open the modal
-    const openModal = () => {
-        setShowModal(true);
-    };
-
-     
-
-
-
-    const handleDelete = async (id) => {
-        console.log("stg._id", id)
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-
-
-                var req = {
-                    _id: id,
-                };
-                await dispatch(DELETE_STRATEGY(req))
-                    .unwrap()
-                    .then((response) => {
-                        if (response.status) {
-                            setrefresh(!refresh)
-                            setdeleteModal(false)
-                            Swal.fire({
-                                title: "Deleted!",
-                                text: response.msg,
-                                icon: "success",
-                                timer: 1500,
-                                timerProgressBar: true
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: "error",
-                                title: "Oops...",
-                                text: response.msg,
-                            });
-                        }
-                    });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-
-            }
-        });
-
-        return
-
-
-    };
 
 
 
@@ -171,57 +105,31 @@ function Strategy() {
             disable: false,
         },
         {
-            name: "strategy_amount_month",
-            label: "Monthly",
-            type: "number",
-            label_size: 3,
-            col_size: 3,
+            name: "strategy_percentage",
+            label: "Strategy Percentage",
+            type: "text3",
+            label_size: 12,
+            col_size: 6,
             disable: false,
         },
-        {
-            name: "strategy_amount_quarterly",
-            label: "Quaterly",
-            type: "number",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "strategy_amount_half_early",
-            label: "Half Yearly",
-            type: "number",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "strategy_amount_early",
-            label: "Yearly",
-            type: "number",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-        },
+
 
     ];
-
 
     const formik = useFormik({
         initialValues: {
             strategy_name: '',
             strategy_category: '',
             strategy_segment: '',
-            strategy_tester: '',
+            strategy_demo_days: '',
             strategy_indicator: '',
             strategy_image: '',
-            strategy_description: '',
-            strategy_amount_month: '',
-            strategy_amount_quarterly: '',
-            strategy_amount_half_early: '',
-            strategy_amount_early: '',
-            strategy_demo_days: '',
-            Service_Type: "",
+            strategy_tester: '',
             max_trade: '',
+            strategy_percentage: '',
+            maker_id: user_id,
+            
+
         },
         validate: (values) => {
             let errors = {};
@@ -237,25 +145,14 @@ function Strategy() {
             if (!values.strategy_segment) {
                 errors.strategy_segment = "strategy segment is required";
             }
-
-            if (!values.strategy_amount_month) {
-                errors.strategy_amount_month = "amount is required";
-            }
-            if (!values.strategy_amount_quarterly) {
-                errors.strategy_amount_quarterly = "amount is required";
-            }
-            if (!values.strategy_amount_half_early) {
-                errors.strategy_amount_half_early = "amount is required";
-            }
-
-            if (!values.strategy_amount_early) {
-                errors.strategy_amount_early = "amount is required";
-            }
             if (!values.max_trade) {
                 errors.max_trade = "Please enter maximum trade";
             }
             if (!getStgDescription) {
                 errors.getStgDescription = "Please enter strategy description";
+            }
+            if (!values.strategy_percentage) {
+                errors.strategy_percentage = "Please enter strategy percentage";
             }
 
             return errors;
@@ -263,7 +160,7 @@ function Strategy() {
 
         },
         onSubmit: async (values, { resetForm }) => {
-           
+
             const data = {
                 strategy_name: values.strategy_name,
                 strategy_category: values.strategy_category,
@@ -273,18 +170,12 @@ function Strategy() {
                 strategy_indicator: values.strategy_indicator,
                 strategy_image: values.strategy_image,
                 strategy_description: getStgDescription,
-                strategy_amount_month: values.strategy_amount_month,
-                strategy_amount_quarterly: values.strategy_amount_quarterly,
-                strategy_amount_half_early: values.strategy_amount_half_early,
-                strategy_amount_early: values.strategy_amount_early,
-                maker_id: user_id,
+                strategy_percentage: values.strategy_percentage,
                 max_trade: values.max_trade,
-                Role: "SUBADMIN",
-                Service_Type: values.Service_Type != '' ? values.Service_Type : subadmin_service_type == 1 ? 1 : 0
+                maker_id: user_id,
+                Service_Type: 0,
+                Role: "RESEARCH"
             };
-
-
-
             await dispatch(AddStrategy(data))
                 .unwrap()
                 .then(async (response) => {
@@ -296,7 +187,7 @@ function Strategy() {
                             timer: 1500,
                             timerProgressBar: true
                         });
-                        setShowModal(false)
+                        setShowCreateStrategyModal(false)
                         setrefresh(!refresh)
                         resetForm();
                         setStgDescription('')
@@ -321,10 +212,6 @@ function Strategy() {
     });
 
 
-    const RefreshHandle = () => {
-        setrefresh(!refresh)
-        setSearchInput('')
-    }
 
 
 
@@ -379,43 +266,67 @@ function Strategy() {
         setStgDescription('')
     }, [refresh, searchInput]);
 
-
-
-
-    const forCSVdata = () => {
-        let csvArr = []
-        if (allStategy.data.length > 0) {
-            allStategy.data.map((item) => {
-                return csvArr.push({
-                    "Strategy Name": item.strategy_name,
-                    "Strategy Description": item.strategy_description,
-                    "Strategy Category": item.strategy_category,
-                    "Strategy Segment": item.strategy_segment,
-                })
-            })
-
-            setForGetCSV(csvArr)
-        }
-
-    }
-
-    useEffect(() => {
-        forCSVdata()
-    }, [allStategy.data])
-
-
-
     const handleEditPackage = (id) => {
-        navigate(`/subadmin/edit/strategies/${id.id}`, { state: { allStategy } });
+        navigate(`/research/edit/strategies/${id.id}`, { state: { allStategy } });
+    };
+
+    const handleDelete = async (id) => {
+        console.log("stg._id", id)
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+
+
+                var req = {
+                    _id: id,
+                };
+                await dispatch(DELETE_STRATEGY(req))
+                    .unwrap()
+                    .then((response) => {
+                        if (response.status) {
+                            setrefresh(!refresh)
+                            setdeleteModal(false)
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: response.msg,
+                                icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: response.msg,
+                            });
+                        }
+                    });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+
+            }
+        });
+
+        return
+
+
     };
 
 
+    const RefreshHandle = () => {
+        setrefresh(!refresh)
 
-
+    }
 
     return (
-
         <>
+
             <div className="content container-fluid">
 
                 {/* PAGE HEADER */}
@@ -446,8 +357,8 @@ function Strategy() {
                                                 placeholder="Search..."
                                                 aria-label="Search"
                                                 aria-describedby="search-addon"
-                                                onChange={(e) => setSearchInput(e.target.value)}
-                                                value={searchInput}
+                                            // onChange={(e) => setSearchInput(e.target.value)}
+                                            // value={searchInput}
 
                                             />
 
@@ -464,10 +375,10 @@ function Strategy() {
                                         >
                                             <li>
                                                 <div className="card-body">
-                                                    <ExportToExcel
+                                                    {/* <ExportToExcel
                                                         className="btn btn-primary "
                                                         apiData={ForGetCSV}
-                                                        fileName={'All Strategy'} />
+                                                        fileName={'All Strategy'} /> */}
                                                 </div>
                                             </li>
                                         </div>
@@ -476,7 +387,7 @@ function Strategy() {
                                     <li>
                                         <p
                                             className="btn btn-primary"
-                                            onClick={openModal}
+                                            onClick={(e) => setShowCreateStrategyModal(true)}
                                         >
                                             <i className="fa fa-plus-circle me-2" aria-hidden="true" />
                                             Create Strategy
@@ -505,7 +416,7 @@ function Strategy() {
 
                                                 </div>
                                                 <span className="icon-frame d-flex align-items-center justify-content-center">
-                                                    {/* <img src="assets/img/icons/price-01.svg" alt="img" /> */}
+                                                    
                                                     <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
 
                                                 </span>
@@ -547,10 +458,14 @@ function Strategy() {
 
 
                                             <a className="btn-action-icon me-2"  >
-                                                <i className="fe fe-edit" onClick={() => handleEditPackage({ id: stg._id })} />
+                                                <i className="fe fe-edit" 
+                                                onClick={() => handleEditPackage({ id: stg._id })} 
+                                                />
                                             </a>
 
-                                            <a className="btn-action-icon" onClick={() => { handleDelete(stg._id); }}  >
+                                            <a className="btn-action-icon" 
+                                            onClick={() => { handleDelete(stg._id); }} 
+                                             >
                                                 <i className="fe fe-trash-2" />
                                             </a>
                                         </div>
@@ -594,12 +509,8 @@ function Strategy() {
                     </ul>
                 </nav>
 
-
-
-
-
-                {/* ADD STRATEGY */}
-                {showModal && (
+                {
+                    showCreateStrategyModal &&
                     <div className="modal custom-modal custom-lg-modal d-block">
                         <div className="modal-dialog modal-dialog-centered modal-md">
                             <div className="modal-content">
@@ -610,8 +521,7 @@ function Strategy() {
                                     <button
                                         type="button"
                                         className="btn-close"
-                                  
-                                        onClick={(e) => {setShowModal(false);  setrefresh(!refresh);   formik.resetForm();}}
+                                        onClick={(e) => { setShowCreateStrategyModal(false); setrefresh(!refresh); formik.resetForm(); }}
                                     ></button>
                                 </div>
                                 <div className="modal-body m-0 p-0">
@@ -622,9 +532,10 @@ function Strategy() {
                                         btn_name="Add Strategy"
                                         additional_field={
                                             <>
-
                                                 <label>Strategy Description</label>
-                                                <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
+                                                <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description"
+                                                    onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}
+                                                >
                                                 </textarea>
                                                 {
                                                     formik.errors.getStgDescription ? (
@@ -641,171 +552,9 @@ function Strategy() {
                             </div>
                         </div>
                     </div>
-
-                )}
-
-
-
-                {/* STRATEGY VIEW */}
-                {opneModal && (
-                    <div
-                        className="modal custom-modal custom-lg-modal d-block"
-                        id="view_companies"
-                        role="dialog"
-                    >
-                        <div className="modal-dialog modal-dialog-centered modal-md">
-                            <div className="modal-content">
-                                <div className="modal-header border-0 d-flex justify-content-between">
-                                    <div className="form-header modal-header-title text-start mb-0">
-                                        <h4 className="mb-0">Hello Company Details</h4>
-                                    </div>
-                                    <div className="d-flex ">
-
-                                        <Link className="modal-edit-link d-flex align-items-center border p-2" to={`/subadmin/edit/strategies/` + StrategyId}>
-                                            <i className="fe fe-edit me-2" />
-                                            Edit Strategy
-                                        </Link>
-                                        <button
-                                            type="button"
-                                            className="btn-close ms-2"
-                                            onClick={() => setopneModal(false)}
-                                        ></button>
-                                    </div>
-                                </div>
-                                <div className="modal-body pb-0">
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="form-field-item">
-                                                <div className="profile-picture company-detail-head">
-                                                    <div className="upload-profile">
-                                                        <div className="profile-img company-profile-img">
-                                                            <img
-                                                                id="view-company-img"
-                                                                className="img-fluid me-0"
-                                                                src="assets/img/companies/company-01.svg"
-                                                                alt="profile-img"
-                                                            />
-                                                        </div>
-                                                        <div className="add-profile">
-                                                            <h5>Hermann Groups</h5>
-                                                            <span>
-                                                                <a
-                                                                    href="https://kanakku.dreamstechnologies.com/cdn-cgi/l/email-protection"
-                                                                    className="__cf_email__"
-                                                                    data-cfemail="2a624f58474646584349426a4f524b475a464f04494547"
-                                                                >
-                                                                    [email&nbsp;protected]
-                                                                </a>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <span className="badge bg-success-light d-inline-flex align-items-center">
-                                                        <i className="fe fe-check me-1" />
-                                                        Active
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                            <div className="plane-basic-info">
-                                                <h5>Basic Info</h5>
-                                                <div className="row">
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Account URL</h6>
-                                                            <p>hru.example.com</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Phone Number</h6>
-                                                            <p>+1 15541 54544</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Website</h6>
-                                                            <p>www.example.com</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Company Address</h6>
-                                                            <p>
-                                                                22 Junior Avenue <br />
-                                                                Duluth, GA 30097
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Currency</h6>
-                                                            <p>United Stated Dollar (USD)</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Language</h6>
-                                                            <p>English</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                            <div className="plane-basic-info plane-detail">
-                                                <h5>Plan Details</h5>
-                                                <div className="row">
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Plan Name</h6>
-                                                            <p>Enterprise</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Plan Type</h6>
-                                                            <p>Yearly</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Price</h6>
-                                                            <p>$200</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Register Date</h6>
-                                                            <p>15 Jan 2024</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Expiring On</h6>
-                                                            <p>15 Jan 2025</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                )}
-
-
-                <ToastButton />
-
-            </div >
-            < ToastButton />
-
+                }
+            </div>
         </>
-
-
     )
 }
 

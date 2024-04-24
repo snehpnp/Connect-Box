@@ -15,6 +15,8 @@ function Edit_Strategies() {
   const [makerId, setMakerId] = useState("");
   const [allStrategy, setAllStrategy] = useState(null);
   const [getStgDescription, setStgDescription] = useState('');
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+
 
 
   useEffect(() => {
@@ -110,55 +112,30 @@ function Edit_Strategies() {
       disable: false,
     },
     {
-      name: "strategy_amount_month",
-      label: "Monthly",
-      type: "number",
-      label_size: 3,
-      col_size: 3,
+      name: "strategy_percentage",
+      label: "Strategy Percentage",
+      type: "text3",
+      label_size: 12,
+      col_size: 6,
       disable: false,
     },
-    {
-      name: "strategy_amount_quarterly",
-      label: "Quaterly",
-      type: "number",
-      label_size: 3,
-      col_size: 3,
-      disable: false,
-    },
-    {
-      name: "strategy_amount_half_early",
-      label: "Half Yearly",
-      type: "number",
-      label_size: 3,
-      col_size: 3,
-      disable: false,
-    },
-    {
-      name: "strategy_amount_early",
-      label: "Yearly",
-      type: "number",
-      label_size: 3,
-      col_size: 3,
-      disable: false,
-    },
+
 
   ];
 
   const formik = useFormik({
     initialValues: {
-      strategy_name: "",
-      strategy_category: "",
-      strategy_segment: "",
-      strategy_tester: "",
-      strategy_indicator: "",
-      strategy_image: "",
-      strategy_description: "",
-      strategy_amount_month: "",
-      strategy_amount_quarterly: "",
-      strategy_amount_half_early: "",
-      strategy_amount_early: "",
-      strategy_demo_days: "",
-      Service_Type: ""
+      strategy_name: '',
+      strategy_category: '',
+      strategy_segment: '',
+      strategy_demo_days: '',
+      strategy_indicator: '',
+      strategy_image: '',
+      strategy_tester: '',
+      max_trade: '',
+      strategy_percentage: '',
+      maker_id: user_id,
+
 
     },
     validate: (values) => {
@@ -175,24 +152,22 @@ function Edit_Strategies() {
       if (!values.strategy_segment) {
         errors.strategy_segment = "strategy segment is required";
       }
+      if (!values.max_trade) {
+        errors.max_trade = "Please enter maximum trade";
+      }
+      if (!getStgDescription) {
+        errors.getStgDescription = "Please enter strategy description";
+      }
+      if (!values.strategy_percentage) {
+        errors.strategy_percentage = "Please enter strategy percentage";
+      }
 
-      if (!values.strategy_amount_month) {
-        errors.strategy_amount_month = "amount is required";
-      }
-      if (!values.strategy_amount_quarterly) {
-        errors.strategy_amount_quarterly = "amount is required";
-      }
-      if (!values.strategy_amount_half_early) {
-        errors.strategy_amount_half_early = "amount is required";
-      }
-
-      if (!values.strategy_amount_early) {
-        errors.strategy_amount_early = "amount is required";
-      }
       return errors;
+
+
     },
-    onSubmit: async (values) => {
-      console.log("values", values)
+    onSubmit: async (values, { resetForm }) => {
+
       const data = {
         _id: id,
         strategy_name: values.strategy_name,
@@ -203,15 +178,11 @@ function Edit_Strategies() {
         strategy_indicator: values.strategy_indicator,
         strategy_image: values.strategy_image,
         strategy_description: getStgDescription,
-        strategy_amount_month: values.strategy_amount_month,
-        strategy_amount_quarterly: values.strategy_amount_quarterly,
-        strategy_amount_half_early: values.strategy_amount_half_early,
-        strategy_amount_early: values.strategy_amount_early,
-        maker_id: makerId.user_id,
+        strategy_percentage: values.strategy_percentage,
         max_trade: values.max_trade,
-        Role: "SUBADMIN",
-
-        Service_Type: values.Service_Type == '' ? 0 : values.Service_Type
+        maker_id: user_id,
+        Service_Type: 0,
+        Role: "RESEARCH"
       };
 
       await dispatch(EditSubStrategys(data))
@@ -220,7 +191,7 @@ function Edit_Strategies() {
           if (response.status) {
             toast.success(response.msg);
             setTimeout(() => {
-              navigate("/subadmin/strategys");
+              navigate("/research/strategys");
             }, 1000);
           } else {
             toast.error(response.msg);
@@ -239,33 +210,11 @@ function Edit_Strategies() {
       formik.setFieldValue("strategy_segment", allStrategy.strategy_segment);
       formik.setFieldValue("strategy_tester", allStrategy.strategy_tester);
       formik.setFieldValue("strategy_description", allStrategy.strategy_description);
-      formik.setFieldValue("Service_Type", allStrategy.Service_Type);
       formik.setFieldValue("max_trade", allStrategy.max_trade);
-      formik.setFieldValue(
-        "strategy_indicator",
-        allStrategy.strategy_indicator
-      );
+      formik.setFieldValue("strategy_percentage", allStrategy.strategy_percentage);
+      formik.setFieldValue("strategy_indicator", allStrategy.strategy_indicator);
       formik.setFieldValue(" strategy_image", allStrategy.strategy_image);
-      formik.setFieldValue(
-        "strategy_amount_month",
-        allStrategy.strategy_amount_month
-      );
-      formik.setFieldValue(
-        "strategy_amount_quarterly",
-        allStrategy.strategy_amount_quarterly
-      );
-      formik.setFieldValue(
-        "strategy_amount_half_early",
-        allStrategy.strategy_amount_half_early
-      );
-      formik.setFieldValue(
-        "strategy_amount_early",
-        allStrategy.strategy_amount_early
-      );
-      formik.setFieldValue(
-        "strategy_demo_days",
-        allStrategy.strategy_demo_days
-      );
+      formik.setFieldValue("strategy_demo_days", allStrategy.strategy_demo_days);
     }
   }, [allStrategy]);
 
@@ -275,10 +224,9 @@ function Edit_Strategies() {
       fields={fields}
       formik={formik}
       btn_name="Update"
-      btn_name1="Cancel" btn_name1_route="/subadmin/strategys"
+      btn_name1="Cancel" btn_name1_route="/research/strategys"
       additional_field={
         <>
-
           <label>Strategy Description</label>
           <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
           </textarea>
