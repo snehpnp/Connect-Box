@@ -138,17 +138,4 @@ export async function active_Status(data, token) {
   }
 
 
-  //find/activity/category
-
-
-  export async function  getalluserActivity(data){
-    try{
-        const res = await axios.post(`${Config.base_url}find/activity/category`, data,{
-            data: {}
-        })
-        return await res?.data;
-    }
-    catch(err){
-        return await err;
-    }
-  }
+ 
