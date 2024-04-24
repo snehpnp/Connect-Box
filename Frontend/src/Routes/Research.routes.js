@@ -20,8 +20,7 @@ import Edit_Strategies from '../Layouts/Researcher/Service/Strategys/Edit_Strate
 
 
 
-// strategydesc
-
+// strategyde
 const Research = () => {
 
 
