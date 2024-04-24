@@ -19,7 +19,6 @@ const groupService_User = db.group_services;
 const client_services = db.client_service;
 const serviceGroup_services_id = db.serviceGroup_services_id;
 const count_licenses = db.count_licenses;
-const user_activity_logs = db.user_activity_logs;
 const strategy = db.strategy;
 const serviceGroupName = db.serviceGroupName;
 const Client_group_Service = db.group_services;

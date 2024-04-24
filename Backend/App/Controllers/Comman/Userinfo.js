@@ -5,7 +5,7 @@ const User_model = db.user;
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
-const user_logs = db.user_logs;
+const user_logs = db.user_activity_logs;
 const subadmin_logs = db.subadmin_activity_logs;
 
 
@@ -67,6 +67,7 @@ class Userinfo {
             })
           const user_login = new user_logs({
             user_Id: Get_User[0]._id,
+            admin_Id: Get_User[0].parent_id,
             trading_status: "Trading Off",
             role: Get_User[0].Role,
             device: "WEB",
