@@ -286,9 +286,9 @@ const AddClient = () => {
       type: "test",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      // disable: false,
       showWhen: (values) => subadmin_service_type1 == 1,
-      // disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type == 0 ? false : true,
+      disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].license_type == 2 ? true : false,
 
     },
     {
@@ -744,6 +744,7 @@ const AddClient = () => {
                                       value={strategy._id}
                                       checked={selectedCheckboxes && selectedCheckboxes.includes(strategy._id)}
                                       onChange={() => handleStrategyChange(strategy._id)}
+                                      disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                     />
                                     <label
                                       className="form-check-label"

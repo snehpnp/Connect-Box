@@ -712,7 +712,7 @@ class Users {
         if (delete_startegy.length > 0) {
           delete_startegy.forEach(async (data) => {
 
-            
+
             var deleteStrategy = await strategy_client.deleteOne({
               _id: data._id,
             });
@@ -742,17 +742,11 @@ class Users {
 
 
       var new_licence = 0;
-      if (
-        req.licence1 === "" ||
-        req.licence1 === undefined ||
-        req.licence1 === null ||
-        req.licence1 === "null"
-      ) {
+      if (req.licence1 === "" || req.licence1 === undefined || req.licence1 === null || req.licence1 === "null") {
         new_licence = 0;
       } else {
         new_licence = req.licence1;
       }
-
 
 
       if (
@@ -884,6 +878,7 @@ class Users {
 
           } else if (req.license_type == "2") {
 
+            // IF ADD NEW STRATEGY
             if (add_startegy.length > 0) {
               add_startegy.forEach(async (data) => {
                 const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early');
@@ -908,10 +903,6 @@ class Users {
                   price_stg = 0
                 }
 
-
-
-
-
                 var currentDate = new Date();
                 var start_date_2days = dateTime.create(currentDate);
                 start_date_2days = start_date_2days.format("Y-m-d H:M:S");
@@ -933,7 +924,7 @@ class Users {
 
                 EndDate1 = end_date_2days;
 
-
+                console.log("data", data)
                 // STRATEGY ADD
                 const User_strategy_client = new strategy_client({
                   strategy_id: matchedStrategy._id,
@@ -974,6 +965,112 @@ class Users {
               });
             }
 
+            // UPDATE PLAN DEMO TO LIVE
+            req.Strategies.map(async (data) => {
+
+
+              const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early');
+
+              var price_stg = 0
+              var daysforstg = 0
+              if (data.plan_id == 1) {
+                price_stg = matchedStrategy.strategy_amount_month
+                daysforstg = 1
+              } else if (data.plan_id == 2) {
+                price_stg = matchedStrategy.strategy_amount_quarterly
+                daysforstg = 3
+              } else if (data.plan_id == 3) {
+                price_stg = matchedStrategy.strategy_amount_half_early
+                daysforstg = 6
+              }
+              else if (data.plan_id == 4) {
+                price_stg = matchedStrategy.strategy_amount_early
+                daysforstg = 12
+              } else {
+                daysforstg = 0
+                price_stg = 0
+              }
+
+              var currentDate = new Date();
+              var start_date_2days = dateTime.create(currentDate);
+              start_date_2days = start_date_2days.format("Y-m-d H:M:S");
+              var start_date = start_date_2days;
+
+
+              StartDate1 = start_date;
+
+              var UpdateDate = "";
+              var StartDate = new Date(start_date);
+
+              UpdateDate = StartDate.setMonth(
+                StartDate.getMonth() + parseInt(daysforstg)
+              );
+
+              var end_date_2days = dateTime.create(UpdateDate);
+              var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
+
+
+              EndDate1 = end_date_2days;
+
+              console.log("data", data)
+              // STRATEGY ADD
+              const User_strategy_client = new strategy_client({
+                strategy_id: matchedStrategy._id,
+                plan_id: data.plan_id,
+                user_id: existingUsername._id,
+                admin_id: PID,
+                Start_Date: StartDate1,
+                End_Date: EndDate1
+
+              });
+              User_strategy_client.save();
+
+
+              const filter = { strategy_id: matchedStrategy._id, user_id: existingUsername._id };
+              const update = {
+                $set: {
+                  plan_id: data.plan_id,
+                  Start_Date: StartDate1,
+                  End_Date: EndDate1,
+                  ActiveStatus: "1"
+
+                },
+              };
+
+
+              const update_token = await strategy_client.updateOne(filter, update, { upsert: true });
+
+
+
+
+              const Activity_logsData = new Activity_logs({
+                user_Id: existingUsername._id,
+                admin_Id: ParentData._id,
+                category: "EDIT-USER",
+                message: data.strategy_name + " Strategy Add",
+                maker_role: "SUBADMIN",
+                device: "web",
+                system_ip: ""
+              });
+              Activity_logsData.save();
+
+
+
+              const Admin_charge_percentage = Number(ParentData.strategy_Percentage) / 100;
+              const Admin_charge1 = Admin_charge_percentage * Number(price_stg);
+
+              const strategy_transactionData = new strategy_transaction({
+                strategy_id: matchedStrategy._id,
+                user_id: existingUsername._id,
+                admin_id: ParentData._id,
+                plan_id: data.plan_id,
+                Start_Date: StartDate1,
+                End_Date: EndDate1,
+                stg_charge: price_stg,
+                Admin_charge: Admin_charge1
+              });
+              strategy_transactionData.save();
+            });
 
           }
 
@@ -1210,12 +1307,10 @@ class Users {
           demat_userid: req.demat_userid,
           service_given_month: req.service_given_month,
           multiple_strategy_select: req.multiple_strategy_select,
+          Service_Type: req.Service_Type,
+          per_trade_value: req.per_trade_value,
+          Balance: req.Balance
         };
-
-
-        
-
-
 
 
 
