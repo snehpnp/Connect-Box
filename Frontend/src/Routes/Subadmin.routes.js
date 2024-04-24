@@ -44,6 +44,9 @@ import Openposition from '../Layouts/SubAdmin/Option/Open_Positions.js';
 import Faqs from '../Layouts/Comman/Faqs';
 
 import Client_Orders from '../Layouts/SubAdmin/Trade/Client_Orders'
+import AllEmployees from '../Layouts/SubAdmin/Subadmin_Employees/AllEmployee'
+import AddEmployee from '../Layouts/SubAdmin/Subadmin_Employees/AddEmployee'
+import Edit_Employee from '../Layouts/SubAdmin/Subadmin_Employees/Update_Employee'
 
 // strategydesc
 const SubAdmin_Routing = () => {
@@ -79,12 +82,14 @@ const SubAdmin_Routing = () => {
           <Route exact path="/position" element={<Position />} />
           <Route exact path="/open-position" element={<Openposition />} />
           <Route exact path="/client/orders" element={<Client_Orders/>}/>
-
+           <Route exact path="/employees" element={<AllEmployees/>}/>
+           <Route exact path="/employee/add" element={<AddEmployee/>}/>
+           <Route exact path="/employee/edit/:id" element={<Edit_Employee/>}/>
 
           <Route exact path="/faqs" element={<Faqs />} />
 
-
-
+          
+          
 
         </Routes>
       </div>
