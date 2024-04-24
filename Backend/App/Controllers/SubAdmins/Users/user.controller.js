@@ -1119,7 +1119,7 @@ class Users {
               user_Id: existingUsername._id,
               admin_Id: ParentData._id,
               category: "EDIT-USER",
-              message: GroupclientNAme[0].name + " Strategy Remove",
+              message: GroupclientNAme[0].name + " Group Update",
               maker_role: "SUBADMIN",
               device: "web",
               system_ip: ""
@@ -1195,14 +1195,9 @@ class Users {
 
 
 
-
-
-
-
         var User_update = {
           FullName: req.FullName,
           license_type: req.license_type,
-          licence: TotalMonth,
           broker: req.broker,
           parent_id: req.parent_id,
           parent_role: existingUsername.Role,

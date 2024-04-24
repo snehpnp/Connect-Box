@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { admin_header, subamdin_header, User_header, employee_header, superadmin_header ,research_header} from './Header_config';
+import { admin_header, subamdin_header, User_header, employee_header, superadmin_header, research_header } from './Header_config';
 
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +16,8 @@ const Header = () => {
 
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   const token = JSON.parse(localStorage.getItem("user_details")).token;
+  const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type;
+
 
   const toggleSubMenu = (menuTitle) => {
     setOpenSubMenu(openSubMenu === menuTitle ? '' : menuTitle);
@@ -33,7 +35,7 @@ const Header = () => {
     HeaderData.push(employee_header)
   } else if (roles === "SUPERADMIN") {
     HeaderData.push(superadmin_header)
-  }else if (roles === "RESEARCH") {
+  } else if (roles === "RESEARCH") {
     HeaderData.push(research_header)
   }
 
@@ -80,32 +82,42 @@ const Header = () => {
             <nav className="greedys sidebar-horizantal">
               <ul className="list-inline-item list-unstyled links">
                 {HeaderData.flat() && HeaderData.flat().map((data) => {
-                  const isOpen = openSubMenu === data.id;
 
-                  return (
-                    <li className='submenu' key={data.id} onMouseEnter={() => toggleSubMenu(data.id)} onMouseLeave={() => setOpenSubMenu('')}>
-                      <Link
-                        to={data.route}
-                        className={`${openSubMenu === data.id ? 'subdrop' : ''} ${activeLink === data.id ? 'active' : ''}`}
-                        style={{ textDecoration: 'none', color: 'inherit' }}
-                        onClick={() => handleLinkClick(data.id)}
-                      >
-                        <i className={data.Icon} id="animated-icon"></i> <span> {data.name}</span> {data.Data.length > 0 ? <span className="menu-arrow"></span> : ""}
-                      </Link>
+                  if (subadmin_service_type == 1 && data.route == '/subadmin/strategys/transaction') {
 
-                      <ul style={{ display: openSubMenu === data.id ? 'block' : 'none' }}>
-                        {data.Data.map((item) => (
-                          <li key={item.id}>
-                            <Link to={item.route} className="active">
-                              <i className={item.Icon} id="animated1-icon"></i> <span> {item.name}</span>
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                  );
+                  } else {
+                    return (
+                      <li className='submenu' key={data.id} onMouseEnter={() => toggleSubMenu(data.id)} onMouseLeave={() => setOpenSubMenu('')}>
+                        <Link
+                          to={data.route}
+                          className={`${openSubMenu === data.id ? 'subdrop' : ''} ${activeLink === data.id ? 'active' : ''}`}
+                          style={{ textDecoration: 'none', color: 'inherit' }}
+                          onClick={() => handleLinkClick(data.id)}
+                        >
+                          <i className={data.Icon} id="animated-icon"></i> <span> {data.name}</span> {data.Data.length > 0 ? <span className="menu-arrow"></span> : ""}
+                        </Link>
+
+                        <ul style={{ display: openSubMenu === data.id ? 'block' : 'none' }}>
+                          {data.Data.map((item) => (
+                            <li key={item.id}>
+                              <Link to={item.route} className="active">
+                                <i className={item.Icon} id="animated1-icon"></i> <span> {item.name}</span>
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </li>
+                    );
+
+                  }
+
+
+
+
+
                 })}
               </ul>
+
             </nav>
           </div>
         </div>

@@ -101,7 +101,7 @@ class ActivityLogs {
                 }
 
                 // DATA GET SUCCESSFULLY
-                res.send({
+                return res.send({
                     status: true,
                     msg: "Activity Name Find",
                     data: Activity_logs_data,
@@ -113,7 +113,7 @@ class ActivityLogs {
 
                 const user_logs_data = await user_logs.aggregate([
                     {
-                        $match: { admin_Id: new ObjectId(id), category: category }
+                        $match: { admin_Id: new ObjectId(id)}
                     },
                     {
                         $lookup: {
@@ -148,7 +148,7 @@ class ActivityLogs {
                 }
 
                 // DATA GET SUCCESSFULLY
-                res.send({
+               return res.send({
                     status: true,
                     msg: "Activity Name Find",
                     data: user_logs_data,
