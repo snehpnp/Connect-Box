@@ -550,6 +550,7 @@ const AddClient = () => {
   }, [refresh]);
 
 
+  console.log("formik.values.Service_Type",formik.values.Service_Type)
 
 
   return (
