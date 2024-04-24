@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Sidebar from '../Sidebar/Sidebars'
+import Trackpanel from './Logs/Trackpanel'
 
 const Settings = () => {
     return (
@@ -1599,6 +1600,33 @@ const Settings = () => {
                                         </div>
 
 
+                                    </div>
+
+                                    <div
+                                        className="tab-pane fade"
+                                        id="v-pills-logs"
+                                        role="tabpanel"
+                                        aria-labelledby="v-pills-logs-tab"
+                                    >
+                                        <div className="col-xl-12 col-md-12">
+                                            <div className="page-header">
+                                                <div className="content-page-header">
+                                                    <h5>Activity</h5>
+                                                    <div className="page-content">
+                                                        <div className="list-btn">
+                                                            <ul className="filter-list">
+                                                                <li>
+                                                               
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <Trackpanel/>  
                                     </div>
 
                                 </div>
