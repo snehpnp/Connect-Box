@@ -58,7 +58,7 @@ function Strategy() {
 
 
     const handleDelete = async (id) => {
-        console.log("stg._id", id)
+    
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",

@@ -33,7 +33,6 @@ const Panel = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          // console.log("response",response.data)
           setPanel(response.data);
           setUpdate({ ...update, _id: response.data[0]._id });
         }

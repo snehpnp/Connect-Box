@@ -120,7 +120,6 @@ const AddClient = () => {
     },
     onSubmit: async (values) => {
 
-      console.log("licence",values.licence)
 
       const req = {
         ProfileImg: ".",
@@ -175,7 +174,6 @@ const AddClient = () => {
           await dispatch(UpdateUsers(req))
             .unwrap()
             .then(async (response) => {
-              console.log("response", response)
               if (response.status) {
 
                 Swal.fire({
@@ -554,8 +552,6 @@ const AddClient = () => {
     getAllGroupService();
   }, [refresh]);
 
-
-  console.log("formik.values.Service_Type",formik.values.Service_Type)
 
 
   return (

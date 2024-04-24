@@ -41,7 +41,6 @@ const Trackpanel = () => {
 
 
       const fetchEditUserData = async (fromDate, toDate) => {
-        console.log("Fetching EditUser data from", fromDate, "to", toDate);
       };
 
       //api  for activity

@@ -160,7 +160,7 @@ const AllResearcher = () => {
 
 
   const handleEdit = () => {
-    console.log("cpp")
+
   }
 
   

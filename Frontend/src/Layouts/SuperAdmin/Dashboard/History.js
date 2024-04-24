@@ -26,7 +26,6 @@ const History = () => {
         if (response.status) {
           setModel(!model);
           setHistory(response.data);
-          // console.log("response",response.data)
         }
       })
       .catch((error) => {

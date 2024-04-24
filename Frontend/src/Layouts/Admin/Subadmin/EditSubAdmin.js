@@ -188,8 +188,7 @@ const EditClient = () => {
   ];
 
   useEffect(() => {
-    // console.log("s -",rowData !== undefined && rowData[0].subadmin_service_type)
-    // console.log("s typeof-",typeof rowData !== undefined && rowData[0].subadmin_service_type)
+ 
 
     formik.setFieldValue(
       "username",
