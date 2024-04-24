@@ -10,11 +10,6 @@ router.post('/researcher/updatebalance', addResearcherupdate)
 router.post('/researcher/delete', DeleteResearcher)
 
 
-
- 
-
-
-
 module.exports = router;
 
 
