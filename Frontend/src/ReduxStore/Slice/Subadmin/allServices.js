@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_SERVICS ,GET_ALL_Catagory,getalluserActivity} from "../../../Services/Subadmin/all.service";
+import { GET_ALL_SERVICS ,GET_ALL_Catagory} from "../../../Services/Subadmin/all.service";
 
 export const getAllServices = createAsyncThunk(
   "ServiceByCatagory",
@@ -37,7 +37,7 @@ const GrouoServicesSlice = createSlice({
     isError: false,
     AllgroupService: null,
     Allcategaory: null,
-    getActivity:null,
+   
 
   },
 
@@ -72,18 +72,7 @@ const GrouoServicesSlice = createSlice({
       .addCase(getCatogries.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-      }).addCase(getActivity.pending, (state, action) => {
-        state.isLoading = true;
-        state.isError = false;
       })
-      .addCase(getActivity.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.getActivity = action.payload;
-      })
-      .addCase(getActivity.rejected, (state, action) => {
-        state.isLoading = false;
-        state.isError = true;
-      });
   },
 });
 
