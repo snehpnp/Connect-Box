@@ -145,22 +145,32 @@ function Login() {
         <div className="login-wrapper">
           <div className="container" >
 
-
-
             <div className="loginbox">
-              <div className="login-right">
+              
+              <div className='row'>
+                <div className='col-md-6 border-right'>
+                  <div className='login-left '>
+                     
+                  {/* <h1>Login</h1>
+                  <p className="account-subtitle">Access to our dashboard</p> */}
+                  <img src="/assets/img/gif/login.gif" className='login-light-img'></img>
+                  <img src="/assets/img/gif/login-dark.gif" className='login-dark-img'></img>
+                  </div>
+                </div>
+                <div className='col-md-6'>
+                <div className="login-right">
                 <div className="login-right-wrap">
-                  <img
+                
+
+                <img
                     className="img-fluid logo-dark mb-2 logo-color"
                     src="https://www.pnpuniverse.com/images/logo/pnp.png"
                     alt="Logo"
-                    style={{ width: "25rem" }}
+                    style={{ width: "15rem" }}
                   />
-                  <h1>Login</h1>
-                  <p className="account-subtitle">Access to our dashboard</p>
 
-                  <div>
-                    <div className="mb-3">
+                  <div className='pt-5'>
+                    <div className=" input-block mb-3">
                       <label className="form-control-label d-flex justify-content-start" htmlFor="email">Email Address</label>
                       <input type="email" id="email" className="form-control" value={email} onChange={handleEmailChange} />
                     </div>
@@ -186,7 +196,7 @@ function Login() {
                     </div>
 
 
-                    <button className="btn btn-lg btn-primary w-100" onClick={handleSubmit}>
+                    <button className="btn btn-lg btn-primary w-100 login-btn" onClick={handleSubmit} >
                       Login
                     </button>
                   </div>
@@ -196,7 +206,7 @@ function Login() {
                     <span className="span-or">or</span>
                   </div>
 
-                  <div className="social-login mb-5">
+                  <div className="social-login ">
                     <span >Login with</span>
                     <div className='mt-2'>
                       <a href="/" className="facebook">
@@ -214,6 +224,9 @@ function Login() {
                   </div>
                 </div>
               </div>
+                </div>
+              </div>
+              
             </div>
 
           </div>
@@ -226,12 +239,14 @@ function Login() {
       {/* For Varify OTP Modal */}
       {showModal ? (
         <>
+        <div className="custom-modal-class">
           <Modal
 
             isOpen={showModal}
             handleClose={() => setShowModal(false)}
             backdrop="static"
-            size="sm"
+            className="custom-modal-class"
+            size="md"
             title="Verify OTP"
             btn_name="Verify"
             btn_name1="Verify1"
@@ -363,7 +378,7 @@ function Login() {
 
             </section>
           </Modal>
-
+          </div>
         </>
       ) : (
         ""

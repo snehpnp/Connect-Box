@@ -166,7 +166,7 @@ const cardsData = [
       <div>
         <div className="content container-fluid">
           <div className="row">
-            <div className="col-md-3">
+            <div className="col-md-4 col-lg-3">
               <div className="card">
                 <div className="col card-header">
                   <h5 className="card-title">Admin Dashboard</h5>
@@ -181,7 +181,7 @@ const cardsData = [
               </div>
             </div>
 
-            <div className="col-md-9">
+            <div className="col-md-8 col-lg-9">
               <div className="row" data-aos="fade-down">
                 {cardsData.map((data, index) => (
                   <div className="col-xl-4 col-sm-6 col-12" key={index}>
@@ -228,9 +228,9 @@ const cardsData = [
             </div>
           </div>
 
-          <div className="row" data-aos="fade-left">
+          
             <div className="row" data-aos="fade-left">
-              <div className="col-xl-8 d-flex">
+              <div className="col-xl-8 d-flex col-md-6">
                 <div className="card flex-fill">
                   <div className="card-header">
                     <div className="d-flex justify-content-between align-items-center">
@@ -335,7 +335,7 @@ const cardsData = [
                 </div>
               </div>
 
-              <div className="col-xl-4 d-flex">
+              <div className="col-xl-4 d-flex col-md-6">
                 <div className="card flex-fill">
                   <div className="card-header">
                     <div className="d-flex justify-content-between align-items-center">
@@ -412,7 +412,7 @@ const cardsData = [
                 </div>
               </div>
             </div>
-          </div>
+         
         </div>
       </div>
     </div>

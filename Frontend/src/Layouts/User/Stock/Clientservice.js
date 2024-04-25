@@ -167,7 +167,7 @@ function Clientservice() {
 
 
       {modal && (
-        <div className="modal custom-modal d-block" id="add_vendor" role="dialog">
+        <div className="modal custom-modal d-block " id="add_vendor" role="dialog" data-aos="fade-down">
           <div className="modal-dialog modal-dialog-centered modal-md">
             <div className="modal-content">
               <div className="modal-header border-0 pb-0">
@@ -194,7 +194,7 @@ function Clientservice() {
                       </div>
                       <div className="col-lg-6 col-sm-12 d-flex">
                         <h6 className='col-lg-4'>Max Qty	 :</h6>
-                        <input type="text" className='col-lg-8 rounded px-2' defaultValue={1} value={maxQty} onChange={(e) => setMaxQty(e.target.value)} />
+                        <input type="text" className='form-control rounded px-2' defaultValue={1} value={maxQty} onChange={(e) => setMaxQty(e.target.value)} />
                       </div>
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex mb-3 mt-3">
@@ -202,7 +202,7 @@ function Clientservice() {
                         <h6 className='col-lg-6'>Strategy :</h6>
                       </div>
                       <div className='col-lg-6'>
-                        <button onClick={(e) => setShowStretgy(!showstrategy)} className="p-1 rounded col-lg-12">
+                        <button onClick={(e) => setShowStretgy(!showstrategy)} className="btn btn-outline-primary w-100 mb-2">
                           Select Strategy
                         </button>
                         {
@@ -229,7 +229,7 @@ function Clientservice() {
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex mb-3">
                       <h6 className='col-lg-6'>Order Type :</h6>
-                      <select className="col-lg-6 rounded" value={orderType} onChange={(e) => { setOrderType(e.target.value) }}>
+                      <select className=" rounded form-select" value={orderType} onChange={(e) => { setOrderType(e.target.value) }}>
                         <option selected>Stoploss Market</option>
                         <option value="1">Market</option>
                         <option value="2">Limit</option>
@@ -238,7 +238,7 @@ function Clientservice() {
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex mb-3">
                       <h6 className='col-lg-6'>Product Type :</h6>
-                      <select className="col-lg-6 rounded " value={productType} onChange={(e) => { setProductType(e.target.value) }}>
+                      <select className="form-select rounded " value={productType} onChange={(e) => { setProductType(e.target.value) }}>
                         <option selected>MIS</option>
                         <option value="1">CNC</option>
                         <option value="2">BO</option>

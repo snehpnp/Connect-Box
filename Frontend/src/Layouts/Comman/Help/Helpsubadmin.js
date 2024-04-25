@@ -247,17 +247,17 @@ const Helpsubadmin = () => {
         <div className="content container-fluid ">
           <div className="row mb-2">
             <div className="col-lg-4 col-md-4" data-aos="fade-left">
-              <div className="page-header">
+              {/* <div className="page-header">
                 <div className="content-page-header">
                   <h5>Help Center</h5>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
           <div className="row">
-            <div className="col-lg-8 col-md-8" data-aos="fade-left">
-              <div className="card h-100" style={{ width: "77rem" }}>
+            <div className="col-lg-12 col-md-8" data-aos="fade-left">
+              <div className="card h-100" >
                 <div className="card-body">
                   <div className="tab-content">
                     <div className="tab-pane show active" id="solid-tab1">

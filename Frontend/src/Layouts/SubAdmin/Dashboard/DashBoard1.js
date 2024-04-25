@@ -231,26 +231,13 @@ const DashBoard = () => {
                     .map((cardGroup, index) => (
                       <div className="col-md-3" key={index}>
                         {cardGroup.map((data, idx) => (
-                          <div className="card mb-4" key={idx}>
-                            <div className="card-body moving-border">
-                              <div className="dash-widget-header crad-widget">
-                                <span
-                                  className={`dash-widget-icon ${data.progressBarClass}`}
-                                >
-                                  <i
-                                    className={data.iconClass}
-                                    id="animated"
-                                  ></i>
-                                </span>
-                                <div className="dash-count">
+                          <div className="card mb-4  moving-border"  key={idx}>
+                            <div className="card-body">
+                              <div className="dash-widget-header crad-widget mb-0 d-flex justify-content-between">
+                               
+                                <div className="dash-count ms-0">
                                   <div className="dash-title">{data.title}</div>
-                                  <div className="dash-counts">
-                                    <p>{data.count}</p>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div className="progress progress-sm mt-3">
+                                  <div className="progress progress-sm my-3">
                                 <div
                                   className={`progress-bar ${data.progressBarClass}`}
                                   role="progressbar"
@@ -260,6 +247,31 @@ const DashBoard = () => {
                                   aria-valuemax={100}
                                 ></div>
                               </div>
+                                  <div className="dash-counts">
+                                    <p>{data.count}</p>
+                                  </div>
+                                </div>
+                               
+                                <span
+                                  className={`dash-widget-icon ${data.progressBarClass}`}
+                                >
+                                  <i
+                                    className={data.iconClass}
+                                    id="animated"
+                                  ></i>
+                                </span>
+                              </div>
+
+                              {/* <div className="progress progress-sm mt-3">
+                                <div
+                                  className={`progress-bar ${data.progressBarClass}`}
+                                  role="progressbar"
+                                  style={{ width: `${data.progress}%` }}
+                                  aria-valuenow={data.progress}
+                                  aria-valuemin={0}
+                                  aria-valuemax={100}
+                                ></div>
+                              </div> */}
                               <p className="text-muted mt-3 mb-0">
                                 <span className="text-success me-1">
                                   <i className={data.arrowIcon} />
