@@ -175,7 +175,7 @@ function Clientservice() {
 
 
 
-  const colors = ["navy", "teal", "green", "crimson","musturd", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson"];
+  const colors = ["navy", "teal", "green", "crimson", "musturd", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson"];
 
 
   return (
@@ -326,7 +326,7 @@ function Clientservice() {
 
               </div>
             </div>
-            
+
           </div>
         </section>
       </div>
@@ -334,7 +334,7 @@ function Clientservice() {
 
 
       {modal && (
-        <div className="modal custom-modal d-block" id="add_vendor" role="dialog">
+        <div className="modal custom-modal d-block" id="add_vendor" role="dialog" data-aos="fade-down">
           <div className="modal-dialog modal-dialog-centered modal-md">
             <div className="modal-content">
               <div className="modal-header border-0 pb-0">
@@ -361,7 +361,7 @@ function Clientservice() {
                       </div>
                       <div className="col-lg-6 col-sm-12 d-flex">
                         <h6 className='col-lg-4'>Max Qty	 :</h6>
-                        <input type="text" className='col-lg-8 rounded px-2' defaultValue={1} value={data.maxQty} onChange={e => handleInputChange('maxQty', e.target.value)} />
+                        <input type="text" className='form-control' defaultValue={1} value={data.maxQty} onChange={e => handleInputChange('maxQty', e.target.value)} />
                       </div>
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex mb-3 mt-3">
@@ -369,7 +369,7 @@ function Clientservice() {
                         <h6 className='col-lg-6'>Strategy :</h6>
                       </div>
                       <div className='col-lg-6'>
-                        <button onClick={(e) => setShowStretgy(!showstrategy)} className="p-1 rounded col-lg-12">
+                        <button onClick={(e) => setShowStretgy(!showstrategy)} className="p-1 rounded col-lg-12 mb-2">
                           Select Strategy
                         </button>
                         {
@@ -397,7 +397,7 @@ function Clientservice() {
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex mb-3">
                       <h6 className='col-lg-6'>Order Type :</h6>
-                      <select className="col-lg-6 rounded" value={data.orderType} onChange={e => handleInputChange('orderType', e.target.value)}>
+                      <select className="form-select" value={data.orderType} onChange={e => handleInputChange('orderType', e.target.value)}>
                         <option value="1">Market</option>
                         <option value="2">Limit</option>
                         <option value="3">Stoploss Limit</option>
@@ -406,7 +406,7 @@ function Clientservice() {
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex mb-3">
                       <h6 className='col-lg-6'>Product Type :</h6>
-                      <select className="col-lg-6 rounded " value={data.productType} onChange={e => handleInputChange('productType', e.target.value)}>
+                      <select className="form-select " value={data.productType} onChange={e => handleInputChange('productType', e.target.value)}>
                         <option value="1">CNC</option>
                         <option value="2">MIS</option>
                         <option value="3">BO</option>

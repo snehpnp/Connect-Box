@@ -298,20 +298,6 @@ export default function AllEmployees() {
                                                 </div>
                                             </li>
 
-                                            <li>
-                                                <div className="input-group input-block">
-                                                    <label>From Date</label>
-                                                    <input
-                                                        type="date"
-                                                        className="form-control"
-                                                        placeholder="Search..."
-                                                        aria-label="Search"
-                                                        aria-describedby="search-addon"
-                                                        onChange={(e) => SetInputSearch(e.target.value || '')}
-                                                        value={inputSearch}
-                                                    />
-                                                </div>
-                                            </li>
 
 
                                             <li>
@@ -366,9 +352,44 @@ export default function AllEmployees() {
 
 
                                         </ul>
+
                                     </div>
+
                                 </div>
+
                             </div>
+                        </div>
+
+                        <div className="d-flex mb-3">
+
+                            <div className=" input-block me-3">
+                                <label>From Date</label>
+                                <input
+                                    type="date"
+                                    className="form-control"
+                                    placeholder="Search..."
+                                    aria-label="Search"
+                                    aria-describedby="search-addon"
+                                    onChange={(e) => SetInputSearch(e.target.value || '')}
+                                    value={inputSearch}
+                                />
+                            </div>
+
+
+                            <div className="input-block">
+                                <label>To Date</label>
+                                <input
+                                    type="date"
+                                    className="form-control"
+                                    placeholder="Search..."
+                                    aria-label="Search"
+                                    aria-describedby="search-addon"
+                                    onChange={(e) => SetInputSearch(e.target.value || '')}
+                                    value={inputSearch}
+                                />
+                            </div>
+
+
                         </div>
 
 
