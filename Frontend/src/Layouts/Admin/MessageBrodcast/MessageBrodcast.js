@@ -31,7 +31,7 @@ function MessageBroadcast() {
 
   const [modalId, setmodalId] = useState('');
 
-  
+
 
 
   const [modal, setModal] = useState(false);
@@ -112,7 +112,7 @@ function MessageBroadcast() {
           <IconButton
             aria-label="edit"
             size="small"
-            onClick={() => { setModal(true);  setopenModalId(params.row._id); setMsgData(params.row.messageTitle)}}
+            onClick={() => { setModal(true); setopenModalId(params.row._id); setMsgData(params.row.messageTitle) }}
           >
             <EditIcon />
           </IconButton>
@@ -135,8 +135,8 @@ function MessageBroadcast() {
 
   ];
 
- 
- 
+
+
 
 
   useEffect(() => {
@@ -148,7 +148,7 @@ function MessageBroadcast() {
     };
   }, []);
 
- 
+
 
 
   const fetchSubadminName = async () => {
@@ -273,7 +273,7 @@ function MessageBroadcast() {
       });
   };
 
-  
+
 
   useEffect(() => {
     fetchSubadminName();
@@ -291,10 +291,13 @@ function MessageBroadcast() {
         Card_title_icon="fas fa-message pe-3"
         Content={
           <>
-            <div className="mt-3">
+            <div className="row align-items-center">
+              <div className="col-md-5">
+                <img className="w-75" src="assets/img/gif/Email-campaign.png" />
+              </div >
 
               <div className="col-md-7">
-                <div className="mt-3">
+                <div className="input-block mt-3">
                   <label className="form-label" htmlFor="broker-select">
                     SubAdmins
                   </label>
@@ -316,7 +319,7 @@ function MessageBroadcast() {
                   </div>
                 </div>
 
-                <div className="mt-3">
+                <div className="input-block mt-3">
                   <label className="form-label" htmlFor="message">
                     Message
                   </label>
@@ -336,6 +339,7 @@ function MessageBroadcast() {
                   Send
                 </ button>
               </div >
+
             </div >
 
 
@@ -352,7 +356,7 @@ function MessageBroadcast() {
 
 
             {
-              modal  && (
+              modal && (
                 <div
                   className="modal fade show"
                   tabIndex="-1"
@@ -370,10 +374,10 @@ function MessageBroadcast() {
                             className="btn-close"
                             data-bs-dismiss="modal"
                             aria-label="Close"
-                            onClick={()=>{setModal(false); setMsgData('')}}
+                            onClick={() => { setModal(false); setMsgData('') }}
                           ></button>
                         </div>
-                        {modal  && (
+                        {modal && (
                           <div>
                             <div className="modal-body">
                               <div className="row">

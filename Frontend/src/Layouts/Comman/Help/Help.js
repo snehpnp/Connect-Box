@@ -141,7 +141,21 @@ function System() {
           <div>
             <div>
               <div>
-                <div
+                <div className="content container-fluid ">
+                  <div className="card flex-fill bg-white">
+                    <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                      <h5 className="card-title mb-0 w-auto">
+                        {" "}
+                        <i className="fas fa-money-bill-wave pe-2" />
+                        Help
+                      </h5>
+                      <div className="pay-btn text-end w-auto" />
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* <div
                   className="content-page-header"
                   style={{
                     padding: "0.7rem",
@@ -165,77 +179,9 @@ function System() {
                     <Dropdown.Item eventKey="Subadmin">Subadmin</Dropdown.Item>
                     <Dropdown.Item eventKey="User">User</Dropdown.Item>
                   </DropdownButton>
-                </div>
+                </div> */}
               </div>
-              {selectedItem === "Subadmin" ? (
-                <div className="mt-3">
-                  <h1
-                    className="col-lg-4 col-md-4"
-                    data-aos="fade-left"
-                    style={{
-                      color: "black",
-                      marginTop: "3rem",
-                      marginLeft: "2rem",
-                    }}
-                  >
-                    <div className="content-page-header">
-                      <h1 style={{ fontSize: "2rem" }}>Subadmin Detail</h1>
-                    </div>
-                  </h1>
 
-                  <div
-                    style={{
-                      overflow: "hidden",
-                      maxWidth: "auto",
-                      width: "77rem",
-                      margin: "auto",
-                    }}
-                  >
-                    {
-                      <FullDataTable
-                        styles={styles}
-                        columns={columns1}
-                        rows={getsubadmin}
-                      />
-                    }
-                  </div>
-                </div>
-              ) : null}
-
-              {selectedItem === "User" ? (
-                <div className="mt-3">
-                  <h1
-                    className="col-lg-4 col-md-4"
-                    data-aos="fade-left"
-                    style={{
-                      color: "black",
-                      marginTop: "3rem",
-                      marginLeft: "2rem",
-                    }}
-                  >
-                    <div className="content-page-header">
-                      <h1 style={{ fontSize: "2rem" }}>User Detail</h1>
-                    </div>
-                  </h1>
-
-                  <div
-                    style={{
-                      overflow: "hidden",
-                      maxWidth: "auto",
-                      width: "77rem",
-                      margin: "auto",
-                    }}
-                  >
-                    {
-                      <FullDataTable
-                        styles={styles}
-                        columns={columns1}
-                        rows={getuserdata}
-                      />
-                    }
-                  </div>
-                </div>
-              ) : null}
             </div>
           </div>
         ) : null}
