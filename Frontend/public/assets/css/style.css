@@ -5336,7 +5336,7 @@ span.select2-container.select2-container--default.select2-container--open {
 }
 
 .nav-link {
-    color: #888 !important;
+    /* color: #888 !important; */
     font-size: 16px !important;
     padding: 15px 20px !important;
     border: 1px solid #e7e3e3 !important;
