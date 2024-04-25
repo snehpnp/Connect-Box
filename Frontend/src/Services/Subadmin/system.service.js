@@ -46,6 +46,22 @@ export async function GetInfo_strategyTransaction(data, token) {
     }
 
 }
+export async function GetInfo_strategyTransactionUser(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}user/strategy/transaction`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}
+
+
+
 
 export async function GetInfo_strategyHistory(data, token) {
     try {

@@ -14,6 +14,7 @@ class SignalController {
       const resultUser = await User_model.findOne({
         _id: ObjSubAdminId,
       }).select("client_key");
+
       if (!resultUser) {
         return res.status(404).send({
           status: false,
@@ -35,6 +36,19 @@ class SignalController {
             TradeType: 1,
             segment: 1,
             tr_price: 1,
+            createdAt: 1,
+            type: 1,
+            price: 1,
+            option_type: 1,
+            strike: 1,
+            expiry: 1,
+            segment: 1,
+            client_persnal_key: 1,
+            TradeType: 1,
+            token: 1,
+            lot_size: 1,
+
+
           },
         },
       ];
@@ -57,7 +71,7 @@ class SignalController {
     try {
       const { subadminId } = req.body;
       const ObjSubAdminId = new ObjectId(subadminId);
-      const resultUser = await User_model.findOne({ _id: ObjSubAdminId,}).select("client_key prifix_key");
+      const resultUser = await User_model.findOne({ _id: ObjSubAdminId, }).select("client_key prifix_key");
       const clientKey = resultUser.client_key;
       const prefixKey = resultUser.prifix_key;
 

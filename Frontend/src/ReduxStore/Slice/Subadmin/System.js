@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetInfo_Company,Edit_Company_info,GetInfo_strategyTransaction,GetInfo_strategyHistory } from "../../../Services/Subadmin/system.service";
+import { GetInfo_Company,Edit_Company_info,GetInfo_strategyTransaction,GetInfo_strategyHistory,GetInfo_strategyTransactionUser } from "../../../Services/Subadmin/system.service";
 
 export const infocompany = createAsyncThunk(
     "subadmin/company/getone",
@@ -33,6 +33,19 @@ export const FindStgTranscData = createAsyncThunk(
         
         try {
             const res = await GetInfo_strategyTransaction(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const FindStgTranscDataUser = createAsyncThunk(
+    "user/strategy/transaction",
+    async (data) => {
+        
+        try {
+            const res = await GetInfo_strategyTransactionUser(data);
             return res;
         } catch (err) {
             throw err;
@@ -127,6 +140,20 @@ const SystemSlice = createSlice({
                 state.stg_history = action.payload;
             })
             .addCase(FindStgHistoryData.rejected, (state, action) => {
+
+                state.isLoading = false;
+                state.isError = true;
+            })
+            .addCase(FindStgTranscDataUser.pending, (state, action) => {
+
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(FindStgTranscDataUser.fulfilled, (state, action) => {
+
+                state.isLoading = false;
+            })
+            .addCase(FindStgTranscDataUser.rejected, (state, action) => {
 
                 state.isLoading = false;
                 state.isError = true;

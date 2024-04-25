@@ -333,17 +333,9 @@ export const User_header = [
     },
     {
         id: 4,
-        name: 'Recharge Details',
-        route: "/user/payment",
+        name: 'Subscription ',
+        route: "/user/subscription",
         Icon: "fe fe-credit-card",
-        Data: []
-    },
-   
-    {
-        id: 6,
-        name: 'Open Positions',
-        route: "/user/open-positions",
-        Icon: "fe fe-grid",
         Data: []
     },
     {
@@ -463,20 +455,7 @@ export const superadmin_header = [
         Data: []
     },
  
-    // {
-    //     id: 10,
-    //     name: 'Message Broadcast',
-    //     route: "/superadmin/message-broadcast",
-    //     Icon: "fe fe-message-circle",
-    //     Data: []
-    // },
-    // {
-    //     id: 11,
-    //     name: 'Help',
-    //     route: "/superadmin/help",
-    //     Icon: "fe fe-help-circle",
-    //     Data: []
-    // },
+
     {
         id: 9,
         name: 'FAQs',
