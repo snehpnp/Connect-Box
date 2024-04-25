@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { GET_ALL_RESEARCHER_STRATEGY } from "../../../Services/Subadmin/all.service";
 
-export const Get_All_Researcher_Strategy = createAsyncThunk('allsearcher/strategy',
+export const Get_All_Researcher_Strategy = createAsyncThunk('subadmin/allsearcher/strategy',
     async (data) => {
         try {
             const res = await GET_ALL_RESEARCHER_STRATEGY(data)

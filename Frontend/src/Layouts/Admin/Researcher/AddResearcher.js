@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect, useState} from 'react';
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik'
 import { Add_Researcher } from '../../../ReduxStore/Slice/Researcher/ResearcherSlice'
@@ -102,6 +102,8 @@ const AddResearcher = () => {
     }
   });
 
+
+
   const fields = [
     {
       name: "profile_img",
@@ -188,7 +190,8 @@ const AddResearcher = () => {
         btn_name1="Cancel"
         formik={formik}
         btn_name1_route={"/admin/allresearch"}
-       
+        
+
       />
 
     </>

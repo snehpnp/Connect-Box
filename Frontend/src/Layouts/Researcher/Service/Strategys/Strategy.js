@@ -203,6 +203,7 @@ const Strategy = () => {
                 Service_Type: 0,
                 Role: "RESEARCH"
             };
+            
             await dispatch(AddStrategy(data))
                 .unwrap()
                 .then(async (response) => {
