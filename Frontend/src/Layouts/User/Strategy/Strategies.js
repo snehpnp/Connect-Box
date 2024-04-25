@@ -163,7 +163,7 @@ const Strategies = () => {
                                 </ul>
                                 <div className="d-flex justify-content-center package-edit">
                                     <a
-                                        className="btn-action-icon me-2"
+                                        className="btn btn-primary"
                                         href="javascript:void(0);"
                                         data-bs-toggle="modal"
                                         data-bs-target="#edit_package"

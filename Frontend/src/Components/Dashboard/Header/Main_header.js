@@ -3,14 +3,28 @@ import DrapDown from './DrapDown';
 import { Link } from 'react-router-dom';
 
 const Main_Header = () => {
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
+  useEffect(() => {
+    if (isNavOpen) {
+      document.body.classList.add('slide-nav');
+    } else {
+      document.body.classList.remove('slide-nav');
+    }
+  }, [isNavOpen]);
+
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
 
   return (
     <div>
       {/* MAIN TOP HEADER */}
       <div className="header header-one">
-
-        <div className="main-logo d-inline float-start d-lg-flex align-items-center d-none d-sm-none d-md-none">
+      <a className="mobile_btn" id="mobile_btn" onClick={toggleNav}>
+<i className="fas fa-bars"></i>
+</a>
+        <div className="main-logo d-inline float-start d-lg-flex align-items-center ">
           <div className="logo-white">
 
             <img
@@ -51,7 +65,7 @@ const Main_Header = () => {
         {/* Toggle theme switch */}
 
 
-
+   
         <div className="nav-item  has-arrow dropdown-heads ">
           <DrapDown />
 

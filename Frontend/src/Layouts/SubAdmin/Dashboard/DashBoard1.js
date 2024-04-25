@@ -22,6 +22,7 @@ const DashBoard = () => {
   const storedTheme = localStorage.getItem("theme_mode");
 
 
+
   const [options, setOptions] = useState({
     chart: {
       id: "basic-bar",
@@ -90,8 +91,13 @@ const DashBoard = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
+
+
           const categories = response.data[0].data;
           const data = response.data[0].strategy_transactions;
+
+          console.log("categories---", response.data[0].date)
+
           setOptions((prevOptions) => ({
             ...prevOptions,
             xaxis: {
@@ -99,7 +105,11 @@ const DashBoard = () => {
               categories: response.data[0].date,
             },
           }));
+
           setSeries([{ name: "series-1", data: data }]);
+
+
+
           setchart(true);
         } else {
           toast.error(response.msg);
@@ -192,6 +202,7 @@ const DashBoard = () => {
     dashData();
   }, [dispatch]);
 
+
   return (
     <div className="main-wrapper">
       <div>
@@ -206,6 +217,7 @@ const DashBoard = () => {
             </div>
 
             <div className="col-md-12">
+              {/* <div className="container"> */}
               <div className="row" data-aos="fade-down">
                 {cardsData
                   .reduce((acc, card, index) => {
@@ -219,9 +231,27 @@ const DashBoard = () => {
                   .map((cardGroup, index) => (
                     <div className="col-md-3" key={index}>
                       {cardGroup.map((data, idx) => (
-                        <div className="card mb-4" key={idx}>
-                          <div className="card-body moving-border">
-                            <div className="dash-widget-header crad-widget">
+                        <div className="card mb-4  moving-border" key={idx}>
+                          <div className="card-body">
+                            <div className="dash-widget-header crad-widget mb-0 d-flex justify-content-between">
+
+                              <div className="dash-count ms-0">
+                                <div className="dash-title">{data.title}</div>
+                                <div className="progress progress-sm my-3">
+                                  <div
+                                    className={`progress-bar ${data.progressBarClass}`}
+                                    role="progressbar"
+                                    style={{ width: `${data.progress}%` }}
+                                    aria-valuenow={data.progress}
+                                    aria-valuemin={0}
+                                    aria-valuemax={100}
+                                  ></div>
+                                </div>
+                                <div className="dash-counts">
+                                  <p>{data.count}</p>
+                                </div>
+                              </div>
+
                               <span
                                 className={`dash-widget-icon ${data.progressBarClass}`}
                               >
@@ -230,24 +260,18 @@ const DashBoard = () => {
                                   id="animated"
                                 ></i>
                               </span>
-                              <div className="dash-count">
-                                <div className="dash-title">{data.title}</div>
-                                <div className="dash-counts">
-                                  <p>{data.count}</p>
-                                </div>
-                              </div>
                             </div>
 
-                            <div className="progress progress-sm mt-3">
-                              <div
-                                className={`progress-bar ${data.progressBarClass}`}
-                                role="progressbar"
-                                style={{ width: `${data.progress}%` }}
-                                aria-valuenow={data.progress}
-                                aria-valuemin={0}
-                                aria-valuemax={100}
-                              ></div>
-                            </div>
+                            {/* <div className="progress progress-sm mt-3">
+                                <div
+                                  className={`progress-bar ${data.progressBarClass}`}
+                                  role="progressbar"
+                                  style={{ width: `${data.progress}%` }}
+                                  aria-valuenow={data.progress}
+                                  aria-valuemin={0}
+                                  aria-valuemax={100}
+                                ></div>
+                              </div> */}
                             <p className="text-muted mt-3 mb-0">
                               <span className="text-success me-1">
                                 <i className={data.arrowIcon} />
@@ -255,8 +279,8 @@ const DashBoard = () => {
                               </span>{" "}
                               <span
                                 className={`since-last-week ${storedTheme == "dark"
-                                  ? "text-white"
-                                  : "text-black"
+                                    ? "text-white"
+                                    : "text-black"
                                   }`}
                               >
                                 {data.sinceLastWeek}
@@ -267,192 +291,193 @@ const DashBoard = () => {
                       ))}
                     </div>
                   ))}
-              </div >
-            </div >
+              </div>
+              {/* </div> */}
+            </div>
+          </div>
 
+          <div className="row" data-aos="fade-left">
             <div className="row" data-aos="fade-left">
-              <div className="row" data-aos="fade-left">
-                <div className="col-xl-8 d-flex">
-                  <div className="card flex-fill">
-                    <div className="card-header">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <h5 className="card-title">Sales Analytics</h5>
-                        <div className="d-flex">
-                          <div className="dropdown main me-3">
-                            <button
-                              className="btn btn-white btn-sm dropdown-toggle"
-                              type="button"
-                              id="subadminDropdownButton"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              {selectedUser}
-                            </button>
-                            <ul
-                              className="dropdown-menu"
-                              aria-labelledby="subadminDropdownButton"
-                            >
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  onClick={(e) => {
-                                    handleUserSales(e);
-                                    totalUserdata(selectedOption, "USERS");
-                                  }}
-                                >
-                                  USERS
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  onClick={(e) => {
-                                    handleUserSales(e);
-                                    totalSalesdata(selectedOption, selectedUser);
-                                  }}
-                                >
-                                  SALES
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-
-                          <div className="dropdown main">
-                            <button
-                              className="btn btn-white btn-sm dropdown-toggle iconclass"
-                              type="button"
-                              id="planDropdownButton"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              {selectedOption}
-                            </button>
-                            <ul
-                              className="dropdown-menu"
-                              aria-labelledby="planDropdownButton"
-                            >
-                              {dropdown.map((data, index) => (
-                                <li key={index}>
-                                  <a
-                                    className="dropdown-item"
-                                    onClick={() => handleSelect1(data)}
-                                  >
-                                    {data}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+              <div className="col-xl-8 d-flex">
+                <div className="card flex-fill">
+                  <div className="card-header">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <h5 className="card-title">Sales Analytics</h5>
+                      <div className="d-flex">
+                        <div className="dropdown main me-3">
+                          <button
+                            className="btn btn-white btn-sm dropdown-toggle"
+                            type="button"
+                            id="subadminDropdownButton"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            {selectedUser}
+                          </button>
+                          <ul
+                            className="dropdown-menu"
+                            aria-labelledby="subadminDropdownButton"
+                          >
+                            <li>
+                              <a
+                                className="dropdown-item"
+                                onClick={(e) => {
+                                  handleUserSales(e);
+                                  totalUserdata(selectedOption, "USERS");
+                                }}
+                              >
+                                USERS
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                className="dropdown-item"
+                                onClick={(e) => {
+                                  handleUserSales(e);
+                                  totalSalesdata(selectedOption, selectedUser);
+                                }}
+                              >
+                                SALES
+                              </a>
+                            </li>
+                          </ul>
                         </div>
-                      </div>
-                    </div>
 
-                    <div className="card-body">
-                      <div id="invoice_chart" />
-                      <div className="text-center text-muted">
-                        <div className="row">
-                          {chart && chart ? (
-                            <div className="mixed-chart">
-                              <Chart
-                                colors={colors}
-                                options={options}
-                                series={series}
-                                type="bar"
-                                width="100%"
-                              />
-                            </div>
-                          ) : (
-                            <div className="loding" style={{ color: "white" }}>
-                              Loading...
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="col-xl-4 d-flex">
-                  <div className="card flex-fill">
-                    <div className="card-header">
-                      <div className="d-flex justify-content-between align-items-center">
-                        <h5 className="card-title">Invoice 1 Analytics</h5>
                         <div className="dropdown main">
                           <button
                             className="btn btn-white btn-sm dropdown-toggle iconclass"
                             type="button"
-                            id="dropdownMenuButton1"
+                            id="planDropdownButton"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
                           >
-                            Monthly
+                            {selectedOption}
                           </button>
                           <ul
                             className="dropdown-menu"
-                            aria-labelledby="dropdownMenuButton1"
+                            aria-labelledby="planDropdownButton"
                           >
-                            <li>
-                              <a className="dropdown-item">Weekly</a>
-                            </li>
-                            <li>
-                              <a className="dropdown-item">Monthly</a>
-                            </li>
-                            <li>
-                              <a className="dropdown-item">Yearly</a>
-                            </li>
+                            {dropdown.map((data, index) => (
+                              <li key={index}>
+                                <a
+                                  className="dropdown-item"
+                                  onClick={() => handleSelect1(data)}
+                                >
+                                  {data}
+                                </a>
+                              </li>
+                            ))}
                           </ul>
                         </div>
                       </div>
                     </div>
-                    <div className="card-body">
-                      <div id="invoice_chart" />
-                      <div className="text-center text-muted">
-                        <div className="row">
-                          <div className="col-4">
-                            <div className="mt-4">
-                              <p className="mb-2 text-truncate">
-                                <i className="fas fa-circle text-primary me-1" />{" "}
-                                Invoiced
-                              </p>
-                              <h5>$2,132</h5>
-                            </div>
+                  </div>
+
+                  <div className="card-body">
+                    <div id="invoice_chart" />
+                    <div className="text-center text-muted">
+                      <div className="row">
+                        {chart && chart ? (
+                          <div className="mixed-chart">
+                            <Chart
+                              colors={colors}
+                              options={options}
+                              series={series}
+                              type="bar"
+                              width="100%"
+                            />
                           </div>
-                          <div className="col-4">
-                            <div className="mt-4">
-                              <p className="mb-2 text-truncate">
-                                <i className="fas fa-circle text-success me-1" />{" "}
-                                Received
-                              </p>
-                              <h5>$1,763</h5>
-                            </div>
+                        ) : (
+                          <div className="loding" style={{ color: "white" }}>
+                            Loading...
                           </div>
-                          <div className="col-4">
-                            <div className="mt-4">
-                              <p className="mb-2 text-truncate">
-                                <i className="fas fa-circle text-danger me-1" />{" "}
-                                Pending
-                              </p>
-                              <h5>$973</h5>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          className="gif-div"
-                          style={{ height: "400px", marginTop: "-60px" }}
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-xl-4 d-flex">
+                <div className="card flex-fill">
+                  <div className="card-header">
+                    <div className="d-flex justify-content-between align-items-center">
+                      <h5 className="card-title">Invoice 1 Analytics</h5>
+                      <div className="dropdown main">
+                        <button
+                          className="btn btn-white btn-sm dropdown-toggle iconclass"
+                          type="button"
+                          id="dropdownMenuButton1"
+                          data-bs-toggle="dropdown"
+                          aria-expanded="false"
                         >
-                          <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
+                          Monthly
+                        </button>
+                        <ul
+                          className="dropdown-menu"
+                          aria-labelledby="dropdownMenuButton1"
+                        >
+                          <li>
+                            <a className="dropdown-item">Weekly</a>
+                          </li>
+                          <li>
+                            <a className="dropdown-item">Monthly</a>
+                          </li>
+                          <li>
+                            <a className="dropdown-item">Yearly</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="card-body">
+                    <div id="invoice_chart" />
+                    <div className="text-center text-muted">
+                      <div className="row">
+                        <div className="col-4">
+                          <div className="mt-4">
+                            <p className="mb-2 text-truncate">
+                              <i className="fas fa-circle text-primary me-1" />{" "}
+                              Invoiced
+                            </p>
+                            <h5>$2,132</h5>
+                          </div>
                         </div>
+                        <div className="col-4">
+                          <div className="mt-4">
+                            <p className="mb-2 text-truncate">
+                              <i className="fas fa-circle text-success me-1" />{" "}
+                              Received
+                            </p>
+                            <h5>$1,763</h5>
+                          </div>
+                        </div>
+                        <div className="col-4">
+                          <div className="mt-4">
+                            <p className="mb-2 text-truncate">
+                              <i className="fas fa-circle text-danger me-1" />{" "}
+                              Pending
+                            </p>
+                            <h5>$973</h5>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className="gif-div"
+                        style={{ height: "400px", marginTop: "-60px" }}
+                      >
+                        <iframe src="https://lottie.host/embed/703aa556-aee8-45e4-a279-c6b636b0542f/rTWOHxoaxl.json"></iframe>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div >
-        </div >
-      </div >
+          </div>
+        </div>
       </div>
-      );
+    </div>
+  );
 };
 
-      export default DashBoard;
+export default DashBoard;

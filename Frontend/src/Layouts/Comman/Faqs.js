@@ -26,13 +26,13 @@ const FAQs = () => {
 
                     <div className="row">
 
-                        <div className="col-5">
+                        <div className="col-sm-4">
 
-                            <img src="/assets/img/gif/FAQ.png" />
+                            <img src="/assets/img/gif/FAQ.png" className='faq-img'/>
 
                         </div>
 
-                        <div className="col-7">
+                        <div className="col-sm-8">
 
                             {faqData.map((faq, index) => (
                                 <div className="faq-item" key={index}>

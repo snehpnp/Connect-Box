@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
-import { GetAllclientDetails, UPDATE_CLIENT_SERVICE_DATA } from '../../../ReduxStore/Slice/Users/ClientServiceSlice'
+import { GetAllclientDetails } from '../../../ReduxStore/Slice/Users/ClientServiceSlice'
 import { SquarePen } from 'lucide-react';
-import Swal from 'sweetalert2';
-
-import { Link } from "react-router-dom";
-import ExportToExcel from '../../../Utils/ExportCSV'
-
 
 function Clientservice() {
-  
-
   const dispatch = useDispatch()
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   const [getAllClientService, setAllClientService] = useState({
@@ -18,75 +11,18 @@ function Clientservice() {
     data: []
   })
 
-  const [getAllClientStrategy, setAllClientStrategy] = useState({
-    loading: false,
-    data: []
-  })
-
-
-  const [getLoginStatus, setLoginStatus] = useState(false)
   const [modal, setModal] = useState(false)
+  const [modalData, setModalData] = useState({});
+  const [strategyId, SetStrategyId] = useState([]);
+  const [maxQty, setMaxQty] = useState('1');
+  const [orderType, setOrderType] = useState('');
+  const [productType, setProductType] = useState('');
   const [showstrategy, setShowStretgy] = useState(false)
-  const [refresh, setRefresh] = useState(false)
-  const [searchInput, setSearchInput] = useState('');
-
-  const [data, setData] = useState({
-    maxQty: '',
-    orderType: '',
-    productType: '',
-    seriveId: '',
-    id: '',
-    strategyId: [],
-    quantity: '',
-    serviceName: ''
-
-  });
 
 
 
 
-  const handleInputChange = (key, value) => {
-    setData(prevData => {
-      if (key === 'strategyId') {
-        if (prevData.strategyId.includes(value)) {
-          // If the value already exists, filter it out
-          return {
-            ...prevData,
-            strategyId: prevData.strategyId.filter(item => item !== value)
-          };
-        } else {
-          // If the value doesn't exist, add it
-          return {
-            ...prevData,
-            strategyId: [...prevData.strategyId, value]
-          };
-        }
-      } else {
-        // For other keys, update the state as usual
-        return {
-          ...prevData,
-          [key]: value
-        };
-      }
-    });
-  };
 
-
-
-  const emptyState = () => {
-    setData({
-      maxQty: '',
-      orderType: '',
-      productType: '',
-      seriveId: '',
-      id: '',
-      strategyId: [],
-      quantity: '',
-      serviceName: ''
-
-    })
-    setRefresh(!refresh);
-  }
 
 
   const GetAllClientServiceDetails = async () => {
@@ -97,196 +33,84 @@ function Clientservice() {
 
         if (response.status) {
 
-          const filterData = response.services.filter((item) => {
-            const searchInputMatch =
-              searchInput == '' ||
-              item.service.name.toLowerCase().includes(searchInput.toLowerCase())
-            return searchInputMatch
-          })
-
-          setAllClientStrategy({
-            loading: true,
-            data: response
-          })
-
           setAllClientService({
             loading: true,
-            data: filterData
+            data: response
           })
         }
         else {
           setAllClientService({
-            loading: true,
+            loading: false,
             data: []
           })
+
         }
       })
       .catch((error) => {
         console.log("Error is found in finding client service detail", error)
-
       })
 
   }
 
-  useEffect(() => {
+  useState(() => {
     GetAllClientServiceDetails();
-  }, [refresh, searchInput]);
+  }, []);
 
 
+  const handleCheckboxChange = (id) => {
+    SetStrategyId(prevIds => {
+      if (prevIds.includes(id)) {
+        return prevIds.filter(item => item !== id);
+      } else {
+        return [...prevIds, id];
+      }
+    });
+  };
 
-
-  const handleOnSubmit = async () => {
+  const handleOnSubmit = () => {
     const req = {
-      strategyId: data.strategyId,
-      maxQty: data.maxQty,
-      orderType: data.orderType,
-      productType: data.productType,
+      strategyId: strategyId,
+      maxQty: maxQty,
+      orderType: orderType,
+      productType: productType,
       userId: user_id,
-      id: data && data.id,
-      seriveId: data && data.seriveId
+      id: modalData && modalData._id,
+      seriveId: modalData && modalData.service._id
     }
 
-    await dispatch(UPDATE_CLIENT_SERVICE_DATA(req)).unwrap()
-      .then((response) => {
-        if (response.status) {
-          Swal.fire({
-            title: "Updated Successful!",
-            text: response.msg,
-            icon: "success",
-            timer: 800,
-            timerProgressBar: true
-          });
-          setModal(!modal);
-          emptyState();
-        } else {
-          setModal(!modal);
-          emptyState();
-        }
-
-      })
-      .catch((error) => {
-        console.log("Error is found in finding client service detail", error)
-
-      })
+    console.log("req :", req)
 
   }
-  const RefreshHandle = () => {
-    setRefresh(!refresh)
-    setSearchInput('')
-  }
 
 
 
-  const colors = ["navy", "teal", "green", "crimson","musturd", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson"];
+  console.log("modalData :", strategyId)
+
+
+
+
+
+
 
 
   return (
     <div className="content container-fluid">
-      <div className="content-page-header">
-        <h5>Stock List</h5>
-      </div>
-      <div className="form-group-item">
-        <div className="card-table">
-          <div className="card-body">
-            <div>
-              {/* <table className="table table-center table-hover datatable">
-                <thead style={{ position: "sticky", top: "0", zIndex: "1", backgroundColor: "#fff", height: "50px" }}>
-                  <tr>
-                    <th>#</th>
-                    <th>Symbol</th>
-                    <th>Lot Size</th>
-                    <th>Max Qty</th>
-                    <th>Lot Size</th>
-                    <th>Quantity</th>
-                    <th>Strategy</th>
-                    <th>Order Type</th>
-                    <th>Product Type</th>
-                    <th>Trading</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {
-                    getAllClientService.data.services && getAllClientService.data.services.map((item, index) => (
-                      <>
-                        <tr>
-                          <td>{index}</td>
-                          <td>{item.service.name}</td>
-                          <td>{item.service.lotsize}</td>
-                          <td>500</td>
-                          <td>
-                            <input
-                              type="number"
-                              className="form-control"
-                              defaultValue={1}
-                            />
-                          </td>
-                          <td>250</td>
-                          <td>
-                            <select className="form-select" aria-label="Default select example">
-                              <option
-                                value={getAllClientService.data.strategy.map((data) => { if (data.result._id.includes(item.strategy_id[0])) return data.result._id })}
-                                className="text-success h6"
-                                selected
+      <div className='card'>
+        <div className="card-header">
+          <h5 className='card-title'>Stock List</h5>
+        </div>
+        <div className='card-body'>
+          <section className="pricing-section p-0">
+            <div className="container">
+              <div className="sec-title">
+                <h3></h3>
+              </div>
+              <div className="outer-box">
+                <div className="row">
+                  {/* Pricing Block */}
 
-                              >
-                                {getAllClientService.data.strategy.map((data) => { if (data.result._id.includes(item.strategy_id[0])) return data.result.strategy_name })}
-                              </option>
-
-                              {
-                                getAllClientService.data.strategy.map((data, index) => {
-                                  if (data.result._id.includes(item.strategy_id[0])) {
-
-                                  }
-                                  else {
-                                    return <option value={index} className='text-danger'>{data.result.strategy_name}</option>
-
-                                  }
-
-
-                                })}
-
-
-
-                            </select>
-                          </td>
-                          <td>
-                            <select className="form-select" aria-label="Default select example">
-                              <option selected>Stoploss Market</option>
-                              <option value="1">Market</option>
-                              <option value="2">Limit</option>
-                              <option value="3">Stoploss Limit</option>
-                            </select>
-                          </td>
-                          <td>
-                            <select className="form-select" aria-label="Default select example">
-                              <option selected>MIS</option>
-                              <option value="1">CNC</option>
-                              <option value="2">BO</option>
-                              <option value="3">So</option>
-                            </select>
-                          </td>
-                          <td>
-                            <div className="status-toggle">
-                              <input id={`rating_${index}`} className="check" type="checkbox" defaultChecked="" />
-                              <label htmlFor={`rating_${index}`} className="checktoggle checkbox-bg">
-                                checkbox
-                              </label>
-                            </div>
-                          </td>
-                        </tr>
-                      </>
-
-                    ))}
-                </tbody>
-              </table> */}
-              <section className="pricing-section p-0">
-                <div className="container">
-                  <div className="sec-title mb-4">
-                    <h3></h3>
-                  </div>
-                  <div className="outer-box">
-                    <div className="row">
-                      {/* Pricing Block */}
+                  {getAllClientService.data.services && getAllClientService.data.services.map((item, index) =>
+                    <>
                       <div className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
                         <div className="inner-box">
                           <div className="icon-box">
@@ -295,328 +119,160 @@ function Clientservice() {
                             </div>
                           </div>
                           <div className="price-box">
-                            <div className="title">BANKNIFTY</div>
+                            <div className="title">{item.service.name}</div>
                             <div className="d-flex justify-content-center price">
                               <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
-
                               </div>
                             </div>
 
-                          </div>    
+                          </div>
                           <ul className="features">
-                            <li className="true">Lot Size: 15</li>
-                            <li className="true">Max Qty: 500</li>
-                            <li className="true">Lot Size: 1</li>
-                            <li className="true">Quantity: 250</li>
-                            <li className="true"> <select className="form-select" aria-label="Default select example">
-                              <option selected>Stoploss Market</option>
-                              <option value="1">Market</option>
-                              <option value="2">Limit</option>
-                              <option value="3">Stoploss Limit</option>
-                            </select></li>
-                            <li>
-                              <div class="dropdown">
-                                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                  Dropdown button
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-
-                                </ul>
-
+                            <li className="true">
+                              <div className='d-flex justify-content-between'>
+                                <p>Quantity:</p>
+                                <p>250</p>
                               </div>
                             </li>
+                            <li className="true">
+                              <div className='d-flex justify-content-between'>
+                                <p>Order Type:</p>
+                                <p>Limit</p>
+                              </div>
+                            </li>
+                            <li>
+                              <div className='d-flex justify-content-between'>
+                                <p>Product Type:</p>
+                                <p>MIS</p>
+                              </div>
+
+                            </li>
                           </ul>
+                          <div className="d-flex justify-content-center" onClick={(e) => { setModal(!modal); setModalData(item) }}>
+                            <SquarePen />
+                          </div>
+
 
                         </div>
                       </div>
-                      {/* Pricing Block */}
-                      <div
-                        className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp"
-                        data-wow-delay="400ms"
-                      >
-                        <div className="inner-box">
-                          <div className="icon-box">
-                            <div className="icon-outer">
-                              <i className="fas fa-gem" />
-                            </div> 
-                          </div>
-                          <div className="price-box">
-                            <div className="title">Nifty</div>
-                            <div className="d-flex justify-content-center price">
-                              <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
-                              </div>
-                            </div>
-                          </div>
-                          <ul className="features">
-                            <li className="true">Lot Size: 15</li>
-                            <li className="true">Max Qty: 500</li>
-                            <li className="true">Lot Size: 1</li>
-                            <li className="true">Quantity: 250</li>
-                            <li className="true"> <select className="form-select" aria-label="Default select example">
-                              <option selected>Stoploss Market</option>
-                              <option value="1">Market</option>
-                              <option value="2">Limit</option>
-                              <option value="3">Stoploss Limit</option>
-                            </select></li>
-                            <li>
-                              <div class="dropdown">
-                                <button class="btn btn-primary  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                  Dropdown button
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
 
-                                </ul>
+                    </>)
+                  }
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
 
-                              </div>
-                            </li>
-                          </ul>
 
-                        </div>
+      {modal && (
+        <div className="modal custom-modal d-block " id="add_vendor" role="dialog" data-aos="fade-down">
+          <div className="modal-dialog modal-dialog-centered modal-md">
+            <div className="modal-content">
+              <div className="modal-header border-0 pb-0">
+                <div className="form-header modal-header-title text-start mb-0">
+                  <h4 className="mb-0">Edit Stock List</h4>
+                </div>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  onClick={(e) => setModal(!modal)}
+                ></button>
+              </div>
+              <div>
+                <div className="modal-body">
+                  <div className="row">
+                    <div className="col-lg-12 col-sm-12 mb-3">
+                      <h6 style={{ fontWeight: 600, color: 'black' }}>Symbol Name : {modalData.service.name}</h6>
+                    </div>
+                    <div className="col-lg-12 col-sm-12 d-flex">
+                      <div className="col-lg-6 col-sm-12">
+                        <h6>Lot Size : {modalData.quantity}</h6>
                       </div>
-                      {/* Pricing Block */}
-                      <div
-                        className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp"
-                        data-wow-delay="800ms"
-                      >
-                        <div className="inner-box">
-                          <div className="icon-box">
-                            <div className="icon-outer">
-                              <i className="fas fa-rocket" />
-                            </div>
-                          </div>
-                          <div className="price-box">
-                            <div className="title">Nifty 50</div>
-                            <div className="d-flex justify-content-center price">
-                              <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
-
-                              </div>
-                            </div>
-                          </div>
-                          <ul className="features">
-                            <li className="true">Lot Size: 15</li>
-                            <li className="true">Max Qty: 500</li>
-                            <li className="true">Lot Size: 1</li>
-                            <li className="true">Quantity: 250</li>
-                            <li className="true"> <select className="form-select" aria-label="Default select example">
-                              <option selected>Stoploss Market</option>
-                              <option value="1">Market</option>
-                              <option value="2">Limit</option>
-                              <option value="3">Stoploss Limit</option>
-                            </select></li>
-                            <li>
-                              <div class="dropdown">
-                                <button class="btn btn-primary  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                  Dropdown button
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-
-                                </ul>
-
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div
-                        className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp"
-                        data-wow-delay="800ms"
-                      >
-                        <div className="inner-box">
-                          <div className="icon-box">
-                            <div className="icon-outer">
-                              <i className="fas fa-rocket" />
-                            </div>
-                          </div>
-                          <div className="price-box">
-                            <div className="title">Nifty 50</div>
-                            <div className="d-flex justify-content-center price">
-                              <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
-
-                              </div>
-                            </div>
-                          </div>
-                          <ul className="features">
-                            <li className="true">Lot Size: 15</li>
-                            <li className="true">Max Qty: 500</li>
-                            <li className="true">Lot Size: 1</li>
-                            <li className="true">Quantity: 250</li>
-                            <li className="true"> <select className="form-select" aria-label="Default select example">
-                              <option selected>Stoploss Market</option>
-                              <option value="1">Market</option>
-                              <option value="2">Limit</option>
-                              <option value="3">Stoploss Limit</option>
-                            </select></li>
-                            <li>
-                              <div class="dropdown">
-                                <button class="btn btn-primary  dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                  Dropdown button
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-                                  <li> <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="Checkme1" />
-                                    <label class="form-check-label" for="Checkme1">Check me</label>
-                                  </div></li>
-
-                                </ul>
-
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
+                      <div className="col-lg-6 col-sm-12 d-flex">
+                        <h6 className='col-lg-4'>Max Qty	 :</h6>
+                        <input type="text" className='form-control rounded px-2' defaultValue={1} value={maxQty} onChange={(e) => setMaxQty(e.target.value)} />
                       </div>
                     </div>
+                    <div className="col-lg-12 col-sm-12 d-flex mb-3 mt-3">
+                      <div className="col-lg-6 col-sm-12">
+                        <h6 className='col-lg-6'>Strategy :</h6>
+                      </div>
+                      <div className='col-lg-6'>
+                        <button onClick={(e) => setShowStretgy(!showstrategy)} className="btn btn-outline-primary w-100 mb-2">
+                          Select Strategy
+                        </button>
+                        {
+                          showstrategy && <div id="myDropdown" class="dropdown-content">
+                            {
+                              getAllClientService.data.strategy.map((data, index) => {
+                                return (
+                                  <>
+                                    <div key={index} className={modalData.strategy_id.includes(data.result._id) ? "text-success" : "text-danger"}>
+                                      <input
+                                        type="checkbox"
+                                        defaultChecked={modalData.strategy_id.includes(data.result._id)}
+                                        onChange={(e) => handleCheckboxChange(data.result._id)}
+                                      />
+                                      {data.result.strategy_name}
+                                    </div>
+
+                                  </>
+                                )
+                              })}
+                          </div>
+                        }
+                      </div>
+                    </div>
+                    <div className="col-lg-12 col-sm-12 d-flex mb-3">
+                      <h6 className='col-lg-6'>Order Type :</h6>
+                      <select className=" rounded form-select" value={orderType} onChange={(e) => { setOrderType(e.target.value) }}>
+                        <option selected>Stoploss Market</option>
+                        <option value="1">Market</option>
+                        <option value="2">Limit</option>
+                        <option value="3">Stoploss Limit</option>
+                      </select>
+                    </div>
+                    <div className="col-lg-12 col-sm-12 d-flex mb-3">
+                      <h6 className='col-lg-6'>Product Type :</h6>
+                      <select className="form-select rounded " value={productType} onChange={(e) => { setProductType(e.target.value) }}>
+                        <option selected>MIS</option>
+                        <option value="1">CNC</option>
+                        <option value="2">BO</option>
+                        <option value="3">So</option>
+                      </select>
+                    </div>
+
                   </div>
                 </div>
-              </section>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    data-bs-dismiss="modal"
+                    className="btn btn-back cancel-btn me-2"
+                    onClick={(e) => setModal(!modal)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    data-bs-dismiss="modal"
+                    className="btn btn-primary paid-continue-btn"
+                    onClick={handleOnSubmit}
+                  >
+                    Update
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      )
+      }
+    </div >
   );
 }
 
