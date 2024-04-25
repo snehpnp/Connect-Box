@@ -134,7 +134,7 @@ export default function AllUsers() {
     },
     {
       field: "Email",
-      headerName: "Email Id",
+      headerName: "Email ID",
       width: 220,
       headerClassName: styles.boldHeader,
     },
@@ -217,7 +217,7 @@ export default function AllUsers() {
 
     {
       field: "Create_Date",
-      headerName: "createdAt",
+      headerName: "Created At",
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,

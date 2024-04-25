@@ -119,7 +119,7 @@ function Strategy() {
 
         {
             name: "strategy_category",
-            label: "Catagory",
+            label: "Category",
             type: "text",
             label_size: 12,
             col_size: 6,
@@ -620,7 +620,7 @@ function Strategy() {
                             <div className="modal-content">
                                 <div className="modal-header border-0 mb-0 pb-0 pt-5 mx-3">
                                     <div className="form-header modal-header-title text-start mb-0">
-                                        <h4 className="mb-0">Add Strategy</h4>
+                                        <h4 className="mb-0">Create New Strategy</h4>
                                     </div>
                                     <button
                                         type="button"

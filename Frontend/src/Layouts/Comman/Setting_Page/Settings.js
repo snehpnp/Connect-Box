@@ -25,6 +25,8 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-account"
                                         aria-selected="true"
+                                
+                                       
                                     >
 
                                         Account Settings
@@ -85,6 +87,7 @@ const Settings = () => {
                                         Logs
                                     </a>
                                 </div>
+
                             </div>
                             <div className="col-sm-9">
                                 <div className="tab-content">

@@ -1,12 +1,10 @@
 import React, { useEffect } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import { useState } from "react";
 import { getActivity,findstatus} from "../../../../ReduxStore/Slice/Comman/Setting";
 import { useDispatch } from "react-redux";
 import FullDataTable from "../../../../Components/ExtraComponents/Tables/FullDataTable";
 import { Form, Row, Col,Card } from 'react-bootstrap';
-
+import { fDate } from "../../../../Utils/Date_formet";
 
 
 const Trackpanel = () => {
@@ -91,6 +89,7 @@ const Trackpanel = () => {
       headerName: "Date",
       width: 220,
       headerClassName: styles.boldHeader,
+      valueGetter: (params) => fDate(params.row.createdAt),
     },
   ];
 

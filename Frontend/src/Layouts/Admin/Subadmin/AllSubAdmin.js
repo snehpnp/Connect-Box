@@ -166,7 +166,7 @@ export default function Help() {
     },
     {
       field: "Create_Date",
-      headerName: "createdAt",
+      headerName: "Account Created At",
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,

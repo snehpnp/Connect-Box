@@ -79,7 +79,7 @@ function MessageBroadcast() {
       ),
     },
     {
-      field: "UserName",
+      field: "FullName",
       headerName: "Full Name",
       width: 160,
       headerClassName: styles.boldHeader,
@@ -99,7 +99,7 @@ function MessageBroadcast() {
 
     {
       field: "createdAt",
-      headerName: "createdAt",
+      headerName: "Created At",
       width: 250,
       headerClassName: styles.boldHeader,
     },
@@ -222,6 +222,7 @@ function MessageBroadcast() {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
+         
           toast.success(response.msg);
           setPipelineData(response.data);
         } else {
@@ -296,7 +297,7 @@ function MessageBroadcast() {
               <div className="col-md-7">
                 <div className="mt-3">
                   <label className="form-label" htmlFor="broker-select">
-                    SubAdmins
+                  Sub-Admin
                   </label>
                   <div className="input-group">
                     <select
