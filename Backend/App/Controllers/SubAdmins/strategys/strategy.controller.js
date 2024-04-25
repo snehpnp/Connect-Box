@@ -661,6 +661,14 @@ class strategy {
       return res.send({ status: false, msg: "Catch Error" });
     }
   }
+  async getAllResearcherStrategy(req,res){
+    
+  
+    const getAllData = await User.find({Role: "RESEARCH"})
+
+    console.log(getAllData)
+
+  }
 }
 
 module.exports = new strategy();
