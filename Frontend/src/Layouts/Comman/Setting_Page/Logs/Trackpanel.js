@@ -12,10 +12,12 @@ import { Form, Row, Col,Card } from 'react-bootstrap';
 const Trackpanel = () => {
   const dispatch = useDispatch();
 
-  const [selectedItem, setSelectedItem] = useState(null);
+  
   const [selectedFromDate, setSelectedFromDate] = useState("");
   const [selectedToDate, setSelectedToDate] = useState("");
-  const [activityData, setActivityData] = useState(null);
+  const [activityData, setActivityData] = useState([]);
+  const [finddata,setFinddata] = useState([])
+ 
   
 
   const user = JSON.parse(localStorage.getItem("user_details"));
@@ -28,8 +30,9 @@ const Trackpanel = () => {
     // Your date change handling logic
   };
 
-  const handleDropdownSelect = (selectedActivity) => {
+  const handleDropdownSelect = async (selectedActivity) => {
     setSelectedCategory(selectedActivity);
+    await  FindActivity(selectedActivity)
   };
 
 
@@ -64,20 +67,20 @@ const Trackpanel = () => {
     {
       field: "createdAt",
       headerName: "Date",
-      width: 190,
+      width: 180,
       headerClassName: styles.boldHeader,
     },
     {
       field: "description",
       headerName: "description",
-      width: 290,
+      width: 280,
       headerClassName: styles.boldHeader,
     },
 
     {
       field: "role",
       headerName: "role",
-      width: 210,
+      width: 200,
       headerClassName: styles.boldHeader,
     },
   ];
@@ -90,8 +93,11 @@ const Trackpanel = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          console.log("response", response.data);
+          // console.log("response", response.data);
+          // console.log("response", response.data[0]._id);
+          FindActivity(response.data[0]._id ,response.data[0].activity)
           setActivityData(response.data);
+      
         }
       })
       .catch((error) => {
@@ -104,13 +110,16 @@ const Trackpanel = () => {
   }, []);
 
   
-  const FindActivity = async () => {
-    var data = {};
-    await dispatch(getActivity(data))
+  const FindActivity = async (id , activity) => {
+
+    var data = {id:id,category:activity};
+    // console.log("data",data)
+    await dispatch(findstatus(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          console.log("response", response.data);
+          // console.log("response findstatus", response.data);
+          setFinddata(response.data)
           
         }
       })
@@ -118,6 +127,7 @@ const Trackpanel = () => {
         console.log("error", error);
       });
   };
+
 
   return (
     <>
@@ -154,7 +164,7 @@ const Trackpanel = () => {
               <Form.Control
                 as="select"
                 value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
+                onChange={(e) => handleDropdownSelect(e.target.value)}
               >
                 <option value="">Select...</option>
                 {activityData &&
@@ -176,6 +186,7 @@ const Trackpanel = () => {
                 <Card.Body>
                   <Card.Title>{selectedCategory}</Card.Title>
                   <Card.Text>{selectedCategory}</Card.Text>
+                  <FullDataTable columns={columns} rows={finddata} />
                 </Card.Body>
               </Card>
             </Col>
