@@ -283,7 +283,7 @@ class Users {
                   plan_id: 0,
                   user_id: User_id,
                   admin_id: SubadminCheck[0]._id,
-
+                  uniqueUserStrategy: User_id + "_" + data.id,
                   Start_Date: StartDate1,
                   End_Date: EndDate1
                 });
@@ -327,6 +327,7 @@ class Users {
                   strategy_id: data.id,
                   plan_id: 0,
                   user_id: User_id,
+                  uniqueUserStrategy: User_id + "_" + data.id,
                   admin_id: SubadminCheck[0]._id,
                   Start_Date: StartDate1,
                   End_Date: EndDate1
@@ -395,6 +396,7 @@ class Users {
                   strategy_id: data.id,
                   plan_id: matchedStrategy.plan_id,
                   user_id: User_id,
+                  uniqueUserStrategy: User_id + "_" + data.id,
                   admin_id: SubadminCheck[0]._id,
                   Start_Date: StartDate1,
                   End_Date: EndDate1
@@ -546,6 +548,11 @@ class Users {
     }
   }
 
+
+
+
+
+
   // UPDATE USER
   async UpdateUser(req, res) {
     try {
@@ -589,6 +596,7 @@ class Users {
             plan_id: 1,
             Start_Date: 1,
             End_Date: 1,
+            uniqueUserStrategy: 1,
             createdAt: 1,
             strategy_name: 1 // Include strategy_name in the projection
           }
@@ -627,8 +635,10 @@ class Users {
       var TotalMonth = "0";
 
 
-      var totalLicense = ''
+      var totalLicense = 0
       if (ParentData.subadmin_service_type == 1) {
+
+
         const result = await User_model.aggregate([
           {
             $match: {
@@ -645,7 +655,12 @@ class Users {
           },
         ]);
 
-        totalLicense = result[0].totalLicense;
+
+        if (result && result.length > 0 && result[0].totalLicense !== undefined) {
+          totalLicense = result[0].totalLicense; // Assign the totalLicense value if it exists
+        } else {
+          totalLicense = 0
+        }
 
       } else {
         const stg_count = await strategy_transaction.aggregate([
@@ -668,9 +683,6 @@ class Users {
       }
 
 
-      // console.log("totalLicense", totalLicense)
-      // console.log("ExistStrategy", ExistStrategy)
-      // console.log("Req Strategy", req.Strategies)
 
 
 
@@ -693,7 +705,7 @@ class Users {
 
 
 
-      // console.log("add_startegy", add_startegy)
+      console.log("add_startegy", add_startegy)
 
 
       var delete_startegy = [];
@@ -704,7 +716,35 @@ class Users {
         }
       });
 
-      // console.log("delete_startegy", delete_startegy);
+      console.log("delete_startegy", delete_startegy);
+
+
+      var Exist_strategy = ExistStrategy.filter(strategy =>
+        req.Strategies.some(existingStrategy => {
+          if (existingStrategy.id == strategy.strategy_id.toString()) {
+            return existingStrategy;
+          }
+        })
+      );
+
+      console.log("Exist_strategy", Exist_strategy);
+
+
+      var Exist_strategy1 = req.Strategies.filter(strategy =>
+        ExistStrategy.some(existingStrategy => {
+          if (existingStrategy.strategy_id.toString() == strategy.id) {
+            return existingStrategy;
+          }
+        })
+      );
+
+
+      console.log("Exist_strategy1", Exist_strategy1);
+
+
+
+
+
 
 
 
@@ -712,10 +752,11 @@ class Users {
         if (delete_startegy.length > 0) {
           delete_startegy.forEach(async (data) => {
 
-
             var deleteStrategy = await strategy_client.deleteOne({
               _id: data._id,
             });
+
+          
 
             // console.log("deleteStrategy",deleteStrategy.acknowledged)
 
@@ -761,8 +802,6 @@ class Users {
           // USER 2 DAYS LICENSE USEcd cd   
           if (req.license_type == "0") {
 
-            // console.log("ssss 2")
-            // if (existingUsername.license_type != "0") {
             var currentDate = new Date();
             var start_date_2days = dateTime.create(currentDate);
             start_date_2days = start_date_2days.format("Y-m-d H:M:S");
@@ -793,8 +832,9 @@ class Users {
               add_startegy.forEach((data) => {
                 const User_strategy_client = new strategy_client({
                   strategy_id: data._id,
-                  plan_id: 0,
+                  plan_id: 10,
                   user_id: existingUsername._id,
+                  uniqueUserStrategy: existingUsername._id + "_" + data.id,
                   admin_id: PID,
                   Start_Date: StartDate1,
                   End_Date: EndDate1
@@ -817,8 +857,41 @@ class Users {
             }
 
 
+            if (Exist_strategy.length > 0 && existingUsername.license_type != "0") {
+              Exist_strategy.forEach(async (data) => {
 
-            // }
+
+                const filter = { strategy_id: data.strategy_id, user_id: existingUsername._id };
+                const update = {
+                  $set: {
+                    plan_id: 10,
+                    Start_Date: StartDate1,
+                    End_Date: EndDate1,
+                    ActiveStatus: "1"
+
+                  },
+                };
+
+
+                const update_token = await strategy_client.updateOne(filter, update, { upsert: true });
+
+
+
+                const Activity_logsData = new Activity_logs({
+                  user_Id: existingUsername._id,
+                  admin_Id: ParentData._id,
+                  category: "EDIT-USER",
+                  message: data.strategy_name + " Strategy Date Update",
+                  maker_role: "SUBADMIN",
+                  device: "web",
+                  system_ip: ""
+                });
+                Activity_logsData.save();
+
+              });
+            }
+
+
 
 
           } else if (req.license_type == "1") {
@@ -853,11 +926,11 @@ class Users {
                   strategy_id: data._id,
                   plan_id: 0,
                   user_id: existingUsername._id,
+                  uniqueUserStrategy: existingUsername._id + "_" + data.id,
                   admin_id: PID,
                   Start_Date: StartDate1,
                   End_Date: EndDate1
                 });
-                // console.log("User_strategy_client", User_strategy_client)
                 User_strategy_client.save();
 
                 const Activity_logsData = new Activity_logs({
@@ -873,9 +946,7 @@ class Users {
               });
             }
 
-
-
-
+           
           } else if (req.license_type == "2") {
 
             // IF ADD NEW STRATEGY
@@ -932,8 +1003,8 @@ class Users {
                   user_id: existingUsername._id,
                   admin_id: PID,
                   Start_Date: StartDate1,
-                  End_Date: EndDate1
-
+                  End_Date: EndDate1,
+                  uniqueUserStrategy: existingUsername._id + "_" + matchedStrategy._id,
                 });
                 User_strategy_client.save();
 
@@ -966,8 +1037,7 @@ class Users {
             }
 
             // UPDATE PLAN DEMO TO LIVE
-            req.Strategies.map(async (data) => {
-
+            Exist_strategy1.map(async (data) => {
 
               const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early');
 
@@ -1012,18 +1082,7 @@ class Users {
 
               EndDate1 = end_date_2days;
 
-              console.log("data", data)
-              // STRATEGY ADD
-              const User_strategy_client = new strategy_client({
-                strategy_id: matchedStrategy._id,
-                plan_id: data.plan_id,
-                user_id: existingUsername._id,
-                admin_id: PID,
-                Start_Date: StartDate1,
-                End_Date: EndDate1
 
-              });
-              User_strategy_client.save();
 
 
               const filter = { strategy_id: matchedStrategy._id, user_id: existingUsername._id };
@@ -1136,7 +1195,8 @@ class Users {
                   user_id: existingUsername._id,
                   admin_id: PID,
                   Start_Date: StartDate1,
-                  End_Date: EndDate1
+                  End_Date: EndDate1,
+                  uniqueUserStrategy: existingUsername._id + "_" + matchedStrategy._id,
 
                 });
                 User_strategy_client.save();
@@ -1171,6 +1231,8 @@ class Users {
                 strategy_transactionData.save();
               });
             }
+
+
 
           } else {
             return res.send({
@@ -1379,6 +1441,10 @@ class Users {
       console.log("Error In User Update-", error);
     }
   }
+
+
+
+
 
 
 
@@ -1758,11 +1824,11 @@ class Users {
       // Delete the strategy
 
       const deleteResult = await User_model.deleteOne({ _id: id });
-      const deleteResult1 = await client_services.deleteOne({ user_id: id });
-      const deleteResult2 = await Client_group_Service.deleteOne({ user_id: id });
-      const deleteResult3 = await strategy_client.deleteOne({ user_id: id });
-      const deleteResult4 = await strategy_transaction.deleteOne({ user_id: id });
-      const deleteResult5 = await count_licenses.deleteOne({ user_id: id });
+      const deleteResult1 = await client_services.deleteMany({ user_id: id });
+      const deleteResult2 = await Client_group_Service.deleteMany({ user_id: id });
+      const deleteResult3 = await strategy_client.deleteMany({ user_id: id });
+      const deleteResult4 = await strategy_transaction.deleteMany({ user_id: id });
+      const deleteResult5 = await count_licenses.deleteMany({ user_id: id });
 
 
       if (deleteResult.deletedCount === 1) {

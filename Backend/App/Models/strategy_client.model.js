@@ -27,13 +27,18 @@ const strategy_clientSchema = Schema({
     },
     plan_id: {
         type: String,
-        enum: ['0', '1', '2', '3', '4'],
+        enum: ['0', '1', '2', '3', '4','10'],     //Todays=10,Demo=0,Month=1,quterly=2,halfyearly=3,yearly=4  
         default: '0'
     },
     ActiveStatus: {
         type: String,
         enum: ['0', '1'], // 1 = Strategy wise , 2 = Per Trade Wise
         default: '1'
+    },
+    uniqueUserStrategy: {
+        type: String,
+        default: null,
+        unique: true,
     },
     createdAt: {
         type: Date,

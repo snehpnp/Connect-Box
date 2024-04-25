@@ -88,7 +88,7 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {params.value == 1 ? "MONTHLY" : params.value == 2 ? "QUATERLY" : params.value == 3 ? "HALF-YEARLY" : params.value == 4 ? "YEARLY" : params.value == 0 ? "DEMO" :"-"}
+          {params.value == 1 ? "MONTHLY" : params.value == 2 ? "QUATERLY" : params.value == 3 ? "HALF-YEARLY" : params.value == 4 ? "YEARLY" : params.value == 0 ? "DEMO" :  params.value == 10 ? "2 Days" :"-"}
         </div>
       )
     },

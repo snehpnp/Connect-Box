@@ -463,20 +463,20 @@ export const superadmin_header = [
         Data: []
     },
  
-    {
-        id: 10,
-        name: 'Message Broadcast',
-        route: "/superadmin/message-broadcast",
-        Icon: "fe fe-message-circle",
-        Data: []
-    },
-    {
-        id: 11,
-        name: 'Help',
-        route: "/superadmin/help",
-        Icon: "fe fe-help-circle",
-        Data: []
-    },
+    // {
+    //     id: 10,
+    //     name: 'Message Broadcast',
+    //     route: "/superadmin/message-broadcast",
+    //     Icon: "fe fe-message-circle",
+    //     Data: []
+    // },
+    // {
+    //     id: 11,
+    //     name: 'Help',
+    //     route: "/superadmin/help",
+    //     Icon: "fe fe-help-circle",
+    //     Data: []
+    // },
     {
         id: 9,
         name: 'FAQs',
