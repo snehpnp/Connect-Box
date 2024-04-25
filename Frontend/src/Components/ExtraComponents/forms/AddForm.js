@@ -643,7 +643,6 @@ const DynamicForm = ({
                                             onClick={() => HandelChange(2)}
                                             type="button"
                                             disabled={field.disable}
-
                                           >
                                             Per Trade
                                           </button>
@@ -654,13 +653,18 @@ const DynamicForm = ({
                                             onClick={() => HandelChange(1)}
                                             type="button"
                                             disabled={field.disable}
-
                                           >
                                             Fixed
                                           </button>
                                         </li>
-
+                                       
                                       </ul>
+                                      {formik.touched[field.name] &&
+                                          formik.errors[field.name] ? (
+                                          <div style={{ color: "red" }}>
+                                            {formik.errors[field.name]}
+                                          </div>
+                                        ) : null}
                                     </div>
                                   </div>
                                   {formik.values[field.name] == 2 && formik.values['licence'] == "2" ?
@@ -679,6 +683,7 @@ const DynamicForm = ({
                                               defaultValue={formik.values['per_trade_value']}
                                               onChange={(e) => PerTradeValueset(e)}
                                             />
+                                             
                                           </div>
                                         </div>
 

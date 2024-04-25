@@ -349,7 +349,7 @@ class strategy {
       const getAllstrategy = await strategy_model
         .find({maker_id : id})
         .sort({ createdAt: -1 })
-        .select('_id strategy_name strategy_description strategy_demo_days strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early strategy_category strategy_segment strategy_image maker_id createdAt updatedAt __v');
+        .select('_id strategy_name strategy_description strategy_demo_days strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early strategy_category strategy_segment strategy_image Service_Type maker_id createdAt updatedAt __v');
  
       // IF DATA NOT EXIST
       if (getAllstrategy.length == 0) {

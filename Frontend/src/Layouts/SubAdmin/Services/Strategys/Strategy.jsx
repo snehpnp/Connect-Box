@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { GetStretgyWithImg, AddStrategy, DELETE_STRATEGY } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
 import { useDispatch } from "react-redux";
+import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice'
+
 
 import AddForm from '../../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
@@ -24,17 +26,23 @@ function Strategy() {
     const [opneModal, setopneModal] = useState(false);
     const [deleteModal, setdeleteModal] = useState(false);
     const [getStgDescription, setStgDescription] = useState('');
+    const [GetAllSgments, setGetAllSgments] = useState({
+        loading: true,
+        data: [],
+    });
+
+    console.log("GetAllSgments :", GetAllSgments)
 
 
 
 
     const [refresh, setrefresh] = useState(false);
-    const [modalId, setModalId] = useState(null);
+
     const [StrategyId, setStrategyId] = useState('')
 
 
     var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
-
+ 
 
 
     const [ForGetCSV, setForGetCSV] = useState([])
@@ -44,6 +52,7 @@ function Strategy() {
         data: [],
     });
 
+    console.log("cp:", allStategy)
 
     // Function to open the modal
     const openModal = () => {
@@ -54,6 +63,24 @@ function Strategy() {
     const closeModal = () => {
         setShowModal(false);
     };
+
+    const getservice = async () => {
+        await dispatch(Get_All_Catagory())
+            .unwrap()
+            .then((response) => {
+
+                if (response.status) {
+
+                    setGetAllSgments({
+                        loading: false,
+                        data: response.data,
+                    });
+                }
+            });
+    };
+    useEffect(() => {
+        getservice();
+    }, []);
 
 
 
@@ -69,8 +96,6 @@ function Strategy() {
             confirmButtonText: "Yes, delete it!"
         }).then(async (result) => {
             if (result.isConfirmed) {
-
-
                 var req = {
                     _id: id,
                 };
@@ -136,7 +161,11 @@ function Strategy() {
         {
             name: "strategy_segment",
             label: "Strategy Segment",
-            type: "text",
+            type: "select",
+            options: GetAllSgments.data.map((item) => ({
+                label: item.name,
+                value: item.name,
+            })),
             label_size: 12,
             col_size: 6,
             disable: false,
@@ -165,8 +194,8 @@ function Strategy() {
             col_size: 6,
             disable: false,
         },
-        
-         
+
+
         {
             name: "max_trade",
             label: "Maximum Trades",
@@ -175,8 +204,8 @@ function Strategy() {
             col_size: 6,
             disable: false,
         },
-        
-        
+
+
         {
             name: "strategy_amount_month",
             label: "Monthly",
@@ -219,6 +248,8 @@ function Strategy() {
         },
 
     ];
+
+
 
 
     const formik = useFormik({
@@ -268,11 +299,12 @@ function Strategy() {
             if (!getStgDescription) {
                 errors.getStgDescription = "Please enter strategy description";
             }
-
             if (!values.strategy_amount_early) {
                 errors.strategy_amount_early = "amount is required";
             }
-
+            if (subadmin_service_type==1 && !values.Service_Type) {
+                errors.Service_Type = "Please Select Service Type";
+            }
             return errors;
 
 
@@ -297,9 +329,10 @@ function Strategy() {
                 Role: "SUBADMIN",
                 Service_Type: values.Service_Type != '' ? values.Service_Type : subadmin_service_type == 1 ? 1 : 0
             };
+             
 
-
-
+         
+           
             await dispatch(AddStrategy(data))
                 .unwrap()
                 .then(async (response) => {
@@ -335,6 +368,8 @@ function Strategy() {
         },
     });
 
+
+    console.log("formik :", formik.values)
 
     const RefreshHandle = () => {
         setrefresh(!refresh)
