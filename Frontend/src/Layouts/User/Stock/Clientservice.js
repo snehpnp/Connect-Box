@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from "react-redux";
-import { GetAllclientDetails } from '../../../ReduxStore/Slice/Users/ClientServiceSlice'
+import { GetAllclientDetails, UPDATE_CLIENT_SERVICE_DATA } from '../../../ReduxStore/Slice/Users/ClientServiceSlice'
 import { SquarePen } from 'lucide-react';
+import Swal from 'sweetalert2';
+
+import { Link } from "react-router-dom";
+import ExportToExcel from '../../../Utils/ExportCSV'
+
 
 function Clientservice() {
   const dispatch = useDispatch()
@@ -11,18 +16,75 @@ function Clientservice() {
     data: []
   })
 
+  const [getAllClientStrategy, setAllClientStrategy] = useState({
+    loading: false,
+    data: []
+  })
+
+
+  const [getLoginStatus, setLoginStatus] = useState(false)
   const [modal, setModal] = useState(false)
-  const [modalData, setModalData] = useState({});
-  const [strategyId, SetStrategyId] = useState([]);
-  const [maxQty, setMaxQty] = useState('1');
-  const [orderType, setOrderType] = useState('');
-  const [productType, setProductType] = useState('');
   const [showstrategy, setShowStretgy] = useState(false)
+  const [refresh, setRefresh] = useState(false)
+  const [searchInput, setSearchInput] = useState('');
+
+  const [data, setData] = useState({
+    maxQty: '',
+    orderType: '',
+    productType: '',
+    seriveId: '',
+    id: '',
+    strategyId: [],
+    quantity: '',
+    serviceName: ''
+
+  });
 
 
 
 
+  const handleInputChange = (key, value) => {
+    setData(prevData => {
+      if (key === 'strategyId') {
+        if (prevData.strategyId.includes(value)) {
+          // If the value already exists, filter it out
+          return {
+            ...prevData,
+            strategyId: prevData.strategyId.filter(item => item !== value)
+          };
+        } else {
+          // If the value doesn't exist, add it
+          return {
+            ...prevData,
+            strategyId: [...prevData.strategyId, value]
+          };
+        }
+      } else {
+        // For other keys, update the state as usual
+        return {
+          ...prevData,
+          [key]: value
+        };
+      }
+    });
+  };
 
+
+
+  const emptyState = () => {
+    setData({
+      maxQty: '',
+      orderType: '',
+      productType: '',
+      seriveId: '',
+      id: '',
+      strategyId: [],
+      quantity: '',
+      serviceName: ''
+
+    })
+    setRefresh(!refresh);
+  }
 
 
   const GetAllClientServiceDetails = async () => {
@@ -33,141 +95,246 @@ function Clientservice() {
 
         if (response.status) {
 
-          setAllClientService({
+          const filterData = response.services.filter((item) => {
+            const searchInputMatch =
+              searchInput == '' ||
+              item.service.name.toLowerCase().includes(searchInput.toLowerCase())
+            return searchInputMatch
+          })
+
+          setAllClientStrategy({
             loading: true,
             data: response
+          })
+
+          setAllClientService({
+            loading: true,
+            data: filterData
           })
         }
         else {
           setAllClientService({
-            loading: false,
+            loading: true,
             data: []
           })
-
         }
       })
       .catch((error) => {
         console.log("Error is found in finding client service detail", error)
+
       })
 
   }
 
-  useState(() => {
+  useEffect(() => {
     GetAllClientServiceDetails();
-  }, []);
+  }, [refresh, searchInput]);
 
 
-  const handleCheckboxChange = (id) => {
-    SetStrategyId(prevIds => {
-      if (prevIds.includes(id)) {
-        return prevIds.filter(item => item !== id);
-      } else {
-        return [...prevIds, id];
-      }
-    });
-  };
 
-  const handleOnSubmit = () => {
+
+  const handleOnSubmit = async () => {
     const req = {
-      strategyId: strategyId,
-      maxQty: maxQty,
-      orderType: orderType,
-      productType: productType,
+      strategyId: data.strategyId,
+      maxQty: data.maxQty,
+      orderType: data.orderType,
+      productType: data.productType,
       userId: user_id,
-      id: modalData && modalData._id,
-      seriveId: modalData && modalData.service._id
+      id: data && data.id,
+      seriveId: data && data.seriveId
     }
 
-    console.log("req :", req)
+    await dispatch(UPDATE_CLIENT_SERVICE_DATA(req)).unwrap()
+      .then((response) => {
+        if (response.status) {
+          Swal.fire({
+            title: "Updated Successful!",
+            text: response.msg,
+            icon: "success",
+            timer: 800,
+            timerProgressBar: true
+          });
+          setModal(!modal);
+          emptyState();
+        } else {
+          setModal(!modal);
+          emptyState();
+        }
 
+      })
+      .catch((error) => {
+        console.log("Error is found in finding client service detail", error)
+
+      })
+
+  }
+  const RefreshHandle = () => {
+    setRefresh(!refresh)
+    setSearchInput('')
   }
 
 
 
-  console.log("modalData :", strategyId)
-
-
-
-
-
-
+  const colors = ["navy", "teal", "green", "crimson","musturd", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson","navy", "teal", "green", "crimson"];
 
 
   return (
-    <div className="content container-fluid">
-      <div className='card'>
-        <div className="card-header">
-          <h5 className='card-title'>Stock List</h5>
-        </div>
-        <div className='card-body'>
-          <section className="pricing-section p-0">
-            <div className="container">
-              <div className="sec-title">
-                <h3></h3>
-              </div>
-              <div className="outer-box">
-                <div className="row">
-                  {/* Pricing Block */}
+    <div className="content container-fluid" data-aos="fade-left">
 
-                  {getAllClientService.data.services && getAllClientService.data.services.map((item, index) =>
-                    <>
-                      <div className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
-                        <div className="inner-box">
-                          <div className="icon-box">
-                            <div className="icon-outer">
-                              <i className="fas fa-paper-plane" />
-                            </div>
-                          </div>
-                          <div className="price-box">
-                            <div className="title">{item.service.name}</div>
-                            <div className="d-flex justify-content-center price">
-                              <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" />
-                              </div>
-                            </div>
+      {/* PAGE HEADER */}
+      <div className="page-header">
+        <div className="content-page-header">
+          <h5>All Users</h5>
+          <div className="page-content">
+            <div className="list-btn">
+              <ul className="filter-list">
 
-                          </div>
-                          <ul className="features">
-                            <li className="true">
-                              <div className='d-flex justify-content-between'>
-                                <p>Quantity:</p>
-                                <p>250</p>
-                              </div>
-                            </li>
-                            <li className="true">
-                              <div className='d-flex justify-content-between'>
-                                <p>Order Type:</p>
-                                <p>Limit</p>
-                              </div>
-                            </li>
-                            <li>
-                              <div className='d-flex justify-content-between'>
-                                <p>Product Type:</p>
-                                <p>MIS</p>
-                              </div>
-
-                            </li>
-                          </ul>
-                          <div className="d-flex justify-content-center" onClick={(e) => { setModal(!modal); setModalData(item) }}>
-                            <SquarePen />
-                          </div>
+                <li>
+                  <div className="status-toggle " style={{ display: 'flex', alignItems: 'center' }}>
+                    <span style={{ marginRight: '10px', fontSize: '16px', fontWeight: 'bold', color: getLoginStatus ? "green" : "red" }}>TRADING STATUS</span>
+                    <input
+                      id="1"
+                      className="check"
+                      type="checkbox"
+                      onChange={() => setLoginStatus(prevState => !prevState)}
+                      checked={getLoginStatus}
+                      style={{ marginRight: '5px' }}
+                    />
+                    <label htmlFor="1" className="checktoggle checkbox-bg"></label>
+                  </div>
+                </li>
 
 
-                        </div>
-                      </div>
+                <li className="mt-3">
+                  <p
+                    className="btn-filters"
 
-                    </>)
-                  }
-                </div>
-              </div>
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="bottom"
+                    title="Refresh"
+                    onClick={RefreshHandle}
+
+                  >
+                    <span>
+                      <i className="fe fe-refresh-ccw" />
+                    </span>
+                  </p>
+                </li>
+                <li>
+                  <div className="input-group input-block">
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Search..."
+                      aria-label="Search"
+                      aria-describedby="search-addon"
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      value={searchInput}
+                    />
+                  </div>
+                </li>
+
+
+                <li className="btn btn-primary">
+                  <i className="fa fa-filter me-2" aria-hidden="true" /> {/* Filter icon */}
+                  Filter
+                </li>
+
+
+
+              </ul>
             </div>
-          </section>
+          </div>
         </div>
       </div>
 
 
+      <div className='card-body'>
+        <section className="pricing-section p-0">
+          <div className="container">
+            <div className="sec-title">
+              <h3></h3>
+            </div>
+
+
+            <div className="outer-box">
+              <div className="row">
+                {/* Pricing Block */}
+
+                {getAllClientService.data && getAllClientService.data.map((item, index) => {
+
+                  var randomColor = colors[index]
+                  if (item.active_status == 0) {
+                    randomColor = "red"
+                  }
+                  return (
+                    <div key={index} className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
+                      <div className="inner-box" style={{ borderBottom: "20px solid " + randomColor }}>
+                        <div className="icon-box" style={{ background: randomColor }}>
+                          <div className="icon-outer">
+                            <i className="fas fa-paper-plane" style={{ border: " 5px solid " + randomColor, color: randomColor }} />
+                          </div>
+                        </div>
+                        <div className="price-box">
+                          <div className="title">{item.service.name}</div>
+                          <div className="d-flex justify-content-center price">
+                            <div className="form-check form-switch">
+                              <input className="form-check-input" type="checkbox" defaultChecked={item.active_status == 1 ? true : false} />
+                            </div>
+                          </div>
+                        </div>
+                        <ul className="features">
+                          <li className="true">
+                            <div className='d-flex justify-content-between'>
+                              <p>Quantity:</p>
+                              {/* <p>{Number(item.lot_size) * Number(item.quantity)}</p> */}
+                              <p>{Number(item.lot_size)}</p>
+
+                            </div>
+                          </li>
+                          <li className="true">
+                            <div className='d-flex justify-content-between'>
+                              <p>Order Type:</p>
+                              <p>{item.order_type == 1 ? "MARKET" : item.order_type == 2 ? "LIMIT" : item.order_type == 3 ? "STOPLOSS LIMIT" : item.order_type == 4 ? "STOPLOSS MARKET" : "MARKET"}</p>
+                            </div>
+                          </li>
+                          <li>
+                            <div className='d-flex justify-content-between'>
+                              <p>Product Type:</p>
+                              <p>{item.product_type == 1 ? "CNC" : item.product_type == 2 ? "MIS" : item.product_type == 3 ? "BO" : item.product_type == 4 ? "CO" : "CNC"}</p>
+                            </div>
+                          </li>
+                        </ul>
+                        <div className="d-flex justify-content-center" onClick={(e) => {
+                          setModal(!modal); setData({
+                            maxQty: item.lot_size,
+                            orderType: item.order_type,
+                            productType: item.product_type,
+                            seriveId: item.service._id,
+                            id: item._id,
+                            strategyId: item.strategy_id,
+                            quantity: item.quantity,
+                            serviceName: item.service.name
+                          });
+                        }}>
+                          <SquarePen />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+
+              </div>
+            </div>
+            
+          </div>
+        </section>
+      </div>
+
+
+
       {modal && (
-        <div className="modal custom-modal d-block " id="add_vendor" role="dialog" data-aos="fade-down">
+        <div className="modal custom-modal d-block" id="add_vendor" role="dialog">
           <div className="modal-dialog modal-dialog-centered modal-md">
             <div className="modal-content">
               <div className="modal-header border-0 pb-0">
@@ -179,22 +346,22 @@ function Clientservice() {
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
-                  onClick={(e) => setModal(!modal)}
+                  onClick={(e) => { setModal(!modal); emptyState(); }}
                 ></button>
               </div>
               <div>
                 <div className="modal-body">
                   <div className="row">
                     <div className="col-lg-12 col-sm-12 mb-3">
-                      <h6 style={{ fontWeight: 600, color: 'black' }}>Symbol Name : {modalData.service.name}</h6>
+                      <h6 style={{ fontWeight: 600, color: 'black' }}>Symbol Name : {data.serviceName}</h6>
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex">
                       <div className="col-lg-6 col-sm-12">
-                        <h6>Lot Size : {modalData.quantity}</h6>
+                        <h6>Lot Size : {data.quantity}</h6>
                       </div>
                       <div className="col-lg-6 col-sm-12 d-flex">
                         <h6 className='col-lg-4'>Max Qty	 :</h6>
-                        <input type="text" className='form-control rounded px-2' defaultValue={1} value={maxQty} onChange={(e) => setMaxQty(e.target.value)} />
+                        <input type="text" className='col-lg-8 rounded px-2' defaultValue={1} value={data.maxQty} onChange={e => handleInputChange('maxQty', e.target.value)} />
                       </div>
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex mb-3 mt-3">
@@ -202,22 +369,23 @@ function Clientservice() {
                         <h6 className='col-lg-6'>Strategy :</h6>
                       </div>
                       <div className='col-lg-6'>
-                        <button onClick={(e) => setShowStretgy(!showstrategy)} className="btn btn-outline-primary w-100 mb-2">
+                        <button onClick={(e) => setShowStretgy(!showstrategy)} className="p-1 rounded col-lg-12">
                           Select Strategy
                         </button>
                         {
                           showstrategy && <div id="myDropdown" class="dropdown-content">
                             {
-                              getAllClientService.data.strategy.map((data, index) => {
+                              getAllClientStrategy.data.strategy.map((data1, index) => {
                                 return (
                                   <>
-                                    <div key={index} className={modalData.strategy_id.includes(data.result._id) ? "text-success" : "text-danger"}>
+                                    <div key={index} className={data.strategyId.includes(data1.result._id) ? "text-success" : "text-danger"}>
                                       <input
                                         type="checkbox"
-                                        defaultChecked={modalData.strategy_id.includes(data.result._id)}
-                                        onChange={(e) => handleCheckboxChange(data.result._id)}
+                                        defaultChecked={data.strategyId.includes(data1.result._id)}
+                                        onChange={(e) => handleInputChange("strategyId", data1.result._id)}
+
                                       />
-                                      {data.result.strategy_name}
+                                      {data1.result.strategy_name}
                                     </div>
 
                                   </>
@@ -229,20 +397,20 @@ function Clientservice() {
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex mb-3">
                       <h6 className='col-lg-6'>Order Type :</h6>
-                      <select className=" rounded form-select" value={orderType} onChange={(e) => { setOrderType(e.target.value) }}>
-                        <option selected>Stoploss Market</option>
+                      <select className="col-lg-6 rounded" value={data.orderType} onChange={e => handleInputChange('orderType', e.target.value)}>
                         <option value="1">Market</option>
                         <option value="2">Limit</option>
                         <option value="3">Stoploss Limit</option>
+                        <option value="4">Stoploss Market</option>
                       </select>
                     </div>
                     <div className="col-lg-12 col-sm-12 d-flex mb-3">
                       <h6 className='col-lg-6'>Product Type :</h6>
-                      <select className="form-select rounded " value={productType} onChange={(e) => { setProductType(e.target.value) }}>
-                        <option selected>MIS</option>
+                      <select className="col-lg-6 rounded " value={data.productType} onChange={e => handleInputChange('productType', e.target.value)}>
                         <option value="1">CNC</option>
-                        <option value="2">BO</option>
-                        <option value="3">So</option>
+                        <option value="2">MIS</option>
+                        <option value="3">BO</option>
+                        <option value="4">CO</option>
                       </select>
                     </div>
 
@@ -253,7 +421,7 @@ function Clientservice() {
                     type="button"
                     data-bs-dismiss="modal"
                     className="btn btn-back cancel-btn me-2"
-                    onClick={(e) => setModal(!modal)}
+                    onClick={(e) => { setModal(!modal); emptyState(); }}
                   >
                     Cancel
                   </button>
@@ -270,8 +438,7 @@ function Clientservice() {
             </div>
           </div>
         </div>
-      )
-      }
+      )}
     </div >
   );
 }
