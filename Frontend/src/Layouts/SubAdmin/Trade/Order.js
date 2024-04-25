@@ -97,7 +97,7 @@ function GroupStrategy() {
           style={{ maxHeight: "100%", overflowY: "auto" }}
         >
           <div className="table-responsive">
-            <table className="table table-striped table-hover">
+            <table className="table ">
               <thead>
                 <tr>
                   <th>Stock Symbol</th>

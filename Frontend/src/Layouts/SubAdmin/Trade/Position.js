@@ -204,7 +204,7 @@ function GroupStrategy() {
 
                     <div className="card-body p-0 mr-2" style={{ maxHeight: "100%", overflowY: "auto" }}>
                         <div className="table-responsive">
-                            <table className="table table-striped table-hover">
+                            <table className="table ">
                                 <thead>
                                     <tr>
                                         <th>Stock Symbol</th>

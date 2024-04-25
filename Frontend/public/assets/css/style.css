@@ -4246,7 +4246,7 @@ div.dataTables_wrapper div.dataTables_filter label i {
 
 .sidebar .sidebar-menu ul li a.subdrop,
 .sidebar .sidebar-menu ul li.submenu>a:hover {
-    background: rgba(118, 56, 255, .05)
+ background: linear-gradient(320deg, #DDCEFF 0%, #DBECFF 100%) !important;
 }
 
 .two-col-bar .sidebar .sidebar-left .nav-link {
@@ -4547,7 +4547,8 @@ span.select2-container.select2-container--default.select2-container--open {
 
 .sidebar .sidebar-menu ul li.active a {
     color: #7539ff;
-    position: relative
+    position: relative;
+  
 }
 
 .sidebar .sidebar-menu ul li.active a::before {
@@ -4653,9 +4654,10 @@ span.select2-container.select2-container--default.select2-container--open {
     color: #fff
 }
 
-.sidebar .sidebar-menu ul li a.active {
+.sidebar .sidebar-menu ul li a.active, .sidebar .sidebar-menu ul li a.subdrop,.sidebar .sidebar-menu ul li a:hover{
     color: #7539ff;
-    border-radius: 0
+    border-radius: 2px;
+    background: linear-gradient(320deg, #DDCEFF 0%, #DBECFF 100%);
 }
 
 .sidebar .sidebar-menu ul li a.active svg {
@@ -4700,7 +4702,7 @@ span.select2-container.select2-container--default.select2-container--open {
 
 .sidebar .sidebar-menu ul li a span {
     padding: 0 10px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 400;
     line-height: 18px
 }
@@ -5928,7 +5930,8 @@ span.select2-container.select2-container--default.select2-container--open {
 }
 
 .table tbody tr td {
-    border-color: #dee2e6
+    border-color: #dee2e6;
+    padding:15px;
 }
 
 .table tbody td h2 {
@@ -7760,10 +7763,11 @@ table .badge {
 }
 
 [data-layout-mode=dark] body .table th {
-    color: #aaa;
+    color: #fff;
     border-top: 1px solid #3b3c3e;
     background: #1e1f25;
-    border-bottom: 1px solid #3b3c3e
+    border-bottom: 1px solid #3b3c3e;
+    /* font-size: 16px; */
 }
 
 [data-layout-mode=dark] body .table td {
@@ -9267,7 +9271,7 @@ table .badge {
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a:hover i,
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a.subdrop i,
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a.active i {
-    color: #7539ff
+    color: #000 !important;
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a:hover span,
@@ -9339,7 +9343,7 @@ table .badge {
 [data-layout=horizontal] body .sidebar .sidebar-menu ul ul {
     display: none;
     width: 200px;
-    /* background-color: #1c1d22; */
+    background-color: #1c1d22;
     position: absolute;
     top: 60px;
     left: 0
@@ -9417,7 +9421,8 @@ table .badge {
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a {
-    padding: 10px 15px
+    padding: 10px 15px;
+    transition:0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 [data-layout=horizontal] body .greedy ul.list-inline-item.list-unstyled.links {
@@ -33437,8 +33442,9 @@ table.table thead {
 }
 
 table.table thead th {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 15px;
+    font-size: 16px;
+    
 }
 
 table.table.bg-none::before {
@@ -34198,30 +34204,38 @@ img {
 .moving-border .text-muted  {
     display: none;
 }
-.card.moving-border {
-    /* border: 2px solid #ddd !important; */
-    margin-bottom: 50px !IMPORTANT;
-    border-bottom: 5px solid #7539ff !important;
-}
+
 .moving-border .dash-widget-header .dash-count .dash-title {
     font-weight: 500;
-    font-size: 16px;
+    font-size: 18px;
     /* color: #000; */
+}
+.moving-border::before {
+    height: 78%;
+    width: 30%;
+    position: absolute;
+    background: linear-gradient(320deg, #ddceff52 0%, #dbecff66 100%);
+    content: "";
+    /* z-index: -1; */
+    border-radius: 40px 10px 0px 40px;
+    right: 0;
+}
+.moving-border:hover {
+    box-shadow: 0 0 13px 0 rgb(82 63 105 / 41%) !important;
 }
 .moving-border .dash-widget-header .dash-count .dash-counts p {
 
     font-size: 20px;
 }
-.moving-border .crad-widget .dash-widget-icon {
-height: 4.5rem;
-width: 4.5rem;
-    margin-top: -100px;
-}
-.moving-border.card .card-body {
 
-    padding: 1rem;
+.moving-border {
+    box-shadow: rgb(117 57 255 / 48%) 0.95px 0.95px 0.95px 2px;
+    border-radius: 10px;
+    transition:0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
-
+.moving-border .card-body{
+ padding: 1rem;
+}
 @keyframes rotate {
     0% {
         --angle: 0deg;
@@ -34260,7 +34274,10 @@ width: 4.5rem;
 {
     background: #7539ff;
 }
-
+.w-30
+{
+width: 30%;
+}
 @media(max-width: 575px) {
     li.nav-item.dropdown button {
         font-size: 10px !important;

@@ -258,10 +258,7 @@ const Helpsubadmin = () => {
           <div className="row">
             <div className="col-lg-12 col-md-8" data-aos="fade-left">
               <div className="card h-100" >
-                <div className="card-body">
-                  <div className="tab-content">
-                    <div className="tab-pane show active" id="solid-tab1">
-                      <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+              <div className="card-header d-flex justify-content-between align-items-center border-bottom">
                         <h5 className="card-title mb-0 w-auto">
                           {" "}
                           <i className="fa-solid fa-landmark pe-2"></i>How Can I
@@ -269,6 +266,80 @@ const Helpsubadmin = () => {
                         </h5>
                         <div className="pay-btn text-end w-auto"></div>
                       </div>
+                <div className="card-body">
+                <div>
+                    <div>
+                      <DropdownButton
+                        id="dropdown-basic-button"
+                        title="Select user"
+                        onSelect={handleDropdownSelect}
+                        style={{
+                          display: "flex",
+                          justifyContent: "end",
+                          alignItems: "end",
+                          marginTop: "1rem",
+                          marginRight: "1rem",
+                        }}
+                      >
+                        <Dropdown.Item eventKey="Subadmin">
+                          Subadmin
+                        </Dropdown.Item>
+                        <Dropdown.Item eventKey="User">User</Dropdown.Item>
+                      </DropdownButton>
+                    </div>
+                    {selectedItem === "Subadmin" ? (
+                      <div className="mt-3">
+                        <div
+                          className="col-lg-4 col-md-4"
+                          data-aos="fade-left"
+                          style={{marginTop:'-100px;'}}
+                        >
+                          <div className="content-page-header">
+                            <h4 style={{ fontSize: "1.5rem" }}>
+                              Subadmin Detail
+                            </h4>
+                          </div>
+                        </div>
+
+                        {
+                          <FullDataTable
+                            styles={styles}
+                            columns={columns}
+                            rows={getuserdata}
+                          />
+                        }
+                      </div>
+                    ) : (
+                      ""
+                    )}
+
+                    {selectedItem === "User" ? (
+                      <div className="mt-3">
+                        <div
+                          className="col-lg-4 col-md-4"
+                          data-aos="fade-left"
+                        style={{marginTop:'-100px;'}}
+                        >
+                          <div className="content-page-header">
+                            <h4 style={{ fontSize: "1.5rem" }}>User Detail</h4>
+                          </div>
+                        </div>
+
+                        {
+                          <FullDataTable
+                            styles={styles}
+                            columns={columns1}
+                            rows={getuserdata}
+                          />
+                        }
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="tab-content">
+                    <div className="tab-pane show active" id="solid-tab1">
+                      
 
                       <div className="invoice-total-box px-3 border">
                         <div className="invoice-total-inner">
@@ -373,76 +444,7 @@ const Helpsubadmin = () => {
                     </div>
                   </div>
 
-                  <div>
-                    <div>
-                      <DropdownButton
-                        id="dropdown-basic-button"
-                        title="Select user"
-                        onSelect={handleDropdownSelect}
-                        style={{
-                          display: "flex",
-                          justifyContent: "end",
-                          alignItems: "end",
-                          marginTop: "1rem",
-                          marginRight: "1rem",
-                        }}
-                      >
-                        <Dropdown.Item eventKey="Subadmin">
-                          Subadmin
-                        </Dropdown.Item>
-                        <Dropdown.Item eventKey="User">User</Dropdown.Item>
-                      </DropdownButton>
-                    </div>
-                    {selectedItem === "Subadmin" ? (
-                      <div className="mt-3">
-                        <h1
-                          className="col-lg-4 col-md-4"
-                          data-aos="fade-left"
-                          style={{ color: "black", marginTop: "3rem" }}
-                        >
-                          <div className="content-page-header">
-                            <h1 style={{ fontSize: "2rem" }}>
-                              Subadmin Detail
-                            </h1>
-                          </div>
-                        </h1>
-
-                        {
-                          <FullDataTable
-                            styles={styles}
-                            columns={columns}
-                            rows={getuserdata}
-                          />
-                        }
-                      </div>
-                    ) : (
-                      ""
-                    )}
-
-                    {selectedItem === "User" ? (
-                      <div className="mt-3">
-                        <h1
-                          className="col-lg-4 col-md-4"
-                          data-aos="fade-left"
-                          style={{ color: "black", marginTop: "3rem" }}
-                        >
-                          <div className="content-page-header">
-                            <h1 style={{ fontSize: "2rem" }}>User Detail</h1>
-                          </div>
-                        </h1>
-
-                        {
-                          <FullDataTable
-                            styles={styles}
-                            columns={columns1}
-                            rows={getuserdata}
-                          />
-                        }
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </div>
+                 
                 </div>
               </div>
             </div>

@@ -219,23 +219,26 @@ const DashBoard = () => {
                   .map((cardGroup, index) => (
                     <div className="col-md-3" key={index}>
                       {cardGroup.map((data, idx) => (
-                        <div className="card mb-4" key={idx}>
-                          <div className="card-body moving-border">
-                            <div className="dash-widget-header crad-widget">
-                              <span
-                                className={`dash-widget-icon ${data.progressBarClass}`}
-                              >
-                                <i
-                                  className={data.iconClass}
-                                  id="animated"
-                                ></i>
-                              </span>
+                        <div className="card moving-border mb-4" key={idx}>
+                          <div className="card-body ">
+                            <div className="dash-widget-header crad-widge justify-content-between 
+                            ">
                               <div className="dash-count">
                                 <div className="dash-title">{data.title}</div>
                                 <div className="dash-counts">
                                   <p>{data.count}</p>
                                 </div>
                               </div>
+                              <img src="/assets/img/category/report.png" className="w-25"/>
+                              {/* <span
+                                className={`dash-widget-icon ${data.progressBarClass}`}
+                              >
+                                <i
+                                  className={data.iconClass}
+                                  id="animated"
+                                ></i>
+                              </span> */}
+                              
                             </div>
 
                             <div className="progress progress-sm mt-3">
@@ -252,7 +255,7 @@ const DashBoard = () => {
                               <span className="text-success me-1">
                                 <i className={data.arrowIcon} />
                                 {data.percentageChange}
-                              </span>{" "}
+                              </span>
                               <span
                                 className={`since-last-week ${storedTheme == "dark"
                                   ? "text-white"
@@ -411,7 +414,9 @@ const DashBoard = () => {
                           <div className="col-4">
                             <div className="mt-4">
                               <p className="mb-2 text-truncate">
-                                <i className="fas fa-circle text-primary me-1" />{" "}
+                                
+                                {/* <i className="fas fa-circle text-primary me-1" /> */}
+                                {/* <i className="fa-light fa-chart-simple"></i> */}
                                 Invoiced
                               </p>
                               <h5>$2,132</h5>
@@ -420,7 +425,7 @@ const DashBoard = () => {
                           <div className="col-4">
                             <div className="mt-4">
                               <p className="mb-2 text-truncate">
-                                <i className="fas fa-circle text-success me-1" />{" "}
+                                <i className="fas fa-circle text-success me-1" />
                                 Received
                               </p>
                               <h5>$1,763</h5>
@@ -429,7 +434,7 @@ const DashBoard = () => {
                           <div className="col-4">
                             <div className="mt-4">
                               <p className="mb-2 text-truncate">
-                                <i className="fas fa-circle text-danger me-1" />{" "}
+                                <i className="fas fa-circle text-danger me-1" />
                                 Pending
                               </p>
                               <h5>$973</h5>

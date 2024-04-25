@@ -175,7 +175,7 @@ function Payment() {
       {companyData && companyData.loading ? (
         <Content
           Card_title="Strategy Transaction"
-          Card_title_icon="fas fa-money-bill-wave pe-2"
+          Card_title_icon="fe fe-credit-card pe-2"
           Content={
             <>
               <FullDataTable
