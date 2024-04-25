@@ -27,9 +27,6 @@ export const getCatogries = createAsyncThunk(
  
 
 
-
-
-
 const GrouoServicesSlice = createSlice({
   name: "SystemSlice",
   initialState: {
@@ -40,10 +37,6 @@ const GrouoServicesSlice = createSlice({
    
 
   },
-
-  
-  
-  
 
 
   reducers: {},

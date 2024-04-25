@@ -52,7 +52,6 @@ class ActivityLogs {
     async findActivity(req, res) {
         try {
             const { id, category } = req.body;
-
             const Activity_logs1 = await Activity_category.find({ activity: category });
 
             // IF DATA NOT EXIST

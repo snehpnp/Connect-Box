@@ -68,7 +68,6 @@ import { getalluserActivity,findActivity } from "../../../Services/Comman/Settin
           })
           .addCase(findstatus.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.findstatus = action.payload;
           })
           .addCase(findstatus.rejected, (state, action) => {
             state.isLoading = false;
