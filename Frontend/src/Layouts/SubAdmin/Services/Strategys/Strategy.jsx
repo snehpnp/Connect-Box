@@ -128,7 +128,7 @@ function Strategy() {
         {
             name: "strategy_demo_days",
             label: "Strategy demo days",
-            type: "number",
+            type: "text3",
             label_size: 12,
             col_size: 6,
             disable: false,
@@ -180,7 +180,7 @@ function Strategy() {
         {
             name: "strategy_amount_month",
             label: "Monthly",
-            type: "number",
+            type: "text3",
             label_size: 3,
             col_size: 3,
             disable: false,
@@ -188,7 +188,7 @@ function Strategy() {
         {
             name: "strategy_amount_quarterly",
             label: "Quaterly",
-            type: "number",
+            type: "text3",
             label_size: 3,
             col_size: 3,
             disable: false,
@@ -196,7 +196,7 @@ function Strategy() {
         {
             name: "strategy_amount_half_early",
             label: "Half Yearly",
-            type: "number",
+            type: "text3",
             label_size: 3,
             col_size: 3,
             disable: false,
@@ -204,7 +204,7 @@ function Strategy() {
         {
             name: "strategy_amount_early",
             label: "Yearly",
-            type: "number",
+            type: "text3",
             label_size: 3,
             col_size: 3,
             disable: false,

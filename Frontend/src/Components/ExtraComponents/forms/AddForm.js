@@ -744,7 +744,7 @@ const DynamicForm = ({
                                   <label htmlFor={field.name}>
                                     {field.label}
                                   </label>
-
+                                  <span className="text-danger">*</span>
                                   <input
                                     type="text"
                                     name={field.name}

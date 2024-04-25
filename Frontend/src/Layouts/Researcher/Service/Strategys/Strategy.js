@@ -30,7 +30,7 @@ const Strategy = () => {
     const [deleteModal, setdeleteModal] = useState(false);
     const [refresh, setrefresh] = useState(false)
     const [allStategy, setAllStategy] = useState({
-        loading: false,
+        loading: true,
         data: [],
     });
 
@@ -59,7 +59,7 @@ const Strategy = () => {
         {
             name: "strategy_demo_days",
             label: "Strategy demo days",
-            type: "number",
+            type: "text3",
             label_size: 12,
             col_size: 6,
             disable: false,
@@ -243,19 +243,19 @@ const Strategy = () => {
 
 
                 setAllStategy({
-                    loading: true,
+                    loading: false,
                     data: searchInput ? filteredData : formattedData,
                 });
             } else {
                 setAllStategy({
-                    loading: true,
+                    loading: false,
                     data: [],
                 });
             }
         } catch (error) {
             console.log("Error", error);
             setAllStategy({
-                loading: false,
+                loading: true,
                 data: [],
             });
         }
@@ -282,8 +282,6 @@ const Strategy = () => {
             confirmButtonText: "Yes, delete it!"
         }).then(async (result) => {
             if (result.isConfirmed) {
-
-
                 var req = {
                     _id: id,
                 };
@@ -400,7 +398,7 @@ const Strategy = () => {
                 </div>
 
                 {/* Cards */}
-                {allStategy.loading ? (
+                {!allStategy.loading ? (
                     <div className="content container-fluid pb-0">
                         <div className="row d-flex align-items-center justify-content-center">
 
