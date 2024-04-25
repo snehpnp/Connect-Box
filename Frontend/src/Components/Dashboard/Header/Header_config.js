@@ -119,25 +119,25 @@ export const subamdin_header = [
     //     Icon: "fe fe-settings",
     //     Data: []
     // },
-    // {
-    //     id: 3,
-    //     name: 'Employees',
-    //     Icon: "fe fe-users",
-    //     Data: [
-    //         {
-    //             id: 31,
-    //             name: 'Add Employee',
-    //             Icon: "fe fe-user-plus",
-    //             route: "/subadmin/employee/add",
-    //         },
-    //         {
-    //             id: 32,
-    //             name: 'All Employees',
-    //             Icon: "fe fe-users",
-    //             route: "/subadmin/employees",
-    //         },
-    //     ]
-    // },
+    {
+        id: 3,
+        name: 'Employees',
+        Icon: "fe fe-users",
+        Data: [
+            {
+                id: 31,
+                name: 'Add Employee',
+                Icon: "fe fe-user-plus",
+                route: "/subadmin/employee/add",
+            },
+            {
+                id: 32,
+                name: 'All Employees',
+                Icon: "fe fe-users",
+                route: "/subadmin/employees",
+            },
+        ]
+    },
     {
         id: 4,
         name: 'Users',
@@ -194,6 +194,13 @@ export const subamdin_header = [
                 id: 61,
                 name: 'Orders',
                 route: "/subadmin/orders",
+                Icon: "fe fe-list",
+                Data: []
+            },
+            {
+                id: 63,
+                name: 'Client Orders',
+                route: "/subadmin/client/orders",
                 Icon: "fe fe-list",
                 Data: []
             },
@@ -296,13 +303,13 @@ export const User_header = [
         route: "/user/stock",
         Data: []
     },
-    {
-        id: 2,
-        name: 'Stock List 1',
-        Icon: "fa-solid fa-arrow-trend-up",
-        route: "/user/stock1",
-        Data: []
-    },
+    // {
+    //     id: 2,
+    //     name: 'Stock List 1',
+    //     Icon: "fa-solid fa-arrow-trend-up",
+    //     route: "/user/stock1",
+    //     Data: []
+    // },
     {
         id: 3,
         name: 'Trade',
@@ -456,26 +463,33 @@ export const superadmin_header = [
         Data: []
     },
  
-    {
-        id: 10,
-        name: 'Message Broadcast',
-        route: "/superadmin/message-broadcast",
-        Icon: "fe fe-message-circle",
-        Data: []
-    },
-    {
-        id: 11,
-        name: 'Help',
-        route: "/superadmin/help",
-        Icon: "fe fe-help-circle",
-        Data: []
-    },
+    // {
+    //     id: 10,
+    //     name: 'Message Broadcast',
+    //     route: "/superadmin/message-broadcast",
+    //     Icon: "fe fe-message-circle",
+    //     Data: []
+    // },
+    // {
+    //     id: 11,
+    //     name: 'Help',
+    //     route: "/superadmin/help",
+    //     Icon: "fe fe-help-circle",
+    //     Data: []
+    // },
     {
         id: 9,
         name: 'FAQs',
         route: "/superadmin/faqs",
         Icon: "fe fe-help-circle",
         Data: []
+    },{
+        id: 9,
+        name: 'History',
+        route: "/superadmin/history",
+        Icon: "fe fe-help-circle",
+        Data: []
+
     }
 ];
 

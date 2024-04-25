@@ -5,8 +5,7 @@ var dateTime = require('node-datetime');
 "use strict";
 const db = require('../../Models');
 const User = db.user;
-const user_logs = db.user_logs;
-const subadmin_logs = db.subadmin_activity_logs;
+const user_logs = db.user_activity_logs;
 
 
 
@@ -22,7 +21,7 @@ class AliceBlue {
             const authCode = req.query.authCode;
             var userId = req.query.userId;
 
-            var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role');
+            var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role ');
 
             if (Get_User[0].TradingStatus != "on") {
 
@@ -82,53 +81,33 @@ class AliceBlue {
     
                             if (response.data.userSession) {
     
-                                if (Get_User[0].Role == "USER") {
-    
-                                    let result = await User.findByIdAndUpdate(
-                                        Get_User[0]._id,
-                                        {
-                                            access_token: response.data.userSession,
-                                            TradingStatus: "on"
-                                        })
-                                    const user_login = new user_logs({
+
+
+                                let result = await User.findByIdAndUpdate(
+                                    Get_User[0]._id,
+                                    {
+                                        access_token: response.data.userSession,
+                                        TradingStatus: "on"
+                                    })
+
+                                if (result != "") {
+
+                                    const Subadmin_login = new user_logs({
                                         user_Id: Get_User[0]._id,
+                                        admin_Id: Get_User[0].parent_id,
                                         trading_status: "Trading On",
                                         role: Get_User[0].Role,
                                         device: "WEB",
-    
+
                                     })
-                                    await user_login.save();
-                                    return res.redirect(redirect_uri);
-    
-                                } else {
-    
-                                    let result = await User.findByIdAndUpdate(
-                                        Get_User[0]._id,
-                                        {
-                                            access_token: response.data.userSession,
-                                            TradingStatus: "on"
-                                        })
-    
-                                    if (result != "") {
-    
-                                        const Subadmin_login = new subadmin_logs({
-                                            user_Id: Get_User[0]._id,
-                                            trading_status: "Trading On",
-                                            role: Get_User[0].Role,
-                                            device: "WEB",
-    
-                                        })
-                                        await Subadmin_login.save();
-                                        if (Subadmin_login) {
-                                            return res.redirect(redirect_uri);
-    
-                                        }
+                                    await Subadmin_login.save();
+                                    if (Subadmin_login) {
+                                        return res.redirect(redirect_uri);
+
                                     }
-    
                                 }
-    
-    
-    
+
+
     
                             } else {
                                 return res.send(redirect_uri);

@@ -6,9 +6,6 @@ const client_services = db.client_service;
 const strategy_client = db.strategy_client;
 const user_activity_logs = db.user_activity_logs;
 
-
-
-
 var dateTime = require('node-datetime');
 var dt = dateTime.create();
 
@@ -180,7 +177,7 @@ class Clientservice {
                 strategy: GetAllClientStrategy,
                 GetServiceStrategy: GetServiceStrategy,
                 status_startegy: GetAllClientServices[0].userInfo.multiple_strategy_select,
-           
+
                 totalCount: totalCount
             })
         } catch (error) {
@@ -191,182 +188,49 @@ class Clientservice {
 
     async updateClientServices(req, res) {
         try {
-            const { user_id, servicesData, data, statusStartegyUser, GetServiceStrategy } = req.body;
-
-    
-
-            if (statusStartegyUser == "1") {
-                const isEmpty = Object.keys(servicesData).length === 0;
-
-                if (isEmpty == false) {
-                    // Filter objects with empty strategy_id
-                    const result = Object.keys(servicesData)
-                        .filter((key) => Array.isArray(servicesData[key].strategy_id) && servicesData[key].strategy_id.length === 0)
-                        .reduce((obj, key) => {
-                            obj[key] = servicesData[key];
-                            return obj;
-                        }, {});
-
-                        recharge/get
+            const { strategyId, maxQty, orderType, productType, userId, id, seriveId } = req.body;
 
 
-                    // Extracting the key (id) from the inputObject
-                    const inputId = Object.keys(result)[0];
-                    // Finding the matching object in dataArray based on _id
-                    const matchingObject = GetServiceStrategy.find(obj => obj._id === inputId);
-                    // Getting the service_name if a match is found
-                    const serviceName = matchingObject ? matchingObject.service_name : null;
-
-
-
-                    const isEmptyStartegyArray = Object.keys(result).length === 0;
-                
-                    if (isEmptyStartegyArray == false) {
-                        return res.send({ status: false, msg: 'Please Select one Strategy a script ' + serviceName, data: [] });
-                    }
-
-                }
-            }
-
-
-      
-
-            const UserData = await User_model.findOne({ _id: user_id });
+            const UserData = await User_model.findOne({ _id: userId });
 
 
             if (!UserData) {
                 return res.send({ status: false, msg: 'User Not exists', data: [] });
             }
 
-            if (Object.keys(servicesData).length == 0) {
+            const clientService = {
+
+                strategy_id: strategyId,
+                lot_size: maxQty,
+                order_type: orderType,
+                product_type: productType
+            };
+
+            console.log("clientService", clientService)
+
+            const filter = { _id: id, user_id: userId, service_id: seriveId };
+            const update = {
+                $set: clientService
+            };
+            const update_token = await client_services.updateOne(filter, update);
+           
             
-                return res.send({ status: false, msg: 'No Data For Update', data: [] });
+            // const user_activity = new user_activity_logs(
+            //     {
+            //         user_id: UserData._id,
+            //         message: Service_name[0].name + " Update Strategy ",
+            //         Strategy: Strategieclient[0].strategy_name,
+            //         role: data.Editor_role,
+            //         system_ip: getIPAddress(),
+            //         device: data.device
+            //     })
+            // await user_activity.save()
+
+            if (update_token.acknowledged) {
+
+                return res.send({ status: true, msg: 'Update Successfully', data: [] });
             }
 
-
-
-
-
-            for (const key in servicesData) {
-                if (servicesData[key]) {
-                    const matchedObject = servicesData[key];
-
-
-
-                    if (matchedObject.strategy_id != undefined) {
-
-                        matchedObject.strategy_id.forEach((sid) => {
-                           
-                            matchedObject.strategy_id.push(new ObjectId(sid))
-                        })
-
-                        matchedObject.strategy_id = matchedObject.strategy_id.filter(item => item instanceof ObjectId);
-
-                    }
-
-
-
-                    if (matchedObject.active_status) {
-                        matchedObject.active_status = matchedObject.active_status == true ? '1' : '0'
-                    }
-
-                    const filter = { user_id: UserData._id, service_id: key };
-                    const updateOperation = { $set: matchedObject };
-
-
-                    const result = await client_services.updateOne(filter, updateOperation);
-
-                    const Service_name = await services.find({ _id: key });
-
-                    if (matchedObject.quantity) {
-
-                        const user_activity = new user_activity_logs(
-                            {
-                                user_id: UserData._id,
-                                message: Service_name[0].name + " quantity Update",
-                                quantity: matchedObject.quantity,
-                                role: data.Editor_role,
-                                system_ip: getIPAddress(),
-                                device: data.device
-                            })
-                        await user_activity.save()
-                    }
-
-                    if (matchedObject.strategy_id != undefined) {
-                        matchedObject.strategy_id.forEach(async (stg_id) => {
-
-                            const Strategieclient = await strategy.find({ _id: stg_id });
-                 
-                            const user_activity = new user_activity_logs(
-                                {
-                                    user_id: UserData._id,
-                                    message: Service_name[0].name + " Update Strategy ",
-                                    Strategy: Strategieclient[0].strategy_name,
-                                    role: data.Editor_role,
-                                    system_ip: getIPAddress(),
-                                    device: data.device
-                                })
-                            await user_activity.save()
-                        })
-
-
-                    }
-
-                    if (matchedObject.active_status || matchedObject.active_status == false) {
-
-                        var msg = matchedObject.active_status == true ? "ON" : "OFF"
-
-                        const user_activity = new user_activity_logs(
-                            {
-                                user_id: UserData._id,
-                                message: Service_name[0].name + " Service " + msg,
-                                quantity: matchedObject.quantity,
-                                role: data.Editor_role,
-                                system_ip: getIPAddress(),
-                                device: data.device
-                            })
-                        await user_activity.save()
-                    }
-
-                    if (matchedObject.order_type) {
-
-
-                        var msg = matchedObject.order_type == '1' ? "MARKET" : matchedObject.order_type == '2' ? "LIMIT" : matchedObject.order_type == '3' ? "STOPLOSS LIMIT" : "STOPLOSS MARKET"
-
-                        const user_activity = new user_activity_logs(
-                            {
-                                user_id: UserData._id,
-                                message: Service_name[0].name + "  order_type " + msg + " Update",
-
-                                role: data.Editor_role,
-                                system_ip: getIPAddress(),
-                                device: data.device
-                            })
-                        await user_activity.save()
-                    }
-
-                    if (matchedObject.product_type) {
-
-
-                        var msg = matchedObject.product_type == '1' ? "CNC" : matchedObject.product_type == '2' ? "MIS" : matchedObject.product_type == '3' ? "BO" : "CO"
-
-                        const user_activity = new user_activity_logs(
-                            {
-                                user_id: UserData._id,
-                                message: Service_name[0].name + "  product_type " + msg + " Update",
-
-                                role: data.Editor_role,
-                                system_ip: getIPAddress(),
-                                device: data.device
-                            })
-                        await user_activity.save()
-                    }
-
-                } else {
-                }
-            }
-
-            return res.send({ status: true, msg: 'Update Successfully', data: [] });
 
 
         } catch (error) {
@@ -375,9 +239,9 @@ class Clientservice {
 
         }
     }
-    
 
-  
+
+
 
 }
 

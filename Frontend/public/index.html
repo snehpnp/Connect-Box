@@ -45,7 +45,20 @@
   <script src="assets/js/greedynav.js" type="1492db9c4e3e2161cceefe8f-text/javascript"></script>
 
   <script src="%PUBLIC_URL%/assets/js/script.js" type="1492db9c4e3e2161cceefe8f-text/javascript"></script>
-
+  <script>
+    // Define your colors array
+    const colors = ["navy", "teal", "green", "crimson"];
+    // Get random index
+    const randomIndex = Math.floor(Math.random() * colors.length);
+    // Get random color
+    const randomColor = colors[randomIndex];
+    // Get all pricing blocks
+    const pricingBlocks = document.querySelectorAll('.pricing-block');
+    // Set random color for each pricing block
+    pricingBlocks.forEach(block => {
+      block.style.borderBottomColor = randomColor;
+    });
+  </script>
 
 </body>
 

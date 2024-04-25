@@ -26,7 +26,10 @@ class strategy {
         strategy_amount_half_early,
         strategy_amount_early,
         maker_id,
-        Service_Type
+        Service_Type,
+        max_trade,
+        strategy_percentage,
+        Role,
       } = req.body;
 
       if (!maker_id || maker_id == "" || maker_id == null) {
@@ -37,9 +40,11 @@ class strategy {
         });
       }
 
+
+      console.log("Role :", Role)
       const maker_id_find = await User.findOne({
         _id: maker_id,
-        Role: "SUBADMIN",
+        Role: Role
       });
       if (!maker_id_find) {
         return res.send({ status: false, msg: "Maker Id Is Wrong", data: [] });
@@ -114,7 +119,9 @@ class strategy {
         strategy_amount_half_early: strategy_amount_half_early,
         strategy_amount_early: strategy_amount_early,
         maker_id: maker_id_find._id,
-        Service_Type:Service_Type
+        Service_Type:Service_Type,
+        max_trade :max_trade || null,
+        strategy_percentage :strategy_percentage || null
       });
 
       strategy_Data
@@ -162,8 +169,14 @@ class strategy {
         strategy_amount_half_early,
         strategy_amount_early,
         maker_id,
-        Service_Type
+        Service_Type,
+        max_trade,
+        strategy_percentage,
+        Role,
       } = req.body;
+
+
+      
 
       if (!_id || _id == "" || _id == null) {
         return res.send({ status: false, msg: "Please Enter Id", data: [] });
@@ -184,7 +197,7 @@ class strategy {
 
       const maker_id_find = await User.findOne({
         _id: maker_id,
-        Role: "SUBADMIN",
+        Role: Role,
       });
       if (!maker_id_find) {
         return res.send({ status: false, msg: "Maker Id Is Wrong", data: [] });
@@ -275,7 +288,9 @@ class strategy {
           strategy_amount_half_early: strategy_amount_half_early,
           strategy_amount_early: strategy_amount_early,
           maker_id: maker_id_find._id,
-          Service_Type:Service_Type
+          Service_Type:Service_Type,
+          max_trade :max_trade || null,
+          strategy_percentage :strategy_percentage || null
         },
       };
 

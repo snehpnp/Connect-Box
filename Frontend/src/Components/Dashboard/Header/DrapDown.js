@@ -31,7 +31,6 @@ const DropDown = () => {
 
         try {
             let data = { "id": user_id }
-
             await dispatch(ProfileInfo(data))
                 .unwrap()
                 .then(async (response) => {
@@ -121,6 +120,8 @@ const DropDown = () => {
             // navigate('/admin/wallet')
         } else if (Role == "SUBADMIN") {
             navigate('/subadmin/wallet')
+        } else if (Role == "RESEARCH") {
+            navigate('/research/wallet')
         }
 
     }
@@ -135,9 +136,49 @@ const DropDown = () => {
             navigate('/user/profile')
         } else if (Role == "EMPLOYEE") {
             navigate('/employee/profile')
+        } else if (Role == "RESEARCH") {
+            navigate('/research/profile')
+        }
+
+
+
+    }
+     
+    const SettingPage = () => {
+        if (Role == "ADMIN") {
+            navigate('/admin/setting')
+        } else if (Role == "SUBADMIN") {
+            navigate('/subadmin/setting')
+        } else if (Role == "USER") {
+            navigate('/user/setting')
+        } else if (Role == "EMPLOYEE") {
+            navigate('/employee/setting')
         }
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 
     const toggleFundsVisibility = () => {
         setShowFunds(!showFunds);
@@ -288,9 +329,9 @@ const DropDown = () => {
                                                 <i class="fa-solid fa-gear p-2"></i> System
                                             </Link>
                                         </li> : ''}
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/settings">
-                                            <i class="fa-solid fa-gear p-2"></i>   Settings
+                                    <li onClick={() => SettingPage()}>
+                                        <Link className="dropdown-item dev" to="/setting">
+                                            <i class="fa-solid fa-gear p-2"></i>Settings
                                         </Link>
                                     </li>
 

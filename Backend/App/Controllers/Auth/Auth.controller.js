@@ -10,7 +10,6 @@ const SignUpUser = db.SignUpUser;
 const User = db.user;
 const company_information = db.company_information;
 const user_logs = db.user_activity_logs;
-const subadmin_logs = db.subadmin_activity_logs;
 
 
 // Login CLASS
@@ -74,12 +73,13 @@ class Auth {
                 'Email': EmailCheck.Email,
                 'user_id': EmailCheck._id,
                 'token': token,
-                'mobile': EmailCheck.PhoneNo, Role: EmailCheck.Role,
+                'mobile': EmailCheck.PhoneNo, 
+                Role: EmailCheck.Role,
                 "broker": EmailCheck.broker,
                 "type": EmailCheck.license_type,
                 "UserName": EmailCheck.UserName,
                 "prifix_key": EmailCheck.prifix_key,
-                "subadmin_service_type": EmailCheck.subadmin_service_type
+                "subadmin_service_type": EmailCheck.Role =="RESEARCH" ? "0" : EmailCheck.subadmin_service_type
 
             };
 
@@ -98,25 +98,16 @@ class Auth {
                 { new: true }
             )
 
-            if (EmailCheck.Role == "USER") {
                 const user_login = new user_logs({
                     user_Id: EmailCheck._id,
-                    trading_status: "Panel On",
+                    admin_Id: EmailCheck.parent_id,
+                    login_status: "Panel On",
                     role: EmailCheck.Role,
                     device: "WEB",
 
                 })
                 await user_login.save();
-            } else if (EmailCheck.Role == "SUBADMIN") {
-                const Subadmin_login = new subadmin_logs({
-                    user_Id: EmailCheck._id,
-                    trading_status: "Panle On",
-                    role: EmailCheck.Role,
-                    device: "WEB",
-
-                })
-                await Subadmin_login.save();
-            }
+       
 
 
             try {
@@ -215,6 +206,7 @@ class Auth {
             // ADD USER LOGS COLLECTION DATA
             const user_login = new user_logs({
                 user_Id: EmailCheck._id,
+                admin_Id: EmailCheck.parent_id,
                 login_status: "Panel On",
                 role: EmailCheck.Role,
                 device: Device,
@@ -272,6 +264,7 @@ class Auth {
 
             const user_login = new user_logs({
                 user_Id: EmailCheck._id,
+                admin_Id: EmailCheck.parent_id,
                 login_status: "Panel off",
                 role: EmailCheck.Role
             })

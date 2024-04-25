@@ -22,7 +22,7 @@ function Edit_Strategies() {
       try {
         const response = await dispatch(GetSubStrategys_ById({ id }));
         if (response.payload && response.payload.data) {
-     
+
           setAllStrategy(response.payload.data);
           setStgDescription(response.payload.data.strategy_description)
 
@@ -45,104 +45,104 @@ function Edit_Strategies() {
 
   const fields = [
     {
-        name: "strategy_name",
-        label: "Strategy Name",
-        type: "text1",
-        label_size: 6,
-        col_size: 6,
-        disable: false,
+      name: "strategy_name",
+      label: "Strategy Name",
+      type: "text1",
+      label_size: 6,
+      col_size: 6,
+      disable: false,
     },
 
     {
-        name: "strategy_category",
-        label: "Catagory",
-        type: "text",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "strategy_category",
+      label: "Catagory",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "strategy_demo_days",
-        label: "Strategy demo days",
-        type: "number",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "strategy_demo_days",
+      label: "Strategy demo days",
+      type: "number",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "strategy_segment",
-        label: "Strategy Segment",
-        type: "text",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "strategy_segment",
+      label: "Strategy Segment",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "strategy_indicator",
-        label: "Indicator",
-        type: "file1",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "strategy_indicator",
+      label: "Indicator",
+      type: "file1",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "strategy_tester",
-        label: "Strategy Tester",
-        type: "file1",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "strategy_tester",
+      label: "Strategy Tester",
+      type: "file1",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "strategy_image",
-        label: "Strategy Logo",
-        type: "file1",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "strategy_image",
+      label: "Strategy Logo",
+      type: "file1",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "Service_Type",
-        label: "Service Type",
-        type: "test",
-        label_size: 12,
-        col_size: 6,
-        disable: true,
+      name: "max_trade",
+      label: "Maximum Trades",
+      type: "text3",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "strategy_amount_month",
-        label: "Monthly",
-        type: "number",
-        label_size: 3,
-        col_size: 3,
-        disable: false,
+      name: "strategy_amount_month",
+      label: "Monthly",
+      type: "number",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
     },
     {
-        name: "strategy_amount_quarterly",
-        label: "Quaterly",
-        type: "number",
-        label_size: 3,
-        col_size: 3,
-        disable: false,
+      name: "strategy_amount_quarterly",
+      label: "Quaterly",
+      type: "number",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
     },
     {
-        name: "strategy_amount_half_early",
-        label: "Half Yearly",
-        type: "number",
-        label_size: 3,
-        col_size: 3,
-        disable: false,
+      name: "strategy_amount_half_early",
+      label: "Half Yearly",
+      type: "number",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
     },
     {
-        name: "strategy_amount_early",
-        label: "Yearly",
-        type: "number",
-        label_size: 3,
-        col_size: 3,
-        disable: false,
+      name: "strategy_amount_early",
+      label: "Yearly",
+      type: "number",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
     },
 
-];
+  ];
 
   const formik = useFormik({
     initialValues: {
@@ -192,7 +192,6 @@ function Edit_Strategies() {
       return errors;
     },
     onSubmit: async (values) => {
-      console.log("values",values)
       const data = {
         _id: id,
         strategy_name: values.strategy_name,
@@ -208,7 +207,10 @@ function Edit_Strategies() {
         strategy_amount_half_early: values.strategy_amount_half_early,
         strategy_amount_early: values.strategy_amount_early,
         maker_id: makerId.user_id,
-        Service_Type: values.Service_Type == '' ? 0 :values.Service_Type
+        max_trade: values.max_trade,
+        Role: "SUBADMIN",
+
+        Service_Type: values.Service_Type == '' ? 0 : values.Service_Type
       };
 
       await dispatch(EditSubStrategys(data))
@@ -237,8 +239,7 @@ function Edit_Strategies() {
       formik.setFieldValue("strategy_tester", allStrategy.strategy_tester);
       formik.setFieldValue("strategy_description", allStrategy.strategy_description);
       formik.setFieldValue("Service_Type", allStrategy.Service_Type);
-
-
+      formik.setFieldValue("max_trade", allStrategy.max_trade);
       formik.setFieldValue(
         "strategy_indicator",
         allStrategy.strategy_indicator
@@ -277,12 +278,12 @@ function Edit_Strategies() {
       additional_field={
         <>
 
-            <label>Strategy Description</label>
-            <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
-            </textarea>
+          <label>Strategy Description</label>
+          <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
+          </textarea>
         </>
 
-    }
+      }
     />
   );
 }

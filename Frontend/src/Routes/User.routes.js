@@ -17,7 +17,7 @@ import Profile from '../Layouts/Comman/Profile/Profile';
 import Bresponse from '../Layouts/User/Brokerresponse/Bresponse';
 
 import Orders from '../Layouts/User/Trade/Order';
-
+import Settings from '../Layouts/Comman/Setting_Page/Settings';
 
 
 // strategydesc
@@ -50,6 +50,7 @@ const User_Routing = () => {
                     <Route exact path="/open-positions" element={<Orders />} />
                     <Route exact path="/broker-response" element={<Orders />} />
                     <Route path="/payment" element={<Orders />} />
+                    <Route exact path="/setting" element={<Settings />} />
 
 
 

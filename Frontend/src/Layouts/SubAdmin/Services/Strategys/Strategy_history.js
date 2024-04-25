@@ -46,7 +46,7 @@ function Payment() {
   };
 
 
-  const columns = [
+  let columns = [
     {
       field: "id",
       headerName: "ID",
@@ -68,7 +68,7 @@ function Payment() {
         </div>
       )
     },
-    
+
     {
       field: 'strategy_id',
       headerName: 'Strategy Name',
@@ -88,7 +88,7 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {params.value == 1 ? "MONTHLY" : params.value == 2 ? "QUATERLY" : params.value == 3 ? "HALF-YEARLY" : params.value == 4 ? "YEARLY" : params.value == 0 ? "DEMO" :"-"}
+          {params.value == 1 ? "MONTHLY" : params.value == 2 ? "QUATERLY" : params.value == 3 ? "HALF-YEARLY" : params.value == 4 ? "YEARLY" : params.value == 0 ? "DEMO" : params.value == 10 ? "2 Days" : "-"}
         </div>
       )
     },
@@ -104,14 +104,15 @@ function Payment() {
       field: 'End_Date', headerName: 'End Date', width: 250, headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {fDateTime(params.value)}
+          {params.row.license_type == 0 ? "-":fDateTime(params.value) }
         </div>
       )
     },
 
-   
-    
+
+
   ];
+
 
 
   const getCompanyData = async () => {
@@ -145,6 +146,7 @@ function Payment() {
 
   }
 
+ 
 
 
   useEffect(() => {

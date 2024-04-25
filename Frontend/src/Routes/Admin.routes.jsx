@@ -40,10 +40,9 @@ import AddResearcher from '../Layouts/Admin/Researcher/AddResearcher'
 import EditResearcher from '../Layouts/Admin/Researcher/EditResearcher'
 import AllResearcher from '../Layouts/Admin/Researcher/AllResearcher'
 
-
-
-
 import SubAdCompanyInfo from '../Layouts/Admin/SubAdminCompany/SubAdCompanyInfo';
+import Settings from '../Layouts/Comman/Setting_Page/Settings';
+import Companies from '../Layouts/Comman/Company/Companies';
 
 
 
@@ -77,6 +76,8 @@ const Admin_Routing = () => {
                     <Route exact path="/research/add" element={<AddResearcher />} />
                     <Route exact path="/research/edit/:id" element={<EditResearcher />} />
                     <Route exact path="/allresearch" element={<AllResearcher />} />
+                    <Route exact path="/setting" element={<Settings />} />
+                    <Route exact path="/company" element={<Companies />} />
 
                 </Routes>
             </div>

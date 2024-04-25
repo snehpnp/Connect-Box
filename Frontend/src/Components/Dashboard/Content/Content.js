@@ -10,7 +10,6 @@ const Content = ({
   route,
   ...rest
 }) => {
-  // console.log("Page_title", route)
 
   return (
     <div className="content container-fluid ">

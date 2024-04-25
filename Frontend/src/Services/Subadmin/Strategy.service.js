@@ -87,6 +87,117 @@ export async function Get_Strategy_By_Id(data, token) {
 }
 
 
+//Orders From SubAdmin
+export async function getOrders_data(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}orders/data`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+
+}
+
+export async function GetClientsOrderBy_Prefix(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}client/Order`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+//SUBADMIN EMPLOYEE SECTION
+export async function EmployeeData(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}employee/data`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+export async function AddEmployeeBySub(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}add/employee/data`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+
+export async function DeleteEmployee(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}Delete/employee`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+export async function UpdateEmployee(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}employee/update`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+export async function get_Employee_Id(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}employee/edit`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+export async function get_Employee_Status(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}employee/statusUpdate`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+
+
 
 
 

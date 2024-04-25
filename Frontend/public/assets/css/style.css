@@ -5336,12 +5336,14 @@ span.select2-container.select2-container--default.select2-container--open {
     color: #455560;
     border-radius: 4px
 }
+
 #pills-tab .nav-link {
     color: #252525 !important;
     font-size: 12px !important;
     padding: 10px 10px !important;
     border: none !important;
 }
+
 .nav-link {
     color: #888 !important;
     font-size: 16px !important;
@@ -33622,7 +33624,7 @@ img {
 .pricing-block .icon-box {
     position: relative;
     padding: 50px 30px 0;
-    background-color: #7539FF;
+    /* background-color: #7539FF; */
     text-align: center;
 }
 
@@ -33654,7 +33656,7 @@ img {
     height: 100px;
     width: 97px;
     line-height: 91px;
-    border: 5px solid #7539ff;
+    /* border: 5px solid #7539ff; */
     border-radius: 50%;
     font-size: 50px;
     color: #7539ff;

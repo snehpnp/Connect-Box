@@ -134,7 +134,6 @@ const Helpuser = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          // console.log("response", response.data);
           setGetuserdata(response.data);
           setRefresh(!refresh);
         }

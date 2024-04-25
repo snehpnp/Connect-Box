@@ -19,7 +19,7 @@ const FullDataTable = ({
 
   return (
     <>
-      {/* <div style={{ height: "100%", backgroundColor: backgroundColor }}> */}
+
       <DataGrid
         rows={rowsWithIds}
         columns={columns}

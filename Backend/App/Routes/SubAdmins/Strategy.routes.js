@@ -7,7 +7,9 @@ const { AddStragegy, GetOneStragegy, EditStragegy, GetAllStrategy, DeleteStrageg
 
 const { GetDashboardData } = require('../../Controllers/SubAdmins/DashBoardData/DashboardData')
 
+const {Signal_data,getAllSignalByPrefix}=require("../../Controllers/SubAdmins/Order/Order")
 
+const {allEmployeeData,addEmployee,DeleteEmployee,UpdateEmployee,getEmployeeById,UpdateEmployeeStatus} =require("../../Controllers/SubAdmins/Subadmin_Employees/Employees")
 
 // STRATEGY RELETED ROUTES
 router.post('/strategy/add', AddStragegy);
@@ -22,6 +24,20 @@ router.post('/sub/strategy/getall', GetAllSubadminStrategy);
 
 //DashBoard Route
 router.post('/data/dashboard', GetDashboardData);
+
+//Order Releated Routes
+router.post('/orders/data', Signal_data);
+router.post('/client/Order', getAllSignalByPrefix);
+
+
+//Employee Related Routes
+router.post('/employee/data', allEmployeeData);
+router.post('/add/employee/data', addEmployee);
+router.post('/Delete/employee', DeleteEmployee);
+router.post('/employee/update', UpdateEmployee);
+router.post('/employee/edit', getEmployeeById);
+router.post('/employee/statusUpdate', UpdateEmployeeStatus);
+
 
 
 

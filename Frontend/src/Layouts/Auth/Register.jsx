@@ -42,7 +42,6 @@ const SignUp = () => {
                 ReferralCode: values.referral,
             };
 
-            console.log("req :", req)
  
             await dispatch(SignUpUser(req))
                 .unwrap()

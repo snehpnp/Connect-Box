@@ -11,6 +11,8 @@ import { IndianRupee } from 'lucide-react';
 function Payment() {
   const dispatch = useDispatch();
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+  const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
+
 
   const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
   const [selectedRow, setSelectedRow] = useState(null);
@@ -46,7 +48,7 @@ function Payment() {
   };
 
 
-  const columns = [
+  let columns = [
     {
       field: "id",
       headerName: "ID",
@@ -126,6 +128,9 @@ function Payment() {
     },
   ];
 
+  if (subadmin_service_type == 1) {
+    columns = columns.filter(column => column.field !== 'Admin_charge');
+  }
 
   const getCompanyData = async () => {
 
