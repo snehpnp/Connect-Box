@@ -679,7 +679,13 @@ class Users {
           }
         ]);
         // console.log("stg_count", stg_count)
-        totalLicense = stg_count[0].totalAdminCharge;
+
+
+        if (stg_count && stg_count.length > 0 && stg_count[0].totalAdminCharge !== undefined) {
+          totalLicense = stg_count[0].totalAdminCharge; // Assign the totalLicense value if it exists
+        } else {
+          totalLicense = 0
+        }
       }
 
 

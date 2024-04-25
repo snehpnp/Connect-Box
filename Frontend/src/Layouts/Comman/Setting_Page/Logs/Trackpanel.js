@@ -21,7 +21,8 @@ const Trackpanel = () => {
   
 
   const user = JSON.parse(localStorage.getItem("user_details"));
-
+  const userid = JSON.parse(localStorage.getItem("user_details")).user_id
+ 
 
 
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -32,9 +33,11 @@ const Trackpanel = () => {
 
   const handleDropdownSelect = async (selectedActivity) => {
     setSelectedCategory(selectedActivity);
-    await  FindActivity(selectedActivity)
+    const selectedActivityObj = activityData.find(activity => activity.activity === selectedActivity);
+    if (selectedActivityObj) {
+      await FindActivity(selectedActivityObj.activity);
+    }
   };
-
 
 
 
@@ -60,27 +63,33 @@ const Trackpanel = () => {
     {
       field: "activity",
       headerName: "activity",
-      width: 150,
+      width: 100,
       headerClassName: styles.boldHeader,
       renderCell: (params, index) => params.row.id + 1,
     },
     {
-      field: "createdAt",
-      headerName: "Date",
-      width: 180,
+      field: "UserName",
+      headerName: "UserName",
+      width: 120,
       headerClassName: styles.boldHeader,
     },
     {
-      field: "description",
-      headerName: "description",
-      width: 280,
+      field: "maker_role",
+      headerName: "maker_role",
+      width: 180,
       headerClassName: styles.boldHeader,
     },
 
     {
-      field: "role",
-      headerName: "role",
+      field: "message",
+      headerName: "message",
       width: 200,
+      headerClassName: styles.boldHeader,
+    },
+    {
+      field: "createdAt",
+      headerName: "Date",
+      width: 220,
       headerClassName: styles.boldHeader,
     },
   ];
@@ -93,9 +102,6 @@ const Trackpanel = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          // console.log("response", response.data);
-          // console.log("response", response.data[0]._id);
-          FindActivity(response.data[0]._id ,response.data[0].activity)
           setActivityData(response.data);
       
         }
@@ -110,17 +116,17 @@ const Trackpanel = () => {
   }, []);
 
   
-  const FindActivity = async (id , activity) => {
+  const FindActivity = async (activity) => {
 
-    var data = {id:id,category:activity};
-    // console.log("data",data)
+    var data = {id:userid,category:activity};
+   
     await dispatch(findstatus(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          // console.log("response findstatus", response.data);
           setFinddata(response.data)
-          
+        }else{
+          setFinddata([])
         }
       })
       .catch((error) => {
