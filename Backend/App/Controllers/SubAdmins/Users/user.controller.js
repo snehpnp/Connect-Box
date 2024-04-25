@@ -226,7 +226,8 @@ class Users {
           demat_userid: demat_userid,
           Service_Type: Service_Type,
           per_trade_value: per_trade_value,
-          Balance: Balance || 0
+          Balance: Balance || 0,
+
         },
 
       ])
@@ -280,7 +281,7 @@ class Users {
                 const matchedStrategy = Strategies.find(strat => strat.id === data._id.toString());
                 const User_strategy_client = new strategy_client({
                   strategy_id: data.id,
-                  plan_id: 0,
+                  plan_id: 10,
                   user_id: User_id,
                   admin_id: SubadminCheck[0]._id,
                   uniqueUserStrategy: User_id + "_" + data.id,
@@ -486,18 +487,21 @@ class Users {
 
 
 
+            // I USER IF 2 DAYS CLICNT
+            if (license_type == "0") {
+              // console.log("SNEH JAISWAL")
 
-            // LICENSE TABLE ADD USE LICENSE OUR CLIENT
-            // if (license_type == "2") {
-            //   const count_licenses_add = new count_licenses({
-            //     user_id: User_id,
-            //     Balance: Balance,
-            //     admin_id: parent_id,
-            //     Role: "USER"
+              const filter = { _id: User_id };
+              const update = {
+                $set: {
+                  Start_Date: license_type == 0 ? StartDate1 : null,
+                  End_Date: license_type == 0 ? EndDate1 : null
 
-            //   });
-            //   count_licenses_add.save();
-            // }
+                },
+              };
+       
+              const update_Date = await User_model.updateOne(filter, update);
+            }
 
             var toEmail = Email;
             var subjectEmail = "User ID and Password";
@@ -519,7 +523,7 @@ class Users {
             }
 
 
-            res.send({ status: true, msg: "successfully Add!", data: data[0]._id });
+          return res.send({ status: true, msg: "successfully Add!", data: data[0]._id });
 
             // var EmailData = await firstOptPass(email_data);
             // CommonEmail(toEmail, subjectEmail, EmailData);
@@ -756,7 +760,7 @@ class Users {
               _id: data._id,
             });
 
-          
+
 
             // console.log("deleteStrategy",deleteStrategy.acknowledged)
 
@@ -946,7 +950,7 @@ class Users {
               });
             }
 
-           
+
           } else if (req.license_type == "2") {
 
             // IF ADD NEW STRATEGY
@@ -1371,7 +1375,9 @@ class Users {
           multiple_strategy_select: req.multiple_strategy_select,
           Service_Type: req.Service_Type,
           per_trade_value: req.per_trade_value,
-          Balance: req.Balance
+          Balance: req.Balance,
+          Start_Date: existingUsername.license_type != 0 && req.license_type == 0 ? StartDate1 : null,
+          End_Date: existingUsername.license_type != 0 && req.license_type == 0 ? EndDate1 : null
         };
 
 
@@ -1747,6 +1753,7 @@ class Users {
         {
           $addFields: {
             user_id: { $arrayElemAt: ['$userData.UserName', 0] },
+            license_type: { $arrayElemAt: ['$userData.license_type', 0] },
             strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] }
           }
         },
@@ -1754,6 +1761,7 @@ class Users {
           $project: {
             _id: 1,
             user_id: 1,
+            license_type:1,
             strategy_id: 1,
             ActiveStatus: 1,
             plan_id: 1,
