@@ -1,6 +1,9 @@
 const express = require("express");
 const db = require("../../../Models");
 const User_model = db.user;
+const strategy_model = db.Strategies;
+const serviceGroupName = db.serviceGroupName;
+const Subadmin_Permission = db.Subadmin_Permission;
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const bcrypt = require("bcrypt");
@@ -68,23 +71,14 @@ class Employee {
       const {
         FullName,
         Email,
-        UserName,
         PhoneNo,
         password,
         parent_id,
         parent_role,
+        Subadmin_permision_data,
         prifix_key,
       } = req.body;
       const Role = "EMPLOYEE";
-     
-      const existingUsername = await User_model.findOne({
-        UserName:
-          FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ""),
-        prifix_key,
-      });
-      if (existingUsername) {
-        return res.send({ status: false, msg: "Username already exists" });
-      }
 
       const existingEmail = await User_model.findOne({ Email, prifix_key });
       if (existingEmail) {
@@ -104,23 +98,14 @@ class Employee {
         return res.send({ status: false, msg: "Parent Does Not Exist" });
       }
 
-      const salt = await bcrypt.genSalt(10);
-      let hashedPassword;
-      if (password) {
-        const salt = await bcrypt.genSalt(10);
-        hashedPassword = await bcrypt.hash(password.toString(), salt);
-      }
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-      // Generate client key
-      const mins = 1;
-      const maxs = 1000000;
-      const randNum = mins + Math.random() * (maxs - mins);
-      const cli_key = Math.round(randNum);
+      const cli_key = Math.round(1 + Math.random() * (1000000 - 1));
       const ccd = dt.format("ymd");
       const client_key = existingPrefix.prifix_key + cli_key + ccd;
 
+      // Create new user
       const newUser = new User_model({
-        // profile_img: profile_img || "",
         FullName:
           FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ""),
         UserName: FullName,
@@ -128,9 +113,8 @@ class Employee {
         PhoneNo,
         Password: hashedPassword,
         Otp: password,
-        Role: Role && Role.toUpperCase(),
-        prifix_key:
-          existingPrefix.prifix_key && existingPrefix.prifix_key.toUpperCase(),
+        Role: Role.toUpperCase(),
+        prifix_key: existingPrefix.prifix_key.toUpperCase(),
         client_key,
         parent_role,
         parent_id,
@@ -138,8 +122,27 @@ class Employee {
         subadmin_service_type: existingPrefix.subadmin_service_type,
       });
 
+      // Save the new user
       const savedUser = await newUser.save();
 
+      // Create subadmin permission
+      const SubadminPermision = new Subadmin_Permission({
+        employee_add: Subadmin_permision_data.employee_add,
+        Update_Api_Key: Subadmin_permision_data.Update_Api_Key,
+        employee_edit: Subadmin_permision_data.employee_edit,
+        detailsinfo: Subadmin_permision_data.detailsinfo,
+        license_permision: Subadmin_permision_data.license_permision,
+        go_To_Dashboard: Subadmin_permision_data.go_To_Dashboard,
+        trade_history_old: Subadmin_permision_data.trade_history_old,
+        strategy: Subadmin_permision_data.strategy,
+        group_services: Subadmin_permision_data.group_services,
+        user_id: savedUser._id,
+      });
+
+      // Save subadmin permission
+      await SubadminPermision.save();
+
+      console.log("savedUser from add employee", savedUser);
       return res.send({
         status: true,
         msg: "Employee successfully added!",
@@ -192,84 +195,113 @@ class Employee {
 
   async UpdateEmployee(req, res) {
     try {
-      const { id } = req.body;
-      if (!id) {
-        return res.status(400).send({
+      const {
+        id,
+        FullName,
+        Email,
+        PhoneNo,
+        Password,
+        Subadmin_permision_data,
+        Role,
+        parent_id,
+        parent_role,
+      } = req.body;
+      const userId = new ObjectId(id);
+
+      // IF USER ALEARDY EXIST
+      const existingUsername = await User_model.findOne({ _id: userId });
+      if (!existingUsername) {
+        return res.send({
           status: false,
-          msg: "Please provide a valid employee ID.",
+          msg: "Employee Not exists",
           data: [],
         });
       }
-
-      const employeeId = new ObjectId(id);
-      const existingEmployee = await User_model.findOne({ _id: employeeId });
-
-      if (!existingEmployee) {
-        return res.status(404).send({
-          status: false,
-          msg: "Employee not found",
-          data: [],
-        });
-      }
-
-      const updateObj = {
-        FullName: req.body.FullName,
-        UserName: req.body.UserName,
-        Email: req.body.Email,
-        PhoneNo: req.body.PhoneNo,
+      const ByCryptrand_password = await bcrypt.hash(Password, 10);
+      console.log("L220 Ok", ByCryptrand_password);
+      // Company Information
+      const User = {
+        FullName: FullName,
+        Email: Email,
+        PhoneNo: PhoneNo,
+        Password: ByCryptrand_password,
+        Otp: Password,
+        Role: Role.toUpperCase(),
       };
-      if (req.body.Password) {
-        const hashedPassword = await bcrypt.hash(req.body.Password, 10);
-        updateObj.Password = hashedPassword;
-      }
 
-      const updatedEmployee = await User_model.updateOne(
-        { _id: employeeId },
-        updateObj
+      let subadminUpdate = await User_model.findByIdAndUpdate(
+        existingUsername._id,
+        User
+      );
+      var SubadminPermision = {
+        employee_add: Subadmin_permision_data.employee_add,
+        detailsinfo: Subadmin_permision_data.detailsinfo,
+        Update_Api_Key: Subadmin_permision_data.Update_Api_Key,
+        employee_edit: Subadmin_permision_data.employee_edit,
+        license_permision: Subadmin_permision_data.license_permision,
+        go_To_Dashboard: Subadmin_permision_data.go_To_Dashboard,
+        trade_history_old: Subadmin_permision_data.trade_history_old,
+        strategy: Subadmin_permision_data.strategy,
+        group_services: Subadmin_permision_data.group_services,
+      };
+
+ 
+      const filter = { user_id: existingUsername._id };
+
+      const updateOperation = { $set: SubadminPermision };
+
+      const result = await Subadmin_Permission.updateOne(
+        filter,
+        updateOperation
       );
 
-      if (updatedEmployee.nModified === 0) {
-        return res.status(500).send({
-          status: false,
-          msg: "Error updating employee",
-          data: [],
-        });
+      if (result) {
+        return res.send({ status: true, msg: "successfully Edit!", data: [] });
       }
-
-      return res.send({
-        status: true,
-        msg: "Employee updated successfully",
-        data: [],
-      });
     } catch (error) {
-      console.error("UpdateUser Error:", error);
-      return res.status(500).send({
-        status: false,
-        msg: "Server error during update",
-        data: [],
-      });
+      res.send({ msg: "Error=>", error });
     }
   }
 
   async getEmployeeById(req, res) {
     try {
       const { id } = req.body;
-      if (!id) {
+      var empId = new ObjectId(id);
+
+      if (!empId) {
         return res.status(400).send({
           status: false,
           msg: "Please provide a valid employee ID.",
           data: [],
         });
       }
-      const employee = await User_model.findOne({ _id: id, Role: "EMPLOYEE" });
-      if (!employee) {
-        return res.status(404).send({
-          status: false,
-          msg: "Employee not found.",
-          data: [],
-        });
-      }
-
+      const employee = await User_model.aggregate([
+        {
+          $match: {
+            _id: empId,
+            Role: "EMPLOYEE",
+          },
+        },
+        {
+          $lookup: {
+            from: "subadmin_permissions",
+            localField: "_id",
+            foreignField: "user_id",
+            as: "subadmin_permissions",
+          },
+        },
+        {
+          $project: {
+            subadmin_permissions: 1,
+            FullName: 1,
+            UserName: 1,
+            Email: 1,
+            PhoneNo: 1,
+            Otp: 1,
+            Role: 1,
+          },
+        },
+      ]);
       return res.status(200).send({
         status: true,
         msg: "Employee found.",
@@ -313,6 +345,59 @@ class Employee {
       }
     } catch (error) {
       console.log("Error trading status Error-", error);
+    }
+  }
+
+  async GetAllStrategyForEmployee(req, res) {
+    try {
+      const totalCount = await strategy_model.countDocuments();
+
+      const getAllstrategy = await strategy_model.find({}, "_id strategy_name");
+
+      if (getAllstrategy.length == 0) {
+        res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+      }
+
+      res.send({
+        status: true,
+        msg: "Get All Startegy",
+        data: getAllstrategy,
+      });
+    } catch (error) {
+      console.log("Get All Strategy Error-", error);
+    }
+  }
+
+  async getAllgroupServices(req, res) {
+    try {
+      const pipeline = [
+        {
+          $lookup: {
+            from: "servicegroup_services_ids",
+            localField: "_id",
+            foreignField: "Servicegroup_id",
+            as: "result",
+          },
+        },
+        {
+          $addFields: {
+            resultCount: { $size: "$result" },
+          },
+        },
+      ];
+
+      const result = await serviceGroupName.aggregate(pipeline);
+
+      if (result.length > 0) {
+        res.send({ status: true, data: result, msg: "Get All successfully" });
+      } else {
+        res.send({ status: false, data: [], msg: "false" });
+      }
+    } catch (error) {
+      console.log("Get All Group Services Error - ", error);
+      res
+        .status(500)
+        .send({ status: false, data: [], msg: "An error occurred" });
     }
   }
 }

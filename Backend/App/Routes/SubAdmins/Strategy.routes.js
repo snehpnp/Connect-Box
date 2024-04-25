@@ -9,7 +9,7 @@ const { GetDashboardData } = require('../../Controllers/SubAdmins/DashBoardData/
 
 const {Signal_data,getAllSignalByPrefix}=require("../../Controllers/SubAdmins/Order/Order")
 
-const {allEmployeeData,addEmployee,DeleteEmployee,UpdateEmployee,getEmployeeById,UpdateEmployeeStatus} =require("../../Controllers/SubAdmins/Subadmin_Employees/Employees")
+const {allEmployeeData,addEmployee,DeleteEmployee,UpdateEmployee,getEmployeeById,UpdateEmployeeStatus,GetAllStrategyForEmployee,getAllgroupServices} =require("../../Controllers/SubAdmins/Subadmin_Employees/Employees")
 
 // STRATEGY RELETED ROUTES
 router.post('/strategy/add', AddStragegy);
@@ -37,6 +37,10 @@ router.post('/Delete/employee', DeleteEmployee);
 router.post('/employee/update', UpdateEmployee);
 router.post('/employee/edit', getEmployeeById);
 router.post('/employee/statusUpdate', UpdateEmployeeStatus);
+router.post('/get/strategy', GetAllStrategyForEmployee);
+router.post('/get/allgroupServices', getAllgroupServices);
+
+
 
 
 

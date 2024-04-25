@@ -397,7 +397,7 @@ export default function AllEmployees() {
                             className="fa fa-plus-circle me-2"
                             aria-hidden="true"
                           />
-                          Add Users
+                          Add Employees
                         </Link>
                       </li>
                     </ul>
