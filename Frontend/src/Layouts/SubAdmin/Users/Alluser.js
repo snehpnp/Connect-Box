@@ -46,7 +46,7 @@ export default function AllUsers() {
   const [modalId, setmodalId] = useState('');
 
   const [getAllUsers, setAllUsers] = useState({
-    loading: false,
+    loading: true,
     data: [],
     data1: [],
   });
@@ -227,8 +227,8 @@ export default function AllUsers() {
 
   const handleEdit = async (row) => {
     navigate('/subadmin/user/edit/' + row._id);
-   
-};
+
+  };
 
 
 
@@ -240,40 +240,38 @@ export default function AllUsers() {
     const user_active_status = event.target.checked ? 1 : 0;
 
     const result = await Swal.fire({
-        title: "Do you want to save the changes?",
-        showCancelButton: true,
-        confirmButtonText: "Save",
-        cancelButtonText: "Cancel",
-        timer: 2000,
-        allowOutsideClick: false, // Prevents closing modal by clicking outside or pressing Esc key
+      title: "Do you want to save the changes?",
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      cancelButtonText: "Cancel",
+      allowOutsideClick: false, // Prevents closing modal by clicking outside or pressing Esc key
     });
 
     if (result.isConfirmed) {
-        try {
-            const response = await dispatch(Show_Status({ id, user_active_status })).unwrap();
-            if (response.status) {
-                Swal.fire({
-                    title: "Saved!",
-                    icon: "success",
-                    timer: 1000,
-                    
-                    timerProgressBar:true
-                });
-                setTimeout(() => {
-                    Swal.close(); // Close the modal
-                    setrefresh(!refresh);
-                }, 1000);
-            } else {
-                setrefresh(!refresh);
-            }
-        } catch (error) {
-            console.error("Error", error);
-            Swal.fire("Error", "There was an error processing your request.", "error");
+      try {
+        const response = await dispatch(Show_Status({ id, user_active_status })).unwrap();
+        if (response.status) {
+          Swal.fire({
+            title: "Saved!",
+            icon: "success",
+            timer: 1000,
+            timerProgressBar: true
+          });
+          setTimeout(() => {
+            Swal.close(); // Close the modal
+            setrefresh(!refresh);
+          }, 1000);
+        } else {
+          setrefresh(!refresh);
         }
+      } catch (error) {
+        console.error("Error", error);
+        Swal.fire("Error", "There was an error processing your request.", "error");
+      }
     } else if (result.dismiss === Swal.DismissReason.cancel) {
-        window.location.reload();
+      window.location.reload();
     }
-};
+  };
 
 
 
@@ -412,15 +410,15 @@ export default function AllUsers() {
           })
 
           setAllUsers({
-            loading: true,
+            loading: false,
             data: searchInput ? filterData : formattedData,
-          
+
           });
 
         } else {
 
           setAllUsers({
-            loading: true,
+            loading: false,
             data: [],
             data1: [],
           });
@@ -430,7 +428,7 @@ export default function AllUsers() {
         console.log("Error", error);
 
         setAllUsers({
-          loading: false,
+          loading: true,
           data: [],
           data1: [],
         });
@@ -440,12 +438,12 @@ export default function AllUsers() {
 
   useEffect(() => {
     getUsersData();
-  }, [refresh, searchInput ]);
+  }, [refresh, searchInput]);
 
 
   return (
     <>
-      {getAllUsers.loading ? (
+      {!getAllUsers.loading ? (
         <>
           <div className="content container-fluid" data-aos="fade-left">
             <div className="page-header">
@@ -519,7 +517,7 @@ export default function AllUsers() {
               </div>
             </div>
 
-       <FullDataTable
+            <FullDataTable
               styles={styles}
               label={label}
               columns={columns}
@@ -530,11 +528,6 @@ export default function AllUsers() {
       ) : (
         <Loader />
       )}
-
-
-
-
-
 
     </>
   );

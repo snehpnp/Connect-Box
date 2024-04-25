@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable'
-import { Get_All_Researcher , Update_Balance, Delete_Researcher } from '../../../ReduxStore/Slice/Researcher/ResearcherSlice'
+import { Get_All_Researcher, Update_Balance, Delete_Researcher } from '../../../ReduxStore/Slice/Researcher/ResearcherSlice'
 import { useDispatch } from "react-redux";
 import { Link } from 'react-router-dom';
 import IconButton from "@mui/material/IconButton";
@@ -9,6 +9,7 @@ import { Trash2, IndianRupee } from 'lucide-react'
 import ExportToExcel from '../../../Utils/ExportCSV'
 import { Show_Status } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import Swal from 'sweetalert2'
+import Loader from '../../../Utils/Loader';
 
 
 
@@ -16,7 +17,7 @@ const AllResearcher = () => {
   const dispatch = useDispatch();
 
   const [allResearcher, setAllResearcher] = useState({
-    loading: false,
+    loading: true,
     data: [],
     data1: []
   })
@@ -27,7 +28,7 @@ const AllResearcher = () => {
   const [updateBalance, setUpdateBalance] = useState([])
   const [inputBalance, setInputBalance] = useState('0')
 
- 
+
   const user_id = JSON.parse(localStorage.getItem('user_details')).user_id
 
 
@@ -102,7 +103,7 @@ const AllResearcher = () => {
         <div>
           <span className="text-success-light" onClick={(e) => handleOnClick(params.row)}>
             <IndianRupee style={{ height: "19px" }} />
-            {params.value || '-'}
+            {"+"+params.value || '-'}
           </span>
         </div>
       ),
@@ -163,7 +164,7 @@ const AllResearcher = () => {
 
   }
 
-  
+
   const handleDelete = async (row) => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -174,7 +175,7 @@ const AllResearcher = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!"
     });
-  
+
     if (result.isConfirmed) {
       let data = { id: row._id }; // Assuming `row._id` holds the ID of the record to delete
       try {
@@ -187,7 +188,7 @@ const AllResearcher = () => {
             timer: 1000,
             timerProgressBar: true,
           });
-          
+
           setrefresh(!refresh);
         }
       } catch (error) {
@@ -200,49 +201,51 @@ const AllResearcher = () => {
       }
     }
   };
-  
+
 
   const handleOnClick = (row) => {
-    
-    setShowBalanceModal(true) 
-    setUpdateBalance({_id:row._id, parent_id:row.parent_id})                   
+
+    setShowBalanceModal(true)
+    setUpdateBalance({ _id: row._id, parent_id: row.parent_id })
   }
 
   const handleSwitchChange = async (event, id) => {
-    const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
+    const user_active_status = event.target.checked ? 1 : 0;
 
+    const result = await Swal.fire({
+      title: "Do you want to save the changes?",
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      cancelButtonText: "Cancel",
+      allowOutsideClick: false, // Prevents closing modal by clicking outside or pressing Esc key
+    });
 
-    await dispatch(Show_Status({ id, user_active_status }))
-      .unwrap()
-      .then(async (response) => {
-
+    if (result.isConfirmed) {
+      try {
+        const response = await dispatch(Show_Status({ id, user_active_status })).unwrap();
         if (response.status) {
           Swal.fire({
-            title: "Status Updated !",
-            text: "status updated successfully",
+            title: "Saved!",
             icon: "success",
             timer: 1000,
-            timerProgressBar: true,
+            timerProgressBar: true
           });
-          setrefresh(!refresh)
-
+          setTimeout(() => {
+            Swal.close(); // Close the modal
+            setrefresh(!refresh);
+          }, 1000);
         } else {
-          Swal.fire({
-            title: "Error !",
-            icon: "error",
-            timer: 1000,
-            timerProgressBar: true,
-          });
-
-
+          setrefresh(!refresh);
         }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-
-      });
-
+      } catch (error) {
+        console.error("Error", error);
+        Swal.fire("Error", "There was an error processing your request.", "error");
+      }
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      window.location.reload();
+    }
   };
+
 
   const GetAllResearcher = async () => {
     let data = { id: user_id };
@@ -262,7 +265,7 @@ const AllResearcher = () => {
           return searchMatch;
         })
         setAllResearcher({
-          loading: true,
+          loading: false,
           data: inputSearch ? filterData : response.data,
           data1: [
             { name: "Total Researcher", count: response.count.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
@@ -316,44 +319,44 @@ const AllResearcher = () => {
     setInputSearch("")
   }
 
-  
 
-  const handlesubmit=async()=>{
 
-     
-    let data={
+  const handlesubmit = async () => {
+
+
+    let data = {
       _id: updateBalance._id,
-      parent_id : updateBalance.parent_id,
+      parent_id: updateBalance.parent_id,
       Balance: inputBalance
     }
     await dispatch(Update_Balance(data))
-    .unwrap()
-    .then((response) => {
-      if (response.status) {
+      .unwrap()
+      .then((response) => {
+        if (response.status) {
+          setShowBalanceModal(false)
+          setInputBalance('0')
+          Swal.fire({
+            title: "Status Updated!",
+            text: "Status updated successfully",
+            icon: "success",
+            timer: 1000,
+            timerProgressBar: true,
+          });
+          setrefresh(!refresh);
+        }
+      })
+      .catch((error) => {
         setShowBalanceModal(false)
         setInputBalance('0')
+        console.error("Error updating balance:", error);
         Swal.fire({
-          title: "Status Updated!",
-          text: "Status updated successfully",
-          icon: "success",
-          timer: 1000,
-          timerProgressBar: true,
+          title: "Error!",
+          text: "Failed to update status",
+          icon: "error",
         });
-        setrefresh(!refresh);
-      }
-    })
-    .catch((error) => {
-      setShowBalanceModal(false)
-      setInputBalance('0')
-      console.error("Error updating balance:", error);
-      Swal.fire({
-        title: "Error!",
-        text: "Failed to update status",
-        icon: "error",
       });
-    });
   }
-  
+
 
   return (
     <>
@@ -449,11 +452,16 @@ const AllResearcher = () => {
               ))}
           </div>
         </div>
-        <FullDataTable
-          styles={styles}
-          columns={columns}
-          rows={allResearcher.data}
-        />
+        {
+          allResearcher.loading ? <Loader /> :
+            <FullDataTable
+              styles={styles}
+              columns={columns}
+              rows={allResearcher.data}
+            />
+        }
+
+
       </div>
 
 
@@ -470,7 +478,7 @@ const AllResearcher = () => {
                   className="btn-close"
                   data-bs-dismiss="modal"
                   aria-label="Close"
-                  onClick={(e) => {setShowBalanceModal(false)  ;  setInputBalance('0')}}
+                  onClick={(e) => { setShowBalanceModal(false); setInputBalance('0') }}
                 ></button>
               </div>
               <div>
@@ -490,7 +498,7 @@ const AllResearcher = () => {
                             setInputBalance(e.target.value)
                           }}
                           value={inputBalance}
-                         
+
                         />
                       </div>
                     </div>
