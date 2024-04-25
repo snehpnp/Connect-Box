@@ -120,7 +120,7 @@ const EditClient = () => {
    
     {
       name: "fullName",
-      label: "FullName",
+      label: "Full Name",
       type: "text",
       label_size: 12,
       col_size: 6,
@@ -152,7 +152,7 @@ const EditClient = () => {
     },
     {
       name: "prifix_key",
-      label: "Prifix Key",
+      label: "Prefix Key",
       type: "text",
       label_size: 12,
       col_size: 6,
@@ -160,7 +160,7 @@ const EditClient = () => {
     },
     {
       name: "subadmin_servic_type",
-      label: "Subadmin Servic Type",
+      label: "Subadmin Service Type",
       type: "select",
       options: [
         { label: "Per Trade", value: "1" },

@@ -95,7 +95,7 @@ class strategy {
       ) {
         return res.send({
           status: false,
-          msg: "Please Enter Strategy starting 3 leter is your prifix letter",
+          msg: "Please Enter Strategy starting 3 leter is your Prefix Key letter",
           data: [],
         });
       }
@@ -239,7 +239,7 @@ class strategy {
         ) {
           return res.send({
             status: false,
-            msg: "Please Enter Strategy starting 3 leter is your prifix letter",
+            msg: "Please Enter Strategy starting 3 leter is your priPrefix Key fix letter",
             data: [],
           });
         }

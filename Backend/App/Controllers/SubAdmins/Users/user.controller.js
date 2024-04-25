@@ -186,7 +186,7 @@ class Users {
       if (!SubadminCheck[0].prifix_key || SubadminCheck[0].prifix_key == "" || SubadminCheck[0].prifix_key == null) {
         return res.send({
           status: false,
-          msg: "prifix Key not exist.",
+          msg: "Prefix Key Key not exist.",
           data: [],
         });
       }

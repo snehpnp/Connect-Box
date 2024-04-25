@@ -151,7 +151,7 @@ const AddResearcher = () => {
     },
     {
       name: "prifix_key",
-      label: "Prifix key",
+      label: "Prefix Key",
       type: "text2",
       label_size: 12,
       col_size: 6,

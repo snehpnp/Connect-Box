@@ -204,7 +204,7 @@ const AddClient = () => {
     },
     {
       name: "prifix_key",
-      label: "Prifix Key",
+      label: "Prefix Key",
       type: "text2",
       label_size: 12,
       col_size: 6,
