@@ -117,14 +117,7 @@ const EditClient = () => {
       col_size: 12,
       disable: false,
     },
-    {
-      name: "username",
-      label: "Username",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: true,
-    },
+   
     {
       name: "fullName",
       label: "FullName",
@@ -132,6 +125,14 @@ const EditClient = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
+    },
+    {
+      name: "username",
+      label: "Username",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: true,
     },
     {
       name: "email",
@@ -143,7 +144,7 @@ const EditClient = () => {
     },
     {
       name: "mobile",
-      label: "Mobile",
+      label: "Phone Number",
       type: "text",
       label_size: 12,
       col_size: 6,

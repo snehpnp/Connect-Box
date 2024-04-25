@@ -74,9 +74,9 @@ const cardsData = [
   formatCardData("Total Subadmins", Totalcount, calculatePercentage(Totalcount, Totalcount)),
   formatCardData("Active Subadmins", TotalActivecount, calculatePercentage(TotalActivecount, Totalcount)),
   formatCardData("Inactive Subadmins", TotalInActivecount, calculatePercentage(TotalInActivecount, Totalcount)),
-  formatCardData("Total Users", TotalUsercount, calculatePercentage(TotalUsercount, TotalUsercount)),
-  formatCardData("Active Users", TotalActiveUsercount, calculatePercentage(TotalActiveUsercount, TotalUsercount)),
-  formatCardData("Inactive Users", TotalInActiveUsercount, calculatePercentage(TotalInActiveUsercount, TotalUsercount)),
+  formatCardData("Total Researcher", TotalUsercount, calculatePercentage(TotalUsercount, TotalUsercount)),
+  formatCardData("Active Researcher", TotalActiveUsercount, calculatePercentage(TotalActiveUsercount, TotalUsercount)),
+  formatCardData("Inactive Researcher", TotalInActiveUsercount, calculatePercentage(TotalInActiveUsercount, TotalUsercount)),
 ];
 
 
@@ -85,7 +85,6 @@ const cardsData = [
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          toast.success(response.msg);
           setAdminData(response.data);
         } else {
           toast.error(response.msg);
@@ -190,7 +189,7 @@ const cardsData = [
                         <div className="dash-widget-header ">
 
                           <span
-                            className={`dash-widget-icon ${data.title === 'Active Subadmins' || data.title === 'Active Users' ? "bg-success" : ''} ${data.progressBarClass} `}
+                            className={`dash-widget-icon ${data.title === 'Active Subadmins' || data.title === 'Active Researcher' ? "bg-success" : ''} ${data.progressBarClass} `}
                           >
 
                             <i className={`${data.iconClass}`} id="animated" />

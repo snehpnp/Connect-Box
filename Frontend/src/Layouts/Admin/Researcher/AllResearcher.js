@@ -430,7 +430,7 @@ const AllResearcher = () => {
           </div>
         </div>
 
-        <div className="super-admin-list-head">
+        {/* <div className="super-admin-list-head">
           <div className="row">
             {allResearcher &&
               allResearcher.data1.map((data, index) => (
@@ -451,7 +451,9 @@ const AllResearcher = () => {
                 </div>
               ))}
           </div>
-        </div>
+        </div> */}
+
+        
         {
           allResearcher.loading ? <Loader /> :
             <FullDataTable

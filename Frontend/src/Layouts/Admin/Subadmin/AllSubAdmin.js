@@ -426,7 +426,7 @@ export default function Help() {
               </div>
             </div>
 
-            <div className="super-admin-list-head">
+            {/* <div className="super-admin-list-head">
               <div className="row">
                 {getAllSubadmins &&
                   getAllSubadmins.data1.map((data, index) => (
@@ -447,7 +447,7 @@ export default function Help() {
                     </div>
                   ))}
               </div>
-            </div>
+            </div> */}
 
             <FullDataTable
               styles={styles}

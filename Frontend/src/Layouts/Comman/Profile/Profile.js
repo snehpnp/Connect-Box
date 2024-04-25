@@ -344,7 +344,7 @@ const Profile = () => {
                         </li>
                         <li className="list-inline-item">
                           <i className="far fa-calendar-alt" />{" "}
-                          <span>{fDate(item.DOB)}</span>
+                          <span>{fDate(item.DOB || "")}</span>
                         </li>
                       </ul>
                     );
@@ -567,7 +567,7 @@ const Profile = () => {
 
                             <li className="pt-2 pb-0">
                               <h6>DOB</h6>
-                              <li> {fDate(item.DOB)} </li>
+                              <li> {fDate(item.DOB || '')} </li>
                             </li>
                             <br />
 
