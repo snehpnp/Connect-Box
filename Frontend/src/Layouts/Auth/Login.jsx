@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
 import Modal from '../../Components/Dashboard/Models/Model'
 import OtpInput from "react-otp-input";
-import Lodding from '../../Utils/Loader';
+import {ipAddress} from '../../Utils/Ipaddress';
 
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
@@ -18,11 +18,9 @@ function Login() {
   const navigate = useNavigate()
   var theme_mode = localStorage.getItem('theme_mode')
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [ip, setIp] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-
   const [typeOtp, setTypeOtp] = useState("");
-
   const [getData, SetData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -99,6 +97,7 @@ function Login() {
     let req = {
       Email: email,
       Password: password,
+      ip:ip,
       device: "WEB",
     };
 
@@ -137,7 +136,23 @@ function Login() {
 
 
 
+  useEffect(() => {
+    const fetchIP = async () => {
+        try {
+            const ip = await ipAddress();
+            setIp(ip);
+        } catch (error) {
+            console.error('Failed to fetch IP address:', error);
+        }
+    };
 
+    fetchIP();
+
+    // Clean up function
+    return () => {
+     
+    };
+}, []);
   return (
 
     <div >
@@ -150,7 +165,7 @@ function Login() {
               <div className='row'>
                 <div className='col-md-6 border-right'>
                   <div className='login-left '>
-                     
+                  <p>IP Address: {ip}</p>
                   {/* <h1>Login</h1>
                   <p className="account-subtitle">Access to our dashboard</p> */}
                   <img src="/assets/img/gif/login.gif" className='login-light-img'></img>

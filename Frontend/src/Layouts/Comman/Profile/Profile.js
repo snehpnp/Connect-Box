@@ -97,7 +97,7 @@ const Profile = () => {
     "wolf (1).png",
   ];
 
- 
+
 
   const handleAvatarClick = async (avatarUrl) => {
     try {
@@ -603,14 +603,19 @@ const Profile = () => {
                           .filter((item) => isToday(new Date(item.createdAt)))
                           .map((item, index) => (
                             <li key={index} className="feed-item">
-                              <div className="feed-date">
-                                {fDateTime(item.createdAt)}
+                              <div className="feed-date d-flex">
+                                <span className="feed-text">{fDateTime(item.createdAt)}</span> 
+
+                                <span className="feed-text  justify-content-end">
+                                  <a href="#" style={{ color: "blue" }}>{item.system_ip}</a>
+                                </span>
                               </div>
                               <span className="feed-text">
-                                <a style={{ color: "blue" }}>{item.role}</a>{" "}
+                                <a href="#" style={{ color: "blue" }}>{item.role}</a>{" "}
                                 {item.trading_status}
                               </span>
                             </li>
+
                           ))}
                       </ul>
                     </div>

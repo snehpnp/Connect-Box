@@ -18,7 +18,7 @@ class Auth {
     // Login User
     async login(req, res) {
         try {
-            const { Email, Password, device } = req.body;
+            const { Email, Password, device,ip } = req.body;
             // IF Login Time Email CHECK
 
 
@@ -104,6 +104,7 @@ class Auth {
                     login_status: "Panel On",
                     role: EmailCheck.Role,
                     device: "WEB",
+                    system_ip:ip
 
                 })
                 await user_login.save();
