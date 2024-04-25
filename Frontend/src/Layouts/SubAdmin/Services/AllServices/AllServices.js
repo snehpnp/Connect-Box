@@ -125,7 +125,6 @@ const ServicesList = () => {
 
           })
 
-          console.log("filterData :", filterData)
 
 
           setAllServices({

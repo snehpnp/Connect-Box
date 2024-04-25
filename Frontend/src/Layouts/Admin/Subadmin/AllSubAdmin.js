@@ -17,6 +17,8 @@ import {
 } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
+import Swal from 'sweetalert2';
+
 
 
 
@@ -120,7 +122,7 @@ export default function Help() {
         <div onClick={() => { setmodal(true); setInitialRowData(params.row); }}>
           <span className="text-success-light">
             <IndianRupee style={{ height: "19px" }} />
-            {params.value || '-'}
+            {"+"+params.value || '-'}
           </span>
         </div>
       ),
@@ -180,29 +182,45 @@ export default function Help() {
 
 
 
+
   const handleSwitchChange = async (event, id) => {
-    const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
+    const user_active_status = event.target.checked ? 1 : 0;
 
+    const result = await Swal.fire({
+      title: "Do you want to save the changes?",
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      cancelButtonText: "Cancel",
+      allowOutsideClick: false, // Prevents closing modal by clicking outside or pressing Esc key
+    });
 
-    await dispatch(Show_Status({ id, user_active_status }))
-      .unwrap()
-      .then(async (response) => {
-
+    if (result.isConfirmed) {
+      try {
+        const response = await dispatch(Show_Status({ id, user_active_status })).unwrap();
         if (response.status) {
-          toast.success(response.msg);
-          setrefresh(!refresh)
-
+          Swal.fire({
+            title: "Saved!",
+            icon: "success",
+            timer: 1000,
+            timerProgressBar: true
+          });
+          setTimeout(() => {
+            Swal.close(); // Close the modal
+            setrefresh(!refresh);
+          }, 1000);
         } else {
-          toast.error(response.msg);
-
+          setrefresh(!refresh);
         }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-
-      });
-
+      } catch (error) {
+        console.error("Error", error);
+        Swal.fire("Error", "There was an error processing your request.", "error");
+      }
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      window.location.reload();
+    }
   };
+
+
 
 
   const handleSubmit = async () => {
@@ -281,7 +299,7 @@ export default function Help() {
 
         } else {
           setAllSubadmins({
-            loading: false,
+            loading: true,
             data: [],
             data1: [],
           });
@@ -290,7 +308,7 @@ export default function Help() {
       .catch((error) => {
         console.log("Error", error);
         setAllSubadmins({
-          loading: false,
+          loading: true,
           data: [],
         });
       });
@@ -444,35 +462,59 @@ export default function Help() {
       )}
 
 
-      {
-        modal && (
-          <div className="modal custom-modal d-block" data-aos="fade-down">
-            <div className="modal-dialog modal-dialog-centered modal-md">
-              <div className="modal-content">
-                <div className="modal-header border-0 pb-0">
-                  <div className="form-header modal-header-title text-start mb-0">
-                    <h4 className="mb-0">Update</h4>
-                  </div>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                    onClick={() => setmodal(false)}
-                  ></button>
+      {modal && (
+        <div className="modal custom-modal d-block" id="add_vendor" role="dialog">
+          <div className="modal-dialog modal-dialog-centered modal-md">
+            <div className="modal-content">
+              <div className="modal-header border-0 pb-0">
+                <div className="form-header modal-header-title text-start mb-0">
+                  <h4 className="mb-0">Add Fund</h4>
                 </div>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  onClick={() => setmodal(false)}
+                ></button>
+              </div>
+              <div>
                 <div className="modal-body">
-                  <input
-                    type="number"
-                    value={balanceValue}
-                    onChange={(e) => setBalanceValue(e.target.value)}
-                    placeholder="Enter Balance You want to add"
-                  />
+                  <div className="row">
+                    <div className="col-lg-12 col-sm-12">
+                      <div className="input-block mb-3">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Fund"
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            const newValue = value.replace(/\D/g, '');
+                            e.target.value = newValue;
+                            setBalanceValue(e.target.value)
+                          }}
+                          value={balanceValue}
+
+
+                        />
+                      </div>
+                    </div>
+
+                  </div>
                 </div>
                 <div className="modal-footer">
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    data-bs-dismiss="modal"
+                    className="btn btn-back cancel-btn me-2"
+                    onClick={() => setmodal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    data-bs-dismiss="modal"
+                    className="btn btn-primary paid-continue-btn"
                     onClick={handleSubmit}
                   >
                     Submit
@@ -481,8 +523,9 @@ export default function Help() {
               </div>
             </div>
           </div>
-        )
+        </div>
 
+      )
 
       }
     </>

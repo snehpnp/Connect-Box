@@ -45,7 +45,8 @@ const clientServiceSchema = Schema({
     },
     uniqueUserService: {
         type: String,
-        default: null
+        default: null,
+        unique: true,
     },
 }, {
 

@@ -1,18 +1,15 @@
 
 
-import { useDispatch } from "react-redux";
-import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
-
-import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
-import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
 import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
-import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { GetOneUser, Get_All_Broker, UpdateUsers } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
-import Loader from '../../../Utils/Loader';
-
-import { useFormik } from 'formik';
+import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
+import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Loader from '../../../Utils/Loader';
+import { useDispatch } from "react-redux";
+import { useFormik } from 'formik';
 import Swal from 'sweetalert2';
 
 
@@ -29,9 +26,15 @@ const AddClient = () => {
 
 
 
-  const [refresh, setrefresh] = useState(false)
+  const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
 
   const [getOneUsers, setOneUsers] = useState([]);
+  const [stgDiseble, setStgDiseble] = useState([]);
+  const [getAllBroker, setAllBroker] = useState([]);
+
+
+
 
 
 
@@ -40,12 +43,11 @@ const AddClient = () => {
     loading: true,
     data: [],
   });
+
   const [getAllStategy, setgetallStrategy] = useState({
     loading: true,
     data: [],
   });
-
-
 
   const [allGroupService, setAllGroupService] = useState({
     loading: true,
@@ -53,165 +55,10 @@ const AddClient = () => {
   });
 
 
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [stgDiseble, setStgDiseble] = useState([]);
-
-  const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
-  const [getAllBroker, setAllBroker] = useState([]);
-
-
-
-  const formik = useFormik({
-    initialValues: {
-      profile_Img: null,
-      fullName: "",
-      username: "",
-      email: "",
-      phone: "",
-      broker: null,
-      groupservice: null,
-      licence: null,
-      parent_id: null,
-      parent_role: null,
-      demat_userid: null,
-      api_key: null,
-      Service_Type: 0,
-      balance: 0,
-      per_trade_value: null,
-    },
-    validate: (values) => {
-      let errors = {};
-      if (!values.fullName) {
-        errors.fullName = "Full Name is required";
-      }
-
-      if (!values.username) {
-        errors.username = "Username is required";
-      }
-      if (!values.broker) {
-        errors.broker = "Username is required";
-      }
-
-      if (!values.licence) {
-        errors.licence = "licence is required";
-      }
-
-
-
-      if (!values.groupservice) {
-        errors.groupservice = "Username is required";
-      }
-      if (!values.email) {
-        errors.email = "Please enter your email address.";
-      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
-        errors.email = "Please enter a valid email address.";
-      }
-      if (!values.phone) {
-        errors.phone = "Please enter your phone number.";
-      } else if (!/^\d{10}$/.test(values.phone)) {
-        errors.phone = "Please enter a valid 10-digit phone number.";
-      }
-
-      return errors;
-    },
-    onSubmit: async (values) => {
-
-      const req = {
-        ProfileImg: ".",
-        FullName: values.fullName,
-        license_type: values.licence,
-        Balance: values.balance || 0,
-        Per_trade: null,
-        Strategies: selectedCheckboxesAndPlan,
-        parent_id: user_id,
-        parent_role: Role || "SUBADMIN",
-        demat_userid: values.demat_userid,
-        group_service: values.groupservice,
-        broker: values.broker,
-        Per_trade: null,
-        Service_Type: values.Service_Type,
-        per_trade_value: values.per_trade_value || 0,
-        _id: getOneUsers.getClients[0]._id,
-
-      };
-
-      console.log("selectedCheckboxesAndPlan", selectedCheckboxesAndPlan)
-
-      var stg_error = 0
-      if (selectedCheckboxesAndPlan.length > 0) {
-        selectedCheckboxesAndPlan.forEach((stg) => {
-          if (stg.plan_id == "0") {
-            stg_error = 1
-            return
-          }
-        })
-      }
-
-      if (stg_error == 1 && values.licence == 2) {
-        Swal.fire({
-          title: "Error!",
-          text: "Please Select A Plan ",
-          icon: "error",
-          timer: 1200,
-          timerProgressBar: true
-        });
-        return
-      }
-
-      Swal.fire({
-        title: "Do you want to save the changes?",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Save",
-        denyButtonText: `Don't save`
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-
-          await dispatch(UpdateUsers(req))
-            .unwrap()
-            .then(async (response) => {
-              console.log("response", response)
-              if (response.status) {
-
-                Swal.fire({
-                  title: "Update Successful!",
-                  text: response.msg,
-                  icon: "success",
-                  timer: 1200,
-                  timerProgressBar: true
-                });
-                setTimeout(() => {
-                  navigate("/subadmin/users")
-                }, 1200);
-
-              } else {
-                Swal.fire({
-                  title: "Error!",
-                  text: response.msg,
-                  icon: "error"
-                });
-              }
-
-            })
-            .catch((error) => {
-              console.log("Error", error);
-            });
-        } else if (result.isDenied) {
-    
-            navigate("/subadmin/users")
-      
-        }
-      });
-
-
-
-    },
-  });
 
 
 
   // 0 = 2 days 1= Demo 2 =Live
-
   const fields = [
     {
       name: "profile_Img",
@@ -286,9 +133,9 @@ const AddClient = () => {
       type: "test",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      // disable: false,
       showWhen: (values) => subadmin_service_type1 == 1,
-      // disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type == 0 ? false : true,
+      disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].license_type == 2 ? true : false,
 
     },
     {
@@ -331,6 +178,164 @@ const AddClient = () => {
       , label_size: 12, col_size: 6, disable: false
     },
   ];
+
+
+
+  const formik = useFormik({
+    initialValues: {
+      profile_Img: null,
+      fullName: "",
+      username: "",
+      email: "",
+      phone: "",
+      broker: null,
+      groupservice: null,
+      licence: null,
+      parent_id: null,
+      parent_role: null,
+      demat_userid: null,
+      api_key: null,
+      Service_Type: 0,
+      balance: 0,
+      per_trade_value: null,
+    },
+    validate: (values) => {
+      let errors = {};
+      if (!values.fullName) {
+        errors.fullName = "Full Name is required";
+      }
+
+      if (!values.username) {
+        errors.username = "Username is required";
+      }
+      if (!values.broker) {
+        errors.broker = "broker is required";
+      }
+
+      if (values.broker == 0 && values.licence == 2) {
+        errors.broker = "broker is required";
+      }
+      if (values.broker == 0 && values.licence == 0) {
+        errors.broker = "broker is required";
+      }
+
+
+      if (!values.licence) {
+        errors.licence = "licence is required";
+      }
+
+
+
+      if (!values.groupservice) {
+        errors.groupservice = "Username is required";
+      }
+      if (!values.email) {
+        errors.email = "Please enter your email address.";
+      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
+        errors.email = "Please enter a valid email address.";
+      }
+      if (!values.phone) {
+        errors.phone = "Please enter your phone number.";
+      } else if (!/^\d{10}$/.test(values.phone)) {
+        errors.phone = "Please enter a valid 10-digit phone number.";
+      }
+
+      return errors;
+    },
+    onSubmit: async (values) => {
+
+
+      const req = {
+        ProfileImg: ".",
+        FullName: values.fullName,
+        license_type: values.licence,
+        Balance: values.balance || 0,
+        Per_trade: null,
+        Strategies: selectedCheckboxesAndPlan,
+        parent_id: user_id,
+        parent_role: Role || "SUBADMIN",
+        demat_userid: values.demat_userid,
+        group_service: values.groupservice,
+        broker: values.broker,
+        Per_trade: null,
+        Service_Type: values.Service_Type,
+        per_trade_value: values.per_trade_value || 0,
+        _id: getOneUsers.getClients[0]._id,
+
+      };
+
+
+      var stg_error = 0
+      if (selectedCheckboxesAndPlan.length > 0) {
+        selectedCheckboxesAndPlan.forEach((stg) => {
+          if (stg.plan_id == "0") {
+            stg_error = 1
+            return
+          }
+        })
+      }
+
+      if (stg_error == 1 && values.licence == 2) {
+        Swal.fire({
+          title: "Error!",
+          text: "Please Select A Plan ",
+          icon: "error",
+          timer: 1200,
+          timerProgressBar: true
+        });
+        return
+      }
+
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        denyButtonText: `Don't save`
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+
+          await dispatch(UpdateUsers(req))
+            .unwrap()
+            .then(async (response) => {
+              if (response.status) {
+
+                Swal.fire({
+                  title: "Update Successful!",
+                  text: response.msg,
+                  icon: "success",
+                  timer: 1200,
+                  timerProgressBar: true
+                });
+                setTimeout(() => {
+                  navigate("/subadmin/users")
+                }, 1200);
+
+              } else {
+                Swal.fire({
+                  title: "Error!",
+                  text: response.msg,
+                  icon: "error"
+                });
+              }
+
+            })
+            .catch((error) => {
+              console.log("Error in Update User", error);
+            });
+        } else if (result.isDenied) {
+
+          navigate("/subadmin/users")
+
+        }
+      });
+
+
+
+    },
+  });
+
+  
 
   const getAllUsers = async () => {
     var data = { user_ID: id }
@@ -382,6 +387,8 @@ const AddClient = () => {
   }, [getOneUsers.getClients])
 
 
+
+  // GET ALL GROUP SERVICES
   const getAllGroupService = async () => {
 
     try {
@@ -415,14 +422,7 @@ const AddClient = () => {
 
   };
 
-
-
-
-
-  //FIND ALL GROUP SERVICES
-  const FindAllGroupService = allGroupService.data.find(item => item._id === formik.values.groupservice);
-
-
+  // GET ALL GROUP SERVICES NAME
   const getAllGroupServicesName = async () => {
     if (formik.values.groupservice) {
       var data = { id: formik.values.groupservice }
@@ -448,7 +448,7 @@ const AddClient = () => {
     }
   }
 
-
+  // GET ALL STRATEGY
   const GetAllStrategy = async () => {
     var data = { id: user_id }
     await dispatch(GetSubStrategys(data)).unwrap()
@@ -472,7 +472,7 @@ const AddClient = () => {
       })
   }
 
-
+  // GET ALL BROKER
   const AllBroker = async () => {
     await dispatch(Get_All_Broker()).unwrap()
       .then((response) => {
@@ -509,6 +509,7 @@ const AddClient = () => {
 
 
 
+  // SET PLAN FUNCTION
   const PlanSetinState = (id) => {
     const strategyPlanMonth = id.split('_')[1];
     const checkboxId = id.split('_')[0];
@@ -524,39 +525,34 @@ const AddClient = () => {
   };
 
 
-
-  useState(() => {
-    AllBroker();
-  }, [])
-
-
-
-
-
-
-
-
-
   useEffect(() => {
+    AllBroker();
     getAllUsers()
     GetAllStrategy();
+    getAllGroupService();
   }, [])
+
+
 
   useEffect(() => {
     getAllGroupServicesName();
-  }, [refresh, formik.values.groupservice])
-  useEffect(() => {
-    getAllGroupService();
-  }, [refresh]);
+  }, [formik.values.groupservice])
 
 
-  console.log("formik.values.Service_Type",formik.values.Service_Type)
+  // console.log("formik.values.Service_Type", formik.values.Service_Type)
+
+  // useEffect(() => {
+  //   setSelectedCheckboxesAndPlan([])
+  //   setSelectedCheckboxes([])
+  // }, [formik.values.Service_Type])
 
 
   return (
     <>
       {
-        getAllStategy.data.length == 0 ? <Loader /> :
+        getAllStategy.data.length == 0 ?
+          <Loader />
+          :
           <>
             <AddForm
               fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))}
@@ -620,9 +616,9 @@ const AddClient = () => {
                                   </label>
 
 
-                                  {formik.values.licence == 1 || formik.values.licence == 0
-                                    ? ""
-                                    : selectedCheckboxes.includes(strategy._id) && (
+                                  {formik.values.licence == 2 ?
+                                    
+                                    selectedCheckboxes.includes(strategy._id) && (
                                       <>
                                         <div
                                           className=""
@@ -710,7 +706,8 @@ const AddClient = () => {
 
                                         </div>
                                       </>
-                                    )}
+                                    )
+                                    : ""}
                                 </div>
                               </div>
                             </div>
@@ -744,6 +741,7 @@ const AddClient = () => {
                                       value={strategy._id}
                                       checked={selectedCheckboxes && selectedCheckboxes.includes(strategy._id)}
                                       onChange={() => handleStrategyChange(strategy._id)}
+                                      disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                     />
                                     <label
                                       className="form-check-label"
@@ -753,9 +751,9 @@ const AddClient = () => {
                                     </label>
 
 
-                                    {formik.values.licence == 1 || formik.values.licence == 0
-                                      ? ""
-                                      : selectedCheckboxes.includes(strategy._id) && (
+                                    {formik.values.licence == 2
+                                      ?
+                                      selectedCheckboxes.includes(strategy._id) && (
                                         <>
                                           <div
                                             className=""
@@ -843,7 +841,9 @@ const AddClient = () => {
 
                                           </div>
                                         </>
-                                      )}
+                                      )
+                                      :
+                                      ""}
                                   </div>
                                 </div>
                               </div>

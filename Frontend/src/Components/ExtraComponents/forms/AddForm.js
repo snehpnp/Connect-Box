@@ -27,6 +27,7 @@ const DynamicForm = ({
   btn_status,
   content_btn_name,
   content_path,
+  btn_name2
 }) => {
   const location = useLocation();
 
@@ -93,9 +94,13 @@ const DynamicForm = ({
   return (
     <div className="content container-fluid" data-aos="fade-left">
       <div className="card mb-0">
-        {page_title ? <div className="card-header">
-          {page_title ? <h5 className="card-title mb-0 w-auto"><i className="fa-regular fa-circle-user pe-2"></i>{page_title} </h5> : ""}
-        </div> : ""}
+        {page_title ?
+          <div className="card-header">
+            {page_title ? <h5 className="card-title mb-0 w-auto"><i className="fa-regular fa-circle-user pe-2"></i>{page_title} </h5> : ""}
+            {/* {close_btn ? <h5 className="card-title mb-0 w-auto"><i className="fa-regular fa-circle-user pe-2"></i>{} </h5> : ""} */}
+
+
+          </div> : ""}
         <form onSubmit={formik.handleSubmit}>
           <div className="card-body ">
             <div className="page-header">
@@ -211,7 +216,7 @@ const DynamicForm = ({
                                 value={inputValue}
                                 onChange={(e) => {
                                   const newValue = e.target.value.toUpperCase()
-                              
+
                                   if (/^[a-zA-Z]{0,3}$/.test(newValue)) {
                                     setInputValue(newValue);
                                     formik.handleChange(e);
@@ -220,14 +225,14 @@ const DynamicForm = ({
 
                               />
                               {inputValue == '' ? (
-                              <div style={{ color: "red" }}>
-                                {formik.errors[field.name]}
-                              </div>
-                            ) : null}
+                                <div style={{ color: "red" }}>
+                                  {formik.errors[field.name]}
+                                </div>
+                              ) : null}
 
                             </div>
 
-                            
+
                           </div>
 
                         </>
@@ -654,7 +659,7 @@ const DynamicForm = ({
                                             Fixed
                                           </button>
                                         </li>
-                                          
+
                                       </ul>
                                     </div>
                                   </div>
@@ -739,7 +744,7 @@ const DynamicForm = ({
                                   <label htmlFor={field.name}>
                                     {field.label}
                                   </label>
-
+                                  <span className="text-danger">*</span>
                                   <input
                                     type="text"
                                     name={field.name}
@@ -808,9 +813,19 @@ const DynamicForm = ({
                       ""
                     )}
                     {
-                      <button type="submit" className="btn customer-btn-save">
-                        {btn_name}
-                      </button>
+                      <>
+                        <button type="submit" className="btn customer-btn-save">
+                          {btn_name}
+                        </button>
+                        {
+                          btn_name2 ? <button type="submit" className="btn customer-btn-save">
+                            {btn_name2}
+                          </button> : ''
+
+                        }
+
+                      </>
+
                     }
                   </div>
                 </div>

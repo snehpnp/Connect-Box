@@ -24,7 +24,7 @@ const Dashboards = () => {
 
     if (currentTime < 12) {
       return { greeting: "Good Morning", icon: "fe-sun" };
-    } else if (currentTime < 18) {
+    } else if (currentTime < 17) {
       return { greeting: "Good Afternoon", icon: "fe-sun" };
     } else {
       return { greeting: "Good Evening", icon: "fe-moon" };

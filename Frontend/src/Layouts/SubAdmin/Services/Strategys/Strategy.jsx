@@ -125,7 +125,7 @@ function Strategy() {
         {
             name: "strategy_demo_days",
             label: "Strategy demo days",
-            type: "number",
+            type: "text3",
             label_size: 12,
             col_size: 6,
             disable: false,
@@ -162,18 +162,22 @@ function Strategy() {
             col_size: 6,
             disable: false,
         },
+        
+         
         {
-            name: "Service_Type",
-            label: "Service Type",
-            type: "test",
+            name: "max_trade",
+            label: "Maximum Trades",
+            type: "text3",
             label_size: 12,
             col_size: 6,
             disable: false,
         },
+        
+        
         {
             name: "strategy_amount_month",
             label: "Monthly",
-            type: "number",
+            type: "text3",
             label_size: 3,
             col_size: 3,
             disable: false,
@@ -181,7 +185,7 @@ function Strategy() {
         {
             name: "strategy_amount_quarterly",
             label: "Quaterly",
-            type: "number",
+            type: "text3",
             label_size: 3,
             col_size: 3,
             disable: false,
@@ -189,7 +193,7 @@ function Strategy() {
         {
             name: "strategy_amount_half_early",
             label: "Half Yearly",
-            type: "number",
+            type: "text3",
             label_size: 3,
             col_size: 3,
             disable: false,
@@ -197,9 +201,17 @@ function Strategy() {
         {
             name: "strategy_amount_early",
             label: "Yearly",
-            type: "number",
+            type: "text3",
             label_size: 3,
             col_size: 3,
+            disable: false,
+        },
+        {
+            name: "Service_Type",
+            label: "Service Type",
+            type: "test",
+            label_size: 12,
+            col_size: 12,
             disable: false,
         },
 
@@ -220,7 +232,8 @@ function Strategy() {
             strategy_amount_half_early: '',
             strategy_amount_early: '',
             strategy_demo_days: '',
-            Service_Type: ""
+            Service_Type: "",
+            max_trade: '',
         },
         validate: (values) => {
             let errors = {};
@@ -236,6 +249,9 @@ function Strategy() {
             if (!values.strategy_segment) {
                 errors.strategy_segment = "strategy segment is required";
             }
+            if (!values.max_trade) {
+                errors.max_trade = "Please enter maximum trade";
+            }
 
             if (!values.strategy_amount_month) {
                 errors.strategy_amount_month = "amount is required";
@@ -245,6 +261,9 @@ function Strategy() {
             }
             if (!values.strategy_amount_half_early) {
                 errors.strategy_amount_half_early = "amount is required";
+            }
+            if (!getStgDescription) {
+                errors.getStgDescription = "Please enter strategy description";
             }
 
             if (!values.strategy_amount_early) {
@@ -271,6 +290,8 @@ function Strategy() {
                 strategy_amount_half_early: values.strategy_amount_half_early,
                 strategy_amount_early: values.strategy_amount_early,
                 maker_id: user_id,
+                max_trade: values.max_trade,
+                Role: "SUBADMIN",
                 Service_Type: values.Service_Type != '' ? values.Service_Type : subadmin_service_type == 1 ? 1 : 0
             };
 
@@ -587,6 +608,13 @@ function Strategy() {
                                                 <label>Strategy Description</label>
                                                 <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
                                                 </textarea>
+                                                {
+                                                    formik.errors.getStgDescription ? (
+                                                        <div style={{ color: "red" }}>
+                                                            {formik.errors.getStgDescription}
+                                                        </div>
+                                                    ) : null
+                                                }
                                             </>
 
                                         }

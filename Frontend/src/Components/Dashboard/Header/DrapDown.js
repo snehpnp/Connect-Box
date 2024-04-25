@@ -26,8 +26,6 @@ const DropDown = () => {
     var Role = JSON.parse(localStorage.getItem("user_details")).Role
     var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
 
-    console.log("Role :", Role)
-
 
     const fetchData = async () => {
 

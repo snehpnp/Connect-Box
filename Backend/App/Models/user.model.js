@@ -113,6 +113,7 @@ const userModel = Schema({
     prifix_key: {
         type: String,
         required: true,
+        unique: true,
         trim: true,
         default: null
     },
@@ -120,7 +121,8 @@ const userModel = Schema({
         type: String,
         required: true,
         trim: true,
-        default: null
+        default: null,
+        unique: true,
     },
     parent_id: {
         type: String,

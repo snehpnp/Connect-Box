@@ -278,19 +278,19 @@ const AddClient = () => {
           id: index + 1,
         }));
         setAllGroupService({
-          loading: true,
+          loading: false,
           data: formattedData,
         });
       } else {
         setAllGroupService({
-          loading: true,
+          loading: false,
           data: [],
         });
       }
     } catch (error) {
       console.log("Error", error);
       setAllGroupService({
-        loading: false,
+        loading: true,
         data: [],
       });
     }
@@ -336,12 +336,12 @@ const AddClient = () => {
       .then((response) => {
         if (response.status) {
           setgetallStrategy({
-            loading: true,
+            loading: false,
             data: response.data,
           });
         } else {
           setgetallStrategy({
-            loading: true,
+            loading: false,
             data: [],
           });
         }
@@ -405,15 +405,12 @@ const AddClient = () => {
     AllBroker();
   }, []);
 
-  console.log("subadmin_service_type1 ", subadmin_service_type1)
-  console.log("formik.values.licence ", formik.values.licence)
-  console.log("formik.values.Service_Type ", formik.values.Service_Type)
 
 
 
   return (
     <>
-      {getAllStategy.data.length == 0 ? (
+      {getAllStategy.loading ? (
         <Loader />
       ) : (
         <>
