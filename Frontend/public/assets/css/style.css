@@ -34246,6 +34246,10 @@ width: 4.5rem;
 {
     display:none;
 }
+[data-layout-mode=null] .login-dark-img ,[data-layout-mode=dark] .login-light-img
+{
+    display:none;
+}
 [data-layout-mode=dark] .login-wrapper .loginbox
 {
     background-color: #1c1d22;

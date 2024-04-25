@@ -11,23 +11,8 @@ const Main_Header = () => {
     } else {
       document.body.classList.remove('slide-nav');
     }
-  
-    // Add event listener to sidebar links
-    const sidebarLinks = document.querySelectorAll('.submenu a.active');
-    sidebarLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        setIsNavOpen(false); // Update isNavOpen state to false
-      });
-    });
   }, [isNavOpen]);
-  const sidebarLinks = document.querySelectorAll('.submenu a.subdrop.active');
-    sidebarLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        setIsNavOpen(false); // Update isNavOpen state to false
-      });
-    });
- 
-  
+
   const toggleNav = () => {
     setIsNavOpen(!isNavOpen);
   };

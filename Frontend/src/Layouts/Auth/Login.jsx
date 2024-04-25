@@ -154,6 +154,7 @@ function Login() {
                   {/* <h1>Login</h1>
                   <p className="account-subtitle">Access to our dashboard</p> */}
                   <img src="/assets/img/gif/login.gif" className='login-light-img'></img>
+                  
                   <img src="/assets/img/gif/login-dark.gif" className='login-dark-img'></img>
                   </div>
                 </div>
