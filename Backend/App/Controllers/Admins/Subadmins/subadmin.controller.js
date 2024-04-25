@@ -110,6 +110,7 @@ class Subadmin {
         strategy_Percentage,
         Per_trade,
         Balance,
+        broker:2
       });
 
       // Save new user and count licenses
