@@ -59,6 +59,9 @@ const Profile = () => {
     CompanyName: "",
   });
 
+  const currentDate = new Date();
+  const currentDateISOString = currentDate.toISOString().split("T")[0];
+
   const avatarImages = [
     "hacker.png",
     "gamer (1).png",
@@ -97,8 +100,6 @@ const Profile = () => {
     "wolf (1).png",
   ];
 
- 
-
   const handleAvatarClick = async (avatarUrl) => {
     try {
       var data = { user_id: user_id, profile_img: avatarUrl };
@@ -113,6 +114,24 @@ const Profile = () => {
     }
 
     setOpen(false);
+  };
+
+  ///  handler to handle form
+
+  const handleAddInfo = () => {
+    if (info && info.length > 0) {
+      const latestInfo = info[0];
+      setUpdate({
+        user_Id: user_id,
+        Address: latestInfo.Address || "",
+        Country: latestInfo.Country || "",
+        State: latestInfo.State || "",
+        Location: latestInfo.Location || "",
+        DOB: latestInfo.DOB || "",
+        CompanyName: latestInfo.CompanyName || "",
+      });
+    }
+    setEditbtn(!editbtn);
   };
 
   // update profile data
@@ -228,24 +247,7 @@ const Profile = () => {
                     alt="Profile Cover"
                     id="cover-image"
                   />
-                  <div className="cover-content">
-                    {/* <div className="custom-file-btn">
-                      <input
-                        type="file"
-                        className="custom-file-btn-input"
-                        id="cover_upload"
-                      />
-                      <label
-                        className="custom-file-btn-label btn btn-sm btn-white"
-                        htmlFor="cover_upload"
-                      >
-                        <i className="fas fa-camera" />
-                        <span className="d-none d-sm-inline-block ms-1">
-                          Update Cover
-                        </span>
-                      </label>
-                    </div> */}
-                  </div>
+                  <div className="cover-content"></div>
                 </div>
               </div>
               <div className="text-center mb-5">
@@ -374,11 +376,12 @@ const Profile = () => {
                         <span>Profile</span>
                         <a
                           className="btn btn-sm btn-white"
-                          onClick={() => {
-                            setEditbtn(!editbtn);
-                          }}
+                          // onClick={() => {
+                          //   setEditbtn(!editbtn);
+                          // }}
+                          onClick={handleAddInfo}
                         >
-                          Add Info
+                          Update Info
                         </a>
                       </h5>
                       {editbtn && (
@@ -405,10 +408,9 @@ const Profile = () => {
                               <form>
                                 <div className="modal-body">
                                   <div className="row">
-                                    <div className="col-lg-12 col-sm-12">
+                                    <div className="col-lg-4 col-sm-12">
                                       <div className="input-block mb-3">
                                         <label>Address</label>
-
                                         <input
                                           type="text"
                                           className="form-control"
@@ -422,12 +424,8 @@ const Profile = () => {
                                           }}
                                         />
                                       </div>
-                                    </div>
-
-                                    <div className="col-lg-12 col-sm-12">
                                       <div className="input-block mb-3">
                                         <label>Country</label>
-
                                         <input
                                           type="text"
                                           className="form-control"
@@ -442,11 +440,9 @@ const Profile = () => {
                                         />
                                       </div>
                                     </div>
-
-                                    <div className="col-lg-12 col-sm-12">
+                                    <div className="col-lg-4 col-sm-12">
                                       <div className="input-block mb-3">
                                         <label>State</label>
-
                                         <input
                                           type="text"
                                           className="form-control"
@@ -460,12 +456,8 @@ const Profile = () => {
                                           }}
                                         />
                                       </div>
-                                    </div>
-
-                                    <div className="col-lg-12 col-sm-12">
                                       <div className="input-block mb-3">
                                         <label>Location</label>
-
                                         <input
                                           type="text"
                                           className="form-control"
@@ -480,16 +472,15 @@ const Profile = () => {
                                         />
                                       </div>
                                     </div>
-
-                                    <div className="col-lg-12 col-sm-12">
-                                      <div className="input-block mb-0">
+                                    <div className="col-lg-4 col-sm-12">
+                                      <div className="input-block mb-3">
                                         <label>DOB</label>
-
                                         <input
-                                          type="Date"
+                                          type="date"
                                           className="form-control"
                                           placeholder="Enter birth date"
                                           value={update.DOB}
+                                          max={currentDateISOString}
                                           onChange={(e) => {
                                             setUpdate({
                                               ...update,
@@ -498,12 +489,8 @@ const Profile = () => {
                                           }}
                                         />
                                       </div>
-                                    </div>
-
-                                    <div className="col-lg-12 col-sm-12">
-                                      <div className="input-block mb-0">
+                                      <div className="input-block mb-3">
                                         <label>Company Name</label>
-
                                         <input
                                           type="text"
                                           className="form-control"
@@ -520,7 +507,6 @@ const Profile = () => {
                                     </div>
                                   </div>
                                 </div>
-
                                 <div className="modal-footer">
                                   <button
                                     type="button"
@@ -532,10 +518,8 @@ const Profile = () => {
                                   >
                                     Cancel
                                   </button>
-
                                   <button
                                     type="submit"
-                                    // data-bs-dismiss="modal"
                                     className="btn btn-primary paid-continue-btn"
                                     onClick={Updateprofile}
                                   >

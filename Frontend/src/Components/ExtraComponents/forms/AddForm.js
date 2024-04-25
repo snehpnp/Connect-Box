@@ -47,7 +47,7 @@ const DynamicForm = ({
 
   const handleFileChange = (event, index, name) => {
     if (event.target.files[0].size > 420000) {
-      alert("Please  Select file less then 420KB");
+      alert("Select file less then 420KB");
       event.target.value = "";
       return;
     } else {
@@ -366,7 +366,7 @@ const DynamicForm = ({
                                   {...formik.getFieldProps(field.name)}
                                 >
                                   <option value="" selected  >
-                                    Please Select {field.label}
+                                     Select {field.label}
                                   </option>
                                   {field.options.map((option) => (
                                     <option

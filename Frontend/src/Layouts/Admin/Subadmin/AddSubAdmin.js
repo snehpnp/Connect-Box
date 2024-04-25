@@ -87,8 +87,8 @@ const AddClient = () => {
         errors.strategy_Percentage = "Please Enter strategy percentage value";
       }
 
-      if (!values.prifix_key) {
-        errors.prifix_key = "Please Enter Prefix Key";
+      if (!values.prefix_key) {
+        errors.prefix_key = "Please Enter Prefix Key";
       }
       return errors;
     },
@@ -103,7 +103,7 @@ const AddClient = () => {
         subadmin_service_type: values.subadmin_servic_type,
         strategy_Percentage: values.strategy_Percentage,
         Per_trade: values.Per_trade,
-        prifix_key: values.prifix_key,
+        prefix_key: values.prefix_key,
         password: values.password,
         parent_id: user_id || "65feb434ce02a722ac3b997d",
         parent_role: Role || "ADMIN",
@@ -203,8 +203,8 @@ const AddClient = () => {
       disable: false,
     },
     {
-      name: "prifix_key",
-      label: "Prifix Key",
+      name: "prefix_key",
+      label: "Prefix Key",
       type: "text2",
       label_size: 12,
       col_size: 6,
