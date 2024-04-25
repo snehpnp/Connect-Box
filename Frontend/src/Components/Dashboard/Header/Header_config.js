@@ -112,13 +112,7 @@ export const subamdin_header = [
         route: "/subadmin/dashboard",
         Data: []
     },
-    // {
-    //     id: 2,
-    //     name: 'System',
-    //     route: "/subadmin/system",
-    //     Icon: "fe fe-settings",
-    //     Data: []
-    // },
+    
     {
         id: 3,
         name: 'Employees',
@@ -268,6 +262,13 @@ export const subamdin_header = [
         name: 'Message Broadcast',
         route: "/subadmin/message-broadcast",
         Icon: "fe fe-message-circle",
+        Data: []
+    },
+    {
+        id: 12,
+        name: 'Researcher Strategy',
+        route: "/subadmin/researcher-strategy",
+        Icon: "fe fe-target",
         Data: []
     },
     {

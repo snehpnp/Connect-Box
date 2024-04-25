@@ -1,11 +1,14 @@
-import React from 'react'
+import React from 'react';
 import AddForm from '../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik'
 import { Add_Researcher } from '../../../ReduxStore/Slice/Researcher/ResearcherSlice'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
 import Swal from 'sweetalert2'
+
+
+
+
 
 const AddResearcher = () => {
   const dispatch = useDispatch();
@@ -20,7 +23,7 @@ const AddResearcher = () => {
       password: '',
       strategy_percentage: '',
       prifix_key: '',
-      Balance : '',
+      Balance: '',
     },
     validate: (values) => {
       let errors = {}
@@ -66,7 +69,7 @@ const AddResearcher = () => {
           Strategy_percentage_to_researcher: values.strategy_percentage,
           prifix_key: values.prifix_key,
           user_id: user_id,
-          Balance : values.Balance,
+          Balance: values.Balance,
         };
         const response = await dispatch(Add_Researcher(data)).unwrap();
 
@@ -176,11 +179,6 @@ const AddResearcher = () => {
 
   ]
 
-
-
-
-
-
   return (
     <>
       <AddForm
@@ -190,6 +188,7 @@ const AddResearcher = () => {
         btn_name1="Cancel"
         formik={formik}
         btn_name1_route={"/admin/allresearch"}
+       
       />
 
     </>
