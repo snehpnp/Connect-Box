@@ -46,7 +46,7 @@ export default function AllUsers() {
   const [modalId, setmodalId] = useState('');
 
   const [getAllUsers, setAllUsers] = useState({
-    loading: false,
+    loading: true,
     data: [],
     data1: [],
   });
@@ -244,7 +244,6 @@ export default function AllUsers() {
         showCancelButton: true,
         confirmButtonText: "Save",
         cancelButtonText: "Cancel",
-        timer: 2000,
         allowOutsideClick: false, // Prevents closing modal by clicking outside or pressing Esc key
     });
 
@@ -256,7 +255,6 @@ export default function AllUsers() {
                     title: "Saved!",
                     icon: "success",
                     timer: 1000,
-                    
                     timerProgressBar:true
                 });
                 setTimeout(() => {
@@ -412,7 +410,7 @@ export default function AllUsers() {
           })
 
           setAllUsers({
-            loading: true,
+            loading: false,
             data: searchInput ? filterData : formattedData,
           
           });
@@ -420,7 +418,7 @@ export default function AllUsers() {
         } else {
 
           setAllUsers({
-            loading: true,
+            loading: false,
             data: [],
             data1: [],
           });
@@ -430,7 +428,7 @@ export default function AllUsers() {
         console.log("Error", error);
 
         setAllUsers({
-          loading: false,
+          loading: true,
           data: [],
           data1: [],
         });
@@ -445,7 +443,7 @@ export default function AllUsers() {
 
   return (
     <>
-      {getAllUsers.loading ? (
+      {!getAllUsers.loading ? (
         <>
           <div className="content container-fluid" data-aos="fade-left">
             <div className="page-header">

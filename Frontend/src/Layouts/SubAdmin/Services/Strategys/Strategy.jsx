@@ -50,12 +50,15 @@ function Strategy() {
         setShowModal(true);
     };
 
-     
+    // Function to close the modal
+    const closeModal = () => {
+        setShowModal(false);
+    };
 
 
 
     const handleDelete = async (id) => {
-    
+        console.log("stg._id", id)
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -162,6 +165,8 @@ function Strategy() {
             col_size: 6,
             disable: false,
         },
+        
+         
         {
             name: "max_trade",
             label: "Maximum Trades",
@@ -170,6 +175,8 @@ function Strategy() {
             col_size: 6,
             disable: false,
         },
+        
+        
         {
             name: "strategy_amount_month",
             label: "Monthly",
@@ -200,6 +207,14 @@ function Strategy() {
             type: "number",
             label_size: 3,
             col_size: 3,
+            disable: false,
+        },
+        {
+            name: "Service_Type",
+            label: "Service Type",
+            type: "test",
+            label_size: 12,
+            col_size: 12,
             disable: false,
         },
 
@@ -237,6 +252,9 @@ function Strategy() {
             if (!values.strategy_segment) {
                 errors.strategy_segment = "strategy segment is required";
             }
+            if (!values.max_trade) {
+                errors.max_trade = "Please enter maximum trade";
+            }
 
             if (!values.strategy_amount_month) {
                 errors.strategy_amount_month = "amount is required";
@@ -247,15 +265,12 @@ function Strategy() {
             if (!values.strategy_amount_half_early) {
                 errors.strategy_amount_half_early = "amount is required";
             }
+            if (!getStgDescription) {
+                errors.getStgDescription = "Please enter strategy description";
+            }
 
             if (!values.strategy_amount_early) {
                 errors.strategy_amount_early = "amount is required";
-            }
-            if (!values.max_trade) {
-                errors.max_trade = "Please enter maximum trade";
-            }
-            if (!getStgDescription) {
-                errors.getStgDescription = "Please enter strategy description";
             }
 
             return errors;
@@ -263,7 +278,7 @@ function Strategy() {
 
         },
         onSubmit: async (values, { resetForm }) => {
-           
+            console.log("values.Service_Type", values.Service_Type)
             const data = {
                 strategy_name: values.strategy_name,
                 strategy_category: values.strategy_category,
@@ -610,8 +625,7 @@ function Strategy() {
                                     <button
                                         type="button"
                                         className="btn-close"
-                                  
-                                        onClick={(e) => {setShowModal(false);  setrefresh(!refresh);   formik.resetForm();}}
+                                        onClick={closeModal}
                                     ></button>
                                 </div>
                                 <div className="modal-body m-0 p-0">

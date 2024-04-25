@@ -9,6 +9,8 @@ import {
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from 'sweetalert2'
+
 
 const EditClient = () => {
   const dispatch = useDispatch();
@@ -78,16 +80,30 @@ const EditClient = () => {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
-            toast.success(response.msg);
+            Swal.fire({
+              title: "Subadmin Added!",
+              text: "subadmin added successfully",
+              icon: "success",
+              timer: 1000,
+              timerProgressBar: true,
+            });
             setTimeout(() => {
               navigate("/admin/allsubadmin");
             }, 1000);
+             
           } else {
-            toast.error(response.msg);
+            Swal.fire({
+              title: "Subadmin Added!",
+              text: response.msg,
+              icon: "error",
+              timer: 1000,
+              timerProgressBar: true,
+            });
           }
         })
         .catch((error) => {
           console.log("Error", error);
+          
         });
     },
   });
