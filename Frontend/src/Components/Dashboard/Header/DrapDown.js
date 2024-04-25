@@ -225,11 +225,9 @@ const DropDown = () => {
                         data-bs-dismiss="modal"
                         className="btn btn-primary cancel-btn me-2 mt-2 iconclass"
                         style={{
-<<<<<<<<< Temporary merge branch 1
-                           
-=========
+
                             backgroundColor: "#7539FF",
->>>>>>>>> Temporary merge branch 2
+
                             color: "white",
                             border: "none",
                             display: "flex",
