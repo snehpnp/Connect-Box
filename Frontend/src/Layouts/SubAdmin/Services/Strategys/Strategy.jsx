@@ -369,7 +369,7 @@ function Strategy() {
     });
 
 
-    console.log("formik :", formik.values)
+    
 
     const RefreshHandle = () => {
         setrefresh(!refresh)

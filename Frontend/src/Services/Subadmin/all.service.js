@@ -140,7 +140,7 @@ export async function GET_ALL_TRADE_DETAILS(data) {
 
 export async function GET_ALL_RESEARCHER_STRATEGY(data) {
     try {
-        const res = await axios.post(`${Config.base_url}allsearcher/strategy`, data, {
+        const res = await axios.post(`${Config.base_url}subadmin/allsearcher/strategy`, data, {
             data: {}
         })
         return await res;
