@@ -197,6 +197,30 @@ export async function get_Employee_Status(data, token) {
 }
 
 
+export async function GetAllStrategyFor_Employee(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}get/strategy`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+export async function GetAllServicesForEmployee(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}get/allgroupServices`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
 
 
 
