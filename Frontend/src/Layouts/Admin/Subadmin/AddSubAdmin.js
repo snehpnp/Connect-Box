@@ -54,6 +54,7 @@ const AddClient = () => {
       Per_trade: "0",
       parent_id: null,
       parent_role: null,
+      prefix_key:''
     },
     validate: (values) => {
       let errors = {};
@@ -109,6 +110,10 @@ const AddClient = () => {
         parent_role: Role || "ADMIN",
       };
 
+      console.log("prefix_key :", data)
+
+
+ 
 
 
       setSubmitting(false);

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_CLIENT_ALL_SERVICE,UPDATE_CLIENT_SERVICE} from "../../../Services/Users/allUsers.service";
+import { GET_CLIENT_ALL_SERVICE,UPDATE_CLIENT_SERVICE, GET_ALL_SUBADMIN_STRATEGY} from "../../../Services/Users/allUsers.service";
 
 export const GetAllclientDetails = createAsyncThunk("getall/user/clientServices",
   async (data) => {
@@ -12,8 +12,6 @@ export const GetAllclientDetails = createAsyncThunk("getall/user/clientServices"
   }
 );
  
-
-
 export const UPDATE_CLIENT_SERVICE_DATA = createAsyncThunk("update/clientServices",
   async (data) => {
     try {
@@ -24,6 +22,17 @@ export const UPDATE_CLIENT_SERVICE_DATA = createAsyncThunk("update/clientService
     }
   }
 );
+
+export const Get_All_Subadmin_Strategy= createAsyncThunk('getall/strategy',
+async (data)=>{
+  try{
+    const res = await GET_ALL_SUBADMIN_STRATEGY(data)
+    return  await res;
+  }
+  catch(err){
+    return await err
+  }
+})
  
 
 const ClientServiceSlice = createSlice({
@@ -32,6 +41,7 @@ const ClientServiceSlice = createSlice({
     isLoading: false,
     isError: false,
     getAllservice: null,
+    get_all_subadmin_strategy:null,
 
   },
   reducers: {},
@@ -59,6 +69,10 @@ const ClientServiceSlice = createSlice({
       .addCase(UPDATE_CLIENT_SERVICE_DATA.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      .addCase(Get_All_Subadmin_Strategy.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.get_all_subadmin_strategy = action.payload;
       })
       
   },

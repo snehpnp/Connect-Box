@@ -213,8 +213,8 @@ class Clientservice {
                 $set: clientService
             };
             const update_token = await client_services.updateOne(filter, update);
-           
-            
+
+
             // const user_activity = new user_activity_logs(
             //     {
             //         user_id: UserData._id,
@@ -239,6 +239,76 @@ class Clientservice {
 
         }
     }
+
+    async GetAllStrategy(req, res) {
+
+        const { prefix_key } = req.body
+
+        try {
+            if (!prefix_key || prefix_key == undefined || prefix_key == null) {
+                return res.send({
+                    status: false,
+                    msg: "Prefix key requir",
+                    data: []
+                })
+            }
+
+            const subadminStrategies = await User_model.aggregate([
+                {
+                    $match: {
+                        Role: "SUBADMIN",
+                        prifix_key: prefix_key
+
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "strategies",
+                        localField: "_id",
+                        foreignField: "maker_id",
+                        as: "strategies"
+                    }
+                },
+                {
+                    $unwind: "$strategies"
+                },
+                {
+                    $project: {
+                        _id: "$strategies._id",
+                        strategy_name: "$strategies.strategy_name",
+                        UserName: "$UserName",
+                        strategy_description: "$strategies.strategy_description",
+                        strategy_category: "$strategies.strategy_category",
+                        strategy_segment: "$strategies.strategy_segment",
+                        strategy_image: "$strategies.strategy_image",
+                        strategy_indicator: "$strategies.strategy_indicator",
+                        maker_id: "$strategies.maker_id",
+                        createdAt: "$strategies.createdAt",
+                        max_trade: "$strategies.max_trade",
+                        strategy_percentage: "$strategies.strategy_percentage"
+                    }
+                }
+            ]);
+
+            if (!subadminStrategies) {
+                return res.send({ status: false, msg: "strategy Find Error", data: [] })
+            }
+
+            if (subadminStrategies) {
+                return res.send({ status: true, msg: "fetch all stategy successfully !", data: subadminStrategies })
+            }
+
+        }
+        catch(err){
+            console.log("Error to fatch the strategy ",err)
+            return res.send({status: false, msg: "strategy does not exit !", data:[]})
+        }
+     
+
+        
+    }
+
+
 
 
 
