@@ -24,41 +24,66 @@ class Employee {
         });
       }
 
-      const matchStage = {
-        $match: {
-          parent_id: userId,
-          Role: "EMPLOYEE",
-        },
-      };
-      const projectionStage = {
-        $project: {
-          _id: 1,
-          userName: "$UserName",
-          email: "$Email",
-          fullName: "$FullName",
-          clientKey: "$client_key",
-          phoneNo: "$PhoneNo",
-          broker: "$broker",
-          tradingStatus: "$TradingStatus",
-          activeStatus: "$ActiveStatus",
-          createDate: {
-            $dateToString: { format: "%m-%d-%Y", date: "$Create_Date" },
-          },
-          Role: "$Role",
-        },
-      };
 
-      const pipeline = [matchStage, projectionStage];
+
+
+
+      const pipeline = [
+        {
+          $match: {
+            parent_id: userId,
+            Role: "EMPLOYEE",
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "_id",
+            foreignField: "employee_id",
+            as: "Users",
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            userName: "$UserName",
+            email: "$Email",
+            fullName: "$FullName",
+            clientKey: "$client_key",
+            phoneNo: "$PhoneNo",
+            broker: "$broker",
+            tradingStatus: "$TradingStatus",
+            activeStatus: "$ActiveStatus",
+            createDate: {
+              $dateToString: { format: "%m-%d-%Y", date: "$Create_Date" },
+            },
+            Role: "$Role",
+            Users: 1,
+          },
+        },
+      ];
+
       const results = await User_model.aggregate(pipeline);
 
-      res.send({
+      if (results.length > 0) {
+        await Promise.all(results.map(async (data) => {
+          var usernameGet = await User_model.find({ employee_id: data._id.toString() }).select('UserName');
+          data.Users = usernameGet;
+        }));
+      }
+      
+      
+
+
+
+      return res.send({
         status: true,
         msg: "Data retrieved successfully.",
         data: results,
       });
     } catch (error) {
       console.error("Error fetching data:", error);
-      res.status(500).send({
+      return res.status(500).send({
         status: false,
         msg: "Error fetching data. Please try again later.",
         data: [],
@@ -106,9 +131,8 @@ class Employee {
 
       // Create new user
       const newUser = new User_model({
-        FullName:
-          FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ""),
-        UserName: FullName,
+        FullName: FullName,
+        UserName: FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ""),
         Email,
         PhoneNo,
         Password: hashedPassword,
@@ -120,6 +144,7 @@ class Employee {
         parent_id,
         Is_First_login: "1",
         subadmin_service_type: existingPrefix.subadmin_service_type,
+        employee_id: parent_id
       });
 
       // Save the new user
@@ -245,7 +270,7 @@ class Employee {
         group_services: Subadmin_permision_data.group_services,
       };
 
- 
+
       const filter = { user_id: existingUsername._id };
 
       const updateOperation = { $set: SubadminPermision };

@@ -1,6 +1,6 @@
 
 
-import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
+import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN,Get_All_Employee_Names } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { GetOneUser, Get_All_Broker, UpdateUsers } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
@@ -19,25 +19,20 @@ const AddClient = () => {
   const navigate = useNavigate()
   const { id } = useParams();
 
-
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
   var subadmin_service_type1 = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
 
-
-
   const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-
   const [getOneUsers, setOneUsers] = useState([]);
   const [stgDiseble, setStgDiseble] = useState([]);
   const [getAllBroker, setAllBroker] = useState([]);
 
-
-
-
-
-
+  const [employeeNames, setEmployeeNames] = useState({
+    loading: true,
+    data: [],
+  });
 
   const [serviceName, setServiceName] = useState({
     loading: true,
@@ -53,8 +48,6 @@ const AddClient = () => {
     loading: true,
     data: [],
   });
-
-
 
 
 
@@ -177,6 +170,20 @@ const AddClient = () => {
         allGroupService.data && allGroupService.data.map((item) => ({ label: item.name, value: item._id }))
       , label_size: 12, col_size: 6, disable: false
     },
+    {
+      name: "Employees",
+      label: "Employees",
+      type: "select1",
+      options:
+        employeeNames.data &&
+        employeeNames.data.map((item) => ({
+          label: item.UserName,
+          value: item._id,
+        })),
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
   ];
 
 
@@ -198,6 +205,8 @@ const AddClient = () => {
       Service_Type: 0,
       balance: 0,
       per_trade_value: null,
+      Employees: null,
+
     },
     validate: (values) => {
       let errors = {};
@@ -261,6 +270,7 @@ const AddClient = () => {
         Service_Type: values.Service_Type,
         per_trade_value: values.per_trade_value || 0,
         _id: getOneUsers.getClients[0]._id,
+        employee_id:values.Employees || null
 
       };
 
@@ -378,6 +388,8 @@ const AddClient = () => {
     formik.setFieldValue('per_trade_value', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].per_trade_value);
     formik.setFieldValue('balance', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Balance);
     formik.setFieldValue('demat_userid', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].demat_userid);
+    formik.setFieldValue('Employees', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].employee_id);
+
 
 
 
@@ -525,8 +537,40 @@ const AddClient = () => {
   };
 
 
+
+  const getAllEmployeeName = async () => {
+    try {
+      var data = { user_ID: user_id };
+      const response = await dispatch(Get_All_Employee_Names(data)).unwrap();
+
+      if (response.status) {
+        const formattedData = response.data.map((row, index) => ({
+          ...row,
+          id: index + 1,
+        }));
+        setEmployeeNames({
+          loading: false,
+          data: formattedData,
+        });
+      } else {
+        setEmployeeNames({
+          loading: false,
+          data: [],
+        });
+      }
+    } catch (error) {
+      console.log("Error", error);
+      setEmployeeNames({
+        loading: true,
+        data: [],
+      });
+    }
+  };
+
+
   useEffect(() => {
     AllBroker();
+    getAllEmployeeName()
     getAllUsers()
     GetAllStrategy();
     getAllGroupService();

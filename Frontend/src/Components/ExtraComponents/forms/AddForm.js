@@ -276,41 +276,9 @@ const DynamicForm = ({
                         </>
                       ) : field.type === "file1" ? (
                         <>
-                          {/* <div className={`col-lg-${field.col_size}`}>
-                            <div className="profile-picture">
-                              <div className="upload-profile">
-                                <div className="profile-img">
-                                  <img
-                                    id="blah"
-                                    className="avatar"
-                                    src={formik.values[field.name] ? formik.values[field.name] : "assets/img/profiles/avatar-14.jpg"}
-                                    alt="profile-img"
-                                  />
-                                </div>
-                                <div className="add-profile">
-                                  <h5>Upload a Photo</h5>
-                                  <span>{selectedImage ? selectedImage.name : "Profile-pic.jpg"}</span>
-                                </div>
-                              </div>
-                              <div className="img-upload d-flex">
-                                <label className="btn btn-upload">
-                                  Upload <input type="file"
-                                    id={field.name}
-                                    className="form-control"
-                                    onChange={(e) =>
-                                      handleFileChange(e, index, field.name)
-                                    } />
-                                </label>
-                            </div>
-                            </div>
-
-
-
-
-                          </div> */}
+                         
                           <div className={`col-lg-${field.col_size}`}>
                             <div className="row d-flex">
-                              {/* <div className={`col-lg-${field.col_size}`}> */}
                               <div className="mb-3">
                                 <label className={`col-form-${field.label_size}`} htmlFor={field.name}>
                                   {field.label}
@@ -351,6 +319,61 @@ const DynamicForm = ({
                               >
                                 {field.label}
                                 <span className="text-danger">*</span>
+                              </label>
+                              <div
+                                className={`col-lg-${title === "addgroup" ? 12 : 12
+                                  }`}
+                              >
+
+
+                                <select
+                                  className="default-select wide form-control"
+                                  aria-describedby="basic-addon1"
+                                  disabled={field.disable}
+                                  id={field.name}
+                                  {...formik.getFieldProps(field.name)}
+                                >
+                                  <option value="" selected  >
+                                     Select {field.label}
+                                  </option>
+                                  {field.options.map((option) => (
+                                    <option
+                                      key={option.value}
+                                      value={option.value}
+                                    >
+                                      {option.label}
+                                    </option>
+                                  ))}
+                                </select>
+
+                                {formik.touched[field.name] &&
+                                  formik.errors[field.name] ? (
+                                  <div style={{ color: "red" }}>
+                                    {formik.errors[field.name]}
+                                  </div>
+                                ) : null}
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ) : field.type === "select1" ? (
+                        <>
+                          <div
+                            className={`col-lg-${title === "update_theme" ? 12 : 6
+                              }`}
+                          >
+                            <div className="input-block row mb-3">
+                              <label
+                                className={`col-lg-${title === "forlogin"
+                                  ? 3
+                                  : title === "update_theme"
+                                    ? 12
+                                    : 7
+                                  }  col-form-label p-0 mx-3 `}
+                                htmlFor={field.name}
+                              >
+                                {field.label}
+                           
                               </label>
                               <div
                                 className={`col-lg-${title === "addgroup" ? 12 : 12
