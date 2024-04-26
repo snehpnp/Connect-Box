@@ -1,53 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { admin_header, subamdin_header, User_header, employee_header, superadmin_header, research_header } from './Header_config';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import {
+  admin_header,
+  subamdin_header,
+  User_header,
+  employee_header,
+  superadmin_header,
+  research_header,
+} from "./Header_config";
 
 import { useNavigate } from "react-router-dom";
 
 const Header = () => {
-  const roles = JSON.parse(localStorage.getItem('user_role'))
-  const [openSubMenu, setOpenSubMenu] = useState('');
+  const roles = JSON.parse(localStorage.getItem("user_role"));
+  const [openSubMenu, setOpenSubMenu] = useState("");
   const [activeLink, setActiveLink] = useState(null);
-
 
   const navigate = useNavigate();
 
-
-
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   const token = JSON.parse(localStorage.getItem("user_details")).token;
-  const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type;
-
+  const subadmin_service_type = JSON.parse(
+    localStorage.getItem("user_details")
+  ).subadmin_service_type;
 
   const toggleSubMenu = (menuTitle) => {
-    setOpenSubMenu(openSubMenu === menuTitle ? '' : menuTitle);
+    setOpenSubMenu(openSubMenu === menuTitle ? "" : menuTitle);
   };
 
-  var HeaderData = []
+  var HeaderData = [];
 
   if (roles === "ADMIN") {
-    HeaderData.push(admin_header)
+    HeaderData.push(admin_header);
   } else if (roles === "SUBADMIN") {
-    HeaderData.push(subamdin_header)
+    HeaderData.push(subamdin_header);
   } else if (roles === "USER") {
-    HeaderData.push(User_header)
+    HeaderData.push(User_header);
   } else if (roles === "EMPLOYEE") {
-    HeaderData.push(employee_header)
+    HeaderData.push(employee_header);
   } else if (roles === "SUPERADMIN") {
-    HeaderData.push(superadmin_header)
+    HeaderData.push(superadmin_header);
   } else if (roles === "RESEARCH") {
-    HeaderData.push(research_header)
+    HeaderData.push(research_header);
   }
 
-
-
-
   const ClearSession = async () => {
-
     if (token) {
-      const decodedToken = JSON.parse(atob(token.split('.')[1])); // Decode JWT token
+      const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT token
       const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-
 
       if (decodedToken.exp && decodedToken.exp < currentTime) {
         // Token has expired
@@ -59,68 +59,104 @@ const Header = () => {
         }, 1000);
       }
     }
-
-
   };
 
   useEffect(() => {
     ClearSession();
   }, []);
 
+  const [isNavOpen, setIsNavOpen] = useState(false);
 
+  // useEffect(() => {
+  //   if (isNavOpen) {
+  //     document.body.classList.add('slide-nav');
+  //   } else {
+  //     document.body.classList.remove('slide-nav');
+  //   }
+  // }, [isNavOpen]);
+
+  const toggleNav = (data) => {
+    console.log("neha", data);
+    if (data.Data.length == 0) {
+      document.body.classList.remove("slide-nav");
+    }
+  };
+
+
+  const toggleNav1 = (item) => {
+    console.log("neha1", item);
+    // if(data.Data.length == 0){
+      document.body.classList.remove('slide-nav');
+    // }
+  };
 
   const handleLinkClick = (id) => {
     setActiveLink(id);
   };
 
   return (
-
     <div className="sidebar" id="sidebar">
       <div className="sidebar-inner slimscroll">
         <div id="sidebar-menu" className="sidebar-menu">
           <nav className="greedys sidebar-horizantal">
             <ul className="list-inline-item list-unstyled links">
-              {HeaderData.flat() && HeaderData.flat().map((data) => {
-
-     
+              {HeaderData.flat() &&
+                HeaderData.flat().map((data) => {
                   return (
-                    <li className='submenu' key={data.id} onMouseEnter={() => toggleSubMenu(data.id)} onMouseLeave={() => setOpenSubMenu('')}>
+                    <li
+                      className="submenu"
+                      key={data.id}
+                      onMouseEnter={() => toggleSubMenu(data.id)}
+                      onMouseLeave={() => setOpenSubMenu("")}
+                    >
                       <Link
                         to={data.route}
-                        className={`${openSubMenu === data.id ? 'subdrop' : ''} ${activeLink === data.id ? 'active' : ''}`}
-                        style={{ textDecoration: 'none', color: 'inherit' }}
-                        onClick={() => handleLinkClick(data.id)}
+                        className={`${
+                          openSubMenu === data.id ? "subdrop" : ""
+                        } ${activeLink === data.id ? "active" : ""}`}
+                        style={{ textDecoration: "none", color: "inherit" }}
+                        onClick={() => {
+                          handleLinkClick(data.id);
+                          toggleNav(data);
+                        }}
                       >
-                        <i className={data.Icon} id="animated-icon"></i> <span> {data.name}</span> {data.Data.length > 0 ? <span className="menu-arrow"></span> : ""}
+                        <i className={data.Icon} id="animated-icon"></i>{" "}
+                        <span> {data.name}</span>{" "}
+                        {data.Data.length > 0 ? (
+                          <span className="menu-arrow"></span>
+                        ) : (
+                          ""
+                        )}
                       </Link>
 
-                      <ul style={{ display: openSubMenu === data.id ? 'block' : 'none' }}>
+                      <ul
+                        style={{
+                          display: openSubMenu === data.id ? "block" : "none",
+                        }}
+                      >
                         {data.Data.map((item) => (
                           <li key={item.id}>
-                            <Link to={item.route} className="active">
-                              <i className={item.Icon} id="animated1-icon"></i> <span> {item.name}</span>
+                            <Link
+                              to={item.route}
+                              className=""
+                              onClick={() => {
+                                toggleNav1(item);
+                              }}
+                            >
+                              <i className={item.Icon} id="animated1-icon"></i>{" "}
+                              <span> {item.name}</span>
                             </Link>
                           </li>
                         ))}
                       </ul>
                     </li>
                   );
-                
-
-
-
-
-
-
-
-              })}
+                })}
             </ul>
-
           </nav>
         </div>
       </div>
     </div>
-
   );
 };
 
