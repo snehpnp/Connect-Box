@@ -4538,9 +4538,11 @@ span.select2-container.select2-container--default.select2-container--open {
 }
 
 .sidebar .sidebar-menu ul li ul li a {
-    background: #fff
+    background: #7539ff;
 }
-
+.sidebar .sidebar-menu ul li ul li a {
+    background: #7539ff;
+}
 .sidebar .sidebar-menu ul li ul li a:before {
     height: 0 !important
 }
@@ -9333,7 +9335,7 @@ table .badge {
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li.submenu ul li a:hover {
     color: #7539ff;
-    background: #6d44ff;
+    background: linear-gradient(320deg, #DDCEFF 0%, #DBECFF 100%) !important;
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a .menu-arrow {
@@ -17564,10 +17566,11 @@ body.filter-opened {
 
 .login-wrapper {
     width: 100%;
-    height: 100%;
+    height: 100lvh;
     display: table-cell;
     vertical-align: middle;
-    padding-top: 1.875rem
+    padding-top: 1.875rem;
+    overflow: hidden;
 }
 
 .login-wrapper .loginbox {
@@ -33398,19 +33401,22 @@ table.table,
     position: relative;
 }
 
-table.table:before,
-.custom-data-grid:before {
+
+
+table.table:before, .custom-data-grid:before {
     content: ' ';
     display: block;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
+    position: absolute;
     opacity: 0.1;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 50%;
-    /* z-index:1; */
+    z-index: -1;
+    background-image: url('https://www.pnpuniverse.com/images/logo/pnp.png');
 }
 
 label.form-label,
@@ -34270,9 +34276,12 @@ img {
 {
     background-color: #1c1d22;
 }
-[data-layout-mode=light] .login-btn
+[data-layout-mode=light] .login-btn, [data-layout-mode=light] .login-btn:active,
+[data-layout-mode=null] .login-btn, [data-layout-mode=null] .login-btn:active,
+[data-layout-mode=null] .otp-modal .btn-primary
 {
-    background: #7539ff;
+    background: #7539ff !important;
+    border-color:#7539ff !important;
 }
 .w-30
 {
@@ -34327,6 +34336,10 @@ width: 30%;
         text-align: center;
         display: block;
     }
+    .intro-fill .welcome-1,.intro-fill .welcome-2,.intro-fill .welcome-3 {
+        font-size: 20px;
+        max-width: 300px;
+    } 
 }
 @media(max-width: 767px) {
   
@@ -34344,9 +34357,27 @@ width: 30%;
     .login-left img {
     display: none;
 }
-    
+  
 }
 @media(max-width: 991px) {
+   
+    .intro-fill {
+        width: 100%;
+
+    }
+    [data-layout=horizontal] body .sidebar .sidebar-menu ul li a .menu-arrow {
+        right: 12px !important;
+    }
+    [data-layout=horizontal] body .sidebar .sidebar-menu ul li a {
+        padding: 0px 0px 0px 15px;
+    }
+    .sidebar .sidebar-menu ul {
+        width: 100%;
+    }
+    .greedys {
+
+        padding: 0;
+    }
     [data-aos^=fade][data-aos^=fade] {
         opacity: 1 !important; 
         

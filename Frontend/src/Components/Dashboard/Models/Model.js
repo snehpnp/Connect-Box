@@ -21,7 +21,7 @@ const Modal_Component = ({
   return (
     <div className="">
       <Modal
-        className="neha-modal"
+        className="otp-modal"
         show={isOpen}
         centered
         size={size}
