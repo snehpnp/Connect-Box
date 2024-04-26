@@ -54,6 +54,7 @@ const AddClient = () => {
       Per_trade: "0",
       parent_id: null,
       parent_role: null,
+      prefix_key:''
     },
     validate: (values) => {
       let errors = {};
@@ -103,12 +104,16 @@ const AddClient = () => {
         subadmin_service_type: values.subadmin_servic_type,
         strategy_Percentage: values.strategy_Percentage,
         Per_trade: values.Per_trade,
-        prefix_key: values.prefix_key,
+        prifix_key: values.prefix_key,
         password: values.password,
         parent_id: user_id || "65feb434ce02a722ac3b997d",
         parent_role: Role || "ADMIN",
       };
 
+      console.log("prefix_key :", data)
+
+
+ 
 
 
       setSubmitting(false);
