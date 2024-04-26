@@ -7,40 +7,33 @@ import System from "../Layouts/SubAdmin/Systems/System.js";
 import Adduser from "../Layouts/SubAdmin/Users/User_Add.js";
 import ALLUSER from "../Layouts/SubAdmin/Users/Alluser.js";
 import Strategy from "../Layouts/SubAdmin/Services/Strategys/Strategy.jsx";
-
-
 import Grpservices from "../Layouts/SubAdmin/Services/GroupServices/Grpservices";
 import AllServices from "../Layouts/SubAdmin/Services/AllServices/AllServices.js";
 import Edit_Strategies from "../Layouts/SubAdmin/Services/Strategys/Edit_Strategies"
-
-
 import Help from '../Layouts/Comman/Help/Helpsubadmin.js';
 import MessageBroadcast from '../Layouts/SubAdmin/MessageBroadCast/MessageBroadCast';
-
-
 import Option_Chain from '../Layouts/SubAdmin/Option/Option_Chain.js';
 import Add_Group from '../Layouts/SubAdmin/Services/GroupServices/Add_Groups.js'
-
-
 import Makecall from '../Layouts/Comman/Make/Makecall.js';
 import Strategytransaction from '../Layouts/SubAdmin/Services/Strategys/Strategy_transaction.js';
 import Edit_Group_Service from '../Layouts/SubAdmin/Services/GroupServices/Edit_Group.js'
 import Edit_User from '../Layouts/SubAdmin/Users/EditUser.js'
-
 import Wallets from '../Layouts/Comman/Wallet/Wallets';
-
 import Strategyhistory from '../Layouts/SubAdmin/Services/Strategys/Strategy_history.js'
 import OrderDetails from '../Layouts/SubAdmin/Trade/Order.js'
-
-
 import Position from '../Layouts/SubAdmin/Trade/Position.js'
-
-
 import Profile from '../Layouts/Comman/Profile/Profile';
-
 import Openposition from '../Layouts/SubAdmin/Option/Open_Positions.js';
-
 import Faqs from '../Layouts/Comman/Faqs';
+import Client_Orders from '../Layouts/SubAdmin/Trade/Client_Orders'
+import Settings from '../Layouts/Comman/Setting_Page/Settings.js';
+import AllEmployees from '../Layouts/SubAdmin/Subadmin_Employees/AllEmployee'
+import AddEmployee from '../Layouts/SubAdmin/Subadmin_Employees/AddEmployee'
+import Edit_Employee from '../Layouts/SubAdmin/Subadmin_Employees/Update_Employee'
+import AllResearcherStrategy from '../Layouts/SubAdmin/Researcher/AllResearcherStrategy.js'
+
+
+
 
 // strategydesc
 const SubAdmin_Routing = () => {
@@ -52,6 +45,7 @@ const SubAdmin_Routing = () => {
       <div className="page-wrapper">
         <Routes>
           <Route exact path="/dashboard" element={<DashBoard />} />
+
           <Route exact path="/system" element={<System />} />
           <Route exact path="/help" element={<Help />} />
           <Route exact path="/message-broadcast" element={<MessageBroadcast />} />
@@ -74,10 +68,18 @@ const SubAdmin_Routing = () => {
           <Route exact path="/orders" element={<OrderDetails />} />
           <Route exact path="/position" element={<Position />} />
           <Route exact path="/open-position" element={<Openposition />} />
+          <Route exact path="/client/orders" element={<Client_Orders/>}/>
+           <Route exact path="/employees" element={<AllEmployees/>}/>
+           <Route exact path="/employee/add" element={<AddEmployee/>}/>
+           <Route exact path="/employee/edit/:id" element={<Edit_Employee/>}/>
 
           <Route exact path="/faqs" element={<Faqs />} />
+          <Route exact path="/setting" element={<Settings />} />
+          <Route exact path="/researcher-strategy" element={<AllResearcherStrategy />} />
 
 
+          
+          
 
         </Routes>
       </div>
