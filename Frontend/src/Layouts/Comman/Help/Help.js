@@ -149,8 +149,26 @@ function System() {
                         <i className="fas fa-money-bill-wave pe-2" />
                         Help
                       </h5>
+                      <DropdownButton
+                        id="dropdown-basic-button"
+                        title="Select user"
+                        onSelect={handleDropdownSelect}
+                        style={{
+                          display: "flex",
+                          justifyContent: "end",
+                          alignItems: "end",
+                          marginTop: "1rem",
+                          marginRight: "1rem",
+                        }}
+                      >
+                        <Dropdown.Item eventKey="Subadmin">Subadmin</Dropdown.Item>
+                        <Dropdown.Item eventKey="User">User</Dropdown.Item>
+                      </DropdownButton>
+
                       <div className="pay-btn text-end w-auto" />
+
                     </div>
+
 
                   </div>
                 </div>
