@@ -44,6 +44,11 @@ class Employee {
           },
         },
         {
+          $sort: {
+            createdAt: -1 
+          }
+        },
+        {
           $project: {
             _id: 1,
             userName: "$UserName",
@@ -71,8 +76,8 @@ class Employee {
           data.Users = usernameGet;
         }));
       }
-      
-      
+
+
 
 
 
@@ -105,12 +110,12 @@ class Employee {
       } = req.body;
       const Role = "EMPLOYEE";
 
-      const existingEmail = await User_model.findOne({ Email, prifix_key });
+      const existingEmail = await User_model.findOne({ Email });
       if (existingEmail) {
         return res.send({ status: false, msg: "Email already exists" });
       }
 
-      const existingPhone = await User_model.findOne({ PhoneNo, prifix_key });
+      const existingPhone = await User_model.findOne({ PhoneNo });
       if (existingPhone) {
         return res.send({ status: false, msg: "Phone number already exists" });
       }
