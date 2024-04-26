@@ -11,6 +11,8 @@ import ClientServiceSlice from '../Slice/Users/ClientServiceSlice'
 import UserdashboardSlice from '../Slice/Users/Userdashboard.Slice'
 import OptionChainSlice from '../Slice/Subadmin/OptionChainSlice'
 import TradeDetailsSlice from '../Slice/Subadmin/TradeDetailsSlice'
+import ResearcherSlice from '../Slice/Researcher/ResearcherSlice'
+import AllResearcherStrategySlice from "../Slice/Subadmin/AllResearcherStrategySlice";
 
 
 
@@ -31,10 +33,8 @@ const store = configureStore({
     UserdashboardSlice : UserdashboardSlice.reducer,
     TradeDetailsSlice : TradeDetailsSlice.reducer,
     Userinfo1Slice: Userinfo1Slice.reducer,
-   
-
-
-
+    ResearcherSlice : ResearcherSlice.reducer,
+    AllResearcherStrategySlice : AllResearcherStrategySlice.reducer
   },
 });
 

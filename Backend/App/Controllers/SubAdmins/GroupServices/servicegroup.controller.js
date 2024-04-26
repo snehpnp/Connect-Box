@@ -53,7 +53,7 @@ class GroupService {
           return res.send({ status: false, msg: 'Please Enter Group  name _ is mandatory Emaple AAA_', data: [] });
         }
         if (maker_id_find.prifix_key != grpService.substring(0, 3).toUpperCase()) {
-          return res.send({ status: false, msg: 'Please Enter Group starting 3 leter is your prifix letter', data: [] });
+          return res.send({ status: false, msg: 'Please Enter Group starting 3 leter is your Prefix Key letter', data: [] });
 
         }
         return true;
@@ -166,7 +166,7 @@ class GroupService {
         return res.send({ status: false, msg: 'Please Enter Group name _ is mandatory', data: [] });
       }
       if (maker_id_find.prifix_key != groupdetails.name.substring(0, 3).toUpperCase()) {
-        return res.send({ status: false, msg: 'Please Enter Group starting 3 leter is your prifix letter', data: [] });
+        return res.send({ status: false, msg: 'Please Enter Group starting 3 leter is your Prefix Key letter', data: [] });
 
       }
 

@@ -1,19 +1,16 @@
 
 
-import { useDispatch } from "react-redux";
-import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
-
-import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
-import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
 import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
+import { GetOneUser, Get_All_Broker, UpdateUsers } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
-import { GetOneUser, Get_All_Broker, } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
-import Loader from '../../../Utils/Loader';
-
-import { useFormik } from 'formik';
+import ToastButton from '../../../Components/ExtraComponents/Alert_Toast';
+import AddForm from '../../../Components/ExtraComponents/forms/AddForm';
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import Loader from '../../../Utils/Loader';
+import { useDispatch } from "react-redux";
+import { useFormik } from 'formik';
+import Swal from 'sweetalert2';
 
 
 
@@ -28,9 +25,16 @@ const AddClient = () => {
   var subadmin_service_type1 = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
 
 
-  const [refresh, setrefresh] = useState(false)
+
+  const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
+  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
 
   const [getOneUsers, setOneUsers] = useState([]);
+  const [stgDiseble, setStgDiseble] = useState([]);
+  const [getAllBroker, setAllBroker] = useState([]);
+
+
+
 
 
 
@@ -39,12 +43,11 @@ const AddClient = () => {
     loading: true,
     data: [],
   });
+
   const [getAllStategy, setgetallStrategy] = useState({
     loading: true,
     data: [],
   });
-
-
 
   const [allGroupService, setAllGroupService] = useState({
     loading: true,
@@ -52,111 +55,10 @@ const AddClient = () => {
   });
 
 
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
-  const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
-  const [getAllBroker, setAllBroker] = useState([]);
-
-
-
-  const formik = useFormik({
-    initialValues: {
-      profile_Img: null,
-      fullName: "",
-      username: "",
-      email: "",
-      phone: "",
-      broker: null,
-      groupservice: null,
-      licence: null,
-      parent_id: null,
-      parent_role: null,
-      demat_userid: null,
-      api_key: null,
-    },
-    validate: (values) => {
-      let errors = {};
-      if (!values.fullName) {
-        errors.fullName = "Full Name is required";
-      }
-  
-      if (!values.username) {
-        errors.username = "Username is required";
-      }
-      if (!values.broker) {
-        errors.broker = "Username is required";
-      }
-
-      if (!values.licence) {
-        errors.licence = "licence is required";
-      }
-
-      if (!values.groupservice) {
-        errors.groupservice = "Username is required";
-      }
-      if (!values.email) {
-        errors.email = "Please enter your email address.";
-      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
-        errors.email = "Please enter a valid email address.";
-      }
-      if (!values.phone) {
-        errors.phone = "Please enter your phone number.";
-      } else if (!/^\d{10}$/.test(values.phone)) {
-        errors.phone = "Please enter a valid 10-digit phone number.";
-      }
-
-      return errors;
-    },
-    onSubmit: async (values) => {
-      const req = {
-        ProfileImg: ".",
-        FullName: values.fullName,
-        UserName: values.username,
-        Email: values.email,
-        license_type: values.licence,
-        PhoneNo: values.phone,
-        Balance: null,
-        subadmin_service_type: null,
-        strategy_Percentage: null,
-        Per_trade: null,
-        password: null,
-        Strategies: selectedCheckboxesAndPlan,
-        parent_id: user_id,
-        parent_role: Role || "SUBADMIN",
-        demat_userid: values.demat_userid,
-        group_service: values.groupservice,
-        broker: values.broker,
-
-      };
-
-console.log("req",req)
-
-      // await dispatch(AddUsers(req))
-      //   .unwrap()
-      //   .then(async (response) => {
-
-
-      //     if (response.status) {
-      //       toast.success(response.msg);
-      //       setTimeout(() => {
-      //         navigate("/subadmin/users")
-      //       }, 1000);
-
-      //     } else {
-      //       toast.error(response.msg);
-      //     }
-
-      //   })
-      //   .catch((error) => {
-      //     console.log("Error", error);
-      //   });
-
-    },
-  });
 
 
 
   // 0 = 2 days 1= Demo 2 =Live
-
   const fields = [
     {
       name: "profile_Img",
@@ -168,7 +70,7 @@ console.log("req",req)
     },
     {
       name: "fullName",
-      label: "FullName",
+      label: "Full Name",
       type: "text",
       label_size: 6,
       col_size: 6,
@@ -180,7 +82,7 @@ console.log("req",req)
       type: "text",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      disable: true,
     },
     {
       name: "email",
@@ -188,7 +90,7 @@ console.log("req",req)
       type: "text",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      disable: true,
     },
 
     {
@@ -197,11 +99,8 @@ console.log("req",req)
       type: "number",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      disable: true,
     },
-
-
-
 
     {
       name: "licence",
@@ -228,18 +127,25 @@ console.log("req",req)
     },
 
     {
+
       name: "Service_Type",
       label: "Service Type",
-      type: "select",
-      options: [
-        { label: "Fixed", value: "1" },
-        { label: "Per Trade", value: "2" },
-
-      ],
-      showWhen: (values) => subadmin_service_type1 == 1,
+      type: "test",
       label_size: 12,
       col_size: 6,
-      disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type == 0 ? false :true,
+      // disable: false,
+      showWhen: (values) => subadmin_service_type1 == 1,
+      disable: getOneUsers.getClients !== undefined && getOneUsers.getClients[0].license_type == 2 ? true : false,
+
+    },
+    {
+      name: "balance",
+      label: "Balance",
+      type: "text3",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+      showWhen: (values) => subadmin_service_type1 == 1 && values.licence === "2" && formik.values.Service_Type == 2,
     },
     {
       name: 'broker',
@@ -273,14 +179,178 @@ console.log("req",req)
     },
   ];
 
+
+
+  const formik = useFormik({
+    initialValues: {
+      profile_Img: null,
+      fullName: "",
+      username: "",
+      email: "",
+      phone: "",
+      broker: null,
+      groupservice: null,
+      licence: null,
+      parent_id: null,
+      parent_role: null,
+      demat_userid: null,
+      api_key: null,
+      Service_Type: 0,
+      balance: 0,
+      per_trade_value: null,
+    },
+    validate: (values) => {
+      let errors = {};
+      if (!values.fullName) {
+        errors.fullName = "Full Name is required";
+      }
+
+      if (!values.username) {
+        errors.username = "Username is required";
+      }
+      if (!values.broker) {
+        errors.broker = "broker is required";
+      }
+
+      if (values.broker == 0 && values.licence == 2) {
+        errors.broker = "broker is required";
+      }
+      if (values.broker == 0 && values.licence == 0) {
+        errors.broker = "broker is required";
+      }
+
+
+      if (!values.licence) {
+        errors.licence = "licence is required";
+      }
+
+
+
+      if (!values.groupservice) {
+        errors.groupservice = "Username is required";
+      }
+      if (!values.email) {
+        errors.email = "Please enter your email address.";
+      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
+        errors.email = "Please enter a valid email address.";
+      }
+      if (!values.phone) {
+        errors.phone = "Please enter your phone number.";
+      } else if (!/^\d{10}$/.test(values.phone)) {
+        errors.phone = "Please enter a valid 10-digit phone number.";
+      }
+
+      return errors;
+    },
+    onSubmit: async (values) => {
+
+
+      const req = {
+        ProfileImg: ".",
+        FullName: values.fullName,
+        license_type: values.licence,
+        Balance: values.balance || 0,
+        Per_trade: null,
+        Strategies: selectedCheckboxesAndPlan,
+        parent_id: user_id,
+        parent_role: Role || "SUBADMIN",
+        demat_userid: values.demat_userid,
+        group_service: values.groupservice,
+        broker: values.broker,
+        Per_trade: null,
+        Service_Type: values.Service_Type,
+        per_trade_value: values.per_trade_value || 0,
+        _id: getOneUsers.getClients[0]._id,
+
+      };
+
+
+      var stg_error = 0
+      if (selectedCheckboxesAndPlan.length > 0) {
+        selectedCheckboxesAndPlan.forEach((stg) => {
+          if (stg.plan_id == "0") {
+            stg_error = 1
+            return
+          }
+        })
+      }
+
+      if (stg_error == 1 && values.licence == 2) {
+        Swal.fire({
+          title: "Error!",
+          text: "Please Select A Plan ",
+          icon: "error",
+          timer: 1200,
+          timerProgressBar: true
+        });
+        return
+      }
+
+      Swal.fire({
+        title: "Do you want to save the changes?",
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: "Save",
+        denyButtonText: `Don't save`
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+
+          await dispatch(UpdateUsers(req))
+            .unwrap()
+            .then(async (response) => {
+              if (response.status) {
+
+                Swal.fire({
+                  title: "Update Successful!",
+                  text: response.msg,
+                  icon: "success",
+                  timer: 1200,
+                  timerProgressBar: true
+                });
+                setTimeout(() => {
+                  navigate("/subadmin/users")
+                }, 1200);
+
+              } else {
+                Swal.fire({
+                  title: "Error!",
+                  text: response.msg,
+                  icon: "error"
+                });
+              }
+
+            })
+            .catch((error) => {
+              console.log("Error in Update User", error);
+            });
+        } else if (result.isDenied) {
+
+          navigate("/subadmin/users")
+
+        }
+      });
+
+
+
+    },
+  });
+
+  
+
   const getAllUsers = async () => {
     var data = { user_ID: id }
     await dispatch(GetOneUser(data)).unwrap()
       .then((response) => {
         if (response.status) {
           setOneUsers(response.data);
-          setSelectedCheckboxes(response.data.ClientStrategy.map((stg) => stg.strategy_id))
 
+          setSelectedCheckboxes(response.data.ClientStrategy.map((stg) => stg.strategy_id))
+          setSelectedCheckboxesAndPlan(response.data.ClientStrategy.map((stg) => ({ id: stg.strategy_id, plan_id: stg.plan_id })));
+
+          if (response.data.getClients[0].license_type == 2) {
+
+            setStgDiseble(response.data.ClientStrategy.map((stg) => stg.strategy_id))
+          }
 
         }
         else {
@@ -293,9 +363,6 @@ console.log("req",req)
       })
   }
 
-  useEffect(() => {
-    getAllUsers()
-  }, [])
 
 
 
@@ -308,12 +375,20 @@ console.log("req",req)
     formik.setFieldValue('licence', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].license_type);
     formik.setFieldValue('groupservice', getOneUsers.getClients !== undefined && getOneUsers.ClientGroupName[0].groupService_id);
     formik.setFieldValue('Service_Type', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Service_Type);
+    formik.setFieldValue('per_trade_value', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].per_trade_value);
+    formik.setFieldValue('balance', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Balance);
+    formik.setFieldValue('demat_userid', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].demat_userid);
+
+
+
 
 
 
   }, [getOneUsers.getClients])
 
 
+
+  // GET ALL GROUP SERVICES
   const getAllGroupService = async () => {
 
     try {
@@ -347,17 +422,7 @@ console.log("req",req)
 
   };
 
-  useEffect(() => {
-    getAllGroupService();
-  }, [refresh]);
-
-
-
-
-  //FIND ALL GROUP SERVICES
-  const FindAllGroupService = allGroupService.data.find(item => item._id === formik.values.groupservice);
-
-
+  // GET ALL GROUP SERVICES NAME
   const getAllGroupServicesName = async () => {
     if (formik.values.groupservice) {
       var data = { id: formik.values.groupservice }
@@ -382,11 +447,8 @@ console.log("req",req)
 
     }
   }
-  useEffect(() => {
-    getAllGroupServicesName();
-  }, [refresh, formik.values.groupservice])
 
-
+  // GET ALL STRATEGY
   const GetAllStrategy = async () => {
     var data = { id: user_id }
     await dispatch(GetSubStrategys(data)).unwrap()
@@ -409,11 +471,8 @@ console.log("req",req)
         console.log("Error Stategy finding Error", error)
       })
   }
-  useState(() => {
-    GetAllStrategy();
-  }, [])
 
-
+  // GET ALL BROKER
   const AllBroker = async () => {
     await dispatch(Get_All_Broker()).unwrap()
       .then((response) => {
@@ -450,6 +509,7 @@ console.log("req",req)
 
 
 
+  // SET PLAN FUNCTION
   const PlanSetinState = (id) => {
     const strategyPlanMonth = id.split('_')[1];
     const checkboxId = id.split('_')[0];
@@ -465,19 +525,34 @@ console.log("req",req)
   };
 
 
-
-  useState(() => {
+  useEffect(() => {
     AllBroker();
+    getAllUsers()
+    GetAllStrategy();
+    getAllGroupService();
   }, [])
 
 
-  var planSelect = [1, 2, 3, 4]
+
+  useEffect(() => {
+    getAllGroupServicesName();
+  }, [formik.values.groupservice])
+
+
+  // console.log("formik.values.Service_Type", formik.values.Service_Type)
+
+  // useEffect(() => {
+  //   setSelectedCheckboxesAndPlan([])
+  //   setSelectedCheckboxes([])
+  // }, [formik.values.Service_Type])
 
 
   return (
     <>
       {
-        getAllStategy.data.length == 0 ? <Loader /> :
+        getAllStategy.data.length == 0 ?
+          <Loader />
+          :
           <>
             <AddForm
               fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))}
@@ -511,7 +586,7 @@ console.log("req",req)
                   </div>
 
                   <div className="row mt-4">
-                    <h6>All Strategy</h6>
+                    {/* STRATEGY CODE */}
                     {subadmin_service_type1 == 2 ?
                       (<div className="row mt-4">
                         <div class="input-block ">
@@ -525,22 +600,25 @@ console.log("req",req)
                                   <input
                                     type="checkbox"
                                     className="form-check-input"
+                                    id={strategy._id}
                                     name={strategy.strategy_name}
                                     value={strategy._id}
-                                    onChange={() =>
-                                      handleStrategyChange(strategy._id)
-                                    }
+                                    checked={selectedCheckboxes && selectedCheckboxes.includes(strategy._id)}
+                                    onChange={() => handleStrategyChange(strategy._id)}
+                                    disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                   />
                                   <label
                                     className="form-check-label"
-                                    htmlFor={strategy.strategy_name}
+                                    htmlFor={strategy._id}
                                   >
                                     {strategy.strategy_name}
+
                                   </label>
 
-                                  {formik.values.licence == 1
-                                    ? ""
-                                    : selectedCheckboxes.includes(strategy._id) && (
+
+                                  {formik.values.licence == 2 ?
+                                    
+                                    selectedCheckboxes.includes(strategy._id) && (
                                       <>
                                         <div
                                           className=""
@@ -556,11 +634,9 @@ console.log("req",req)
                                                 type="radio"
                                                 name={`option_${strategy._id}`}
                                                 value="1"
-                                                defaultChecked
                                                 id={`${strategy._id}_1`}
-                                                onChange={(e) =>
-                                                  PlanSetinState(e.target.id)
-                                                }
+                                                checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 1)}
+                                                onChange={(e) => PlanSetinState(e.target.id)}
                                               />
                                               <label
                                                 style={{
@@ -568,7 +644,7 @@ console.log("req",req)
                                                   fontSize: "1rem",
                                                 }}
                                               >
-                                                monthly{" "}
+                                                Monthly
                                               </label>
                                             </div>
                                             <div className="d-flex align-items-center">
@@ -577,9 +653,8 @@ console.log("req",req)
                                                 name={`option_${strategy._id}`}
                                                 value="2"
                                                 id={`${strategy._id}_2`}
-                                                onChange={(e) =>
-                                                  PlanSetinState(e.target.id)
-                                                }
+                                                checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 2)}
+                                                onChange={(e) => PlanSetinState(e.target.id)}
                                               />
                                               <label
                                                 style={{
@@ -587,7 +662,7 @@ console.log("req",req)
                                                   fontSize: "1rem",
                                                 }}
                                               >
-                                                quarterly{" "}
+                                                Quarterly
                                               </label>
                                             </div>
                                             <div className="d-flex align-items-center">
@@ -596,9 +671,8 @@ console.log("req",req)
                                                 name={`option_${strategy._id}`}
                                                 value="3"
                                                 id={`${strategy._id}_3`}
-                                                onChange={(e) =>
-                                                  PlanSetinState(e.target.id)
-                                                }
+                                                checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 3)}
+                                                onChange={(e) => PlanSetinState(e.target.id)}
                                               />
                                               <label
                                                 style={{
@@ -606,18 +680,17 @@ console.log("req",req)
                                                   fontSize: "1rem",
                                                 }}
                                               >
-                                                halfyearly{" "}
+                                                Halfyearly
                                               </label>
                                             </div>
                                             <div className="d-flex align-items-center">
                                               <input
                                                 type="radio"
                                                 name={`option_${strategy._id}`}
-                                                value="3"
+                                                value="4"
                                                 id={`${strategy._id}_4`}
-                                                onChange={(e) =>
-                                                  PlanSetinState(e.target.id)
-                                                }
+                                                checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 4)}
+                                                onChange={(e) => PlanSetinState(e.target.id)}
                                               />
                                               <label
                                                 style={{
@@ -625,24 +698,37 @@ console.log("req",req)
                                                   fontSize: "1rem",
                                                 }}
                                               >
-                                                yearly{" "}
+                                                Yearly
                                               </label>
                                             </div>
                                           </div>
+
+
                                         </div>
                                       </>
-                                    )}
+                                    )
+                                    : ""}
                                 </div>
                               </div>
                             </div>
                           </div>
                         ))}
-                      </div>) : formik.values.Service_Type ? (<div className="row mt-4">
+                      </div>)
+
+
+
+
+
+
+
+
+                      // Per Trade Code 
+                      : formik.values.Service_Type ? (<div className="row mt-4">
                         <div class="input-block ">
                           <label>All Strategy</label>
                         </div>
                         {getAllStategy.data.map((strategy) => (
-                          strategy.Service_Type === formik.values.Service_Type && (
+                          strategy.Service_Type == formik.values.Service_Type && (
                             <div className={`col-lg-3 mt-2`} key={strategy._id}>
                               <div className="row">
                                 <div className="col-lg-12">
@@ -650,20 +736,23 @@ console.log("req",req)
                                     <input
                                       type="checkbox"
                                       className="form-check-input"
+                                      id={strategy._id}
                                       name={strategy.strategy_name}
                                       value={strategy._id}
+                                      checked={selectedCheckboxes && selectedCheckboxes.includes(strategy._id)}
                                       onChange={() => handleStrategyChange(strategy._id)}
+                                      disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                     />
                                     <label
                                       className="form-check-label"
-                                      htmlFor={strategy.strategy_name}
+                                      htmlFor={strategy._id}
                                     >
                                       {strategy.strategy_name}
                                     </label>
 
-                                    {formik.values.licence == 1 ? (
-                                      ""
-                                    ) : (
+
+                                    {formik.values.licence == 2
+                                      ?
                                       selectedCheckboxes.includes(strategy._id) && (
                                         <>
                                           <div
@@ -680,8 +769,8 @@ console.log("req",req)
                                                   type="radio"
                                                   name={`option_${strategy._id}`}
                                                   value="1"
-                                                  defaultChecked
                                                   id={`${strategy._id}_1`}
+                                                  checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 1)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
                                                 />
                                                 <label
@@ -690,7 +779,7 @@ console.log("req",req)
                                                     fontSize: "1rem",
                                                   }}
                                                 >
-                                                  monthly{" "}
+                                                  Monthly
                                                 </label>
                                               </div>
                                               <div className="d-flex align-items-center">
@@ -699,6 +788,7 @@ console.log("req",req)
                                                   name={`option_${strategy._id}`}
                                                   value="2"
                                                   id={`${strategy._id}_2`}
+                                                  checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 2)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
                                                 />
                                                 <label
@@ -707,7 +797,7 @@ console.log("req",req)
                                                     fontSize: "1rem",
                                                   }}
                                                 >
-                                                  quarterly{" "}
+                                                  Quarterly
                                                 </label>
                                               </div>
                                               <div className="d-flex align-items-center">
@@ -716,6 +806,7 @@ console.log("req",req)
                                                   name={`option_${strategy._id}`}
                                                   value="3"
                                                   id={`${strategy._id}_3`}
+                                                  checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 3)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
                                                 />
                                                 <label
@@ -724,15 +815,16 @@ console.log("req",req)
                                                     fontSize: "1rem",
                                                   }}
                                                 >
-                                                  halfyearly{" "}
+                                                  Halfyearly
                                                 </label>
                                               </div>
                                               <div className="d-flex align-items-center">
                                                 <input
                                                   type="radio"
                                                   name={`option_${strategy._id}`}
-                                                  value="3"
+                                                  value="4"
                                                   id={`${strategy._id}_4`}
+                                                  checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 4)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
                                                 />
                                                 <label
@@ -741,14 +833,17 @@ console.log("req",req)
                                                     fontSize: "1rem",
                                                   }}
                                                 >
-                                                  yearly{" "}
+                                                  Yearly
                                                 </label>
                                               </div>
                                             </div>
+
+
                                           </div>
                                         </>
                                       )
-                                    )}
+                                      :
+                                      ""}
                                   </div>
                                 </div>
                               </div>

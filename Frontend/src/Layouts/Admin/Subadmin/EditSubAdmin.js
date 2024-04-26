@@ -9,6 +9,8 @@ import {
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
+import Swal from 'sweetalert2'
+
 
 const EditClient = () => {
   const dispatch = useDispatch();
@@ -78,16 +80,30 @@ const EditClient = () => {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
-            toast.success(response.msg);
+            Swal.fire({
+              title: "Subadmin Added!",
+              text: "subadmin added successfully",
+              icon: "success",
+              timer: 1000,
+              timerProgressBar: true,
+            });
             setTimeout(() => {
               navigate("/admin/allsubadmin");
             }, 1000);
+             
           } else {
-            toast.error(response.msg);
+            Swal.fire({
+              title: "Subadmin Added!",
+              text: response.msg,
+              icon: "error",
+              timer: 1000,
+              timerProgressBar: true,
+            });
           }
         })
         .catch((error) => {
           console.log("Error", error);
+          
         });
     },
   });
@@ -101,6 +117,15 @@ const EditClient = () => {
       col_size: 12,
       disable: false,
     },
+   
+    {
+      name: "fullName",
+      label: "Full Name",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
     {
       name: "username",
       label: "Username",
@@ -108,14 +133,6 @@ const EditClient = () => {
       label_size: 12,
       col_size: 6,
       disable: true,
-    },
-    {
-      name: "fullName",
-      label: "FullName",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
     },
     {
       name: "email",
@@ -127,7 +144,7 @@ const EditClient = () => {
     },
     {
       name: "mobile",
-      label: "Mobile",
+      label: "Phone Number",
       type: "text",
       label_size: 12,
       col_size: 6,
@@ -135,7 +152,7 @@ const EditClient = () => {
     },
     {
       name: "prifix_key",
-      label: "Prifix Key",
+      label: "Prefix Key",
       type: "text",
       label_size: 12,
       col_size: 6,
@@ -143,7 +160,7 @@ const EditClient = () => {
     },
     {
       name: "subadmin_servic_type",
-      label: "Subadmin Servic Type",
+      label: "Subadmin Service Type",
       type: "select",
       options: [
         { label: "Per Trade", value: "1" },
@@ -188,8 +205,7 @@ const EditClient = () => {
   ];
 
   useEffect(() => {
-    // console.log("s -",rowData !== undefined && rowData[0].subadmin_service_type)
-    // console.log("s typeof-",typeof rowData !== undefined && rowData[0].subadmin_service_type)
+ 
 
     formik.setFieldValue(
       "username",

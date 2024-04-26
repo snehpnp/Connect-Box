@@ -139,7 +139,7 @@ class Admin {
       if (Panel_key.length == 0) {
         return res.send({
           status: false,
-          msg: "client prifix not exist.",
+          msg: "client Prefix Key not exist.",
           data: [],
         });
       }

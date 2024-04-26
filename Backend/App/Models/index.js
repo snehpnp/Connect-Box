@@ -21,10 +21,13 @@ module.exports = {
     Plan:require('./Plan.model'),
     Signals:require('./Signals.model'),
     user_activity_logs:require('./user_logs.model'),
-    subadmin_activity_logs:require('./Subadmin_logs.model'),
+    Activity_logs:require('./Activity_logs.model'),
     get_option_chain_symbols: require('./Get_Option_Chain_Symboll.model'),
     live_price :require('./Live_price.model'),
     live_price_token :require('./Live_price_token.model'),
     MainSignals: require('./Main_signals.model'),
-    SignUpUser :require('./Signup_User.model')
+    SignUpUser :require('./Signup_User.model'),
+    ProfileInfo:require("./ProfileInformation.model"),
+    Activity_category:require("./Activity_category.model"),
+    Subadmin_Permission:require("./Subadmin_permissions"),
 };

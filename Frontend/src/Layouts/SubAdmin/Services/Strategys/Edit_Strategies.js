@@ -8,6 +8,8 @@ import {
   EditSubStrategys,
   GetSubStrategys_ById,
 } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice'
+
 function Edit_Strategies() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -15,6 +17,10 @@ function Edit_Strategies() {
   const [makerId, setMakerId] = useState("");
   const [allStrategy, setAllStrategy] = useState(null);
   const [getStgDescription, setStgDescription] = useState('');
+  const [GetAllSgments, setGetAllSgments] = useState({
+    loading: true,
+    data: [],
+});
 
 
   useEffect(() => {
@@ -22,8 +28,10 @@ function Edit_Strategies() {
       try {
         const response = await dispatch(GetSubStrategys_ById({ id }));
         if (response.payload && response.payload.data) {
-     
+
           setAllStrategy(response.payload.data);
+          setStgDescription(response.payload.data.strategy_description)
+
         }
       } catch (error) {
         console.error("Error fetching strategy data:", error);
@@ -41,106 +49,137 @@ function Edit_Strategies() {
     }
   }, []);
 
+
+  const getservice = async () => {
+    await dispatch(Get_All_Catagory())
+        .unwrap()
+        .then((response) => {
+
+            if (response.status) {
+
+                setGetAllSgments({
+                    loading: false,
+                    data: response.data,
+                });
+            }
+        });
+};
+useEffect(() => {
+    getservice();
+}, []);
+
   const fields = [
     {
-        name: "strategy_name",
-        label: "Strategy Name",
-        type: "text1",
-        label_size: 6,
-        col_size: 6,
-        disable: false,
+      name: "strategy_name",
+      label: "Strategy Name",
+      type: "text1",
+      label_size: 6,
+      col_size: 6,
+      disable: false,
     },
 
     {
-        name: "strategy_category",
-        label: "Catagory",
-        type: "text",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "strategy_category",
+      label: "Catagory",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "strategy_demo_days",
-        label: "Strategy demo days",
-        type: "number",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "strategy_demo_days",
+      label: "Strategy demo days",
+      type: "text3",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "strategy_segment",
-        label: "Strategy Segment",
-        type: "text",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "strategy_segment",
+      label: "Strategy Segment",
+      type: "select",
+      options: GetAllSgments.data.map((item) => ({
+        label: item.name,
+        value: item.name,
+      })),
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "strategy_indicator",
-        label: "Indicator",
-        type: "file1",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "strategy_indicator",
+      label: "Indicator",
+      type: "file1",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "strategy_tester",
-        label: "Strategy Tester",
-        type: "file1",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "strategy_tester",
+      label: "Strategy Tester",
+      type: "file1",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "strategy_image",
-        label: "Strategy Logo",
-        type: "file1",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "strategy_image",
+      label: "Strategy Logo",
+      type: "file1",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "Service_Type",
-        label: "Service Type",
-        type: "test",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
+      name: "max_trade",
+      label: "Maximum Trades",
+      type: "text3",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
     },
     {
-        name: "strategy_amount_month",
-        label: "Monthly",
-        type: "number",
-        label_size: 3,
-        col_size: 3,
-        disable: false,
+      name: "strategy_amount_month",
+      label: "Monthly",
+      type: "text3",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
     },
     {
-        name: "strategy_amount_quarterly",
-        label: "Quaterly",
-        type: "number",
-        label_size: 3,
-        col_size: 3,
-        disable: false,
+      name: "strategy_amount_quarterly",
+      label: "Quaterly",
+      type: "text3",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
     },
     {
-        name: "strategy_amount_half_early",
-        label: "Half Yearly",
-        type: "number",
-        label_size: 3,
-        col_size: 3,
-        disable: false,
+      name: "strategy_amount_half_early",
+      label: "Half Yearly",
+      type: "text3",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
     },
     {
-        name: "strategy_amount_early",
-        label: "Yearly",
-        type: "number",
-        label_size: 3,
-        col_size: 3,
-        disable: false,
+      name: "strategy_amount_early",
+      label: "Yearly",
+      type: "text3",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
+    },
+    {
+      name: "Service_Type",
+      label: "Service Type",
+      type: "test",
+      label_size: 12,
+      col_size: 12,
+      disable: false,
     },
 
-];
+  ];
 
   const formik = useFormik({
     initialValues: {
@@ -156,7 +195,7 @@ function Edit_Strategies() {
       strategy_amount_half_early: "",
       strategy_amount_early: "",
       strategy_demo_days: "",
-      Service_Type: ""
+      Service_Type: ''
 
     },
     validate: (values) => {
@@ -174,9 +213,6 @@ function Edit_Strategies() {
         errors.strategy_segment = "strategy segment is required";
       }
 
-      if (!values.strategy_description) {
-        errors.strategy_description = "strategy description is required";
-      }
       if (!values.strategy_amount_month) {
         errors.strategy_amount_month = "amount is required";
       }
@@ -202,14 +238,18 @@ function Edit_Strategies() {
         strategy_demo_days: values.strategy_demo_days,
         strategy_indicator: values.strategy_indicator,
         strategy_image: values.strategy_image,
-        strategy_description: values.strategy_description,
+        strategy_description: getStgDescription,
         strategy_amount_month: values.strategy_amount_month,
         strategy_amount_quarterly: values.strategy_amount_quarterly,
         strategy_amount_half_early: values.strategy_amount_half_early,
         strategy_amount_early: values.strategy_amount_early,
         maker_id: makerId.user_id,
-        Service_Type: values.Service_Type == '' ? 0 :values.Service_Type
+        max_trade: values.max_trade,
+        Role: "SUBADMIN",
+        Service_Type: values.Service_Type == '' ? 0 : values.Service_Type
       };
+
+      console.log("cp :", data)
 
       await dispatch(EditSubStrategys(data))
         .unwrap()
@@ -237,33 +277,14 @@ function Edit_Strategies() {
       formik.setFieldValue("strategy_tester", allStrategy.strategy_tester);
       formik.setFieldValue("strategy_description", allStrategy.strategy_description);
       formik.setFieldValue("Service_Type", allStrategy.Service_Type);
-
-
-      formik.setFieldValue(
-        "strategy_indicator",
-        allStrategy.strategy_indicator
-      );
-      formik.setFieldValue(" strategy_image", allStrategy.strategy_image);
-      formik.setFieldValue(
-        "strategy_amount_month",
-        allStrategy.strategy_amount_month
-      );
-      formik.setFieldValue(
-        "strategy_amount_quarterly",
-        allStrategy.strategy_amount_quarterly
-      );
-      formik.setFieldValue(
-        "strategy_amount_half_early",
-        allStrategy.strategy_amount_half_early
-      );
-      formik.setFieldValue(
-        "strategy_amount_early",
-        allStrategy.strategy_amount_early
-      );
-      formik.setFieldValue(
-        "strategy_demo_days",
-        allStrategy.strategy_demo_days
-      );
+      formik.setFieldValue("max_trade", allStrategy.max_trade);
+      formik.setFieldValue("strategy_indicator", allStrategy.strategy_indicator);
+      formik.setFieldValue("strategy_image", allStrategy.strategy_image);
+      formik.setFieldValue("strategy_amount_month", allStrategy.strategy_amount_month);
+      formik.setFieldValue("strategy_amount_quarterly", allStrategy.strategy_amount_quarterly);
+      formik.setFieldValue("strategy_amount_half_early", allStrategy.strategy_amount_half_early);
+      formik.setFieldValue("strategy_amount_early", allStrategy.strategy_amount_early);
+      formik.setFieldValue("strategy_demo_days", allStrategy.strategy_demo_days);
     }
   }, [allStrategy]);
 
@@ -277,12 +298,12 @@ function Edit_Strategies() {
       additional_field={
         <>
 
-            <label>Strategy Description</label>
-            <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
-            </textarea>
+          <label>Strategy Description</label>
+          <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
+          </textarea>
         </>
 
-    }
+      }
     />
   );
 }

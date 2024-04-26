@@ -9,7 +9,7 @@ const db = require('../../Models');
 const SignUpUser = db.SignUpUser;
 const User = db.user;
 const company_information = db.company_information;
-
+const user_logs = db.user_activity_logs;
 
 
 // Login CLASS
@@ -18,7 +18,7 @@ class Auth {
     // Login User
     async login(req, res) {
         try {
-            const { Email, Password, device } = req.body;
+            const { Email, Password, device,ip } = req.body;
             // IF Login Time Email CHECK
 
 
@@ -73,12 +73,13 @@ class Auth {
                 'Email': EmailCheck.Email,
                 'user_id': EmailCheck._id,
                 'token': token,
-                'mobile': EmailCheck.PhoneNo, Role: EmailCheck.Role,
+                'mobile': EmailCheck.PhoneNo, 
+                Role: EmailCheck.Role,
                 "broker": EmailCheck.broker,
                 "type": EmailCheck.license_type,
                 "UserName": EmailCheck.UserName,
                 "prifix_key": EmailCheck.prifix_key,
-                "subadmin_service_type": EmailCheck.subadmin_service_type
+                "subadmin_service_type": EmailCheck.Role =="RESEARCH" ? "0" : EmailCheck.subadmin_service_type
 
             };
 
@@ -96,6 +97,18 @@ class Auth {
                 token_query,
                 { new: true }
             )
+
+                const user_login = new user_logs({
+                    user_Id: EmailCheck._id,
+                    admin_Id: EmailCheck.parent_id,
+                    login_status: "Panel On",
+                    role: EmailCheck.Role,
+                    device: "WEB",
+                    system_ip:ip
+
+                })
+                await user_login.save();
+       
 
 
             try {
@@ -194,6 +207,7 @@ class Auth {
             // ADD USER LOGS COLLECTION DATA
             const user_login = new user_logs({
                 user_Id: EmailCheck._id,
+                admin_Id: EmailCheck.parent_id,
                 login_status: "Panel On",
                 role: EmailCheck.Role,
                 device: Device,
@@ -251,6 +265,7 @@ class Auth {
 
             const user_login = new user_logs({
                 user_Id: EmailCheck._id,
+                admin_Id: EmailCheck.parent_id,
                 login_status: "Panel off",
                 role: EmailCheck.Role
             })
@@ -384,7 +399,7 @@ class Auth {
 
     async SignUpUser(req, res) {
         try {
-            const { UserName, Email, PhoneNo , ReferralCode } = req.body;
+            const { UserName, Email, PhoneNo, ReferralCode } = req.body;
             const searchQuery = {
                 $or: [
                     { UserName: UserName },
@@ -443,15 +458,15 @@ class Auth {
                 FullName: req.body.FullName,
                 Email: req.body.Email,
                 PhoneNo: req.body.PhoneNo,
-                ReferralCode : req.body.ReferralCode,
+                ReferralCode: req.body.ReferralCode,
                 End_Date: new Date(today.setDate(today.getDate() + 8))
             });
             await newUser.save();
-            return res.send({status: true, msg : "User SignUp successfully", data : []});
-        } catch(error){
+            return res.send({ status: true, msg: "User SignUp successfully", data: [] });
+        } catch (error) {
 
             console.log("Error in Saving Users", error);
-            return res.send({status :false,msg : "Error in Saving User", data : []})
+            return res.send({ status: false, msg: "Error in Saving User", data: [] })
 
         }
 

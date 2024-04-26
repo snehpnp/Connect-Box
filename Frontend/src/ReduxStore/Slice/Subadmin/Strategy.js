@@ -1,5 +1,128 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG} from "../../../Services/Subadmin/Strategy.service";
+import { GetClientsOrderBy_Prefix,GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG,getOrders_data,EmployeeData,AddEmployeeBySub,DeleteEmployee,UpdateEmployee,get_Employee_Id,get_Employee_Status,GetAllStrategyFor_Employee,GetAllServicesForEmployee} from "../../../Services/Subadmin/Strategy.service";
+
+
+export const GetEmployeeServices= createAsyncThunk(
+    "get/allgroupServices",
+    async (data) => {
+        try {
+            const res = await GetAllServicesForEmployee(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const GetEmployeeStrategy= createAsyncThunk(
+    "get/strategy",
+    async (data) => {
+        try {
+            const res = await GetAllStrategyFor_Employee(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const GetEmployeeStatus= createAsyncThunk(
+    "employee/statusUpdate",
+    async (data) => {
+        try {
+            const res = await get_Employee_Status(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const GetEmployeeByID= createAsyncThunk(
+    "employee/edit",
+    async (data) => {
+        try {
+            const res = await get_Employee_Id(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const Update_Employee= createAsyncThunk(
+    "employee/update",
+    async (data) => {
+        try {
+            const res = await UpdateEmployee(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const Delete_Employee= createAsyncThunk(
+    "Delete/employee",
+    async (data) => {
+        try {
+            const res = await DeleteEmployee(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+export const Add_Employee= createAsyncThunk(
+    "add/employee/data",
+    async (data) => {
+        try {
+            const res = await AddEmployeeBySub(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+
+export const Employee_Details = createAsyncThunk(
+    "employee/data",
+    async (data) => {
+        try {
+            const res = await EmployeeData(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+
+
+
+export const ClientsOrders_Details = createAsyncThunk(
+    "client/Order",
+    async (data) => {
+        try {
+            const res = await GetClientsOrderBy_Prefix(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+export const Orders_Details = createAsyncThunk(
+    "orders/data",
+    async (data) => {
+        try {
+            const res = await getOrders_data(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
 
 
 export const EditSubStrategys = createAsyncThunk(
@@ -132,7 +255,41 @@ const StrategySlice = createSlice({
                 state.isLoading = false;
                 state.get_stretgy_with_img = action.payload;
             })
-         
+            
+            .addCase(Orders_Details.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(ClientsOrders_Details.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(Employee_Details.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(Add_Employee.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.Add_Employee = action.payload;
+            })
+            .addCase(Delete_Employee.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.Delete_Employee = action.payload;
+            })
+            .addCase(Update_Employee.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.Update_Employee = action.payload;
+            })
+            .addCase(GetEmployeeByID.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.GetEmployeeByID = action.payload;
+            })
+            .addCase(GetEmployeeStatus.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(GetEmployeeStrategy.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(GetEmployeeServices.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
     },
 });
 

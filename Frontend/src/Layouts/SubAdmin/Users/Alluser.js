@@ -46,7 +46,7 @@ export default function AllUsers() {
   const [modalId, setmodalId] = useState('');
 
   const [getAllUsers, setAllUsers] = useState({
-    loading: false,
+    loading: true,
     data: [],
     data1: [],
   });
@@ -88,28 +88,7 @@ export default function AllUsers() {
   };
 
 
-  const AllBroker = async () => {
-    await dispatch(Get_All_Broker()).unwrap()
-      .then((response) => {
-        if (response.status) {
 
-
-          setAllBroker(response.data);
-        }
-        else {
-          setAllBroker([]);
-        }
-      })
-      .catch((error) => {
-        console.log("Error Broker find Error :", error)
-      })
-
-  }
-
-
-  useState(() => {
-    AllBroker();
-  }, [])
 
 
 
@@ -155,7 +134,7 @@ export default function AllUsers() {
     },
     {
       field: "Email",
-      headerName: "Email Id",
+      headerName: "Email ID",
       width: 220,
       headerClassName: styles.boldHeader,
     },
@@ -224,8 +203,9 @@ export default function AllUsers() {
             aria-label="delete"
             size="small"
             onClick={() => {
-              setShowDeleteModal(true);
-              setmodalId(params.row._id);
+
+
+              handleDeleteConfirmation(params.row._id)
             }}
           >
             <DeleteIcon />
@@ -237,7 +217,7 @@ export default function AllUsers() {
 
     {
       field: "Create_Date",
-      headerName: "createdAt",
+      headerName: "Created At",
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
@@ -245,132 +225,89 @@ export default function AllUsers() {
   ];
 
 
-
-  const handleEdit = (row) => {
-    navigate('/subadmin/user/edit/' + row._id)
-  };
-
-  const handleDelete = async (row) => {
-
-    var data = { id: modalId }
-    await dispatch(DeleteUser(data)).unwrap()
-      .then((response) => {
-        if (response.status) {
-          toast.success(response.msg)
-          setShowDeleteModal(false)
-          setmodalId('')
-          setrefresh(!refresh);
-        }
-        else {
-          toast.error(response.msg);
-        }
-      })
-      .catch((error) => {
-        console.log("Error User Does Not Exit", error)
-      })
-
-
-
+  const handleEdit = async (row) => {
+    navigate('/subadmin/user/edit/' + row._id);
 
   };
+
+
+
+
 
 
 
   const handleSwitchChange = async (event, id) => {
-    const user_active_status = event.target.checked ? 1 : 0; // 1 for active, 0 for inactive
+    const user_active_status = event.target.checked ? 1 : 0;
 
-    await dispatch(Show_Status({ id, user_active_status }))
-      .unwrap()
-      .then(async (response) => {
+    const result = await Swal.fire({
+      title: "Do you want to save the changes?",
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      cancelButtonText: "Cancel",
+      allowOutsideClick: false, // Prevents closing modal by clicking outside or pressing Esc key
+    });
+
+    if (result.isConfirmed) {
+      try {
+        const response = await dispatch(Show_Status({ id, user_active_status })).unwrap();
         if (response.status) {
-          toast.success(response.msg);
-          setrefresh(!refresh)
+          Swal.fire({
+            title: "Saved!",
+            icon: "success",
+            timer: 1000,
+            timerProgressBar: true
+          });
+          setTimeout(() => {
+            Swal.close(); // Close the modal
+            setrefresh(!refresh);
+          }, 1000);
         } else {
-          toast.error(response.msg);
+          setrefresh(!refresh);
         }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-
-      });
-
+      } catch (error) {
+        console.error("Error", error);
+        Swal.fire("Error", "There was an error processing your request.", "error");
+      }
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      window.location.reload();
+    }
   };
 
 
 
 
 
+  const AllBroker = async () => {
 
-  const getUsersData = async () => {
-    var data = { user_ID: user_id }
-    await dispatch(GetAllUsers(data))
-      .unwrap()
+    await dispatch(Get_All_Broker()).unwrap()
       .then((response) => {
-
         if (response.status) {
-          const formattedData = response.data && response.data.map((row, index) => ({
-            ...row,
-            id: index + 1,
-          }));
 
-          const filterData = formattedData.filter((item) => {
-            const searchInputMatch =
-              searchInput == '' ||
-              item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
-              item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
-              item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
-              item.prifix_key.toLowerCase().includes(searchInput.toLowerCase())
 
-            return searchInputMatch
-
-          })
-
-          setAllUsers({
-            loading: true,
-            data: searchInput ? filterData : formattedData,
-            data1: [
-              { name: "Total Users", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
-              { name: "Active Users", count: response.activeClientsCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
-              {
-                name: "InActive Users",
-                count: response.inActiveCount || 0
-                , Icon: "fe fe-x-circle",
-                color: "#ed3a3a"
-              },
-              {
-                name: "Live Users",
-                count: response.liveUser || 0
-                , Icon: "fas fa-dollar-sign"
-                , color: "#1d8147"
-
-              },
-            ],
-          });
-
-        } else {
-
-          setAllUsers({
-            loading: true,
-            data: [],
-            data1: [],
-          });
+          setAllBroker(response.data);
+        }
+        else {
+          setAllBroker([]);
         }
       })
       .catch((error) => {
-        console.log("Error", error);
+        console.log("Error Broker find Error :", error)
+      })
 
-        setAllUsers({
-          loading: false,
-          data: [],
-          data1: [],
-        });
-      });
-  };
+  }
 
 
-  useEffect(() => {
-    getUsersData();
-  }, [refresh, searchInput]);
+  useState(() => {
+    AllBroker();
+  }, [])
+
+
+
+
+
+
+
+
 
 
   const RefreshHandle = () => {
@@ -401,8 +338,9 @@ export default function AllUsers() {
   }, [getAllUsers.data])
 
 
-  const handleDeleteConfirmation = () => {
-    Swal.fire({
+  // DELETE SWEET ALERT 2
+  const handleDeleteConfirmation = async (id) => {
+    const result = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
       icon: "warning",
@@ -410,21 +348,102 @@ export default function AllUsers() {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success"
-        });
-      }
-      setShowDeleteModal(false);  
     });
+
+    if (result.isConfirmed) {
+      var data = { id: id };
+      try {
+        const response = await dispatch(DeleteUser(data)).unwrap();
+        if (response.status) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+            timer: 1000,
+            timerProgressBar: true,
+            onClose: () => {
+              setShowDeleteModal(false);
+            }
+          });
+          setmodalId('');
+          setrefresh(!refresh);
+        } else {
+        }
+      } catch (error) {
+        console.error('There was a problem with the API request:', error);
+        Swal.fire({
+          title: "Error!",
+          text: "There was an error processing your request.",
+          icon: "error"
+        });
+      } finally {
+        setShowDeleteModal(false);
+      }
+    } else {
+      setShowDeleteModal(false);
+    }
   };
+
+
+  const getUsersData = async () => {
+    var data = { user_ID: user_id }
+    await dispatch(GetAllUsers(data))
+      .unwrap()
+      .then((response) => {
+
+        if (response.status) {
+          const formattedData = response.data && response.data.map((row, index) => ({
+            ...row,
+            id: index + 1,
+          }));
+
+          const filterData = formattedData.filter((item) => {
+            const searchInputMatch =
+              searchInput == '' ||
+              item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
+              item.prifix_key.toLowerCase().includes(searchInput.toLowerCase())
+
+            return searchInputMatch
+
+          })
+
+          setAllUsers({
+            loading: false,
+            data: searchInput ? filterData : formattedData,
+
+          });
+
+        } else {
+
+          setAllUsers({
+            loading: false,
+            data: [],
+            data1: [],
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+
+        setAllUsers({
+          loading: true,
+          data: [],
+          data1: [],
+        });
+      });
+  };
+
+
+  useEffect(() => {
+    getUsersData();
+  }, [refresh, searchInput]);
+
 
   return (
     <>
-      {getAllUsers.loading ? (
+      {!getAllUsers.loading ? (
         <>
           <div className="content container-fluid" data-aos="fade-left">
             <div className="page-header">
@@ -498,29 +517,6 @@ export default function AllUsers() {
               </div>
             </div>
 
-            {/* <div className="super-admin-list-head">
-              <div className="row">
-                {getAllUsers &&
-                  getAllUsers.data1.map((data, index) => (
-                    <div className="col-xl-3 col-md-6 d-flex" key={index}>
-                      <div className="card w-100">
-                        <div className="card-body">
-                          <div className="grid-info-item total-items">
-                            <div className="grid-info">
-                              <span>{data.name}</span>
-                              <h4 style={{ color: data.color }} >{data.count}</h4>
-                            </div>
-                            <div className="grid-head-icon">
-                              <i className={data.Icon} style={{ color: data.color }} />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div> */}
-
             <FullDataTable
               styles={styles}
               label={label}
@@ -532,16 +528,6 @@ export default function AllUsers() {
       ) : (
         <Loader />
       )}
-
-
-
-      {ShowDeleteModal && (
-        <div>
-          {handleDeleteConfirmation()}
-        </div>
-      )}
-
-
 
     </>
   );

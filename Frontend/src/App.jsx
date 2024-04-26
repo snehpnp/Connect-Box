@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Routing from './Routes/Routes';
+import Routing from './Routes/Routes.routes';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Loader from './Utils/Loader';

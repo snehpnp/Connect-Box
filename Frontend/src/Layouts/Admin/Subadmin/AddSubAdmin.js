@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 import AddForm from "../../../Components/ExtraComponents/forms/AddForm";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
+import Swal from 'sweetalert2'
 
 import { useFormik } from "formik";
 
@@ -23,7 +24,7 @@ const AddClient = () => {
   const [inputPerStrategy, setInputPerStrategy] = useState(false);
 
   const handleSelectChange = (e) => {
- 
+
     const selectedValue = e.target.value;
     formik.handleChange(e);
     if (selectedValue === "1") {
@@ -75,20 +76,20 @@ const AddClient = () => {
       }
       if (!values.balance) {
         errors.balance = "Please Enter Balance";
-    }
+      }
       if (!values.password) {
         errors.password = "Please Enter Password";
       }
-      if (!values.Per_trade ) {
+      if (!values.Per_trade) {
         errors.Per_trade = "Please Enter per trade value";
 
       } if (!values.strategy_Percentage) {
         errors.strategy_Percentage = "Please Enter strategy percentage value";
       }
-      
-      if (!values.prifix_key) {
-        errors.prifix_key = "Please Enter Prefix Key";
-      }  
+
+      if (!values.prefix_key) {
+        errors.prefix_key = "Please Enter Prefix Key";
+      }
       return errors;
     },
     onSubmit: async (values, { setSubmitting }) => {
@@ -102,11 +103,13 @@ const AddClient = () => {
         subadmin_service_type: values.subadmin_servic_type,
         strategy_Percentage: values.strategy_Percentage,
         Per_trade: values.Per_trade,
-        prifix_key: values.prifix_key,
+        prefix_key: values.prefix_key,
         password: values.password,
         parent_id: user_id || "65feb434ce02a722ac3b997d",
         parent_role: Role || "ADMIN",
       };
+
+
 
       setSubmitting(false);
 
@@ -114,16 +117,30 @@ const AddClient = () => {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
-            toast.success(response.msg);
+            Swal.fire({
+              title: "Subadmin Added!",
+              text: "subadmin added successfully",
+              icon: "success",
+              timer: 1000,
+              timerProgressBar: true,
+            });
             setTimeout(() => {
               navigate("/admin/allsubadmin");
             }, 1000);
-          } else {
-            toast.error(response.msg);
+          }
+          else {
+            Swal.fire({
+              title: "Error !",
+              text: "subadmin add error",
+              icon: "error",
+              timer: 1000,
+              timerProgressBar: true,
+            });
           }
         })
         .catch((error) => {
-          console.log("Error", error);
+          console.log("error :", error)
+
         });
     },
   });
@@ -186,8 +203,9 @@ const AddClient = () => {
       disable: false,
     },
     {
-      name: "prifix_key",
-      label: "Prifix Key",
+
+      name: "prefix_key",
+      label: "Prefix Key",
       type: "text2",
       label_size: 12,
       col_size: 6,
@@ -210,14 +228,14 @@ const AddClient = () => {
     {
       name:
         formik.values.subadmin_servic_type === "1" ||
-        formik.values.subadmin_servic_type === "2"
+          formik.values.subadmin_servic_type === "2"
           ? formik.values.subadmin_servic_type === "1"
             ? "Per_trade"
             : "strategy_Percentage"
           : "",
       label:
         formik.values.subadmin_servic_type === "1" ||
-        formik.values.subadmin_servic_type === "2"
+          formik.values.subadmin_servic_type === "2"
           ? formik.values.subadmin_servic_type === "1"
             ? "Per Trade Value"
             : "% Per Strategy"
@@ -225,7 +243,7 @@ const AddClient = () => {
       type: "text3",
       placeholder:
         formik.values.subadmin_servic_type === "1" ||
-        formik.values.subadmin_servic_type === "2"
+          formik.values.subadmin_servic_type === "2"
           ? formik.values.subadmin_servic_type === "1"
             ? "Please Enter Trade Value"
             : "Please enter % between 1 to 100"

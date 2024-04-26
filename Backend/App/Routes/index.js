@@ -19,5 +19,11 @@ module.exports = function (app) {
     app.use(require("./Comman/Makecall.routes"))
     app.use(require("./Comman/Brokeraccesstoken.routes"))
     app.use(require("./Comman/Optionchain.routes"))
+    app.use(require("./Comman/Activity.routes"))
+
+
+    app.use(require("./SuperAdmin/SuperAdmin.routes"))
+
+    app.use(require("./Researcher/Researcher.routes"))
 
 };

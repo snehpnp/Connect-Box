@@ -348,20 +348,19 @@ function MessageBroadcast() {
 
   return (
     <>
-      <div className="container-fluid" >
-        <div className="page-header">
-          <div className="content-page-header">
-            <h6>Message Broadcast</h6>
-          </div>
-        </div>
+      <div className="content container-fluid" >
 
-        <div className="mt-3 ">
+        <div className="card" data-aos="fade-left">
+          <div className="card-header">
+          <h5 className=" card-title mb-0 w-auto">Message Broadcast</h5>
+          </div>
+          <div className="card-body"> <div className="mt-3 ">
           <Box sx={{ width: '100%' }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
               <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                 <Tab label="Send" {...a11yProps(0)} />
                 <Tab label="Sent Messages" {...a11yProps(1)} />
-                <Tab label=" Recieved Messages" {...a11yProps(2)} />
+                <Tab label="Received Messages" {...a11yProps(2)} />
 
               </Tabs>
             </Box>
@@ -378,7 +377,7 @@ function MessageBroadcast() {
                   </div>
                   <div className="col-md-7">
                     <div>
-                      <div className="mt-3">
+                      <div className="input-block mt-3">
                         <label className="form-label" htmlFor="strategy-select">
                           Strategy
                         </label>
@@ -399,7 +398,7 @@ function MessageBroadcast() {
                           </select>
                         </div>
                       </div>
-                      <div className="mt-3">
+                      <div className=" input-block mt-3">
                         <label className="form-label" htmlFor="broker-select">
                           Broker
                         </label>
@@ -422,7 +421,7 @@ function MessageBroadcast() {
                       </div>
                     </div>
 
-                    <div className="mt-3">
+                    <div className="input-block mt-3">
                       <label className="form-label" htmlFor="message">
                         Message
                       </label>
@@ -472,7 +471,15 @@ function MessageBroadcast() {
 
             </CustomTabPanel>
           </Box>
+        </div></div>
         </div>
+        {/* <div className="page-header">
+          <div className="content-page-header">
+            <h6>Message Broadcast</h6>
+          </div>
+        </div> */}
+
+       
 
 
         {modal !== 0 && (

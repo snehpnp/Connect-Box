@@ -6,7 +6,12 @@ const dateTime = require('node-datetime');
 // ----------------------------------------------------------------------
 
 export function fDate(date) {
-  return format(new Date(date), 'dd MMMM yyyy');
+  if(date == "" || date == null ){
+    return ""
+  }else{
+
+    return format(new Date(date), 'dd MMMM yyyy');
+  }
 }
 
 export function fDateTime(date) {
@@ -143,3 +148,14 @@ export const dateFormate = (date) => {
   const ccdate = dt.format('Y-m-d');
   return ccdate
 }
+
+
+export const isToday =(date) =>{
+  const today = new Date();
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  );
+}
+

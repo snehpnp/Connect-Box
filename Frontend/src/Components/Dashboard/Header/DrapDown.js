@@ -7,10 +7,11 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { Minimize } from 'lucide-react';
 
+
 const DropDown = () => {
     const navigate = useNavigate();
 
-
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isFullScreen, setIsFullScreen] = useState(false);
     const [showFunds, setShowFunds] = useState(false);
     const [themeMode, setThemeMode] = useState('light');
@@ -19,25 +20,23 @@ const DropDown = () => {
 
     const [profileData, setProfileData] = useState([]);
     const [error, setError] = useState(null);
-
+    const [profileImage, setProfileImage] = useState("");
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+    const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
     var Role = JSON.parse(localStorage.getItem("user_details")).Role
     var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName
-    var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
-
-
 
 
     const fetchData = async () => {
 
         try {
             let data = { "id": user_id }
-
             await dispatch(ProfileInfo(data))
                 .unwrap()
                 .then(async (response) => {
                     if (response.status) {
                         setProfileData(response.data)
+                        setProfileImage(response.data[0].profile_img);
                     } else {
                         toast.error(response.msg);
                     }
@@ -60,16 +59,19 @@ const DropDown = () => {
     }, []);
 
 
-    const LogoutUser = (e) => {
-        e.stopPropagation(); // Stop event propagation
 
+
+
+    const LogoutUser = (e) => {
+        // e.stopPropagation(); // Stop event propagation
+   
 
         localStorage.removeItem('user_details')
         localStorage.removeItem('user_role')
-
-        window.location.reload();
+        navigate('/login')
     };
 
+    // Define toggleTheme function
     const toggleTheme = () => {
 
         const newThemeMode = themeMode === 'light' ? 'dark' : 'light';
@@ -80,7 +82,13 @@ const DropDown = () => {
         htmlElement.setAttribute('data-topbar', newThemeMode);
         localStorage.setItem('theme_mode', newThemeMode);
 
+        // setTimeout(() => {
+        //     window.location.reload();
+        // }, 200);
     };
+
+
+
 
 
     const toggleFullScreen = () => {
@@ -106,11 +114,14 @@ const DropDown = () => {
     };
 
 
+
     const walletmodal = () => {
         if (Role == "ADMIN") {
             // navigate('/admin/wallet')
         } else if (Role == "SUBADMIN") {
             navigate('/subadmin/wallet')
+        } else if (Role == "RESEARCH") {
+            navigate('/research/wallet')
         }
 
     }
@@ -125,9 +136,29 @@ const DropDown = () => {
             navigate('/user/profile')
         } else if (Role == "EMPLOYEE") {
             navigate('/employee/profile')
+        } else if (Role == "RESEARCH") {
+            navigate('/research/profile')
+        }
+
+
+
+    }
+     
+    const SettingPage = () => {
+        if (Role == "ADMIN") {
+            navigate('/admin/setting')
+        } else if (Role == "SUBADMIN") {
+            navigate('/subadmin/setting')
+        } else if (Role == "USER") {
+            navigate('/user/setting')
+        } else if (Role == "EMPLOYEE") {
+            navigate('/employee/setting')
         }
 
     }
+
+
+
 
     const toggleFundsVisibility = () => {
         setShowFunds(!showFunds);
@@ -136,15 +167,11 @@ const DropDown = () => {
 
 
 
-
     // Apply theme based on localStorage value on page load
     useEffect(() => {
         const storedThemeMode = localStorage.getItem('theme_mode');
         if (storedThemeMode) {
             setThemeMode(storedThemeMode);
-        } else {
-            localStorage.setItem('theme_mode', "light");
-            setThemeMode('light');
         }
     }, []);
 
@@ -157,27 +184,49 @@ const DropDown = () => {
         htmlElement.setAttribute('data-topbar', themeMode);
     }, [themeMode]);
 
+
+    function formatNumber(value) {
+        if (value < 1000) {
+            return value.toString();
+        } else if (value < 10000) {
+            return (value / 1000).toFixed(0) + 'k';
+        } else if (value < 1000000) {
+            return (value / 1000).toFixed(0) + 'k';
+        } else if (value < 10000000) {
+            return (value / 1000000).toFixed(0) + 'M';
+        } else if (value < 1000000000) {
+            return (value / 1000000).toFixed(0) + 'M';
+        } else if (value < 10000000000) {
+            return (value / 1000000000).toFixed(0) + 'B';
+        } else if (value < 1000000000000) {
+            return (value / 1000000000).toFixed(0) + 'B';
+        } else if (value < 10000000000000) {
+            return (value / 1000000000000).toFixed(0) + 'T';
+        } else {
+            return (value / 1000000000000).toFixed(0) + 'T';
+        }
+    }
     return (
 
         <div className="mb-0 dropdown custom-dropdown">
 
             <ul className="nav nav-tabs user-menu">
 
-                {Role == "SUBADMIN" && (<li className="nav-item dropdown  flag-nav dropdown-heads">
+                {Role == "SUBADMIN" && (<li className="nav-item dropdown flag-nav dropdown-heads">
+
                     {subadmin_service_type == 2 ? "STRATEGY WISE" : "PER TRADE"}
+
                 </li>)}
-
-
-
 
                 {Role !== "USER" ? <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
                     <button
                         type="button"
                         data-bs-dismiss="modal"
-                        className="btn btn-primary cancel-btn me-2 mt-2"
+                        className="btn btn-primary cancel-btn me-2 mt-2 iconclass"
                         style={{
 
                             backgroundColor: "#7539FF",
+
                             color: "white",
                             border: "none",
                             display: "flex",
@@ -192,12 +241,12 @@ const DropDown = () => {
                         {showFunds ? (
                             <span>
                                 <IndianRupee style={{ height: "24px", marginRight: "10px" }} />
-                                <strong>{profileData && profileData[0].Balance || "-"}</strong>
+                                <strong>{formatNumber(profileData && profileData[0].Balance) || "-"}</strong>
                             </span>
                         ) : (
-                            <span className='d-flex align-items-center'>
-                                <i className="fe fe-eye" style={{ fontSize: "24px", marginRight: "10px" }} />
-                                <span>View Fund </span>
+                            <span>
+                                <i className="fe fe-eye " style={{ fontSize: "24px", marginRight: "10px" }} />
+                                <strong>*****</strong>
                             </span>
                         )}
                         {/* {showFunds && "+"} */}
@@ -212,13 +261,13 @@ const DropDown = () => {
 
 
 
-                <li className="nav-item dropdown  flag-nav dropdown-heads">
+                <li className="nav-item dropdown  flag-nav dropdown-heads iconclass">
                     <a className="nav-link" data-bs-toggle="dropdown" href="#" role="button">
                         <i className="fe fe-bell" /> <span className="badge rounded-pill" />
                     </a>
                 </li>
 
-                <li className="nav-item has-arrow dropdown-heads">
+                <li className="nav-item has-arrow dropdown-heads iconclass">
                     <a onClick={toggleFullScreen} className="win-maximize">
                         {isFullScreen ? <Minimize /> : <i className="fe fe-maximize" />}
                     </a>
@@ -239,9 +288,14 @@ const DropDown = () => {
                         <a className="user-a nav-a d-flex" data-bs-toggle="dropdown" aria-expanded="false" >
                             <span className="user-img">
                                 <img
-                                    src="assets/img/profiles/avatar-07.jpg"
+                                    src={
+                                        profileImage
+                                          ? profileImage
+                                          : "assets/img/profiles/ProfileAvataar/hacker.png"
+                                      }
                                     alt="img"
                                     className="profilesidebar"
+
                                 />
                                 <span className="animate-circle" />
                             </span>
@@ -255,10 +309,12 @@ const DropDown = () => {
                             </span>
 
                         </a>
-                        <div className="dropdown-menu dropdown-menu-right">
+                        <div className="dropdown-menu dropdown-menu-right mt-1 ms-2" style={{
+                            borderRadius: 20
+                        }}>
                             <div className="subscription-menu">
                                 <ul className="list-unstyled">
-                                <li className='dropdown-item de togel'>
+                                    <li className='dropdown-item de '>
                                         <label className="theme-switch mb-0">
                                             <input type="checkbox" checked={themeMode === 'dark'} onChange={toggleTheme} />
                                             <span className="slider"></span>
@@ -267,26 +323,24 @@ const DropDown = () => {
                                     </li>
                                     <li onClick={() => ProfilePage()}>
                                         <Link className="dropdown-item dev" >
-                                            Profile
+                                            <i class="fa-solid fa-user p-2"></i>Profile
                                         </Link>
                                     </li>
-                                    {Role == "ADMIN" || Role === "SUBADMIN" ?
+                                    {/* {Role == "ADMIN" || Role === "SUBADMIN" ?
                                         <li>
                                             <Link className="dropdown-item dev" to={Role === "ADMIN" ? "/admin/system" : "/subadmin/system"}>
-                                                System
+                                                <i class="fa-solid fa-gear p-2"></i> System
                                             </Link>
-                                        </li> : ''}
-                                    <li>
-                                        <Link className="dropdown-item dev" to="/settings">
-                                            Settings
+                                        </li> : ''} */}
+                                    <li onClick={() => SettingPage()}>
+                                        <Link className="dropdown-item dev" to="/setting">
+                                            <i class="fa-solid fa-gear p-2"></i>Settings
                                         </Link>
                                     </li>
-                                  
 
-                                    
                                     <li>
                                         <a className="dropdown-item dev" onClick={(e) => LogoutUser(e)}>
-                                            Log out
+                                            <i class="fa-solid fa-right-to-bracket p-2"></i>  Log out
                                         </a>
                                     </li>
                                 </ul>

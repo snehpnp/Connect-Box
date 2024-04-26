@@ -7,7 +7,6 @@ const db = require('../../Models');
 const User = db.user;
 const user_logs = db.user_logs;
 const subadmin_logs = db.subadmin_activity_logs;
-const live_price_token = db.live_price_token;
 
 
 
@@ -23,9 +22,7 @@ class AliceBlue {
             const authCode = req.query.authCode;
             var userId = req.query.userId;
 
-            var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role broker');
-
-
+            var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role');
 
             if (Get_User[0].TradingStatus != "on") {
 
@@ -113,42 +110,7 @@ class AliceBlue {
                                             access_token: response.data.userSession,
                                             TradingStatus: "on"
                                         })
-
-                                
-                                     
-                                        const exist_user = await live_price_token.findOne({demate_user_id:userId}).select('access_token')
-
-                                        // console.log("exist_user ",exist_user)
-
-                                        if(exist_user==null){
-                                            const live_price_token_data = new live_price_token({
-                                                user_id: Get_User[0]._id,
-                                                broker_id: Get_User[0].broker,
-                                                demate_user_id: userId,
-                                                demate_user_id_second:userId,
-                                                access_token: response.data.userSession,
-                                                trading_status: "on",
-                                                Role: Get_User[0].Role
-        
-                                            })
-                                            await live_price_token_data.save();
-                                        }else{
-                                            let res1  = await live_price_token.findOneAndUpdate(
-                                                { demate_user_id: userId },
-                                                {
-                                                    $set: {
-                                                        access_token: response.data.userSession,
-                                                       
-                                                    }
-                                                },
-                                                {
-                                                    new: true 
-                                                }
-                                            );
-                                        }
-
-                                
-
+    
                                     if (result != "") {
     
                                         const Subadmin_login = new subadmin_logs({

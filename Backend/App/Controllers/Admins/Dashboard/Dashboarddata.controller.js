@@ -23,11 +23,11 @@ class Dashboard {
               { $match: { Role: "SUBADMIN", ActiveStatus: "1" } },
               { $count: "count" },
             ],
-            TotalUsercount: [{ $match: { Role: "USER" } }, { $count: "count" }],
+            TotalUsercount: [{ $match: { Role: "RESEARCH" } }, { $count: "count" }],
             TotalActiveUsercount: [
               {
                 $match: {
-                  Role: "USER",
+                  Role: "RESEARCH",
                   ActiveStatus: "1",
                   $or: [{ End_Date: { $gte: new Date() } }, { End_Date: null }],
                 },
@@ -66,16 +66,9 @@ class Dashboard {
         },
       ]);
 
-      const dummyData = {
-        categories: [],
-        data: [],
-      };
+  
 
-      // Assuming your data array is named 'responseData'
-      data.forEach((item) => {
-        dummyData.categories.push(item._id); // Extracting the year from createdAt field
-        dummyData.data.push(parseInt(item.totalBalance)); // Converting Balance to integer and pushing to data array
-      });
+  
 
       const {
         Totalcount,
@@ -92,7 +85,7 @@ class Dashboard {
         TotalUsercount: TotalUsercount,
         TotalActiveUsercount: TotalActiveUsercount,
         TotalInActiveUsercount: TotalUsercount - TotalActiveUsercount,
-        dummyData: dummyData,
+       
       };
 
       // DATA GET SUCCESSFULLY

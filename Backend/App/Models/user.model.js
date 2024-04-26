@@ -113,6 +113,7 @@ const userModel = Schema({
     prifix_key: {
         type: String,
         required: true,
+        unique: true,
         trim: true,
         default: null
     },
@@ -120,7 +121,8 @@ const userModel = Schema({
         type: String,
         required: true,
         trim: true,
-        default: null
+        default: null,
+        unique: true,
     },
     parent_id: {
         type: String,
@@ -216,12 +218,19 @@ const userModel = Schema({
         type: Number,
         default: '0'
     },
+    Strategy_percentage_to_researcher: {
+        type: Number,
+        default: '0'
+    },
     Service_Type: {
         type: String,
         enum: ['0','1', '2'], // 0 = No Use , 1= Fixed , 2= per trade
         default: '0'
     },
-
+    per_trade_value: {
+        type: String,
+        default: null
+    },
 },
     {
         timestamps: true

@@ -27,6 +27,7 @@ const DynamicForm = ({
   btn_status,
   content_btn_name,
   content_path,
+  btn_name2
 }) => {
   const location = useLocation();
 
@@ -46,7 +47,7 @@ const DynamicForm = ({
 
   const handleFileChange = (event, index, name) => {
     if (event.target.files[0].size > 420000) {
-      alert("Please  Select file less then 420KB");
+      alert("Select file less then 420KB");
       event.target.value = "";
       return;
     } else {
@@ -82,18 +83,24 @@ const DynamicForm = ({
 
 
   const HandelChange = (value) => {
-    console.log("value", value.target.checked)
+    formik.setFieldValue('Service_Type', value);
+  }
 
-    formik.setFieldValue('Service_Type', value.target.checked == true ? "1" : "2");
+  const PerTradeValueset = (value) => {
+    formik.setFieldValue('per_trade_value', value.target.value);
   }
 
 
   return (
     <div className="content container-fluid" data-aos="fade-left">
       <div className="card mb-0">
-        {page_title ? <div className="card-header">
-          {page_title ? <h5 className="card-title mb-0 w-auto"><i className="fa-regular fa-circle-user pe-2"></i>{page_title} </h5> : ""}
-        </div> : ""}
+        {page_title ?
+          <div className="card-header">
+            {page_title ? <h5 className="card-title mb-0 w-auto"><i className="fa-regular fa-circle-user pe-2"></i>{page_title} </h5> : ""}
+            {/* {close_btn ? <h5 className="card-title mb-0 w-auto"><i className="fa-regular fa-circle-user pe-2"></i>{} </h5> : ""} */}
+
+
+          </div> : ""}
         <form onSubmit={formik.handleSubmit}>
           <div className="card-body ">
             <div className="page-header">
@@ -178,13 +185,14 @@ const DynamicForm = ({
                                 name={field.name}
                                 {...formik.getFieldProps(field.name)}
                               />
+                              {formik.touched[field.name] &&
+                                formik.errors[field.name] ? (
+                                <div style={{ color: "red" }}>
+                                  {formik.errors[field.name]}
+                                </div>
+                              ) : null}
                             </div>
-                            {formik.touched[field.name] &&
-                              formik.errors[field.name] ? (
-                              <div style={{ color: "red" }}>
-                                {formik.errors[field.name]}
-                              </div>
-                            ) : null}
+
                           </div>
 
                         </>
@@ -208,6 +216,7 @@ const DynamicForm = ({
                                 value={inputValue}
                                 onChange={(e) => {
                                   const newValue = e.target.value.toUpperCase()
+
                                   if (/^[a-zA-Z]{0,3}$/.test(newValue)) {
                                     setInputValue(newValue);
                                     formik.handleChange(e);
@@ -215,14 +224,15 @@ const DynamicForm = ({
                                 }}
 
                               />
+                              {inputValue == '' ? (
+                                <div style={{ color: "red" }}>
+                                  {formik.errors[field.name]}
+                                </div>
+                              ) : null}
 
                             </div>
 
-                            {inputValue == '' ? (
-                              <div style={{ color: "red" }}>
-                                {formik.errors[field.name]}
-                              </div>
-                            ) : null}
+
                           </div>
 
                         </>
@@ -356,7 +366,7 @@ const DynamicForm = ({
                                   {...formik.getFieldProps(field.name)}
                                 >
                                   <option value="" selected  >
-                                    Please Select {field.label}
+                                     Select {field.label}
                                   </option>
                                   {field.options.map((option) => (
                                     <option
@@ -623,19 +633,69 @@ const DynamicForm = ({
                                   <span className="text-danger">*</span>
                                 </label>
 
-                                <div className="status-toggle">
-                                  <input
-                                    id="rating"
-                                    className="check"
-                                    type="checkbox"
-                                    onChange={(event) => HandelChange(event)}
-                                    defaultChecked={formik.values['Service_Type'] === "1"}
-                                  />
-                                  <label htmlFor="rating" className="checktoggle checkbox-bg"></label>
+                                <div className="row">
+                                  <div className="w-auto">
+                                    <div className="input-block mb-3 recurring-tab">
+                                      <ul className="nav nav-pills d-flex" id="pills-tab" role="tablist">
+                                        <li className="nav-item" role="presentation">
+                                          <button
+                                            className={`nav-link yes ${formik.values[field.name] == 2 ? "active show" : ""}`}
+                                            onClick={() => HandelChange(2)}
+                                            type="button"
+                                            disabled={field.disable}
+                                          >
+                                            Per Trade
+                                          </button>
+                                        </li>
+                                        <li className="nav-item" role="presentation">
+                                          <button
+                                            className={`nav-link no ${formik.values[field.name] == 1 ? "active show" : ""}`}
+                                            onClick={() => HandelChange(1)}
+                                            type="button"
+                                            disabled={field.disable}
+                                          >
+                                            Fixed
+                                          </button>
+                                        </li>
+                                       
+                                      </ul>
+                                      {formik.touched[field.name] &&
+                                          formik.errors[field.name] ? (
+                                          <div style={{ color: "red" }}>
+                                            {formik.errors[field.name]}
+                                          </div>
+                                        ) : null}
+                                    </div>
+                                  </div>
+                                  {formik.values[field.name] == 2 && formik.values['licence'] == "2" ?
+                                    (<div className="col-md-6">
+                                      <div className="tab-content pt-0" id="pills-tabContent">
+                                        <div
+                                          id="pills-home"
+                                          role="tabpanel"
+                                        >
+                                          <div className="input-block">
+                                            <input
+                                              type="text"
+                                              className="form-control"
+                                              placeholder="Per Trade"
+                                              // disabled={field.disable}
+                                              defaultValue={formik.values['per_trade_value']}
+                                              onChange={(e) => PerTradeValueset(e)}
+                                            />
+                                             
+                                          </div>
+                                        </div>
+
+                                      </div>
+                                    </div>)
+
+
+                                    : ""}
+
                                 </div>
 
 
-                                {formik.values['Service_Type'] === "1" ? "PER TRADE" : "FIXED"}
                               </div>
                             </div>
 
@@ -689,7 +749,7 @@ const DynamicForm = ({
                                   <label htmlFor={field.name}>
                                     {field.label}
                                   </label>
-
+                                  <span className="text-danger">*</span>
                                   <input
                                     type="text"
                                     name={field.name}
@@ -758,9 +818,19 @@ const DynamicForm = ({
                       ""
                     )}
                     {
-                      <button type="submit" className="btn customer-btn-save">
-                        {btn_name}
-                      </button>
+                      <>
+                        <button type="submit" className="btn customer-btn-save">
+                          {btn_name}
+                        </button>
+                        {
+                          btn_name2 ? <button type="submit" className="btn customer-btn-save">
+                            {btn_name2}
+                          </button> : ''
+
+                        }
+
+                      </>
+
                     }
                   </div>
                 </div>
