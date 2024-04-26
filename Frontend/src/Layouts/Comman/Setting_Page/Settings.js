@@ -88,6 +88,29 @@ const Settings = () => {
                                     >
                                         Logs
                                     </a>
+
+                                    <a
+                                        className="nav-link mb-1"
+                                        id="v-pills-logs-tab"
+                                        data-bs-toggle="pill"
+                                        href="#v-pills-logs"
+                                        role="tab"
+                                        aria-controls="v-pills-logs"
+                                        aria-selected="false"
+                                    >
+                                        Change Password
+                                    </a>
+                                    <a
+                                        className="nav-link mb-1"
+                                        id="v-pills-logs-tab"
+                                        data-bs-toggle="pill"
+                                        href="#v-pills-logs"
+                                        role="tab"
+                                        aria-controls="v-pills-logs"
+                                        aria-selected="false"
+                                    >
+                                       Api Create Information
+                                    </a>
                                 </div>
 
                             </div>
