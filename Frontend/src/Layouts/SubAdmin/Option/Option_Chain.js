@@ -508,18 +508,18 @@ function Option_Chain() {
                     console.log("response.tk " ,response.tk ," socket " ,socket)
                      socket.onclose = async function (event) {
                         if (event.wasClean) {
-                            alert("IFFF CLOSE")
+                            // alert("IFFF CLOSE")
                             setUserIdSocketRun('DONE')
 
                         } else {
-                            alert("IFFF ELSE")
+                            // alert("IFFF ELSE")
                             setUserIdSocketRun('DONE')
                             
                         }
                       };
   
                      socket.onerror = function (error) {
-                          alert("ERRROR")
+                        //   alert("ERRROR")
                           setUserIdSocketRun('DONE')                         
                      };
 
