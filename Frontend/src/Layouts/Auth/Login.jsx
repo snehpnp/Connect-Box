@@ -164,13 +164,13 @@ function Login() {
                 
 
                 <img
-                    className="img-fluid logo-dark mb-2 logo-color"
-                    src="https://www.pnpuniverse.com/images/logo/pnp.png"
+                    className="img-fluid logo-dark mb-2 "
+                    src="/assets/img/pnp.png"
                     alt="Logo"
                     style={{ width: "15rem" }}
                   />
 
-                  <div className='pt-5'>
+                  <div className='pt-5' data-aos="fade-left">
                     <div className=" input-block mb-3">
                       <label className="form-control-label d-flex justify-content-start" htmlFor="email">Email Address</label>
                       <input type="email" id="email" className="form-control" value={email} onChange={handleEmailChange} />
@@ -196,10 +196,11 @@ function Login() {
                       </div>
                     </div>
 
-
-                    <button className="btn btn-lg btn-primary w-100 login-btn" onClick={handleSubmit} >
+                    <div class="add-customer-btns d-flex justify-content-between text-end mt-3">
+                    <button className="btn customer-btn-save" onClick={handleSubmit} >
                       Login
                     </button>
+                    </div>
                   </div>
 
                   <div className="login-or">
