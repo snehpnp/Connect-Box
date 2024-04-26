@@ -28,7 +28,7 @@ const strategy_transactionSchema = Schema({
     },
     plan_id: {
         type: String,
-        enum: ['0', '1', '2', '3', '4'],
+        enum: ['0', '1', '2', '3', '4','10'],
         default: '0'
     },
     stg_charge: {

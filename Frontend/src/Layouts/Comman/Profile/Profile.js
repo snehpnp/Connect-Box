@@ -4,7 +4,6 @@ import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { fDateTime } from "../../../Utils/Date_formet";
@@ -587,10 +586,9 @@ const Profile = () => {
                           .filter((item) => isToday(new Date(item.createdAt)))
                           .map((item, index) => (
                             <li key={index} className="feed-item">
-                              <div className="feed-date d-flex">
+                              <div className="feed-date d-flex justify-content-between">
                                 <span className="feed-text">{fDateTime(item.createdAt)}</span> 
-
-                                <span className="feed-text  justify-content-end">
+                                <span className="feed-text ">
                                   <a href="#" style={{ color: "blue" }}>{item.system_ip}</a>
                                 </span>
                               </div>

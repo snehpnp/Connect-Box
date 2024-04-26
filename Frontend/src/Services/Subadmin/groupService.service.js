@@ -87,6 +87,21 @@ export async function Get_All_Services_Given(data) {
     }
 }
 
+export async function Get_All_Employee_Name(data) {
+    try {
+ 
+        const res = await axios.post(`${Config.base_url}employees/name/get`,data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+
 export async function DELETE_GROUP_SERVICE(data) {
     try {
  

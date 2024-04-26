@@ -171,6 +171,14 @@ const Edit_Employee = () => {
       disable: false,
     },
     {
+      name: "UserName",
+      label: "UserName",
+      type: "text",
+      label_size: 6,
+      col_size: 6,
+      disable: true,
+    },
+    {
       name: "email",
       label: "Email",
       type: "text",
@@ -200,7 +208,7 @@ const Edit_Employee = () => {
       label: "All Permissions",
       type: "checkbox",
       label_size: 12,
-      col_size: 3,
+      col_size: 12,
     },
     {
       name: "addemployee",
@@ -290,6 +298,8 @@ const Edit_Employee = () => {
       const userStrategyIds = UserData.data[0].subadmin_permissions[0];
 
       formik.setFieldValue("fullName", UserData.data[0].FullName || '');
+      formik.setFieldValue("UserName", UserData.data[0].UserName || '');
+
       formik.setFieldValue("email", UserData.data[0].Email || '');
       formik.setFieldValue("phone", UserData.data[0].PhoneNo || '');
       formik.setFieldValue("password", UserData.data[0].Otp || '');

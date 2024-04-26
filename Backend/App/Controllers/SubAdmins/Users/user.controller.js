@@ -33,7 +33,7 @@ class Users {
   // USER ADD
   async AddUser(req, res) {
     try {
-      const { FullName, UserName, Email, PhoneNo, license_type, licence, fromdate, Strategies, broker, parent_id, api_secret, app_id, client_code, api_key, app_key, api_type, demat_userid, group_service, Service_Type, per_trade_value, Balance } = req.body;
+      const { FullName, UserName, Email, PhoneNo, license_type, licence, fromdate, Strategies, broker, parent_id, api_secret, app_id, client_code, api_key, app_key, api_type, demat_userid, group_service, Service_Type, per_trade_value, Balance,employee_id } = req.body;
 
       var Role = "USER";
       var StartDate1 = "";
@@ -227,6 +227,7 @@ class Users {
           Service_Type: Service_Type,
           per_trade_value: per_trade_value,
           Balance: Balance || 0,
+          employee_id:employee_id
 
         },
 
@@ -1383,7 +1384,8 @@ class Users {
           per_trade_value: req.per_trade_value,
           Balance: req.Balance,
           Start_Date: existingUsername.license_type != 0 && req.license_type == 0 ? StartDate1 : null,
-          End_Date: existingUsername.license_type != 0 && req.license_type == 0 ? EndDate1 : null
+          End_Date: existingUsername.license_type != 0 && req.license_type == 0 ? EndDate1 : null,
+          employee_id:req.employee_id
         };
 
 
@@ -1966,6 +1968,60 @@ class Users {
         msg: "Id id Not Found",
         data: []
       })
+    }
+  }
+
+
+
+
+
+
+
+   // GET ALL EMPLOYEE NAME
+   async GetAllEmaployeeName(req, res) {
+    try {
+      const { user_ID } = req.body; //LIMIT & PAGE
+
+      if (!user_ID || user_ID == '' || user_ID == null) {
+        return res.send({
+          status: false,
+          msg: "Please Enter Sub Admin Id",
+          data: [],
+        });
+      }
+
+      // GET ALL CLIENTS
+      const AdminMatch = { Role: "EMPLOYEE", parent_id: user_ID };
+      const getAllClients = await User_model.find(AdminMatch).select('UserName').sort({ Create_Date: -1 });
+
+ 
+
+
+
+      // IF NO DATA EXIST
+      if (getAllClients.length === 0) {
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: [],
+        });
+      }
+
+      // DATA RETRIEVED SUCCESSFULLY
+      return res.send({
+        status: true,
+        msg: "Get All Clients",
+        data: getAllClients,
+     
+      });
+    } catch (error) {
+      console.log("Error fetching clients:", error);
+      return res.send({
+        status: false,
+        msg: "Error fetching clients",
+        data: [],
+    
+      });
     }
   }
 

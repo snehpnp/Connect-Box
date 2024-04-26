@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_GROUP_SERVICS, ADD_GROUP_SERVICS,Get_All_Services_Given, GET_ALL_CATAGORY, SERVICE_BY_CATAGORY, Get_All_Services_Name, DELETE_GROUP_SERVICE, GET_GROUP_DATA, EDIT_GROUP_SERVICE } from "../../../Services/Subadmin/groupService.service";
+import { GET_ALL_GROUP_SERVICS, ADD_GROUP_SERVICS,Get_All_Services_Given,Get_All_Employee_Name, GET_ALL_CATAGORY, SERVICE_BY_CATAGORY, Get_All_Services_Name, DELETE_GROUP_SERVICE, GET_GROUP_DATA, EDIT_GROUP_SERVICE } from "../../../Services/Subadmin/groupService.service";
 
 export const GetAll_Group_Servics = createAsyncThunk("groupservices/getall",
     async (data) => {
@@ -72,6 +72,18 @@ export const GET_ALL_SERVICES_GIVEN = createAsyncThunk('servicesGiven/getall',
         }
     }
 );
+
+export const Get_All_Employee_Names = createAsyncThunk('employees/name/get',
+    async (data) => {
+
+        try {
+            const res = await Get_All_Employee_Name(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
 export const Delete_GroupServices = createAsyncThunk('groupServices/delete',
     async (data) => {
 
@@ -125,6 +137,7 @@ const GrouoServicesSlice = createSlice({
         get_group_data:null,
         edit_group_service:null,
         get_all_services_given:null,
+        Get_All_Employee:null
 
 
     },
@@ -181,7 +194,21 @@ const GrouoServicesSlice = createSlice({
                 state.isLoading = false;
                 state.edit_group_service = action.payload;
             })
+            .addCase(Get_All_Employee_Names.pending, (state, action) => {
 
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(Get_All_Employee_Names.fulfilled, (state, action) => {
+
+                state.isLoading = false;
+                state.Get_All_Employee = action.payload;
+            })
+            .addCase(Get_All_Employee_Names.rejected, (state, action) => {
+
+                state.isLoading = false;
+                state.isError = true;
+            })
     },
 });
 

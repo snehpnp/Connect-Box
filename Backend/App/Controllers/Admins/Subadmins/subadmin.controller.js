@@ -49,17 +49,17 @@ class Subadmin {
       }
 
       // Check if username, email, phone number, and prefix key already exist
-      const existingUsername = await User_model.findOne({  UserName:UserName, prifix_key });
+      const existingUsername = await User_model.findOne({  UserName:UserName });
       if (existingUsername) {
         return res.send({ status: false, msg: "Username already exists" });
       }
 
-      const existingEmail = await User_model.findOne({ Email, prifix_key });
+      const existingEmail = await User_model.findOne({ Email });
       if (existingEmail) {
         return res.send({ status: false, msg: "Email already exists" });
       }
 
-      const existingPhone = await User_model.findOne({ PhoneNo, prifix_key });
+      const existingPhone = await User_model.findOne({ PhoneNo });
       if (existingPhone) {
         return res.send({ status: false, msg: "Phone number already exists" });
       }
@@ -106,7 +106,8 @@ class Subadmin {
         strategy_Percentage,
         Per_trade,
         Balance,
-        broker: 2
+        broker: 2,
+        employee_id:parent_id
       });
 
       // Save new user and count licenses

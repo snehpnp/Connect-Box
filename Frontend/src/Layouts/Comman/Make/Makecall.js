@@ -1061,8 +1061,7 @@ const Makecall = () => {
         <div>
             <div className="content container-fluid">
                 <div className="card">
-                    <div className="card-body">
-                        <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                <div className="card-header d-flex justify-content-between align-items-center border-bottom">
                             <h5 className="card-title mb-0 w-auto">
 
                                 <i className="fas fa-money-bill-wave pe-2" />
@@ -1070,6 +1069,8 @@ const Makecall = () => {
                             </h5>
                             <div className="pay-btn text-end w-auto" />
                         </div>
+                    <div className="card-body">
+                       
 
                         <div className="row">
                             <div className="col-md-12">
