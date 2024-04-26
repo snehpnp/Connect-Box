@@ -33469,9 +33469,8 @@ table.table.bg-none::before {
     border-color: #7539ff !important;
 }
 
-=========
-}
-
+ 
+ 
 
 a,
 a:hover,
@@ -33981,11 +33980,10 @@ img {
 
 .ultimite .price {
     background: #DD4B5E;
-    <<<<<<< HEAD>>>>>>>>>Temporary merge branch 2
+    
 }
 
-=======
-}
+ 
 
 [data-layout-mode=dark] .pricing-block .inner-box,
 [data-layout-mode=dark] .pricing-block .icon-box:before {
