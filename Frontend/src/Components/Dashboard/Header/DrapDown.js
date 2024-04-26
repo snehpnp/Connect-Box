@@ -160,31 +160,10 @@ const DropDown = () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
     const toggleFundsVisibility = () => {
         setShowFunds(!showFunds);
         walletmodal()
     };
-
 
 
 
@@ -205,6 +184,28 @@ const DropDown = () => {
         htmlElement.setAttribute('data-topbar', themeMode);
     }, [themeMode]);
 
+
+    function formatNumber(value) {
+        if (value < 1000) {
+            return value.toString();
+        } else if (value < 10000) {
+            return (value / 1000).toFixed(0) + 'k';
+        } else if (value < 1000000) {
+            return (value / 1000).toFixed(0) + 'k';
+        } else if (value < 10000000) {
+            return (value / 1000000).toFixed(0) + 'M';
+        } else if (value < 1000000000) {
+            return (value / 1000000).toFixed(0) + 'M';
+        } else if (value < 10000000000) {
+            return (value / 1000000000).toFixed(0) + 'B';
+        } else if (value < 1000000000000) {
+            return (value / 1000000000).toFixed(0) + 'B';
+        } else if (value < 10000000000000) {
+            return (value / 1000000000000).toFixed(0) + 'T';
+        } else {
+            return (value / 1000000000000).toFixed(0) + 'T';
+        }
+    }
     return (
 
         <div className="mb-0 dropdown custom-dropdown">
@@ -240,7 +241,7 @@ const DropDown = () => {
                         {showFunds ? (
                             <span>
                                 <IndianRupee style={{ height: "24px", marginRight: "10px" }} />
-                                <strong>{profileData && profileData[0].Balance || "-"}</strong>
+                                <strong>{formatNumber(profileData && profileData[0].Balance) || "-"}</strong>
                             </span>
                         ) : (
                             <span>
@@ -325,12 +326,12 @@ const DropDown = () => {
                                             <i class="fa-solid fa-user p-2"></i>Profile
                                         </Link>
                                     </li>
-                                    {Role == "ADMIN" || Role === "SUBADMIN" ?
+                                    {/* {Role == "ADMIN" || Role === "SUBADMIN" ?
                                         <li>
                                             <Link className="dropdown-item dev" to={Role === "ADMIN" ? "/admin/system" : "/subadmin/system"}>
                                                 <i class="fa-solid fa-gear p-2"></i> System
                                             </Link>
-                                        </li> : ''}
+                                        </li> : ''} */}
                                     <li onClick={() => SettingPage()}>
                                         <Link className="dropdown-item dev" to="/setting">
                                             <i class="fa-solid fa-gear p-2"></i>Settings
