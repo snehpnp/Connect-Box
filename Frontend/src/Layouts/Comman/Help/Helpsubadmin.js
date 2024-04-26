@@ -275,7 +275,7 @@ const Helpsubadmin = () => {
                           <form action="#" className="mt-3">
                             <div className="card">
                               <div className="row" style={{ gap: "0.1rem" }}>
-                                <div style={{ width: "24rem" }}>
+                                <div className="row" style={{ width: "24rem" }}>
                                   <div className="input-block mb-2">
                                     <label>Name</label>
                                     <input
@@ -331,23 +331,31 @@ const Helpsubadmin = () => {
                                   </div>
                                 </div>
 
-                                <div className="col-lg-12 col-md-12">
-                                  <div className="input-block mb-0 mt-2">
-                                    <label>Message</label>
-                                    <textarea
-                                      id="message"
-                                      className="form-control"
-                                      rows="4"
-                                      value={help.Message}
-                                      onChange={(e) => {
-                                        setHelp({
-                                          ...help,
-                                          Message: e.target.value,
-                                        });
-                                      }}
-                                    ></textarea>
-                                    {!help.Message ? <div><p style={{ color: "red" }}>Please Enter Message</p></div> : ""}
+                                <div className="col-lg-12  d-flex">
+                                  <div className="col-lg-6 col-md-6">
+                                    <div className="input-block mb-0 mt-2">
+                                      <label>Message</label>
+                                      <textarea
+                                        id="message"
+                                        className="form-control"
+                                        rows="4"
+                                        value={help.Message}
+                                        onChange={(e) => {
+                                          setHelp({
+                                            ...help,
+                                            Message: e.target.value,
+                                          });
+                                        }}
+                                      ></textarea>
+                                      {!help.Message ? <div><p style={{ color: "red" }}>Please Enter Message</p></div> : ""}
 
+                                    </div>
+                                  </div>
+
+                                  <div className="col-lg-6 col-md-6">
+                                    <div className="input-block mb-0 mt-2">
+                                      <img src="assets/img/help.png" />
+                                    </div>
                                   </div>
                                 </div>
                                 <div
