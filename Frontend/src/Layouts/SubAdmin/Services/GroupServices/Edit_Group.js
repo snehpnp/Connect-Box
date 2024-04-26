@@ -375,7 +375,7 @@ const AddStrategy = () => {
                     <div style={{ overflowY: 'scroll', height: '65vh' }}>
                         <h4 className='text-center text-decoration-underline mb-3'>Select Services And Quantity</h4>
                         <table className="table table-responsive-sm col-md-3 " >
-                            <thead className="bg-primary">
+                            <thead className="">
                                 <tr className='text-center'>
                                     <th>#</th>
                                     <th>Segment</th>

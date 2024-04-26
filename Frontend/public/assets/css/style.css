@@ -3250,7 +3250,7 @@ div.dataTables_wrapper div.dataTables_filter input {
     width: auto;
     padding-left: 30px;
     border: 1px solid #e5e5e5;
-    color: #1b2559;
+    /* color: #1b2559; */
     height: 40px;
     border-radius: 8px
 }
@@ -34363,4 +34363,22 @@ img {
 
     color: unset !important;
 
+}
+
+.button_BUY {
+    background: #D4EDDA;
+    color: green;
+    margin-right: 10px;
+    border: 1px solid green;
+}
+
+.button_BUY i {
+    height: 10px;
+}
+
+.button_sell {
+    background: #F8D7DA;
+    color: red;
+    margin-right: 10px;
+    border: 1px solid red;
 }
