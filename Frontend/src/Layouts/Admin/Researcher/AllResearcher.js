@@ -364,7 +364,7 @@ const AllResearcher = () => {
       <div className="content container-fluid" data-aos="fade-left">
         <div className="page-header">
           <div className="content-page-header">
-            <h5>Researcher</h5>
+            <h5>All Researcher</h5>
             <div className="page-content">
               <div className="list-btn">
                 <ul className="filter-list">

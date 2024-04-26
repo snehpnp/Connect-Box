@@ -288,7 +288,7 @@ function MessageBroadcast() {
     <div data-aos="fade-left">
       <Content
 
-        Card_title=" Message Boardcast"
+        Card_title="Message Broadcast"
         Card_title_icon="fas fa-message pe-3"
         Content={
           <>
@@ -300,7 +300,7 @@ function MessageBroadcast() {
               <div className="col-md-7">
                 <div className="input-block mt-3">
                   <label className="form-label" htmlFor="broker-select">
-                  Sub-Admin
+                  To Sub-Admin
                   </label>
                   <div className="input-group">
                     <select

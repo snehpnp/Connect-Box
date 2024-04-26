@@ -48,7 +48,7 @@ const AddClient = () => {
       phone: "",
       balance: "",
       password: "",
-      prifix_key: null,
+      prefix_key: null,
       subadmin_servic_type: "0",
       strategy_Percentage: "0",
       Per_trade: "0",
@@ -103,7 +103,7 @@ const AddClient = () => {
         subadmin_service_type: values.subadmin_servic_type,
         strategy_Percentage: values.strategy_Percentage,
         Per_trade: values.Per_trade,
-        prefix_key: values.prefix_key,
+        prifix_key: values.prefix_key,
         password: values.password,
         parent_id: user_id || "65feb434ce02a722ac3b997d",
         parent_role: Role || "ADMIN",
@@ -254,6 +254,7 @@ const AddClient = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
+     
     },
   ];
 

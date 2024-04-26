@@ -81,7 +81,7 @@ export default function Help() {
 
     {
       field: "UserName",
-      headerName: "User name",
+      headerName: "User Name",
       width: 160,
       headerClassName: styles.boldHeader,
     },
@@ -256,7 +256,6 @@ export default function Help() {
       .then(async (response) => {
 
         if (response.status) {
-
           const formattedData = response.data && response.data.map((row, index) => ({
             ...row,
             id: index + 1,
@@ -357,7 +356,7 @@ export default function Help() {
           <div className="content container-fluid" data-aos="fade-left">
             <div className="page-header">
               <div className="content-page-header">
-                <h5>Subadmins</h5>
+                <h5>All Sub-Admins</h5>
                 <div className="page-content">
                   <div className="list-btn">
                     <ul className="filter-list">

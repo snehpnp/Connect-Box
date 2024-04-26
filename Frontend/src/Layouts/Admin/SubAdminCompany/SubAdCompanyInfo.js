@@ -82,7 +82,7 @@ function Payment() {
     },
     {
       field: 'email',
-      headerName: 'email',
+      headerName: 'Email Address',
       width: 290,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
@@ -147,7 +147,7 @@ function Payment() {
       }
     },
     {
-      field: 'createdAt', headerName: 'createdAt', width: 250, headerClassName: styles.boldHeader,
+      field: 'createdAt', headerName: 'Created At', width: 250, headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           {fDateTime(params.value)}
