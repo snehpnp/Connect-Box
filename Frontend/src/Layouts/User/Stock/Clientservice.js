@@ -270,11 +270,11 @@ function Clientservice() {
                   return (
                     <div key={index} className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
                       <div className="inner-box" style={{ borderBottom: "20px solid " + randomColor }}>
-                        <div className="icon-box" style={{ background: randomColor }}>
+                        {/* <div className="icon-box" style={{ background: randomColor }}>
                           <div className="icon-outer">
                             <i className="fas fa-paper-plane" style={{ border: " 5px solid " + randomColor, color: randomColor }} />
                           </div>
-                        </div>
+                        </div> */}
                         <div className="price-box">
                           <div className="title">{item.service.name}</div>
                           <div className="d-flex justify-content-center price">
