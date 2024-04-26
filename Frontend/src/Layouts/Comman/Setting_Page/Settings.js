@@ -25,7 +25,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-account"
                                         aria-selected="true"
-                                
+                                        style={{color:"black"}}
                                        
                                     >
 
@@ -39,6 +39,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-company"
                                         aria-selected="false"
+                                        style={{color:"black"}}
                                     >
                                         Company Settings
                                     </a>
@@ -50,6 +51,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-invoice"
                                         aria-selected="false"
+                                        style={{color:"dark"}}
                                     >
                                         Invoice Templates
                                     </a>
@@ -61,6 +63,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-payment"
                                         aria-selected="false"
+                                        style={{color:"black"}}
                                     >
                                         Payment Methods
                                     </a>
@@ -72,6 +75,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-email"
                                         aria-selected="false"
+                                        style={{color:"black"}}
                                     >
                                         Email Templates
                                     </a>
@@ -83,6 +87,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-logs"
                                         aria-selected="false"
+                                        style={{color:"black"}}
                                     >
                                         Logs
                                     </a>
