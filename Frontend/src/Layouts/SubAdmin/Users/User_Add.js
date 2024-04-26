@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import AddForm from "../../../Components/ExtraComponents/forms/AddForm";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
-import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
+import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN ,Get_All_Employee_Names} from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { AddUsers, Get_All_Broker, } from "../../../ReduxStore/Slice/Subadmin/UsersSlice";
 import Loader from "../../../Utils/Loader";
@@ -12,7 +12,6 @@ import Loader from "../../../Utils/Loader";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
-import { Placeholder } from "react-bootstrap";
 
 const AddClient = () => {
   const dispatch = useDispatch();
@@ -22,7 +21,10 @@ const AddClient = () => {
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   var subadmin_service_type1 = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
 
-
+  const [employeeNames, setEmployeeNames] = useState({
+    loading: true,
+    data: [],
+  });
   const [serviceName, setServiceName] = useState({
     loading: true,
     data: [],
@@ -167,6 +169,20 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
+    {
+      name: "Employees",
+      label: "Employees",
+      type: "select",
+      options:
+        employeeNames.data &&
+        employeeNames.data.map((item) => ({
+          label: item.UserName,
+          value: item._id,
+        })),
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
   ];
 
   const formik = useFormik({
@@ -297,7 +313,39 @@ const AddClient = () => {
     }
   };
 
+
+  const getAllEmployeeName = async () => {
+    try {
+      var data = { user_ID: user_id };
+      const response = await dispatch(Get_All_Employee_Names(data)).unwrap();
+
+      if (response.status) {
+        const formattedData = response.data.map((row, index) => ({
+          ...row,
+          id: index + 1,
+        }));
+        setEmployeeNames({
+          loading: false,
+          data: formattedData,
+        });
+      } else {
+        setEmployeeNames({
+          loading: false,
+          data: [],
+        });
+      }
+    } catch (error) {
+      console.log("Error", error);
+      setEmployeeNames({
+        loading: true,
+        data: [],
+      });
+    }
+  };
+
+
   useEffect(() => {
+    getAllEmployeeName()
     getAllGroupService();
   }, []);
 

@@ -1970,6 +1970,60 @@ class Users {
   }
 
 
+
+
+
+
+
+   // GET ALL EMPLOYEE NAME
+   async GetAllEmaployeeName(req, res) {
+    try {
+      const { user_ID } = req.body; //LIMIT & PAGE
+
+      if (!user_ID || user_ID == '' || user_ID == null) {
+        return res.send({
+          status: false,
+          msg: "Please Enter Sub Admin Id",
+          data: [],
+        });
+      }
+
+      // GET ALL CLIENTS
+      const AdminMatch = { Role: "EMPLOYEE", parent_id: user_ID };
+      const getAllClients = await User_model.find(AdminMatch).select('UserName').sort({ Create_Date: -1 });
+
+ 
+
+
+
+      // IF NO DATA EXIST
+      if (getAllClients.length === 0) {
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: [],
+        });
+      }
+
+      // DATA RETRIEVED SUCCESSFULLY
+      return res.send({
+        status: true,
+        msg: "Get All Clients",
+        data: getAllClients,
+     
+      });
+    } catch (error) {
+      console.log("Error fetching clients:", error);
+      return res.send({
+        status: false,
+        msg: "Error fetching clients",
+        data: [],
+    
+      });
+    }
+  }
+
+
 }
 
 module.exports = new Users();
