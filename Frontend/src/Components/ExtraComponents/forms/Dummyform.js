@@ -102,7 +102,7 @@ function Dummyform() {
                                                 </div>
                                                 <div className="col-lg-4">
                                                     <div className="d-flex justify-content-between flex-wrap">
-                                                        <div className="input-block mb-3 recurring-tab">
+                                                        <div className="input-block mb-3 ">
                                                             <label>Recurring</label>
                                                             <ul
                                                                 className="nav nav-pills d-flex"

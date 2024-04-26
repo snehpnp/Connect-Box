@@ -5347,7 +5347,9 @@ span.select2-container.select2-container--default.select2-container--open {
     padding: 10px 10px !important;
     border: none !important;
 }
-
+body #pills-tab button.nav-link.active.show {
+    color: #fff !important;
+}
 .nav-link {
     color: #888 !important;
     font-size: 16px !important;
@@ -32615,7 +32617,7 @@ span.badge.bg-success-light {
     color: #ddd;
    
 }
-.css-gl260s-MuiDataGrid-columnHeadersInner {
+[data-layout-mode=dark] .css-gl260s-MuiDataGrid-columnHeadersInner {
     background: #1e1f25;
     width: 100%;
 }
@@ -33733,7 +33735,9 @@ img {
     max-width: 280px;
     margin: 0 auto 20px;
 }
-
+.pricing-block .features p{
+   margin-bottom: 0px;
+}
 .pricing-block .features li {
     position: relative;
     display: block;
