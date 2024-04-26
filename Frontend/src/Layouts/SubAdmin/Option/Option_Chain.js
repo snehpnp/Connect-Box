@@ -78,6 +78,25 @@ function Option_Chain() {
         data: []
     });
 
+    const styles = {
+        container: {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "80vh",
+        },
+        card: {
+            width: "auto",
+        },
+        boldHeader: {
+            fontWeight: "bold",
+        },
+        headerButton: {
+            marginRight: 8,
+        },
+    };
+
+
 
     const [UserDetails, seUserDetails] = useState('')
 
@@ -166,7 +185,7 @@ function Option_Chain() {
                             RemoveClases('CALL', row, 'LE', rowIndex, e);
                         }}
                     >
-                        B
+                        Buy   <i class="fa-solid fa-arrow-up"></i>
                     </button>
                     <button
                         value="SE"
@@ -180,7 +199,7 @@ function Option_Chain() {
                             RemoveClases('CALL', row, 'SE', rowIndex, e);
                         }}
                     >
-                        S
+                        Sell   <i class="fa-solid fa-arrow-down"></i>
                     </button>
                 </div>
             ),
@@ -239,7 +258,7 @@ function Option_Chain() {
                         onClick={(e) => { CreateRequest("PUT", row, "LE", rowIndex, e) }}
                         onDoubleClick={(e) => { RemoveClases("PUT", row, "LE", rowIndex, e) }}
                     >
-                        B
+                        Buy <i class="fa-solid fa-arrow-up"></i>
                     </button>
                     <button
                         value="SE"
@@ -248,7 +267,7 @@ function Option_Chain() {
                         onDoubleClick={(e) => { RemoveClases("PUT", row, "SE", rowIndex, e) }}
 
                     >
-                        S
+                        Sell <i class="fa-solid fa-arrow-down"></i>
                     </button >
                 </div >
             ),
@@ -853,7 +872,12 @@ function Option_Chain() {
                                 </div>
                             </div>
 
-                            <FullDataTable TableColumns={columns} tableData={OptionChainData.data} pagination1={true}></FullDataTable>
+                            <FullDataTable
+                                styles={styles}
+                                TableColumns={columns}
+                                tableData={OptionChainData.data}
+                                pagination1={true}>
+                            </FullDataTable>
 
 
                         </>

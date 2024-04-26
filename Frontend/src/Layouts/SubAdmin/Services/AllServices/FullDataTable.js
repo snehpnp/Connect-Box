@@ -44,9 +44,9 @@ const FullDataTable = ({
           pagination={!pagination1 ? paginationFactory(options) : ""}
           selectRow={selectRow}
           noDataIndication={() => <NoDataIndication />}
-          headerClasses="bg-primary text-primary text-center header-class"
+          headerClasses=" text-primary text-center header-class"
           rowClasses={`text-center`}
-          // rowStyle={rowStyle}
+        // rowStyle={rowStyle}
         />
       </div>
     </>

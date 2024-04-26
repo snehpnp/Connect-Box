@@ -30,7 +30,7 @@ const FullDataTable = ({ tableData, TableColumns, tableoptions, selectRow, keyFi
                 pagination={!pagination1 ? paginationFactory(options) : ""}
                 selectRow={selectRow}
                  
-                headerClasses="bg-primary text-primary text-center header-class"
+                headerClasses="text-primary text-center header-class"
                 rowClasses={`text-center`}
                 rowStyle={rowStyle}
             />
