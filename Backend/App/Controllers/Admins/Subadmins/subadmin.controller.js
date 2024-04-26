@@ -22,6 +22,7 @@ class Subadmin {
     try {
       const {
         profile_img,
+        UserName,
         FullName,
         Email,
         PhoneNo,
@@ -48,11 +49,7 @@ class Subadmin {
       }
 
       // Check if username, email, phone number, and prefix key already exist
-      const existingUsername = await User_model.findOne({
-        UserName:
-          FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ""),
-        prifix_key,
-      });
+      const existingUsername = await User_model.findOne({  UserName:UserName, prifix_key });
       if (existingUsername) {
         return res.send({ status: false, msg: "Username already exists" });
       }
@@ -93,9 +90,8 @@ class Subadmin {
       // Create new user instance
       const newUser = new User_model({
         profile_img: profile_img || "",
-        FullName:
-          FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ""),
-        UserName: FullName,
+        FullName: FullName,
+        UserName: UserName,
         Email,
         PhoneNo,
         Password: hashedPassword,
@@ -110,7 +106,7 @@ class Subadmin {
         strategy_Percentage,
         Per_trade,
         Balance,
-        broker:2
+        broker: 2
       });
 
       // Save new user and count licenses
@@ -186,8 +182,8 @@ class Subadmin {
   async getallSubadmin(req, res) {
     try {
       // GET LOGIN CLIENTS
-      const getAllSubAdmins = await User_model.find({ Role: "SUBADMIN"})
-      .select("profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key subadmin_service_type strategy_Percentage Per_trade Create_Date").sort({ Create_Date: -1 });
+      const getAllSubAdmins = await User_model.find({ Role: "SUBADMIN" })
+        .select("profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key subadmin_service_type strategy_Percentage Per_trade Create_Date").sort({ Create_Date: -1 });
 
       const totalCount = getAllSubAdmins.length;
       const ActiveCount = getAllSubAdmins.filter(
@@ -494,7 +490,7 @@ class Subadmin {
           data: mergedArray,
           Count: Count
         });
-      } else if (subadmin_service_type == 1){
+      } else if (subadmin_service_type == 1) {
 
         var Count = {
           TotalBalance: TotalBalance[0].Balance,
@@ -507,7 +503,7 @@ class Subadmin {
           data: rechargeDetails,
           Count: Count
         });
-      }else if (subadmin_service_type == 0){
+      } else if (subadmin_service_type == 0) {
 
         // var Count = {
         //   TotalBalance: TotalBalance[0].Balance,

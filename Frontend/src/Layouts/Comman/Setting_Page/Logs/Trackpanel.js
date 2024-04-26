@@ -1,28 +1,26 @@
 import React, { useEffect } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import { useState } from "react";
-import { getActivity,findstatus} from "../../../../ReduxStore/Slice/Comman/Setting";
+import { getActivity, findstatus } from "../../../../ReduxStore/Slice/Comman/Setting";
 import { useDispatch } from "react-redux";
 import FullDataTable from "../../../../Components/ExtraComponents/Tables/FullDataTable";
-import { Form, Row, Col,Card } from 'react-bootstrap';
-
+import { Form, Row, Col, Card } from 'react-bootstrap';
+import { fDate, fDateTime } from "../../../../Utils/Date_formet";
 
 
 const Trackpanel = () => {
   const dispatch = useDispatch();
 
-  
+
   const [selectedFromDate, setSelectedFromDate] = useState("");
   const [selectedToDate, setSelectedToDate] = useState("");
   const [activityData, setActivityData] = useState([]);
-  const [finddata,setFinddata] = useState([])
- 
-  
+  const [finddata, setFinddata] = useState([])
+
+
 
   const user = JSON.parse(localStorage.getItem("user_details"));
   const userid = JSON.parse(localStorage.getItem("user_details")).user_id
- 
+
 
 
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -61,16 +59,16 @@ const Trackpanel = () => {
 
   const columns = [
     {
-      field: "activity",
-      headerName: "activity",
-      width: 100,
+      field: "id",
+      headerName: "#",
+      width: 80,
       headerClassName: styles.boldHeader,
       renderCell: (params, index) => params.row.id + 1,
     },
     {
       field: "UserName",
       headerName: "UserName",
-      width: 120,
+      width: 150,
       headerClassName: styles.boldHeader,
     },
     {
@@ -83,7 +81,7 @@ const Trackpanel = () => {
     {
       field: "message",
       headerName: "message",
-      width: 200,
+      width: 350,
       headerClassName: styles.boldHeader,
     },
     {
@@ -91,6 +89,7 @@ const Trackpanel = () => {
       headerName: "Date",
       width: 220,
       headerClassName: styles.boldHeader,
+      valueGetter: (params) => fDateTime(params.row.createdAt),
     },
   ];
 
@@ -103,7 +102,7 @@ const Trackpanel = () => {
       .then(async (response) => {
         if (response.status) {
           setActivityData(response.data);
-      
+
         }
       })
       .catch((error) => {
@@ -115,17 +114,17 @@ const Trackpanel = () => {
     Activity();
   }, []);
 
-  
+
   const FindActivity = async (activity) => {
 
-    var data = {id:userid,category:activity};
-   
+    var data = { id: userid, category: activity };
+
     await dispatch(findstatus(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
           setFinddata(response.data)
-        }else{
+        } else {
           setFinddata([])
         }
       })

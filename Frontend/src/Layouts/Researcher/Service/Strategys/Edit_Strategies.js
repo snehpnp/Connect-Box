@@ -8,6 +8,8 @@ import {
   EditSubStrategys,
   GetSubStrategys_ById,
 } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice'
+
 function Edit_Strategies() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -16,6 +18,10 @@ function Edit_Strategies() {
   const [allStrategy, setAllStrategy] = useState(null);
   const [getStgDescription, setStgDescription] = useState('');
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+  const [GetAllSgments, setGetAllSgments] = useState({
+    loading: true,
+    data: [],
+  });
 
 
 
@@ -45,6 +51,24 @@ function Edit_Strategies() {
     }
   }, []);
 
+  const getservice = async () => {
+    await dispatch(Get_All_Catagory())
+      .unwrap()
+      .then((response) => {
+
+        if (response.status) {
+
+          setGetAllSgments({
+            loading: false,
+            data: response.data,
+          });
+        }
+      });
+  };
+  useEffect(() => {
+    getservice();
+  }, []);
+
   const fields = [
     {
       name: "strategy_name",
@@ -54,7 +78,6 @@ function Edit_Strategies() {
       col_size: 6,
       disable: false,
     },
-
     {
       name: "strategy_category",
       label: "Catagory",
@@ -66,7 +89,7 @@ function Edit_Strategies() {
     {
       name: "strategy_demo_days",
       label: "Strategy demo days",
-      type: "number",
+      type: "text3",
       label_size: 12,
       col_size: 6,
       disable: false,
@@ -74,7 +97,11 @@ function Edit_Strategies() {
     {
       name: "strategy_segment",
       label: "Strategy Segment",
-      type: "text",
+      type: "select",
+      options: GetAllSgments.data.map((item) => ({
+        label: item.name,
+        value: item.name,
+      })),
       label_size: 12,
       col_size: 6,
       disable: false,

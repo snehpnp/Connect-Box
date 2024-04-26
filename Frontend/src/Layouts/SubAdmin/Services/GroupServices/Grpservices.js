@@ -340,7 +340,7 @@ function GroupStrategy() {
             field: 'data1',
             width: 190,
             headerClassName: styles.boldHeader,
-            headerName: 'group qty',
+            headerName: 'Group Quantity',
             renderCell: (params) => (
                 <div>
                     {params.row.data1.group_qty}

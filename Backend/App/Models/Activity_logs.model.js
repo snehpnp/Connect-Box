@@ -13,7 +13,7 @@ const ActivitySchema = new mongoose.Schema({
         type: String,
         default: null
     },
-   
+
     message: {
         type: String,
         default: null

@@ -166,7 +166,7 @@ export default function Help() {
     },
     {
       field: "Create_Date",
-      headerName: "createdAt",
+      headerName: "Account Created At",
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
@@ -426,7 +426,7 @@ export default function Help() {
               </div>
             </div>
 
-            <div className="super-admin-list-head">
+            {/* <div className="super-admin-list-head">
               <div className="row">
                 {getAllSubadmins &&
                   getAllSubadmins.data1.map((data, index) => (
@@ -447,7 +447,7 @@ export default function Help() {
                     </div>
                   ))}
               </div>
-            </div>
+            </div> */}
 
             <FullDataTable
               styles={styles}

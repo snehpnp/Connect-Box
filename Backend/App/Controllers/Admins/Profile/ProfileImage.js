@@ -107,7 +107,7 @@ class profile {
         return res.status(400).send({ status: false, msg: "ID NOT FOUND" });
       }
 
-      let messagedata = await user_logs.find({ user_Id: _id });
+      let messagedata = await user_logs.find({ user_Id: _id }).sort({createdAt:-1})
 
       if (!messagedata || messagedata.length === 0) {
         return res.send({

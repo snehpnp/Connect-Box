@@ -6,7 +6,12 @@ const dateTime = require('node-datetime');
 // ----------------------------------------------------------------------
 
 export function fDate(date) {
-  return format(new Date(date), 'dd MMMM yyyy');
+  if(date == "" || date == null ){
+    return ""
+  }else{
+
+    return format(new Date(date), 'dd MMMM yyyy');
+  }
 }
 
 export function fDateTime(date) {

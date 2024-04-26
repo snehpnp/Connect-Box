@@ -12,6 +12,7 @@ import Loader from "../../../Utils/Loader";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
+import { Placeholder } from "react-bootstrap";
 
 const AddClient = () => {
   const dispatch = useDispatch();
@@ -87,7 +88,7 @@ const AddClient = () => {
     },
     {
       name: "licence",
-      label: "Lincense Type",
+      label: "License Type",
       type: "select",
       options: [
         { label: "Demo", value: "1" },
@@ -190,30 +191,30 @@ const AddClient = () => {
     validate: (values) => {
       let errors = {};
       if (!values.fullName) {
-        errors.fullName = "Full Name is required";
+        errors.fullName = "Please Enter Full Name ";
       }
 
       if (!values.username) {
-        errors.username = "Username is required";
+        errors.username = "Please Enter Username";
       }
       if (!values.broker && values.licence != 1) {
         errors.broker = "Please Select Broker ";
       }
 
       if (!values.licence) {
-        errors.licence = "licence  is required";
+        errors.licence = "Please Select License Type";
       }
 
       if (!values.groupservice) {
         errors.groupservice = "Please select group service ";
       }
       if (!values.email) {
-        errors.email = "Please enter your email address.";
+        errors.email = "Please Enter Email address.";
       } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
         errors.email = "Please enter a valid email address.";
       }
       if (!values.phone) {
-        errors.phone = "Please enter your phone number.";
+        errors.phone = "Please Enter  Phone number.";
       } else if (!/^\d{10}$/.test(values.phone)) {
         errors.phone = "Please enter a valid 10-digit phone number.";
       }
@@ -418,7 +419,7 @@ const AddClient = () => {
             fields={fields.filter(
               (field) => !field.showWhen || field.showWhen(formik.values)
             )}
-            page_title="Add User"
+            page_title="Add New User"
             btn_name="Add User"
             btn_name1="Cancel"
             formik={formik}
@@ -454,7 +455,7 @@ const AddClient = () => {
                 {subadmin_service_type1 == 2 ?
                   (<div className="row mt-4">
                     <div class="input-block ">
-                      <label>All Strategy</label>
+                      <label>All Strategies</label>
                     </div>
                     {getAllStategy.data.map((strategy) => (
                       <div className={`col-lg-3 mt-2`} key={strategy._id}>

@@ -70,7 +70,7 @@ const ServicesList = () => {
     },
     {
       field: "category",
-      headerName: "Catagory",
+      headerName: "Category",
       width: 400,
       headerClassName: styles.boldHeader,
       renderCell: (params) => params.row.category.name,
@@ -181,7 +181,7 @@ const ServicesList = () => {
       <div className="content container-fluid" data-aos="fade-left">
         <div className="page-header">
           <div className="content-page-header">
-            <h5>All Service</h5>
+            <h5>All Services</h5>
             <div className="page-content">
               <div className="list-btn">
                 <ul className="filter-list">

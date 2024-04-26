@@ -283,7 +283,6 @@ export default function AllEmployees() {
                                             </li>
                                             <li>
                                                 <div className="input-group input-block">
-
                                                     <input
                                                         type="text"
                                                         className="form-control"
@@ -298,38 +297,10 @@ export default function AllEmployees() {
                                                 </div>
                                             </li>
 
-                                            <li>
-                                                <div className="input-group input-block">
-                                                    <label>From Date</label>
-                                                    <input
-                                                        type="date"
-                                                        className="form-control"
-                                                        placeholder="Search..."
-                                                        aria-label="Search"
-                                                        aria-describedby="search-addon"
-                                                        onChange={(e) => SetInputSearch(e.target.value || '')}
-                                                        value={inputSearch}
-                                                    />
-                                                </div>
-                                            </li>
-
 
                                             <li>
 
-                                                <select id="strategySelect" className="form-select ">
-                                                    <option value="">Select Symbol</option>
-                                                    <option value="1">Option 1</option>
-                                                    <option value="2">Option 2</option>
-                                                    <option value="3">Option 3</option>
-                                                    <option value="4">Option 4</option>
-                                                    <option value="5">Option 5</option>
-                                                </select>
-
-                                            </li>
-
-                                            <li>
-
-                                                <select id="strategySelect" className="form-select ">
+                                                <select id="strategySelect" className="form-select btn btn-primary">
                                                     <option value="">Select Strategy</option>
                                                     <option value="1">Option 1</option>
                                                     <option value="2">Option 2</option>
@@ -339,11 +310,6 @@ export default function AllEmployees() {
                                                 </select>
 
                                             </li>
-
-
-
-
-
 
 
                                             <li>

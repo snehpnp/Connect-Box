@@ -47,7 +47,7 @@ const DynamicForm = ({
 
   const handleFileChange = (event, index, name) => {
     if (event.target.files[0].size > 420000) {
-      alert("Please  Select file less then 420KB");
+      alert("Select file less then 420KB");
       event.target.value = "";
       return;
     } else {
@@ -366,7 +366,7 @@ const DynamicForm = ({
                                   {...formik.getFieldProps(field.name)}
                                 >
                                   <option value="" selected  >
-                                    Please Select {field.label}
+                                     Select {field.label}
                                   </option>
                                   {field.options.map((option) => (
                                     <option
@@ -643,7 +643,6 @@ const DynamicForm = ({
                                             onClick={() => HandelChange(2)}
                                             type="button"
                                             disabled={field.disable}
-
                                           >
                                             Per Trade
                                           </button>
@@ -654,13 +653,18 @@ const DynamicForm = ({
                                             onClick={() => HandelChange(1)}
                                             type="button"
                                             disabled={field.disable}
-
                                           >
                                             Fixed
                                           </button>
                                         </li>
-
+                                       
                                       </ul>
+                                      {formik.touched[field.name] &&
+                                          formik.errors[field.name] ? (
+                                          <div style={{ color: "red" }}>
+                                            {formik.errors[field.name]}
+                                          </div>
+                                        ) : null}
                                     </div>
                                   </div>
                                   {formik.values[field.name] == 2 && formik.values['licence'] == "2" ?
@@ -679,6 +683,7 @@ const DynamicForm = ({
                                               defaultValue={formik.values['per_trade_value']}
                                               onChange={(e) => PerTradeValueset(e)}
                                             />
+                                             
                                           </div>
                                         </div>
 

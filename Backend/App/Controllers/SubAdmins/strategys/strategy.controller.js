@@ -95,7 +95,7 @@ class strategy {
       ) {
         return res.send({
           status: false,
-          msg: "Please Enter Strategy starting 3 leter is your prifix letter",
+          msg: "Please Enter Strategy starting 3 leter is your Prefix Key letter",
           data: [],
         });
       }
@@ -119,9 +119,9 @@ class strategy {
         strategy_amount_half_early: strategy_amount_half_early,
         strategy_amount_early: strategy_amount_early,
         maker_id: maker_id_find._id,
-        Service_Type:Service_Type,
-        max_trade :max_trade || null,
-        strategy_percentage :strategy_percentage || null
+        Service_Type: Service_Type,
+        max_trade: max_trade || null,
+        strategy_percentage: strategy_percentage || null
       });
 
       strategy_Data
@@ -176,7 +176,7 @@ class strategy {
       } = req.body;
 
 
-      
+
 
       if (!_id || _id == "" || _id == null) {
         return res.send({ status: false, msg: "Please Enter Id", data: [] });
@@ -239,7 +239,7 @@ class strategy {
         ) {
           return res.send({
             status: false,
-            msg: "Please Enter Strategy starting 3 leter is your prifix letter",
+            msg: "Please Enter Strategy starting 3 leter is your priPrefix Key fix letter",
             data: [],
           });
         }
@@ -288,9 +288,9 @@ class strategy {
           strategy_amount_half_early: strategy_amount_half_early,
           strategy_amount_early: strategy_amount_early,
           maker_id: maker_id_find._id,
-          Service_Type:Service_Type,
-          max_trade :max_trade || null,
-          strategy_percentage :strategy_percentage || null
+          Service_Type: Service_Type,
+          max_trade: max_trade || null,
+          strategy_percentage: strategy_percentage || null
         },
       };
 
@@ -343,14 +343,14 @@ class strategy {
   async GetAllStrategy(req, res) {
     try {
       const { page, id } = req.body;
-      
+
 
       // var getAllTheme = await strategy_model.find()
       const getAllstrategy = await strategy_model
-        .find({maker_id : id})
+        .find({ maker_id: id })
         .sort({ createdAt: -1 })
-        .select('_id strategy_name strategy_description strategy_demo_days strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early strategy_category strategy_segment strategy_image maker_id createdAt updatedAt __v');
- 
+        .select('_id strategy_name strategy_description strategy_demo_days strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early strategy_category strategy_segment strategy_image Service_Type maker_id createdAt updatedAt __v');
+
       // IF DATA NOT EXIST
       if (getAllstrategy.length == 0) {
         res.send({ status: false, msg: "Empty data", data: getAllstrategy });
@@ -378,8 +378,8 @@ class strategy {
       }
 
       const getAllstrategy = await strategy_model.find({ maker_id: id }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
-  
- 
+
+
 
       // IF DATA NOT EXIST
       if (getAllstrategy.length == 0) {
@@ -465,7 +465,7 @@ class strategy {
           .status(500)
           .send({ status: false, msg: "Error deleting strategy", data: [] });
       }
-    } 
+    }
     catch (error) {
       console.log("Error Delete Strategy Error:", error);
       return res
@@ -628,12 +628,12 @@ class strategy {
 
   // Update Add Remove Strategy
   async UpdateAddRemoveStrategy(req, res) {
-  
+
 
     try {
       if (req.body.clientId.length > 0) {
         req.body.clientId.forEach(async (element) => {
-       
+
           //  ADD  STRATEGY CLIENT
           const strategy_client = new strategy_client_model({
             strategy_id: req.body.strategyId,
@@ -660,6 +660,60 @@ class strategy {
     } catch (error) {
       return res.send({ status: false, msg: "Catch Error" });
     }
+  }
+  async getAllResearcherStrategy(req, res) {
+
+
+    const researchUsersWithStrategies = await User.aggregate([
+      {
+        $match: {
+          Role: "RESEARCH"
+        }
+      },
+      {
+        $lookup: {
+          from: "strategies",
+          localField: "_id",
+          foreignField: "maker_id",
+          as: "strategies"
+        }
+      },
+      {
+        $unwind: "$strategies"
+      },
+      {
+        $project: {
+          _id: "$strategies._id",
+          strategy_name: "$strategies.strategy_name",
+          UserName: "$UserName",
+          strategy_description: "$strategies.strategy_description",
+          strategy_category: "$strategies.strategy_category",
+          strategy_segment: "$strategies.strategy_segment",
+          strategy_image: "$strategies.strategy_image",
+          strategy_indicator: "$strategies.strategy_indicator",
+          maker_id: "$strategies.maker_id",
+          createdAt: "$strategies.createdAt",
+          max_trade: "$strategies.max_trade",
+          strategy_percentage:"$strategies.strategy_percentage"
+        }
+      }
+    ]);
+
+
+    console.log("researchUsersWithStrategies :", researchUsersWithStrategies)
+
+    if (!researchUsersWithStrategies) {
+      return res.send({
+        status: false,
+        msg: "NO Researcher Found",
+        data: []
+      })
+    }
+
+    return res.send({ status: true, msg: "All strategy fetche successfully ", data: researchUsersWithStrategies })
+
+
+
   }
 }
 

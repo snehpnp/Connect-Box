@@ -1,8 +1,30 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetClientsOrderBy_Prefix,GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG,getOrders_data,EmployeeData,AddEmployeeBySub,DeleteEmployee,UpdateEmployee,get_Employee_Id,get_Employee_Status} from "../../../Services/Subadmin/Strategy.service";
+import { GetClientsOrderBy_Prefix,GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG,getOrders_data,EmployeeData,AddEmployeeBySub,DeleteEmployee,UpdateEmployee,get_Employee_Id,get_Employee_Status,GetAllStrategyFor_Employee,GetAllServicesForEmployee} from "../../../Services/Subadmin/Strategy.service";
 
 
+export const GetEmployeeServices= createAsyncThunk(
+    "get/allgroupServices",
+    async (data) => {
+        try {
+            const res = await GetAllServicesForEmployee(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
 
+export const GetEmployeeStrategy= createAsyncThunk(
+    "get/strategy",
+    async (data) => {
+        try {
+            const res = await GetAllStrategyFor_Employee(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
 
 export const GetEmployeeStatus= createAsyncThunk(
     "employee/statusUpdate",
@@ -260,6 +282,12 @@ const StrategySlice = createSlice({
                 state.GetEmployeeByID = action.payload;
             })
             .addCase(GetEmployeeStatus.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(GetEmployeeStrategy.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(GetEmployeeServices.fulfilled, (state, action) => {
                 state.isLoading = false;
             })
     },

@@ -1,8 +1,9 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import AddForm from '../../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
 import { GetStretgyWithImg, AddStrategy, DELETE_STRATEGY } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
- 
+import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice'
+
 import Swal from 'sweetalert2';
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -33,9 +34,31 @@ const Strategy = () => {
         loading: true,
         data: [],
     });
+    const [GetAllSgments, setGetAllSgments] = useState({
+        loading: true,
+        data: [],
+    });
 
 
 
+
+    const getservice = async () => {
+        await dispatch(Get_All_Catagory())
+            .unwrap()
+            .then((response) => {
+
+                if (response.status) {
+
+                    setGetAllSgments({
+                        loading: false,
+                        data: response.data,
+                    });
+                }
+            });
+    };
+    useEffect(() => {
+        getservice();
+    }, []);
 
 
     const fields = [
@@ -67,7 +90,11 @@ const Strategy = () => {
         {
             name: "strategy_segment",
             label: "Strategy Segment",
-            type: "text",
+            type: "select",
+            options: GetAllSgments.data.map((item) => ({
+                label: item.name,
+                value: item.name,
+            })),
             label_size: 12,
             col_size: 6,
             disable: false,
@@ -128,7 +155,7 @@ const Strategy = () => {
             max_trade: '',
             strategy_percentage: '',
             maker_id: user_id,
-            
+
 
         },
         validate: (values) => {
@@ -176,6 +203,7 @@ const Strategy = () => {
                 Service_Type: 0,
                 Role: "RESEARCH"
             };
+            
             await dispatch(AddStrategy(data))
                 .unwrap()
                 .then(async (response) => {
@@ -414,7 +442,7 @@ const Strategy = () => {
 
                                                 </div>
                                                 <span className="icon-frame d-flex align-items-center justify-content-center">
-                                                    
+
                                                     <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
 
                                                 </span>
@@ -456,14 +484,14 @@ const Strategy = () => {
 
 
                                             <a className="btn-action-icon me-2"  >
-                                                <i className="fe fe-edit" 
-                                                onClick={() => handleEditPackage({ id: stg._id })} 
+                                                <i className="fe fe-edit"
+                                                    onClick={() => handleEditPackage({ id: stg._id })}
                                                 />
                                             </a>
 
-                                            <a className="btn-action-icon" 
-                                            onClick={() => { handleDelete(stg._id); }} 
-                                             >
+                                            <a className="btn-action-icon"
+                                                onClick={() => { handleDelete(stg._id); }}
+                                            >
                                                 <i className="fe fe-trash-2" />
                                             </a>
                                         </div>

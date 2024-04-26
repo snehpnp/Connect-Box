@@ -117,6 +117,15 @@ const EditClient = () => {
       col_size: 12,
       disable: false,
     },
+   
+    {
+      name: "fullName",
+      label: "Full Name",
+      type: "text",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
     {
       name: "username",
       label: "Username",
@@ -124,14 +133,6 @@ const EditClient = () => {
       label_size: 12,
       col_size: 6,
       disable: true,
-    },
-    {
-      name: "fullName",
-      label: "FullName",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
     },
     {
       name: "email",
@@ -143,7 +144,7 @@ const EditClient = () => {
     },
     {
       name: "mobile",
-      label: "Mobile",
+      label: "Phone Number",
       type: "text",
       label_size: 12,
       col_size: 6,
@@ -151,7 +152,7 @@ const EditClient = () => {
     },
     {
       name: "prifix_key",
-      label: "Prifix Key",
+      label: "Prefix Key",
       type: "text",
       label_size: 12,
       col_size: 6,
@@ -159,7 +160,7 @@ const EditClient = () => {
     },
     {
       name: "subadmin_servic_type",
-      label: "Subadmin Servic Type",
+      label: "Subadmin Service Type",
       type: "select",
       options: [
         { label: "Per Trade", value: "1" },

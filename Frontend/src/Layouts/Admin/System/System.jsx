@@ -282,7 +282,7 @@ function System() {
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
                       <p>
-                        favicon{" "}
+                      Favicon{" "}
                         <img
                           src={getCompanyData && getCompanyData[0].favicon}
                           alt="favicon"
@@ -538,7 +538,7 @@ function System() {
                     <div className="modal-body">
                       <div className="row">
                         <div className="col-lg-6 col-md-12">
-                          <label>favicon</label>
+                          <label>Favicon</label>
                           <input
                             type="file"
                             className="form-control"
@@ -560,7 +560,7 @@ function System() {
                         </div>
 
                         <div className="col-lg-6 col-md-12">
-                          <label>logo</label>
+                          <label>Logo</label>
                           <input
                             type="file"
                             className="form-control"

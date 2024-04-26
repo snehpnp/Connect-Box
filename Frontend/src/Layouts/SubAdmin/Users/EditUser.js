@@ -70,7 +70,7 @@ const AddClient = () => {
     },
     {
       name: "fullName",
-      label: "FullName",
+      label: "Full Name",
       type: "text",
       label_size: 6,
       col_size: 6,

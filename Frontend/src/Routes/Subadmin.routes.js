@@ -30,6 +30,10 @@ import Settings from '../Layouts/Comman/Setting_Page/Settings.js';
 import AllEmployees from '../Layouts/SubAdmin/Subadmin_Employees/AllEmployee'
 import AddEmployee from '../Layouts/SubAdmin/Subadmin_Employees/AddEmployee'
 import Edit_Employee from '../Layouts/SubAdmin/Subadmin_Employees/Update_Employee'
+import AllResearcherStrategy from '../Layouts/SubAdmin/Researcher/AllResearcherStrategy.js'
+
+
+
 
 // strategydesc
 const SubAdmin_Routing = () => {
@@ -71,6 +75,8 @@ const SubAdmin_Routing = () => {
 
           <Route exact path="/faqs" element={<Faqs />} />
           <Route exact path="/setting" element={<Settings />} />
+          <Route exact path="/researcher-strategy" element={<AllResearcherStrategy />} />
+
 
           
           
