@@ -48,4 +48,17 @@ export async function UPDATE_CLIENT_SERVICE(data,token){
 
     }
  } 
+
+ export async function GET_ALL_SUBADMIN_STRATEGY(data){
+    try{
+        const res= await axios.post(`${Config.base_url}getall/strategy`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch(err){
+        
+        return await err
+    }
+ }
  
