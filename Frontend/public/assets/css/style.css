@@ -9523,7 +9523,7 @@ table .badge {
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li a:hover span,
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li a.active span,
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li a.active i {
-    color: #fff
+    color: #000;
 }
 
 [data-sidebar=dark] body .sidebar .sidebar-menu ul li ul li a {
@@ -33617,7 +33617,7 @@ img {
 
 .pricing-section {
     position: relative;
-    padding: 100px 0 80px;
+    /* padding: 100px 0 80px; */
     overflow: hidden;
 }
 
@@ -33641,12 +33641,19 @@ img {
     position: relative;
     background-color: #ffffff;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-    padding: 0 0 30px;
-    max-width: 370px;
+    padding: 20px 20px 30px;
+    /* max-width: 370px; */
     margin: 0 auto;
     border-bottom: 20px solid #40cbb4;
 }
-
+.stock-edit-icon svg{
+    width: 1.2em;
+    height: 1.2em;
+}
+.stock-edit-icon {
+    padding: 0 4px;
+    border-radius: 2px;
+}
 .pricing-block .icon-box {
     position: relative;
     padding: 50px 30px 0;
@@ -33700,15 +33707,15 @@ img {
 
 .pricing-block .price-box {
     position: relative;
-    text-align: center;
-    padding: 10px 20px;
+    /* text-align: center;
+    padding: 10px 20px; */
 }
 
 .pricing-block .title {
     position: relative;
     display: block;
-    font-size: 24px;
-    line-height: 1.2em;
+    font-size: 16px;
+    line-height: 2.2em;
     color: #222222;
     font-weight: 600;
 }
@@ -33724,15 +33731,17 @@ img {
 
 .pricing-block .features {
     position: relative;
-    max-width: 280px;
-    margin: 0 auto 20px;
+    /* max-width: 280px; */
+    margin:0;
 }
-
+.pricing-block .features p{
+    margin-bottom: 0px;
+}
 .pricing-block .features li {
     position: relative;
     display: block;
-    font-size: 14px;
-    line-height: 30px;
+    font-size: 14px !important;
+    line-height: 25px;
     color: #848484;
     font-weight: 500;
     padding: 5px 0;
@@ -34044,7 +34053,9 @@ img {
     background-color: #2a2b2f;
 
 }
-
+[data-layout-mode=dark] .plan-inner {
+    background: #16191c;
+}
 .d-table,
 .intro-fill {
     display: table;
@@ -34312,7 +34323,73 @@ img {
 .w-30 {
     width: 30%;
 }
-
+[data-layout-mode=dark] .MuiDataGrid-cell
+{
+    color: #ddd !important;
+}
+[data-layout-mode=dark] .price-box .title
+{
+    color:#fff;
+}
+[data-layout-mode=dark] .pricing-block .features p ,[data-layout-mode=dark] .entry-content li 
+{
+    /* margin-bottom: 0px; */
+    color: #ddd !important;
+}
+button[aria-label="delete"] ,.button_sell  
+{
+    background-color: rgba(255, 218, 218, .49) !important;
+    color: red !important;
+    margin: 0px 5px;
+}
+.button_BUY  
+{
+background-color: #e1ffed !important;
+color: #33b469 !important;
+border: none;
+}
+.button_sell  
+{
+border: none;
+}
+.MuiIconButton-sizeSmall svg
+{
+    width: 0.8em !important;
+   height: 0.8em !important;
+}
+button[aria-label="edit"] 
+{
+  
+background-color: #ffefdd;
+    color: #ec8000;
+    margin: 0px 5px;
+ }
+ @media(max-width: 480px) {
+    .toggle-li
+    {
+        display: block;
+        width: 100%;
+    }
+   .serach-li
+   {
+   width: 45%;
+   }
+   .filter-list button,.filter-list .input-block input.form-control
+   {
+        font-size: 12px !important;
+        padding: 8px 8px !important;
+    }
+    .list-btn .btn-filters {
+      
+        min-width: 35px;
+        height: 34px;
+       
+    }
+    .select-100
+    {
+        width: 100%;
+    }
+}
 @media(max-width: 575px) {
     li.nav-item.dropdown button {
         font-size: 10px !important;

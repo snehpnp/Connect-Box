@@ -176,38 +176,40 @@ const Helpuser = () => {
     <div>
       {help.Role === "USER" ? (
         <div className="content container-fluid ">
-          <div className="row mb-2">
+          {/* <div className="row mb-2">
             <div className="col-lg-4 col-md-4" data-aos="fade-left">
               <div className="page-header">
                 <div className="content-page-header">
-                  <h5>Help Center</h5>
+                  <h5>Help Center </h5>
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
-          <div className="row">
-            <div className="col-lg-12 col-md-12" data-aos="fade-left">
-              <div className="card h-100" >
-                <div className="card-body">
-                  <div className="tab-content">
-                    <div className="tab-pane show active" id="solid-tab1">
-                      <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+    
+              <div className="card h-100" data-aos="fade-left">
+              <div className="card-header d-flex justify-content-between align-items-center border-bottom">
                         <h5 className="card-title mb-0 w-auto">
                           {" "}
-                          <i className="fa-solid fa-landmark pe-2"></i>How Can I
+                          <i className="fas fa-hands-helping pe-2"></i>How Can I
                           Help You
                         </h5>
                         <div className="pay-btn text-end w-auto"></div>
                       </div>
+                <div className="card-body">
+                  <div className="tab-content">
+                    <div className="tab-pane show active" id="solid-tab1">
+                     
 
-                      <div className="invoice-total-box px-3 border">
+                      <div className="invoice-total-box">
                         <div className="invoice-total-inner">
                           <form action="#" className="mt-3">
-                            <div className="card">
-                              <div className="row" style={{ gap: "0.1rem" }}>
-                                <div style={{ width: "24rem" }}>
-                                  <div className="input-block mb-2">
+                           
+                              <div className="row" >
+                                <div className="col-md-7 order-2 order-md-1">
+                                  <div className="row">
+                                    <div className="col-md-4">
+                                    <div className="input-block mb-2">
                                     <label>Name</label>
                                     <input
                                       type="text"
@@ -223,8 +225,8 @@ const Helpuser = () => {
                                       }}
                                     />
                                   </div>
-                                </div>
-                                <div style={{ width: "23rem" }}>
+                                    </div>
+                                    <div className="col-md-4">
                                   <div className="input-block mb-2">
                                     <label>Email ID</label>
                                     <input
@@ -242,8 +244,7 @@ const Helpuser = () => {
                                     />
                                   </div>
                                 </div>
-
-                                <div style={{ width: "23rem" }}>
+                                <div className="col-md-4">
                                   <div className="input-block mb-0">
                                     <label>Phone No</label>
                                     <input
@@ -261,13 +262,16 @@ const Helpuser = () => {
                                     />
                                   </div>
                                 </div>
-                                <div className="col-lg-12 col-md-12">
+                                  </div>
+                                  <div className="row">
+                                  <div className="col-lg-12 col-md-12">
                                   <div className="input-block mb-0 mt-2">
                                     <label>Message</label>
 
                                     <textarea
                                       id="message"
                                       className="form-control"
+                                      placeholder="Please Enter Message"
                                       rows="4"
                                       onChange={(e) => {
                                         setHelp({
@@ -279,7 +283,28 @@ const Helpuser = () => {
                                     {!help.Message ? <div><p style={{ color: "red" }}>Please Enter Message</p></div> : ""}
                                   </div>
                                 </div>
-                                <div
+                                  </div>
+                                  <button
+                                    type="submit"
+                                    data-bs-dismiss="modal"
+                                    className="btn btn-primary paid-continue-btn"
+                                    onClick={userhelp}
+                                  >
+                                    Send
+                                  </button>
+                                <div >
+                               
+                                </div>
+                                </div>
+                                <div className="col-md-5 order-1  order-md-2">
+                                  <img className="mx-auto text-center" src="/assets/img/category/Call-center.png" style={{width:'350px',display:'block'}}/>
+                                </div>
+                                
+                              
+
+                               
+                               
+                                {/* <div
                                   className="modal-footer mt-2"
                                   style={{
                                     justifyContent: "center !important",
@@ -293,29 +318,26 @@ const Helpuser = () => {
                                   >
                                     Send
                                   </button>
-                                </div>
+                                </div> */}
                               </div>
-                            </div>
+                            
                           </form>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <h1
-                className="col-lg-4 col-md-4"
+                  <div className="mt-3">
+              <div
+                className="col-lg-12"
                 data-aos="fade-left"
-                style={{ color: "black", width: "76rem" }}
+                style={{ color: "black"}}
 
               >
-                <div className="content-page-header">
-                  <h1 style={{ fontSize: "2rem", marginTop: "1rem" }}>
+              
+                  <h5 className="card-title" style={{ marginTop: "1rem" }}>
                     User Detail
-                  </h1>
-                </div>
+                  </h5>
+               
                 {
                   <FullDataTable
                     styles={styles}
@@ -323,10 +345,14 @@ const Helpuser = () => {
                     rows={getuserdata}
                   />
                 }
-              </h1>
+              </div>
             </div>
+                </div>
+              </div>
+           
+         
           </div>
-        </div>
+       
       ) : (
         ""
       )}

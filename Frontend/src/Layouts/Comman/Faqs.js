@@ -20,7 +20,12 @@ const FAQs = () => {
 
             <div className="content container-fluid" data-aos="fade-left">
 
-
+           <div className='card'>
+            <div className='card-header'>
+                <h5 className='card-title mb-0'>
+                <i className="fas fa-question-circle pe-2"></i>Frequently Asked Questions</h5>
+            </div>
+          
                 <div className='card-body'>
 
 
@@ -54,7 +59,7 @@ const FAQs = () => {
                     </div>
 
                 </div>
-
+                </div>
             </div>
 
         </div>
