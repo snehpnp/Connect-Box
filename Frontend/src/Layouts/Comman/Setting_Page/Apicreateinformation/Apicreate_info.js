@@ -467,7 +467,7 @@ function Apicreate_info() {
       </div>
       {model && selectedItem && (
         <>
-          
+
           <div className="modal custom-modal d-block kk" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-md">
               <div className="modal-content">
@@ -477,27 +477,27 @@ function Apicreate_info() {
                   </div>
                 </div>
                 <div className="your-model-class">
-            <h2>{selectedItem.HeadingTitle}</h2>
-            <p>{selectedItem.describtion}</p>
-            <p>
-              <a href={selectedItem.LinkOne}>
-                Link One :{selectedItem.LinkOne}
-              </a>
-            </p>
-            <p>
-              <a href={selectedItem.LinkTwo}>
-                Link Two :{selectedItem.LinkTwo}
-              </a>
-            </p>
-            {selectedItem.img1 && <img src={selectedItem.img1} alt="Image 1" />}
-            <div>
-              {selectedItem.img2 && (
-                <img src={selectedItem.img2} alt="Image 2" />
-              )}
-            </div>
+                  <h2 className="text-center" >{selectedItem.HeadingTitle}</h2>
+                  <p className="ms-3">{selectedItem.describtion}</p>
+                  <p className="ms-3">
+                    <a href={selectedItem.LinkOne}>
+                      Link One :{selectedItem.LinkOne}
+                    </a>
+                  </p>
+                  <p className="ms-3">
+                    <a className href={selectedItem.LinkTwo}>
+                      Link Two :{selectedItem.LinkTwo}
+                    </a>
+                  </p>
+                  {selectedItem.img1 && <img src={selectedItem.img1} alt="Image 1" />}
+                  <div>
+                    {selectedItem.img2 && (
+                      <img src={selectedItem.img2} alt="Image 2" />
+                    )}
+                  </div>
 
-            <button onClick={() => setModel(false)}>Close</button>
-          </div>
+                  <button className="btn btn-primary mb-2 ms-2" onClick={() => setModel(false)}>Close</button>
+                </div>
               </div>
             </div>
           </div>
