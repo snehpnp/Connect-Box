@@ -310,8 +310,9 @@ export default function AllEmployees() {
           FullName: item.fullName,
           UserName: item.userName,
           PhoneNo: item.phoneNo,
-          "Prefix Key": prifixKey,
-          "Created At": item.createDate,
+          EmailId: item.email,
+          Prefix_Key: prifixKey,
+          CreatedAt: item.createDate,
         });
       });
 
@@ -405,7 +406,7 @@ export default function AllEmployees() {
                             <ExportToExcel
                               className="btn btn-primary"
                               apiData={ForGetCSV}
-                              fileName={"All Strategy"}
+                              fileName={"All Employee Details"}
                             />
                           </div>
                         </div>

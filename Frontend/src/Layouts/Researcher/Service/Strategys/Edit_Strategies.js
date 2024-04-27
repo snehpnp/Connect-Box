@@ -5,9 +5,9 @@ import toast from "react-hot-toast";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
-  EditSubStrategys,
-  GetSubStrategys_ById,
-} from "../../../../ReduxStore/Slice/Subadmin/Strategy";
+  EditResearcherStrategys,
+  GetOneResearcherStrategys,
+} from "../../../../ReduxStore/Slice/Researcher/ResearcherSlice";
 import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice'
 
 function Edit_Strategies() {
@@ -28,12 +28,10 @@ function Edit_Strategies() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await dispatch(GetSubStrategys_ById({ id }));
+        const response = await dispatch(GetOneResearcherStrategys({ id }));
         if (response.payload && response.payload.data) {
-
           setAllStrategy(response.payload.data);
           setStgDescription(response.payload.data.strategy_description)
-
         }
       } catch (error) {
         console.error("Error fetching strategy data:", error);
@@ -69,86 +67,102 @@ function Edit_Strategies() {
     getservice();
   }, []);
 
+ 
   const fields = [
     {
-      name: "strategy_name",
-      label: "Strategy Name",
-      type: "text1",
-      label_size: 6,
-      col_size: 6,
-      disable: false,
+        name: "strategy_name",
+        label: "Strategy Name",
+        type: "text1",
+        label_size: 6,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_category",
-      label: "Catagory",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
+        name: "strategy_category",
+        label: "Catagory",
+        type: "text",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_demo_days",
-      label: "Strategy demo days",
-      type: "text3",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
+        name: "strategy_demo_days",
+        label: "Strategy demo days",
+        type: "text3",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_segment",
-      label: "Strategy Segment",
-      type: "select",
-      options: GetAllSgments.data.map((item) => ({
-        label: item.name,
-        value: item.name,
-      })),
-      label_size: 12,
-      col_size: 6,
-      disable: false,
+        name: "strategy_segment",
+        label: "Strategy Segment",
+        type: "select",
+        options: GetAllSgments.data.map((item) => ({
+            label: item.name,
+            value: item.name,
+        })),
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_indicator",
-      label: "Indicator",
-      type: "file1",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
+        name: "strategy_indicator",
+        label: "Indicator",
+        type: "file1",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_tester",
-      label: "Strategy Tester",
-      type: "file1",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
+        name: "strategy_tester",
+        label: "Strategy Tester",
+        type: "file1",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_image",
-      label: "Strategy Logo",
-      type: "file1",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
+        name: "strategy_image",
+        label: "Strategy Logo",
+        type: "file1",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "max_trade",
-      label: "Maximum Trades",
-      type: "text3",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
+        name: "max_trade",
+        label: "Maximum Trades",
+        type: "text3",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
     {
-      name: "strategy_percentage",
-      label: "Strategy Percentage",
-      type: "text3",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
+        name: "strategy_percentage",
+        label: "Strategy Percentage",
+        type: "text3",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
+    },
+    {
+        name: "monthly_charges",
+        label: "Monthly Charges",
+        type: "text3",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
+    },
+    {
+        name: "security_fund",
+        label: "Security Fund",
+        type: "text3",
+        label_size: 12,
+        col_size: 6,
+        disable: false,
     },
 
-
-  ];
+];
 
   const formik = useFormik({
     initialValues: {
@@ -162,37 +176,42 @@ function Edit_Strategies() {
       max_trade: '',
       strategy_percentage: '',
       maker_id: user_id,
-
+      security_fund: '',
+      monthly_charges: ''
 
     },
+     
     validate: (values) => {
       let errors = {};
       if (!values.strategy_name) {
-        errors.strategy_name = "strategy name is required";
+          errors.strategy_name = "strategy name is required";
       }
       if (!values.strategy_demo_days) {
-        errors.strategy_demo_days = "strategy demo day is required";
+          errors.strategy_demo_days = "strategy demo day is required";
       }
       if (!values.strategy_category) {
-        errors.strategy_category = "strategy category is required";
+          errors.strategy_category = "strategy category is required";
       }
       if (!values.strategy_segment) {
-        errors.strategy_segment = "strategy segment is required";
+          errors.strategy_segment = "strategy segment is required";
       }
       if (!values.max_trade) {
-        errors.max_trade = "Please enter maximum trade";
+          errors.max_trade = "Please enter maximum trade";
       }
       if (!getStgDescription) {
-        errors.getStgDescription = "Please enter strategy description";
+          errors.getStgDescription = "Please enter strategy description";
       }
       if (!values.strategy_percentage) {
-        errors.strategy_percentage = "Please enter strategy percentage";
+          errors.strategy_percentage = "Please enter strategy percentage";
       }
-
+      if (!values.monthly_charges) {
+          errors.monthly_charges = "Please enter monthly charges";
+      }
+      if (!values.security_fund) {
+          errors.security_fund = "Please enter security fund";
+      }
       return errors;
-
-
-    },
+  },
     onSubmit: async (values, { resetForm }) => {
 
       const data = {
@@ -208,11 +227,12 @@ function Edit_Strategies() {
         strategy_percentage: values.strategy_percentage,
         max_trade: values.max_trade,
         maker_id: user_id,
-        Service_Type: 0,
-        Role: "RESEARCH"
+        Role: "RESEARCH", 
+        security_fund: values.security_fund,
+        monthly_charges:values.monthly_charges,
       };
 
-      await dispatch(EditSubStrategys(data))
+      await dispatch(EditResearcherStrategys(data))
         .unwrap()
         .then(async (response) => {
           if (response.status) {
@@ -242,6 +262,9 @@ function Edit_Strategies() {
       formik.setFieldValue("strategy_indicator", allStrategy.strategy_indicator);
       formik.setFieldValue(" strategy_image", allStrategy.strategy_image);
       formik.setFieldValue("strategy_demo_days", allStrategy.strategy_demo_days);
+      formik.setFieldValue("security_fund", allStrategy.security_fund);
+      formik.setFieldValue("monthly_charges", allStrategy.monthly_charges);
+
     }
   }, [allStrategy]);
 
