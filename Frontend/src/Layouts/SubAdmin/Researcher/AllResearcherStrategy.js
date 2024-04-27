@@ -16,6 +16,7 @@ const AllResearcherStrategy = () => {
         loading: true,
         data: []
     })
+    
 
     const getAllStrategy = async () => {
         await dispatch(Get_All_Researcher_Strategy()).unwrap()

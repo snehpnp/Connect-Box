@@ -96,6 +96,18 @@ export async function admin_dashData1(data, token) {
   }
 }
 
+//Top 5 Subadmin Data
+export async function topSubadmin_dashData(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}admin/top/dashboard`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
+
 
 export async function SubadminsName(data, token) {
   try {

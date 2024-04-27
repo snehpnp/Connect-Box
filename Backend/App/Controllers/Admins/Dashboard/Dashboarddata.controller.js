@@ -66,9 +66,9 @@ class Dashboard {
         },
       ]);
 
-  
 
-  
+
+
 
       const {
         Totalcount,
@@ -85,7 +85,7 @@ class Dashboard {
         TotalUsercount: TotalUsercount,
         TotalActiveUsercount: TotalActiveUsercount,
         TotalInActiveUsercount: TotalUsercount - TotalActiveUsercount,
-       
+
       };
 
       // DATA GET SUCCESSFULLY
@@ -113,7 +113,7 @@ class Dashboard {
       if (SUBADMINS !== "") {
         // Add a single pipeline for the specified user
         const pipeline = [
-          { $match: { user_id: new ObjectId(SUBADMINS) } },
+          { $match: { user_id: new ObjectId(SUBADMINS),Role:"SUBADMIN" } },
           { $sort: { createdAt: 1 } },
           {
             $addFields: {
@@ -129,6 +129,7 @@ class Dashboard {
         aggregationPipelines.push(pipeline);
       } else {
         const pipeline = [
+          { $match: { Role:"SUBADMIN" } },
           { $sort: { createdAt: 1 } },
           {
             $addFields: {
@@ -272,6 +273,132 @@ class Dashboard {
       });
     }
   }
+
+
+
+  async dashboardtopsubadmins(req, res) {
+    try {
+      const selectedOption = req.body.selectedOption;
+
+      function getDateRange(frequency) {
+        let startDate, endDate;
+        const today = new Date();
+
+        switch (frequency) {
+          case 'Monthly':
+            startDate = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+            endDate = today;
+            break;
+          case 'Quarterly':
+            const quarter = Math.floor((today.getMonth() + 3) / 3); // Current quarter
+            startDate = new Date(today.getFullYear(), (quarter - 1) * 3, 1);
+            endDate = today;
+            break;
+          case 'Half-Yearly':
+            startDate = new Date(today.getFullYear(), today.getMonth() - 6, today.getDate());
+            endDate = today;
+            break;
+          case 'Yearly':
+            startDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+            endDate = today;
+            break;
+          case 'Day':
+            startDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+            endDate = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1); // Next day
+            break;
+          default:
+            startDate = null;
+            endDate = null;
+            break;
+        }
+
+        return { startDate, endDate };
+      }
+
+
+      var dateData = getDateRange(selectedOption)
+      console.log(dateData);
+
+      let topSubadmins = await User_model.aggregate([
+        { $match: { Role: "SUBADMIN" } },
+        {
+          $lookup: {
+            from: "count_licenses",
+            localField: "_id",
+            foreignField: "user_id",
+            as: "licenses"
+          }
+        },
+        {
+          $project: {
+            UserName: 1, // Include UserName field
+            licenses: {
+              $filter: {
+                input: "$licenses",
+                as: "license",
+                cond: {
+                  $and: [
+                    { $gte: ["$$license.createdAt", dateData.startDate] },
+                    { $lte: ["$$license.createdAt", dateData.endDate] }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        { $unwind: "$licenses" },
+        {
+          $addFields: {
+            "licenses.Balance": { $toInt: "$licenses.Balance" } // Convert Balance field from string to number
+          }
+        },
+        {
+          $group: {
+            _id: "$_id",
+            name: { $first: "$UserName" },
+            totalBalance: { $sum: "$licenses.Balance" }, // Calculate individual balance
+          }
+        },
+        {
+          $sort: { totalBalance: -1 } // Sort by totalBalance in descending order
+        },
+        { $limit: 5 } // Limit to top 5 results
+      ]);
+
+
+      const overallTotal = topSubadmins.reduce((acc, obj) => acc + obj.totalBalance, 0);
+
+      // topSubadmins.forEach(user => {
+      //     const percentage = (user.totalBalance / overallTotal) * 100;
+      //     user.percentage = (Math.round(percentage * 100) / 100)
+      // });
+      
+      // console.log("Updated Result:", topSubadmins);
+      const updatedResult = topSubadmins.map(user => ({
+        name: user.name,
+        percentage: (Math.round((user.totalBalance / overallTotal) * 10000) / 100)
+
+    }));
+    
+    console.log("Updated Result:", updatedResult);
+    
+
+
+
+     return res.send({
+        status: true,
+        msg: "Get Subadmins",
+        data: updatedResult,
+      });
+    } catch (error) {
+      console.log("Error getting Subadmins:", error);
+      res.status(500).send({
+        status: false,
+        msg: "Internal Server Error",
+      });
+    }
+  }
+
 }
 
 module.exports = new Dashboard();

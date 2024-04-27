@@ -700,7 +700,7 @@ class strategy {
     ]);
 
 
-    console.log("researchUsersWithStrategies :", researchUsersWithStrategies)
+  
 
     if (!researchUsersWithStrategies) {
       return res.send({

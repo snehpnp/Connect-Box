@@ -176,7 +176,7 @@ export default function AllEmployees() {
     {
       field: "activeStatus",
       headerName: "Status",
-      width: 160,
+      width: 100,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div className="status-toggle">
@@ -198,23 +198,24 @@ export default function AllEmployees() {
     {
       field: "Users",
       headerName: "Users List",
-      width: 220,
+      width: 180,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div className="status-toggle">
-          {console.log("=>", params.value)}
-    
-          <select id="strategySelect" className="form-select ">
-            <option value="">User List</option>
-            {params.value.map((data, index) => (
-              <option key={index} value={data.UserName}>{data.UserName}</option>
-            ))}
-          </select>
-    
+        <div className="status-toggle" style={{ width: '180', position: 'relative' }}>
+        <select id="strategySelect" className="form-select" style={{ width: '180', overflowX: 'hidden' }}>
+          <option value="">User List</option>
+          {params.value.map((data, index) => (
+            <option key={index} value={data.UserName}>{data.UserName}</option>
+          ))}
+        </select>
+        <div className="dropdown-arrow" style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+          ▼
         </div>
+      </div>
+      
       ),
     },
-    
+
     {
       field: "actions",
       headerName: "Actions",
@@ -309,8 +310,9 @@ export default function AllEmployees() {
           FullName: item.fullName,
           UserName: item.userName,
           PhoneNo: item.phoneNo,
-          "Prefix Key": prifixKey,
-          "Created At": item.createDate,
+          EmailId: item.email,
+          Prefix_Key: prifixKey,
+          CreatedAt: item.createDate,
         });
       });
 
@@ -404,7 +406,7 @@ export default function AllEmployees() {
                             <ExportToExcel
                               className="btn btn-primary"
                               apiData={ForGetCSV}
-                              fileName={"All Strategy"}
+                              fileName={"All Employee Details"}
                             />
                           </div>
                         </div>

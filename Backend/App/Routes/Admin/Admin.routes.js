@@ -4,8 +4,8 @@
 const router = require("express").Router()
 const { verifyToken } = require('../../Middlewares/autt.middleware')
 
-const { AddAdmin,GetAll_Broker_details } = require('../../Controllers/Admins/Admins/Admin.controller')
-const { GetDashboardData,GetDashboardData1 } = require('../../Controllers/Admins/Dashboard/Dashboarddata.controller')
+const { AddAdmin,GetAll_Broker_details ,GetAll_Broker} = require('../../Controllers/Admins/Admins/Admin.controller')
+const { GetDashboardData,GetDashboardData1 ,dashboardtopsubadmins} = require('../../Controllers/Admins/Dashboard/Dashboarddata.controller')
 
 
 const { EditCompany, GetCompanyInfo, GetCompany_logo, EditEmailInfo } = require('../../Controllers/Admins/Admins/company.controller')
@@ -28,10 +28,14 @@ router.post('/company/edit', EditCompany);
 
 router.post('/admin/dashboard', GetDashboardData);
 router.post('/admin/dashboard1', GetDashboardData1);
+router.post('/admin/top/dashboard', dashboardtopsubadmins);
+
 
 
 
 router.get('/broker/get', GetAll_Broker_details);
+router.get('/all/brokers/get', GetAll_Broker);
+
 
 router.post('/subadmin/company/edit', EditSubAdminCompany);
 router.post('/subadmin/company/getall', GetAllCompanyInfo);

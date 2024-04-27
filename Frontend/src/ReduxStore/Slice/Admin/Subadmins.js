@@ -8,6 +8,7 @@ import {
   active_Status,
   admin_dashData,
   admin_dashData1,
+  topSubadmin_dashData,
   SubadminsName,
   strategy_All,
   broker_All,
@@ -99,6 +100,19 @@ export const Dashboard_admin1 = createAsyncThunk(
   async (data) => {
     try {
       const res = await admin_dashData1(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
+
+export const top_Subadmin_dashData = createAsyncThunk(
+  "admin/dashboard",
+  async (data) => {
+    try {
+      const res = await topSubadmin_dashData(data);
       return res;
     } catch (err) {
       throw err;
@@ -349,6 +363,18 @@ const SubAdminSlice = createSlice({
         state.isError = false;
       })
       .addCase(Subadmin_SalesData.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(top_Subadmin_dashData.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(top_Subadmin_dashData.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+      })
+      .addCase(top_Subadmin_dashData.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });
