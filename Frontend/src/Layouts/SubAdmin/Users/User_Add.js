@@ -46,14 +46,7 @@ const AddClient = () => {
 
   // 0 = 2 days 1= Demo 2 =Live
   const fields = [
-    {
-      name: "profile_Img",
-      label: "profile_img",
-      type: "file",
-      label_size: 12,
-      col_size: 12,
-      disable: false,
-    },
+ 
     {
       name: "fullName",
       label: "Full Name",
@@ -186,7 +179,6 @@ const AddClient = () => {
 
   const formik = useFormik({
     initialValues: {
-      profile_Img: null,
       fullName: "",
       username: "",
       email: "",

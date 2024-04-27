@@ -49,24 +49,7 @@ const Strategies = () => {
                 <div className="page-header">
                     <div className="content-page-header">
                         <h5>Plans List</h5>
-                        <div className="page-content">
-                            <div className="list-btn">
-                                <ul className="filter-list">
-
-                                    <li>
-                                        <p
-                                            className="btn btn-primary"
-
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#add_newpackage"
-                                        >
-                                            <i className="fa fa-plus-circle me-2" aria-hidden="true" />
-                                            Add Plan
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                    
                     </div>
                 </div>
 
