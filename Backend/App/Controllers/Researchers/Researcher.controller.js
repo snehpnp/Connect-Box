@@ -15,9 +15,38 @@ class Researcher {
 
     async AddResearcher(req, res) {
         try {
-            const { prifix_key, PhoneNo, Email, UserName, Password } = req.body;
+            const { PhoneNo, Email, UserName, Password } = req.body;
 
             const Role = "RESEARCH";
+
+
+
+            async function generateUniquePrefix() {
+                const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                let prefix = '';
+
+                // Retrieve all existing prefix keys from the database
+                const existingPrefixKeys = (await User_model.find().select('prefix_key')).map(user => user.prefix_key);
+
+                // Generate a new prefix key until it's unique
+                do {
+                    prefix = '';
+                    for (let i = 0; i < 3; i++) {
+                        const randomIndex = Math.floor(Math.random() * alphabet.length);
+                        prefix += alphabet[randomIndex];
+                    }
+                } while (existingPrefixKeys.includes(prefix)); // Check if the generated prefix is already in use
+
+                return prefix;
+            }
+
+            // Example usage:
+            const prifix_key = await generateUniquePrefix();
+
+            if (prifix_key.length > 3) {
+                return res.send({ status: false, msg: "prifix_key Omly 3 Digits" });
+            }
+
 
             // Check if role exists
             const roleCheck = await Role_modal.findOne({ name: Role.toUpperCase() });
@@ -104,28 +133,31 @@ class Researcher {
         }
 
     }
+
+
+
     async GetAllResearcher(req, res) {
         const { id } = req.body
 
         try {
             const AllData = await User_model.find({ parent_id: id, Role: "RESEARCH" })
+          
             const aggregateResult = await User_model.aggregate([
-                { $match: { parent_id: id, Role: "RESEARCH" } }, // Match all users
+                { $match: { parent_id: id, Role: "RESEARCH" } }, 
                 {
                     $group: {
                         _id: null,
                         totalBalance: { $sum: { $toDouble: "$Balance" } },
-                        totalCount: { $sum: 1 }, // Count total users
+                        totalCount: { $sum: 1 }, 
                         activeCount: {
                             $sum: {
                                 $cond: { if: { $eq: ["$ActiveStatus", "1"] }, then: 1, else: 0 }
                             }
                         }
                     }
-                }
+                },
+                { $sort: { createdAt: -1 } } 
             ]);
-
-
 
 
             return res.send({
@@ -147,6 +179,9 @@ class Researcher {
         }
 
     }
+
+
+
     async addResearcherupdate(req, res) {
         try {
             const { _id, Balance, parent_id } = req.body
@@ -219,7 +254,7 @@ class Researcher {
                 })
             }
         }
-        catch(err) {
+        catch (err) {
             return res.send({
                 status: false,
                 msg: "Id not found",

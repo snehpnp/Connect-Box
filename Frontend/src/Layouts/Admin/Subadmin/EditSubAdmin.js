@@ -150,14 +150,7 @@ const EditClient = () => {
       col_size: 6,
       disable: true,
     },
-    {
-      name: "prifix_key",
-      label: "Prefix Key",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: true,
-    },
+    
     {
       name: "subadmin_servic_type",
       label: "Subadmin Service Type",
