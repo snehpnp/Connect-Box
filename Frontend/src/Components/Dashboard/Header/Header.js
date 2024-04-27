@@ -76,7 +76,6 @@ const Header = () => {
   // }, [isNavOpen]);
 
   const toggleNav = (data) => {
-    console.log("neha", data);
     if (data.Data.length == 0) {
       document.body.classList.remove("slide-nav");
     }
@@ -84,7 +83,6 @@ const Header = () => {
 
 
   const toggleNav1 = (item) => {
-    console.log("neha1", item);
     // if(data.Data.length == 0){
       document.body.classList.remove('slide-nav');
     // }
