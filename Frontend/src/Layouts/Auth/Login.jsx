@@ -7,11 +7,16 @@ import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
 import Modal from '../../Components/Dashboard/Models/Model'
 import OtpInput from "react-otp-input";
 import Lodding from '../../Utils/Loader';
-
-import {ipAddress} from '../../Utils/Ipaddress';
-
+import Swal from 'sweetalert2';
+import { ipAddress } from '../../Utils/Ipaddress';
+import { FaExclamationTriangle } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
+import { AiOutlineCloseCircle } from 'react-icons/ai'; // Importing close circle icon from React Icons
+import { AiOutlineUserDelete } from 'react-icons/ai'; // Importing delete user icon from React Icons
+import { FaServer } from 'react-icons/fa';
+import { BsExclamationTriangle } from 'react-icons/bs'; // Importing Bootstrap icon
+import { FaUserTimes } from 'react-icons/fa';
 
 
 function Login() {
@@ -89,37 +94,98 @@ function Login() {
   };
 
   const handleSubmit = async () => {
-    let trimmedEmail = email.trim();
-    let trimmedPassword = password.trim();
+    const trimmedEmail = email.trim();
+    const trimmedPassword = password.trim();
+  
     if (!trimmedEmail || !trimmedPassword) {
       toast.error("Please enter the credentials to login.");
       return;
     }
+  
     if (!/^\S+@\S+\.\S+$/.test(trimmedEmail)) {
       toast.error("Please enter a valid email address.");
       return;
     }
-    let req = {
+  
+    const req = {
       Email: email,
       Password: password,
       device: "WEB",
-      ip:ip,
+      ip: ip,
     };
-
-    await dispatch(SignIn(req))
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          SetData(response.data);
-          setShowModal(true);
-        } else {
-          toast.error(response.msg);
+  
+    try {
+      const response = await dispatch(SignIn(req)).unwrap();
+  
+      if (response.status) {
+        SetData(response.data);
+        setShowModal(true);
+      } else {
+        switch (response.msg) {
+          case "Password Not Match":
+            showErrorModal("Incorrect Password", "Please enter the correct password.");
+            break;
+          case "please contact admin you are inactive.":
+            showInactiveAccountModal();
+            break;
+          case "User Not exists":
+            showErrorModal("User Not Exists", "The user you are trying to access does not exist.");
+            break;
+          case "Server Side error":
+            showErrorModal("Server Side Error", "Oops! Something went wrong on the server. Please try again later.");
+            break;
+          case "your service is terminated please contact to admin":
+            showErrorModal("Service Terminated", "Your service has been terminated. Please contact the administrator for assistance.");
+            break;
+          default:
+            showSlowInternetModal();
+            break;
         }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
+      }
+    } catch (error) {
+      console.log("Error", error);
+      showSlowInternetModal();
+    }
   };
+  
+  const showErrorModal = (title, message) => {
+    Swal.fire({
+      icon: 'error',
+      title: `<span style="font-size: 24px; color: #ff5555;">${title}</span>`,
+      html: `<span style="font-size: 18px; color: #333;">${message}</span>`,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: '<span style="background-color: #3085d6; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px;">OK</span>'
+    });
+  };
+  
+  const showInactiveAccountModal = () => {
+    Swal.fire({
+      icon: 'warning',
+      title: '<span style="font-size: 24px; color: #ff9900;"><BsExclamationTriangle /></span> Inactive Account',
+      html: '<span style="font-size: 18px; color: #333;">Please contact admin as your account is inactive.</span>',
+      showCloseButton: true,
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: '<span style="background-color: #3085d6; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px;">OK</span>'
+    });
+  };
+  
+  const showSlowInternetModal = () => {
+    Swal.fire({
+      icon: 'warning',
+      title: '<span style="font-size: 24px; color: #ff9900;"><FaWifi /></span> Slow Internet Connection',
+      html: '<span style="font-size: 18px; color: #333;">Your internet connection seems to be slow. Please try again later.</span>',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'OK'
+    });
+  };
+  
+
+
+
+
+
+
+
 
   const handleChange = (value) => {
     const numericValue = value.replace(/\D/g, '');
@@ -143,21 +209,21 @@ function Login() {
 
   useEffect(() => {
     const fetchIP = async () => {
-        try {
-            const ip = await ipAddress();
-            setIp(ip);
-        } catch (error) {
-            console.error('Failed to fetch IP address:', error);
-        }
+      try {
+        const ip = await ipAddress();
+        setIp(ip);
+      } catch (error) {
+        console.error('Failed to fetch IP address:', error);
+      }
     };
 
     fetchIP();
 
     // Clean up function
     return () => {
-     
+
     };
-}, []);
+  }, []);
   return (
 
     <div >
@@ -170,7 +236,7 @@ function Login() {
               <div className='row'>
                 <div className='col-md-6 border-right'>
                   <div className='login-left '>
-                  <p>IP Address: {ip}</p>
+                    <p>IP Address: {ip}</p>
                     <img src="/assets/img/gif/login.gif" className='login-light-img'></img>
 
                     <img src="/assets/img/gif/login-dark.gif" className='login-dark-img'></img>
@@ -226,7 +292,7 @@ function Login() {
                         <span className="span-or">or</span>
                       </div>
 
-                      <div className="social-login ">
+                      {/* <div className="social-login ">
                         <span >Login with</span>
                         <div className='mt-2'>
                           <a href="/" className="facebook">
@@ -236,7 +302,7 @@ function Login() {
                             <i className="fab fa-google" />
                           </a>
                         </div>
-                      </div>
+                      </div> */}
 
                       <div className="text-center dont-have">
                         Don't have an account yet?{" "}
@@ -382,7 +448,7 @@ function Login() {
                       renderInput={(props, index) => (
                         <input className='text1'
                           {...props}
-                          type="text"
+                          type="tel"
                           autoFocus={index === 0}
                           onKeyPress={(event) => {
                             if (event.key === 'Enter') {
