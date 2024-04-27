@@ -469,12 +469,14 @@ function Strategy() {
             <div className="content container-fluid">
 
                 {/* PAGE HEADER */}
-                <div className="page-header">
-                    <div className="content-page-header mb-0">
-                        <h5>Strategies</h5>
+                <div className="card">
+                    <div className="card-header ">
+                        <h5 className="card-title mb-0">Strategies</h5>
+                        </div>
+                        <div className="card-body">
                         <div className="page-content">
                             <div className="list-btn">
-                                <ul className="filter-list">
+                                <ul className="filter-list justify-content-lg-end">
                                     <li className="mt-3">
                                         <p
                                             className="btn-filters"
@@ -513,7 +515,7 @@ function Strategy() {
                                             title="Download"
                                         >
                                             <li>
-                                                <div className="card-body">
+                                                <div className="">
                                                     <ExportToExcel
                                                         className="btn btn-primary "
                                                         apiData={ForGetCSV}
@@ -535,8 +537,7 @@ function Strategy() {
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                </div>
+                   
 
                 {/* Cards */}
                 {allStategy.loading ? (
@@ -653,7 +654,7 @@ function Strategy() {
                     <div className="modal custom-modal custom-lg-modal d-block">
                         <div className="modal-dialog modal-dialog-centered modal-md">
                             <div className="modal-content">
-                                <div className="modal-header border-0 mb-0 pb-0 pt-5 mx-3">
+                                <div className="modal-header border-0 mb-0 pb-0 ">
                                     <div className="form-header modal-header-title text-start mb-0">
                                         <h4 className="mb-0">Create New Strategy</h4>
                                     </div>
@@ -851,7 +852,8 @@ function Strategy() {
 
             </div >
             < ToastButton />
-
+            </div>
+                </div>
         </>
 
 

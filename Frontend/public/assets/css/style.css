@@ -4710,7 +4710,7 @@ span.select2-container.select2-container--default.select2-container--open {
 
 .sidebar .sidebar-menu ul li a span {
     padding: 0 10px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 400;
     line-height: 18px
 }
@@ -9425,8 +9425,8 @@ table .badge {
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a {
-    padding: 10px 15px;
-    transition: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+    padding: 10px 10px;
+    transition:0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 [data-layout=horizontal] body .greedy ul.list-inline-item.list-unstyled.links {

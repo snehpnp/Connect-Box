@@ -8,6 +8,8 @@ import Modal from '../../Components/Dashboard/Models/Model'
 import OtpInput from "react-otp-input";
 import Lodding from '../../Utils/Loader';
 
+import {ipAddress} from '../../Utils/Ipaddress';
+
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 
@@ -29,6 +31,7 @@ function Login() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [ip, setIp] = useState(null);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -100,6 +103,7 @@ function Login() {
       Email: email,
       Password: password,
       device: "WEB",
+      ip:ip,
     };
 
     await dispatch(SignIn(req))
@@ -137,7 +141,23 @@ function Login() {
 
 
 
+  useEffect(() => {
+    const fetchIP = async () => {
+        try {
+            const ip = await ipAddress();
+            setIp(ip);
+        } catch (error) {
+            console.error('Failed to fetch IP address:', error);
+        }
+    };
 
+    fetchIP();
+
+    // Clean up function
+    return () => {
+     
+    };
+}, []);
   return (
 
     <div >
@@ -150,9 +170,7 @@ function Login() {
               <div className='row'>
                 <div className='col-md-6 border-right'>
                   <div className='login-left '>
-
-                    {/* <h1>Login</h1>
-                  <p className="account-subtitle">Access to our dashboard</p> */}
+                  <p>IP Address: {ip}</p>
                     <img src="/assets/img/gif/login.gif" className='login-light-img'></img>
 
                     <img src="/assets/img/gif/login-dark.gif" className='login-dark-img'></img>

@@ -14,13 +14,11 @@ const StockOutModal = ({ rowData, onClose }) => {
 
   const formik = useFormik({
     initialValues: {
-      profile_img: "",
       panel_name: "",
 
       email: "",
       cc_mail: "",
       bcc_mail: "",
-      razorpay_key: "",
       smtphost: "",
       smtpport: "",
       smtp_password: ""
@@ -28,27 +26,28 @@ const StockOutModal = ({ rowData, onClose }) => {
     },
     validate: (values) => {
       let errors = {};
-      if (!values.razorpay_key) {
-        errors.fullName = "Razor pay Key is required";
-      }
+
       if (!values.smtphost) {
         errors.username = "SMTP  is required";
       }
-      if (!values.email) {
-        errors.email = "Please enter your email address.";
-      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
+      // if (!values.email) {
+      //   errors.email = "Please enter your email address.";
+      // } else
+      if (!/^\S+@\S+\.\S+$/.test(values.email)) {
         errors.email = "Please enter a valid email address.";
       }
-      if (!values.cc_mail) {
-        errors.cc_mail = "Please enter your cc_mail address.";
-      } else if (!/^\S+@\S+\.\S+$/.test(values.cc_mail)) {
+      // if (!values.cc_mail) {
+      //   errors.cc_mail = "Please enter your cc_mail address.";
+      // } else 
+      if (!/^\S+@\S+\.\S+$/.test(values.cc_mail)) {
         errors.cc_mail = "Please enter a valid cc_mail address.";
       }
 
 
-      if (!values.bcc_mail) {
-        errors.bcc_mail = "Please enter your bcc_mail address.";
-      } else if (!/^\S+@\S+\.\S+$/.test(values.bcc_mail)) {
+      // if (!values.bcc_mail) {
+      //   errors.bcc_mail = "Please enter your bcc_mail address.";
+      // } else 
+      if (!/^\S+@\S+\.\S+$/.test(values.bcc_mail)) {
         errors.bcc_mail = "Please enter a valid bcc_mail address.";
       }
 
@@ -69,8 +68,6 @@ const StockOutModal = ({ rowData, onClose }) => {
           bcc_mail: values.bcc_mail || rowData.bcc_mail,
           smtphost: values.smtphost || rowData.smtphost,
           smtpport: values.smtpport || rowData.smtpport,
-          razorpay_key: values.razorpay_key || rowData.razorpay_key,
-          logo: values.profile_img || rowData.profile_img
         }
       };
 
@@ -96,14 +93,7 @@ const StockOutModal = ({ rowData, onClose }) => {
   });
 
   const fields = [
-    {
-      name: "profile_img",
-      label: "Profile Image",
-      type: "file",
-      label_size: 6,
-      col_size: 12,
-      disable: false,
-    },
+
 
     {
       name: "FullName",
@@ -136,15 +126,15 @@ const StockOutModal = ({ rowData, onClose }) => {
 
     {
       name: "smtp_password",
-      label: "Email Password* ",
-      type: "password",
+      label: "Email Password",
+      type: "password1",
       label_size: 12,
       col_size: 6,
       disable: false,
     },
     {
       name: "cc_mail",
-      label: "CC*",
+      label: "CC",
       type: "text",
       label_size: 12,
       col_size: 6,
@@ -152,23 +142,16 @@ const StockOutModal = ({ rowData, onClose }) => {
     },
     {
       name: "bcc_mail",
-      label: "BCC* ",
+      label: "BCC",
       type: "text",
       label_size: 12,
       col_size: 6,
       disable: false,
     },
-    {
-      name: "razorpay_key",
-      label: "Razorpay key* ",
-      type: "password",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
+
     {
       name: "smtphost",
-      label: "HOST* ",
+      label: "HOST",
       type: "text",
       label_size: 12,
       col_size: 6,
@@ -176,24 +159,18 @@ const StockOutModal = ({ rowData, onClose }) => {
     },
     {
       name: "smtpport",
-      label: "PORT* ",
+      label: "PORT",
       type: "number",
       label_size: 12,
       col_size: 6,
       disable: false,
     },
 
-
-
-
   ];
 
 
 
   useEffect(() => {
-
-
-    formik.setFieldValue("profile_img", rowData !== undefined && rowData.logo);
 
     formik.setFieldValue("FullName", rowData !== undefined && rowData.makerInfo.FullName);
     formik.setFieldValue("panel_name", rowData !== undefined && rowData.panel_name);
@@ -205,7 +182,6 @@ const StockOutModal = ({ rowData, onClose }) => {
     formik.setFieldValue("bcc_mail", rowData !== undefined && rowData.bcc_mail);
     formik.setFieldValue("smtphost", rowData !== undefined && rowData.smtphost);
     formik.setFieldValue("smtpport", rowData !== undefined && rowData.smtpport);
-    formik.setFieldValue("razorpay_key", rowData !== undefined && rowData.razorpay_key);
 
 
 
@@ -234,7 +210,7 @@ const StockOutModal = ({ rowData, onClose }) => {
             fields={fields.filter(
               (field) => !field.showWhen || field.showWhen(formik.values)
             )}
-            ProfileShow={formik.values.profile_img}
+
 
             btn_name="Update"
             formik={formik}

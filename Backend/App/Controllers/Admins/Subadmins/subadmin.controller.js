@@ -27,7 +27,6 @@ class Subadmin {
         Email,
         PhoneNo,
         password,
-        prifix_key,
         subadmin_service_type,
         strategy_Percentage,
         Per_trade,
@@ -37,6 +36,33 @@ class Subadmin {
       } = req.body;
 
       const Role = "SUBADMIN";
+
+
+      async function generateUniquePrefix() {
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let prefix = '';
+
+        // Retrieve all existing prefix keys from the database
+        const existingPrefixKeys = (await User_model.find().select('prefix_key')).map(user => user.prefix_key);
+
+        // Generate a new prefix key until it's unique
+        do {
+          prefix = '';
+          for (let i = 0; i < 3; i++) {
+            const randomIndex = Math.floor(Math.random() * alphabet.length);
+            prefix += alphabet[randomIndex];
+          }
+        } while (existingPrefixKeys.includes(prefix)); // Check if the generated prefix is already in use
+
+        return prefix;
+      }
+
+      // Example usage:
+      const prifix_key = await generateUniquePrefix();
+
+
+
+
 
       if (prifix_key.length > 3) {
         return res.send({ status: false, msg: "prifix_key Omly 3 Digits" });
@@ -49,7 +75,7 @@ class Subadmin {
       }
 
       // Check if username, email, phone number, and prefix key already exist
-      const existingUsername = await User_model.findOne({  UserName:UserName });
+      const existingUsername = await User_model.findOne({ UserName: UserName });
       if (existingUsername) {
         return res.send({ status: false, msg: "Username already exists" });
       }
@@ -107,7 +133,7 @@ class Subadmin {
         Per_trade,
         Balance,
         broker: 2,
-        employee_id:parent_id
+        employee_id: parent_id
       });
 
       // Save new user and count licenses
