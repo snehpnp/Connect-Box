@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER , ADD_RESEARCHER_STRATEGY } from '../../../Services/Researcher/researcher.service'
+import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER , ADD_RESEARCHER_STRATEGY, EDIT_RESEARCHER_STRATEGY, GET_ONE_RESEARCHER_STRATEGY, GET_ALL_RESEARCHER_STRATEGY} from '../../../Services/Researcher/researcher.service'
 
 
 export const Add_Researcher = createAsyncThunk("researcher/add",
@@ -58,6 +58,41 @@ async(data)=>{
   }
 
 })
+export const EditResearcherStrategys= createAsyncThunk('researcher/editstrategy',
+async(data)=>{
+  try{
+    const res= await EDIT_RESEARCHER_STRATEGY(data);
+    return await res;
+  }
+  catch(err){
+    return await err
+  }
+
+})
+
+export const GetOneResearcherStrategys= createAsyncThunk('researcher/getonestrategy',
+async(data)=>{
+  try{
+    const res= await GET_ONE_RESEARCHER_STRATEGY(data);
+    return await res;
+  }
+  catch(err){
+    return await err
+  }
+
+})
+
+export const GetAllResearcherStrategys= createAsyncThunk('researcher/getll',
+async(data)=>{
+  try{
+    const res= await GET_ALL_RESEARCHER_STRATEGY(data);
+    return await res;
+  }
+  catch(err){
+    return await err
+  }
+
+})
 
 
 
@@ -71,6 +106,10 @@ const ResearcherSlice = createSlice({
     update_balance: null,
     delete_researcher:null,
     addResearcherStrategy: null,
+    editResearcherStrategys: null,
+    getOneResearcherStrategys:null,
+    getallResearcherStrategys: null,
+    
 
 
   },
@@ -104,6 +143,18 @@ const ResearcherSlice = createSlice({
       .addCase(AddResearcherStrategy.fulfilled, (state, action) => {
         state.isLoading = false;
         state.addResearcherStrategy = action.payload;
+      })
+      .addCase(EditResearcherStrategys.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.editResearcherStrategys = action.payload;
+      })
+      .addCase(GetOneResearcherStrategys.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.getOneResearcherStrategys = action.payload;
+      })
+      .addCase(GetAllResearcherStrategys.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.getallResearcherStrategys = action.payload;
       })
 
   },

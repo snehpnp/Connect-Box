@@ -3,18 +3,13 @@ import AddForm from '../../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
 import { GetStretgyWithImg, AddStrategy, DELETE_STRATEGY } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
 import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice';
-import {AddResearcherStrategy} from '../../../../ReduxStore/Slice/Researcher/ResearcherSlice'
+import {AddResearcherStrategy , GetAllResearcherStrategys} from '../../../../ReduxStore/Slice/Researcher/ResearcherSlice'
 
 import Swal from 'sweetalert2';
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { IndianRupee } from 'lucide-react';
 import Loader from '../../../../Utils/Loader'
-
-
-
-
-
 
 
 const Strategy = () => {
@@ -265,7 +260,7 @@ const Strategy = () => {
     const getAllStrategy = async () => {
         try {
             var data = { id: user_id }
-            const response = await dispatch(GetStretgyWithImg(data)).unwrap();
+            const response = await dispatch(GetAllResearcherStrategys(data)).unwrap();
 
             if (response.status) {
                 const formattedData = response.data.map((row, index) => ({
