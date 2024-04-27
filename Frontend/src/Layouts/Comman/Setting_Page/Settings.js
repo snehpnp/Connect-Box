@@ -27,8 +27,8 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-account"
                                         aria-selected="true"
-                                        style={{color:"black"}}
-                                       
+                                        style={{ color: "black" }}
+
                                     >
 
                                         Account Settings
@@ -41,7 +41,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-company"
                                         aria-selected="false"
-                                        style={{color:"black"}}
+                                        style={{ color: "black" }}
                                     >
                                         Company Settings
                                     </a>
@@ -53,7 +53,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-invoice"
                                         aria-selected="false"
-                                        style={{color:"dark"}}
+                                        style={{ color: "dark" }}
                                     >
                                         Invoice Templates
                                     </a>
@@ -65,7 +65,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-payment"
                                         aria-selected="false"
-                                        style={{color:"black"}}
+                                        style={{ color: "black" }}
                                     >
                                         Payment Methods
                                     </a>
@@ -77,7 +77,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-email"
                                         aria-selected="false"
-                                        style={{color:"black"}}
+                                        style={{ color: "black" }}
                                     >
                                         Email Templates
                                     </a>
@@ -89,7 +89,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-logs"
                                         aria-selected="false"
-                                        style={{color:"black"}}
+                                        style={{ color: "black" }}
                                     >
                                         Logs
                                     </a>
@@ -114,7 +114,7 @@ const Settings = () => {
                                         aria-controls="v-pills-logs"
                                         aria-selected="false"
                                     >
-                                       Api Create Information
+                                        Api Create Information
                                     </a>
                                 </div>
 
@@ -204,7 +204,7 @@ const Settings = () => {
                                                         <div className="col-lg-6 col-12">
                                                             <div className="input-block mb-0">
                                                                 <label>Gender</label>
-                                                                <select className="select">
+                                                                <select className="select form-control">
                                                                     <option>Select Gender</option>
                                                                     <option>Male</option>
                                                                     <option>Female</option>
@@ -308,10 +308,10 @@ const Settings = () => {
                                                     <div className="content-page-header">
                                                         <h5>Company Settings</h5>
                                                     </div>
-                                                  
-                                                  
-                                                 <System/>
 
+                                                    <div className='subadminset'>
+                                                        <System />
+                                                    </div>
 
 
                                                 </div>
@@ -1074,7 +1074,7 @@ const Settings = () => {
                                                                             defaultChecked=""
                                                                         />
                                                                         <label htmlFor="rating_1" className="checktoggle checkbox-bg">
-                                                                            checkbox
+                                                                         
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -1114,7 +1114,7 @@ const Settings = () => {
                                                                             defaultChecked=""
                                                                         />
                                                                         <label htmlFor="rating_2" className="checktoggle checkbox-bg">
-                                                                            checkbox
+
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -1142,7 +1142,7 @@ const Settings = () => {
                                                             <div className="col-lg-4 col-12">
                                                                 <div className="input-block mb-3">
                                                                     <label>Paypal Mode</label>
-                                                                    <select className="select">
+                                                                    <select className="select form-control">
                                                                         <option>Select Paypal Mode</option>
                                                                         <option>Debit Card</option>
                                                                         <option>Credit Card</option>
@@ -1164,7 +1164,7 @@ const Settings = () => {
                                                                             defaultChecked=""
                                                                         />
                                                                         <label htmlFor="rating_3" className="checktoggle checkbox-bg">
-                                                                            checkbox
+
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -1486,17 +1486,17 @@ const Settings = () => {
                                                         <div className="list-btn">
                                                             <ul className="filter-list">
                                                                 <li>
-                                                               
+
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
 
-                                        <Trackpanel/>  
+                                        <Trackpanel />
                                     </div>
 
                                 </div>

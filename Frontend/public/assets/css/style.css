@@ -5344,7 +5344,7 @@ span.select2-container.select2-container--default.select2-container--open {
 
 .nav-pills .nav-link {
     color: #455560;
-    border-radius: 4px
+    border-radius: 0px !important;
 }
 
 #pills-tab .nav-link {
@@ -5358,8 +5358,8 @@ span.select2-container.select2-container--default.select2-container--open {
     color: #888 !important;
     font-size: 16px !important;
     padding: 15px 20px !important;
-    border: 1px solid #e7e3e3 !important;
-    border-radius: 0;
+    border-bottom: 1px solid #e7e3e3 !important;
+
 }
 
 .card-buttons p {
@@ -6446,7 +6446,7 @@ table .badge {
     display: inline-block;
     margin-left: 10px;
     white-space: nowrap;
-  
+
 }
 
 .sidebar-menu-five ul ul a:hover {
@@ -6686,7 +6686,7 @@ table .badge {
     display: inline-block;
     margin-left: 10px;
     white-space: nowrap;
-   
+
     -webkit-transition: all .2s ease;
     -ms-transition: all .2s ease;
     transition: all .2s ease
@@ -8076,7 +8076,8 @@ table .badge {
     background-color: #7539ff;
     border: 1px solid #7539ff;
     box-shadow: inset 0 0 0 0 #fff;
-    border-radius: 4px;
+    border-radius: 4px !important;
+    color: #fff !important;
 }
 
 [data-layout-mode=dark] body .btn-primary:hover,
@@ -9426,7 +9427,7 @@ table .badge {
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a {
     padding: 10px 10px;
-    transition:0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 [data-layout=horizontal] body .greedy ul.list-inline-item.list-unstyled.links {
@@ -34435,4 +34436,8 @@ img {
         display: block;
         /* top:300px  !important; */
     }
+}
+
+[data-layout-mode=dark] .MuiDataGrid-cell {
+    color: #ddd !important;
 }
