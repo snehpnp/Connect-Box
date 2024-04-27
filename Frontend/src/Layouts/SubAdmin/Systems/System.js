@@ -36,7 +36,7 @@ function System() {
       alert("Please  Select file less then 420KB");
       event.target.value = "";
       return;
-    } else { 
+    } else {
 
       const file = event.target.files[0];
       if (file) {
@@ -54,7 +54,7 @@ function System() {
         reader.readAsDataURL(file);
       }
     }
-   
+
   };
 
   const handleInputChange = (e) => {
@@ -122,18 +122,18 @@ function System() {
   return (
     <div className="content container-fluid">
       <div className="row mb-2">
-        <div className="col-lg-4 col-md-4" data-aos="fade-left">
+        {/* <div className="col-lg-4 col-md-4" data-aos="fade-left">
           <div className="page-header">
             <div className="content-page-header">
               <h5>System Information</h5>
             </div>
           </div>
-        </div>
+        </div> */}
 
-        <div className="col-lg-8 col-md-8" data-aos="fade-right">
-          <ul className="nav nav-tabs nav-tabs-solid horizontal-tab d-flex justify-content-center ">
-       
-              
+        <div className="col-lg-12 col-md-12" data-aos="fade-right">
+          {/* <ul className="nav nav-tabs nav-tabs-solid horizontal-tab d-flex justify-content-center ">
+
+
             <li className="nav-item mx-md-5">
               <a className="nav-link active" href="#solid-tab2" data-bs-toggle="tab">
                 <i className="fa-solid fa-envelope pe-2"></i>
@@ -146,12 +146,28 @@ function System() {
                 Background Images
               </a>
             </li>
+          </ul> */}
+          <ul className="nav nav-tabs nav-bordered nav-justified" role="tablist">
+            <li className="nav-item" role="presentation">
+              <a className="nav-link active" href="#solid-tab2" data-bs-toggle="tab">
+                <i className="fa-solid fa-envelope pe-2"></i>
+                Email Information
+              </a>
+            </li>
+            <li className="nav-item" role="presentation">
+              <a className="nav-link" href="#solid-tab3" data-bs-toggle="tab">
+                <i className="fa-regular fa-image pe-2"></i>
+                Background Images
+              </a>
+            </li>
+
           </ul>
+
         </div>
       </div>
 
       <div className="row">
-        <div className="col-lg-4 col-md-4" data-aos="fade-right">
+        {/* <div className="subsystem  col-lg-4 col-md-4" data-aos="fade-right">
           <div className="card">
             <div className="card-body">
               <div data-aos="fade-down" className="gif-div h-100">
@@ -162,13 +178,13 @@ function System() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="col-lg-8 col-md-8" data-aos="fade-left">
-          <div className="card h-100">
-            <div className="card-body">
+        </div> */}
+        <div className="col-lg-12 col-md-12" data-aos="fade-left">
+          <div className="h-100">
+            <div className>
               <div className="tab-content">
                 {/* Tab panes */}
-               
+
                 {/* Tab panes */}
                 <div className="tab-pane active" id="solid-tab2">
                   <div className="card-header d-flex justify-content-between align-items-center border-bottom">
@@ -246,7 +262,7 @@ function System() {
                     <div className="invoice-total-inner">
                       {getCompanyData && getCompanyData[0] ? (
                         <>
-                           
+
                           <p>
                             Logo{" "}
                             {getCompanyData[0]?.logo ? (
@@ -259,7 +275,7 @@ function System() {
                               <span>Data not found</span>
                             )}
                           </p>
-                         
+
                         </>
                       ) : (
                         <p>Data not found</p>

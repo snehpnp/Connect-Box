@@ -187,7 +187,7 @@ const Trackpanel = () => {
         {selectedCategory && (
           <Row>
             <Col>
-              <Card>
+              <Card className="mt-4">
                 <Card.Body>
                   <Card.Title>{selectedCategory}</Card.Title>
                   <Card.Text>{selectedCategory}</Card.Text>
