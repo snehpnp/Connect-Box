@@ -3847,7 +3847,7 @@ div.dataTables_wrapper div.dataTables_filter label i {
         padding: 20px 0 0
     }
 
-    .mini-sidebar .header {}
+
 
     .mini-sidebar .header-two {
         left: 80px
@@ -3973,7 +3973,7 @@ div.dataTables_wrapper div.dataTables_filter label i {
     padding-right: 5px
 }
 
-.user-menu.nav .flag-nav span {}
+
 
 .user-menu.nav .dropdown-heads>a {
     background-color: #f7f7fa;
@@ -4748,7 +4748,7 @@ span.select2-container.select2-container--default.select2-container--open {
     -ms-transform: rotate(90deg)
 }
 
-.sidebar .sidebar-menu ul li.submenu {}
+
 
 .sidebar .sidebar-menu ul li.submenu ul {
     width: 100%;
@@ -5344,7 +5344,7 @@ span.select2-container.select2-container--default.select2-container--open {
 
 .nav-pills .nav-link {
     color: #455560;
-    border-radius: 4px
+    border-radius: 0px !important;
 }
 
 #pills-tab .nav-link {
@@ -5358,8 +5358,8 @@ span.select2-container.select2-container--default.select2-container--open {
     color: #888 !important;
     font-size: 16px !important;
     padding: 15px 20px !important;
-    border: 1px solid #e7e3e3 !important;
-    border-radius: 0;
+    border-bottom: 1px solid #e7e3e3 !important;
+
 }
 
 .card-buttons p {
@@ -6446,7 +6446,7 @@ table .badge {
     display: inline-block;
     margin-left: 10px;
     white-space: nowrap;
-    float: unset
+
 }
 
 .sidebar-menu-five ul ul a:hover {
@@ -6686,7 +6686,7 @@ table .badge {
     display: inline-block;
     margin-left: 10px;
     white-space: nowrap;
-    float: unset;
+
     -webkit-transition: all .2s ease;
     -ms-transition: all .2s ease;
     transition: all .2s ease
@@ -7259,12 +7259,11 @@ table .badge {
     background: 0 0
 }
 
-[data-layout=twocolumn] .sidebar .sidebar-menu ul li.submenu ul li a.active:after {}
 
-[data-layout=twocolumn] .sidebar .sidebar-menu ul li a.active:before,
-[data-layout=twocolumn] .sidebar .sidebar-menu ul li a.active:after {}
 
-[data-layout=twocolumn] .sidebar .sidebar-menu .menu-title {}
+
+
+
 
 [data-layout=twocolumn] #sidebar {
     display: none
@@ -7612,7 +7611,7 @@ table .badge {
     background: #2a2b2f
 }
 
-[data-layout-mode=dark] body .submenu ul {}
+
 
 [data-layout-mode=dark] body .sidebar .sidebar-menu ul li.submenu ul li a:hover,
 [data-layout-mode=dark] body .notifications .notification-list li .noti-details {
@@ -8077,7 +8076,8 @@ table .badge {
     background-color: #7539ff;
     border: 1px solid #7539ff;
     box-shadow: inset 0 0 0 0 #fff;
-    border-radius: 4px;
+    border-radius: 4px !important;
+    color: #fff !important;
 }
 
 [data-layout-mode=dark] body .btn-primary:hover,
@@ -8892,7 +8892,7 @@ table .badge {
     color: #fff
 }
 
-[data-layout-mode=dark] .filter-buttons button.btn-secondary {}
+
 
 [data-layout-mode=dark] .filter-buttons button.btn-secondary:hover {
     box-shadow: inset 0 50px 0 0 rgba(117, 57, 255, .3)
@@ -8979,9 +8979,6 @@ table .badge {
     background: #1e1f25
 }
 
-[data-topbar=light][data-layout-mode=dark][data-layout=horizontal] body .sidebar .sidebar-menu ul li a.active i,
-[data-topbar=light][data-layout-mode=dark][data-layout=horizontal] body .sidebar .sidebar-menu ul li a:hover span.menu-arrow,
-[data-topbar=light][data-layout-mode=dark][data-layout=horizontal] body .sidebar .sidebar-menu ul li a:hover i {}
 
 [data-topbar=light][data-layout-mode=dark][data-layout=horizontal] body .sidebar .sidebar-menu ul {
     background: #1c1d22;
@@ -9240,6 +9237,7 @@ table .badge {
     overflow: inherit !important
 }
 
+
 [data-layout=horizontal] body .sidebar .hidden {
     display: none !important
 }
@@ -9430,7 +9428,7 @@ table .badge {
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a {
     padding: 10px 10px;
-    transition:0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 [data-layout=horizontal] body .greedy ul.list-inline-item.list-unstyled.links {
@@ -33585,7 +33583,7 @@ img {
     background: linear-gradient(to left, rgba(247, 0, 104) 0%, rgba(68, 16, 102, 1) 25%, rgba(247, 0, 104, 1) 75%, rgba(68, 16, 102, 1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F70068', endColorstr='#441066', GradientType=1);
     color: transparent;
-    -webkit-background-clip: text;
+
     -webkit-text-fill-color: transparent;
     text-transform: uppercase;
     letter-spacing: 5px;
@@ -33741,23 +33739,6 @@ img {
     text-align: center;
 }
 
-.pricing-block .features li:before {
-    /* position: absolute;
-    left: 0;
-    top: 50%;
-    font-size: 16px;
-    color: #2bd40f;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    display: inline-block;
-    font-style: normal;
-    font-variant: normal;
-    text-rendering: auto;
-    line-height: 1;
-    content: "\f058";
-    font-family: "Font Awesome 5 Free";
-    margin-top: -8px; */
-}
 
 .pricing-block .features li.false:before {
     color: #e1137b;
@@ -34399,10 +34380,14 @@ img {
 }
 
 @media(max-width: 991px) {
+    [data-layout=horizontal] body .sidebar .slimScrollDiv,
+[data-layout=horizontal] body .sidebar .sidebar-inner {
+    height: 215px !important;
+    overflow-x: scroll !important
+}
 
     .intro-fill {
         width: 100%;
-
     }
 
     [data-layout=horizontal] body .sidebar .sidebar-menu ul li a .menu-arrow {
@@ -34595,3 +34580,6 @@ body {
 
   
 
+[data-layout-mode=dark] .MuiDataGrid-cell {
+    color: #ddd !important;
+}

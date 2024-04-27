@@ -60,7 +60,6 @@ const AddResearcher = () => {
     onSubmit: async (values) => {
       try {
         const data = {
-          profile_img: '',
           FullName: values.fullName,
           UserName: values.userName,
           Email: values.email,
@@ -105,14 +104,7 @@ const AddResearcher = () => {
 
 
   const fields = [
-    {
-      name: "profile_img",
-      label: "Profile Image",
-      type: "file",
-      label_size: 6,
-      col_size: 12,
-      disable: false,
-    },
+ 
     {
       name: "fullName",
       label: "Full Name",

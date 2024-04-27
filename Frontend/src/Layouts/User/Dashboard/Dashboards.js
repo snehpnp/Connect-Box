@@ -401,7 +401,7 @@ const Dashboards = () => {
               <div className="card super-admin-dash-card flex-fill">
                 <div className="card-header">
                   <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="card-title mt-2 ms-2">Most Profitabel Strategies</h5>
+                    <h5 className="card-title mt-2 ms-2">Most Profitable Strategies </h5>
 
                   </div>
                 </div>

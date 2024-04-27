@@ -41,7 +41,6 @@ const AddClient = () => {
 
   const formik = useFormik({
     initialValues: {
-      profile_img: "",
       fullName: "",
       username: "",
       email: "",
@@ -95,7 +94,6 @@ const AddClient = () => {
     },
     onSubmit: async (values, { setSubmitting }) => {
       const data = {
-        ProfileImg: values.profile_img,
         FullName: values.fullName,
         UserName: values.username,
         Email: values.email,
@@ -151,14 +149,7 @@ const AddClient = () => {
   });
 
   const fields = [
-    {
-      name: "profile_img",
-      label: "Profile Image",
-      type: "file",
-      label_size: 6,
-      col_size: 12,
-      disable: false,
-    },
+   
     {
       name: "fullName",
       label: "Full Name",
@@ -271,7 +262,7 @@ const AddClient = () => {
         fields={fields.filter(
           (field) => !field.showWhen || field.showWhen(formik.values)
         )}
-        ProfileShow={formik.values.profile_img}
+    
         page_title="Add New Subadmin"
         btn_name="Add Subadmin"
         btn_name1="Cancel"
