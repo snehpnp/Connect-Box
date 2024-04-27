@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getalluserActivity,findActivity } from "../../../Services/Comman/Setting";
+import { getalluserActivity,findActivity,getbroker } from "../../../Services/Comman/Setting";
 
 
  /////getalluserActivity  
@@ -31,6 +31,20 @@ import { getalluserActivity,findActivity } from "../../../Services/Comman/Settin
     }
   );
 
+  //  get broker detail
+
+  export const brokerdetail = createAsyncThunk(
+    "/broker/get",
+    async (data) => {
+      try {
+        const res = await getbroker(data);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
+
 
 
 
@@ -41,6 +55,7 @@ import { getalluserActivity,findActivity } from "../../../Services/Comman/Settin
       isError: false,
       getActivity:null,
       findstatus:null,
+      brokerdetail:null,
     },
   
     
@@ -70,6 +85,18 @@ import { getalluserActivity,findActivity } from "../../../Services/Comman/Settin
             state.isLoading = false;
           })
           .addCase(findstatus.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+          })
+          .addCase(brokerdetail.pending, (state, action) => {
+            state.isLoading = true;
+            state.isError = false;
+          })
+          .addCase(brokerdetail.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.brokerdetail = action.payload;
+          })
+          .addCase(brokerdetail.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
           })
