@@ -25,8 +25,6 @@ import AddSubadmin from "../Layouts/Admin/Subadmin/AddSubAdmin"
 import EditSubadmin from "../Layouts/Admin/Subadmin/EditSubAdmin"
 import AllSubadmin from "../Layouts/Admin/Subadmin/AllSubAdmin"
 
-import Dummyform from "../Components/ExtraComponents/forms/Dummyform"
-
 import Profile from '../Layouts/Comman/Profile/Profile';
 
 
@@ -67,7 +65,6 @@ const Admin_Routing = () => {
                     <Route exact path="/test" element={<Test />} />
                     <Route exact path="/tabe" element={<Tabe />} />
                     <Route exact path="/tabes" element={<Tabes />} />
-                    <Route exact path="/dummyform" element={<Dummyform />} />
                     <Route exact path="/dashboard" element={<Overview />} />
                     <Route exact path="/system" element={<System />} />
                     <Route exact path="/payment" element={<Payment />} />

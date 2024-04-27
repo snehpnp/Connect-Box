@@ -130,6 +130,7 @@ const DynamicForm = ({
                 <div className="row d-flex ">
                   {fields.map((field, index) => (
                     <React.Fragment key={index}>
+                      
                       {field.type === "text1" ? (
                         <>
                           <div className={`col-lg-${field.col_size}`}>
@@ -579,6 +580,43 @@ const DynamicForm = ({
                                     }))
                                   }
                                 ></i>
+                                {formik.touched[field.name] &&
+                                  formik.errors[field.name] ? (
+                                  <div style={{ color: "red" }}>
+                                    {formik.errors[field.name]}
+                                  </div>
+                                ) : null}
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      ) : field.type === "password1" ? (
+                        <>
+                          <div className={`col-lg-${field.col_size}`}>
+                            <div className=" input-block row">
+                              <label
+                                className={`col-lg-${field.label_size} col-form-labelp-0 `}
+                                htmlFor={field.name}
+                              >
+                                {field.label}
+                                <span className="text-danger">*</span>
+                              </label>
+                              <div
+                                // className={`col-lg-${field.col_size}`}
+                                style={{ position: "relative" }}
+                              >
+                                <input
+                                  id={field.name}
+                                  type={
+                                    passwordVisible[field.name]
+                                      ? "text"
+                                      : field.type
+                                  }
+                                  placeholder={`Enter ${field.label}`}
+                                  {...formik.getFieldProps(field.name)}
+                                  className={` form-control`}
+                                />
+                              
                                 {formik.touched[field.name] &&
                                   formik.errors[field.name] ? (
                                   <div style={{ color: "red" }}>
