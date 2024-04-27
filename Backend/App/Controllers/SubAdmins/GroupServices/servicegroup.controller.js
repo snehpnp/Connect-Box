@@ -450,6 +450,7 @@ class GroupService {
   }
 
   async getServiceByCatagory(req, res) {
+    
     let pipeline;
     if (req.body.segment == '' || req.body.segment == null) {
 

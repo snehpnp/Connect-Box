@@ -208,7 +208,7 @@ const Edit_Employee = () => {
       label: "All Permissions",
       type: "checkbox",
       label_size: 12,
-      col_size: 3,
+      col_size: 12,
     },
     {
       name: "addemployee",

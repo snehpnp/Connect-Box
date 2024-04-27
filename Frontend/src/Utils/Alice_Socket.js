@@ -72,7 +72,7 @@ export async function ConnctSocket(onResponse, channelList, userId1, userSession
     }
     socket.onmessage = async function (msg) {
         var response = JSON.parse(msg.data)
-        await onResponse(response)
+        await onResponse(response,socket)
 
         if (response.s === 'OK') {
             // var channel = await channelList;
@@ -88,6 +88,31 @@ export async function ConnctSocket(onResponse, channelList, userId1, userSession
 
 
 
+}
+
+
+export async function ConnctSocket_user(userId1, userSession1) {
+    const url = "wss://ws1.aliceblueonline.com/NorenWS/"
+    let socket;
+    socket = new WebSocket(url)
+    socket.onopen = function () {
+        // var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession21).toString()).toString();
+        var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession1).toString()).toString();
+        var initCon = {
+            susertoken: encrcptToken,
+            t: "c",
+            // actid: userId + "_" + "API",
+            // uid: userId + "_" + "API",
+            actid: userId1 + "_" + "API",
+            uid: userId1 + "_" + "API",
+            source: "API"
+        }
+        console.log("initCon",initCon)
+        socket.send(JSON.stringify(initCon))
+        console.log("inside ",socket)
+        return socket
+    }
+    
 }
 
 

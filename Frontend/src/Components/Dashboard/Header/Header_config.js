@@ -77,7 +77,7 @@ export const admin_header = [
         id: 6,
         name: 'Payment History',
         route: "/admin/payment",
-        Icon: "fe fe-credit-card",
+        Icon: "fa-solid fa-clock-rotate-left",
         Data: []
     },
     {
@@ -159,14 +159,14 @@ export const subamdin_header = [
             {
                 id: 51,
                 name: 'Group Service',
-                Icon: "fe fe-list",
+                Icon: "fa-solid fa-gears",
                 route: "/subadmin/group-service",
             },
 
             {
                 id: 52,
                 name: 'Strategy',
-                Icon: "fe fe-list",
+                Icon: "fa-solid fa-signal",
                 route: "/subadmin/strategys",
             },
            
@@ -211,7 +211,7 @@ export const subamdin_header = [
         id: 7,
         name: 'Strategy History',
         route: "/subadmin/strategys/history",
-        Icon: "fe fe-credit-card",
+        Icon: "fa-solid fa-clock-rotate-left",
         Data: []
     },
     {
@@ -279,7 +279,7 @@ export const subamdin_header = [
         Data: []
     },
     {
-        id: 9,
+        id: 13,
         name: 'FAQs',
         route: "/subadmin/faqs",
         Icon: "fe fe-help-circle",
@@ -314,7 +314,7 @@ export const User_header = [
     {
         id: 3,
         name: 'Trade',
-        Icon: "fe fe-shopping-cart",
+        Icon: "fa-solid fa-signal",
         Data: [
             {
                 id: 41,
@@ -495,7 +495,7 @@ export const research_header = [
             {
                 id: 52,
                 name: 'Strategy',
-                Icon: "fe fe-list",
+                Icon: "fa-solid fa-signal",
                 route: "/research/strategys",
             },
            

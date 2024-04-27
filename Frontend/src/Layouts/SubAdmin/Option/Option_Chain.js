@@ -11,10 +11,14 @@ import { CreateSocketSession, ConnctSocket, GetAccessToken, } from "../../../Uti
 import Modal from "../../../Components/ExtraComponents/Modal";
 import { Trash2 } from 'lucide-react';
 import { GetBrokerDatas } from "../../../ReduxStore/Slice/Comman/Userinfo";
+
+import {GetBrokerLiveDatas} from "../../../ReduxStore/Slice/Comman/Makecall/make";
+
 import $ from "jquery";
 import Holidays from "date-holidays"
 import { useNavigate } from 'react-router-dom';
 import { Get_Option_All_Round_token, Get_Option_Symbols, Get_Symbol_Expiry, Get_Company_Infos, Get_All_Strategy_for_Client } from '../../../ReduxStore/Slice/Subadmin/OptionChainSlice'
+
 import axios from "axios"
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -99,6 +103,37 @@ function Option_Chain() {
 
 
     const [UserDetails, seUserDetails] = useState('')
+    const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
+    const [userIdSocketRun, setUserIdSocketRun] = useState("none");
+
+    useEffect(() => {
+        GetBrokerLiveData(userIdSocketRun)
+     }, [userIdSocketRun]);
+
+     const GetBrokerLiveData = async (userIdSocketRun) => {
+
+        //alert(userIdSocketRun)
+        await dispatch(GetBrokerLiveDatas(
+
+            {
+                req:
+                {
+                    id: user_id,
+                    exist_user : userIdSocketRun,
+                    exist_user_details : livePriceDataDetails
+                },
+
+                token: token
+            }
+        ))
+            .unwrap()
+            .then(async (response) => {
+                if (response.status) {
+                    console.log("Data --- ",response.data)
+                    setLivePriceDataDetails(response.data)
+                }
+            });
+    };
 
 
     const CreateRequest = (option_type, row_data, call_type, index) => {
@@ -453,16 +488,41 @@ function Option_Chain() {
     const ShowLivePrice = async () => {
         let type = { loginType: "API" };
         let channelList = TokenSymbolChain && TokenSymbolChain
+        
+        console.log("UserDetails ",UserDetails)
+        console.log("livePriceDataDetails ",livePriceDataDetails.demate_user_id)
+        console.log("access_token ",livePriceDataDetails.access_token)
+        console.log("trading_status ",livePriceDataDetails.trading_status)
 
+        // if (UserDetails && UserDetails[0].demat_userid !== undefined && UserDetails && UserDetails[0].access_token !== undefined && UserDetails && UserDetails[0].TradingStatus == "on") {
 
-        if (UserDetails && UserDetails[0].demat_userid !== undefined && UserDetails && UserDetails[0].access_token !== undefined && UserDetails && UserDetails[0].TradingStatus == "on") {
+        //     const res = await CreateSocketSession(type, UserDetails[0].demat_userid, UserDetails[0].access_token);
 
+        if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
-            const res = await CreateSocketSession(type, UserDetails[0].demat_userid, UserDetails[0].access_token);
+            const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
 
 
             if (res.data.stat) {
-                const handleResponse = async (response) => {
+                const handleResponse = async (response , socket) => {
+                    console.log("response.tk " ,response.tk ," socket " ,socket)
+                     socket.onclose = async function (event) {
+                        if (event.wasClean) {
+                            // alert("IFFF CLOSE")
+                            setUserIdSocketRun('DONE')
+
+                        } else {
+                            // alert("IFFF ELSE")
+                            setUserIdSocketRun('DONE')
+                            
+                        }
+                      };
+  
+                     socket.onerror = function (error) {
+                        //   alert("ERRROR")
+                          setUserIdSocketRun('DONE')                         
+                     };
+
 
                     const old_val_call = $('.Call_Price_' + response.tk).html();
                     const old_val_put = $('.Put_Price_' + response.tk).html();
@@ -503,6 +563,8 @@ function Option_Chain() {
                 }
 
                 await ConnctSocket(handleResponse, channelList, UserDetails[0].demat_userid, UserDetails[0].access_token).then((res) => { });
+            }else{
+              setUserIdSocketRun('DONE')
             }
 
         }
@@ -514,7 +576,7 @@ function Option_Chain() {
 
     useEffect(() => {
         ShowLivePrice();
-    }, [TokenSymbolChain]);
+    }, [TokenSymbolChain ,userIdSocketRun]);
 
 
 
@@ -560,7 +622,7 @@ function Option_Chain() {
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'http://localhost:8000/broker-signals',
+                url: 'http://localhost:8800/broker-signals',
                 // url: `${getBrokerUrl && getBrokerUrl}`,
                 headers: {
                     'Content-Type': 'text/plain'
