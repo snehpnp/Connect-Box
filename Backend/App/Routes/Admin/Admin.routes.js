@@ -28,6 +28,8 @@ router.post('/company/edit', EditCompany);
 
 router.post('/admin/dashboard', GetDashboardData);
 router.post('/admin/dashboard1', GetDashboardData1);
+router.post('/admin/top/dashboard', dashboardtopsubadmins);
+
 
 
 

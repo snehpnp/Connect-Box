@@ -54,7 +54,7 @@ function Payment() {
     { field: 'pid', headerName: '#', width: 70, headerClassName: styles.boldHeader },
     {
       field: 'logo',
-      headerName: 'RA Name',
+      headerName: 'Subadmin Name',
       width: 220,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
@@ -68,7 +68,7 @@ function Payment() {
         </div>
       )
     },
-    
+
     {
       field: 'panel_name',
       headerName: 'Company Name',
@@ -76,7 +76,7 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-         {params.value || '-'}
+          {params.value || '-'}
         </div>
       )
     },
@@ -91,28 +91,7 @@ function Payment() {
         </div>
       )
     },
-    {
-      field: 'smtpport',
-      headerName: 'PORT',
-      width: 110,
-      headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div>
-          {params.value || '-'}
-        </div>
-      )
-    },
-    {
-      field: 'razorpay_key',
-      headerName: 'Razorpay key',
-      width: 150,
-      headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div>
-          *****
-        </div>
-      )
-    },
+   
 
     {
       field: "change",
@@ -121,31 +100,31 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div onClick={() => handleOpenModal(params.row)}>
-          <span className="badge bg-purple" style={{width:"6rem",fontSize:"1rem"}}>Change</span>
+          <span className="badge bg-purple" style={{ width: "6rem", fontSize: "1rem" }}>Change</span>
         </div>
       ),
     },
-    {
-      field: 'Status',
-      headerName: 'Status',
-      width: 200,
-      headerClassName: styles.boldHeader,
-      renderCell: (params) => {
-        if (params.row.razorpay_key !== '') {
-          return (
-            <div>
-              <span className="badge bg-success-light d-inline-flex align-items-center" style={{fontSize:"1rem"}}><i className="fe fe-check me-1"></i>Approved</span>
-            </div>
-          );
-        } else {
-          return (
-          
-            <span className="badge bg-orange-light d-inline-flex align-items-center" style={{width:"7rem",fontSize:"1rem"}}><i className="fe fe-clock me-1"></i>Pending</span>
-           
-          );
-        }
-      }
-    },
+    // {
+    //   field: 'Status',
+    //   headerName: 'Status',
+    //   width: 200,
+    //   headerClassName: styles.boldHeader,
+    //   renderCell: (params) => {
+    //     if (params.row.razorpay_key !== '') {
+    //       return (
+    //         <div>
+    //           <span className="badge bg-success-light d-inline-flex align-items-center" style={{ fontSize: "1rem" }}><i className="fe fe-check me-1"></i>Approved</span>
+    //         </div>
+    //       );
+    //     } else {
+    //       return (
+
+    //         <span className="badge bg-orange-light d-inline-flex align-items-center" style={{ width: "7rem", fontSize: "1rem" }}><i className="fe fe-clock me-1"></i>Pending</span>
+
+    //       );
+    //     }
+    //   }
+    // },
     {
       field: 'createdAt', headerName: 'Created At', width: 250, headerClassName: styles.boldHeader,
       renderCell: (params) => (
@@ -191,20 +170,20 @@ function Payment() {
   return (
     <>
       {companyData.loading ? (
-        <div  data-aos="fade-left">
-        <Content
-          Card_title="Subadmin Details"
-          Card_title_icon="fa-solid fa-users-gear pe-2"
-          Content={
-            <FullDataTable
-              styles={styles}
-              columns={columns}
-              rows={companyData.data}
-              checkboxSelection={false}
+        <div data-aos="fade-left">
+          <Content
+            Card_title="Subadmin Details"
+            Card_title_icon="fa-solid fa-users-gear pe-2"
+            Content={
+              <FullDataTable
+                styles={styles}
+                columns={columns}
+                rows={companyData.data}
+                checkboxSelection={false}
 
-            />
-          }
-        />
+              />
+            }
+          />
         </div>
       ) : (
         <Loader />

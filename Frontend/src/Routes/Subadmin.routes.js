@@ -14,7 +14,7 @@ import Help from '../Layouts/Comman/Help/Helpsubadmin.js';
 import MessageBroadcast from '../Layouts/SubAdmin/MessageBroadCast/MessageBroadCast';
 import Option_Chain from '../Layouts/SubAdmin/Option/Option_Chain.js';
 import Add_Group from '../Layouts/SubAdmin/Services/GroupServices/Add_Groups.js'
-import Makecall from '../Layouts/SubAdmin/Make/Makecall.js';
+import Makecall from '../Layouts/Comman/Make/Makecall.js';
 import Strategytransaction from '../Layouts/SubAdmin/Services/Strategys/Strategy_transaction.js';
 import Edit_Group_Service from '../Layouts/SubAdmin/Services/GroupServices/Edit_Group.js'
 import Edit_User from '../Layouts/SubAdmin/Users/EditUser.js'

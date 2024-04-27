@@ -45,7 +45,6 @@ const AddClient = () => {
   const [getAllBroker, setAllBroker] = useState([]);
 
   // 0 = 2 days 1= Demo 2 =Live
-
   const fields = [
     {
       name: "profile_Img",
@@ -172,7 +171,7 @@ const AddClient = () => {
     {
       name: "Employees",
       label: "Employees",
-      type: "select",
+      type: "select1",
       options:
         employeeNames.data &&
         employeeNames.data.map((item) => ({
@@ -202,6 +201,7 @@ const AddClient = () => {
       Service_Type: 0,
       balance: 0,
       per_trade_value: null,
+      Employees: null,
     
     },
     validate: (values) => {
@@ -256,7 +256,8 @@ const AddClient = () => {
         group_service: values.groupservice,
         broker: values.broker,
         Service_Type: values.Service_Type,
-        per_trade_value: values.per_trade_value || null
+        per_trade_value: values.per_trade_value || null,
+        employee_id:values.Employees || null
       };
 
       await dispatch(AddUsers(req))

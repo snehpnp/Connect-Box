@@ -127,7 +127,10 @@ const userModel = Schema({
     parent_id: {
         type: String,
         required: true,
-
+    },
+    employee_id: {
+        type: String,
+        default:null
     },
     parent_role: {
         type: String,

@@ -1,6 +1,47 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { Get_All_Subadmin_Strategy } from '../../../ReduxStore/Slice/Users/ClientServiceSlice'
 
 const Strategies = () => {
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const prefix_key = JSON.parse(localStorage.getItem('user_details')).prifix_key
+
+    const [getAllStrategy, setAllStrategy] = useState({
+        loading: true,
+        data: []
+    })
+
+    const GetAllStrategy = async () => {
+        let data = { prefix_key: prefix_key }
+        await dispatch(Get_All_Subadmin_Strategy(data)).unwrap()
+            .then((response) => {
+                if (response.status) {
+                    setAllStrategy({
+                        loading: false,
+                        data: response.data
+                    })
+                }
+                else {
+                    setAllStrategy({
+                        loading: false,
+                        data: []
+                    })
+                }
+            })
+            .catch((err) => {
+                console.log("Error fetching the strategy", err);
+            });
+    }
+    useEffect(() => {
+        GetAllStrategy()
+    }, [])
+
+
+    console.log("getAllStrategy:", getAllStrategy)
+
     return (
         <div>
             <div className="content container-fluid pb-0">
@@ -11,108 +52,11 @@ const Strategies = () => {
                         <div className="page-content">
                             <div className="list-btn">
                                 <ul className="filter-list">
-                                    {/* <li>
-                                        <a
-                                            className="btn-filters active"
-                                            href="packages.html"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="Grid-View"
-                                        >
-                                            <span>
-                                                <i className="fe fe-grid" />
-                                            </span>
-                                        </a>
-                                    </li> */}
-                                    {/* <li>
-                                        <a
-                                            className="btn-filters"
-                                            href="plans-list.html"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="List-View"
-                                        >
-                                            <span>
-                                                <i className="fe fe-list" />
-                                            </span>
-                                        </a>
-                                    </li> */}
-                                    {/* <li>
-                                        <a
-                                            className="btn-filters"
-                                            href="javascript:void(0);"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="Refresh"
-                                        >
-                                            <span>
-                                                <i className="fe fe-refresh-ccw" />
-                                            </span>
-                                        </a>
-                                    </li> */}
-                                  
-                                    {/* <li>
-                                        <div
-                                            className="dropdown dropdown-action"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="Download"
-                                        >
-                                            <a
-                                                href="#"
-                                                className="btn btn-filters"
-                                                data-bs-toggle="dropdown"
-                                                aria-expanded="false"
-                                            >
-                                                <span className="me-2">
-                                                    <i className="fe fe-download" />
-                                                </span>
-                                                Export
-                                            </a>
-                                            <div className="dropdown-menu dropdown-menu-end">
-                                                <ul className="d-block">
-                                                    <li>
-                                                        <a
-                                                            className="d-flex align-items-center download-item"
-                                                            href="javascript:void(0);"
-                                                            download=""
-                                                        >
-                                                            <i className="far fa-file-pdf me-2" />
-                                                            Export as PDF
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a
-                                                            className="d-flex align-items-center download-item"
-                                                            href="javascript:void(0);"
-                                                            download=""
-                                                        >
-                                                            <i className="far fa-file-text me-2" />
-                                                            Export as Excel
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </li> */}
-                                    {/* <li>
-                                        <a
-                                            className="btn btn-filters"
-                                            href="javascript:void(0);"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="Print"
-                                        >
-                                            <span className="me-2">
-                                                <i className="fe fe-printer" />
-                                            </span>{" "}
-                                            Print
-                                        </a>
-                                    </li> */}
+
                                     <li>
                                         <p
                                             className="btn btn-primary"
-                                             
+
                                             data-bs-toggle="modal"
                                             data-bs-target="#add_newpackage"
                                         >
@@ -128,30 +72,30 @@ const Strategies = () => {
 
                 <div className="row d-flex align-items-center justify-content-center">
 
-                    {Array.from({ length: 40 }, (_, index) => (
 
+                    {getAllStrategy.data.map((item) =>
                         <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
                             <div className="packages card">
-                                <div className="package-header d-flex justify-content-between">
+                                <div className="package-header">
                                     <div className="d-flex justify-content-between w-100">
                                         <div className="">
-                                            <h6>Monthly</h6>
-                                            <h4>Free</h4>
+                                            <h4>{item.strategy_name}</h4>  
                                         </div>
                                         <span className="icon-frame d-flex align-items-center justify-content-center">
                                             <img src="assets/img/icons/price-01.svg" alt="img" />
                                         </span>
                                     </div>
+                                    <p>{item.strategy_description}</p>
                                 </div>
-                                <p>Lorem ipsum dolor sit amet doloroli sitiol conse ctetur </p>
-                                <h2>$0.00</h2>
+                                
+                                <h2>Price : 5000 only</h2>
                                 <h6>What’s included</h6>
                                 <ul>
                                     <li>
-                                        <i className="fa-solid fa-circle-check" />2 Users
+                                        <i className="fa-solid fa-circle-check" />Maximum Trade :{item.max_trade}
                                     </li>
                                     <li>
-                                        <i className="fa-solid fa-circle-check" />1 Suppliers
+                                        <i className="fa-solid fa-circle-check" />strategy categories :{item.strategy_segment}
                                     </li>
                                     <li>
                                         <i className="fa-solid fa-circle-check" />
@@ -168,20 +112,13 @@ const Strategies = () => {
                                         data-bs-toggle="modal"
                                         data-bs-target="#edit_package"
                                     >
-                                      BUY
+                                        BUY
                                     </a>
-                                    {/* <a
-                                        className="btn-action-icon"
-                                        href="javascript:void(0);"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#delete_modal"
-                                    >
-                                        <i className="fe fe-trash-2" />
-                                    </a> */}
+
                                 </div>
                             </div>
                         </div>
-                    ))}
+                    )}
 
 
                 </div>

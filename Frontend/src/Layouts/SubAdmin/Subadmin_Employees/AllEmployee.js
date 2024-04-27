@@ -4,7 +4,7 @@ import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTa
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import { useDispatch } from "react-redux";
-import { Employee_Details ,Delete_Employee,GetEmployeeStatus} from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Employee_Details, Delete_Employee, GetEmployeeStatus } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
@@ -50,32 +50,32 @@ export default function AllEmployees() {
   };
   const handleEdit = async (row) => {
     const result = await Swal.fire({
-        title: "Are you sure?",
-    
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, edit it!",
-        cancelButtonText: "Cancel"
+      title: "Are you sure?",
+
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, edit it!",
+      cancelButtonText: "Cancel"
     });
 
     if (result.isConfirmed) {
       navigate(`/subadmin/employee/edit/${row._id}`);
     } else {
-        Swal.fire({
-            title: "Action canceled",
-            text: "Your edit operation was canceled",
-            icon: "info",
-            timer: 1000,
-            timerProgressBar: true
-        });
-        setTimeout(() => {
-            Swal.close(); // Close the modal
-            setrefresh(!refresh);
-        }, 1000);
+      Swal.fire({
+        title: "Action canceled",
+        text: "Your edit operation was canceled",
+        icon: "info",
+        timer: 1000,
+        timerProgressBar: true
+      });
+      setTimeout(() => {
+        Swal.close(); // Close the modal
+        setrefresh(!refresh);
+      }, 1000);
     }
-};
+  };
 
 
   const handleDeleteConfirmation = async (id) => {
@@ -122,7 +122,7 @@ export default function AllEmployees() {
       setShowDeleteModal(false);
     }
   };
-  
+
 
 
   const columns = [
@@ -175,8 +175,8 @@ export default function AllEmployees() {
     },
     {
       field: "activeStatus",
-      headerName: "Active Status",
-      width: 200,
+      headerName: "Status",
+      width: 160,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div className="status-toggle">
@@ -189,18 +189,32 @@ export default function AllEmployees() {
           />
           <label
             htmlFor={`rating_${params.row.id}`}
-            className={`checktoggle ${
-              params.value == 1 ? "checkbox-bg-on" : "checkbox-bg-off"
-            }`}
+            className={`checktoggle ${params.value == 1 ? "checkbox-bg-on" : "checkbox-bg-off"
+              }`}
           ></label>
         </div>
       ),
     },
     {
-      field: "createDate",
-      headerName: "Created Date",
-      width: 200,
+      field: "Users",
+      headerName: "Users List",
+      width: 220,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div className="status-toggle">
+          {console.log("=>", params.value)}
+    
+          <select id="strategySelect" className="form-select ">
+            <option value="">User List</option>
+            {params.value.map((data, index) => (
+              <option key={index} value={data.UserName}>{data.UserName}</option>
+            ))}
+          </select>
+    
+        </div>
+      ),
     },
+    
     {
       field: "actions",
       headerName: "Actions",
@@ -229,6 +243,12 @@ export default function AllEmployees() {
       ),
       headerClassName: styles.boldHeader,
     },
+    {
+      field: "createDate",
+      headerName: "Created Date",
+      width: 160,
+    },
+
   ];
 
   useEffect(() => {
@@ -274,7 +294,7 @@ export default function AllEmployees() {
     };
 
     fetchData();
-  }, [dispatch, userId, searchInput,refresh]);
+  }, [dispatch, userId, searchInput, refresh]);
 
   const RefreshHandle = () => {
     setrefresh(!refresh);
@@ -305,42 +325,42 @@ export default function AllEmployees() {
   const handleSwitchChange = async (event, id) => {
     const activeStatus = event.target.checked ? 1 : 0;
     const result = await Swal.fire({
-        title: "Do you want to save the changes?",
-        showCancelButton: true,
-        confirmButtonText: "Save",
-        cancelButtonText: "Cancel",
-      
+      title: "Do you want to save the changes?",
+      showCancelButton: true,
+      confirmButtonText: "Save",
+      cancelButtonText: "Cancel",
+
     });
 
     if (result.isConfirmed) {
-        try {
-            const response = await dispatch(GetEmployeeStatus({ id, activeStatus })).unwrap();
-            if (response.status) {
-                Swal.fire({
-                    title: "Saved!",
-                    icon: "success",
-                    timer: 1000,
-                    timerProgressBar:true
-                });
-                setrefresh(!refresh);
+      try {
+        const response = await dispatch(GetEmployeeStatus({ id, activeStatus })).unwrap();
+        if (response.status) {
+          Swal.fire({
+            title: "Saved!",
+            icon: "success",
+            timer: 1000,
+            timerProgressBar: true
+          });
+          setrefresh(!refresh);
 
-            } else {
-                setrefresh(!refresh);
-            }
-        } catch (error) {
-            console.error("Error", error);
-            Swal.fire("Error", "There was an error processing your request.", "error");
+        } else {
+          setrefresh(!refresh);
         }
+      } catch (error) {
+        console.error("Error", error);
+        Swal.fire("Error", "There was an error processing your request.", "error");
+      }
     } else if (result.dismiss === Swal.DismissReason.cancel) {
-        // window.location.reload();
+      // window.location.reload();
     }
-};
+  };
   return (
     <>
       {getAllUsers.loading ? (
         <>
           <div className="content container-fluid" data-aos="fade-left">
-       
+
             <div className="page-header">
               <div className="content-page-header">
                 <h5>All Employees</h5>

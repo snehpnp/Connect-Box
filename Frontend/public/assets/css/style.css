@@ -4246,7 +4246,7 @@ div.dataTables_wrapper div.dataTables_filter label i {
 
 .sidebar .sidebar-menu ul li a.subdrop,
 .sidebar .sidebar-menu ul li.submenu>a:hover {
-    background: rgba(118, 56, 255, .05)
+    background: linear-gradient(320deg, #DDCEFF 0%, #DBECFF 100%) !important;
 }
 
 .two-col-bar .sidebar .sidebar-left .nav-link {
@@ -4540,7 +4540,11 @@ span.select2-container.select2-container--default.select2-container--open {
 }
 
 .sidebar .sidebar-menu ul li ul li a {
-    background: #fff
+    background: #7539ff;
+}
+
+.sidebar .sidebar-menu ul li ul li a {
+    background: #7539ff;
 }
 
 .sidebar .sidebar-menu ul li ul li a:before {
@@ -4549,7 +4553,8 @@ span.select2-container.select2-container--default.select2-container--open {
 
 .sidebar .sidebar-menu ul li.active a {
     color: #7539ff;
-    position: relative
+    position: relative;
+
 }
 
 .sidebar .sidebar-menu ul li.active a::before {
@@ -4655,9 +4660,12 @@ span.select2-container.select2-container--default.select2-container--open {
     color: #fff
 }
 
-.sidebar .sidebar-menu ul li a.active {
+.sidebar .sidebar-menu ul li a.active,
+.sidebar .sidebar-menu ul li a.subdrop,
+.sidebar .sidebar-menu ul li a:hover {
     color: #7539ff;
-    border-radius: 0
+    border-radius: 2px;
+    background: linear-gradient(320deg, #DDCEFF 0%, #DBECFF 100%);
 }
 
 .sidebar .sidebar-menu ul li a.active svg {
@@ -4702,7 +4710,7 @@ span.select2-container.select2-container--default.select2-container--open {
 
 .sidebar .sidebar-menu ul li a span {
     padding: 0 10px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     line-height: 18px
 }
@@ -5347,7 +5355,7 @@ span.select2-container.select2-container--default.select2-container--open {
 }
 
 .nav-link {
-    /* color: #888 !important; */
+    color: #888 !important;
     font-size: 16px !important;
     padding: 15px 20px !important;
     border: 1px solid #e7e3e3 !important;
@@ -5930,7 +5938,8 @@ span.select2-container.select2-container--default.select2-container--open {
 }
 
 .table tbody tr td {
-    border-color: #dee2e6
+    border-color: #dee2e6;
+    padding: 15px;
 }
 
 .table tbody td h2 {
@@ -7762,10 +7771,11 @@ table .badge {
 }
 
 [data-layout-mode=dark] body .table th {
-    color: #aaa;
+    color: #fff;
     border-top: 1px solid #3b3c3e;
     background: #1e1f25;
-    border-bottom: 1px solid #3b3c3e
+    border-bottom: 1px solid #3b3c3e;
+    /* font-size: 16px; */
 }
 
 [data-layout-mode=dark] body .table td {
@@ -9269,7 +9279,7 @@ table .badge {
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a:hover i,
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a.subdrop i,
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a.active i {
-    color: #7539ff
+    color: #000 !important;
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a:hover span,
@@ -9331,7 +9341,7 @@ table .badge {
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li.submenu ul li a:hover {
     color: #7539ff;
-    background: #6d44ff;
+    background: linear-gradient(320deg, #DDCEFF 0%, #DBECFF 100%) !important;
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a .menu-arrow {
@@ -9341,7 +9351,7 @@ table .badge {
 [data-layout=horizontal] body .sidebar .sidebar-menu ul ul {
     display: none;
     width: 200px;
-    /* background-color: #1c1d22; */
+    background-color: #1c1d22;
     position: absolute;
     top: 60px;
     left: 0
@@ -9419,7 +9429,8 @@ table .badge {
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li a {
-    padding: 10px 15px
+    padding: 10px 10px;
+    transition:0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
 [data-layout=horizontal] body .greedy ul.list-inline-item.list-unstyled.links {
@@ -17564,10 +17575,11 @@ body.filter-opened {
 
 .login-wrapper {
     width: 100%;
-    height: 100%;
+    height: 100lvh;
     display: table-cell;
     vertical-align: middle;
-    padding-top: 1.875rem
+    padding-top: 1.875rem;
+    overflow: hidden;
 }
 
 .login-wrapper .loginbox {
@@ -33402,6 +33414,8 @@ table.table,
     position: relative;
 }
 
+
+
 table.table:before,
 .custom-data-grid:before {
     content: ' ';
@@ -33410,11 +33424,13 @@ table.table:before,
     top: 0;
     width: 100%;
     height: 100%;
+    position: absolute;
     opacity: 0.1;
     background-repeat: no-repeat;
     background-position: center;
     background-size: 50%;
-    /* z-index:1; */
+    z-index: -1;
+    background-image: url('https://www.pnpuniverse.com/images/logo/pnp.png');
 }
 
 label.form-label,
@@ -33446,8 +33462,9 @@ table.table thead {
 }
 
 table.table thead th {
-    padding-top: 15px;
-    padding-bottom: 15px;
+    padding: 15px;
+    font-size: 16px;
+
 }
 
 table.table.bg-none::before {
@@ -33469,7 +33486,46 @@ table.table.bg-none::before {
     border-color: #7539ff !important;
 }
 
-=========
+[data-layout-mode=dark] .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #16191c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+
+[data-layout-mode=dark] .overlay-content {
+    /* background-color: #fff; */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+[data-layout-mode=light] .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+
+[data-layout-mode=light] .overlay-content {
+    /* background-color: #fff; */
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
 }
 
 
@@ -33981,10 +34037,6 @@ img {
 
 .ultimite .price {
     background: #DD4B5E;
-    <<<<<<< HEAD>>>>>>>>>Temporary merge branch 2
-}
-
-=======
 }
 
 [data-layout-mode=dark] .pricing-block .inner-box,
@@ -34173,16 +34225,25 @@ img {
     display: none;
 }
 
-.card.moving-border {
-    /* border: 2px solid #ddd !important; */
-    margin-bottom: 50px !IMPORTANT;
-    border-bottom: 5px solid #7539ff !important;
-}
-
 .moving-border .dash-widget-header .dash-count .dash-title {
     font-weight: 500;
-    font-size: 16px;
+    font-size: 18px;
     /* color: #000; */
+}
+
+.moving-border::before {
+    height: 78%;
+    width: 30%;
+    position: absolute;
+    background: linear-gradient(320deg, #ddceff52 0%, #dbecff66 100%);
+    content: "";
+    /* z-index: -1; */
+    border-radius: 40px 10px 0px 40px;
+    right: 0;
+}
+
+.moving-border:hover {
+    box-shadow: 0 0 13px 0 rgb(82 63 105 / 41%) !important;
 }
 
 .moving-border .dash-widget-header .dash-count .dash-counts p {
@@ -34190,14 +34251,13 @@ img {
     font-size: 20px;
 }
 
-.moving-border .crad-widget .dash-widget-icon {
-    height: 4.5rem;
-    width: 4.5rem;
-    margin-top: -100px;
+.moving-border {
+    box-shadow: rgb(117 57 255 / 48%) 0.95px 0.95px 0.95px 2px;
+    border-radius: 10px;
+    transition: 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-.moving-border.card .card-body {
-
+.moving-border .card-body {
     padding: 1rem;
 }
 
@@ -34240,8 +34300,17 @@ img {
     background-color: #1c1d22;
 }
 
-[data-layout-mode=light] .login-btn {
-    background: #7539ff;
+[data-layout-mode=light] .login-btn,
+[data-layout-mode=light] .login-btn:active,
+[data-layout-mode=null] .login-btn,
+[data-layout-mode=null] .login-btn:active,
+[data-layout-mode=null] .otp-modal .btn-primary {
+    background: #7539ff !important;
+    border-color: #7539ff !important;
+}
+
+.w-30 {
+    width: 30%;
 }
 
 @media(max-width: 575px) {
@@ -34299,6 +34368,13 @@ img {
         text-align: center;
         display: block;
     }
+
+    .intro-fill .welcome-1,
+    .intro-fill .welcome-2,
+    .intro-fill .welcome-3 {
+        font-size: 20px;
+        max-width: 300px;
+    }
 }
 
 @media(max-width: 767px) {
@@ -34323,6 +34399,29 @@ img {
 }
 
 @media(max-width: 991px) {
+
+    .intro-fill {
+        width: 100%;
+
+    }
+
+    [data-layout=horizontal] body .sidebar .sidebar-menu ul li a .menu-arrow {
+        right: 12px !important;
+    }
+
+    [data-layout=horizontal] body .sidebar .sidebar-menu ul li a {
+        padding: 0px 0px 0px 15px;
+    }
+
+    .sidebar .sidebar-menu ul {
+        width: 100%;
+    }
+
+    .greedys {
+
+        padding: 0;
+    }
+
     [data-aos^=fade][data-aos^=fade] {
         opacity: 1 !important;
 
@@ -34495,3 +34594,4 @@ body {
   }
 
   
+
