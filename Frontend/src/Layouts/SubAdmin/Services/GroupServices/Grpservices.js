@@ -358,75 +358,15 @@ function GroupStrategy() {
 
         <>
             <div className="content container-fluid">
-
-                {/* PAGE HEADER */}
-                <div className="page-header">
-                    <div className="content-page-header">
-                        <h5>Group Services</h5>
-                        <div className="page-content">
-                            <div className="list-btn">
-                                <ul className="filter-list">
-                                    <li className="mt-3">
-                                        <p
-                                            className="btn-filters"
-
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="Refresh"
-                                            onClick={RefreshHandle}
-                                        >
-                                            <span>
-                                                <i className="fe fe-refresh-ccw" />
-                                            </span>
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <div className="input-group input-block">
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="Search..."
-                                                aria-label="Search"
-                                                aria-describedby="search-addon"
-                                                onChange={(e) => SetInputSearch(e.target.value || '')}
-                                                value={inputSearch}
-
-                                            />
-
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div
-                                            className="dropdown dropdown-action"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="Download"
-                                        >
-                                            <li>
-                                                <div className="card-body">
-                                                    <ExportToExcel
-                                                        className="btn btn-primary "
-                                                        apiData={ForGetCSV}
-                                                        fileName={'All Strategy'} />
-                                                </div>
-                                            </li>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <Link
-                                            className="btn btn-primary"
-                                            to={'/subadmin/group_service/add'}
-                                        >
-                                            <i className="fa fa-plus-circle me-2" aria-hidden="true" />
-                                            Add GroupService
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                <div className="card">
+                    <div className="card-header">
+                    <h5 className="card-title mb-0">Group Services</h5>
                     </div>
-                </div>
+                    <div className="card-body">
+                        
+                   
+                {/* PAGE HEADER */}
+             
                 {
                     allGroupService.loading ? (
                         <>
@@ -568,6 +508,8 @@ function GroupStrategy() {
 
 
             </div>
+            </div>
+                </div>
             < ToastButton />
         </>
     )
