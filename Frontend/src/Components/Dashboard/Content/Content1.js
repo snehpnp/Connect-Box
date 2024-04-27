@@ -1,56 +1,68 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 
-
-const Content = ({ Page_title, button_title, button_status, route, additional_field, ...rest }) => {
-
-
-
-    return (
-      <div>
-        <div className="content-body">
-          <div className="container-fluid">
-            <div className="row page-titles   mt-5  " style={{ margin:" 0 1px 0 1px", borderBottom: "2px solid white"}}>
-              <div className='row mb-3'>
-                <div className="col-lg-6"></div>
-              </div>
-              <ol className="breadcrumb d-flex justify-content-between align-items-center "  >
-                <div className="col-lg-5">
-                  <li className="breadcrumb-item">
-                    <h4 className="font-w500 mb-0 mx-4">{Page_title}</h4>
-                  </li>
-                </div>
-                {button_status === false ? "" : <div className="col-lg-5">
-                  <Link to={route} className='btn btn-primary float-lg-end mx-4' >
-                    <i className={`fa-solid  ${button_title === "Back" ? 'fa-arrow-left' : 'fa-plus'} `}></i> {button_title}</Link>
-                </div>}
-              </ol>
+const Content = ({
+  Page_title,
+  button_title,
+  button_status,
+  route,
+  additional_field,
+  ...rest
+}) => {
+  return (
+    <div>
+      <div className="content-body">
+        <div className="container-fluid">
+          <div
+            className="row page-titles   mt-5  "
+            style={{ margin: " 0 1px 0 1px", borderBottom: "2px solid white" }}
+          >
+            <div className="row mb-3">
+              <div className="col-lg-6"></div>
             </div>
-            <div className="row d-flex">
-              <div className="col-xl-5">
-                <div className="row">
-                  <div className="col-xl-12">
-                    <div className="card form-card ">
-                      <div className="card-body ">
-                        <div className="form-validation ">
-                          {rest.children}
-                        </div>
-                      </div>
+            <ol className="breadcrumb d-flex justify-content-between align-items-center ">
+              <div className="col-lg-5">
+                <li className="breadcrumb-item">
+                  <h4 className="font-w500 mb-0 mx-4">{Page_title}</h4>
+                </li>
+              </div>
+              {button_status === false ? (
+                ""
+              ) : (
+                <div className="col-lg-5">
+                  <Link
+                    to={route}
+                    className="btn btn-primary float-lg-end mx-4"
+                  >
+                    <i
+                      className={`fa-solid  ${
+                        button_title === "Back" ? "fa-arrow-left" : "fa-plus"
+                      } `}
+                    ></i>{" "}
+                    {button_title}
+                  </Link>
+                </div>
+              )}
+            </ol>
+          </div>
+          <div className="row d-flex">
+            <div className="col-xl-5">
+              <div className="row">
+                <div className="col-xl-12">
+                  <div className="card form-card ">
+                    <div className="card-body ">
+                      <div className="form-validation ">{rest.children}</div>
                     </div>
-  
-  
                   </div>
                 </div>
               </div>
-              <div className="col-xl-7">
-                <div className="row">
-                  <div className="col-xl-12">
-                    <div className="card form-card">
-                      <div className="card-body ">
-                        <div className="form-validation ">
-                          {additional_field}
-                        </div>
-                      </div>
+            </div>
+            <div className="col-xl-7">
+              <div className="row">
+                <div className="col-xl-12">
+                  <div className="card form-card">
+                    <div className="card-body ">
+                      <div className="form-validation ">{additional_field}</div>
                     </div>
                   </div>
                 </div>
@@ -58,9 +70,9 @@ const Content = ({ Page_title, button_title, button_status, route, additional_fi
             </div>
           </div>
         </div>
-  
-      </div >
-    )
-  }
-  
-  export default Content
+      </div>
+    </div>
+  );
+};
+
+export default Content;

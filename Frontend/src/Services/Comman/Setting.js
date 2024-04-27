@@ -37,4 +37,18 @@ export async function  findActivity(data){
   }
 
 
+  // broker detail
+
+  export async function  getbroker(data){
+    try{
+        const res = await axios.get(`${Config.base_url}broker/get`, data,{
+            data: {}
+        })
+        return await res?.data;
+    }
+    catch(err){
+        return await err;
+    }
+  }
+
 
