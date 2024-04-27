@@ -19,7 +19,6 @@ function Apicreate_info() {
     await dispatch(brokerdetail({}))
       .unwrap()
       .then((response) => {
-        console.log("ajay", response.data);
         if (response.status) {
           setUserDetails({
             loading: false,
@@ -427,7 +426,6 @@ function Apicreate_info() {
     if (selectedItem) {
       setSelectedItem(selectedItem);
       setModel(true);
-      console.log("Model state:", model);
     }
   };
 
@@ -467,7 +465,6 @@ function Apicreate_info() {
       </div>
       {model && selectedItem && (
         <>
-          
           <div className="modal custom-modal d-block kk" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-md">
               <div className="modal-content">
@@ -477,27 +474,29 @@ function Apicreate_info() {
                   </div>
                 </div>
                 <div className="your-model-class">
-            <h2>{selectedItem.HeadingTitle}</h2>
-            <p>{selectedItem.describtion}</p>
-            <p>
-              <a href={selectedItem.LinkOne}>
-                Link One :{selectedItem.LinkOne}
-              </a>
-            </p>
-            <p>
-              <a href={selectedItem.LinkTwo}>
-                Link Two :{selectedItem.LinkTwo}
-              </a>
-            </p>
-            {selectedItem.img1 && <img src={selectedItem.img1} alt="Image 1" />}
-            <div>
-              {selectedItem.img2 && (
-                <img src={selectedItem.img2} alt="Image 2" />
-              )}
-            </div>
+                  <h2>{selectedItem.HeadingTitle}</h2>
+                  <p>{selectedItem.describtion}</p>
+                  <p>
+                    <a href={selectedItem.LinkOne}>
+                      Link One :{selectedItem.LinkOne}
+                    </a>
+                  </p>
+                  <p>
+                    <a href={selectedItem.LinkTwo}>
+                      Link Two :{selectedItem.LinkTwo}
+                    </a>
+                  </p>
+                  {selectedItem.img1 && (
+                    <img src={selectedItem.img1} alt="Image 1" />
+                  )}
+                  <div>
+                    {selectedItem.img2 && (
+                      <img src={selectedItem.img2} alt="Image 2" />
+                    )}
+                  </div>
 
-            <button onClick={() => setModel(false)}>Close</button>
-          </div>
+                  <button onClick={() => setModel(false)}>Close</button>
+                </div>
               </div>
             </div>
           </div>

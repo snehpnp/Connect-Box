@@ -99,7 +99,7 @@ const Profile = () => {
     "wolf (1).png",
   ];
 
- const handleAvatarClick = async (avatarUrl) => {
+  const handleAvatarClick = async (avatarUrl) => {
     try {
       var data = { user_id: user_id, profile_img: avatarUrl };
       const response = await dispatch(ProfilImage(data)).unwrap();
@@ -550,7 +550,7 @@ const Profile = () => {
 
                             <li className="pt-2 pb-0">
                               <h6>DOB</h6>
-                              <li> {fDate(item.DOB || '')} </li>
+                              <li> {fDate(item.DOB || "")} </li>
                             </li>
                             <br />
 
@@ -587,17 +587,22 @@ const Profile = () => {
                           .map((item, index) => (
                             <li key={index} className="feed-item">
                               <div className="feed-date d-flex justify-content-between">
-                                <span className="feed-text">{fDateTime(item.createdAt)}</span> 
+                                <span className="feed-text">
+                                  {fDateTime(item.createdAt)}
+                                </span>
                                 <span className="feed-text ">
-                                  <a href="#" style={{ color: "blue" }}>{item.system_ip}</a>
+                                  <a href="#" style={{ color: "blue" }}>
+                                    {item.system_ip}
+                                  </a>
                                 </span>
                               </div>
                               <span className="feed-text">
-                                <a href="#" style={{ color: "blue" }}>{item.role}</a>{" "}
+                                <a href="#" style={{ color: "blue" }}>
+                                  {item.role}
+                                </a>{" "}
                                 {item.trading_status}
                               </span>
                             </li>
-
                           ))}
                       </ul>
                     </div>
