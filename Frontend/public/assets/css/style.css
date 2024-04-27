@@ -9237,6 +9237,7 @@ table .badge {
     overflow: inherit !important
 }
 
+
 [data-layout=horizontal] body .sidebar .hidden {
     display: none !important
 }
@@ -34379,10 +34380,14 @@ img {
 }
 
 @media(max-width: 991px) {
+    [data-layout=horizontal] body .sidebar .slimScrollDiv,
+[data-layout=horizontal] body .sidebar .sidebar-inner {
+    height: 215px !important;
+    overflow-x: scroll !important
+}
 
     .intro-fill {
         width: 100%;
-
     }
 
     [data-layout=horizontal] body .sidebar .sidebar-menu ul li a .menu-arrow {
@@ -34437,7 +34442,6 @@ img {
         /* top:300px  !important; */
     }
 }
-
 [data-layout-mode=dark] .MuiDataGrid-cell {
     color: #ddd !important;
 }
