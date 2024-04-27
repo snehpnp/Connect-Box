@@ -12,11 +12,15 @@ import {
     gettokenbysocket,
     GetBrokerLiveDatas,
     AddDataAboveBelowRange,
+    GetDataAboveBelowRange,
 
 } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
 import { GetBrokerDatas} from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { CreateSocketSession, ConnctSocket, GetAccessToken, ConnctSocket_user } from "../../../Utils/Alice_Socket";
+
+import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
+
 
 
 
@@ -114,10 +118,47 @@ const Makecall = () => {
     const [stockSellPrice, setStockSellPrice] = useState("");
     const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
     const [userIdSocketRun, setUserIdSocketRun] = useState("none");
+   
+   
+    const [typeABROnclickFunc, setTypeABROnclickFunc] = useState("below");
 
     let socket;
-   
 
+    const handleClick_abr = (ABR) =>{
+       //alert(ABR)
+       setTypeABROnclickFunc(ABR)
+       GetDataAboveBelowRangeFun(ABR)
+    }
+    
+    const GetDataAboveBelowRangeFun =async (ABR) =>{
+   
+    await dispatch(GetDataAboveBelowRange(
+        {
+            req:
+            {
+                user_id: UserLocalDetails.user_id,
+                ABR: ABR,
+            },
+
+            token: UserLocalDetails.token
+        }
+    ))
+        .unwrap()
+        .then((response) => {
+
+            if (response.status) {
+               
+            } else {
+                
+            }
+        });
+
+
+    }
+   
+    useEffect(() => {
+        handleClick_abr(typeABROnclickFunc)
+    }, [])
     
 
 
@@ -459,7 +500,6 @@ const Makecall = () => {
                 }
             });
     };
-
 
 
     useEffect(() => {
@@ -1119,15 +1159,10 @@ const Makecall = () => {
 
                 // console.log("response ",response.data)
                 // if (response.status) {
-                //     setStrategyDataAll({
-                //         loading: false,
-                //         data: response.data,
-                //     });
+                
+
                 // } else {
-                //     setStrategyDataAll({
-                //         loading: false,
-                //         data: [],
-                //     });
+                
 
                 // }
             });
@@ -1191,15 +1226,11 @@ const Makecall = () => {
 
                 // console.log("response ",response.data)
                 // if (response.status) {
-                //     setStrategyDataAll({
-                //         loading: false,
-                //         data: response.data,
-                //     });
+                
+
                 // } else {
-                //     setStrategyDataAll({
-                //         loading: false,
-                //         data: [],
-                //     });
+                
+
 
                 // }
             });
@@ -1658,6 +1689,7 @@ const Makecall = () => {
                                         className="nav-link active"
                                         href="#solid-tab1"
                                         data-bs-toggle="tab"
+                                        onClick={()=>handleClick_abr("below")}
                                     >
                                         <i className="fa-solid fa-landmark pe-2"></i>
                                         Below
@@ -1668,6 +1700,7 @@ const Makecall = () => {
                                         className="nav-link"
                                         href="#solid-tab2"
                                         data-bs-toggle="tab"
+                                        onClick={()=>handleClick_abr("above")}
                                     >
                                         <i className="fa-solid fa-envelope pe-2"></i>
                                         Above
@@ -1678,6 +1711,7 @@ const Makecall = () => {
                                         className="nav-link"
                                         href="#solid-tab3"
                                         data-bs-toggle="tab"
+                                        onClick={()=>handleClick_abr("range")}
                                     >
                                         <i className="fa-regular fa-image pe-2"></i>
                                         Range
@@ -1730,12 +1764,7 @@ const Makecall = () => {
                                                                     <td>$1360.00</td>
                                                                     <td>$1350.00</td>
                                                                     <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
+                                                                       
                                                                         <div className="dropdown dropdown-action">
                                                                             <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
                                                                             <div className="dropdown-menu dropdown-menu-right">
@@ -1745,156 +1774,6 @@ const Makecall = () => {
                                                                                     </li>
                                                                                     <li>
                                                                                         <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>2</td>
-                                                                    <td>Lobar Handy</td>
-                                                                    <td>P125393</td>
-                                                                    <td>Inches</td>
-                                                                    <td>5</td>
-                                                                    <td>$155.00</td>
-                                                                    <td>$150.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>3</td>
-                                                                    <td>Iphone 14 Pro</td>
-                                                                    <td>P125398</td>
-                                                                    <td>Inches</td>
-                                                                    <td>7</td>
-                                                                    <td>$764.00</td>
-                                                                    <td>$750.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>4</td>
-                                                                    <td>Black Slim 200</td>
-                                                                    <td>P125395</td>
-                                                                    <td>Inches</td>
-                                                                    <td>3</td>
-                                                                    <td>$255.00</td>
-                                                                    <td>$250.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>5</td>
-                                                                    <td>Bold V3.2</td>
-                                                                    <td>P125397</td>
-                                                                    <td>Pieces</td>
-                                                                    <td>6</td>
-                                                                    <td>$1055.00</td>
-                                                                    <td>$1050.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>6</td>
-                                                                    <td>Woodcraft Sandal</td>
-                                                                    <td>P125394</td>
-                                                                    <td>Pieces</td>
-                                                                    <td>8</td>
-                                                                    <td>$175.00</td>
-                                                                    <td>$140.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
                                                                                     </li>
                                                                                 </ul>
                                                                             </div>
@@ -1946,12 +1825,7 @@ const Makecall = () => {
                                                                     <td>$1360.00</td>
                                                                     <td>$1350.00</td>
                                                                     <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
+                                                                       
                                                                         <div className="dropdown dropdown-action">
                                                                             <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
                                                                             <div className="dropdown-menu dropdown-menu-right">
@@ -1961,156 +1835,6 @@ const Makecall = () => {
                                                                                     </li>
                                                                                     <li>
                                                                                         <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>2</td>
-                                                                    <td>Lobar Handy</td>
-                                                                    <td>P125393</td>
-                                                                    <td>Inches</td>
-                                                                    <td>5</td>
-                                                                    <td>$155.00</td>
-                                                                    <td>$150.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>3</td>
-                                                                    <td>Iphone 14 Pro</td>
-                                                                    <td>P125398</td>
-                                                                    <td>Inches</td>
-                                                                    <td>7</td>
-                                                                    <td>$764.00</td>
-                                                                    <td>$750.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>4</td>
-                                                                    <td>Black Slim 200</td>
-                                                                    <td>P125395</td>
-                                                                    <td>Inches</td>
-                                                                    <td>3</td>
-                                                                    <td>$255.00</td>
-                                                                    <td>$250.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>5</td>
-                                                                    <td>Bold V3.2</td>
-                                                                    <td>P125397</td>
-                                                                    <td>Pieces</td>
-                                                                    <td>6</td>
-                                                                    <td>$1055.00</td>
-                                                                    <td>$1050.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>6</td>
-                                                                    <td>Woodcraft Sandal</td>
-                                                                    <td>P125394</td>
-                                                                    <td>Pieces</td>
-                                                                    <td>8</td>
-                                                                    <td>$175.00</td>
-                                                                    <td>$140.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
                                                                                     </li>
                                                                                 </ul>
                                                                             </div>
@@ -2162,12 +1886,7 @@ const Makecall = () => {
                                                                     <td>$1360.00</td>
                                                                     <td>$1350.00</td>
                                                                     <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
+                                                                       
                                                                         <div className="dropdown dropdown-action">
                                                                             <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
                                                                             <div className="dropdown-menu dropdown-menu-right">
@@ -2177,156 +1896,6 @@ const Makecall = () => {
                                                                                     </li>
                                                                                     <li>
                                                                                         <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>2</td>
-                                                                    <td>Lobar Handy</td>
-                                                                    <td>P125393</td>
-                                                                    <td>Inches</td>
-                                                                    <td>5</td>
-                                                                    <td>$155.00</td>
-                                                                    <td>$150.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>3</td>
-                                                                    <td>Iphone 14 Pro</td>
-                                                                    <td>P125398</td>
-                                                                    <td>Inches</td>
-                                                                    <td>7</td>
-                                                                    <td>$764.00</td>
-                                                                    <td>$750.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>4</td>
-                                                                    <td>Black Slim 200</td>
-                                                                    <td>P125395</td>
-                                                                    <td>Inches</td>
-                                                                    <td>3</td>
-                                                                    <td>$255.00</td>
-                                                                    <td>$250.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>5</td>
-                                                                    <td>Bold V3.2</td>
-                                                                    <td>P125397</td>
-                                                                    <td>Pieces</td>
-                                                                    <td>6</td>
-                                                                    <td>$1055.00</td>
-                                                                    <td>$1050.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>6</td>
-                                                                    <td>Woodcraft Sandal</td>
-                                                                    <td>P125394</td>
-                                                                    <td>Pieces</td>
-                                                                    <td>8</td>
-                                                                    <td>$175.00</td>
-                                                                    <td>$140.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
                                                                                     </li>
                                                                                 </ul>
                                                                             </div>

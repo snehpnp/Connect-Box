@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_SERVICS ,GET_ALL_Catagory ,GET_EXPIRY_BY_SCRIPT,GET_ALL_STRIKE_PRICE ,GET_STRATEGY_DATA ,GET_TOKEN_BY_SOCKET ,GET_LIVE_DATA_SESSION ,ADD_DATA_MAKECALL_ABR} from "../../../../Services/Comman/Makecall/make.service";
+import { GET_ALL_SERVICS ,GET_ALL_Catagory ,GET_EXPIRY_BY_SCRIPT,GET_ALL_STRIKE_PRICE ,GET_STRATEGY_DATA ,GET_TOKEN_BY_SOCKET ,GET_LIVE_DATA_SESSION ,ADD_DATA_MAKECALL_ABR ,GET_DATA_MAKECALL_ABR} from "../../../../Services/Comman/Makecall/make.service";
 
 export const getAllServices = createAsyncThunk(
   "make/ServiceByCatagory",
@@ -125,6 +125,21 @@ export const getexpirymanualtrade = createAsyncThunk(
     }
   );
 
+  // Get data above below range
+  export const GetDataAboveBelowRange = createAsyncThunk(
+    "make/GetDataAboveBelowRange",
+    async (data) => {
+      try {
+        const {req,token} = data
+       // console.log("token ",token)
+        const res = await GET_DATA_MAKECALL_ABR(req,token);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
+
 
 
 const GrouoServicesSlice = createSlice({
@@ -140,6 +155,7 @@ const GrouoServicesSlice = createSlice({
     AllGetTokenBySocket: null,
     AllBrokerLiveData: null,
     AddDataAboveBelowRangeData:null,
+    GetDataAboveBelowRangeData:null,
 
   },
   reducers: {},
@@ -250,7 +266,22 @@ const GrouoServicesSlice = createSlice({
       .addCase(AddDataAboveBelowRange.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+      })
+
+      .addCase(GetDataAboveBelowRange.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(GetDataAboveBelowRange.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.GetDataAboveBelowRangeData = action.payload;
+      })
+      .addCase(GetDataAboveBelowRange.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
       });
+
+      
 
   },
 });

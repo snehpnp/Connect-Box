@@ -9,6 +9,7 @@ const MongoClient = require('mongodb').MongoClient;
 
 
 const uri = process.env.MONGO_URI
+//const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db_GET_VIEW = client.db(process.env.DB_NAME);
 const makecallabrView_excute_view = db_GET_VIEW.collection('makecallabrView_excute');
@@ -429,7 +430,7 @@ class Makecall {
     try {
 
 
-             let result = null
+            let result = null
 
             if(req.body.exist_user == "none"){
               result = await live_price_token.findOne().limit(1).select('demate_user_id access_token trading_status');
@@ -547,6 +548,43 @@ class Makecall {
  
  
    }
+
+
+   //Get data above beleow range
+  async GetDataAboveBelowRange(req, res) {
+
+    console.log("req  ABR",req.body)
+  
+    try {  
+      const { user_id, ABR } = req.body;  
+       const UserId  = new ObjectId(user_id)
+        const pipeline = [
+        {
+           $match: {
+            user_id: UserId,
+            ABR_TYPE: ABR,
+            status: 0,
+          },
+        },
+        ];
+  
+         const result = await makecallABR.aggregate(pipeline);
+           
+         console.log("result",result)
+          if (result.length > 0) {
+             return res.send({ status: true, msg: "Data Add Successfully....", data: result });
+           }else{
+             return res.send({ status: false, msg: "Id Wrong" });
+           }
+
+
+
+    } catch (error) {
+      console.log("Get Data MakeAbovebeloveRange-", error);
+    }
+
+
+  }
 
 
 
