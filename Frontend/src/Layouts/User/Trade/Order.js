@@ -241,16 +241,19 @@ export default function AllEmployees() {
                     <div className="content container-fluid" data-aos="fade-left">
 
                         {/* PAGE HEADER */}
-                        <div className="page-header">
-                            <div className="content-page-header">
-                                <h5>Trade History</h5>
-                                <div className="page-content">
-                                    <div className="list-btn">
-                                        <ul className="filter-list">
+                        <div className="card">
+                            <div className="card-header">
+                                <div className="row align-center">
+                                    <div className="col">
+                                <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Trade History</h5>
+                                </div>
+                                <div className="col-auto">
+                                <div className="list-btn">
+                                        <ul className="filter-list mb-0">
 
-                                            <li className="mt-3">
-                                                <div className="status-toggle pe-5" style={{ display: 'flex', alignItems: 'center' }}>
-                                                    <span style={{ marginRight: '10px', fontSize: '16px', fontWeight: 'bold', color: getLoginStatus ? "green" : "red" }}>TRADING STATUS</span>
+                                            <li className="toggle-li">
+                                                <div className="status-toggle pe-2" style={{ display: 'flex', alignItems: 'center' }}>
+                                                    <span  className= {getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} >Trading Status</span>
                                                     <input
                                                         id="1"
                                                         className="check"
@@ -267,9 +270,9 @@ export default function AllEmployees() {
                                             </li>
 
 
-                                            <li className="mt-3">
+                                            <li className="">
                                                 <p
-                                                    className="btn-filters"
+                                                    className=" mb-0 btn-filters"
 
                                                     data-bs-toggle="tooltip"
                                                     data-bs-placement="bottom"
@@ -281,7 +284,7 @@ export default function AllEmployees() {
                                                     </span>
                                                 </p>
                                             </li>
-                                            <li>
+                                            <li  className='serach-li'>
                                                 <div className="input-group input-block">
 
                                                     <input
@@ -297,10 +300,27 @@ export default function AllEmployees() {
 
                                                 </div>
                                             </li>
+                                            <li>
+                                                   
+                                                            <ExportToExcel
+                                                                className="btn btn-primary "
+                                                                apiData={ForGetCSV}
+                                                                fileName={'All Strategy'} />
+                                                        
+                                                        </li>
+                                                        </ul>
+                                                        </div>
+                                </div>
+                                </div>
+                                </div>
+                                <div className="card-body">
+                                    <div className="list-btn">
+                                        <ul className="filter-list">
+
 
                                             <li>
-                                                <div className="input-group input-block">
-                                                    <label>From Date</label>
+                                                <div className="input-group input-block align-items-center">
+                                                    <label className="mb-0 pe-3">From Date</label>
                                                     <input
                                                         type="date"
                                                         className="form-control"
@@ -314,7 +334,7 @@ export default function AllEmployees() {
                                             </li>
 
 
-                                            <li>
+                                            <li className="select-100">
 
                                                 <select id="strategySelect" className="form-select ">
                                                     <option value="">Select Symbol</option>
@@ -327,7 +347,7 @@ export default function AllEmployees() {
 
                                             </li>
 
-                                            <li>
+                                            <li className="select-100">
 
                                                 <select id="strategySelect" className="form-select ">
                                                     <option value="">Select Strategy</option>
@@ -353,14 +373,7 @@ export default function AllEmployees() {
                                                     data-bs-placement="bottom"
                                                     title="Download"
                                                 >
-                                                    <li>
-                                                        <div className="card-body">
-                                                            <ExportToExcel
-                                                                className="btn btn-primary "
-                                                                apiData={ForGetCSV}
-                                                                fileName={'All Strategy'} />
-                                                        </div>
-                                                    </li>
+                                                    
                                                 </div>
                                             </li>
 
@@ -368,8 +381,9 @@ export default function AllEmployees() {
                                         </ul>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                           
+
+                        
 
 
                         <FullDataTable
@@ -378,6 +392,7 @@ export default function AllEmployees() {
                             columns={columns}
                             rows={tableData.data}
                         />
+                    </div>
                     </div>
                 </>
             ) : (

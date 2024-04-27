@@ -6,7 +6,7 @@ const Bresponse = () => {
 
             <div className='card'>
                 <div className='card-header'>
-                    <h5 className='card-title'>Broker Response </h5>
+                    <h5 className='card-title mb-0'><i className="pe-2 fas fa-reply-all"></i>Broker Response </h5>
                 </div>
                 <div className='card-body'>
                     <div id="price mb-5">
