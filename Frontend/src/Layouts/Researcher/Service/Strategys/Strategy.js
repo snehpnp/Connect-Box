@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import AddForm from '../../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
 import { GetStretgyWithImg, AddStrategy, DELETE_STRATEGY } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
-import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice'
+import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice';
+import {AddResearcherStrategy} from '../../../../ReduxStore/Slice/Researcher/ResearcherSlice'
 
 import Swal from 'sweetalert2';
 import { useDispatch } from "react-redux";
@@ -139,7 +140,22 @@ const Strategy = () => {
             col_size: 6,
             disable: false,
         },
-
+        {
+            name: "monthly_charges",
+            label: "Monthly Charges",
+            type: "text3",
+            label_size: 12,
+            col_size: 6,
+            disable: false,
+        },
+        {
+            name: "security_fund",
+            label: "Security Fund",
+            type: "text3",
+            label_size: 12,
+            col_size: 6,
+            disable: false,
+        },
 
     ];
 
@@ -155,8 +171,8 @@ const Strategy = () => {
             max_trade: '',
             strategy_percentage: '',
             maker_id: user_id,
-
-
+            security_fund: '',
+            monthly_charges: ''
         },
         validate: (values) => {
             let errors = {};
@@ -181,13 +197,15 @@ const Strategy = () => {
             if (!values.strategy_percentage) {
                 errors.strategy_percentage = "Please enter strategy percentage";
             }
-
+            if (!values.monthly_charges) {
+                errors.monthly_charges = "Please enter monthly charges";
+            }
+            if (!values.security_fund) {
+                errors.security_fund = "Please enter security fund";
+            }
             return errors;
-
-
         },
         onSubmit: async (values, { resetForm }) => {
-
             const data = {
                 strategy_name: values.strategy_name,
                 strategy_category: values.strategy_category,
@@ -200,11 +218,12 @@ const Strategy = () => {
                 strategy_percentage: values.strategy_percentage,
                 max_trade: values.max_trade,
                 maker_id: user_id,
-                Service_Type: 0,
-                Role: "RESEARCH"
+                Role: "RESEARCH",
+                security_fund: values.security_fund,
+                monthly_charges:values.monthly_charges,
             };
-            
-            await dispatch(AddStrategy(data))
+
+            await dispatch(AddResearcherStrategy(data))
                 .unwrap()
                 .then(async (response) => {
                     if (response.status) {

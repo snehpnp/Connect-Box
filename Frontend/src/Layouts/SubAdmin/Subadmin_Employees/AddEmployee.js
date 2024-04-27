@@ -82,9 +82,6 @@ const AddEmployee = () => {
         }
       }
 
-      
-
-
       if ((values.addemployee || values.editemployee) && values.groupservice && state.length === 0) {
         errors.grouper_servcice = "You must select a Group Service from the list";
       }

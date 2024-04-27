@@ -54,3 +54,14 @@ export async function DELETE_RESEARCHER(data){
         return await err;
     }
 }
+export async function ADD_RESEARCHER_STRATEGY(data){
+    try{
+        const res= await axios.post(`${Config.base_url}researcher/addstrategy`, data,{
+            data:{}
+        })
+        return await res?.data
+    }
+    catch(err){
+        return await err;
+    }
+}

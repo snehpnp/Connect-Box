@@ -8,6 +8,8 @@ const Role_modal = db.role;
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
 const count_licenses = db.count_licenses;
+const researcher_strategy = db.researcher_strategy;
+
 
 
 
@@ -133,22 +135,19 @@ class Researcher {
         }
 
     }
-
-
-
     async GetAllResearcher(req, res) {
         const { id } = req.body
 
         try {
             const AllData = await User_model.find({ parent_id: id, Role: "RESEARCH" })
-          
+
             const aggregateResult = await User_model.aggregate([
-                { $match: { parent_id: id, Role: "RESEARCH" } }, 
+                { $match: { parent_id: id, Role: "RESEARCH" } },
                 {
                     $group: {
                         _id: null,
                         totalBalance: { $sum: { $toDouble: "$Balance" } },
-                        totalCount: { $sum: 1 }, 
+                        totalCount: { $sum: 1 },
                         activeCount: {
                             $sum: {
                                 $cond: { if: { $eq: ["$ActiveStatus", "1"] }, then: 1, else: 0 }
@@ -156,7 +155,7 @@ class Researcher {
                         }
                     }
                 },
-                { $sort: { createdAt: -1 } } 
+                { $sort: { createdAt: -1 } }
             ]);
 
 
@@ -179,9 +178,6 @@ class Researcher {
         }
 
     }
-
-
-
     async addResearcherupdate(req, res) {
         try {
             const { _id, Balance, parent_id } = req.body
@@ -262,6 +258,135 @@ class Researcher {
             })
         }
     }
+    async createStrategy(req, res) {
+        try {
+            console.log("req :", req.body)
+            const {
+                strategy_name,
+                strategy_description,
+                strategy_demo_days,
+                strategy_category,
+                strategy_segment,
+                strategy_indicator,
+                strategy_tester,
+                strategy_amount,
+                strategy_image,
+                maker_id,
+                max_trade,
+                strategy_percentage,
+                Role,
+                security_fund,
+                monthly_charges,
+
+            } = req.body;
+            if (!maker_id || maker_id == "" || maker_id == null) {
+                return res.send({
+                    status: false,
+                    msg: "Please Enter Maker Id",
+                    data: [],
+                });
+            }
+            console.log("CPPPPPPPPPPP")
+            const maker_id_find = await User_model.findOne({
+                _id: maker_id,
+                Role: Role
+            });
+            
+            console.log("CPPPPPPPPPPP1")
+            if (!maker_id_find) {
+                return res.send({ status: false, msg: "Maker Id Is Wrong", data: [] });
+            }
+         
+            const exist_strategy = await researcher_strategy.findOne({
+                strategy_name: strategy_name,
+            });
+            
+            if (exist_strategy) {
+                return res.send({
+                    status: false,
+                    msg: "Strategy already exists",
+                    data: [],
+                });
+            }
+
+          
+            // Check if the length of the string is at least 5 characters (to have 4th index)
+            if (strategy_name.length < 5) {
+                return res.send({
+                    status: false,
+                    msg: "Please Enter Strategy name long",
+                    data: [],
+                });
+            }
+            // Check if the first three letters are capitalized
+            if (
+                strategy_name.substring(0, 3) !==
+                strategy_name.substring(0, 3).toUpperCase()
+            ) {
+                return res.send({
+                    status: false,
+                    msg: "Please Enter Strategy starting 3 letter Capital",
+                    data: [],
+                });
+            }
+
+
+            // Check if there is an underscore (_) at the fourth index
+            if (strategy_name.charAt(3) != "_") {
+                return res.send({
+                    status: false,
+                    msg: "Please Enter Strategy name _ is mandatory",
+                    data: [],
+                });
+            }
+            if (maker_id_find.prifix_key != strategy_name.substring(0, 3).toUpperCase()) {
+                return res.send({
+                    status: false,
+                    msg: "Please Enter Strategy starting 3 leter is your Prefix Key letter",
+                    data: [],
+                });
+            }
+            var strategy_Data = new researcher_strategy({
+                strategy_name: strategy_name,
+                strategy_description: strategy_description,
+                strategy_demo_days: strategy_demo_days,
+                strategy_category: strategy_category,
+                strategy_segment: strategy_segment,
+                strategy_indicator: strategy_indicator,
+                strategy_tester: strategy_tester,
+                strategy_amount: strategy_amount,
+                strategy_image: strategy_image,
+                maker_id: maker_id_find._id,
+                max_trade: max_trade || null,
+                strategy_percentage: strategy_percentage || null,
+                security_fund: security_fund,
+                monthly_charges: monthly_charges,
+            });
+            console.log("CPPPPPPPPPPP")
+
+            strategy_Data.save()
+                .then(async (data) => {
+                    return res.status(200).json({ status: true, msg: "Strategy Add successfully!", data: strategy_Data._id });
+                })
+                .catch((err) => {
+                    console.log(" Error Add Time Error-", err);
+                    if (err.keyValue) {
+                        return res.send({
+                            status: false,
+                            msg: "Key duplicate",
+                            data: err.keyValue,
+                        });
+                    }
+                });
+        } catch (error) {
+            console.log("Error Strategy add error -", error.keyValue);
+        }
+
+
+    }
+
 }
+
+
 
 module.exports = new Researcher();
