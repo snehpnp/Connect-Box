@@ -1,9 +1,8 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import Sidebar from '../Sidebar/Sidebars'
-import Trackpanel from './Logs/Trackpanel'
-import System from '../../../Layouts/SubAdmin/Systems/System'
-
+import React from "react";
+import { Link } from "react-router-dom";
+import Sidebar from "../Sidebar/Sidebars";
+import Trackpanel from "./Logs/Trackpanel";
+import System from "../../../Layouts/SubAdmin/Systems/System";
 
 const Settings = () => {
     return (
@@ -28,9 +27,7 @@ const Settings = () => {
                                         aria-controls="v-pills-account"
                                         aria-selected="true"
                                         style={{ color: "black" }}
-
                                     >
-
                                         Account Settings
                                     </a>
                                     <a
@@ -117,7 +114,6 @@ const Settings = () => {
                                         Api Create Information
                                     </a>
                                 </div>
-
                             </div>
                             <div className="col-sm-9">
                                 <div className="tab-content">
@@ -151,8 +147,8 @@ const Settings = () => {
                                                                 </label>
                                                                 <a className="btn btn-danger">Delete</a>
                                                                 <p className="mt-1">
-                                                                    Logo Should be minimum 152 * 152 Supported File format
-                                                                    JPG,PNG,SVG
+                                                                    Logo Should be minimum 152 * 152 Supported
+                                                                    File format JPG,PNG,SVG
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -286,7 +282,10 @@ const Settings = () => {
                                                                 >
                                                                     Cancel
                                                                 </a>
-                                                                <a href="javascript:void(0);" className="btn btn-primary">
+                                                                <a
+                                                                    href="javascript:void(0);"
+                                                                    className="btn btn-primary"
+                                                                >
                                                                     Save Changes
                                                                 </a>
                                                             </div>
@@ -309,11 +308,9 @@ const Settings = () => {
                                                         <h5>Company Settings</h5>
                                                     </div>
 
-                                                    <div className='subadminset'>
+                                                    <div className="subadminset">
                                                         <System />
                                                     </div>
-
-
                                                 </div>
                                             </div>
                                         </div>
@@ -348,8 +345,8 @@ const Settings = () => {
                                                                 </label>
                                                                 <a className="btn btn-danger">Delete</a>
                                                                 <p className="mt-1">
-                                                                    Logo Should be minimum 152 * 152 Supported File format
-                                                                    JPG,PNG,SVG
+                                                                    Logo Should be minimum 152 * 152 Supported
+                                                                    File format JPG,PNG,SVG
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -483,7 +480,10 @@ const Settings = () => {
                                                                 >
                                                                     Cancel
                                                                 </a>
-                                                                <a href="javascript:void(0);" className="btn btn-primary">
+                                                                <a
+                                                                    href="javascript:void(0);"
+                                                                    className="btn btn-primary"
+                                                                >
                                                                     Save Changes
                                                                 </a>
                                                             </div>
@@ -576,7 +576,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens active ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/invoice-one.svg"
@@ -591,7 +594,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">General Invoice 1</a>
+                                                                                <a href="javascript:;">
+                                                                                    General Invoice 1
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -607,7 +612,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens  ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/invoice%20-%20two.svg"
@@ -622,7 +630,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">General Invoice 2</a>
+                                                                                <a href="javascript:;">
+                                                                                    General Invoice 2
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -638,7 +648,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens  ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/invoice%20-%20three.svg"
@@ -653,7 +666,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">General Invoice 3</a>
+                                                                                <a href="javascript:;">
+                                                                                    General Invoice 3
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -669,7 +684,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens  ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/invoice-four.svg"
@@ -684,7 +702,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">General Invoice 4</a>
+                                                                                <a href="javascript:;">
+                                                                                    General Invoice 4
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -700,7 +720,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/invoice%20-%20five.svg"
@@ -715,7 +738,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">General Invoice 5</a>
+                                                                                <a href="javascript:;">
+                                                                                    General Invoice 5
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -748,7 +773,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens active ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/invoice-one.svg"
@@ -763,7 +791,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">General Invoice 1</a>
+                                                                                <a href="javascript:;">
+                                                                                    General Invoice 1
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -779,7 +809,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens  ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/invoice%20-%20two.svg"
@@ -794,7 +827,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">General Invoice 2</a>
+                                                                                <a href="javascript:;">
+                                                                                    General Invoice 2
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -810,7 +845,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens  ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/invoice%20-%20three.svg"
@@ -825,7 +863,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">General Invoice 3</a>
+                                                                                <a href="javascript:;">
+                                                                                    General Invoice 3
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -841,7 +881,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens  ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/invoice-four.svg"
@@ -856,7 +899,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">General Invoice 4</a>
+                                                                                <a href="javascript:;">
+                                                                                    General Invoice 4
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -872,7 +917,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/invoice%20-%20five.svg"
@@ -887,7 +935,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">General Invoice 5</a>
+                                                                                <a href="javascript:;">
+                                                                                    General Invoice 5
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -920,7 +970,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens active">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/cash-receipt-1.svg"
@@ -935,7 +988,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">Receipt Invoice 1</a>
+                                                                                <a href="javascript:;">
+                                                                                    Receipt Invoice 1
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -951,7 +1006,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens  ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/cash-receipt-2.svg"
@@ -966,7 +1024,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">Receipt Invoice 2</a>
+                                                                                <a href="javascript:;">
+                                                                                    Receipt Invoice 2
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -982,7 +1042,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens  ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/cash-receipt-3.svg"
@@ -997,7 +1060,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">Receipt Invoice 3</a>
+                                                                                <a href="javascript:;">
+                                                                                    Receipt Invoice 3
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -1013,7 +1078,10 @@ const Settings = () => {
                                                                     <div className="col-md-6 col-xl-3 col-sm-12 d-md-flex d-sm-block">
                                                                         <div className="blog grid-blog invoice-blog flex-fill  d-flex flex-wrap align-content-betweens  ">
                                                                             <div className="blog-image">
-                                                                                <a href="javascript:;" className="img-general">
+                                                                                <a
+                                                                                    href="javascript:;"
+                                                                                    className="img-general"
+                                                                                >
                                                                                     <img
                                                                                         className="img-fluid"
                                                                                         src="assets/img/cash-receipt-4.svg"
@@ -1028,7 +1096,9 @@ const Settings = () => {
                                                                                 </a>
                                                                             </div>
                                                                             <div className="invoice-content-title">
-                                                                                <a href="javascript:;">Receipt Invoice 4</a>
+                                                                                <a href="javascript:;">
+                                                                                    Receipt Invoice 4
+                                                                                </a>
                                                                                 <span
                                                                                     className="invoice-star"
                                                                                     data-bs-toggle="tooltip"
@@ -1073,9 +1143,10 @@ const Settings = () => {
                                                                             type="checkbox"
                                                                             defaultChecked=""
                                                                         />
-                                                                        <label htmlFor="rating_1" className="checktoggle checkbox-bg">
-                                                                         
-                                                                        </label>
+                                                                        <label
+                                                                            htmlFor="rating_1"
+                                                                            className="checktoggle checkbox-bg"
+                                                                        ></label>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1113,9 +1184,10 @@ const Settings = () => {
                                                                             type="checkbox"
                                                                             defaultChecked=""
                                                                         />
-                                                                        <label htmlFor="rating_2" className="checktoggle checkbox-bg">
-
-                                                                        </label>
+                                                                        <label
+                                                                            htmlFor="rating_2"
+                                                                            className="checktoggle checkbox-bg"
+                                                                        ></label>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1163,9 +1235,10 @@ const Settings = () => {
                                                                             type="checkbox"
                                                                             defaultChecked=""
                                                                         />
-                                                                        <label htmlFor="rating_3" className="checktoggle checkbox-bg">
-
-                                                                        </label>
+                                                                        <label
+                                                                            htmlFor="rating_3"
+                                                                            className="checktoggle checkbox-bg"
+                                                                        ></label>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1199,7 +1272,10 @@ const Settings = () => {
                                                             >
                                                                 Cancel
                                                             </a>
-                                                            <a href="javascript:void(0);" className="btn btn-primary">
+                                                            <a
+                                                                href="javascript:void(0);"
+                                                                className="btn btn-primary"
+                                                            >
                                                                 Save Changes
                                                             </a>
                                                         </div>
@@ -1207,7 +1283,6 @@ const Settings = () => {
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
                                     <div
                                         className="tab-pane fade"
@@ -1229,7 +1304,10 @@ const Settings = () => {
                                                                         data-bs-toggle="modal"
                                                                         data-bs-target="#add_custom"
                                                                     >
-                                                                        <i className="fa fa-plus-circle me-2" aria-hidden="true" />
+                                                                        <i
+                                                                            className="fa fa-plus-circle me-2"
+                                                                            aria-hidden="true"
+                                                                        />
                                                                         Add Template
                                                                     </a>
                                                                 </li>
@@ -1468,12 +1546,10 @@ const Settings = () => {
                                                 </div>
                                             </div>
                                         </div>
-
-
                                     </div>
 
                                     <div
-                                        className="tab-pane fade"
+                                        className="tab-pane fade ps-5"
                                         id="v-pills-logs"
                                         role="tabpanel"
                                         aria-labelledby="v-pills-logs-tab"
@@ -1485,20 +1561,16 @@ const Settings = () => {
                                                     <div className="page-content">
                                                         <div className="list-btn">
                                                             <ul className="filter-list">
-                                                                <li>
-
-                                                                </li>
+                                                                <li></li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
 
                                         <Trackpanel />
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -1506,7 +1578,7 @@ const Settings = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Settings
+export default Settings;
