@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_SERVICS ,GET_ALL_Catagory ,GET_EXPIRY_BY_SCRIPT,GET_ALL_STRIKE_PRICE ,GET_STRATEGY_DATA ,GET_TOKEN_BY_SOCKET ,GET_LIVE_DATA_SESSION} from "../../../../Services/Comman/Makecall/make.service";
+import { GET_ALL_SERVICS ,GET_ALL_Catagory ,GET_EXPIRY_BY_SCRIPT,GET_ALL_STRIKE_PRICE ,GET_STRATEGY_DATA ,GET_TOKEN_BY_SOCKET ,GET_LIVE_DATA_SESSION ,ADD_DATA_MAKECALL_ABR} from "../../../../Services/Comman/Makecall/make.service";
 
 export const getAllServices = createAsyncThunk(
   "make/ServiceByCatagory",
@@ -109,6 +109,22 @@ export const getexpirymanualtrade = createAsyncThunk(
     }
   );
 
+ 
+  // Add data above below range
+  export const AddDataAboveBelowRange = createAsyncThunk(
+    "make/AddDataAboveBelowRange",
+    async (data) => {
+      try {
+        const {req,token} = data
+       // console.log("token ",token)
+        const res = await ADD_DATA_MAKECALL_ABR(req,token);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
+
 
 
 const GrouoServicesSlice = createSlice({
@@ -123,6 +139,7 @@ const GrouoServicesSlice = createSlice({
     AllStrategyData: null,
     AllGetTokenBySocket: null,
     AllBrokerLiveData: null,
+    AddDataAboveBelowRangeData:null,
 
   },
   reducers: {},
@@ -218,6 +235,19 @@ const GrouoServicesSlice = createSlice({
         state.AllBrokerLiveData = action.payload;
       })
       .addCase(GetBrokerLiveDatas.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+
+      .addCase(AddDataAboveBelowRange.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(AddDataAboveBelowRange.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.AddDataAboveBelowRangeData = action.payload;
+      })
+      .addCase(AddDataAboveBelowRange.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });

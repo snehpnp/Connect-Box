@@ -30,4 +30,5 @@ module.exports = {
     ProfileInfo:require("./ProfileInformation.model"),
     Activity_category:require("./Activity_category.model"),
     Subadmin_Permission:require("./Subadmin_permissions"),
+    makecallABR:require("./makecallABR.model"),
 };

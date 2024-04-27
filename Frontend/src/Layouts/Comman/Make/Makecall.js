@@ -11,6 +11,7 @@ import {
     getStrategyData,
     gettokenbysocket,
     GetBrokerLiveDatas,
+    AddDataAboveBelowRange,
 
 } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
@@ -115,7 +116,9 @@ const Makecall = () => {
     const [userIdSocketRun, setUserIdSocketRun] = useState("none");
 
     let socket;
+   
 
+    
 
 
     useEffect(() => {
@@ -351,6 +354,19 @@ const Makecall = () => {
     //         });
     // };
 
+    const GetBrokerData = async () => {
+        var data = { id: UserLocalDetails.user_id }
+        await dispatch(GetBrokerDatas(data))
+            .unwrap()
+            .then(async (response) => {
+                //console.log("GetBrokerData ",response.data)
+                if (response.status) {
+                    seUserDetails(response.data)
+                }
+            });
+    };
+    
+
     const getAllSteategyApiFun = async () => {
         await dispatch(getStrategyData(
             {
@@ -409,7 +425,7 @@ const Makecall = () => {
     useEffect(() => {
         getCatogriesFun();
         getAllSteategyApiFun();
-        //GetBrokerData();
+        GetBrokerData();
     }, []);
 
 
@@ -508,10 +524,6 @@ const Makecall = () => {
 
 
     const selectCatagoryId = (e) => {
-
-        
-        
-
 
         setStrikePrice('');
         setOptionType('');
@@ -774,6 +786,7 @@ const Makecall = () => {
                                 sockets.send(JSON.stringify(json));
 
                             } else {
+                                liveToken.current = response.token;
                                 console.log("sockets closeeee");
                             }
 
@@ -814,6 +827,7 @@ const Makecall = () => {
                                 sockets.send(JSON.stringify(json));
 
                             } else {
+                                liveToken.current = response.token;
                                 console.log("sockets closeeee");
                             }
 
@@ -853,6 +867,8 @@ const Makecall = () => {
                                 sockets.send(JSON.stringify(json));
 
                             } else {
+
+                                liveToken.current = response.token;
                                 console.log("sockets closeeee");
                             }
 
@@ -907,41 +923,6 @@ const Makecall = () => {
         if (EntryPriceBA == '') {
             alert("Please Select a  Above/Below/Range")
             return
-        }
-
-
-        let price = "0";
-        // set price
-        if (EntryPriceBA == 'at') {
-            const get_price_live = $(".liveprice" + liveToken.current).html();
-
-            if (get_price_live == '' || get_price_live == undefined) {
-                if (EntryPrice == '') {
-                    alert("Please Enter a Entry Price")
-                    return
-                } else {
-                    price = EntryPrice
-                }
-            } else {
-                price = get_price_live
-            }
-        }
-        else if (EntryPriceBA == 'range') {
-            if (EntryPriceRange_one == '') {
-                alert("Please Enter a price from")
-                return
-            }
-            if (EntryPriceRange_two == '') {
-                alert("Please Enter a price to")
-                return
-            }
-        } else if (EntryPriceBA == 'above' || EntryPriceBA == 'below') {
-            if (EntryPrice == '') {
-                alert("Please Enter a Entry Price")
-                return
-            } else {
-                price = EntryPrice
-            }
         }
 
 
@@ -1022,10 +1003,34 @@ const Makecall = () => {
 
         }
 
-       
-        alert("Done")
+        
+        let Tr_Price = '0.00'
+        let Sq_Value = '0.00'
+        let Sl_Value = '0.00'
+        let TSL = '0.00'
 
-        // const currentTimestamp = Math.floor(Date.now() / 1000);
+
+        let price = "0";
+        // set price
+        alert("Done")
+        //Trade At price -------- AT
+        if (EntryPriceBA == 'at') {
+            const get_price_live = $(".liveprice" + liveToken.current).html();
+
+            if (get_price_live == '' || get_price_live == undefined) {
+                if (EntryPrice == '') {
+                    alert("Please Enter a Entry Price")
+                    return
+                } else {
+                    price = EntryPrice
+                }
+            } else {
+                price = get_price_live
+            }
+
+
+
+            // const currentTimestamp = Math.floor(Date.now() / 1000);
         //     let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice==''?'100':strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${target1}|StopLoss:${stoploss}|ExitTime:${selectedTimeExit}|sl_status:1|Demo:demo`
 
         const currentTimestamp = Math.floor(Date.now() / 1000);
@@ -1050,7 +1055,161 @@ const Makecall = () => {
             })
             .catch((error) => {
                 // console.log(error.response.data);
+        }); 
+
+
+
+
+
+
+        }
+
+        // TRADE RANGE --------
+        else if (EntryPriceBA == 'range') {
+            if (EntryPriceRange_one == '') {
+                alert("Please Enter a price from")
+                return
+            }
+            if (EntryPriceRange_two == '') {
+                alert("Please Enter a price to")
+                return
+            }
+
+          // markettime - after market order
+            
+            
+          await dispatch(AddDataAboveBelowRange(
+            {
+                req: {
+
+                    user_id: UserLocalDetails.user_id,
+                    Symbol: scriptname,
+                    TType: tradeType,
+                    Tr_Price: Tr_Price,
+                    Price: price,
+                    EntryPrice: EntryPrice,
+                    Sq_Value: Sq_Value,
+                    Sl_Value: Sl_Value,
+                    TSL: TSL,
+                    Segment: scriptSegment,
+                    Strike: strikePrice == '' ? '100' : strikePrice,
+                    OType: optionType,
+                    Expiry: expiryOnChange,
+                    Strategy: selectStrategy,
+                    Quntity: '100',
+                    Key: UserDetails && UserDetails[0].client_key,
+                    TradeType: 'MAKECALL',
+                    Target: Target == 0 ? 0 : Target.toFixed(2),
+                    StopLoss: StopLoss == 0 ? 0 : StopLoss.toFixed(2),
+                    ExitTime: selectedTimeExit,
+                    sl_status: sl_status,
+                    token: liveToken.current,
+                    EntryPriceRange_one: EntryPriceRange_one,
+                    EntryPriceRange_two: EntryPriceRange_two,
+                    ABR_TYPE: EntryPriceBA,
+                    marketTimeAmo: markettime,
+                   
+                },
+
+                token: UserLocalDetails.token
+            }
+            ))
+            .unwrap()
+            .then((response) => {
+
+                // console.log("response ",response.data)
+                // if (response.status) {
+                //     setStrategyDataAll({
+                //         loading: false,
+                //         data: response.data,
+                //     });
+                // } else {
+                //     setStrategyDataAll({
+                //         loading: false,
+                //         data: [],
+                //     });
+
+                // }
             });
+    
+
+        }
+        
+        // TRADE ABOVE BELOW ------------
+        else if (EntryPriceBA == 'above' || EntryPriceBA == 'below') {
+            if (EntryPrice == '') {
+                alert("Please Enter a Entry Price")
+                return
+            } else {
+                price = EntryPrice
+            }
+
+            
+            
+          
+           // markettime - after market order
+           //alert(liveToken.current)
+           
+            await dispatch(AddDataAboveBelowRange(
+            {
+                req: {
+
+                    user_id: UserLocalDetails.user_id,
+                    Symbol: scriptname,
+                    TType: tradeType,
+                    Tr_Price: Tr_Price,
+                    Price: price,
+                    EntryPrice: EntryPrice,
+                    Sq_Value: Sq_Value,
+                    Sl_Value: Sl_Value,
+                    TSL: TSL,
+                    Segment: scriptSegment,
+                    Strike: strikePrice == '' ? '100' : strikePrice,
+                    OType: optionType,
+                    Expiry: expiryOnChange,
+                    Strategy: selectStrategy,
+                    Quntity: '100',
+                    Key: UserDetails && UserDetails[0].client_key,
+                    TradeType: 'MAKECALL',
+                    Target: Target == 0 ? 0 : Target.toFixed(2),
+                    StopLoss: StopLoss == 0 ? 0 : StopLoss.toFixed(2),
+                    ExitTime: selectedTimeExit,
+                    sl_status: sl_status,
+                    token: liveToken.current,
+                    EntryPriceRange_one: "",
+                    EntryPriceRange_two: "",
+                    ABR_TYPE: EntryPriceBA,
+                    marketTimeAmo: markettime,
+                   
+                },
+
+                token: UserLocalDetails.token
+            }
+            ))
+            .unwrap()
+            .then((response) => {
+
+                // console.log("response ",response.data)
+                // if (response.status) {
+                //     setStrategyDataAll({
+                //         loading: false,
+                //         data: response.data,
+                //     });
+                // } else {
+                //     setStrategyDataAll({
+                //         loading: false,
+                //         data: [],
+                //     });
+
+                // }
+            });
+    
+
+
+
+
+
+        }
 
        }
 

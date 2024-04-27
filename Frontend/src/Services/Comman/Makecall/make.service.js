@@ -112,5 +112,21 @@ export async function GET_LIVE_DATA_SESSION(data, token) {
 }
 
 
+//Ad data above below range 
+export async function ADD_DATA_MAKECALL_ABR(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}make/AddDataAboveBelowRange`, data, {  
+            // data: {},
+            headers: header(token),
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+
 
 
