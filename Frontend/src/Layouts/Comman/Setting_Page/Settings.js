@@ -13,11 +13,13 @@ const Settings = () => {
           <div className="card-body">
             <div className="row">
               <div className="col-sm-3">
-                <div
-                  className="nav flex-column nav-pills nav-pills-tab"
+                <div 
+              
+                  className="nav flex-column nav-pills nav-pills-tab "
                   id="v-pills-tab"
                   role="tablist"
                   aria-orientation="vertical"
+                 
                 >
                   <a
                     className="nav-link active show mb-1"

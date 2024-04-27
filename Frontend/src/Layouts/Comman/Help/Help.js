@@ -173,31 +173,6 @@ function System() {
                   </div>
                 </div>
 
-                {/* <div
-                  className="content-page-header"
-                  style={{
-                    padding: "0.7rem",
-                    borderBottom: "0.1rem solid black",
-                  }}
-                >
-                  <h5>Help Center</h5>
-
-                  <DropdownButton
-                    id="dropdown-basic-button"
-                    title="Select user"
-                    onSelect={handleDropdownSelect}
-                    style={{
-                      display: "flex",
-                      justifyContent: "end",
-                      alignItems: "end",
-                      marginTop: "1rem",
-                      marginRight: "1rem",
-                    }}
-                  >
-                    <Dropdown.Item eventKey="Subadmin">Subadmin</Dropdown.Item>
-                    <Dropdown.Item eventKey="User">User</Dropdown.Item>
-                  </DropdownButton>
-                </div> */}
               </div>
 
             </div>
