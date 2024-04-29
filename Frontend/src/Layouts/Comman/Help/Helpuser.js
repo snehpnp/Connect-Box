@@ -31,6 +31,24 @@ const Helpuser = () => {
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState(0);
 
+  
+  const styles = {
+    container: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "80vh",
+    },
+    card: {
+      width: "auto",
+    },
+    boldHeader: {
+      fontWeight: "bold",
+    },
+    headerButton: {
+      marginRight: 8,
+    },
+  };
   const columns2 = [
     {
       field: "index",
@@ -262,7 +280,7 @@ const Helpuser = () => {
               ) : (
                 <div className="mt-5">
                   <FullDataTable
-                    // styles={styles}
+                    styles={styles}
                     columns={columns2}
                     rows={getuserdata}
                   />
