@@ -105,6 +105,7 @@ class strategy {
       // }
 
       var strategy_Data = new strategy_model({
+        stgname_adminid:strategy_name+"_"+maker_id_find._id,
         strategy_name: strategy_name,
         strategy_description: strategy_description,
         strategy_demo_days: strategy_demo_days,
@@ -672,7 +673,7 @@ class strategy {
       },
       {
         $lookup: {
-          from: "strategies",
+          from: "researcher_strategies",
           localField: "_id",
           foreignField: "maker_id",
           as: "strategies"
@@ -694,7 +695,14 @@ class strategy {
           maker_id: "$strategies.maker_id",
           createdAt: "$strategies.createdAt",
           max_trade: "$strategies.max_trade",
-          strategy_percentage:"$strategies.strategy_percentage"
+          strategy_percentage:"$strategies.strategy_percentage",
+          security_fund:"$strategies.security_fund",
+          monthly_charges:"$strategies.monthly_charges",
+          maker_id:"$strategies.maker_id",
+
+
+
+
         }
       }
     ]);

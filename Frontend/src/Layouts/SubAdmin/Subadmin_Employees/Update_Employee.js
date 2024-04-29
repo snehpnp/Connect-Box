@@ -6,7 +6,8 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Loader from "../../../Utils/Loader";
-
+import * as valid_err from "../../../Utils/Common_Messages";
+import { Email_regex, Mobile_regex,Name_regex} from "../../../Utils/Common_regex";
 
 import {
   Update_Employee,
@@ -45,6 +46,17 @@ const Edit_Employee = () => {
     loading: true,
     data: [],
   });
+
+  const isValidEmail = (email) => {
+    return Email_regex(email);
+  };
+  const isValidContact = (mobile) => {
+    return Mobile_regex(mobile);
+  };
+
+  const isValidName = (mobile) => {
+    return Name_regex(mobile);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,13 +105,25 @@ const Edit_Employee = () => {
     validate: (values) => {
       let errors = {};
       if (!values.fullName) {
-        errors.fullName = "Full Name is required";
+        errors.fullName = valid_err.FULLNAME_ERROR;
+      } else if(!isValidName(values.fullName)){
+        errors.fullName = valid_err.INVALID_ERROR
       }
       if (!values.email) {
-        errors.email = "Email is required";
+        errors.email = valid_err.EMPTY_EMAIL_ERROR;
+      } else if (!isValidEmail(values.email)) {
+        errors.email = valid_err.INVALID_EMAIL_ERROR;
+      }
+      if (!values.userName) {
+        errors.userName = valid_err.USERNAME_ERROR;
+      }
+      if (!values.password) {
+        errors.password = valid_err.PASSWORD_ERROR;
       }
       if (!values.phone) {
-        errors.phone = "Phone is required";
+        errors.phone = valid_err.CONTACT_ERROR;
+      }else if (!isValidContact(values.phone)) {
+        errors.phone = valid_err.INVALID_CONTACT_ERROR;
       }
       if (values.Strategy) {
         if (!values.addemployee && !values.editemployee) {

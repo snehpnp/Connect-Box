@@ -19,6 +19,7 @@ export async function GetCompanyInfo(data, token) {
 
 }
 
+
 export async function EditCompanyInfo(data, token) {
     try {
         const res = await axios.post(`${Config.base_url}emailinfo/edit`, data, {  
@@ -50,7 +51,6 @@ export async function ProfileData(data, token) {
 
 
 //help user subadmin post 
-
 export async function Subadminhelp(data,token){
     try {
 
@@ -68,8 +68,6 @@ export async function Subadminhelp(data,token){
 
 
 //get help for table of subadmin 
-
-
 export async function getSubadminhelp(data,token){
     try {
 
@@ -87,7 +85,6 @@ export async function getSubadminhelp(data,token){
 
 
 //post help for user data
-
 export async function  postuserhelpdata(data,token){
     try {
 
@@ -106,7 +103,6 @@ export async function  postuserhelpdata(data,token){
 
 
 // get user help data
-
 export async function  gethelpdata(data,token){
     try {
 
@@ -124,7 +120,6 @@ export async function  gethelpdata(data,token){
 
 
 // delete user help data 
-
 export async function  deleteuserhelpdata(data,token){
     try {
 
@@ -141,10 +136,8 @@ export async function  deleteuserhelpdata(data,token){
 }
 
 
+
 // delete subadmin help data  
-
-
-
 export async function  deletesubadmindata(data,token){
     try {
 
@@ -160,8 +153,8 @@ export async function  deletesubadmindata(data,token){
     }
 }
 
-// api for prefix compare to 
 
+// api for prefix compare to 
 export async function  ComparePrefix_key(data,token){
     try {
 

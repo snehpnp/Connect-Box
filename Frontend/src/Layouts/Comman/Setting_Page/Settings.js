@@ -3,12 +3,18 @@ import { Link } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebars";
 import Trackpanel from "./Logs/Trackpanel";
 import System from "../../../Layouts/SubAdmin/Systems/System";
+import AdminSystem from "../../../Layouts/Admin/System/System";
+
 
 
 
 import Apicreate_info from "./Apicreateinformation/Apicreate_info";
 
 const Settings = () => {
+
+    var Role = JSON.parse(localStorage.getItem("user_details")).Role
+
+
     return (
         <div>
             <div className="">
@@ -265,7 +271,7 @@ const Settings = () => {
                                                     </div>
 
                                                     <div className='subadminset'>
-                                                        <System />
+                                                      {Role == "ADMIN" ? <AdminSystem/>  : Role == "SUBADMIN" ? <System /> :""}
                                                     </div>
 
 

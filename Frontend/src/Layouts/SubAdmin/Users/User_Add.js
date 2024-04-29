@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import AddForm from "../../../Components/ExtraComponents/forms/AddForm";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
-import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN ,Get_All_Employee_Names} from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
+import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN, Get_All_Employee_Names } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { AddUsers, Get_All_Broker, } from "../../../ReduxStore/Slice/Subadmin/UsersSlice";
 import Loader from "../../../Utils/Loader";
@@ -12,6 +12,13 @@ import Loader from "../../../Utils/Loader";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
+import * as valid_err from "../../../Utils/Common_Messages";
+
+import {
+  Email_regex,
+  Mobile_regex,
+  Name_regex,
+} from "../../../Utils/Common_regex";
 
 const AddClient = () => {
   const dispatch = useDispatch();
@@ -44,9 +51,23 @@ const AddClient = () => {
   );
   const [getAllBroker, setAllBroker] = useState([]);
 
+
+
+  const isValidEmail = (email) => {
+    return Email_regex(email);
+  };
+  const isValidContact = (mobile) => {
+    return Mobile_regex(mobile);
+  };
+
+  const isValidName = (mobile) => {
+    return Name_regex(mobile);
+  };
+
+
   // 0 = 2 days 1= Demo 2 =Live
   const fields = [
- 
+
     {
       name: "fullName",
       label: "Full Name",
@@ -194,17 +215,31 @@ const AddClient = () => {
       balance: 0,
       per_trade_value: null,
       Employees: null,
-    
+
     },
     validate: (values) => {
       let errors = {};
+
       if (!values.fullName) {
-        errors.fullName = "Please Enter Full Name ";
+        errors.fullName = valid_err.FULLNAME_ERROR;
+      } else if (!isValidName(values.fullName)) {
+        errors.fullName = valid_err.INVALID_ERROR
+      }
+      if (!values.email) {
+        errors.email = valid_err.EMPTY_EMAIL_ERROR;
+      } else if (!isValidEmail(values.email)) {
+        errors.email = valid_err.INVALID_EMAIL_ERROR;
+      }
+      if (!values.username) {
+        errors.username = valid_err.USERNAME_ERROR;
+      }
+   
+      if (!values.phone) {
+        errors.phone = valid_err.CONTACT_ERROR;
+      } else if (!isValidContact(values.phone)) {
+        errors.phone = valid_err.INVALID_CONTACT_ERROR;
       }
 
-      if (!values.username) {
-        errors.username = "Please Enter Username";
-      }
       if (!values.broker && values.licence != 1) {
         errors.broker = "Please Select Broker ";
       }
@@ -216,17 +251,6 @@ const AddClient = () => {
       if (!values.groupservice) {
         errors.groupservice = "Please select group service ";
       }
-      if (!values.email) {
-        errors.email = "Please Enter Email address.";
-      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
-        errors.email = "Please enter a valid email address.";
-      }
-      if (!values.phone) {
-        errors.phone = "Please Enter  Phone number.";
-      } else if (!/^\d{10}$/.test(values.phone)) {
-        errors.phone = "Please enter a valid 10-digit phone number.";
-      }
-
       return errors;
     },
     onSubmit: async (values) => {
@@ -249,7 +273,7 @@ const AddClient = () => {
         broker: values.broker,
         Service_Type: values.Service_Type,
         per_trade_value: values.per_trade_value || null,
-        employee_id:values.Employees || null
+        employee_id: values.Employees || null
       };
 
       await dispatch(AddUsers(req))
@@ -619,11 +643,11 @@ const AddClient = () => {
                       </div>
                     ))}
                   </div>)
-                  
-                   :
-                  
-                  
-                  
+
+                  :
+
+
+
                   (<div className="row mt-4">
                     <div class="input-block ">
                       <label>All Strategy</label>

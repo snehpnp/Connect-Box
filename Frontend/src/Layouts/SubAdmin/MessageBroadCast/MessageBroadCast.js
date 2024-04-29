@@ -170,7 +170,7 @@ function MessageBroadcast() {
           >
             <EditIcon />
           </IconButton>
-         {value == 1 ?  <IconButton
+          {value == 1 ? <IconButton
             aria-label="delete"
             size="small"
             onClick={() => {
@@ -178,9 +178,9 @@ function MessageBroadcast() {
             }}
           >
             <DeleteIcon />
-          </IconButton> :""
+          </IconButton> : ""
 
-         }
+          }
         </div>
       ),
       headerClassName: styles.boldHeader,
@@ -352,134 +352,131 @@ function MessageBroadcast() {
 
         <div className="card" data-aos="fade-left">
           <div className="card-header">
-          <h5 className=" card-title mb-0 w-auto">Message Broadcast</h5>
+            <h5 className=" card-title mb-0 w-auto">Message Broadcast</h5>
           </div>
           <div className="card-body"> <div className="mt-3 ">
-          <Box sx={{ width: '100%' }}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
-              <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                <Tab label="Send" {...a11yProps(0)} />
-                <Tab label="Sent Messages" {...a11yProps(1)} />
-                <Tab label="Received Messages" {...a11yProps(2)} />
+            <Box sx={{ width: '100%' }}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
+                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                  <Tab label="Send" {...a11yProps(0)} />
+                  <Tab label="Sent Messages" {...a11yProps(1)} />
+                  <Tab label="Received Messages" {...a11yProps(2)} />
 
-              </Tabs>
-            </Box>
-            <CustomTabPanel value={value} index={0}>
-              <>
+                </Tabs>
+              </Box>
+              <CustomTabPanel value={value} index={0}>
+                <>
 
-                <div className="row align-items-center">
-                  <div className="col-md-5">
-                    <img
-                      src="/assets/img/gif/Email-campaign.png"
-                      alt="Investment data"
-                      className="w-75"
-                    />
-                  </div>
-                  <div className="col-md-7">
-                    <div>
+                  <div className="row align-items-center">
+                    <div className="col-md-5">
+                      <img
+                        src="/assets/img/gif/Email-campaign.png"
+                        alt="Investment data"
+                        className="w-75"
+                      />
+                    </div>
+                    <div className="col-md-7">
+                      <div>
+                        <div className="input-block mt-3">
+                          <label className="form-label" htmlFor="strategy-select">
+                            Strategy
+                          </label>
+                          <div className="input-group">
+                            <select
+                              id="strategy-select"
+                              className="form-control"
+                              value={selectedStrategy}
+                              onChange={(e) => setSelectedStrategy(e.target.value)}
+                            >
+                              <option value="">Select Strategy</option>
+                              {strategies &&
+                                strategies.map((strategy) => (
+                                  <option key={strategy._id} value={strategy._id}>
+                                    {strategy.strategy_name}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                        <div className=" input-block mt-3">
+                          <label className="form-label" htmlFor="broker-select">
+                            Broker
+                          </label>
+                          <div className="input-group">
+                            <select
+                              id="broker-select"
+                              className="form-control"
+                              value={selectedBroker}
+                              onChange={(e) => setSelectedBroker(e.target.value)}
+                            >
+                              <option value="">Select Broker</option>
+                              {brokers &&
+                                brokers.map((broker) => (
+                                  <option key={broker._id} value={broker._id}>
+                                    {broker.title}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
                       <div className="input-block mt-3">
-                        <label className="form-label" htmlFor="strategy-select">
-                          Strategy
+                        <label className="form-label" htmlFor="message">
+                          Message
                         </label>
-                        <div className="input-group">
-                          <select
-                            id="strategy-select"
-                            className="form-control"
-                            value={selectedStrategy}
-                            onChange={(e) => setSelectedStrategy(e.target.value)}
-                          >
-                            <option value="">Select Strategy</option>
-                            {strategies &&
-                              strategies.map((strategy) => (
-                                <option key={strategy._id} value={strategy._id}>
-                                  {strategy.strategy_name}
-                                </option>
-                              ))}
-                          </select>
-                        </div>
+                        <textarea
+                          id="message"
+                          className="form-control"
+                          rows="4"
+                          value={messageText}
+                          onChange={(e) => setMessageText(e.target.value)}
+                        ></textarea>
                       </div>
-                      <div className=" input-block mt-3">
-                        <label className="form-label" htmlFor="broker-select">
-                          Broker
-                        </label>
-                        <div className="input-group">
-                          <select
-                            id="broker-select"
-                            className="form-control"
-                            value={selectedBroker}
-                            onChange={(e) => setSelectedBroker(e.target.value)}
-                          >
-                            <option value="">Select Broker</option>
-                            {brokers &&
-                              brokers.map((broker) => (
-                                <option key={broker._id} value={broker._id}>
-                                  {broker.title}
-                                </option>
-                              ))}
-                          </select>
-                        </div>
-                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-primary mt-3"
+                        onClick={sendMessage}
+                      >
+                        Send
+                      </button>
                     </div>
-
-                    <div className="input-block mt-3">
-                      <label className="form-label" htmlFor="message">
-                        Message
-                      </label>
-                      <textarea
-                        id="message"
-                        className="form-control"
-                        rows="4"
-                        value={messageText}
-                        onChange={(e) => setMessageText(e.target.value)}
-                      ></textarea>
-                    </div>
-                    <button
-                      type="button"
-                      className="btn btn-primary mt-3"
-                      onClick={sendMessage}
-                    >
-                      Send
-                    </button>
                   </div>
-                </div>
 
 
-              </>
+                </>
 
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={1}>
-              {loading ? (
-                <Loader /> // Show loader while loading
-              ) : (<FullDataTable
-                styles={styles}
-                label={label}
-                columns={columns}
-                rows={pipelineData}
-              />)}
+              </CustomTabPanel>
+              <CustomTabPanel value={value} index={1}>
+                {loading ? (
+                  <Loader /> // Show loader while loading
+                ) : (<FullDataTable
+                  styles={styles}
+                  label={label}
+                  columns={columns}
+                  rows={pipelineData}
+                />)}
 
-            </CustomTabPanel>
-            <CustomTabPanel value={value} index={2}>
-              {loading ? (
-                <Loader /> // Show loader while loading
-              ) : (<FullDataTable
-                styles={styles}
-                label={label}
-                columns={columns}
-                rows={pipelineData}
-              />)}
+              </CustomTabPanel>
+              <CustomTabPanel value={value} index={2}>
+                {loading ? (
+                  <Loader /> // Show loader while loading
+                ) : (<FullDataTable
+                  styles={styles}
+                  label={label}
+                  columns={columns}
+                  rows={pipelineData}
+                />)}
 
 
-            </CustomTabPanel>
-          </Box>
-        </div></div>
-        </div>
-        {/* <div className="page-header">
-          <div className="content-page-header">
-            <h6>Message Broadcast</h6>
+              </CustomTabPanel>
+            </Box>
           </div>
-        </div> */}
+          </div>
+        </div>
 
-       
+
+
 
 
         {modal !== 0 && (

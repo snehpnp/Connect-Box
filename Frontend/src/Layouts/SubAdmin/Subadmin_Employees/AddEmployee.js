@@ -6,6 +6,13 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import * as valid_err from "../../../Utils/Common_Messages";
+
+import {
+  Email_regex,
+  Mobile_regex,
+  Name_regex,
+} from "../../../Utils/Common_regex";
 import { Add_Employee, GetEmployeeStrategy, GetEmployeeServices } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 
 const AddEmployee = () => {
@@ -28,6 +35,17 @@ const AddEmployee = () => {
   const [state, setstate] = useState([]);
   const [state1, setstate1] = useState([]);
 
+
+  const isValidEmail = (email) => {
+    return Email_regex(email);
+  };
+  const isValidContact = (mobile) => {
+    return Mobile_regex(mobile);
+  };
+
+  const isValidName = (mobile) => {
+    return Name_regex(mobile);
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -55,20 +73,27 @@ const AddEmployee = () => {
     validate: (values) => {
       let errors = {};
       if (!values.fullName) {
-        errors.fullName = "Enter Full Name";
+        errors.fullName = valid_err.FULLNAME_ERROR;
+      } else if(!isValidName(values.fullName)){
+        errors.fullName = valid_err.INVALID_ERROR
       }
       if (!values.email) {
-        errors.email = "Enter Email ID";
+        errors.email = valid_err.EMPTY_EMAIL_ERROR;
+      } else if (!isValidEmail(values.email)) {
+        errors.email = valid_err.INVALID_EMAIL_ERROR;
       }
       if (!values.userName) {
-        errors.userName = "Enter userName";
+        errors.userName = valid_err.USERNAME_ERROR;
       }
       if (!values.password) {
-        errors.password = "Enter Password";
+        errors.password = valid_err.PASSWORD_ERROR;
       }
       if (!values.phone) {
-        errors.phone = "Enter Phone Number";
+        errors.phone = valid_err.CONTACT_ERROR;
+      }else if (!isValidContact(values.phone)) {
+        errors.phone = valid_err.INVALID_CONTACT_ERROR;
       }
+ 
       if (values.Strategy) {
         if (!values.addemployee && !values.editemployee) {
           errors.addemployee = "select Add Client Also";

@@ -33855,7 +33855,7 @@ img {
     border: 1px solid #E5E5E5;
     display: inline-block;
     margin: 10px 1%;
-    font-family: 'Lato', Arial, sans-serif;
+    /* font-family: 'Lato', Arial, sans-serif; */
 }
 
 .plan-inner {
@@ -34313,10 +34313,13 @@ background-color: #ffefdd;
     margin: 0px 5px;
  }
  @media(max-width: 480px) {
-    .toggle-li
-    {
+    .list-btn .filter-list li {
+        padding: 0 5px 0px 0;
+    }
+    .toggle-li {
         display: block;
         width: 100%;
+        margin-bottom: 12px;
     }
    .serach-li
    {

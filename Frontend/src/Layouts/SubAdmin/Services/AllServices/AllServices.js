@@ -256,7 +256,7 @@ const ServicesList = () => {
                         <ExportToExcel
                           className="btn btn-primary "
                           apiData={ForGetCSV}
-                          fileName={'All Strategy'} />
+                          fileName={'All Service'} />
                       </div>
 
                     </div>

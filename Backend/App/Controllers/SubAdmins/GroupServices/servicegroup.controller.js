@@ -632,6 +632,10 @@ class GroupService {
       const { id } = req.body; // Assuming your ID is passed as 'id' in the request body
 
 
+      if (id == null || id=='') {
+        return res.send({ status: false, msg: 'Enter Valid Id', data: [] });
+      }
+
       // Convert the string ID to an ObjectId
       const objectId = new ObjectId(id);
 
@@ -640,7 +644,7 @@ class GroupService {
 
 
       if (groupServices_user.length != 0) {
-        return res.json({ status: false, msg: 'This group already assign', data: groupServices_user });
+        return res.send({ status: false, msg: 'This group already assign', data: groupServices_user });
       }
 
       const result = await serviceGroupName.deleteOne({ _id: objectId });
@@ -656,7 +660,7 @@ class GroupService {
       }
     } catch (error) {
 
-      return res.json({ status: false, msg: 'server error delete group service-', data: error });
+      return res.send({ status: false, msg: 'server error delete group service', data: error });
     }
   }
 

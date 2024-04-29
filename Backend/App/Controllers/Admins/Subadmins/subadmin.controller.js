@@ -5,7 +5,8 @@ const User_model = db.user;
 const Role_model = db.role;
 const SubAdminCompanyInfo = db.SubAdminCompanyInfo;
 const strategy_transaction = db.strategy_transaction;
-
+const { CommonEmail } = require("../../../Helpers/CommonEmail");
+const { firstOptPass } = require("../../../Helpers/Email_formate/first_login");
 
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
@@ -153,16 +154,34 @@ class Subadmin {
 
       await Subadmin_company.save();
 
-      return res.status(200).send({
+       res.status(200).send({
         status: true,
         msg: "Successfully added!",
         data: { UserId: savedUser.user_id },
       });
+
+
+      
+      var toEmail = Email;
+      var subjectEmail = "User ID and Password";
+      var email_data = {
+        FullName: FullName,
+        Email: Email,
+        Password: password,
+        // : subadmin_service_type == 1 ? "Trade wise" : subadmin_service_type == 2 ? "Strategy Wise" : "Trade wise"
+      };
+
+      var EmailData = await firstOptPass(email_data);
+      CommonEmail(toEmail, subjectEmail, EmailData);
     } catch (error) {
       console.error("Error:", error);
       return res.send({ msg: "Internal server error", error });
     }
   }
+
+
+
+
 
   // EDIT SUBADMIN
   async EditSubadmin(req, res) {
@@ -205,6 +224,10 @@ class Subadmin {
       res.send({ msg: "Error=>", error });
     }
   }
+
+
+
+
 
   async getallSubadmin(req, res) {
     try {

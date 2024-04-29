@@ -29,6 +29,7 @@ const DashBoard = () => {
     xaxis: {
       categories: [],
     },
+    colors: ["#FF5733", "#33FF57", "#3357FF"],
   });
 
   const [series, setSeries] = useState([
@@ -199,9 +200,7 @@ const DashBoard = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="card">
-                {/* <div className="col card-header">
-                  <h5 className="card-title">Subadmin Dashboard</h5>
-                </div> */}
+
               </div>
             </div>
 
@@ -229,16 +228,9 @@ const DashBoard = () => {
                                   <p>{data.count}</p>
                                 </div>
                               </div>
-                              <img src="/assets/img/category/report.png" className="w-25"/>
-                              {/* <span
-                                className={`dash-widget-icon ${data.progressBarClass}`}
-                              >
-                                <i
-                                  className={data.iconClass}
-                                  id="animated"
-                                ></i>
-                              </span> */}
-                              
+                              <img src="/assets/img/category/report.png" className="w-25" />
+
+
                             </div>
 
                             <div className="progress progress-sm mt-3">
@@ -275,7 +267,8 @@ const DashBoard = () => {
 
             <div className="row" data-aos="fade-left">
               <div className="row" data-aos="fade-left">
-                <div className="col-xl-8 d-flex">
+
+                <div className="col-xl-12 d-flex">
                   <div className="card flex-fill">
                     <div className="card-header">
                       <div className="d-flex justify-content-between align-items-center">
@@ -358,7 +351,19 @@ const DashBoard = () => {
                             <div className="mixed-chart">
                               <Chart
                                 colors={colors}
-                                options={options}
+                                options={{
+                                  ...options,
+
+                                  theme: {
+                                    monochrome: {
+                                      enabled: true,
+                                      color: '#255aee',
+                                      shadeTo: 'light',
+                                      shadeIntensity: 0.65
+                                    }
+                                  }
+
+                                }}
                                 series={series}
                                 type="bar"
                                 width="100%"
@@ -375,7 +380,10 @@ const DashBoard = () => {
                   </div>
                 </div>
 
-                <div className="col-xl-4 d-flex">
+
+
+
+                {/* <div className="col-xl-4 d-flex">
                   <div className="card flex-fill">
                     <div className="card-header">
                       <div className="d-flex justify-content-between align-items-center">
@@ -415,8 +423,7 @@ const DashBoard = () => {
                             <div className="mt-4">
                               <p className="mb-2 text-truncate">
                                 
-                                {/* <i className="fas fa-circle text-primary me-1" /> */}
-                                {/* <i className="fa-light fa-chart-simple"></i> */}
+                          
                                 Invoiced
                               </p>
                               <h5>$2,132</h5>
@@ -450,14 +457,16 @@ const DashBoard = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
+
+
               </div>
             </div>
           </div >
         </div >
       </div >
-      </div>
-      );
+    </div>
+  );
 };
 
-      export default DashBoard;
+export default DashBoard;
