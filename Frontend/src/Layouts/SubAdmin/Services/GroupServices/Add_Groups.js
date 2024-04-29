@@ -8,6 +8,7 @@ import { Trash2 } from 'lucide-react';
 import AddForm from '../../../../Components/ExtraComponents/forms/AddFrom1'
 import { Get_All_Catagory, AddGrpservices, Service_By_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice'
 import Content from '../../../../Components/Dashboard/Content/Content1'
+import Swal from "sweetalert2";
 
 
 
@@ -44,7 +45,7 @@ const AddStrategy = () => {
     const [selectAllFiltered, setSelectAllFiltered] = useState(false);
 
 
-
+ 
 
 
 
@@ -139,9 +140,24 @@ const AddStrategy = () => {
 
 
 
+ 
     // //  For Remove Service From Select And Table
-    const remoeveService = (id) => {
-        if (window.confirm("Do you want to delete")) {
+    const remoeveService = async(id) => {
+
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          });
+
+        
+        if(result.isConfirmed){
+
+        
             let test = selectedServices.filter((item) => {
                 return item.service_id !== id
             })
@@ -230,20 +246,31 @@ const AddStrategy = () => {
                 errors.selectedValue = "Please select segment ";
             }
 
-
-
             return errors;
         },
         onSubmit: async (values) => {
-
-
             let checkValid = true
+            if(selectedServices.length==0){
+                Swal.fire({
+                    title: "Error!",
+                    text: "Please Select atleast one service",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true,
+                })
+                return 
+            }
+            else{
             selectedServices && selectedServices.map((item) => {
-
-
                 if (item.lotsize !== 1) {
                     if ((item.group_qty) % (item.lotsize) !== 0) {
-                        alert(`Please Enter Valid Lot Size Inside ${item.name}`)
+                        Swal.fire({
+                            title: "Error!",
+                            text: `Please Enter Valid Lot Size Inside ${item.name}`,
+                            icon: "error",
+                            timer: 1500,
+                            timerProgressBar: true,
+                        })
                         checkValid = false
                         return
                     }
@@ -257,21 +284,30 @@ const AddStrategy = () => {
                 await dispatch(AddGrpservices({
                     groupdetails: { name: groupName, description: groupDescription },
                     services_id: selectedServices,
-
                     maker_id: user_id
                 })).then((response) => {
-
                     if (response.payload.status) {
-                        toast.success(response.payload.msg);
-                        setTimeout(() => {
-                            navigate("/subadmin/group-service")
-                        }, 1000);
-                    } else {
-                        toast.error(response.payload.msg);
+                        Swal.fire({
+                            title: "Create Successful!",
+                            text: response.payload.msg,
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true,
+                        }).then(() => {
+                            navigate("/subadmin/group-service");
+                        });
 
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: response.payload.msg,
+                            icon: "error",
+                            timer: 1500,
+                            timerProgressBar: true,
+                        })
                     }
                 })
-
+            }
             }
         }
     });
@@ -300,6 +336,7 @@ const AddStrategy = () => {
                 }
             });
     };
+
 
 
 
@@ -364,7 +401,6 @@ const AddStrategy = () => {
                 <AddForm fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))} formik={formik} btn_name="Add Group" title='addstrategy'
                     additional_field={
                         <>
-
                             <div className='row '>
                                 <div className='col-lg-6 col-sm-6 mb-4'>
                                     <div className="form-group mx-2">
@@ -382,12 +418,9 @@ const AddStrategy = () => {
                                                         prifix_key + '_' + groupName
                                                 }
                                             />
-
                                             {groupName ? '' :
                                                 <div style={{ color: 'red' }}>{formik.errors.groupName}</div>
                                             }
-
-
                                         </div>
                                     </div>
 
@@ -408,12 +441,7 @@ const AddStrategy = () => {
                                             {groupDescription ? '' :
                                                 <div style={{ color: 'red' }}>{formik.errors.groupDescription}</div>
                                             }
-
-
-
                                         </div>
-
-
                                     </div>
                                 </div>
 
@@ -463,7 +491,6 @@ const AddStrategy = () => {
                                     <div className="mb-3 row">
                                         <div className="col-lg-12">
                                             <div className="row mt-4">
-
                                                 <>
                                                     <div className="col-md-4 mb-2">
                                                         <div className="form-check">
@@ -496,23 +523,15 @@ const AddStrategy = () => {
                                                             </div>
                                                         </div>
                                                     ))}
-
                                                 </>
-
                                             </div>
                                         </div>
                                     </div>
                                 )}
                             </div>
-
-
-
                         </>
                     }
                 />
-
-
-
                 < ToastButton />
             </Content >
         </>
