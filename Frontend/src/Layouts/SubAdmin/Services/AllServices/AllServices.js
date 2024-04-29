@@ -179,15 +179,19 @@ const ServicesList = () => {
   return (
     <>
       <div className="content container-fluid" data-aos="fade-left">
-        <div className="page-header">
-          <div className="content-page-header">
-            <h5>All Services</h5>
-            <div className="page-content">
+        <div className="card">
+          <div className="card-header">
+            <div className="row align-items-center">
+              <div className="col">
+              <h5 className="card-title mb-0"><i class="pe-2 fas fa-list"></i>All Services</h5>
+
+              </div>
+              <div className="col-auto">
               <div className="list-btn">
-                <ul className="filter-list">
-                  <li className="mt-3">
+                <ul className="filter-list mb-0">
+                  <li className="">
                     <p
-                      className="btn-filters"
+                      className="mb-0 btn-filters"
 
                       data-bs-toggle="tooltip"
                       data-bs-placement="bottom"
@@ -199,7 +203,7 @@ const ServicesList = () => {
                       </span>
                     </p>
                   </li>
-                  <li>
+                  <li className="serach-li">
                     <div className="input-group input-block">
                       <input
                         type="text"
@@ -216,8 +220,8 @@ const ServicesList = () => {
                   <li>
                     <div className="d-flex">
                       <div className="col-lg-12">
-                        <div className="mb-3">
-                          <div className="col-lg-12 mt-3">
+                        <div className="">
+                          <div className="col-lg-12 ">
                             <select
                               className="default-select wide form-control p-2"
                               id="validationCustom05"
@@ -252,21 +256,26 @@ const ServicesList = () => {
                       title="Download"
                     >
 
-                      <div className="card-body">
+                    
                         <ExportToExcel
                           className="btn btn-primary "
                           apiData={ForGetCSV}
                           fileName={'All Strategy'} />
-                      </div>
+                     
 
                     </div>
                   </li>
 
                 </ul>
               </div>
+              </div>
             </div>
-          </div>
-        </div>
+            </div>
+            <div className="card-body">
+            
+            
+         
+        
 
 
         <FullDataTable
@@ -276,7 +285,8 @@ const ServicesList = () => {
 
         />
       </div>
-
+      </div>
+      </div>
 
        
     </>

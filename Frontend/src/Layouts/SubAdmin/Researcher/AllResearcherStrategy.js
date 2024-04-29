@@ -54,12 +54,12 @@ const AllResearcherStrategy = () => {
         <>
             <div className="content container-fluid">
                 {/* PAGE HEADER */}
-                <div className="page-header">
-                    <div className="content-page-header mb-0">
-                        <h5>Researcher Strategy</h5>  
+                <div className="card">
+                    <div className="card-header mb-0">
+                        <h5 className='card-title mb-0'>Researcher Strategy</h5>  
                     </div>
-                </div>
-
+               
+<div className='card-body'>
                 {/* Cards */}
                 {!allStrategy.loading ? (
                     <div className="content container-fluid pb-0">
@@ -151,10 +151,10 @@ const AllResearcherStrategy = () => {
                         </li>
                     </ul>
                 </nav>
-
+                </div>
 
             </div>
-
+            </div>
 
 
         </>

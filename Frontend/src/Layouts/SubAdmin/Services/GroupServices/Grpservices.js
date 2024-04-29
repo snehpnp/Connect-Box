@@ -360,7 +360,7 @@ function GroupStrategy() {
             <div className="content container-fluid">
                 <div className="card">
                     <div className="card-header">
-                    <h5 className="card-title mb-0">Group Services</h5>
+                    <h5 className="card-title mb-0"><i class="pe-2 fa-solid fa-gears" ></i>Group Services</h5>
                     </div>
                     <div className="card-body">
                         

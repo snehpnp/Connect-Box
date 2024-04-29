@@ -471,15 +471,17 @@ function Strategy() {
                 {/* PAGE HEADER */}
                 <div className="card">
                     <div className="card-header ">
-                        <h5 className="card-title mb-0">Strategies</h5>
-                        </div>
-                        <div className="card-body">
-                        <div className="page-content">
-                            <div className="list-btn">
-                                <ul className="filter-list justify-content-lg-end">
-                                    <li className="mt-3">
+                        <div className="row align-items-center">
+                              <div className="col">
+                              <h5 className="card-title mb-0"><i className=" pe-2 fas fa-chart-line"></i>Strategies</h5>
+
+                              </div>
+                              <div className="col-auto">
+                              <div className="list-btn">
+                                <ul className="mb-0 filter-list justify-content-lg-end">
+                                    <li className="">
                                         <p
-                                            className="btn-filters"
+                                            className="mb-0 btn-filters"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Refresh"
@@ -490,7 +492,7 @@ function Strategy() {
                                             </span>
                                         </p>
                                     </li>
-                                    <li>
+                                    <li className="serach-li">
                                         <div className="input-group input-block">
                                             <input
                                                 type="text"
@@ -536,6 +538,12 @@ function Strategy() {
                                     </li>
                                 </ul>
                             </div>
+                              </div>
+                        </div>
+                        </div>
+                        <div className="card-body">
+                     <div className="page-content">
+                         
                         </div>
                    
 
