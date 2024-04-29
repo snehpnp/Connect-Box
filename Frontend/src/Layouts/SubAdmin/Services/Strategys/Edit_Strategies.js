@@ -68,6 +68,17 @@ useEffect(() => {
     getservice();
 }, []);
 
+
+
+
+
+
+
+
+
+
+console.log("-=====",allStrategy )
+
   const fields = [
     {
       name: "strategy_name",
@@ -84,7 +95,7 @@ useEffect(() => {
       type: "text",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      // disable: allStrategy.researcher_id !== undefined && allStrategy.researcher_id == null ? true : false,
     },
     {
       name: "strategy_demo_days",
@@ -92,7 +103,7 @@ useEffect(() => {
       type: "text3",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      // disable: allStrategy.researcher_id !== undefined && allStrategy.researcher_id == null ? true : false,
     },
     {
       name: "strategy_segment",
@@ -104,7 +115,7 @@ useEffect(() => {
       })),
       label_size: 12,
       col_size: 6,
-      disable: false,
+      // disable: allStrategy.researcher_id !== undefined && allStrategy.researcher_id == null ? true : false,
     },
     {
       name: "strategy_indicator",
@@ -112,7 +123,7 @@ useEffect(() => {
       type: "file1",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      // disable: allStrategy.researcher_id !== undefined && allStrategy.researcher_id == null ? true : false,
     },
     {
       name: "strategy_tester",
@@ -120,7 +131,7 @@ useEffect(() => {
       type: "file1",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      // disable: allStrategy !== undefined && allStrategy.researcher_id == null ? true : false,
     },
     {
       name: "strategy_image",
@@ -128,7 +139,7 @@ useEffect(() => {
       type: "file1",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      // disable: allStrategy !== undefined && allStrategy.researcher_id == null ? true : false,
     },
     {
       name: "max_trade",
@@ -136,7 +147,7 @@ useEffect(() => {
       type: "text3",
       label_size: 12,
       col_size: 6,
-      disable: false,
+      // disable: allStrategy !== undefined && allStrategy.researcher_id == null ? true : false,
     },
     {
       name: "strategy_amount_month",
@@ -180,6 +191,14 @@ useEffect(() => {
     },
 
   ];
+
+
+
+
+
+
+
+
 
   const formik = useFormik({
     initialValues: {
@@ -287,6 +306,18 @@ useEffect(() => {
       formik.setFieldValue("strategy_demo_days", allStrategy.strategy_demo_days);
     }
   }, [allStrategy]);
+
+
+
+
+
+
+
+
+
+
+
+
 
   return (
     <AddForm
