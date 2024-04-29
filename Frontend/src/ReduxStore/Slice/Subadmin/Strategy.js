@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetClientsOrderBy_Prefix,GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG,getOrders_data,EmployeeData,AddEmployeeBySub,DeleteEmployee,UpdateEmployee,get_Employee_Id,get_Employee_Status,GetAllStrategyFor_Employee,GetAllServicesForEmployee} from "../../../Services/Subadmin/Strategy.service";
+import { GetClientsOrderBy_Prefix,GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG,getOrders_data,EmployeeData,AddEmployeeBySub,DeleteEmployee,UpdateEmployee,get_Employee_Id,get_Employee_Status,GetAllStrategyFor_Employee,GetAllServicesForEmployee,StrategyPurchaseBySubadmin,strategyOrderUpdate} from "../../../Services/Subadmin/Strategy.service";
 
 
 export const GetEmployeeServices= createAsyncThunk(
@@ -204,6 +204,36 @@ export const DELETE_STRATEGY = createAsyncThunk("strategy/delete",
 
 
 
+export const Stg_by_Subadmin = createAsyncThunk("strategy/order/create",
+    async (data) => {
+        
+        try {
+            const res = await StrategyPurchaseBySubadmin(data);
+            
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+
+
+
+export const update_Stg_order = createAsyncThunk("strategy/order/update",
+    async (data) => {
+        
+        try {
+            const res = await strategyOrderUpdate(data);
+            
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+
 const StrategySlice = createSlice({
     name: "SystemSlice",
     initialState: {
@@ -288,6 +318,12 @@ const StrategySlice = createSlice({
                 state.isLoading = false;
             })
             .addCase(GetEmployeeServices.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(Stg_by_Subadmin.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(update_Stg_order.fulfilled, (state, action) => {
                 state.isLoading = false;
             })
     },

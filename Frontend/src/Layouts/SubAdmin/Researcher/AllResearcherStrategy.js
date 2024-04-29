@@ -6,8 +6,12 @@ import Loader from '../../../Utils/Loader'
 import { Modal, Button, Form } from 'react-bootstrap';
 
 import { Get_All_Researcher_Strategy } from '../../../ReduxStore/Slice/Subadmin/AllResearcherStrategySlice'
+import { Stg_by_Subadmin, update_Stg_order } from '../../../ReduxStore/Slice/Subadmin/Strategy'
+import { loadScript } from "../../../Utils/payment";
+
 
 const AllResearcherStrategy = () => {
+    const userDetails = JSON.parse(localStorage.getItem("user_details"));
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -53,24 +57,96 @@ const AllResearcherStrategy = () => {
 
 
     // State for modal visibility and selected option
-    const [showModal, setShowModal] = useState(true);
+    const [showModal, setShowModal] = useState(false);
+    const [selectStrategy, setSelectStrategy] = useState({});
+
     const [selectedOption, setSelectedOption] = useState('');
 
-    // Function to handle modal close
-    const handleClose = () => setShowModal(false);
-
-    // Function to handle option selection
     const handleOptionChange = (e) => setSelectedOption(e.target.value);
 
-    // Function to handle form submission
-    const BuyStrategy = () => {
-        console.log("Selected option:", selectedOption);
-        // Call your purchase function or perform any other action here
-        setShowModal(true); // Close modal after submission
-    };
+    const handleClose = () => setShowModal(false);
 
-    const handleSubmit = () => {
-        console.log("RUNNNNNNNNNNNNNNNN")
+    const handleSubmit = async () => {
+        console.log("RUNNNNNNNNNNNNNNNN", selectStrategy)
+
+        console.log("selectedOption", selectedOption)
+
+
+        var req = {
+            user_id: userDetails.user_id,
+            admin_id: selectStrategy.maker_id,
+            strategy_name: selectStrategy.strategy_name,
+            strategy_id: selectStrategy._id,
+            amount: selectedOption == "monthlyPlan" ? Number(selectStrategy.monthly_charges) * 100 : Number(selectStrategy.security_fund) * 100 ,
+            type: selectedOption,
+            currency: "INR",
+            receipt: "Buy Subscription " + selectedOption == "monthlyPlan" ? selectStrategy.monthly_charges : selectStrategy.strategy_percentage
+        }
+
+
+        await dispatch(
+            Stg_by_Subadmin(req)
+        )
+            .unwrap()
+            .then(async (response) => {
+
+                console.log("response ", response)
+
+                if (response.status) {
+                    await loadScript('https://checkout.razorpay.com/v1/checkout.js');
+
+                    const options = {
+                        key: response.data1.key,
+                        amount: Number(response.data.amount) * 100,
+                        currency: 'INR',
+                        name: response.data1.name,
+                        description: response.data.receipt,
+                        order_id: response.data.order_id,
+
+
+                        handler: async function (response1) {
+
+
+                            var req = {
+                                razorpay_order_id: response1.razorpay_order_id,
+                                razorpay_payment_id: response1.razorpay_payment_id,
+                                razorpay_signature: response1.razorpay_signature,
+                                id: response.data._id,
+                                user_id: response.data.user_id,
+                                strategy_id: response.data.strategy_id,
+                                order_status: "Success"
+                            }
+
+                            console.log("req ===>", req)
+
+                            await dispatch(
+                                update_Stg_order(req)
+                            )
+                                .unwrap()
+                                .then(async (response_order) => {
+                                    if (response_order.status) {
+                                        window.location.reload();
+                                    }
+                                })
+                        },
+                        prefill: {
+
+                        },
+                        theme: {
+                            color: '#F37254',
+                        },
+                    };
+
+                    const rzp = new window.Razorpay(options);
+                    rzp.open();
+                } else {
+
+                }
+            });
+
+
+
+
     }
 
     return (
@@ -142,7 +218,7 @@ const AllResearcherStrategy = () => {
 
 
                                         <div className="d-flex justify-content-center package-edit">
-                                            <button type='submit' className='btn btn-primary' onClick={(e) => BuyStrategy(stg)}>BUY</button>
+                                            <button type='submit' className='btn btn-primary' onClick={(e) => { setShowModal(true); setSelectStrategy(stg) }}>BUY</button>
 
                                         </div>
                                     </div>
@@ -203,15 +279,16 @@ const AllResearcherStrategy = () => {
                                             name="plan"
                                             id="monthlyPlan"
                                             label="Monthly Plan"
-                                            value="Plan A"
+                                            value="monthlyPlan"
                                             onChange={handleOptionChange}
+                                            defaultChecked // Add this attribute for default selection
                                         />
                                         <Form.Check
                                             type="radio"
                                             name="plan"
                                             id="percentageWise"
                                             label="% Wise"
-                                            value="Plan B"
+                                            value="% Wise"
                                             onChange={handleOptionChange}
                                         />
                                     </Form.Group>
@@ -222,6 +299,7 @@ const AllResearcherStrategy = () => {
                                 <Button variant="primary" onClick={handleSubmit}>Submit</Button>
                             </Modal.Footer>
                         </Modal>
+
 
                     )
                 }

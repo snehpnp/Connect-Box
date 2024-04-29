@@ -697,6 +697,8 @@ class strategy {
           strategy_percentage:"$strategies.strategy_percentage",
           security_fund:"$strategies.security_fund",
           monthly_charges:"$strategies.monthly_charges",
+          maker_id:"$strategies.maker_id",
+
 
 
 
