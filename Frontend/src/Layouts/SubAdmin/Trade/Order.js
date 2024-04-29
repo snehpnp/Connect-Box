@@ -291,15 +291,10 @@ export default function AllEmployees() {
                                                         aria-describedby="search-addon"
                                                         onChange={(e) => SetInputSearch(e.target.value || '')}
                                                         value={inputSearch}
-
                                                     />
-
                                                 </div>
                                             </li>
-
-
                                             <li>
-
                                                 <select id="strategySelect" className="form-select btn btn-primary">
                                                     <option value="">Select Strategy</option>
                                                     <option value="1">Option 1</option>
@@ -310,8 +305,6 @@ export default function AllEmployees() {
                                                 </select>
 
                                             </li>
-
-
                                             <li>
                                                 <div
                                                     className="dropdown dropdown-action"
@@ -324,19 +317,16 @@ export default function AllEmployees() {
                                                             <ExportToExcel
                                                                 className="btn btn-primary "
                                                                 apiData={ForGetCSV}
-                                                                fileName={'All Strategy'} />
+                                                                fileName={'Trade History'} />
                                                         </div>
                                                     </li>
                                                 </div>
                                             </li>
-
-
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
 
                         <FullDataTable
                             styles={styles}
