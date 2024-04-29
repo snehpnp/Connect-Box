@@ -672,7 +672,7 @@ class strategy {
       },
       {
         $lookup: {
-          from: "strategies",
+          from: "researcher_strategies",
           localField: "_id",
           foreignField: "maker_id",
           as: "strategies"
