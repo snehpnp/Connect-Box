@@ -83,6 +83,10 @@ const MakecallABRsSchema = Schema({
         type: String,
         default: null
     },
+    NoTradeTime: {
+        type: String,
+        default: null
+    },
     sl_status: {
         type: String,
         default: null
