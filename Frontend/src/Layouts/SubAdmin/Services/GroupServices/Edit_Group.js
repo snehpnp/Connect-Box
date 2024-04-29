@@ -2,20 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { useFormik } from 'formik';
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import toast from 'react-hot-toast';
 import ToastButton from "../../../../Components/ExtraComponents/Alert_Toast";
 import { Trash2 } from 'lucide-react';
 import AddForm from '../../../../Components/ExtraComponents/forms/AddFrom1'
 import { Get_All_Catagory, Service_By_Catagory, Get_Group_Data, Edit_Group_Service } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice'
 import Content from '../../../../Components/Dashboard/Content/Content1'
-
-
-
+import Swal from "sweetalert2";
 
 
 const AddStrategy = () => {
     const { id } = useParams();
-
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [state, setstate] = useState([]);
@@ -23,7 +19,6 @@ const AddStrategy = () => {
     const [selectedValue, setSelectedValue] = useState('')
     const [groupName, setGroupName] = useState('')
     const [groupDescription, setGroupDescription] = useState('')
-    const [selectSegment, setSelectSegment] = useState('')
     const [selectedServices, setSelectedServices] = useState([]);
     const [selectedServices1, setSelectedServices1] = useState([]);
 
@@ -144,8 +139,18 @@ const AddStrategy = () => {
 
 
     // //  For Remove Service From Select And Table
-    const remoeveService = (id) => {
-        if (window.confirm("Do you want to delete")) {
+    const remoeveService = async (id) => {
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        });
+
+        if (result.isConfirmed) {
             let test = selectedServices.filter((item) => {
                 return item.service_id !== id
             })
@@ -156,6 +161,7 @@ const AddStrategy = () => {
 
             setSelectedServices(test)
         }
+
     }
 
 
@@ -230,49 +236,71 @@ const AddStrategy = () => {
             if (!groupDescription) {
                 errors.groupDescription = "Group groupDescription is required";
             }
-            // if (!selectedValue) {
-            //     errors.selectedValue = "Please select segment ";
-            // }
+
 
             return errors;
         },
         onSubmit: async (values) => {
 
-
             let checkValid = true
-            selectedServices && selectedServices.map((item) => {
-                if (item.lotsize !== 1) {
-                    if ((item.group_qty) % (item.lotsize) !== 0) {
-                        alert(`Please Enter Valid Lot Size Inside ${item.name}`)
-                        checkValid = false
+            if (selectedServices.length == 0) {
+                Swal.fire({
+                    title: "Error!",
+                    text: "Please Select atleast one service",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true,
+                })
+                return
+            }
+            else {
+                selectedServices && selectedServices.map((item) => {
+                    if (item.lotsize !== 1) {
+                        if ((item.group_qty) % (item.lotsize) !== 0) {
+                            Swal.fire({
+                                title: "Error!",
+                                text: `Please Enter Valid Lot Size Inside ${item.name}`,
+                                icon: "error",
+                                timer: 1500,
+                                timerProgressBar: true,
+                            })
+
+                            checkValid = false
+                            return
+                        }
                         return
                     }
                     return
-                }
-                return
-            })
-
-
-            if (checkValid) {
-                await dispatch(Edit_Group_Service({
-                    groupdetails: { name: groupName, description: groupDescription, id: id },
-                    services_id: selectedServices,
-                    maker_id: user_id
-                })).then((response) => {
-
-
-
-              if (response.payload.status) {
-                        toast.success(response.payload.msg);
-                        setTimeout(() => {
-                            navigate("/subadmin/group-service")
-                        }, 1000);
-                    } else {
-                        toast.error(response.payload.msg);
-
-                    }
                 })
 
+
+                if (checkValid) {
+                    await dispatch(Edit_Group_Service({
+                        groupdetails: { name: groupName, description: groupDescription, id: id },
+                        services_id: selectedServices,
+                        maker_id: user_id
+                    })).then((response) => {
+                        if (response.payload.status) {
+                            Swal.fire({
+                                title: "Create Successful!",
+                                text: response.payload.msg,
+                                icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true,
+                            }).then(() => {
+                                navigate("/subadmin/group-service");
+                            });
+                        } else {
+                            Swal.fire({
+                                title: "Error",
+                                text: response.payload.msg,
+                                icon: "error",
+                                timer: 1500,
+                                timerProgressBar: true,
+                            })
+                        }
+                    })
+                }
             }
         }
     });
@@ -321,12 +349,12 @@ const AddStrategy = () => {
                         loading: true,
                         data: response.data
                     })
-                setGroupDescription(response.data && response.data.group_name[0].description)
+                    setGroupDescription(response.data && response.data.group_name[0].description)
                     setGroupName(response.data && response.data.group_name[0].name)
                     setSelectedServices1(response.data && response.data.Service_name_get)
 
                     response.data && response.data.Service_name_get.map((item) => {
-            selectedServices.push({
+                        selectedServices.push({
                             service_id: item.ServiceResult._id,
                             // ServiceResult_id: item.ServiceResult._id,
                             lotsize: item.ServiceResult.lotsize,
