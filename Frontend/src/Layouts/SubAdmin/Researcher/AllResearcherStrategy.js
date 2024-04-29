@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 import { IndianRupee } from 'lucide-react';
 import Loader from '../../../Utils/Loader'
-
+import { Modal, Button, Form } from 'react-bootstrap';
 
 import { Get_All_Researcher_Strategy } from '../../../ReduxStore/Slice/Subadmin/AllResearcherStrategySlice'
 
@@ -12,11 +12,13 @@ const AllResearcherStrategy = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [refresh, setrefresh] = useState(false)
+    const [openModal, setopenModal] = useState(false)
+
     const [allStrategy, setAllStrategy] = useState({
         loading: true,
         data: []
     })
-    
+
 
     const getAllStrategy = async () => {
         await dispatch(Get_All_Researcher_Strategy()).unwrap()
@@ -48,7 +50,28 @@ const AllResearcherStrategy = () => {
 
 
 
- 
+
+
+    // State for modal visibility and selected option
+    const [showModal, setShowModal] = useState(true);
+    const [selectedOption, setSelectedOption] = useState('');
+
+    // Function to handle modal close
+    const handleClose = () => setShowModal(false);
+
+    // Function to handle option selection
+    const handleOptionChange = (e) => setSelectedOption(e.target.value);
+
+    // Function to handle form submission
+    const BuyStrategy = () => {
+        console.log("Selected option:", selectedOption);
+        // Call your purchase function or perform any other action here
+        setShowModal(true); // Close modal after submission
+    };
+
+    const handleSubmit = () => {
+        console.log("RUNNNNNNNNNNNNNNNN")
+    }
 
     return (
         <>
@@ -56,7 +79,7 @@ const AllResearcherStrategy = () => {
                 {/* PAGE HEADER */}
                 <div className="page-header">
                     <div className="content-page-header mb-0">
-                        <h5>Researcher Strategy</h5>  
+                        <h5>Researcher Strategy</h5>
                     </div>
                 </div>
 
@@ -74,7 +97,7 @@ const AllResearcherStrategy = () => {
                                                     <h2 className="my-2">{stg.strategy_name}</h2>
                                                     <h6>create by : {stg.UserName}</h6>
                                                     <h6>strategy description : {stg.strategy_description}</h6>
-                                            
+
 
                                                 </div>
                                                 <span className="icon-frame d-flex align-items-center justify-content-center">
@@ -101,26 +124,26 @@ const AllResearcherStrategy = () => {
                                             <h6>Strategy percentage:</h6>
                                             <h6>{stg.strategy_percentage}</h6>
                                         </div>
-                                         
+
 
                                         <div className='d-flex justify-content-between'>
                                             <h6>Monthly Charges:</h6>
                                             <h6>{stg.monthly_charges}</h6>
                                         </div>
-                                         
+
                                         <div className='d-flex justify-content-between'>
                                             <h6>Security Fund:</h6>
                                             <h6>{stg.security_fund}</h6>
                                         </div>
-                                         
+
 
 
 
 
 
                                         <div className="d-flex justify-content-center package-edit">
-                                            <button type='submit' className='btn btn-primary'>BUY</button>
-  
+                                            <button type='submit' className='btn btn-primary' onClick={(e) => BuyStrategy(stg)}>BUY</button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -161,6 +184,48 @@ const AllResearcherStrategy = () => {
                         </li>
                     </ul>
                 </nav>
+
+
+
+
+
+                {
+                    showModal && (
+                        <Modal show={showModal} onHide={handleClose} centered>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Select Plan</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <Form>
+                                    <Form.Group controlId="formPlan">
+                                        <Form.Check
+                                            type="radio"
+                                            name="plan"
+                                            id="monthlyPlan"
+                                            label="Monthly Plan"
+                                            value="Plan A"
+                                            onChange={handleOptionChange}
+                                        />
+                                        <Form.Check
+                                            type="radio"
+                                            name="plan"
+                                            id="percentageWise"
+                                            label="% Wise"
+                                            value="Plan B"
+                                            onChange={handleOptionChange}
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={handleClose}>Close</Button>
+                                <Button variant="primary" onClick={handleSubmit}>Submit</Button>
+                            </Modal.Footer>
+                        </Modal>
+
+                    )
+                }
+
 
 
             </div>
