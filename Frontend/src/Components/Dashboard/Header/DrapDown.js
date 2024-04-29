@@ -326,12 +326,12 @@ const DropDown = () => {
                                             <i class="fa-solid fa-user p-2"></i>Profile
                                         </Link>
                                     </li>
-                                    {/* {Role == "ADMIN" || Role === "SUBADMIN" ?
+                                    {Role == "ADMIN" || Role === "SUBADMIN" ?
                                         <li>
                                             <Link className="dropdown-item dev" to={Role === "ADMIN" ? "/admin/system" : "/subadmin/system"}>
                                                 <i class="fa-solid fa-gear p-2"></i> System
                                             </Link>
-                                        </li> : ''} */}
+                                        </li> : ''}
                                     <li onClick={() => SettingPage()}>
                                         <Link className="dropdown-item dev" to="/setting">
                                             <i class="fa-solid fa-gear p-2"></i>Settings

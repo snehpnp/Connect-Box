@@ -233,9 +233,7 @@ const AddClient = () => {
       if (!values.username) {
         errors.username = valid_err.USERNAME_ERROR;
       }
-      if (!values.password) {
-        errors.password = valid_err.PASSWORD_ERROR;
-      }
+   
       if (!values.phone) {
         errors.phone = valid_err.CONTACT_ERROR;
       } else if (!isValidContact(values.phone)) {
