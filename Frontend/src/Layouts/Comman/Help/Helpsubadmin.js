@@ -148,25 +148,25 @@ const Helpsubadmin = () => {
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value || '')}</div>,
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 190,
-      renderCell: (params) => (
-        <div>
-          <IconButton
-            aria-label="delete"
-            size="small"
-            onClick={() => {
-              deletesubadmindata(params.row._id);
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </div>
-      ),
-    },
+    }
+    // {
+    //   field: "actions",
+    //   headerName: "Actions",
+    //   width: 190,
+    //   renderCell: (params) => (
+    //     <div>
+    //       <IconButton
+    //         aria-label="delete"
+    //         size="small"
+    //         onClick={() => {
+    //           deletesubadmindata(params.row._id);
+    //         }}
+    //       >
+    //         <DeleteIcon />
+    //       </IconButton>
+    //     </div>
+    //   ),
+    // },
   ];
 
 
