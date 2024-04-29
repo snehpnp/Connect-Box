@@ -279,8 +279,9 @@ export default function AllEmployees() {
                                                         </span>
                                                     </p>
                                                 </li>
-                                                <li>
+                                                <li className='serach-li'>
                                                     <div className="input-group input-block">
+
                                                         <input
                                                             type="text"
                                                             className="form-control"
@@ -289,86 +290,61 @@ export default function AllEmployees() {
                                                             aria-describedby="search-addon"
                                                             onChange={(e) => SetInputSearch(e.target.value || '')}
                                                             value={inputSearch}
-                                                        />
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <select id="strategySelect" className="form-select btn btn-primary">
-                                                        <option value="">Select Strategy</option>
-                                                        <option value="1">Option 1</option>
-                                                        <option value="2">Option 2</option>
-                                                        <option value="3">Option 3</option>
-                                                        <option value="4">Option 4</option>
-                                                        <option value="5">Option 5</option>
-                                                    </select>
 
+                                                        />
+
+                                                    </div>
                                                 </li>
                                                 <li>
-                                                    <div
-                                                        className="dropdown dropdown-action"
-                                                        data-bs-toggle="tooltip"
-                                                        data-bs-placement="bottom"
-                                                        title="Download"
-                                                    >
-                                                        <li>
-                                                            <div className="card-body">
-                                                                <ExportToExcel
-                                                                    className="btn btn-primary "
-                                                                    apiData={ForGetCSV}
-                                                                    fileName={'Trade History'} />
-                                                            </div>
-                                                        </li>
-                                                    </div>
+
+                                                    <ExportToExcel
+                                                        className="btn btn-primary "
+                                                        apiData={ForGetCSV}
+                                                        fileName={'All Strategy'} />
+
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div className="card-body">
-                                    <div className="row ">
-                                        <div className="input-block col-lg-2 mt-3 mb-3">
-                                            <label>From Date</label>
-                                            <input
-                                                type="date"
-                                                className="form-control"
-                                                placeholder="Search..."
-                                                aria-label="Search"
-                                                aria-describedby="search-addon"
-                                                onChange={(e) => SetInputSearch(e.target.value || '')}
-                                                value={inputSearch}
-                                            />
-                                        </div>
-                                        <div className="input-block col-lg-2 mt-3 mb-3">
-                                            <label>To Date</label>
-                                            <input
-                                                type="date"
-                                                className="form-control"
-                                                placeholder="Search..."
-                                                aria-label="Search"
-                                                aria-describedby="search-addon"
-                                                onChange={(e) => SetInputSearch(e.target.value || '')}
-                                                value={inputSearch}
-                                            />
-                                        </div>
-                                    </div>
-
-
-                                    <FullDataTable
-                                        styles={styles}
-                                        label={label}
-                                        columns={columns}
-                                        rows={tableData.data}
-                                    />
-                                </div>
                             </div>
 
-                            <FullDataTable
-                                styles={styles}
-                                label={label}
-                                columns={columns}
-                                rows={tableData.data}
-                            />
+                            <div className="card-body">
+                                <div className="row ">
+                                    <div className="input-block col-lg-2 mt-3 mb-3">
+                                        <label>From Date</label>
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            placeholder="Search..."
+                                            aria-label="Search"
+                                            aria-describedby="search-addon"
+                                            onChange={(e) => SetInputSearch(e.target.value || '')}
+                                            value={inputSearch}
+                                        />
+                                    </div>
+                                    <div className="input-block col-lg-2 mt-3 mb-3">
+                                        <label>To Date</label>
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            placeholder="Search..."
+                                            aria-label="Search"
+                                            aria-describedby="search-addon"
+                                            onChange={(e) => SetInputSearch(e.target.value || '')}
+                                            value={inputSearch}
+                                        />
+                                    </div>
+                                </div>
+
+
+                                <FullDataTable
+                                    styles={styles}
+                                    label={label}
+                                    columns={columns}
+                                    rows={tableData.data}
+                                />
+                            </div>
                         </div>
                     </div>
                 </>
