@@ -33,13 +33,13 @@ const StockOutModal = ({ rowData, onClose }) => {
       // if (!values.email) {
       //   errors.email = "Please enter your email address.";
       // } else
-      if (!/^\S+@\S+\.\S+$/.test(values.email)) {
+      if (!/^\S+@\S+\.\S+$/.test(values.email || rowData.email)) {
         errors.email = "Please enter a valid email address.";
       }
       // if (!values.cc_mail) {
       //   errors.cc_mail = "Please enter your cc_mail address.";
       // } else 
-      if (!/^\S+@\S+\.\S+$/.test(values.cc_mail)) {
+      if (!/^\S+@\S+\.\S+$/.test(values.cc_mail || rowData.cc_mail)) {
         errors.cc_mail = "Please enter a valid cc_mail address.";
       }
 
@@ -47,7 +47,7 @@ const StockOutModal = ({ rowData, onClose }) => {
       // if (!values.bcc_mail) {
       //   errors.bcc_mail = "Please enter your bcc_mail address.";
       // } else 
-      if (!/^\S+@\S+\.\S+$/.test(values.bcc_mail)) {
+      if (!/^\S+@\S+\.\S+$/.test(values.bcc_mail || rowData.bcc_mail)) {
         errors.bcc_mail = "Please enter a valid bcc_mail address.";
       }
 
@@ -176,12 +176,12 @@ const StockOutModal = ({ rowData, onClose }) => {
     formik.setFieldValue("panel_name", rowData !== undefined && rowData.panel_name);
 
 
-    formik.setFieldValue("email", rowData !== undefined && rowData.email);
-    formik.setFieldValue("smtp_password", rowData !== undefined && rowData.smtp_password);
-    formik.setFieldValue("cc_mail", rowData !== undefined && rowData.cc_mail);
-    formik.setFieldValue("bcc_mail", rowData !== undefined && rowData.bcc_mail);
-    formik.setFieldValue("smtphost", rowData !== undefined && rowData.smtphost);
-    formik.setFieldValue("smtpport", rowData !== undefined && rowData.smtpport);
+    // formik.setFieldValue("email", rowData !== undefined && rowData.email);
+    // formik.setFieldValue("smtp_password", rowData !== undefined && rowData.smtp_password);
+    // formik.setFieldValue("cc_mail", rowData !== undefined && rowData.cc_mail);
+    // formik.setFieldValue("bcc_mail", rowData !== undefined && rowData.bcc_mail);
+    // formik.setFieldValue("smtphost", rowData !== undefined && rowData.smtphost);
+    // formik.setFieldValue("smtpport", rowData !== undefined && rowData.smtpport);
 
 
 
