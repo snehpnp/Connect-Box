@@ -24,7 +24,11 @@ let helpmessage = new mongoose.Schema({
 prifix_key :{
   type: String,
   
-}
+},
+createdAt: {
+  type: Date,
+  default: Date.now,
+},
 
 });
 
