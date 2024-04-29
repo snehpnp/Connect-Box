@@ -128,7 +128,6 @@ const Helpuser = () => {
   };
 
   // get user help data
-
   const getusertable = async () => {
     await dispatch(userdataforhelp({}))
       .unwrap()
@@ -148,7 +147,6 @@ const Helpuser = () => {
   }, []);
 
   //delete user help data
-
   const delteuserdata = async (userId) => {
     var data = { id: userId };
     await dispatch(deleteuserdata(data))
@@ -165,7 +163,6 @@ const Helpuser = () => {
   };
 
   // fetch data by using local storage
-
   useEffect(() => {
     const user = localStorage.getItem("user_details");
 
