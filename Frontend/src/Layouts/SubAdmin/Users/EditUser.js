@@ -11,6 +11,13 @@ import Loader from '../../../Utils/Loader';
 import { useDispatch } from "react-redux";
 import { useFormik } from 'formik';
 import Swal from 'sweetalert2';
+import * as valid_err from "../../../Utils/Common_Messages";
+
+import {
+  Email_regex,
+  Mobile_regex,
+  Name_regex,
+} from "../../../Utils/Common_regex";
 
 
 
@@ -49,6 +56,17 @@ const AddClient = () => {
     data: [],
   });
 
+
+  const isValidEmail = (email) => {
+    return Email_regex(email);
+  };
+  const isValidContact = (mobile) => {
+    return Mobile_regex(mobile);
+  };
+
+  const isValidName = (mobile) => {
+    return Name_regex(mobile);
+  };
 
 
   // 0 = 2 days 1= Demo 2 =Live
@@ -203,11 +221,22 @@ const AddClient = () => {
     validate: (values) => {
       let errors = {};
       if (!values.fullName) {
-        errors.fullName = "Full Name is required";
+        errors.fullName = valid_err.FULLNAME_ERROR;
+      } else if (!isValidName(values.fullName)) {
+        errors.fullName = valid_err.INVALID_ERROR
       }
-
+      if (!values.email) {
+        errors.email = valid_err.EMPTY_EMAIL_ERROR;
+      } else if (!isValidEmail(values.email)) {
+        errors.email = valid_err.INVALID_EMAIL_ERROR;
+      }
       if (!values.username) {
-        errors.username = "Username is required";
+        errors.username = valid_err.USERNAME_ERROR;
+      }
+      if (!values.phone) {
+        errors.phone = valid_err.CONTACT_ERROR;
+      } else if (!isValidContact(values.phone)) {
+        errors.phone = valid_err.INVALID_CONTACT_ERROR;
       }
       if (!values.broker) {
         errors.broker = "broker is required";
@@ -219,28 +248,12 @@ const AddClient = () => {
       if (values.broker == 0 && values.licence == 0) {
         errors.broker = "broker is required";
       }
-
-
       if (!values.licence) {
         errors.licence = "licence is required";
       }
-
-
-
       if (!values.groupservice) {
         errors.groupservice = "Username is required";
       }
-      if (!values.email) {
-        errors.email = "Please enter your email address.";
-      } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
-        errors.email = "Please enter a valid email address.";
-      }
-      if (!values.phone) {
-        errors.phone = "Please enter your phone number.";
-      } else if (!/^\d{10}$/.test(values.phone)) {
-        errors.phone = "Please enter a valid 10-digit phone number.";
-      }
-
       return errors;
     },
     onSubmit: async (values) => {
