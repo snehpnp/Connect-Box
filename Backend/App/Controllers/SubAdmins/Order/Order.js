@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 class SignalController {
+  
   async Signal_data(req, res) {
     try {
       const { subadminId } = req.body;

@@ -251,7 +251,7 @@ export default function AllEmployees() {
                                         <div className="list-btn">
                                             <ul className="filter-list mb-0">
 
-                                                <li className="toggle-li">
+                                                {/* <li className="toggle-li">
                                                     <div className="status-toggle pe-2" style={{ display: 'flex', alignItems: 'center' }}>
                                                         <span className={getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} >Trading Status</span>
                                                         <input
@@ -267,7 +267,7 @@ export default function AllEmployees() {
                                                         />
                                                         <label htmlFor="1" className="checktoggle checkbox-bg"></label>
                                                     </div>
-                                                </li>
+                                                </li> */}
 
 
                                                 <li className="">
