@@ -103,6 +103,16 @@ const AllResearcherStrategy = () => {
                                         </div>
                                          
 
+                                        <div className='d-flex justify-content-between'>
+                                            <h6>Monthly Charges:</h6>
+                                            <h6>{stg.monthly_charges}</h6>
+                                        </div>
+                                         
+                                        <div className='d-flex justify-content-between'>
+                                            <h6>Security Fund:</h6>
+                                            <h6>{stg.security_fund}</h6>
+                                        </div>
+                                         
 
 
 

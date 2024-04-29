@@ -694,7 +694,12 @@ class strategy {
           maker_id: "$strategies.maker_id",
           createdAt: "$strategies.createdAt",
           max_trade: "$strategies.max_trade",
-          strategy_percentage:"$strategies.strategy_percentage"
+          strategy_percentage:"$strategies.strategy_percentage",
+          security_fund:"$strategies.security_fund",
+          monthly_charges:"$strategies.monthly_charges",
+
+
+
         }
       }
     ]);
