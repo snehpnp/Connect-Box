@@ -6,7 +6,7 @@ const company_information = db.company_information;
 const CommonEmail = async (toEmail, subjectEmail, htmlEmail, textEmail, res) => {
     try {
         const companyData = await company_information.findOne();
-        console.log("companyData", companyData)
+   
         if (companyData) {
             const transport = nodemailer.createTransport({
                 host: companyData.smtphost,
@@ -17,8 +17,6 @@ const CommonEmail = async (toEmail, subjectEmail, htmlEmail, textEmail, res) => 
                     pass: companyData.smtp_password
                 }
             });
-            console.log("transport", transport)
-
             const mailOptions = {
                 from: companyData.email,
                 to: toEmail,
@@ -28,7 +26,6 @@ const CommonEmail = async (toEmail, subjectEmail, htmlEmail, textEmail, res) => 
                 text: textEmail,
                 html: htmlEmail
             };
-            console.log("mailOptions", mailOptions)
 
             transport.verify((error, success) => {
                 if (error) {
