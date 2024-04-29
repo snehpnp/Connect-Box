@@ -105,6 +105,7 @@ class strategy {
       // }
 
       var strategy_Data = new strategy_model({
+        stgname_adminid:strategy_name+"_"+maker_id_find._id,
         strategy_name: strategy_name,
         strategy_description: strategy_description,
         strategy_demo_days: strategy_demo_days,

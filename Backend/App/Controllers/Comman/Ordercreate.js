@@ -4,6 +4,10 @@ const db = require("../../Models");
 const User_model = db.user;
 const strategy_Order_modal = db.strategy_Order
 const company_information = db.company_information
+const strategy_model = db.Strategies;
+const researcher_strategy = db.researcher_strategy;
+
+
 
 
 const mongoose = require("mongoose");
@@ -90,16 +94,32 @@ class Ordercreate {
 
         try {
             console.log("req.body", req.body)
+            const findStg = await researcher_strategy.find({ _id: req.body.strategy_id });
+
+            console.log("req.body", findStg)
 
 
-            // const User_strategy_client = new strategy_client_modal({
-            //     strategy_id: req.body.strategy_id,
-            //     user_id: req.body.user_id,
-            // });
-            // User_strategy_client.save();
-     
+            var strategy_Data = new strategy_model({
+                stgname_adminid: findStg[0].strategy_name + "_" + req.body.user_id,
+                strategy_name: findStg[0].strategy_name,
+                strategy_description: findStg[0].strategy_description,
+                strategy_demo_days: findStg[0].strategy_demo_days,
+                strategy_category: findStg[0].strategy_category,
+                strategy_segment: findStg[0].strategy_segment,
+                strategy_indicator: findStg[0].strategy_indicator,
+                strategy_tester: findStg[0].strategy_tester,
 
-            // let Res = await User.updateOne(filter_client, { $set: { count_strategy_select: count.toString() } });
+                strategy_image: findStg[0].strategy_image,
+
+                maker_id: req.body.user_id,
+                max_trade: findStg[0].max_trade || null,
+                strategy_percentage: findStg[0].strategy_percentage || null,
+                researcher_id: findStg[0].maker_id
+            });
+
+            console.log("strategy_Data",strategy_Data)
+
+            strategy_Data.save()
 
 
 
