@@ -75,10 +75,16 @@ class MessageController {
 
       let matchCondition = {};
 
+      // KEY 1 = ADMIN 
+      // KEY 2 = SUBADMIN SEND
+      // KEY 3 = SUBADMIN SENT
+
+
+
       if (key == 1) {
         matchCondition = {
           $or: [
-            { Role: "SUBADMIN", ownerId: new ObjectId(ownerId) },
+            { Role: "ADMIN",},
             // { Role: "ADMIN", subAdminId: { $in: [new ObjectId(ownerId)] } }
           ]
         };
@@ -100,7 +106,7 @@ class MessageController {
       console.log("matchCondition",matchCondition)
 
       const pipeline = [
-        { $match:  { Role: "SUBADMIN", ownerId: new ObjectId(ownerId) } },
+        { $match: matchCondition },
         {
           $lookup: {
             from: "users",
