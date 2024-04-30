@@ -39,7 +39,7 @@ function MessageBroadcast() {
   const [msgData, setMsgData] = useState([]);
   const [openModalId, setopenModalId] = useState("");
   const [refresh, setrefresh] = useState(false);
-  const [socket, setSocket] = useState(null);
+  // const [socket, setSocket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState("1");
 
@@ -51,18 +51,18 @@ function MessageBroadcast() {
 
 
   // CONNECT SOCKET
-  useEffect(() => {
-    const newSocket = io.connect(Config.base_url);
-    setSocket(newSocket);
-    newSocket.on("receive_message", (data) => {
-      setrefresh(!refresh)
-    });
+  // useEffect(() => {
+  //   const newSocket = io.connect(Config.base_url);
+  //   setSocket(newSocket);
+  //   newSocket.on("receive_message", (data) => {
+  //     setrefresh(!refresh)
+  //   });
 
-    return () => {
-      newSocket.off("receive_message");
-      newSocket.close();
-    };
-  }, []);
+  //   return () => {
+  //     newSocket.off("receive_message");
+  //     newSocket.close();
+  //   };
+  // }, []);
 
 
   const styles = {

@@ -27,7 +27,7 @@ app.use(bodyparser.json({ limit: '10mb', extended: true }));
 //socket.io
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://connectbox.tradestreet.in/",
     methods: ["GET", "POST"],
   },
 });

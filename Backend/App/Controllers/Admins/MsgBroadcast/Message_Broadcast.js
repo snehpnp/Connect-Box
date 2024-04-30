@@ -40,7 +40,7 @@ class MessageController {
             Role,
           });
           await msg.save();
-          io.emit("message_updated", msg);
+          // io.emit("message_updated", msg);
         }
       } else if (Role === "SUBADMIN") {
         msg = new msgdata({
