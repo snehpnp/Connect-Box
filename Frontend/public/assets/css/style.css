@@ -34408,3 +34408,8 @@ width: 30%;
         /* top:300px  !important; */
     }
 }
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
+import { useNavigate ,useHistory } from "react-router-dom";
 import axios from "axios";
 import CryptoJS from "crypto-js";
 import $ from "jquery";
@@ -13,6 +14,8 @@ import {
     GetBrokerLiveDatas,
     AddDataAboveBelowRange,
     GetDataAboveBelowRange,
+    DeleteDataMakeCall,
+    UpdateDataMakeCall
 
 } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
@@ -20,12 +23,15 @@ import { GetBrokerDatas } from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { CreateSocketSession, ConnctSocket, GetAccessToken, ConnctSocket_user } from "../../../Utils/Alice_Socket";
 
 import FullDataTable from "../../../Components/ExtraComponents/Tables/DataTable";
+import Swal from 'sweetalert2';
 
 
 
 
 const Makecall = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    // const history = useHistory();
     const [ForDisabledSubmit, SetForDisabledSubmit] = useState(false)
     const [UserDetails, seUserDetails] = useState('')
     const [AllServices, setAllServices] = useState({ loading: true, data: [] });
@@ -79,28 +85,28 @@ const Makecall = () => {
         setselectedTimeNoTrade(event.target.value);
     };
 
-    console.log(
+    // console.log(
 
-        " scriptSegment ", scriptSegment, "\n",
-        " scriptname ", scriptname, "\n",
-        " expiryOnChange ", expiryOnChange, "\n",
-        " strikePrice ", strikePrice, "\n",
-        " optionType ", optionType, "\n",
-        " selectStrategy ", selectStrategy, "\n",
-        " tradeType ", tradeType, "\n",
-        " markettime ", markettime, "\n",
-        " EntryPrice ", EntryPrice, "\n",
-        " EntryPriceRange_one ", EntryPriceRange_one, "\n",
-        " EntryPriceRange_two ", EntryPriceRange_two, "\n",
-        " EntryPriceBA ", EntryPriceBA, "\n",
-        " IntradayDelivery ", IntradayDelivery, "\n",
-        " selectedTimeExit ", selectedTimeExit, "\n",
-        " selectedTimeNoTrade ", selectedTimeNoTrade, "\n",
-        " WiseTypeDropdown ", WiseTypeDropdown, "\n",
-        " target1 ", target1, "\n",
-        " stoploss ", stoploss, "\n",
-        " targetStoplossDropdown ", targetStoplossDropdown, "\n",
-    )
+    //     " scriptSegment ", scriptSegment, "\n",
+    //     " scriptname ", scriptname, "\n",
+    //     " expiryOnChange ", expiryOnChange, "\n",
+    //     " strikePrice ", strikePrice, "\n",
+    //     " optionType ", optionType, "\n",
+    //     " selectStrategy ", selectStrategy, "\n",
+    //     " tradeType ", tradeType, "\n",
+    //     " markettime ", markettime, "\n",
+    //     " EntryPrice ", EntryPrice, "\n",
+    //     " EntryPriceRange_one ", EntryPriceRange_one, "\n",
+    //     " EntryPriceRange_two ", EntryPriceRange_two, "\n",
+    //     " EntryPriceBA ", EntryPriceBA, "\n",
+    //     " IntradayDelivery ", IntradayDelivery, "\n",
+    //     " selectedTimeExit ", selectedTimeExit, "\n",
+    //     " selectedTimeNoTrade ", selectedTimeNoTrade, "\n",
+    //     " WiseTypeDropdown ", WiseTypeDropdown, "\n",
+    //     " target1 ", target1, "\n",
+    //     " stoploss ", stoploss, "\n",
+    //     " targetStoplossDropdown ", targetStoplossDropdown, "\n",
+    // )
 
 
     //console.log("UserDetails ",UserDetails[0].client_key)
@@ -127,11 +133,13 @@ const Makecall = () => {
     const [selected, setSelected] = useState([]);
     const [selected1, setSelected1] = useState([]);
 
+    const [refreshscreen, setRefreshscreen] = useState(false);
+
     let socket;
 
- 
-    
-    console.log("aboveBelowRangData ", aboveBelowRangData)
+
+
+    // console.log("aboveBelowRangData ", aboveBelowRangData)
     const styles = {
         container: {
             display: "flex",
@@ -154,13 +162,40 @@ const Makecall = () => {
     const containerStyle = {
         width: '70px',
         height: '20px',
-       // backgroundColor: 'lightgray', // Example background color
+        // backgroundColor: 'lightgray', // Example background color
+    };
+
+  
+
+
+    const [updatedDataPriceTS, setUpdatedDataPriceTS] = useState({});
+    console.log("updatedDataPriceTS  ", updatedDataPriceTS)
+
+    
+
+    const inputChangeTargetStoplos = (e, type, row) => {
+      
+         let name = e.target.name;
+         let value = e.target.value;
+         let id = row._id;
+    
+        setUpdatedDataPriceTS((prevData) => ({
+          ...prevData,
+          [id]: {
+            ...prevData[id],
+            [name]:value,
+           
+          },
+        }));
       };
 
 
-    let columns = [
+
+
+        
+      let columns = [
         {
-            dataField: "Symbol",
+            dataField: "1",
             text: "SR. No.",
             formatter: (cell, row, rowIndex) => rowIndex + 1,
         },
@@ -199,7 +234,7 @@ const Makecall = () => {
                         <span>{row.ExitTime}</span>
 
                         :
-                        "-"     
+                        "-"
                     }
                 </div>
             ),
@@ -215,27 +250,27 @@ const Makecall = () => {
                         <span>{row.NoTradeTime}</span>
 
                         :
-                        "-"     
+                        "-"
                     }
                 </div>
             ),
 
         },
-        
+
         {
-           dataField: "Price",
-           text: "Price",
+            dataField: "Price",
+            text: "Price",
             formatter: (cell, row, rowIndex) => (
                 <div>
-                     <input
+                    <input
                         style={containerStyle}
                         className="hidebg"
-                        name="price_input"
+                        name="Price"
                         type="number"
-                        // onChange={(e) => {
-                        //     inputChangeTargetStoplos(e,"price",row);
-                        // }}
-                         defaultValue={row.Price}
+                        onChange={(e) => {
+                            inputChangeTargetStoplos(e, "price", row);
+                        }}
+                        defaultValue={row.Price}
                     />
                 </div>
             ),
@@ -244,41 +279,41 @@ const Makecall = () => {
         {
             dataField: "EntryPriceRange_one",
             text: "Price First",
-             formatter: (cell, row, rowIndex) => (
-                 <div>
-                      <input
-                         style={containerStyle}
-                         className="hidebg"
-                         name="price_input"
-                         type="number"
-                         // onChange={(e) => {
-                         //     inputChangeTargetStoplos(e,"price",row);
-                         // }}
-                          defaultValue={row.EntryPriceRange_one}
-                     />
-                 </div>
-             ),
-             hidden: iscolumntPriceRange
-         },
-         {
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <input
+                        style={containerStyle}
+                        className="hidebg"
+                        name="EntryPriceRange_one"
+                        type="number"
+                        onChange={(e) => {
+                            inputChangeTargetStoplos(e, "rangePriceOne", row);
+                        }}
+                        defaultValue={row.EntryPriceRange_one}
+                    />
+                </div>
+            ),
+            hidden: iscolumntPriceRange
+        },
+        {
             dataField: "EntryPriceRange_two",
             text: "Price Second",
-             formatter: (cell, row, rowIndex) => (
-                 <div>
-                      <input
-                         style={containerStyle}
-                         className="hidebg"
-                         name="price_input"
-                         type="number"
-                         // onChange={(e) => {
-                         //     inputChangeTargetStoplos(e,"price",row);
-                         // }}
-                          defaultValue={row.EntryPriceRange_two}
-                     />
-                 </div>
-             ),
-             hidden: iscolumntPriceRange
-         },
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <input
+                        style={containerStyle}
+                        className="hidebg"
+                        name="EntryPriceRange_two"
+                        type="number"
+                        onChange={(e) => {
+                            inputChangeTargetStoplos(e, "rangePriceTwo", row);
+                        }}
+                        defaultValue={row.EntryPriceRange_two}
+                    />
+                </div>
+            ),
+            hidden: iscolumntPriceRange
+        },
         {
             dataField: "TType",
             text: "T Type",
@@ -287,7 +322,7 @@ const Makecall = () => {
                     {row.TType == "LE" ?
                         <span>BUY</span>
                         :
-                        <span>SELL</span>  
+                        <span>SELL</span>
                     }
                 </div>
             ),
@@ -295,41 +330,41 @@ const Makecall = () => {
 
         {
             dataField: "Target",
-             text: "Target",
-             formatter: (cell, row, rowIndex) => (
-                 <div>
-                      <input
-                         style={containerStyle}
-                         className="hidebg"
-                         name="price_input"
-                         type="number"
-                         // onChange={(e) => {
-                         //     inputChangeTargetStoplos(e,"price",row);
-                         // }}
-                          defaultValue={row.Target}
-                     />
-                 </div>
-             ),
-         },
+            text: "Target",
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <input
+                        style={containerStyle}
+                        className="hidebg"
+                        name="Target"
+                        type="number"
+                        onChange={(e) => {
+                            inputChangeTargetStoplos(e, "target", row);
+                        }}
+                        defaultValue={row.Target}
+                    />
+                </div>
+            ),
+        },
 
-         {
+        {
             dataField: "StopLoss",
-             text: "StopLoss",
-             formatter: (cell, row, rowIndex) => (
-                 <div>
-                      <input
-                         style={containerStyle}
-                         className="hidebg"
-                         name="price_input"
-                         type="number"
-                         // onChange={(e) => {
-                         //     inputChangeTargetStoplos(e,"price",row);
-                         // }}
-                          defaultValue={row.StopLoss}
-                     />
-                 </div>
-             ),
-         },
+            text: "StopLoss",
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <input
+                        style={containerStyle}
+                        className="hidebg"
+                        name="StopLoss"
+                        type="number"
+                        onChange={(e) => {
+                            inputChangeTargetStoplos(e, "stoploss", row);
+                        }}
+                        defaultValue={row.StopLoss}
+                    />
+                </div>
+            ),
+        },
         // {
         //     dataField: "qty_persent",
         //     text: "Exit Qty (%)",
@@ -362,19 +397,19 @@ const Makecall = () => {
         //         </div>
         //     ),
         // },
-        
+
         // {
         //     dataField: "strategy",
         //     text: "Strategy",
         // },
     ]
 
-    if (iscolumntPrice ==true) {
-        console.log("iscolumntPrice",iscolumntPrice)
+    if (iscolumntPrice == true) {
+        console.log("iscolumntPrice", iscolumntPrice)
         columns = columns.filter(column => column.dataField !== "Price");
     }
 
-    
+
 
     const handleOnSelect = (row, isSelect) => {
         if (isSelect) {
@@ -389,6 +424,8 @@ const Makecall = () => {
 
     const handleOnSelectAll = (isSelect, rows) => {
         const ids = rows.map(r => r._id);
+        // console.log("isSelect ",isSelect)
+        // console.log("rows ",rows)
         if (isSelect) {
             setSelected(ids);
             setSelected1(rows);
@@ -397,6 +434,133 @@ const Makecall = () => {
             setSelected1([]);
         }
     }
+
+
+ 
+    console.log("setSelected1 ",selected1)
+
+
+    const delete_data = async (ABR) => {
+        if(selected1.length <= 0){
+        //   alert("please select any signal");
+        Swal.fire({
+            text: "please select any signal",
+            icon: "error",
+            timer: 1500,
+            timerProgressBar: true
+          });
+          return
+        }  
+       let text = "Are you sure you want delete signal ?";
+       if (window.confirm(text) == true) {
+           alert("DONE")
+           await dispatch(DeleteDataMakeCall(
+            {
+                req:
+                {
+                    user_id: UserLocalDetails.user_id,
+                    row: selected1,
+                },
+
+                token: UserLocalDetails.token
+            }
+             ))
+            .unwrap()
+            .then((response) => {
+                setSelected([]);
+                setSelected1([]);
+                setUpdatedDataPriceTS({})
+                if (response.status) {
+                    Swal.fire({
+                        title: "Delete Successful!",
+                        text: response.msg,
+                        icon: "success",
+                        timer: 1500,
+                        timerProgressBar: true
+                      });
+                       
+                      setRefreshscreen(!refreshscreen);
+                      
+                      handleClick_abr(ABR)
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: response.msg,
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                      });
+                      setRefreshscreen(!refreshscreen);
+                      handleClick_abr(ABR)
+
+                }
+            });
+
+           
+       } 
+    
+     }
+
+
+     const update_data = async (ABR) => {
+  
+        if (Object.keys(updatedDataPriceTS).length === 0) {
+            // alert("please input any field");
+            Swal.fire({
+                text: "please Input Any Field",
+                icon: "error",
+                timer: 1500,
+                timerProgressBar: true
+              });
+            return;
+        }
+
+        await dispatch(UpdateDataMakeCall(
+            {
+                req:
+                {
+                    user_id: UserLocalDetails.user_id,
+                    row: updatedDataPriceTS,
+                },
+
+                token: UserLocalDetails.token
+            }
+             ))
+            .unwrap()
+            .then((response) => {
+                setSelected([]);
+                setSelected1([]);
+                setUpdatedDataPriceTS({})
+              
+                if (response.status) {
+                    Swal.fire({
+                        title: "Update Successful!",
+                        text: response.msg,
+                        icon: "success",
+                        timer: 1500,
+                        timerProgressBar: true
+                      });
+                      setRefreshscreen(!refreshscreen);
+                      handleClick_abr(ABR)
+                     // window.location.reload();
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: response.msg,
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                      });
+                    setRefreshscreen(!refreshscreen);
+                    handleClick_abr(ABR)
+
+                }
+            });
+    
+    
+       }
+
+
 
 
     const selectRow = {
@@ -416,12 +580,15 @@ const Makecall = () => {
 
 
     const handleClick_abr = (ABR) => {
-        // alert(ABR)
-        if(ABR=='range'){
-            setiscolumntPrice(true)  
+        //  alert(ABR)
+        setSelected([]);
+        setSelected1([]);
+        setUpdatedDataPriceTS({})
+        if (ABR == 'range') {
+            setiscolumntPrice(true)
             setiscolumntPriceRange(false)
-        }else{
-            setiscolumntPrice(false) 
+        } else {
+            setiscolumntPrice(false)
             setiscolumntPriceRange(true)
 
         }
@@ -432,7 +599,7 @@ const Makecall = () => {
 
     const GetDataAboveBelowRangeFun = async (ABR) => {
 
-        await dispatch(GetDataAboveBelowRange(
+             await dispatch(GetDataAboveBelowRange(
             {
                 req:
                 {
@@ -442,7 +609,7 @@ const Makecall = () => {
 
                 token: UserLocalDetails.token
             }
-        ))
+             ))
             .unwrap()
             .then((response) => {
 
@@ -466,9 +633,9 @@ const Makecall = () => {
     useEffect(() => {
         handleClick_abr(typeABROnclickFunc)
     }, [])
-     
-    
-   
+
+
+
 
 
 
@@ -762,7 +929,7 @@ const Makecall = () => {
             .unwrap()
             .then((response) => {
 
-                console.log("response ", response.data)
+                //console.log("response ", response.data)
                 if (response.status) {
                     setCatagoryData({
                         loading: false,
@@ -1029,7 +1196,13 @@ const Makecall = () => {
     const selectOptionType = (e) => {
         if (e.target.value != '') {
             if (strikePrice == '') {
-                alert('please alert select strike price');
+               // alert('please alert select strike price');
+                Swal.fire({
+                    text: "please alert select strike price",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             }
             setOptionType(e.target.value);
@@ -1239,39 +1412,87 @@ const Makecall = () => {
         e.preventDefault();
 
         if (selectCatagoryid == "") {
-            alert("Please Select a Script  Type")
+           // alert("Please Select a Script  Type")
+             Swal.fire({
+                text: "Please Select a Script  Type",
+                icon: "error",
+                timer: 1500,
+                timerProgressBar: true
+              });
             return
         }
         if (scriptname == "") {
-            alert("Please Select a Script Name")
+            // alert("Please Select a Script Name")
+            Swal.fire({
+                text: "Please Select a Script Name",
+                icon: "error",
+                timer: 1500,
+                timerProgressBar: true
+              });
             return
         }
         if (scriptSegment != 'C') {
             if (expiryOnChange == "") {
-                alert("Please Select a Expiry")
+                // alert("Please Select a Expiry")
+                Swal.fire({
+                    text: "Please Select a Expiry",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             }
         }
         if (scriptSegment == 'O' || scriptSegment == 'MO' || scriptSegment == 'CO') {
             if (strikePrice == "") {
-                alert("Please Select a strike price")
+                // alert("Please Select a strike price")
+                Swal.fire({
+                    text: "Please Select a strike price",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             }
             if (optionType == "") {
-                alert("Please Select a Option Type")
+                // alert("Please Select a Option Type")
+                Swal.fire({
+                    text: "Please Select a Option Type",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             }
         }
         if (selectStrategy == "") {
-            alert("Please Select a Strategy")
+            // alert("Please Select a Strategy")
+            Swal.fire({
+                text: "Please Select a Strategy",
+                icon: "error",
+                timer: 1500,
+                timerProgressBar: true
+              });
             return
         }
         if (tradeType == '') {
-            alert("Please Select a Trade Type")
+            // alert("Please Select a Trade Type")
+            Swal.fire({
+                text: "Please Select a Trade Type",
+                icon: "error",
+                timer: 1500,
+                timerProgressBar: true
+              });
             return
         }
         if (EntryPriceBA == '') {
-            alert("Please Select a  Above/Below/Range")
+            // alert("Please Select a  Above/Below/Range")
+            Swal.fire({
+                text: "Please Select a  Above/Below/Range",
+                icon: "error",
+                timer: 1500,
+                timerProgressBar: true
+              });
             return
         }
 
@@ -1279,17 +1500,35 @@ const Makecall = () => {
         if (IntradayDelivery == '1') {
             if (EntryPriceBA == "at") {
                 if (selectedTimeExit == '') {
-                    alert("Please Select a Intraday Time Exit")
+                    // alert("Please Select a Intraday Time Exit")
+                    Swal.fire({
+                        text: "Please Select a Intraday Time Exit",
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                      });
                     return
                 }
             } else {
                 if (selectedTimeExit == '') {
-                    alert("Please Select a Intraday Time Exit")
+                    // alert("Please Select a Intraday Time Exit")
+                    Swal.fire({
+                        text: "Please Select a Intraday Time Exit",
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                      });
                     return
                 }
 
                 if (selectedTimeNoTrade == '') {
-                    alert("Please Select a Intraday No Trade Time")
+                    // alert("Please Select a Intraday No Trade Time")
+                    Swal.fire({
+                        text: "Please Select a Intraday No Trade Time",
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                      });
                     return
                 }
             }
@@ -1297,7 +1536,13 @@ const Makecall = () => {
 
         if (IntradayDelivery == '2') {
             if (selectedTimeNoTrade == '') {
-                alert("Please Select a Delivery No Trade Time")
+                // alert("Please Select a Delivery No Trade Time")
+                Swal.fire({
+                    text: "Please Select a Delivery No Trade Time",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             }
         }
@@ -1313,7 +1558,13 @@ const Makecall = () => {
 
             if (get_price_live == '' || get_price_live == undefined) {
                 if (EntryPrice == '') {
-                    alert("Please Enter a Entry Price")
+                    // alert("Please Enter a Entry Price")
+                    Swal.fire({
+                        text: "Please Enter a Entry Price",
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                      });
                     return
                 } else {
                     price = EntryPrice
@@ -1327,17 +1578,35 @@ const Makecall = () => {
 
         else if (EntryPriceBA == 'range') {
             if (EntryPriceRange_one == '') {
-                alert("Please Enter a price from")
+                // alert("Please Enter a price from")
+                Swal.fire({
+                    text: "Please Enter a price from",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             }
             if (EntryPriceRange_two == '') {
-                alert("Please Enter a price to")
+                // alert("Please Enter a price to")
+                Swal.fire({
+                    text: "Please Enter a price to",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             }
         }
         else if (EntryPriceBA == 'above' || EntryPriceBA == 'below') {
             if (EntryPrice == '') {
-                alert("Please Enter a Entry Price")
+                // alert("Please Enter a Entry Price")
+                Swal.fire({
+                    text: "Please Enter a Entry Price",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             } else {
                 price = EntryPrice
@@ -1348,16 +1617,34 @@ const Makecall = () => {
 
         if (WiseTypeDropdown != '') {
             if (parseFloat(target1) == 0 && parseFloat(stoploss) == 0) {
-                alert("Please Select Any target/Stoploss")
+                // alert("Please Select Any target/Stoploss")
+                Swal.fire({
+                    text: "Please Select Any target/Stoploss",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             }
 
             if (parseFloat(target1) < 0) {
-                alert("Not Set Negative value in Target")
+                // alert("Not Set Negative value in Target")
+                Swal.fire({
+                    text: "Not Set Negative value in Target",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             }
             if (parseFloat(stoploss) < 0) {
-                alert("Not Set Negative value in Stoploss")
+                // alert("Not Set Negative value in Stoploss")
+                Swal.fire({
+                    text: "Not Set Negative value in Stoploss",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             }
 
@@ -1402,13 +1689,13 @@ const Makecall = () => {
 
 
         // set price
-        alert("Done")
+        //alert("Done")
         //Trade At price -------- AT
         if (EntryPriceBA == 'at') {
 
             // const currentTimestamp = Math.floor(Date.now() / 1000);
             //     let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice==''?'100':strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${target1}|StopLoss:${stoploss}|ExitTime:${selectedTimeExit}|sl_status:1|Demo:demo`
-
+            SetForDisabledSubmit(true)
             const currentTimestamp = Math.floor(Date.now() / 1000);
             let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice == '' ? '100' : strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:${UserDetails && UserDetails[0].client_key}|TradeType:MAKECALL|Target:${Target == 0 ? 0 : Target.toFixed(2)}|StopLoss:${StopLoss == 0 ? 0 : StopLoss.toFixed(2)}|ExitTime:0|sl_status:${sl_status}|Demo:demo`
             console.log("req ", req)
@@ -1428,6 +1715,33 @@ const Makecall = () => {
             axios.request(config)
                 .then(async (response) => {
                     //console.log("response ", response);
+                    if (response.status) {
+                        Swal.fire({
+                            title: "Data Add Successful!",
+                            text: response.msg,
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true
+                          });
+                          setRefreshscreen(!refreshscreen);
+                          setTimeout(() => {
+                            window.location.reload()
+                          }, 2000);
+
+                     } else {
+                       
+                        Swal.fire({
+                            title: "Error",
+                            text: response.msg,
+                            icon: "error",
+                            timer: 1500,
+                            timerProgressBar: true
+                          });
+                          setRefreshscreen(!refreshscreen);
+                         
+
+
+                     }
                 })
                 .catch((error) => {
                     // console.log(error.response.data);
@@ -1443,17 +1757,30 @@ const Makecall = () => {
         // TRADE RANGE --------
         else if (EntryPriceBA == 'range') {
             if (EntryPriceRange_one == '') {
-                alert("Please Enter a price from")
+                // alert("Please Enter a price from")
+                
+                Swal.fire({
+                    text: "Please Enter a price from",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             }
             if (EntryPriceRange_two == '') {
-                alert("Please Enter a price to")
+                // alert("Please Enter a price to")
+                Swal.fire({
+                    text: "Please Enter a price to",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             }
 
             // markettime - after market order
 
-
+            SetForDisabledSubmit(true)
             await dispatch(AddDataAboveBelowRange(
                 {
                     req: {
@@ -1494,14 +1821,33 @@ const Makecall = () => {
                 .unwrap()
                 .then((response) => {
 
-                    // console.log("response ",response.data)
-                    // if (response.status) {
+                    if (response.status) {
+                        Swal.fire({
+                            title: "Data Add Successful!",
+                            text: response.msg,
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true
+                          });
+                          setRefreshscreen(!refreshscreen);
+                          setTimeout(() => {
+                            window.location.reload()
+                          }, 2000);
+
+                     } else {
+                       
+                        Swal.fire({
+                            title: "Error",
+                            text: response.msg,
+                            icon: "error",
+                            timer: 1500,
+                            timerProgressBar: true
+                          });
+                          setRefreshscreen(!refreshscreen);
+                         
 
 
-                    // } else {
-
-
-                    // }
+                     }
                 });
 
 
@@ -1510,7 +1856,13 @@ const Makecall = () => {
         // TRADE ABOVE BELOW ------------
         else if (EntryPriceBA == 'above' || EntryPriceBA == 'below') {
             if (EntryPrice == '') {
-                alert("Please Enter a Entry Price")
+                // alert("Please Enter a Entry Price")
+                Swal.fire({
+                    text: "Please Enter a Entry Price",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
                 return
             } else {
                 price = EntryPrice
@@ -1521,7 +1873,7 @@ const Makecall = () => {
 
             // markettime - after market order
             //alert(liveToken.current)
-
+            SetForDisabledSubmit(true)
             await dispatch(AddDataAboveBelowRange(
                 {
                     req: {
@@ -1561,16 +1913,34 @@ const Makecall = () => {
             ))
                 .unwrap()
                 .then((response) => {
-
                     // console.log("response ",response.data)
-                    // if (response.status) {
+                     if (response.status) {
+                        Swal.fire({
+                            title: "Data Add Successful!",
+                            text: response.msg,
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true
+                          });
+                          setRefreshscreen(!refreshscreen);
+                          setTimeout(() => {
+                            window.location.reload()
+                          }, 2000);
+
+                     } else {
+                       
+                        Swal.fire({
+                            title: "Error",
+                            text: response.msg,
+                            icon: "error",
+                            timer: 1500,
+                            timerProgressBar: true
+                          });
+                          setRefreshscreen(!refreshscreen);
+                         
 
 
-                    // } else {
-
-
-
-                    // }
+                     }
                 });
 
 
@@ -2019,6 +2389,7 @@ const Makecall = () => {
                 </div>
                 <div className='card'>
                     <div className='card-body'>
+                        
                         <div className="col-lg-12 col-md-12" data-aos="fade-right">
                             <ul className="nav nav-tabs nav-tabs-solid d-flex justify-content-center">
                                 <li className="nav-item">
@@ -2057,11 +2428,34 @@ const Makecall = () => {
                             </ul>
 
                         </div>
+
+                        {/* <button className='btn btn-success float-end' onClick={() => delete_data()}>DELETE</button>
+                    
+                        <button className='btn btn-success float-end' onClick={() => update_data()}>UPDATE</button> */}
+
+
+
                         <div className="col-lg-12 col-md-12" data-aos="fade-left">
                             <div className="card h-100">
                                 <div className="card-body">
                                     <div className="tab-content">
+
+                                  
+
                                         <div className="tab-pane show active" id="solid-tab1">
+
+                                        <div className="d-flex">
+                                        <div className="preview-boxs mb-3">
+                                                    <button type="submit" className="btn btn-primary" onClick={() => update_data('below')}>
+                                                        Update
+                                                    </button>
+                                                </div>
+                                                <div className="preview-boxs mb-3 ms-2 ">
+                                                    <button type="submit" className="btn btn-primary" onClick={() => delete_data('below')}>
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                                </div>     
 
                                             <div className="card-header d-flex justify-content-between align-items-center border-bottom">
                                                 <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-landmark pe-2"></i>Below</h5>
@@ -2092,7 +2486,22 @@ const Makecall = () => {
 
                                         </div>
                                         <div className="tab-pane" id="solid-tab2">
+
+                                        <div className="d-flex">
+                                        <div className="preview-boxs mb-3">
+                                                    <button type="submit" className="btn btn-primary" onClick={() => update_data('above')}>
+                                                        Update
+                                                    </button>
+                                                </div>
+                                                <div className="preview-boxs mb-3 ms-2 ">
+                                                    <button type="submit" className="btn btn-primary" onClick={() => delete_data('above')}>
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                                </div>     
+
                                             <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+
                                                 <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-envelope pe-2"></i>Above</h5>
                                                 <div className="pay-btn text-end w-auto">
                                                     {/* <button className="btn btn-primary " data-bs-toggle="modal"
@@ -2106,7 +2515,8 @@ const Makecall = () => {
                                             <div className="invoice-total-box border">
                                                 <div className="invoice-total-inner">
                                                     <div className="inventory-table">
-                                                         <FullDataTable
+                                                        <FullDataTable
+                                                
                                                             keyField="_id"
                                                             TableColumns={columns}
                                                             tableData={aboveBelowRangData.data}
@@ -2119,6 +2529,18 @@ const Makecall = () => {
 
                                         </div>
                                         <div className="tab-pane" id="solid-tab3">
+                                        <div className="d-flex">
+                                        <div className="preview-boxs mb-3">
+                                                    <button type="submit" className="btn btn-primary" onClick={() => update_data('range')}>
+                                                        Update
+                                                    </button>
+                                                </div>
+                                                <div className="preview-boxs mb-3 ms-2 ">
+                                                    <button type="submit" className="btn btn-primary" onClick={() => delete_data('range')}>
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                                </div>       
                                             <div className="card-header d-flex justify-content-between align-items-center border-bottom">
                                                 <h5 className="card-title mb-0 w-auto">  <i className="fa-regular fa-image pe-2"></i>Range</h5>
                                                 <div className="pay-btn text-end w-auto">
@@ -2132,12 +2554,14 @@ const Makecall = () => {
                                             <div className="invoice-total-box border">
                                                 <div className="invoice-total-inner">
                                                     <div className="inventory-table">
-                                                          <FullDataTable
+                                                        <FullDataTable
+                                                            
                                                             keyField="_id"
                                                             TableColumns={columns}
                                                             tableData={aboveBelowRangData.data}
                                                             pagination1={true}
                                                             selectRow={selectRow}
+
                                                         />
                                                     </div>
                                                 </div>

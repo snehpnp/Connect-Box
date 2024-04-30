@@ -38,9 +38,6 @@ class Makecall {
   async GetallCatagory(req, res) {
 
     //console.log("Ok",req.body)
-
-
-
     const pipeline = [
       {
         $project: {
@@ -61,9 +58,6 @@ class Makecall {
       res.send({ status: false, data: [] });
 
     }
-
-
-
     //
   }
 
@@ -345,7 +339,8 @@ class Makecall {
       }
 
     } catch (error) {
-      console.log("Error Get All Strategy Error-", error);
+      //console.log("Error Get All Strategy Error-", error);
+      return res.send({ status: false, msg: "Server Error" });
     }
 
 
@@ -417,7 +412,8 @@ class Makecall {
 
 
     } catch (error) {
-      console.log("Error Get token by socket Error-", error);
+      //console.log("Error Get token by socket Error-", error);
+      return res.send({ status: false, msg: "Server Error" });
     }
 
 
@@ -455,7 +451,8 @@ class Makecall {
 
 
     } catch (error) {
-      console.log("Error Get token by socket Error-", error);
+     // console.log("Error Get token by socket Error-", error);
+     return res.send({ status: false, msg: "Server Error" });
     }
 
 
@@ -545,7 +542,8 @@ class Makecall {
 
  
      } catch (error) {
-       console.log("Data Insert MakeAbovebeloveRange-", error);
+       //console.log("Data Insert MakeAbovebeloveRange-", error);
+       return res.send({ status: false, msg: "Server Error" });
      }
  
  
@@ -555,7 +553,7 @@ class Makecall {
    //Get data above beleow range
   async GetDataAboveBelowRange(req, res) {
 
-    console.log("req  ABR",req.body)
+    //console.log("req  ABR",req.body)
   
     try {  
       const { user_id, ABR } = req.body;  
@@ -572,7 +570,7 @@ class Makecall {
   
          const result = await makecallABR.aggregate(pipeline);
            
-         console.log("result",result)
+        // console.log("result",result)
           if (result.length > 0) {
              return res.send({ status: true, msg: "Data Add Successfully....", data: result });
            }else{
@@ -582,9 +580,63 @@ class Makecall {
 
 
     } catch (error) {
-      console.log("Get Data MakeAbovebeloveRange-", error);
+
+     return res.send({ status: false, msg: "Server Error" });
     }
 
+
+  }
+
+
+   //Delete data above beleow range
+   async DeleteDataMakeCall(req, res) {
+
+    // console.log("req  Delete ",req.body)
+      
+    try {  
+       
+           const AllIds = req.body.row.map(item => new ObjectId(item._id))
+          //console.log("req  ids  ",AllIds)
+           const result = await makecallABR.deleteMany({ _id: { $in: AllIds } })
+           return res.send({ status: true, msg: "Data Delete Successfully...." });
+           
+
+
+
+    } catch (error) {
+      //console.log("Delete MakeAbovebeloveRange-", error);
+      return res.send({ status: false, msg: "Server Error" });
+    }
+
+
+  }
+
+   //Update data above beleow range
+   async UpdateDataMakeCall(req, res) {
+
+    try {  
+
+        //console.log("req  Update ",req.body)
+
+        for (let id in req.body.row) {
+        const updates = req.body.row[id];
+
+        // console.log('ID:', id);
+        // console.log('Updates:', updates);
+
+         const filter = { _id: new ObjectId(id) };
+         const update = { $set: updates };
+
+        await makecallABR.updateOne(filter,update)
+        // Perform any operation you need with the ID and updates
+        }
+      return res.send({ status: true, msg: "Data Update Successfully...." });
+          
+
+    } catch (error) {
+     // console.log("Data update MakeAbovebeloveRange-", error);
+     return res.send({ status: false, msg: "server Error" });
+    }
 
   }
 
