@@ -18,9 +18,9 @@ const Content = ({
         <div className="card-header d-flex justify-content-between align-items-center border-bottom">
           <h5 className="card-title mb-0 w-auto">
             {Page_title}
-            {/* {" "}
-            {Card_title_icon ? <i className={Card_title_icon}></i> : ""}
-            {Card_title} */}
+            
+            {Card_title_icon ? <><i className={Card_title_icon}> </i> {Card_title}</> : ""}
+          
           </h5>
           <div className="pay-btn text-end w-auto">
             {button_title ? (

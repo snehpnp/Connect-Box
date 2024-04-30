@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from "react";
-import Content from "../../../Components/Dashboard/Content/Content";
 import { admin_Msg_Get, admin_Msg_Delete, admin_Msg_Edit, add_message } from "../../../ReduxStore/Slice/Admin/MessageData";
+import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
+import Content from "../../../Components/Dashboard/Content/Content";
 import { GetAllSubAdmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useDispatch } from "react-redux";
-import * as Config from "../../../Utils/Config";
-import io from "socket.io-client";
-import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import Swal from 'sweetalert2';
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Loader from "../../../Utils/Loader";
 import { fDateTime } from "../../../Utils/Date_formet";
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
@@ -27,10 +26,7 @@ function MessageBroadcast() {
   const [messageText, setMessageText] = useState("");
   const [pipelineData, setPipelineData] = useState([]);
   const [msgData, setMsgData] = useState('');
-  const [modalId, setmodalId] = useState('');
   const [modal, setModal] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [ShowDeleteModal, setShowDeleteModal] = useState(false);
   const [openModalId, setopenModalId] = useState("");
   const [refresh, setrefresh] = useState(false);
   const datas = JSON.parse(localStorage.getItem("user_details"));
@@ -38,45 +34,22 @@ function MessageBroadcast() {
 
 
   const [loading, setLoading] = useState(true);
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState("0");
 
 
 
 
 
 
-  function CustomTabPanel(props) {
-    const { children, value, index, ...other } = props;
+  // useEffect(() => {
+  //   const newSocket = io.connect(`${Config.base_url}`);
+  //   setSocket(newSocket);
 
-    return (
-      <div
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && (
-          <Box sx={{ p: 3 }}>
-            <Typography>{children}</Typography>
-          </Box>
-        )}
-      </div>
-    );
-  }
+  //   return () => {
+  //     newSocket.close();
+  //   };
+  // }, []);
 
-  CustomTabPanel.propTypes = {
-    children: PropTypes.node,
-    index: PropTypes.number.isRequired,
-    value: PropTypes.number.isRequired,
-  };
-
-  function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
-  }
 
 
   const handleChange = (event, newValue) => {
@@ -157,8 +130,6 @@ function MessageBroadcast() {
             size="small"
             onClick={() => {
               handleDelete(params.row._id)
-              // setShowDeleteModal(true);
-              setmodalId(params.row._id);
             }}
 
           >
@@ -173,14 +144,6 @@ function MessageBroadcast() {
   ];
 
 
-  // useEffect(() => {
-  //   const newSocket = io.connect(`${Config.base_url}`);
-  //   setSocket(newSocket);
-
-  //   return () => {
-  //     newSocket.close();
-  //   };
-  // }, []);
 
 
 
@@ -220,10 +183,35 @@ function MessageBroadcast() {
         .then(async (response) => {
           if (response.status) {
             // await socket.emit("send_message", newMessage);
-            toast.success(response.msg);
+            let timerInterval;
+            Swal.fire({
+              title: "Messgage Send!",
+              html: "I will close in <b></b> milliseconds.",
+              timer: 1200,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                  timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+              },
+              willClose: () => {
+                clearInterval(timerInterval);
+              }
+            }).then((result) => {
+              /* Read more about handling dismissals below */
+              if (result.dismiss === Swal.DismissReason.timer) {
+                console.log("I was closed by the timer");
+              }
+            });
+
+
+
             setSelectedSubadmin("");
             setMessageText("");
-            setrefresh(!refresh);
+
+
           } else {
             toast.error(response.msg);
           }
@@ -271,42 +259,56 @@ function MessageBroadcast() {
   };
 
   const handleDelete = async (id) => {
-    const data = { id: modalId }
+    const data = { id: id };
 
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then(async (result) => {
+    try {
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success"
-        });
-
-        await dispatch(admin_Msg_Delete(data))
-          .unwrap()
-          .then(async (response) => {
-            if (response.status) {
-              setmodalId('')
-              setrefresh(!refresh);
-            } else {
-              toast.error(response.msg);
-            }
-          })
-          .catch((error) => {
-            console.log("Error", error);
+        const response = await dispatch(admin_Msg_Delete(data)).unwrap()
+ 
+        if (response.status) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+            timer: 1200,
+            timerProgressBar: true,
+            showConfirmButton: false
           });
-
+          setrefresh(!refresh);
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: response.message,
+            icon: "error",
+            timer: 1200,
+            timerProgressBar: true,
+            showConfirmButton: false
+          });
+        }
       }
-    });
-
+    } catch (error) {
+      console.log("Error", error);
+      Swal.fire({
+        title: "Error!",
+        text: "An error occurred while deleting the file.",
+        icon: "error",
+        timer: 1200,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+    }
   };
+
 
   const handleUpdate = async () => {
     var data = { id: openModalId, messageTitle: msgData };
@@ -334,9 +336,9 @@ function MessageBroadcast() {
     fetchSubadminName();
     getAdminTableData();
 
-    const allSubadminUsernames = subadmin.map((sub) => sub._id);
-    setSelectedSubadmin(allSubadminUsernames);
-  }, [refresh]);
+    // const allSubadminUsernames = subadmin.map((sub) => sub._id);
+    // setSelectedSubadmin(allSubadminUsernames);
+  }, [refresh, value]);
 
   return (
     <div data-aos="fade-left">
@@ -347,93 +349,97 @@ function MessageBroadcast() {
         Content={
           <>
             <Box sx={{ width: '100%' }}>
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                  <Tab label="Send" {...a11yProps(0)} />
-                  <Tab label="Sent Messages" {...a11yProps(1)} />
+              <TabContext value={value}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
+                  <TabList value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tab label="Send" value="0" />
+                    <Tab label="Sent" value="1" />
 
-                </Tabs>
-              </Box>
-              <CustomTabPanel value={value} index={0}>
-                <>
+                  </TabList>
+                </Box>
 
-                  <div className="row align-items-center">
-                    <div className="col-md-5">
-                      <img
-                        src="/assets/img/gif/Email-campaign.png"
-                        alt="Investment data"
-                        className="w-75"
-                      />
-                    </div>
-                    <div className="col-md-7">
-                      <div className="input-block mt-3">
-                        <label className="form-label" htmlFor="broker-select">
-                          To Sub-Admin
-                        </label>
-                        <div className="input-group">
-                          <select
-                            id="broker-select"
-                            className="form-control"
-                            value={selectedSubadmin}
-                            onChange={handleSubadmins}
-                          >
-                            <option value="all">All</option>
-                            {subadmin &&
-                              subadmin.map((val) => (
-                                <option key={val._id} value={val._id}>
-                                  {val.UserName}
-                                </option>
-                              ))}
-                          </select>
+                <TabPanel value="0" >
+                  <>
+
+                    <div className="row align-items-center">
+                      <div className="col-md-5">
+                        <img
+                          src="/assets/img/gif/Email-campaign.png"
+                          alt="Investment data"
+                          className="w-75"
+                        />
+                      </div>
+                      <div className="col-md-7">
+                        <div className="input-block mt-3">
+                          <label className="form-label" htmlFor="broker-select">
+                            To Sub-Admin
+                          </label>
+                          <div className="input-group">
+                            <select
+                              id="broker-select"
+                              className="form-control"
+                              value={selectedSubadmin}
+                              onChange={handleSubadmins}
+                            >
+                              <option value="all">All</option>
+                              {subadmin &&
+                                subadmin.map((val) => (
+                                  <option key={val._id} value={val._id}>
+                                    {val.UserName}
+                                  </option>
+                                ))}
+                            </select>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="input-block mt-3">
-                        <label className="form-label" htmlFor="message">
-                          Message
-                        </label>
-                        <textarea
-                          id="message"
-                          className="form-control"
-                          rows="4"
-                          value={messageText}
-                          onChange={(e) => setMessageText(e.target.value)}
-                        ></textarea>
-                      </div>
-                      <button
-                        type="button"
-                        className="btn btn-primary mt-3"
-                        onClick={sendMessage}
-                      >
-                        Send
-                      </ button>
-                    </div >
-                  </div>
-
-
-                </>
-
-              </CustomTabPanel>
-              <CustomTabPanel value={value} index={1}>
-                {loading ? (
-                  <Loader />
-                ) : (
+                        <div className="input-block mt-3">
+                          <label className="form-label" htmlFor="message">
+                            Message
+                          </label>
+                          <textarea
+                            id="message"
+                            className="form-control"
+                            rows="4"
+                            value={messageText}
+                            onChange={(e) => setMessageText(e.target.value)}
+                          ></textarea>
+                        </div>
+                        <button
+                          type="button"
+                          className="btn btn-primary mt-3"
+                          onClick={sendMessage}
+                        >
+                          Send
+                        </ button>
+                      </div >
+                    </div>
 
 
-                  <div className="mt-5">
-                    <FullDataTable
-                      styles={styles}
-                      columns={columns}
-                      rows={pipelineData}
-                    />
+                  </>
 
-                  </div>
+                </TabPanel>
+
+                <TabPanel value="1" >
+                  {loading ? (
+                    <Loader />
+                  ) : (
 
 
-                )}
+                    <div className="mt-5">
+                      <FullDataTable
+                        styles={styles}
+                        columns={columns}
+                        rows={pipelineData}
+                      />
 
-              </CustomTabPanel>
+                    </div>
 
+
+                  )}
+
+                </TabPanel>
+
+              </TabContext>
             </Box>
 
 

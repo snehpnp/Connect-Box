@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable'
 import { Get_All_Researcher, Update_Balance, Delete_Researcher } from '../../../ReduxStore/Slice/Researcher/ResearcherSlice'
 import { useDispatch } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import { Trash2, IndianRupee } from 'lucide-react'
@@ -16,6 +16,7 @@ import { fDateTime } from "../../../Utils/Date_formet";
 
 const AllResearcher = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [allResearcher, setAllResearcher] = useState({
     loading: true,
@@ -154,7 +155,7 @@ const AllResearcher = () => {
           <IconButton
             aria-label="edit"
             size="small"
-            onClick={() => handleEdit(params.row)}
+            onClick={() => handleEdit(params.row, params)}
           >
             <EditIcon />
           </IconButton>
@@ -177,12 +178,11 @@ const AllResearcher = () => {
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
     }
   ]
-
-
-  const handleEdit = () => {
-      
+  const handleEdit = (id, obj) => {
+    navigate(`/admin/research/edit/${id._id}`, { state: { rowData: obj.row } });
   }
-
+  
+  
 
   const handleDelete = async (row) => {
     const result = await Swal.fire({
