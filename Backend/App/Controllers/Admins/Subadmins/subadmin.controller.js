@@ -154,14 +154,14 @@ class Subadmin {
 
       await Subadmin_company.save();
 
-       res.status(200).send({
+      res.status(200).send({
         status: true,
         msg: "Successfully added!",
         data: { UserId: savedUser.user_id },
       });
 
 
-      
+
       var toEmail = Email;
       var subjectEmail = "User ID and Password";
       var email_data = {
@@ -331,21 +331,34 @@ class Subadmin {
     }
   }
 
-  async GetAllRechargeDetails(req, res) {
+  async  GetAllRechargeDetails(req, res) {
     try {
-      const { Role } = req.body;
-
+      let { Role } = req.body;
+  
       if (!Role) {
         return res.send({
           status: false,
           msg: "Role is required in the request body",
         });
       }
-
+  
+      let matchStage;
+      if (Role === "SUBADMIN") {
+        matchStage = {
+          $match: {
+            Role: { $in: ["SUBADMIN", "RESEARCH"] },
+          },
+        };
+      } else {
+        matchStage = {
+          $match: {
+            Role: Role,
+          },
+        };
+      }
+  
       const rechargeDetails = await count_licenses.aggregate([
-        {
-          $match: { Role },
-        },
+        matchStage,
         {
           $lookup: {
             from: "users",
@@ -364,12 +377,14 @@ class Subadmin {
             Role: 1,
             Mode: 1,
             createdAt: 1,
-
             username: "$user.UserName",
           },
         },
+        {
+          $sort: { createdAt: -1 } // Sort by createdAt field in descending order
+        }
       ]);
-
+  
       res.send({
         status: true,
         msg: "Recharge details fetched successfully",
@@ -380,6 +395,7 @@ class Subadmin {
       res.send({ status: false, msg: "Internal Server Error" });
     }
   }
+  
 
   async GetAllRechargeDetailsById(req, res) {
     try {

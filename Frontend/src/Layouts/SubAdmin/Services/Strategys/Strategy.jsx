@@ -31,7 +31,6 @@ function Strategy() {
         data: [],
     });
 
-    console.log("GetAllSgments :", GetAllSgments)
 
 
 
@@ -42,7 +41,7 @@ function Strategy() {
 
 
     var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
- 
+
 
 
     const [ForGetCSV, setForGetCSV] = useState([])
@@ -302,7 +301,7 @@ function Strategy() {
             if (!values.strategy_amount_early) {
                 errors.strategy_amount_early = "amount is required";
             }
-            if (subadmin_service_type==1 && !values.Service_Type) {
+            if (subadmin_service_type == 1 && !values.Service_Type) {
                 errors.Service_Type = "Please Select Service Type";
             }
             return errors;
@@ -329,10 +328,10 @@ function Strategy() {
                 Role: "SUBADMIN",
                 Service_Type: values.Service_Type != '' ? values.Service_Type : subadmin_service_type == 1 ? 1 : 0
             };
-             
 
-         
-           
+
+
+
             await dispatch(AddStrategy(data))
                 .unwrap()
                 .then(async (response) => {
@@ -369,7 +368,7 @@ function Strategy() {
     });
 
 
-    
+
 
     const RefreshHandle = () => {
         setrefresh(!refresh)
@@ -471,15 +470,17 @@ function Strategy() {
                 {/* PAGE HEADER */}
                 <div className="card">
                     <div className="card-header ">
-                        <h5 className="card-title mb-0">Strategies</h5>
-                        </div>
-                        <div className="card-body">
-                        <div className="page-content">
-                            <div className="list-btn">
-                                <ul className="filter-list justify-content-lg-end">
-                                    <li className="mt-3">
+                        <div className="row align-items-center">
+                              <div className="col">
+                              <h5 className="card-title mb-0"><i className=" pe-2 fas fa-chart-line"></i>Strategies</h5>
+
+                              </div>
+                              <div className="col-auto">
+                              <div className="list-btn">
+                                <ul className="mb-0 filter-list justify-content-lg-end">
+                                    <li className="">
                                         <p
-                                            className="btn-filters"
+                                            className="mb-0 btn-filters"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Refresh"
@@ -490,7 +491,7 @@ function Strategy() {
                                             </span>
                                         </p>
                                     </li>
-                                    <li>
+                                    <li className="serach-li">
                                         <div className="input-group input-block">
                                             <input
                                                 type="text"
@@ -536,304 +537,313 @@ function Strategy() {
                                     </li>
                                 </ul>
                             </div>
+                              </div>
                         </div>
-                   
+                        </div>
+                        <div className="card-body">
+                     <div className="page-content">
+                         
+                        </div>
 
-                {/* Cards */}
-                {allStategy.loading ? (
-                    <div className="content container-fluid pb-0">
-                        <div className="row d-flex align-items-center justify-content-center">
 
-                            {allStategy.data.map((stg) => {
-                                return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                    <div className="packages card" data-aos="fade-down">
-                                        <div className="package-header d-flex justify-content-between">
-                                            <div className="d-flex justify-content-between w-100">
-                                                <div className="">
-                                                    <h6>Segment: {stg.strategy_segment}</h6>
+                        {/* Cards */}
+                        {allStategy.loading ? (
+                            <div className="content container-fluid pb-0">
+                                <div className="row d-flex align-items-center justify-content-center">
 
-                                                    <h2 className="my-2">{stg.strategy_name}</h2>
+                                    {allStategy.data.map((stg) => {
+                                        return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                            <div className="packages card" data-aos="fade-down">
+                                                <div className="package-header d-flex justify-content-between">
+                                                    <div className="d-flex justify-content-between w-100">
+                                                        <div className="">
+                                                            <h6>Segment: {stg.strategy_segment}</h6>
 
+                                                            <h2 className="my-2">{stg.strategy_name}</h2>
+
+                                                        </div>
+                                                        <span className="icon-frame d-flex align-items-center justify-content-center">
+                                                            {/* <img src="assets/img/icons/price-01.svg" alt="img" /> */}
+                                                            <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
+
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                                <span className="icon-frame d-flex align-items-center justify-content-center">
-                                                    {/* <img src="assets/img/icons/price-01.svg" alt="img" /> */}
-                                                    <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
+                                             { stg.researcher_id != null ?  <span><i>Researcher :</i> {stg.researcher_id && stg.researcher_id.UserName }</span> :""}
+                                             
+                                                <p class="text-dark"><b>{stg.strategy_description}</b></p>
 
-                                                </span>
+                                                <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
+                                                <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                        <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                        <span >Demo</span>
+                                                        <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
+                                                    </li>
+                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                        <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                        <span >Month</span>
+                                                        <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_month}/month</span>
+                                                    </li>
+                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                        <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                        <span >Quarterly</span>
+                                                        <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_quarterly}/Quarterly</span>
+                                                    </li>
+                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                        <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                        <span >Half Yearly</span>
+                                                        <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_half_early}/half year</span>
+                                                    </li>
+                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                        <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                        <span >Yearly</span>
+                                                        <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_early}/year</span>
+                                                    </li>
+                                                </ul>
 
+                                                <div className="d-flex justify-content-center package-edit">
+
+
+                                                    <a className="btn-action-icon me-2"  >
+                                                        <i className="fe fe-edit" onClick={() => handleEditPackage({ id: stg._id })} />
+                                                    </a>
+
+                                                    {stg.researcher_id == null ? <a className="btn-action-icon" onClick={() => { handleDelete(stg._id); }}  >
+                                                        <i className="fe fe-trash-2" />
+                                                    </a> : ""}
+                                                </div>
                                             </div>
                                         </div>
-                                        <p>{stg.strategy_description}</p>
-
-                                        <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
-                                        <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
-                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Demo</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
-                                            </li>
-                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Month</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_month}/month</span>
-                                            </li>
-                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Quarterly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_quarterly}/Quarterly</span>
-                                            </li>
-                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Half Yearly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_half_early}/half year</span>
-                                            </li>
-                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Yearly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_early}/year</span>
-                                            </li>
-                                        </ul>
-
-                                        <div className="d-flex justify-content-center package-edit">
+                                    })}
 
 
-                                            <a className="btn-action-icon me-2"  >
-                                                <i className="fe fe-edit" onClick={() => handleEditPackage({ id: stg._id })} />
-                                            </a>
 
-                                            <a className="btn-action-icon" onClick={() => { handleDelete(stg._id); }}  >
-                                                <i className="fe fe-trash-2" />
-                                            </a>
+                                </div>
+                            </div>
+
+                        ) : (<Loader />)}
+                        <nav aria-label="Page navigation example">
+                            <ul className="pagination d-flex justify-content-center">
+                                <li className="page-item">
+                                    <a className="page-link" href="#">
+                                        Previous
+                                    </a>
+                                </li>
+                                <li className="page-item">
+                                    <a className="page-link" href="#">
+                                        1
+                                    </a>
+                                </li>
+                                <li className="page-item">
+                                    <a className="page-link" href="#">
+                                        2
+                                    </a>
+                                </li>
+                                <li className="page-item">
+                                    <a className="page-link" href="#">
+                                        3
+                                    </a>
+                                </li>
+                                <li className="page-item">
+                                    <a className="page-link" href="#">
+                                        Next
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+
+
+
+
+
+                        {/* ADD STRATEGY */}
+                        {showModal && (
+                            <div className="modal custom-modal custom-lg-modal d-block">
+                                <div className="modal-dialog modal-dialog-centered modal-md">
+                                    <div className="modal-content">
+                                        <div className="modal-header border-0 mb-0 pb-0 ">
+                                            <div className="form-header modal-header-title text-start mb-0">
+                                                <h4 className="mb-0">Create New Strategy</h4>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                className="btn-close"
+                                                onClick={closeModal}
+                                            ></button>
+                                        </div>
+                                        <div className="modal-body m-0 p-0">
+                                            <AddForm
+                                                ProfileShow={formik.values.strategy_image}
+                                                fields={fields}
+                                                formik={formik}
+                                                btn_name="Add Strategy"
+                                                additional_field={
+                                                    <>
+
+                                                        <label>Strategy Description</label>
+                                                        <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
+                                                        </textarea>
+                                                        {
+                                                            formik.errors.getStgDescription ? (
+                                                                <div style={{ color: "red" }}>
+                                                                    {formik.errors.getStgDescription}
+                                                                </div>
+                                                            ) : null
+                                                        }
+                                                    </>
+
+                                                }
+                                            />
                                         </div>
                                     </div>
                                 </div>
-                            })}
-
-
-
-                        </div>
-                    </div>
-
-                ) : (<Loader />)}
-                <nav aria-label="Page navigation example">
-                    <ul className="pagination d-flex justify-content-center">
-                        <li className="page-item">
-                            <a className="page-link" href="#">
-                                Previous
-                            </a>
-                        </li>
-                        <li className="page-item">
-                            <a className="page-link" href="#">
-                                1
-                            </a>
-                        </li>
-                        <li className="page-item">
-                            <a className="page-link" href="#">
-                                2
-                            </a>
-                        </li>
-                        <li className="page-item">
-                            <a className="page-link" href="#">
-                                3
-                            </a>
-                        </li>
-                        <li className="page-item">
-                            <a className="page-link" href="#">
-                                Next
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-
-
-
-
-
-                {/* ADD STRATEGY */}
-                {showModal && (
-                    <div className="modal custom-modal custom-lg-modal d-block">
-                        <div className="modal-dialog modal-dialog-centered modal-md">
-                            <div className="modal-content">
-                                <div className="modal-header border-0 mb-0 pb-0 ">
-                                    <div className="form-header modal-header-title text-start mb-0">
-                                        <h4 className="mb-0">Create New Strategy</h4>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        className="btn-close"
-                                        onClick={closeModal}
-                                    ></button>
-                                </div>
-                                <div className="modal-body m-0 p-0">
-                                    <AddForm
-                                        ProfileShow={formik.values.strategy_image}
-                                        fields={fields}
-                                        formik={formik}
-                                        btn_name="Add Strategy"
-                                        additional_field={
-                                            <>
-
-                                                <label>Strategy Description</label>
-                                                <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
-                                                </textarea>
-                                                {
-                                                    formik.errors.getStgDescription ? (
-                                                        <div style={{ color: "red" }}>
-                                                            {formik.errors.getStgDescription}
-                                                        </div>
-                                                    ) : null
-                                                }
-                                            </>
-
-                                        }
-                                    />
-                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                )}
+                        )}
 
 
 
-                {/* STRATEGY VIEW */}
-                {opneModal && (
-                    <div
-                        className="modal custom-modal custom-lg-modal d-block"
-                        id="view_companies"
-                        role="dialog"
-                    >
-                        <div className="modal-dialog modal-dialog-centered modal-md">
-                            <div className="modal-content">
-                                <div className="modal-header border-0 d-flex justify-content-between">
-                                    <div className="form-header modal-header-title text-start mb-0">
-                                        <h4 className="mb-0">Hello Company Details</h4>
-                                    </div>
-                                    <div className="d-flex ">
+                        {/* STRATEGY VIEW */}
+                        {opneModal && (
+                            <div
+                                className="modal custom-modal custom-lg-modal d-block"
+                                id="view_companies"
+                                role="dialog"
+                            >
+                                <div className="modal-dialog modal-dialog-centered modal-md">
+                                    <div className="modal-content">
+                                        <div className="modal-header border-0 d-flex justify-content-between">
+                                            <div className="form-header modal-header-title text-start mb-0">
+                                                <h4 className="mb-0">Hello Company Details</h4>
+                                            </div>
+                                            <div className="d-flex ">
 
-                                        <Link className="modal-edit-link d-flex align-items-center border p-2" to={`/subadmin/edit/strategies/` + StrategyId}>
-                                            <i className="fe fe-edit me-2" />
-                                            Edit Strategy
-                                        </Link>
-                                        <button
-                                            type="button"
-                                            className="btn-close ms-2"
-                                            onClick={() => setopneModal(false)}
-                                        ></button>
-                                    </div>
-                                </div>
-                                <div className="modal-body pb-0">
-                                    <div className="row">
-                                        <div className="col-md-12">
-                                            <div className="form-field-item">
-                                                <div className="profile-picture company-detail-head">
-                                                    <div className="upload-profile">
-                                                        <div className="profile-img company-profile-img">
-                                                            <img
-                                                                id="view-company-img"
-                                                                className="img-fluid me-0"
-                                                                src="assets/img/companies/company-01.svg"
-                                                                alt="profile-img"
-                                                            />
-                                                        </div>
-                                                        <div className="add-profile">
-                                                            <h5>Hermann Groups</h5>
-                                                            <span>
-                                                                <a
-                                                                    href="https://kanakku.dreamstechnologies.com/cdn-cgi/l/email-protection"
-                                                                    className="__cf_email__"
-                                                                    data-cfemail="2a624f58474646584349426a4f524b475a464f04494547"
-                                                                >
-                                                                    [email&nbsp;protected]
-                                                                </a>
+                                                <Link className="modal-edit-link d-flex align-items-center border p-2" to={`/subadmin/edit/strategies/` + StrategyId}>
+                                                    <i className="fe fe-edit me-2" />
+                                                    Edit Strategy
+                                                </Link>
+                                                <button
+                                                    type="button"
+                                                    className="btn-close ms-2"
+                                                    onClick={() => setopneModal(false)}
+                                                ></button>
+                                            </div>
+                                        </div>
+                                        <div className="modal-body pb-0">
+                                            <div className="row">
+                                                <div className="col-md-12">
+                                                    <div className="form-field-item">
+                                                        <div className="profile-picture company-detail-head">
+                                                            <div className="upload-profile">
+                                                                <div className="profile-img company-profile-img">
+                                                                    <img
+                                                                        id="view-company-img"
+                                                                        className="img-fluid me-0"
+                                                                        src="assets/img/companies/company-01.svg"
+                                                                        alt="profile-img"
+                                                                    />
+                                                                </div>
+                                                                <div className="add-profile">
+                                                                    <h5>Hermann Groups</h5>
+                                                                    <span>
+                                                                        <a
+                                                                            href="https://kanakku.dreamstechnologies.com/cdn-cgi/l/email-protection"
+                                                                            className="__cf_email__"
+                                                                            data-cfemail="2a624f58474646584349426a4f524b475a464f04494547"
+                                                                        >
+                                                                            [email&nbsp;protected]
+                                                                        </a>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                            <span className="badge bg-success-light d-inline-flex align-items-center">
+                                                                <i className="fe fe-check me-1" />
+                                                                Active
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <span className="badge bg-success-light d-inline-flex align-items-center">
-                                                        <i className="fe fe-check me-1" />
-                                                        Active
-                                                    </span>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                            <div className="plane-basic-info">
-                                                <h5>Basic Info</h5>
-                                                <div className="row">
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Account URL</h6>
-                                                            <p>hru.example.com</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Phone Number</h6>
-                                                            <p>+1 15541 54544</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Website</h6>
-                                                            <p>www.example.com</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Company Address</h6>
-                                                            <p>
-                                                                22 Junior Avenue <br />
-                                                                Duluth, GA 30097
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Currency</h6>
-                                                            <p>United Stated Dollar (USD)</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Language</h6>
-                                                            <p>English</p>
+                                                <div className="col-md-12">
+                                                    <div className="plane-basic-info">
+                                                        <h5>Basic Info</h5>
+                                                        <div className="row">
+                                                            <div className="col-md-4 col-sm-6">
+                                                                <div className="basic-info-detail">
+                                                                    <h6>Account URL</h6>
+                                                                    <p>hru.example.com</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-4 col-sm-6">
+                                                                <div className="basic-info-detail">
+                                                                    <h6>Phone Number</h6>
+                                                                    <p>+1 15541 54544</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-4 col-sm-6">
+                                                                <div className="basic-info-detail">
+                                                                    <h6>Website</h6>
+                                                                    <p>www.example.com</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-4 col-sm-6">
+                                                                <div className="basic-info-detail">
+                                                                    <h6>Company Address</h6>
+                                                                    <p>
+                                                                        22 Junior Avenue <br />
+                                                                        Duluth, GA 30097
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-4 col-sm-6">
+                                                                <div className="basic-info-detail">
+                                                                    <h6>Currency</h6>
+                                                                    <p>United Stated Dollar (USD)</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-4 col-sm-6">
+                                                                <div className="basic-info-detail">
+                                                                    <h6>Language</h6>
+                                                                    <p>English</p>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-12">
-                                            <div className="plane-basic-info plane-detail">
-                                                <h5>Plan Details</h5>
-                                                <div className="row">
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Plan Name</h6>
-                                                            <p>Enterprise</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Plan Type</h6>
-                                                            <p>Yearly</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Price</h6>
-                                                            <p>$200</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Register Date</h6>
-                                                            <p>15 Jan 2024</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-4 col-sm-6">
-                                                        <div className="basic-info-detail">
-                                                            <h6>Expiring On</h6>
-                                                            <p>15 Jan 2025</p>
+                                                <div className="col-md-12">
+                                                    <div className="plane-basic-info plane-detail">
+                                                        <h5>Plan Details</h5>
+                                                        <div className="row">
+                                                            <div className="col-md-4 col-sm-6">
+                                                                <div className="basic-info-detail">
+                                                                    <h6>Plan Name</h6>
+                                                                    <p>Enterprise</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-4 col-sm-6">
+                                                                <div className="basic-info-detail">
+                                                                    <h6>Plan Type</h6>
+                                                                    <p>Yearly</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-4 col-sm-6">
+                                                                <div className="basic-info-detail">
+                                                                    <h6>Price</h6>
+                                                                    <p>$200</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-4 col-sm-6">
+                                                                <div className="basic-info-detail">
+                                                                    <h6>Register Date</h6>
+                                                                    <p>15 Jan 2024</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-4 col-sm-6">
+                                                                <div className="basic-info-detail">
+                                                                    <h6>Expiring On</h6>
+                                                                    <p>15 Jan 2025</p>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -841,19 +851,17 @@ function Strategy() {
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
-                        </div>
-
-                    </div>
-                )}
+                        )}
 
 
-                <ToastButton />
+                        <ToastButton />
 
-            </div >
-            < ToastButton />
-            </div>
+                    </div >
+                    < ToastButton />
                 </div>
+            </div>
         </>
 
 

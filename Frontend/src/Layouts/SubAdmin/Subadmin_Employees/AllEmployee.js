@@ -202,17 +202,17 @@ export default function AllEmployees() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div className="status-toggle" style={{ width: '180', position: 'relative' }}>
-        <select id="strategySelect" className="form-select" style={{ width: '180', overflowX: 'hidden' }}>
-          <option value="">User List</option>
-          {params.value.map((data, index) => (
-            <option key={index} value={data.UserName}>{data.UserName}</option>
-          ))}
-        </select>
-        <div className="dropdown-arrow" style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-          ▼
+          <select id="strategySelect" className="form-select" style={{ width: '180', overflowX: 'hidden' }}>
+            <option value="">User List</option>
+            {params.value.map((data, index) => (
+              <option key={index} value={data.UserName}>{data.UserName}</option>
+            ))}
+          </select>
+          <div className="dropdown-arrow" style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
+            ▼
+          </div>
         </div>
-      </div>
-      
+
       ),
     },
 
@@ -363,77 +363,83 @@ export default function AllEmployees() {
         <>
           <div className="content container-fluid" data-aos="fade-left">
 
-            <div className="page-header">
-              <div className="content-page-header">
-                <h5>All Employees</h5>
-                <div className="page-content">
-                  <div className="list-btn">
-                    <ul className="filter-list">
-                      <li className="mt-3">
-                        <p
-                          className="btn-filters"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Refresh"
-                          onClick={RefreshHandle}
-                        >
-                          <span>
-                            <i className="fe fe-refresh-ccw" />
-                          </span>
-                        </p>
-                      </li>
-                      <li>
-                        <div className="input-group input-block">
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Search..."
-                            aria-label="Search"
-                            aria-describedby="search-addon"
-                            onChange={(e) => setSearchInput(e.target.value)}
-                            value={searchInput}
-                          />
-                        </div>
-                      </li>
-                      <li>
-                        <div
-                          className="dropdown dropdown-action"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Download"
-                        >
-                          <div className="card-body">
+            <div className="card">
+              <div className="card-header">
+                <div className="row align-center">
+                  <div className="col">
+                    <h5 className="card-title mb-0">All Employees</h5>
+                  </div>
+                  <div className="col-auto">
+                    <div className="list-btn">
+                      <ul className="filter-list mb-0">
+                        <li className="">
+                          <p
+                            className="btn-filters mb-0"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            title="Refresh"
+                            onClick={RefreshHandle}
+                          >
+                            <span>
+                              <i className="fe fe-refresh-ccw" />
+                            </span>
+                          </p>
+                        </li>
+                        <li className="serach-li">
+                          <div className="input-group input-block">
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Search..."
+                              aria-label="Search"
+                              aria-describedby="search-addon"
+                              onChange={(e) => setSearchInput(e.target.value)}
+                              value={searchInput}
+                            />
+                          </div>
+                        </li>
+                        <li>
+                          <div
+                            className="dropdown dropdown-action"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            title="Download"
+                          >
+
                             <ExportToExcel
                               className="btn btn-primary"
                               apiData={ForGetCSV}
                               fileName={"All Employee Details"}
                             />
+
                           </div>
-                        </div>
-                      </li>
-                      <li>
-                        <Link
-                          to={"/subadmin/employee/add"}
-                          className="btn btn-primary"
-                        >
-                          <i
-                            className="fa fa-plus-circle me-2"
-                            aria-hidden="true"
-                          />
-                          Add Employees
-                        </Link>
-                      </li>
-                    </ul>
+                        </li>
+                        <li>
+                          <Link
+                            to={"/subadmin/employee/add"}
+                            className="btn btn-primary"
+                          >
+                            <i
+                              className="fa fa-plus-circle me-2"
+                              aria-hidden="true"
+                            />
+                            Add Employees
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
+              <div className="card-body">
+                <FullDataTable
+                  styles={styles}
+                  label={label}
+                  columns={columns}
+                  rows={getAllUsers.data}
+                />
+              </div>
             </div>
-            <FullDataTable
-              styles={styles}
-              label={label}
-              columns={columns}
-              rows={getAllUsers.data}
-            />
           </div>
         </>
       ) : (

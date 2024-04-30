@@ -32,6 +32,9 @@ import AddEmployee from '../Layouts/SubAdmin/Subadmin_Employees/AddEmployee'
 import Edit_Employee from '../Layouts/SubAdmin/Subadmin_Employees/Update_Employee'
 import AllResearcherStrategy from '../Layouts/SubAdmin/Researcher/AllResearcherStrategy.js'
 
+import Test from '../Layouts/SubAdmin/MessageBroadCast/test.js'
+
+
 
 
 
@@ -79,6 +82,7 @@ const SubAdmin_Routing = () => {
 
 
           
+          <Route exact path="/test" element={<Test />} />
           
 
         </Routes>

@@ -348,9 +348,14 @@ class strategy {
 
       // var getAllTheme = await strategy_model.find()
       const getAllstrategy = await strategy_model
-        .find({ maker_id: id })
-        .sort({ createdAt: -1 })
-        .select('_id strategy_name strategy_description strategy_demo_days strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early strategy_category strategy_segment strategy_image Service_Type maker_id createdAt updatedAt __v');
+      .find({ maker_id: id })
+      .sort({ createdAt: -1 })
+      .populate({
+          path: 'researcher_id',
+          select: 'UserName', 
+      })
+      .select('_id strategy_name strategy_description strategy_demo_days strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early strategy_category strategy_segment strategy_image Service_Type maker_id createdAt updatedAt __v researcher_id');
+  
 
       // IF DATA NOT EXIST
       if (getAllstrategy.length == 0) {
@@ -367,6 +372,13 @@ class strategy {
       console.log("Error Get All Strategy Error-", error);
     }
   }
+
+
+
+
+
+
+  
   // GET ALL STRATEGYS
   async GetAllSubadminStrategy(req, res) {
     try {
@@ -699,8 +711,6 @@ class strategy {
           security_fund:"$strategies.security_fund",
           monthly_charges:"$strategies.monthly_charges",
           maker_id:"$strategies.maker_id",
-
-
 
 
         }

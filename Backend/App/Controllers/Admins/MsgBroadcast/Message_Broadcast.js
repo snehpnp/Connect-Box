@@ -40,7 +40,7 @@ class MessageController {
             Role,
           });
           await msg.save();
-          io.emit("message_updated", msg);
+          // io.emit("message_updated", msg);
         }
       } else if (Role === "SUBADMIN") {
         msg = new msgdata({
@@ -75,14 +75,14 @@ class MessageController {
 
       let matchCondition = {};
 
-      if (key === 1) {
+      if (key == 1) {
         matchCondition = {
           $or: [
             { Role: "SUBADMIN", ownerId: new ObjectId(ownerId) },
-            { Role: "ADMIN", subAdminId: { $in: [new ObjectId(ownerId)] } }
+            // { Role: "ADMIN", subAdminId: { $in: [new ObjectId(ownerId)] } }
           ]
         };
-      } else if (key === 2) {
+      } else if (key == 2) {
         matchCondition = {
           $or: [
             { Role: "SUBADMIN" },
@@ -97,8 +97,10 @@ class MessageController {
         });
       }
 
+      console.log("matchCondition",matchCondition)
+
       const pipeline = [
-        { $match: matchCondition },
+        { $match:  { Role: "SUBADMIN", ownerId: new ObjectId(ownerId) } },
         {
           $lookup: {
             from: "users",
