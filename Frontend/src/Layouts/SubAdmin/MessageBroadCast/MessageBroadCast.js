@@ -435,7 +435,7 @@ function MessageBroadcast() {
                           rows="4"
                           value={messageText}
                           onChange={(e) => handleChande(e)}
-                          
+                          autoFocus 
                         ></textarea>
                       </div>
                       <button
