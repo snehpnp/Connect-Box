@@ -28,6 +28,6 @@ module.exports = function (app) {
 
     app.use(require("./Researcher/Researcher.routes"))
     //faq
-    app.use(require("./Comman/FAQ.routes"))
+    // app.use(require("./Comman/FAQ.routes"))
 
 };

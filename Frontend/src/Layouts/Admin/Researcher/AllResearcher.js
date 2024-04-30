@@ -171,7 +171,7 @@ const AllResearcher = () => {
     },
     {
       field: "createdAt",
-      headerName: "Create Date",
+      headerName: "Account Created At",
       width: 220,
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
@@ -180,7 +180,7 @@ const AllResearcher = () => {
 
 
   const handleEdit = () => {
-
+      
   }
 
 

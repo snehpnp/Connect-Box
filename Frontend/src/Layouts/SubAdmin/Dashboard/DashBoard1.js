@@ -125,8 +125,8 @@ const DashBoard = () => {
     { key: "TotalExpiredLiveUsercount", title: "Expired Live Users" },
     { key: "TotalTodayUsercount", title: "Today Total User" },
     { key: "TotalActiveTodayUsercount", title: "Today Active Users" },
-    { key: "TotalExpiredTodayUsercount", title: "Converted Users" },
-    { key: "TotalDemoUsercount", title: "Demo Users" },
+    { key: "TotalExpiredTodayUsercount", title: " Today Expired Users" },
+    { key: "TotalDemoUsercount", title: "Total Demo Users" },
     { key: "TotalActiveDemoUsercount", title: "Active Demo Users" },
     { key: "TotalExpiredDemoUsercount", title: "Expired Demo Users" },
   ];
