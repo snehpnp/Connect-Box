@@ -269,7 +269,7 @@ export const subamdin_header = [
     {
         id: 25,
         name: 'More',
-        Icon: "fe fe-target",
+        Icon: "fa-solid fa-ellipsis-vertical",
         Data: [
             {
                 id: 10,
@@ -282,7 +282,7 @@ export const subamdin_header = [
                 id: 11,
                 name: 'Help',
                 route: "/subadmin/help",
-                Icon: "fe fe-help-circle",
+                Icon: "fa-solid fa-circle-info",
                 Data: []
             },
             {
@@ -367,7 +367,7 @@ export const User_header = [
         id: 5,
         name: 'Help',
         route: "/user/help",
-        Icon: "fe fe-help-circle",
+        Icon: "fa-solid fa-circle-info",
         Data: []
     },
     {
@@ -442,7 +442,7 @@ export const employee_header = [
         id: 9,
         name: 'FAQs',
         route: "/employee/faqs",
-        Icon: "fe fe-help-circle",
+        Icon: "fa-solid fa-circle-info",
         Data: []
     }
 ];
@@ -600,7 +600,7 @@ export const research_header = [
         id: 11,
         name: 'Help',
         route: "/research/help",
-        Icon: "fe fe-help-circle",
+        Icon: "fa-solid fa-circle-info",
         Data: []
     },
     {
