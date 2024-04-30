@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
+ 
 import Loader from "../../../../Utils/Loader";
-
 import FullDataTable from '../../../../Components/ExtraComponents/Tables/FullDataTable'
-
 import ExportToExcel from '../../../../Utils/ExportCSV'
-
-
-
 import {
   getAllServices,
   getCatogries,
@@ -171,7 +167,7 @@ const ServicesList = () => {
     forCSVdata()
   }, [AllServices.data])
 
-
+ 
 
 
   return (
@@ -241,7 +237,7 @@ const ServicesList = () => {
                     </div>
 
                   </li>
-
+                 
                   <li>
                     <div
                       className="dropdown dropdown-action"
@@ -266,6 +262,7 @@ const ServicesList = () => {
           </div>
         </div>
 
+
         {AllServices.loading ? <Loader /> :
           <FullDataTable
             styles={styles}
@@ -274,11 +271,10 @@ const ServicesList = () => {
 
           />
         }
-
       </div>
 
 
-
+       
     </>
   );
 };

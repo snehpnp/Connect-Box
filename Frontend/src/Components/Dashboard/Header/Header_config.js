@@ -484,8 +484,6 @@ export const research_header = [
         route: "/research/dashboard",
         Data: []
     },
-
-  
     {
         id: 5,
         name: 'Services',
@@ -503,7 +501,7 @@ export const research_header = [
                 'id': 53,
                 name: 'All Services',
                 Icon: "fe fe-list",
-                route: "/research/servicesAll",
+                route: "/research/allservice",
 
             },
         ]
@@ -529,13 +527,13 @@ export const research_header = [
             }
         ]
     },
-    {
-        id: 7,
-        name: 'Strategy History',
-        route: "/research/strategys/history",
-        Icon: "fe fe-credit-card",
-        Data: []
-    },
+    // {
+    //     id: 7,
+    //     name: 'Strategy History',
+    //     route: "/research/strategys/history",
+    //     Icon: "fe fe-credit-card",
+    //     Data: []
+    // },
     {
         id: 17,
         name: 'Strategy Transaction',
@@ -582,7 +580,7 @@ export const research_header = [
     {
         id: 10,
         name: 'Message Broadcast',
-        route: "/research/message-broadcast",
+        route: "/research/message_broadcast",
         Icon: "fe fe-message-circle",
         Data: []
     },

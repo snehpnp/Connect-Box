@@ -12,7 +12,6 @@ import Payment from '../Layouts/Admin/Payment/Payment';
 import Orders from '../Layouts/Admin/Trade/Order';
 import Positions from '../Layouts/Admin/Trade/Position';
 
-
 import Test from '../Layouts/Admin/Dashboard/text';
 
 import Login from '../Layouts/Auth/Login';
