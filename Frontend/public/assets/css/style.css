@@ -34623,6 +34623,10 @@ background-color: #ffefdd;
 
   
 
-[data-layout-mode=dark] .MuiDataGrid-cell {
+  [data-layout-mode=dark] .MuiDataGrid-cell {
     color: #ddd !important;
+}
+[data-layout-mode=dark] .MuiTablePagination-toolbar ,[data-layout-mode=dark] .MuiTab-textColorPrimary ,[data-layout-mode=dark] .MuiSelect-icon
+{
+    color: #fff;
 }
