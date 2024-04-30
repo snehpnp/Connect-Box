@@ -5,7 +5,8 @@ const User_model = db.user;
 const Role_model = db.role;
 const SubAdminCompanyInfo = db.SubAdminCompanyInfo;
 const strategy_transaction = db.strategy_transaction;
-
+const { CommonEmail } = require("../../../Helpers/CommonEmail");
+const { firstOptPass } = require("../../../Helpers/Email_formate/first_login");
 
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
@@ -153,16 +154,34 @@ class Subadmin {
 
       await Subadmin_company.save();
 
-      return res.status(200).send({
+      res.status(200).send({
         status: true,
         msg: "Successfully added!",
         data: { UserId: savedUser.user_id },
       });
+
+
+
+      var toEmail = Email;
+      var subjectEmail = "User ID and Password";
+      var email_data = {
+        FullName: FullName,
+        Email: Email,
+        Password: password,
+        // : subadmin_service_type == 1 ? "Trade wise" : subadmin_service_type == 2 ? "Strategy Wise" : "Trade wise"
+      };
+
+      var EmailData = await firstOptPass(email_data);
+      CommonEmail(toEmail, subjectEmail, EmailData);
     } catch (error) {
       console.error("Error:", error);
       return res.send({ msg: "Internal server error", error });
     }
   }
+
+
+
+
 
   // EDIT SUBADMIN
   async EditSubadmin(req, res) {
@@ -205,6 +224,10 @@ class Subadmin {
       res.send({ msg: "Error=>", error });
     }
   }
+
+
+
+
 
   async getallSubadmin(req, res) {
     try {
@@ -308,21 +331,34 @@ class Subadmin {
     }
   }
 
-  async GetAllRechargeDetails(req, res) {
+  async  GetAllRechargeDetails(req, res) {
     try {
-      const { Role } = req.body;
-
+      let { Role } = req.body;
+  
       if (!Role) {
         return res.send({
           status: false,
           msg: "Role is required in the request body",
         });
       }
-
+  
+      let matchStage;
+      if (Role === "SUBADMIN") {
+        matchStage = {
+          $match: {
+            Role: { $in: ["SUBADMIN", "RESEARCH"] },
+          },
+        };
+      } else {
+        matchStage = {
+          $match: {
+            Role: Role,
+          },
+        };
+      }
+  
       const rechargeDetails = await count_licenses.aggregate([
-        {
-          $match: { Role },
-        },
+        matchStage,
         {
           $lookup: {
             from: "users",
@@ -341,12 +377,14 @@ class Subadmin {
             Role: 1,
             Mode: 1,
             createdAt: 1,
-
             username: "$user.UserName",
           },
         },
+        {
+          $sort: { createdAt: -1 } // Sort by createdAt field in descending order
+        }
       ]);
-
+  
       res.send({
         status: true,
         msg: "Recharge details fetched successfully",
@@ -357,6 +395,7 @@ class Subadmin {
       res.send({ status: false, msg: "Internal Server Error" });
     }
   }
+  
 
   async GetAllRechargeDetailsById(req, res) {
     try {

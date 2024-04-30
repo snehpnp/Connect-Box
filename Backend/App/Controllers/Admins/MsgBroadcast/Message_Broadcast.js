@@ -40,7 +40,7 @@ class MessageController {
             Role,
           });
           await msg.save();
-          io.emit("message_updated", msg);
+          // io.emit("message_updated", msg);
         }
       } else if (Role === "SUBADMIN") {
         msg = new msgdata({
@@ -75,14 +75,14 @@ class MessageController {
 
       let matchCondition = {};
 
-      if (key === 1) {
+      if (key == 1) {
         matchCondition = {
           $or: [
             { Role: "SUBADMIN", ownerId: new ObjectId(ownerId) },
-            { Role: "ADMIN", subAdminId: { $in: [new ObjectId(ownerId)] } }
+            // { Role: "ADMIN", subAdminId: { $in: [new ObjectId(ownerId)] } }
           ]
         };
-      } else if (key === 2) {
+      } else if (key == 2) {
         matchCondition = {
           $or: [
             { Role: "SUBADMIN" },
@@ -97,8 +97,10 @@ class MessageController {
         });
       }
 
+      console.log("matchCondition",matchCondition)
+
       const pipeline = [
-        { $match: matchCondition },
+        { $match:  { Role: "SUBADMIN", ownerId: new ObjectId(ownerId) } },
         {
           $lookup: {
             from: "users",
@@ -113,16 +115,32 @@ class MessageController {
             UserName: "$makerInfo.UserName",
           },
         },
+
+        {
+          $lookup: {
+            from: "users",
+            localField: "subAdminId",
+            foreignField: "_id",
+            as: "makerInfo",
+          },
+        },
+        { $unwind: "$makerInfo" },
+        {
+          $addFields: {
+            FullName: "$makerInfo.UserName",
+          },
+        },
         {
           $project: {
             makerInfo: 0,
           },
         },
+        { $sort: { createdAt: -1 } }
       ];
 
       const getMessages = await msgdata.aggregate(pipeline);
 
-      res.send({
+      return res.send({
         status: true,
         msg: "Messages retrieved successfully",
         data: getMessages,
@@ -142,19 +160,15 @@ class MessageController {
     try {
       const { id } = req.body;
       if (!id) {
-        return res
-          .status(400)
-          .send({ message: "Message ID is required in the request body" });
+        return res.send({ message: "Message ID is required in the request body" });
       }
       const result = await msgdata.findByIdAndDelete(id);
       if (!result) {
-        return res
-          .status(404)
-          .send({ status: false, message: "Message not found" });
+        return res.send({ status: false, message: "Message not found" });
       }
       res.send({ status: true, message: "Message deleted successfully" });
     } catch (error) {
-      res.status(500).send({
+      res.send({
         status: false,
         message: "Error deleting message",
         error: error.message,
@@ -167,16 +181,14 @@ class MessageController {
       const { id, messageTitle } = req.body;
       const existingMsg = await msgdata.findById(id);
       if (!existingMsg) {
-        return res
-          .status(404)
-          .json({ status: false, msg: "Message not found", data: null });
+        return res.json({ status: false, msg: "Message not found", data: null });
       }
       existingMsg.messageTitle = messageTitle;
       const updatedMsg = await existingMsg.save();
-      return res.status(200).json({ status: true, msg: "Message updated successfully", data: updatedMsg });
+      return res.json({ status: true, msg: "Message updated successfully", data: updatedMsg });
     } catch (error) {
       console.error("Error updating message:", error);
-      return res.status(500).json({
+      return res.json({
         status: false,
         msg: "Error updating message",
         error: error.message,

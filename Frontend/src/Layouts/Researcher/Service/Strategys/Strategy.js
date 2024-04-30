@@ -3,7 +3,7 @@ import AddForm from '../../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
 import { GetStretgyWithImg, AddStrategy, DELETE_STRATEGY } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
 import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice';
-import {AddResearcherStrategy , GetAllResearcherStrategys} from '../../../../ReduxStore/Slice/Researcher/ResearcherSlice'
+import { AddResearcherStrategy, GetAllResearcherStrategys } from '../../../../ReduxStore/Slice/Researcher/ResearcherSlice'
 
 import Swal from 'sweetalert2';
 import { useDispatch } from "react-redux";
@@ -215,7 +215,7 @@ const Strategy = () => {
                 maker_id: user_id,
                 Role: "RESEARCH",
                 security_fund: values.security_fund,
-                monthly_charges:values.monthly_charges,
+                monthly_charges: values.monthly_charges,
             };
 
             await dispatch(AddResearcherStrategy(data))
@@ -370,10 +370,12 @@ const Strategy = () => {
             <div className="content container-fluid">
 
                 {/* PAGE HEADER */}
-                <div className="card">
-                    <div className="card-header">
-                        <h5 className='card-title mb-0'>Strategies</h5>
-                        <div className="card-body">
+
+
+                <div className="page-header">
+                    <div className="content-page-header">
+                        <h5>Strategies</h5>
+                        <div className="page-content">
                             <div className="list-btn">
                                 <ul className="filter-list">
                                     <li className="mt-3">
@@ -393,17 +395,16 @@ const Strategy = () => {
                                         <div className="input-group input-block">
                                             <input
                                                 type="text"
-                                                className="form-control "
+                                                className="form-control"
                                                 placeholder="Search..."
                                                 aria-label="Search"
                                                 aria-describedby="search-addon"
-                                            // onChange={(e) => setSearchInput(e.target.value)}
-                                            // value={searchInput}
-
+                                            // onChange={(e) => setInputSearch(e.target.value)}
+                                            // value={inputSearch}
                                             />
-
                                         </div>
                                     </li>
+
 
 
                                     <li>
@@ -413,25 +414,28 @@ const Strategy = () => {
                                             data-bs-placement="bottom"
                                             title="Download"
                                         >
-                                            <li>
-                                                <div className="card-body">
-                                                    {/* <ExportToExcel
-                                                        className="btn btn-primary "
-                                                        apiData={ForGetCSV}
-                                                        fileName={'All Strategy'} /> */}
-                                                </div>
-                                            </li>
+
+                                            <div className="card-body">
+                                                {/* <ExportToExcel
+                              className="btn btn-primary "
+                              apiData={ForGetCSV}
+                              fileName={'All Strategy'} /> */}
+                                            </div>
+
                                         </div>
                                     </li>
 
                                     <li>
-                                        <p
+                                        <Link
+                                            to={"/admin/subadmin/add"}
                                             className="btn btn-primary"
-                                            onClick={(e) => setShowCreateStrategyModal(true)}
                                         >
-                                            <i className="fa fa-plus-circle me-2" aria-hidden="true" />
+                                            <i
+                                                className="fa fa-plus-circle me-2"
+                                                aria-hidden="true"
+                                            />
                                             Create Strategy
-                                        </p>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>

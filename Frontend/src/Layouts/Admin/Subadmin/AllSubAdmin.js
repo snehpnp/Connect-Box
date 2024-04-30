@@ -115,7 +115,7 @@ export default function Help() {
     },
     {
       field: "Balance",
-      headerName: "Balance",
+      headerName: "Add Balance",
       width: 150,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
@@ -137,8 +137,8 @@ export default function Help() {
           }}
           onClick={() => { setmodal(true); setInitialRowData(params.row); }}
         >
-          <span style={{ fontWeight: 'bold', verticalAlign: 'middle' }}>
-            <IndianRupee style={{ height: "16px", marginBottom: '-4px', marginRight: '3px' }} /> {/* Adjusted icon size and margin */}
+          <span style={{ fontWeight: 'bold', verticalAlign: 'middle' }}> +
+            <IndianRupee style={{ height: "16px", marginBottom: '-4px', marginRight: '0px' ,padding:"0"}} /> 
             {params.value || '-'}
           </span>
         </div>

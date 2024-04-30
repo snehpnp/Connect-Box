@@ -4,6 +4,10 @@ const { Schema, model } = require('mongoose');
 const strategySchema = Schema({
     strategy_name: {
         type: String,
+       
+    },
+    stgname_adminid: {
+        type: String,
         unique: true
     },
     strategy_description: {
@@ -55,6 +59,11 @@ const strategySchema = Schema({
         default: null
     },
     maker_id: {
+        type: Schema.Types.ObjectId,
+        ref: "USER",
+        default: null
+    },
+    researcher_id: {
         type: Schema.Types.ObjectId,
         ref: "USER",
         default: null

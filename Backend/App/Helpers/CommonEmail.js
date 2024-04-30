@@ -1,74 +1,54 @@
-var nodemailer = require('nodemailer');
-
+const nodemailer = require('nodemailer');
 const db = require('../Models');
 const User = db.user;
 const company_information = db.company_information;
 
-
-const CommonEmail = async(toEmail, subjectEmail, htmlEmail, textEmail, res) => {
-    var id = 1;
+const CommonEmail = async (toEmail, subjectEmail, htmlEmail, textEmail, res) => {
     try {
-        
-        var Companydata= await company_information.find()
-
-        if(Companydata){
-
-            var transport = nodemailer.createTransport({
-                type: "smtp",
-                host: Companydata[0].smtphost,
-                port: Companydata[0].smtpport,
-                // ignoreTLS: false,
+        const companyData = await company_information.findOne();
+   
+        if (companyData) {
+            const transport = nodemailer.createTransport({
+                host: companyData.smtphost,
+                port: companyData.smtpport,
                 secure: true,
-                // secure: false,
-                // requireTLS: true,
                 auth: {
-                    user: Companydata[0].email,
-                    pass: Companydata[0].smtp_password
-                },
-                secureConnection: true
-    
+                    user: companyData.email,
+                    pass: companyData.smtp_password
+                }
             });
-            var mailOptions = {
-                from:  Companydata[0].email,
+            const mailOptions = {
+                from: companyData.email,
                 to: toEmail,
                 subject: subjectEmail,
-                cc:  Companydata[0].cc_mail,
-                bcc:  Companydata[0].bcc_mail,
+                cc: companyData.cc_mail,
+                bcc: companyData.bcc_mail,
                 text: textEmail,
                 html: htmlEmail
-    
             };
-    
 
-            
-            transport.verify(function (error, success) {
+            transport.verify((error, success) => {
                 if (error) {
-                    console.log("Error ",error);
+                    console.error("Error verifying transport:", error);
                 } else {
                     console.log("Server is ready to take our messages");
                 }
             });
-            transport.sendMail(mailOptions, function (err, info) {
+
+            transport.sendMail(mailOptions, (err, info) => {
                 if (err) {
-                    console.log("Error ",err);
-                    return res.send({ status: 'Failed!!!' })
+                    console.error("Error sending email:", err);
+                    // return res.send({ status: 'Failed!!!' });
                 } else {
-                    // console.log("Email has been sent", info.response);
-                    return res.send({ status: 'success', msg: "Mail send successfully" ,data:info.response })
+                    console.log("Email has been sent:", info.response);
+                    // return res.send({ status: 'success', msg: "Mail send successfully", data: info.response });
                 }
             });
         }
-
-
-
     } catch (error) {
-        console.log("Error In Email File :", error);
+        console.error("Error in CommonEmail function:", error);
+        // return res.status(500).send({ status: 'error', msg: 'Internal server error' });
     }
+};
 
-}
-
-
-
-
-
-module.exports = { CommonEmail }
+module.exports = { CommonEmail };

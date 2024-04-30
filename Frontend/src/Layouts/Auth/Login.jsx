@@ -224,6 +224,14 @@ function Login() {
 
     };
   }, []);
+
+
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      handleSubmit();
+    }
+  };
+  
   return (
 
     <div >
@@ -272,6 +280,7 @@ function Login() {
                               className="form-control pass-input"
                               value={password}
                               onChange={handlePasswordChange}
+                              onKeyPress={handleKeyPress}
                             />
                             <span
                               className={showPassword ? "fas fa-eye-slash toggle-password" : "fas fa-eye toggle-password"}
@@ -281,7 +290,7 @@ function Login() {
                         </div>
 
                         <div class="add-customer-btns d-flex justify-content-between text-end mt-3">
-                          <button className="btn customer-btn-save" onClick={handleSubmit} >
+                          <button className="btn customer-btn-save" onClick={handleSubmit}  onKeyPress={handleKeyPress} >
                             Login
                           </button>
                         </div>

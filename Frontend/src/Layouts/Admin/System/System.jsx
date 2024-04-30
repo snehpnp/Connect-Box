@@ -431,14 +431,14 @@ function System() {
 
                         <div className="col-lg-6 col-md-12">
                           <div className="input-block mb-3">
-                            <label>EMAIL</label>
+                            <label>EMAIL Password</label>
                             <input
                               type="email"
                               className="form-control"
-                              name="email"
-                              placeholder="Enter Email"
+                              name="smtp_password"
+                              placeholder="Enter Email Password"
                               defaultValue={
-                                (getCompanyData && getCompanyData[0].email) ||
+                                (getCompanyData && getCompanyData[0].smtp_password) ||
                                 ""
                               }
                               onChange={handleInputChange}

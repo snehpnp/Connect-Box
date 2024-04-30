@@ -10,7 +10,8 @@ var dt = dateTime.create();
 const count_licenses = db.count_licenses;
 const researcher_strategy = db.researcher_strategy;
 
-
+const { CommonEmail } = require("../../Helpers/CommonEmail");
+const { firstOptPass } = require("../../Helpers/Email_formate/first_login");
 
 
 class Researcher {
@@ -124,11 +125,32 @@ class Researcher {
             // Save new user and count licenses
             const savedUser = await newUser.save();
 
-            return res.status(200).send({
+            const count_licenses_add = new count_licenses({
+                user_id: savedUser._id,
+                Role: "RESEARCH",
+                admin_id: req.body.user_id,
+                Balance:req.body.Balance,
+                Mode: "CASH"
+              });
+              await count_licenses_add.save();
+
+
+             res.status(200).send({
                 status: true,
                 msg: "Successfully added!",
                 data: { UserId: savedUser.user_id },
             });
+
+            var toEmail = Email;
+            var subjectEmail = "User ID and Password";
+            var email_data = {
+              FullName: req.body.FullName,
+              Email: Email,
+              Password: Password,
+            };
+      
+            var EmailData = await firstOptPass(email_data);
+            CommonEmail(toEmail, subjectEmail, EmailData);
         } catch (error) {
             console.log(error, "Server side Error");
             return res.send({ status: false, msg: "Server side error" });

@@ -269,7 +269,7 @@ export const subamdin_header = [
     {
         id: 25,
         name: 'More',
-        Icon: "fe fe-target",
+        Icon: "fa-solid fa-ellipsis-vertical",
         Data: [
             {
                 id: 10,
@@ -282,7 +282,7 @@ export const subamdin_header = [
                 id: 11,
                 name: 'Help',
                 route: "/subadmin/help",
-                Icon: "fe fe-help-circle",
+                Icon: "fa-solid fa-circle-info",
                 Data: []
             },
             {
@@ -367,7 +367,7 @@ export const User_header = [
         id: 5,
         name: 'Help',
         route: "/user/help",
-        Icon: "fe fe-help-circle",
+        Icon: "fa-solid fa-circle-info",
         Data: []
     },
     {
@@ -442,7 +442,7 @@ export const employee_header = [
         id: 9,
         name: 'FAQs',
         route: "/employee/faqs",
-        Icon: "fe fe-help-circle",
+        Icon: "fa-solid fa-circle-info",
         Data: []
     }
 ];
@@ -494,8 +494,6 @@ export const research_header = [
         route: "/research/dashboard",
         Data: []
     },
-
-  
     {
         id: 5,
         name: 'Services',
@@ -513,7 +511,7 @@ export const research_header = [
                 'id': 53,
                 name: 'All Services',
                 Icon: "fe fe-list",
-                route: "/research/servicesAll",
+                route: "/research/allservice",
 
             },
         ]
@@ -539,13 +537,13 @@ export const research_header = [
             }
         ]
     },
-    {
-        id: 7,
-        name: 'Strategy History',
-        route: "/research/strategys/history",
-        Icon: "fe fe-credit-card",
-        Data: []
-    },
+    // {
+    //     id: 7,
+    //     name: 'Strategy History',
+    //     route: "/research/strategys/history",
+    //     Icon: "fe fe-credit-card",
+    //     Data: []
+    // },
     {
         id: 17,
         name: 'Strategy Transaction',
@@ -592,7 +590,7 @@ export const research_header = [
     {
         id: 10,
         name: 'Message Broadcast',
-        route: "/research/message-broadcast",
+        route: "/research/message_broadcast",
         Icon: "fe fe-message-circle",
         Data: []
     },
@@ -600,7 +598,7 @@ export const research_header = [
         id: 11,
         name: 'Help',
         route: "/research/help",
-        Icon: "fe fe-help-circle",
+        Icon: "fa-solid fa-circle-info",
         Data: []
     },
     {

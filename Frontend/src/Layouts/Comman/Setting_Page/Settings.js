@@ -3,12 +3,18 @@ import { Link } from "react-router-dom";
 import Sidebar from "../Sidebar/Sidebars";
 import Trackpanel from "./Logs/Trackpanel";
 import System from "../../../Layouts/SubAdmin/Systems/System";
+import AdminSystem from "../../../Layouts/Admin/System/System";
+
 
 
 
 import Apicreate_info from "./Apicreateinformation/Apicreate_info";
 
 const Settings = () => {
+
+    var Role = JSON.parse(localStorage.getItem("user_details")).Role
+
+
     return (
         <div>
             <div className="">
@@ -265,7 +271,7 @@ const Settings = () => {
                                                     </div>
 
                                                     <div className='subadminset'>
-                                                        <System />
+                                                      {Role == "ADMIN" ? <AdminSystem/>  : Role == "SUBADMIN" ? <System /> :""}
                                                     </div>
 
 
@@ -1298,17 +1304,50 @@ const Settings = () => {
                                     >
                                         <div className="col-xl-12 col-md-12">
                                             <div className="page-header">
-                                                <div className="content-page-header">
+                                                {/* <div className="content-page-header">
                                                     <h5>Change Password</h5>
-                                                    <div className="page-content">
-                                                        <div className="list-btn">
-                                                            <ul className="filter-list">
-                                                                <li>
 
-                                                                </li>
-                                                            </ul>
+                                                </div> */}
+
+                                                <div className="page-content">
+                                                    <div className="mainDiv">
+                                                        <div className="cardStyle">
+                                                            <form action="" method="post" name="signupForm" id="signupForm">
+
+                                                                <h5 className="formTitle">Change Password</h5>
+                                                                <div className="inputDiv">
+                                                                    <label className="inputLabel" htmlFor="password">
+                                                                        Current Password
+                                                                    </label>
+                                                                    <input type="password" id="password" name="password" required="" />
+                                                                </div>
+                                                                <div className="inputDiv">
+                                                                    <label className="inputLabel" htmlFor="password">
+                                                                        New Password
+                                                                    </label>
+                                                                    <input type="password" id="password" name="password" required="" />
+                                                                </div>
+                                                                <div className="inputDiv">
+                                                                    <label className="inputLabel" htmlFor="confirmPassword">
+                                                                        Confirm New Password
+                                                                    </label>
+                                                                    <input type="password" id="confirmPassword" name="confirmPassword" />
+                                                                </div>
+                                                                <div className="buttonWrapper">
+                                                                    <button
+                                                                        type="submit"
+                                                                        id="submitButton"
+
+                                                                        className="submitButton"
+                                                                    >
+                                                                        <span>Submit</span>
+
+                                                                    </button>
+                                                                </div>
+                                                            </form>
                                                         </div>
                                                     </div>
+
                                                 </div>
                                             </div>
 
