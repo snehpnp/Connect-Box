@@ -342,37 +342,7 @@ export default function AllEmployees() {
                             </div>
 
                             
-                                <div className="table-responsive">
-                                    <table className="table ">
-                                        <thead>
-                                            <tr>
-                                                <th>Stock Symbol</th>
-                                                <th>Company Name</th>
-                                                <th>Quantity</th>
-                                                <th>Average Price</th>
-                                                <th>Total Investment</th>
-                                                <th>Current Price</th>
-                                                <th>Market Value</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {/* JavaScript loop */}
-                                            {[...Array(50)].map((_, index) => (
-                                                <tr key={index}>
-                                                    <td>AAPL</td>
-                                                    <td>Apple Inc.</td>
-                                                    <td>100</td>
-                                                    <td>$120.50</td>
-                                                    <td>$12,050.00</td>
-                                                    <td>$130.00</td>
-                                                    <td>$13,000.00</td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-
-
+                               
                                 <FullDataTable
                                     styles={styles}
                                     label={label}
