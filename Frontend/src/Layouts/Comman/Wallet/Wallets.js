@@ -161,7 +161,7 @@ function Payment() {
                   <div className="row">
                     <div className="col-xl-3 col-md-6 d-flex">
                       <div className="card w-100">
-                        <div className="card-body">
+                        <div className="">
                           <div className="grid-info-item total-plane">
                             <div className="grid-info">
                               <span>Total Balance</span>
@@ -176,7 +176,7 @@ function Payment() {
                     </div>
                     <div className="col-xl-3 col-md-6 d-flex">
                       <div className="card w-100">
-                        <div className="card-body">
+                        <div className="">
                           <div className="grid-info-item active-plane">
                             <div className="grid-info">
                               <span>Used Balance</span>
@@ -191,7 +191,7 @@ function Payment() {
                     </div>
                     <div className="col-xl-3 col-md-6 d-flex">
                       <div className="card w-100">
-                        <div className="card-body">
+                        <div className="">
                           <div className="grid-info-item inactive-plane">
                             <div className="grid-info">
                               <span>Remaining Balance</span>
@@ -208,7 +208,7 @@ function Payment() {
 
 
                       <div className="card w-100" style={{ boxShadow: '0 4px 6px rgba(0,0,0,0.1)', borderRadius: '10px' }}>
-                        <div className="card-body">
+                        <div className="">
                           <div className="grid-info-item total-type" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                             <div className="grid-info">
                               <h4 style={{ marginBottom: '0', fontSize: '1.25rem', color: '#333' }}>Wallet</h4>
