@@ -1376,21 +1376,14 @@ const Settings = () => {
                                                 </div>
                                             </div>
                                         </div>
-
                                         <Apicreate_info />
                                     </div>
-
-
-
-
-
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     );
 };
