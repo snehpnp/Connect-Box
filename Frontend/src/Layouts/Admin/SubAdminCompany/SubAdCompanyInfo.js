@@ -6,7 +6,8 @@ import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTa
 import Loader from '../../../Utils/Loader';
 import { fDateTime } from '../../../Utils/Date_formet';
 import CompanyChange from '../../../Components/ExtraComponents/Models/CompanyChange';
-
+import IconButton from "@mui/material/IconButton";
+import EditIcon from "@mui/icons-material/Edit";
 
 function Payment() {
   const dispatch = useDispatch();
@@ -100,7 +101,16 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div onClick={() => handleOpenModal(params.row)}>
-          <span className="badge bg-purple" style={{ width: "6rem", fontSize: "1rem" }}>Change</span>
+          {/* <span className="badge bg-purple" style={{ width: "6rem", fontSize: "1rem" }}>Change</span> */}
+
+          <IconButton
+            aria-label="edit"
+            size="small"
+            // onClick={() => handleEdit(params.row)}
+          >
+            <EditIcon />
+          </IconButton>
+
         </div>
       ),
     },

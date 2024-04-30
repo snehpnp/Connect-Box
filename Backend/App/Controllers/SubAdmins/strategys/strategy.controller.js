@@ -713,8 +713,6 @@ class strategy {
           maker_id:"$strategies.maker_id",
 
 
-
-
         }
       }
     ]);
