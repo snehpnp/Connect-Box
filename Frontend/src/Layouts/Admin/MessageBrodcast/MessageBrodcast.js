@@ -31,7 +31,6 @@ function MessageBroadcast() {
   const [messageText, setMessageText] = useState("");
   const [pipelineData, setPipelineData] = useState([]);
   const [msgData, setMsgData] = useState('');
-  const [modalId, setmodalId] = useState('');
   const [modal, setModal] = useState(false);
   const [openModalId, setopenModalId] = useState("");
   const [refresh, setrefresh] = useState(false);
@@ -47,7 +46,7 @@ function MessageBroadcast() {
 
 
 
- // useEffect(() => {
+  // useEffect(() => {
   //   const newSocket = io.connect(`${Config.base_url}`);
   //   setSocket(newSocket);
 
@@ -136,8 +135,6 @@ function MessageBroadcast() {
             size="small"
             onClick={() => {
               handleDelete(params.row._id)
-              // setShowDeleteModal(true);
-              setmodalId(params.row._id);
             }}
 
           >
@@ -152,7 +149,7 @@ function MessageBroadcast() {
   ];
 
 
- 
+
 
 
   // GET ALL SUBADMIN NAMES
@@ -191,7 +188,31 @@ function MessageBroadcast() {
         .then(async (response) => {
           if (response.status) {
             // await socket.emit("send_message", newMessage);
-        
+            let timerInterval;
+            Swal.fire({
+              title: "Messgage Send!",
+              html: "I will close in <b></b> milliseconds.",
+              timer: 1200,
+              timerProgressBar: true,
+              didOpen: () => {
+                Swal.showLoading();
+                const timer = Swal.getPopup().querySelector("b");
+                timerInterval = setInterval(() => {
+                  timer.textContent = `${Swal.getTimerLeft()}`;
+                }, 100);
+              },
+              willClose: () => {
+                clearInterval(timerInterval);
+              }
+            }).then((result) => {
+              /* Read more about handling dismissals below */
+              if (result.dismiss === Swal.DismissReason.timer) {
+                console.log("I was closed by the timer");
+              }
+            });
+
+
+
             setSelectedSubadmin("");
             setMessageText("");
 
@@ -243,42 +264,56 @@ function MessageBroadcast() {
   };
 
   const handleDelete = async (id) => {
-    const data = { id: modalId }
+    const data = { id: id };
 
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then(async (result) => {
+    try {
+      const result = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success"
-        });
-
-        await dispatch(admin_Msg_Delete(data))
-          .unwrap()
-          .then(async (response) => {
-            if (response.status) {
-              setmodalId('')
-              setrefresh(!refresh);
-            } else {
-              toast.error(response.msg);
-            }
-          })
-          .catch((error) => {
-            console.log("Error", error);
+        const response = await dispatch(admin_Msg_Delete(data)).unwrap()
+ 
+        if (response.status) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+            timer: 1200,
+            timerProgressBar: true,
+            showConfirmButton: false
           });
-
+          setrefresh(!refresh);
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: response.message,
+            icon: "error",
+            timer: 1200,
+            timerProgressBar: true,
+            showConfirmButton: false
+          });
+        }
       }
-    });
-
+    } catch (error) {
+      console.log("Error", error);
+      Swal.fire({
+        title: "Error!",
+        text: "An error occurred while deleting the file.",
+        icon: "error",
+        timer: 1200,
+        timerProgressBar: true,
+        showConfirmButton: false
+      });
+    }
   };
+
 
   const handleUpdate = async () => {
     var data = { id: openModalId, messageTitle: msgData };
@@ -308,7 +343,7 @@ function MessageBroadcast() {
 
     // const allSubadminUsernames = subadmin.map((sub) => sub._id);
     // setSelectedSubadmin(allSubadminUsernames);
-  }, [refresh,value]);
+  }, [refresh, value]);
 
   return (
     <div data-aos="fade-left">
