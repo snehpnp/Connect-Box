@@ -239,8 +239,6 @@ export default function AllEmployees() {
             {tableData.loading ? (
                 <>
                     <div className="content container-fluid" data-aos="fade-left">
-
-
                         <div className="card">
                             <div className="card-header">
                                 <div className="row align-center">
@@ -393,6 +391,9 @@ export default function AllEmployees() {
                             </div>
                         </div>
                     </div>
+
+
+
 
 
                 </>

@@ -13,21 +13,14 @@ const Content = ({
 
   return (
     <div className="content container-fluid ">
-      {Page_title ? (
-        <div className="page-header">
-          <div className="content-page-header">
-            <h5>{Page_title}</h5>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
+    
       <div className="card flex-fill bg-white">
         <div className="card-header d-flex justify-content-between align-items-center border-bottom">
           <h5 className="card-title mb-0 w-auto">
-            {" "}
-            {Card_title_icon ? <i className={Card_title_icon}></i> : ""}
-            {Card_title}
+            {Page_title}
+            
+            {Card_title_icon ? <><i className={Card_title_icon}> </i> {Card_title}</> : ""}
+          
           </h5>
           <div className="pay-btn text-end w-auto">
             {button_title ? (

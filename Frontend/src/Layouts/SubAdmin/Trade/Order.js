@@ -338,7 +338,7 @@ export default function AllEmployees() {
                                 </div>
                             </div>
 
-                            <div className="card-body">
+                         <div className="card-body">
                                 <div className="row ">
                                     <div className="input-block col-lg-2 mt-3 mb-3">
                                         <label>From Date</label>
@@ -375,6 +375,8 @@ export default function AllEmployees() {
                                 />
                             </div>
                         </div>
+     
+
                     </div>
                 </>
             ) : (
