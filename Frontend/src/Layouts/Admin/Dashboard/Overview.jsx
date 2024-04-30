@@ -35,7 +35,7 @@ const Overview = () => {
 
   const [chart, setchart] = useState(false);
 
-  const [colors] = useState(["#9423FF"]);
+  const [colors] = useState(["#7539FF"]);
   const [adminData, setAdminData] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();

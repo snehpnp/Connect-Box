@@ -9490,7 +9490,7 @@ table .badge {
 
 [data-sidebar=dark][data-layout=horizontal] body .sidebar .sidebar-menu ul li a:hover span.menu-arrow,
 [data-sidebar=dark][data-layout=horizontal] body .sidebar .sidebar-menu ul li a.active span.menu-arrow {
-    color: #fff;
+    color: #000;
 }
 
 [data-sidebar=dark] body .sidebar-twocol.sidebar .sidebar-left {
