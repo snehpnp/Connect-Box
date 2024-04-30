@@ -346,6 +346,11 @@ function MessageBroadcast() {
   }, [refresh, value]);
 
 
+  const handleChande=(e)=>{
+    setMessageText(e.target.value)
+  }
+
+
   return (
     <>
       <div className="content container-fluid" >
@@ -358,10 +363,9 @@ function MessageBroadcast() {
             <Box sx={{ width: '100%' }}>
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                  <Tab label="Send" {...a11yProps(0)} />
+                  <Tab label="Send" {...a11yProps(0)}  />
                   <Tab label="Sent Messages" {...a11yProps(1)} />
                   <Tab label="Received Messages" {...a11yProps(2)} />
-
                 </Tabs>
               </Box>
               <CustomTabPanel value={value} index={0}>
@@ -430,7 +434,8 @@ function MessageBroadcast() {
                           className="form-control"
                           rows="4"
                           value={messageText}
-                          onChange={(e) => setMessageText(e.target.value)}
+                          onChange={(e) => handleChande(e)}
+                          
                         ></textarea>
                       </div>
                       <button
