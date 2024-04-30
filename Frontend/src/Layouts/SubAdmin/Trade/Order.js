@@ -100,7 +100,7 @@ export default function AllEmployees() {
     }, []);
 
 
-    const handleTradingOff = async (id) => {
+    const handleTradingOff = async (id)=> {
         let data = { id: id };
 
         await dispatch(Trading_Off_Btn(data)).unwrap()
@@ -338,7 +338,43 @@ export default function AllEmployees() {
                                 </div>
                             </div>
 
-                            <div className="card-body">
+
+                    <div className="card-body">
+                            <div className="row ">
+                                <div className="input-block col-lg-2 ms-4 mt-3 mb-3">
+                                    <label>From Date</label>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        placeholder="Search..."
+                                        aria-label="Search"
+                                        aria-describedby="search-addon"
+                                        onChange={(e) => SetInputSearch(e.target.value || '')}
+                                        value={inputSearch}
+                                    />
+                                </div>
+                                <div className="input-block col-lg-2 mt-3 mb-3">
+                                    <label>To Date</label>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        placeholder="Search..."
+                                        aria-label="Search"
+                                        aria-describedby="search-addon"
+                                        onChange={(e) => SetInputSearch(e.target.value || '')}
+                                        value={inputSearch}
+                                    />
+                                </div>
+                            </div>
+                       
+
+                        <FullDataTable
+                            styles={styles}
+                            label={label}
+                            columns={columns}
+                            rows={tableData.data}
+                        />
+             
                                 <div className="row ">
                                     <div className="input-block col-lg-2 mt-3 mb-3">
                                         <label>From Date</label>
@@ -375,6 +411,7 @@ export default function AllEmployees() {
                                 />
                             </div>
                         </div>
+
                     </div>
                 </>
             ) : (

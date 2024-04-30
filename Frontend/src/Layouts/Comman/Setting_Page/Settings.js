@@ -21,7 +21,7 @@ const Settings = () => {
                 <div className="card">
                     <div className="card-body">
                         <div className="row">
-                            <div className="col-sm-3">
+                            <div className="col-sm-3 left-side">
                                 <div
                                     className="nav flex-column nav-pills nav-pills-tab"
                                     id="v-pills-tab"
