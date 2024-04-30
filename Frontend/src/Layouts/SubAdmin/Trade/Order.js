@@ -10,7 +10,7 @@ import { Orders_Details } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { fDateTime } from "../../../Utils/Date_formet";
 
- 
+
 
 
 export default function AllEmployees() {
@@ -309,6 +309,7 @@ export default function AllEmployees() {
                                 </div>
                             </div>
 
+
                     <div className="card-body">
                             <div className="row ">
                                 <div className="input-block col-lg-2 ms-4 mt-3 mb-3">
@@ -344,7 +345,44 @@ export default function AllEmployees() {
                             columns={columns}
                             rows={tableData.data}
                         />
-                        </div></div>
+             
+                                <div className="row ">
+                                    <div className="input-block col-lg-2 mt-3 mb-3">
+                                        <label>From Date</label>
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            placeholder="Search..."
+                                            aria-label="Search"
+                                            aria-describedby="search-addon"
+                                            onChange={(e) => SetInputSearch(e.target.value || '')}
+                                            value={inputSearch}
+                                        />
+                                    </div>
+                                    <div className="input-block col-lg-2 mt-3 mb-3">
+                                        <label>To Date</label>
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            placeholder="Search..."
+                                            aria-label="Search"
+                                            aria-describedby="search-addon"
+                                            onChange={(e) => SetInputSearch(e.target.value || '')}
+                                            value={inputSearch}
+                                        />
+                                    </div>
+                                </div>
+
+
+                                <FullDataTable
+                                    styles={styles}
+                                    label={label}
+                                    columns={columns}
+                                    rows={tableData.data}
+                                />
+                            </div>
+                        </div>
+
                     </div>
                 </>
             ) : (
