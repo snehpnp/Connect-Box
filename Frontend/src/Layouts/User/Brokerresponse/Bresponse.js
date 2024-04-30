@@ -9,7 +9,7 @@ const Bresponse = () => {
                     <h5 className='card-title mb-0'><i className="pe-2 fas fa-reply-all"></i>Broker Response </h5>
                 </div>
                 <div className='card-body'>
-                    <div id="price mb-5">
+                    <div id="price mb-5 " className='text-center'>
                         {/*price tab*/}
                         <div className="plan">
                             <div className="plan-inner">

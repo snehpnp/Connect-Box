@@ -257,13 +257,7 @@ export const subamdin_header = [
             },
         ]
     },
-    {
-        id: 10,
-        name: 'Message Broadcast',
-        route: "/subadmin/message-broadcast",
-        Icon: "fe fe-message-circle",
-        Data: []
-    },
+    
     {
         id: 12,
         name: 'Researcher Strategy',
@@ -271,20 +265,36 @@ export const subamdin_header = [
         Icon: "fe fe-target",
         Data: []
     },
+    
     {
-        id: 11,
-        name: 'Help',
-        route: "/subadmin/help",
-        Icon: "fe fe-help-circle",
-        Data: []
+        id: 25,
+        name: 'More',
+        Icon: "fe fe-target",
+        Data: [
+            {
+                id: 10,
+                name: 'Message Broadcast',
+                route: "/subadmin/message-broadcast",
+                Icon: "fe fe-message-circle",
+                Data: []
+            },
+            {
+                id: 11,
+                name: 'Help',
+                route: "/subadmin/help",
+                Icon: "fe fe-help-circle",
+                Data: []
+            },
+            {
+                id: 13,
+                name: 'FAQs',
+                route: "/subadmin/faqs",
+                Icon: "fe fe-help-circle",
+                Data: []
+            },
+           
+        ]
     },
-    {
-        id: 13,
-        name: 'FAQs',
-        route: "/subadmin/faqs",
-        Icon: "fe fe-help-circle",
-        Data: []
-    }
 ];
 
 

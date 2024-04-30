@@ -4416,7 +4416,7 @@ span.select2-container.select2-container--default.select2-container--open {
     left: 0;
     margin-top: 0;
     position: fixed;
-    top: 65px;
+    top: 64px;
     -webkit-transition: all .2s ease;
     -ms-transition: all .2s ease;
     transition: all .2s ease;
@@ -33855,7 +33855,7 @@ img {
     border: 1px solid #E5E5E5;
     display: inline-block;
     margin: 10px 1%;
-    font-family: 'Lato', Arial, sans-serif;
+    /* font-family: 'Lato', Arial, sans-serif; */
 }
 
 .plan-inner {
@@ -34313,16 +34313,21 @@ background-color: #ffefdd;
     margin: 0px 5px;
  }
  @media(max-width: 480px) {
-    .toggle-li
-    {
+    .list-btn .filter-list li {
+        padding: 0 5px 0px 0;
+        margin-top:10px;
+    }
+    .toggle-li {
         display: block;
         width: 100%;
+        margin-bottom: 12px;
     }
    .serach-li
    {
    width: 45%;
    }
-   .filter-list button,.filter-list .input-block input.form-control
+   
+   .filter-list button,.filter-list .input-block input.form-control, .filter-list a
    {
         font-size: 12px !important;
         padding: 8px 8px !important;
@@ -34426,7 +34431,7 @@ background-color: #ffefdd;
 @media(max-width: 991px) {
     [data-layout=horizontal] body .sidebar .slimScrollDiv,
 [data-layout=horizontal] body .sidebar .sidebar-inner {
-    height: 215px !important;
+    height: 100% !important;
     overflow-x: scroll !important
 }
 
@@ -34494,12 +34499,6 @@ background-color: #ffefdd;
 }
 
 
-/* cards */
-
-/* ADVERTISERS SERVICE CARD */
-body {
-    font-family: "Roboto", sans-serif !important;
-  }
   
   .sec-icon {
     position: relative;
