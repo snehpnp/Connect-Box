@@ -27,5 +27,7 @@ module.exports = function (app) {
     app.use(require("./SuperAdmin/SuperAdmin.routes"))
 
     app.use(require("./Researcher/Researcher.routes"))
+    //faq
+    app.use(require("./Comman/FAQ.routes"))
 
 };

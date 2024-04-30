@@ -32,6 +32,6 @@ module.exports = {
     Subadmin_Permission:require("./Subadmin_permissions"),
     researcher_strategy :require('./researcher_strategy.modal'),
     strategy_Order :require('./Strategy_order.model'),
-
+    FAQ: require("./FAQ.model")
 
 };
