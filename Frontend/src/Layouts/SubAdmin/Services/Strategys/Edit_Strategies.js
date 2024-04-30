@@ -4,6 +4,10 @@ import { useFormik } from "formik";
 import toast from "react-hot-toast";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import Loader from "../../../../Utils/Loader";
+
+
+
 import {
   EditSubStrategys,
   GetSubStrategys_ById,
@@ -14,70 +18,58 @@ function Edit_Strategies() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [makerId, setMakerId] = useState("");
+
+  const makerId = JSON.parse(localStorage.getItem("user_details"))
+
+  const [loading, setloading] = useState(false);
+
   const [allStrategy, setAllStrategy] = useState(null);
   const [getStgDescription, setStgDescription] = useState('');
   const [GetAllSgments, setGetAllSgments] = useState({
     loading: true,
     data: [],
-});
+  });
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await dispatch(GetSubStrategys_ById({ id }));
-        if (response.payload && response.payload.data) {
 
-          setAllStrategy(response.payload.data);
-          setStgDescription(response.payload.data.strategy_description)
-
-        }
-      } catch (error) {
-        console.error("Error fetching strategy data:", error);
+  const fetchData = async () => {
+    try {
+      const response = await dispatch(GetSubStrategys_ById({ id })).unwrap();
+      if (response.status) {
+        setAllStrategy(response.data);
+        setStgDescription(response.data.strategy_description);
+        setloading(true)
       }
-    };
-
-    fetchData();
-  }, [dispatch, id]);
-
-  useEffect(() => {
-    const userDetailsStr = localStorage.getItem("user_details");
-    if (userDetailsStr) {
-      const userDetails = JSON.parse(userDetailsStr);
-      setMakerId(userDetails);
+    } catch (error) {
+      console.error("Error fetching strategy data:", error);
     }
-  }, []);
+  };
+
 
 
   const getservice = async () => {
     await dispatch(Get_All_Catagory())
-        .unwrap()
-        .then((response) => {
+      .unwrap()
+      .then((response) => {
 
-            if (response.status) {
+        if (response.status) {
 
-                setGetAllSgments({
-                    loading: false,
-                    data: response.data,
-                });
-            }
-        });
-};
-useEffect(() => {
+          setGetAllSgments({
+            loading: false,
+            data: response.data,
+          });
+        }
+      });
+  };
+
+  useEffect(() => {
+
+    fetchData();
     getservice();
-}, []);
+  }, []);
 
 
-
-
-
-
-
-
-
-
-console.log("-=====",allStrategy )
+  console.log("-=====", allStrategy)
 
   const fields = [
     {
@@ -88,22 +80,22 @@ console.log("-=====",allStrategy )
       col_size: 6,
       disable: false,
     },
-
     {
       name: "strategy_category",
-      label: "Catagory",
+      label: "Category",
       type: "text",
       label_size: 12,
       col_size: 6,
-      // disable: allStrategy.researcher_id !== undefined && allStrategy.researcher_id == null ? true : false,
+      disable: allStrategy && allStrategy.researcher_id != null,
     },
     {
       name: "strategy_demo_days",
-      label: "Strategy demo days",
+      label: "Strategy Demo Days",
       type: "text3",
       label_size: 12,
       col_size: 6,
-      // disable: allStrategy.researcher_id !== undefined && allStrategy.researcher_id == null ? true : false,
+      disable: allStrategy && allStrategy.researcher_id != null,
+      showWhen: (values) => allStrategy && allStrategy.researcher_id == null 
     },
     {
       name: "strategy_segment",
@@ -115,7 +107,8 @@ console.log("-=====",allStrategy )
       })),
       label_size: 12,
       col_size: 6,
-      // disable: allStrategy.researcher_id !== undefined && allStrategy.researcher_id == null ? true : false,
+      disable: allStrategy && allStrategy.researcher_id != null,
+
     },
     {
       name: "strategy_indicator",
@@ -123,7 +116,8 @@ console.log("-=====",allStrategy )
       type: "file1",
       label_size: 12,
       col_size: 6,
-      // disable: allStrategy.researcher_id !== undefined && allStrategy.researcher_id == null ? true : false,
+      disable: allStrategy && allStrategy.researcher_id != null,
+      showWhen: (values) => allStrategy && allStrategy.researcher_id == null 
     },
     {
       name: "strategy_tester",
@@ -131,7 +125,8 @@ console.log("-=====",allStrategy )
       type: "file1",
       label_size: 12,
       col_size: 6,
-      // disable: allStrategy !== undefined && allStrategy.researcher_id == null ? true : false,
+      disable: allStrategy && allStrategy.researcher_id != null,
+      showWhen: (values) => allStrategy && allStrategy.researcher_id == null 
     },
     {
       name: "strategy_image",
@@ -139,7 +134,8 @@ console.log("-=====",allStrategy )
       type: "file1",
       label_size: 12,
       col_size: 6,
-      // disable: allStrategy !== undefined && allStrategy.researcher_id == null ? true : false,
+      disable: allStrategy && allStrategy.researcher_id != null,
+      showWhen: (values) => allStrategy && allStrategy.researcher_id == null 
     },
     {
       name: "max_trade",
@@ -147,7 +143,7 @@ console.log("-=====",allStrategy )
       type: "text3",
       label_size: 12,
       col_size: 6,
-      // disable: allStrategy !== undefined && allStrategy.researcher_id == null ? true : false,
+      disable: allStrategy && allStrategy.researcher_id != null,
     },
     {
       name: "strategy_amount_month",
@@ -189,16 +185,7 @@ console.log("-=====",allStrategy )
       col_size: 12,
       disable: false,
     },
-
   ];
-
-
-
-
-
-
-
-
 
   const formik = useFormik({
     initialValues: {
@@ -215,7 +202,6 @@ console.log("-=====",allStrategy )
       strategy_amount_early: "",
       strategy_demo_days: "",
       Service_Type: ''
-
     },
     validate: (values) => {
       let errors = {};
@@ -319,23 +305,34 @@ console.log("-=====",allStrategy )
 
 
 
+
   return (
-    <AddForm
-      ProfileShow={formik.values.strategy_image}
-      fields={fields}
-      formik={formik}
-      btn_name="Update"
-      btn_name1="Cancel" btn_name1_route="/subadmin/strategys"
-      additional_field={
-        <>
-
-          <label>Strategy Description</label>
-          <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
-          </textarea>
-        </>
-
-      }
-    />
+    <>
+      {loading ? (
+        <AddForm
+          ProfileShow={formik.values.strategy_image}
+          fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))}
+          formik={formik}
+          btn_name="Update"
+          btn_name1="Cancel"
+          btn_name1_route="/subadmin/strategys"
+          additional_field={
+            <>
+              <label>Strategy Description</label>
+              <textarea
+                className="rounded"
+                name="strategy"
+                rows="4"
+                cols="50"
+                placeholder="Enter Strategy Description"
+                onChange={(e) => setStgDescription(e.target.value)}
+                value={getStgDescription}
+              ></textarea>
+            </>
+          }
+        />
+      ) : <Loader />}
+    </>
   );
 }
 

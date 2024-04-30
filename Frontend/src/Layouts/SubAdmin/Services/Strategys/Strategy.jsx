@@ -561,7 +561,7 @@ function Strategy() {
                                                         </span>
                                                     </div>
                                                 </div>
-                                             { stg.researcher_id != null ?  <span>Researcher Name: {stg.researcher_id}</span> :""}
+                                             { stg.researcher_id != null ?  <span>Researcher Name: {stg.researcher_id && stg.researcher_id.UserName }</span> :""}
                                                 <p>{stg.strategy_description}</p>
 
                                                 <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
