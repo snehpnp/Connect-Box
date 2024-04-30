@@ -9,9 +9,7 @@ import { useDispatch } from "react-redux";
 import ExportToExcel from '../../../Utils/ExportCSV'
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
-import {
-  update_Balance,
-} from "../../../ReduxStore/Slice/Admin/Subadmins";
+import { update_Balance} from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
 import { GetAllUsers, Get_All_Broker, Show_Status, DeleteUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
