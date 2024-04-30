@@ -129,13 +129,13 @@ class Researcher {
                 user_id: savedUser._id,
                 Role: "RESEARCH",
                 admin_id: req.body.user_id,
-                Balance:req.body.Balance,
+                Balance: req.body.Balance,
                 Mode: "CASH"
-              });
-              await count_licenses_add.save();
+            });
+            await count_licenses_add.save();
 
 
-             res.status(200).send({
+            res.status(200).send({
                 status: true,
                 msg: "Successfully added!",
                 data: { UserId: savedUser.user_id },
@@ -144,11 +144,11 @@ class Researcher {
             var toEmail = Email;
             var subjectEmail = "User ID and Password";
             var email_data = {
-              FullName: req.body.FullName,
-              Email: Email,
-              Password: Password,
+                FullName: req.body.FullName,
+                Email: Email,
+                Password: Password,
             };
-      
+
             var EmailData = await firstOptPass(email_data);
             CommonEmail(toEmail, subjectEmail, EmailData);
         } catch (error) {
@@ -157,6 +157,34 @@ class Researcher {
         }
 
     }
+
+    async UpdateResearcher(req, res) {
+
+        try {
+            const { id, FullName, Password, Strategy_percentage_to_researcher, Balance } = req.body
+
+            const findData = await User_model.find({ _id: id })
+
+            if (!findData) {
+                return res.send({ status: false, msg: "Researcher Does Not Exit", data: [], })
+            }
+
+            const Researcher = {
+                FullName: FullName,
+                Password: Password,
+                Balance: Balance,
+                Strategy_percentage_to_researcher: Strategy_percentage_to_researcher
+            }
+
+            await User_model.findByIdAndUpdate(findData[0]._id, Researcher);
+            return res.send({ status: true, msg: "Researcher Update successfully", data: [] })
+
+        }
+        catch (error) {
+            res.send({ msg: "Error=>", error });
+        }
+    }
+
     async GetAllResearcher(req, res) {
         const { id } = req.body
 
@@ -200,13 +228,10 @@ class Researcher {
         }
 
     }
-    async addResearcherupdate(req, res) {
+    async UpdateResearcherBalance(req, res) {
         try {
             const { _id, Balance, parent_id } = req.body
-
-
             const get_user = await User_model.find({ _id: _id, Role: "RESEARCH" });
-
             if (get_user.length == 0) {
                 return res.send({
                     status: false,

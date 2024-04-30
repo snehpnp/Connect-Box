@@ -815,6 +815,7 @@ const DynamicForm = ({
                                   <input
                                     type="text"
                                     name={field.name}
+                                    readOnly={field.disable}
                                     aria-describedby="basic-addon1"
                                     className="form-control"
                                     id={field.name}

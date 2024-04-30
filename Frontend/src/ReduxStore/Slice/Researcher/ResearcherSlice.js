@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER , ADD_RESEARCHER_STRATEGY, EDIT_RESEARCHER_STRATEGY, GET_ONE_RESEARCHER_STRATEGY, GET_ALL_RESEARCHER_STRATEGY} from '../../../Services/Researcher/researcher.service'
+import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER , ADD_RESEARCHER_STRATEGY, EDIT_RESEARCHER_STRATEGY, GET_ONE_RESEARCHER_STRATEGY, GET_ALL_RESEARCHER_STRATEGY , UPDATE_RESEARCHER} from '../../../Services/Researcher/researcher.service'
 
 
 export const Add_Researcher = createAsyncThunk("researcher/add",
@@ -94,6 +94,17 @@ async(data)=>{
 
 })
 
+export const Update_Researcher=createAsyncThunk('researcher/edit',
+async (data)=>{
+  try{
+    const res = await UPDATE_RESEARCHER(data)
+    return await res;
+  }
+  catch(err){
+    return await err
+  }
+})
+
 
 
 const ResearcherSlice = createSlice({
@@ -109,6 +120,7 @@ const ResearcherSlice = createSlice({
     editResearcherStrategys: null,
     getOneResearcherStrategys:null,
     getallResearcherStrategys: null,
+    updateResearcher :null,
     
 
 
@@ -157,6 +169,10 @@ const ResearcherSlice = createSlice({
         state.getallResearcherStrategys = action.payload;
       })
 
+      .addCase(Update_Researcher.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.updateResearcher = action.payload;
+      })
   },
 });
 
