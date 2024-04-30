@@ -569,8 +569,9 @@ function Strategy() {
                                                         </span>
                                                     </div>
                                                 </div>
-                                             { stg.researcher_id != null ?  <span>Researcher Name: {stg.researcher_id && stg.researcher_id.UserName }</span> :""}
-                                                <p>{stg.strategy_description}</p>
+                                             { stg.researcher_id != null ?  <span><i>Researcher :</i> {stg.researcher_id && stg.researcher_id.UserName }</span> :""}
+                                             
+                                                <p class="text-dark"><b>{stg.strategy_description}</b></p>
 
                                                 <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
                                                 <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>

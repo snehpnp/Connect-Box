@@ -305,15 +305,16 @@ function GroupStrategy() {
             <div className="content container-fluid">
                 <div className="card">
                     <div className="card-header">
-                    <h5 className="card-title mb-0"><i class="pe-2 fa-solid fa-gears" ></i>Group Services</h5>
-                    </div>
-                    <div className="card-body">
-                        <div className="page-content">
-                            <div className="list-btn">
-                                <ul className="filter-list justify-content-lg-end">
-                                    <li className="mt-3">
+                   
+                    <div className="row align-items-center">
+                        <div className="col">
+                        <h5 className="card-title mb-0"><i class="pe-2 fa-solid fa-gears" ></i>Group Services</h5>
+                        </div>
+                        <div className="col-auto"> <div className="list-btn">
+                                <ul className="mb-0 filter-list justify-content-lg-end">
+                                    <li className="">
                                         <p
-                                            className="btn-filters"
+                                            className="mb-0 btn-filters"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Refresh"
@@ -365,7 +366,12 @@ function GroupStrategy() {
                                         </Link>
                                     </li>
                                 </ul>
-                            </div>
+                            </div></div>
+                    </div>
+                    </div>
+                    <div className="card-body">
+                        <div className="page-content">
+                           
                         </div>
 
 
