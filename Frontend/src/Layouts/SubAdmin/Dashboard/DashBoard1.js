@@ -12,7 +12,7 @@ import Chart from "react-apexcharts";
 const DashBoard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [colors] = useState(["#9423FF"]);
+  const [colors] = useState(["#7539FF"]);
   const [userData, setUserData] = useState("");
   const userDetails = JSON.parse(localStorage.getItem("user_details"));
   const [chart, setchart] = useState(false);
