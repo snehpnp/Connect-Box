@@ -437,7 +437,7 @@ const Makecall = () => {
 
 
  
-    console.log("setSelected1 ",selected1)
+    //console.log("setSelected1 ",selected1)
 
 
     const delete_data = async (ABR) => {
@@ -453,7 +453,7 @@ const Makecall = () => {
         }  
        let text = "Are you sure you want delete signal ?";
        if (window.confirm(text) == true) {
-           alert("DONE")
+         //  alert("DONE")
            await dispatch(DeleteDataMakeCall(
             {
                 req:
