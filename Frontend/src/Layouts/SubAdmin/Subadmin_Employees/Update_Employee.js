@@ -46,6 +46,7 @@ const Edit_Employee = () => {
     loading: true,
     data: [],
   });
+  
 
   const isValidEmail = (email) => {
     return Email_regex(email);
@@ -301,7 +302,7 @@ const Edit_Employee = () => {
     },
   ];
 
-  
+
 
 
   

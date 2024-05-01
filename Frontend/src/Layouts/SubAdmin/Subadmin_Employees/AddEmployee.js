@@ -6,11 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import * as valid_err from "../../../Utils/Common_Messages";
 
-import {
-  Email_regex,
-  Mobile_regex,
-  Name_regex,
-} from "../../../Utils/Common_regex";
+import {Email_regex, Mobile_regex, Name_regex} from "../../../Utils/Common_regex";
 import { Add_Employee, GetEmployeeStrategy, GetEmployeeServices } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 
 const AddEmployee = () => {
