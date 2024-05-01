@@ -20,23 +20,12 @@ function BrokerInfoForm() {
 
 
   const handleSubmit = async (event) => {
-
     event.preventDefault();
-
-    console.log("apiKey", apiKey)
-    console.log("secretKey", secretKey)
-    console.log("dematUserId", dematUserId)
-
-
-
 
     if (!apiKey || !secretKey || !dematUserId) {
       alert("Please field the box");
       return;
     }
-
-
-
 
     await dispatch(
       update_broker_Data({
@@ -86,8 +75,10 @@ function BrokerInfoForm() {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          console.log("response", response.data[0].api_key)
           setApiKey(response.data[0].api_key)
+          setSecretKey(response.data[0].api_secret)
+          setDematUserId(response.data[0].demat_userid)
+
         }
       })
       .catch((error) => {
