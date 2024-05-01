@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable'
 import { Get_All_Researcher, Update_Balance, Delete_Researcher } from '../../../ReduxStore/Slice/Researcher/ResearcherSlice'
 import { useDispatch } from "react-redux";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import { Trash2, IndianRupee } from 'lucide-react'
@@ -11,10 +11,12 @@ import { Show_Status } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import Swal from 'sweetalert2'
 import Loader from '../../../Utils/Loader';
 
+import { fDateTime } from "../../../Utils/Date_formet";
 
 
 const AllResearcher = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [allResearcher, setAllResearcher] = useState({
     loading: true,
@@ -96,23 +98,40 @@ const AllResearcher = () => {
     },
     {
       field: "Balance",
-      headerName: "Balance",
-      width: 120,
+      headerName: "Add Balance",
+      width: 150,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>
-          <span className="text-success-light" onClick={(e) => handleOnClick(params.row)}>
-            <IndianRupee style={{ height: "19px" }} />
-            {"+"+params.value || '-'}
-          </span>
-        </div>
+        <div
+        style={{
+          backgroundColor: '#4CAF50', // Green
+          border: 'none',
+          color: 'white',
+          width: "150px",
+          padding: '8px 18px', // Adjusted padding
+          textAlign: 'center',
+          textDecoration: 'none',
+          display: 'inline-block',
+          fontSize: '16px',
+          margin: '4px 2px',
+          cursor: 'pointer',
+          borderRadius: '10px', // Rounded border radius
+          transition: 'background-color 0.3s ease',
+        }}
+        onClick={() => { handleOnClick(params.row) }}
+      >
+        <span style={{ fontWeight: 'bold', verticalAlign: 'middle' }}> +
+          <IndianRupee style={{ height: "16px", marginBottom: '-4px', marginRight: '0px' }} /> 
+          {params.value || '-'}
+        </span>
+      </div>
       ),
     },
 
     {
       field: "ActiveStatus",
       headerName: "Status",
-      width: 150,
+      width: 120,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div className="status-toggle">
@@ -130,23 +149,23 @@ const AllResearcher = () => {
     {
       field: "actions",
       headerName: "Actions",
-      width: 150,
+      width: 100,
       renderCell: (params) => (
         <div>
           <IconButton
             aria-label="edit"
             size="small"
-            onClick={() => handleEdit(params.row)}
+            onClick={() => handleEdit(params.row, params)}
           >
             <EditIcon />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             aria-label="edit"
             size="small"
             onClick={() => handleDelete(params.row)}
           >
             <Trash2 />
-          </IconButton>
+          </IconButton> */}
         </div>
       ),
       headerClassName: styles.boldHeader,
@@ -155,15 +174,15 @@ const AllResearcher = () => {
       field: "createdAt",
       headerName: "Create Date",
       width: 220,
-      headerClassName: styles.boldHeader
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => <div>{fDateTime(params.value)}</div>,
     }
   ]
-
-
-  const handleEdit = () => {
-
+  const handleEdit = (id, obj) => {
+    navigate(`/admin/research/edit/${id._id}`, { state: { rowData: obj.row } });
   }
-
+  
+  
 
   const handleDelete = async (row) => {
     const result = await Swal.fire({

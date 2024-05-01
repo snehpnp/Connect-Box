@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER } from '../../../Services/Researcher/researcher.service'
+import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER , ADD_RESEARCHER_STRATEGY, EDIT_RESEARCHER_STRATEGY, GET_ONE_RESEARCHER_STRATEGY, GET_ALL_RESEARCHER_STRATEGY , UPDATE_RESEARCHER} from '../../../Services/Researcher/researcher.service'
 
 
 export const Add_Researcher = createAsyncThunk("researcher/add",
@@ -47,6 +47,63 @@ async(data)=>{
 
 })
 
+export const AddResearcherStrategy= createAsyncThunk('researcher/addstrategy',
+async(data)=>{
+  try{
+    const res= await ADD_RESEARCHER_STRATEGY(data);
+    return await res;
+  }
+  catch(err){
+    return await err
+  }
+
+})
+export const EditResearcherStrategys= createAsyncThunk('researcher/editstrategy',
+async(data)=>{
+  try{
+    const res= await EDIT_RESEARCHER_STRATEGY(data);
+    return await res;
+  }
+  catch(err){
+    return await err
+  }
+
+})
+
+export const GetOneResearcherStrategys= createAsyncThunk('researcher/getonestrategy',
+async(data)=>{
+  try{
+    const res= await GET_ONE_RESEARCHER_STRATEGY(data);
+    return await res;
+  }
+  catch(err){
+    return await err
+  }
+
+})
+
+export const GetAllResearcherStrategys= createAsyncThunk('researcher/getll',
+async(data)=>{
+  try{
+    const res= await GET_ALL_RESEARCHER_STRATEGY(data);
+    return await res;
+  }
+  catch(err){
+    return await err
+  }
+
+})
+
+export const Update_Researcher=createAsyncThunk('researcher/edit',
+async (data)=>{
+  try{
+    const res = await UPDATE_RESEARCHER(data)
+    return await res;
+  }
+  catch(err){
+    return await err
+  }
+})
 
 
 
@@ -59,6 +116,13 @@ const ResearcherSlice = createSlice({
     get_all_researcher: null,
     update_balance: null,
     delete_researcher:null,
+    addResearcherStrategy: null,
+    editResearcherStrategys: null,
+    getOneResearcherStrategys:null,
+    getallResearcherStrategys: null,
+    updateResearcher :null,
+    
+
 
   },
   reducers: {},
@@ -88,7 +152,27 @@ const ResearcherSlice = createSlice({
         state.isLoading = false;
         state.delete_researcher = action.payload;
       })
+      .addCase(AddResearcherStrategy.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.addResearcherStrategy = action.payload;
+      })
+      .addCase(EditResearcherStrategys.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.editResearcherStrategys = action.payload;
+      })
+      .addCase(GetOneResearcherStrategys.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.getOneResearcherStrategys = action.payload;
+      })
+      .addCase(GetAllResearcherStrategys.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.getallResearcherStrategys = action.payload;
+      })
 
+      .addCase(Update_Researcher.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.updateResearcher = action.payload;
+      })
   },
 });
 

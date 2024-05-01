@@ -65,18 +65,10 @@ const Header = () => {
     ClearSession();
   }, []);
 
-  const [isNavOpen, setIsNavOpen] = useState(false);
 
-  // useEffect(() => {
-  //   if (isNavOpen) {
-  //     document.body.classList.add('slide-nav');
-  //   } else {
-  //     document.body.classList.remove('slide-nav');
-  //   }
-  // }, [isNavOpen]);
 
   const toggleNav = (data) => {
-    console.log("neha", data);
+    
     if (data.Data.length == 0) {
       document.body.classList.remove("slide-nav");
     }
@@ -84,10 +76,9 @@ const Header = () => {
 
 
   const toggleNav1 = (item) => {
-    console.log("neha1", item);
-    // if(data.Data.length == 0){
+   
       document.body.classList.remove('slide-nav');
-    // }
+  
   };
 
   const handleLinkClick = (id) => {

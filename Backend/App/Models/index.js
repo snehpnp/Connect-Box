@@ -31,4 +31,8 @@ module.exports = {
     Activity_category:require("./Activity_category.model"),
     Subadmin_Permission:require("./Subadmin_permissions"),
     makecallABR:require("./makecallABR.model"),
+    researcher_strategy :require('./researcher_strategy.modal'),
+    strategy_Order :require('./Strategy_order.model'),
+
+
 };

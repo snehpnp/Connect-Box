@@ -12,7 +12,6 @@ import Payment from '../Layouts/Admin/Payment/Payment';
 import Orders from '../Layouts/Admin/Trade/Order';
 import Positions from '../Layouts/Admin/Trade/Position';
 
-
 import Test from '../Layouts/Admin/Dashboard/text';
 
 import Login from '../Layouts/Auth/Login';
@@ -24,8 +23,6 @@ import MessageBrodcast from '../Layouts/Admin/MessageBrodcast/MessageBrodcast';
 import AddSubadmin from "../Layouts/Admin/Subadmin/AddSubAdmin"
 import EditSubadmin from "../Layouts/Admin/Subadmin/EditSubAdmin"
 import AllSubadmin from "../Layouts/Admin/Subadmin/AllSubAdmin"
-
-import Dummyform from "../Components/ExtraComponents/forms/Dummyform"
 
 import Profile from '../Layouts/Comman/Profile/Profile';
 
@@ -67,7 +64,6 @@ const Admin_Routing = () => {
                     <Route exact path="/test" element={<Test />} />
                     <Route exact path="/tabe" element={<Tabe />} />
                     <Route exact path="/tabes" element={<Tabes />} />
-                    <Route exact path="/dummyform" element={<Dummyform />} />
                     <Route exact path="/dashboard" element={<Overview />} />
                     <Route exact path="/system" element={<System />} />
                     <Route exact path="/payment" element={<Payment />} />

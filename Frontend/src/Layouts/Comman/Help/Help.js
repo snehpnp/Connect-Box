@@ -5,25 +5,74 @@ import {
   getsubadmintable,
   userdataforhelp,
 } from "../../../ReduxStore/Slice/Admin/System";
-
+import Content from "../../../Components/Dashboard/Content/Content";
 import { useDispatch } from "react-redux";
-import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
-import Helpsubadmin from "./Helpsubadmin";
-import Helpuser from "./Helpuser";
+
+
+import Swal from 'sweetalert2';
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Loader from "../../../Utils/Loader";
+import { fDateTime } from "../../../Utils/Date_formet";
+
+
+
 
 function System() {
   const dispatch = useDispatch();
-  const [refresh, setRefresh] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
   const [getsubadmin, setGetsubadmin] = useState([]);
   const [getuserdata, setGetuserdata] = useState([]);
-  const [help, setHelp] = useState({
-    UserName: "",
-    Email: "",
-    mobile: "",
-    Message: "",
-  });
+
+
+
+  const [loading, setLoading] = useState(true);
+  const [value, setValue] = React.useState(0);
+
+
+
+
+  function CustomTabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+      <div
+        role="tabpanel"
+        hidden={value !== index}
+        id={`simple-tabpanel-${index}`}
+        aria-labelledby={`simple-tab-${index}`}
+        {...other}
+      >
+        {value === index && (
+          <Box sx={{ p: 3 }}>
+            <Typography>{children}</Typography>
+          </Box>
+        )}
+      </div>
+    );
+  }
+
+  CustomTabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+  };
+
+  function a11yProps(index) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+
 
   const styles = {
     container: {
@@ -47,34 +96,42 @@ function System() {
     {
       field: "index",
       headerName: "SR. No.",
-      width: 150,
+      width: 100,
       headerClassName: styles.boldHeader,
       renderCell: (params, index) => params.row.id + 1,
     },
     {
       field: "UserName",
-      headerName: "Name",
-      width: 250,
+      headerName: "User Name",
+      width: 220,
       headerClassName: styles.boldHeader,
     },
     {
       field: "Email",
       headerName: "Email Id",
-      width: 350,
+      width: 220,
       headerClassName: styles.boldHeader,
     },
 
     {
       field: "mobile",
       headerName: "Phone No",
-      width: 250,
+      width: 220,
       headerClassName: styles.boldHeader,
     },
     {
       field: "Message",
       headerName: "Message",
-      width: 290,
+      width: 350,
       headerClassName: styles.boldHeader,
+    },
+
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      width: 250,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => <div>{fDateTime(params.value || '')}</div>,
     },
   ];
 
@@ -85,7 +142,7 @@ function System() {
       .then(async (response) => {
         if (response.status) {
           setGetsubadmin(response.data);
-          setRefresh(!refresh);
+          setLoading(false)
         }
       })
       .catch((error) => {
@@ -94,14 +151,13 @@ function System() {
   };
 
   // // get user help data
-
   const getusertable = async () => {
     await dispatch(userdataforhelp({}))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
           setGetuserdata(response.data);
-          setRefresh(!refresh);
+          setLoading(false)
         }
       })
       .catch((error) => {
@@ -110,106 +166,83 @@ function System() {
   };
 
   // fetch data by using local storage
-
   useEffect(() => {
-    const user = localStorage.getItem("user_details");
+    gettable()
+    getusertable()
+  }, [value]);
 
-    setHelp(JSON.parse(user));
-  }, []);
 
-  // handler for dropdown button
 
-  const handleDropdownSelect = async (eventKey) => {
-    setSelectedItem(eventKey);
-    switch (eventKey) {
-      case "Subadmin":
-        await gettable(); // Call a function to fetch subadmin data
-        break;
-      case "User":
-        await getusertable();
-        break;
-      default:
-        // Handle other cases if necessary
-        break;
-    }
-  };
 
   return (
     <>
-      <div>
-        {help.Role === "ADMIN" ? (
-          <div>
-            <div>
-              <div>
-                <div className="content container-fluid ">
-                  <div className="card flex-fill bg-white">
-                    <div className="card-header d-flex justify-content-between align-items-center border-bottom">
-                      <h5 className="card-title mb-0 w-auto">
-                        {" "}
-                        <i className="fas fa-money-bill-wave pe-2" />
-                        Help
-                      </h5>
-                      <DropdownButton
-                        id="dropdown-basic-button"
-                        title="Select user"
-                        onSelect={handleDropdownSelect}
-                        style={{
-                          display: "flex",
-                          justifyContent: "end",
-                          alignItems: "end",
-                          marginTop: "1rem",
-                          marginRight: "1rem",
-                        }}
-                      >
-                        <Dropdown.Item eventKey="Subadmin">Subadmin</Dropdown.Item>
-                        <Dropdown.Item eventKey="User">User</Dropdown.Item>
-                      </DropdownButton>
+      <div data-aos="fade-left">
+        <Content
 
-                      <div className="pay-btn text-end w-auto" />
+          Card_title="Help"
+          Card_title_icon="fas fa-message pe-3"
+          Content={
+            <>
+              <Box sx={{ width: '100%' }}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
+                  <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                    <Tab label="Sub Admin" {...a11yProps(0)} />
+                    <Tab label="User" {...a11yProps(1)} />
+
+                  </Tabs>
+                </Box>
+                <CustomTabPanel value={value} index={0}>
+                  <>
+
+
+                    {loading ? (
+                      <Loader />
+                    ) : (
+
+
+                      <div className="mt-5">
+                        <FullDataTable
+                          styles={styles}
+                          columns={columns1}
+                          rows={getsubadmin}
+                        />
+
+                      </div>
+
+
+                    )}
+                  </>
+
+                </CustomTabPanel>
+                <CustomTabPanel value={value} index={1}>
+                  {loading ? (
+                    <Loader />
+                  ) : (
+
+
+                    <div className="mt-5">
+                      <FullDataTable
+                        styles={styles}
+                        columns={columns1}
+                        rows={getuserdata}
+                      />
 
                     </div>
 
 
-                  </div>
-                </div>
+                  )}
 
-                {/* <div
-                  className="content-page-header"
-                  style={{
-                    padding: "0.7rem",
-                    borderBottom: "0.1rem solid black",
-                  }}
-                >
-                  <h5>Help Center</h5>
+                </CustomTabPanel>
 
-                  <DropdownButton
-                    id="dropdown-basic-button"
-                    title="Select user"
-                    onSelect={handleDropdownSelect}
-                    style={{
-                      display: "flex",
-                      justifyContent: "end",
-                      alignItems: "end",
-                      marginTop: "1rem",
-                      marginRight: "1rem",
-                    }}
-                  >
-                    <Dropdown.Item eventKey="Subadmin">Subadmin</Dropdown.Item>
-                    <Dropdown.Item eventKey="User">User</Dropdown.Item>
-                  </DropdownButton>
-                </div> */}
-              </div>
+              </Box>
 
-            </div>
-          </div>
-        ) : null}
-        <div>
-          <Helpsubadmin />
-        </div>
-      </div>
 
-      <div>
-        <Helpuser />
+
+
+
+            </>
+          }
+        />
       </div>
     </>
   );

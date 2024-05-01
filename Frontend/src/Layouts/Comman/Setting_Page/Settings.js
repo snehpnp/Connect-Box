@@ -1,18 +1,27 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import Sidebar from '../Sidebar/Sidebars'
-import Trackpanel from './Logs/Trackpanel'
-import System from '../../../Layouts/SubAdmin/Systems/System'
+import React from "react";
+import { Link } from "react-router-dom";
+import Sidebar from "../Sidebar/Sidebars";
+import Trackpanel from "./Logs/Trackpanel";
+import System from "../../../Layouts/SubAdmin/Systems/System";
+import AdminSystem from "../../../Layouts/Admin/System/System";
 
+
+
+
+import Apicreate_info from "./Apicreateinformation/Apicreate_info";
 
 const Settings = () => {
+
+    var Role = JSON.parse(localStorage.getItem("user_details")).Role
+
+
     return (
         <div>
             <div className="">
                 <div className="card">
                     <div className="card-body">
                         <div className="row">
-                            <div className="col-sm-3">
+                            <div className="col-sm-3 left-side">
                                 <div
                                     className="nav flex-column nav-pills nav-pills-tab"
                                     id="v-pills-tab"
@@ -27,8 +36,8 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-account"
                                         aria-selected="true"
-                                        style={{color:"black"}}
-                                       
+                                        style={{ color: "black" }}
+
                                     >
 
                                         Account Settings
@@ -41,7 +50,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-company"
                                         aria-selected="false"
-                                        style={{color:"black"}}
+                                        style={{ color: "black" }}
                                     >
                                         Company Settings
                                     </a>
@@ -53,7 +62,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-invoice"
                                         aria-selected="false"
-                                        style={{color:"dark"}}
+                                        style={{ color: "dark" }}
                                     >
                                         Invoice Templates
                                     </a>
@@ -65,7 +74,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-payment"
                                         aria-selected="false"
-                                        style={{color:"black"}}
+                                        style={{ color: "black" }}
                                     >
                                         Payment Methods
                                     </a>
@@ -77,7 +86,7 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-email"
                                         aria-selected="false"
-                                        style={{color:"black"}}
+                                        style={{ color: "black" }}
                                     >
                                         Email Templates
                                     </a>
@@ -89,38 +98,42 @@ const Settings = () => {
                                         role="tab"
                                         aria-controls="v-pills-logs"
                                         aria-selected="false"
-                                        style={{color:"black"}}
+                                        style={{ color: "black" }}
                                     >
                                         Logs
                                     </a>
 
                                     <a
                                         className="nav-link mb-1"
-                                        id="v-pills-logs-tab"
+                                        id="v-pills-changepass-tab"
                                         data-bs-toggle="pill"
-                                        href="#v-pills-logs"
+                                        href="#v-pills-changepass"
                                         role="tab"
-                                        aria-controls="v-pills-logs"
+                                        aria-controls="v-pills-changepass"
                                         aria-selected="false"
                                     >
                                         Change Password
                                     </a>
                                     <a
                                         className="nav-link mb-1"
-                                        id="v-pills-logs-tab"
+                                        id="v-pills-api-tab"
                                         data-bs-toggle="pill"
-                                        href="#v-pills-logs"
+                                        href="#v-pills-api"
                                         role="tab"
-                                        aria-controls="v-pills-logs"
+                                        aria-controls="v-pills-api"
                                         aria-selected="false"
+                                        style={{ color: "black" }}
                                     >
-                                       Api Create Information
+                                        Api Create Information
                                     </a>
                                 </div>
 
                             </div>
                             <div className="col-sm-9">
                                 <div className="tab-content">
+
+
+                                    {/* Account Settings */}
                                     <div
                                         className="tab-pane fade active show"
                                         id="v-pills-account"
@@ -204,7 +217,7 @@ const Settings = () => {
                                                         <div className="col-lg-6 col-12">
                                                             <div className="input-block mb-0">
                                                                 <label>Gender</label>
-                                                                <select className="select">
+                                                                <select className="select form-control">
                                                                     <option>Select Gender</option>
                                                                     <option>Male</option>
                                                                     <option>Female</option>
@@ -223,61 +236,7 @@ const Settings = () => {
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div className="col-lg-12">
-                                                            <div className="form-title">
-                                                                <h5>Address Information</h5>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Address</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter your Address"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Country</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter your Country"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>State</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter your State"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>City</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter your City"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Postal Code</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter Your Postal Code"
-                                                                />
-                                                            </div>
-                                                        </div>
+
                                                         <div className="col-lg-12">
                                                             <div className="btn-path text-end">
                                                                 <a
@@ -296,6 +255,8 @@ const Settings = () => {
                                             </div>
                                         </div>
                                     </div>
+
+                                    {/* Company Settings */}
                                     <div
                                         className="tab-pane fade"
                                         id="v-pills-company"
@@ -308,191 +269,18 @@ const Settings = () => {
                                                     <div className="content-page-header">
                                                         <h5>Company Settings</h5>
                                                     </div>
-                                                  
-                                                  
-                                                 <System/>
 
+                                                    <div className='subadminset'>
+                                                      {Role == "ADMIN" ? <AdminSystem/>  : Role == "SUBADMIN" ? <System /> :""}
+                                                    </div>
 
 
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div
-                                        className="tab-pane fade"
-                                        id="v-pills-messages"
-                                        role="tabpanel"
-                                        aria-labelledby="v-pills-messages-tab"
-                                    >
-                                        <div className="col-xl-9 col-md-8">
-                                            <div className="card">
-                                                <div className="card-body w-100">
-                                                    <div className="content-page-header">
-                                                        <h5 className="setting-menu">Account Settings</h5>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="profile-picture">
-                                                            <div className="upload-profile me-2">
-                                                                <div className="profile-img">
-                                                                    <img
-                                                                        id="blah"
-                                                                        className="avatar"
-                                                                        src="assets/img/profiles/avatar-10.jpg"
-                                                                        alt="profile-img"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="img-upload">
-                                                                <label className="btn btn-primary">
-                                                                    Upload new picture <input type="file" />
-                                                                </label>
-                                                                <a className="btn btn-danger">Delete</a>
-                                                                <p className="mt-1">
-                                                                    Logo Should be minimum 152 * 152 Supported File format
-                                                                    JPG,PNG,SVG
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-12">
-                                                            <div className="form-title">
-                                                                <h5>General Information</h5>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>First Name</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter First Name"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Last Name</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter Last Name"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Email</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter Email Address"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Mobile Number</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter Mobile Number"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-0">
-                                                                <label>Gender</label>
-                                                                <select className="select">
-                                                                    <option>Select Gender</option>
-                                                                    <option>Male</option>
-                                                                    <option>Female</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Date of Birth</label>
-                                                                <div className="cal-icon cal-icon-info">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="datetimepicker form-control"
-                                                                        placeholder="Select Date"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-12">
-                                                            <div className="form-title">
-                                                                <h5>Address Information</h5>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Address</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter your Address"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Country</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter your Country"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>State</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter your State"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>City</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter your City"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Postal Code</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter Your Postal Code"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-12">
-                                                            <div className="btn-path text-end">
-                                                                <a
-                                                                    href="javascript:void(0);"
-                                                                    className="btn btn-cancel bg-primary-light me-3"
-                                                                >
-                                                                    Cancel
-                                                                </a>
-                                                                <a href="javascript:void(0);" className="btn btn-primary">
-                                                                    Save Changes
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+
+                                    {/* Invoice Templates */}
                                     <div
                                         className="tab-pane fade"
                                         id="v-pills-invoice"
@@ -1049,6 +837,8 @@ const Settings = () => {
                                             </div>
                                         </div>
                                     </div>
+
+                                    {/* Payment Settings */}
                                     <div
                                         className="tab-pane fade"
                                         id="v-pills-payment"
@@ -1074,7 +864,7 @@ const Settings = () => {
                                                                             defaultChecked=""
                                                                         />
                                                                         <label htmlFor="rating_1" className="checktoggle checkbox-bg">
-                                                                            checkbox
+
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -1114,7 +904,7 @@ const Settings = () => {
                                                                             defaultChecked=""
                                                                         />
                                                                         <label htmlFor="rating_2" className="checktoggle checkbox-bg">
-                                                                            checkbox
+
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -1142,7 +932,7 @@ const Settings = () => {
                                                             <div className="col-lg-4 col-12">
                                                                 <div className="input-block mb-3">
                                                                     <label>Paypal Mode</label>
-                                                                    <select className="select">
+                                                                    <select className="select form-control">
                                                                         <option>Select Paypal Mode</option>
                                                                         <option>Debit Card</option>
                                                                         <option>Credit Card</option>
@@ -1164,7 +954,7 @@ const Settings = () => {
                                                                             defaultChecked=""
                                                                         />
                                                                         <label htmlFor="rating_3" className="checktoggle checkbox-bg">
-                                                                            checkbox
+
                                                                         </label>
                                                                     </div>
                                                                 </div>
@@ -1209,6 +999,9 @@ const Settings = () => {
                                         </div>
 
                                     </div>
+
+
+                                    {/* Email Templates */}
                                     <div
                                         className="tab-pane fade"
                                         id="v-pills-email"
@@ -1472,6 +1265,8 @@ const Settings = () => {
 
                                     </div>
 
+
+                                    {/* LOGS COMPNENT */}
                                     <div
                                         className="tab-pane fade"
                                         id="v-pills-logs"
@@ -1486,19 +1281,103 @@ const Settings = () => {
                                                         <div className="list-btn">
                                                             <ul className="filter-list">
                                                                 <li>
-                                                               
+
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                         </div>
 
-                                        <Trackpanel/>  
+                                        <Trackpanel />
                                     </div>
 
+
+                                    {/* CHANGE PASSWORD */}
+                                    <div
+                                        className="tab-pane fade"
+                                        id="v-pills-changepass"
+                                        role="tabpanel"
+                                        aria-labelledby="v-pills-changepass-tab"
+                                    >
+                                        <div className="col-xl-12 col-md-12">
+                                            <div className="page-header">
+                                                {/* <div className="content-page-header">
+                                                    <h5>Change Password</h5>
+
+                                                </div> */}
+
+                                                <div className="page-content">
+                                                    <div className="mainDiv">
+                                                        <div className="cardStyle">
+                                                            <form action="" method="post" name="signupForm" id="signupForm">
+
+                                                                <h5 className="formTitle">Change Password</h5>
+                                                                <div className="inputDiv">
+                                                                    <label className="inputLabel" htmlFor="password">
+                                                                        Current Password
+                                                                    </label>
+                                                                    <input type="password" id="password" name="password" required="" />
+                                                                </div>
+                                                                <div className="inputDiv">
+                                                                    <label className="inputLabel" htmlFor="password">
+                                                                        New Password
+                                                                    </label>
+                                                                    <input type="password" id="password" name="password" required="" />
+                                                                </div>
+                                                                <div className="inputDiv">
+                                                                    <label className="inputLabel" htmlFor="confirmPassword">
+                                                                        Confirm New Password
+                                                                    </label>
+                                                                    <input type="password" id="confirmPassword" name="confirmPassword" />
+                                                                </div>
+                                                                <div className="buttonWrapper">
+                                                                    <button
+                                                                        type="submit"
+                                                                        id="submitButton"
+
+                                                                        className="submitButton"
+                                                                    >
+                                                                        <span>Submit</span>
+
+                                                                    </button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    {/* API CREATE INFORMATION */}
+                                    <div
+                                        className="tab-pane fade"
+                                        id="v-pills-api"
+                                        role="tabpanel"
+                                        aria-labelledby="v-pills-api-tab"
+                                    >
+                                        <div className="col-xl-12 col-md-12">
+                                            <div className="page-header">
+                                                <div className="content-page-header">
+                                                    <h5>All Api-Create Info</h5>
+                                                    <div className="page-content">
+                                                        <div className="list-btn">
+                                                            <ul className="filter-list">
+                                                                <li></li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <Apicreate_info />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1506,7 +1385,8 @@ const Settings = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Settings
+
+export default Settings;

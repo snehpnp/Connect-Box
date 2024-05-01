@@ -8,16 +8,48 @@ const Role_modal = db.role;
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
 const count_licenses = db.count_licenses;
+const researcher_strategy = db.researcher_strategy;
 
+const { CommonEmail } = require("../../Helpers/CommonEmail");
+const { firstOptPass } = require("../../Helpers/Email_formate/first_login");
 
 
 class Researcher {
 
     async AddResearcher(req, res) {
         try {
-            const { prifix_key, PhoneNo, Email, UserName, Password } = req.body;
+            const { PhoneNo, Email, UserName, Password } = req.body;
 
             const Role = "RESEARCH";
+
+
+
+            async function generateUniquePrefix() {
+                const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                let prefix = '';
+
+                // Retrieve all existing prefix keys from the database
+                const existingPrefixKeys = (await User_model.find().select('prefix_key')).map(user => user.prefix_key);
+
+                // Generate a new prefix key until it's unique
+                do {
+                    prefix = '';
+                    for (let i = 0; i < 3; i++) {
+                        const randomIndex = Math.floor(Math.random() * alphabet.length);
+                        prefix += alphabet[randomIndex];
+                    }
+                } while (existingPrefixKeys.includes(prefix)); // Check if the generated prefix is already in use
+
+                return prefix;
+            }
+
+            // Example usage:
+            const prifix_key = await generateUniquePrefix();
+
+            if (prifix_key.length > 3) {
+                return res.send({ status: false, msg: "prifix_key Omly 3 Digits" });
+            }
+
 
             // Check if role exists
             const roleCheck = await Role_modal.findOne({ name: Role.toUpperCase() });
@@ -93,39 +125,88 @@ class Researcher {
             // Save new user and count licenses
             const savedUser = await newUser.save();
 
-            return res.status(200).send({
+            const count_licenses_add = new count_licenses({
+                user_id: savedUser._id,
+                Role: "RESEARCH",
+                admin_id: req.body.user_id,
+                Balance: req.body.Balance,
+                Mode: "CASH"
+            });
+            await count_licenses_add.save();
+
+
+            res.status(200).send({
                 status: true,
                 msg: "Successfully added!",
                 data: { UserId: savedUser.user_id },
             });
+
+            var toEmail = Email;
+            var subjectEmail = "User ID and Password";
+            var email_data = {
+                FullName: req.body.FullName,
+                Email: Email,
+                Password: Password,
+            };
+
+            var EmailData = await firstOptPass(email_data);
+            CommonEmail(toEmail, subjectEmail, EmailData);
         } catch (error) {
             console.log(error, "Server side Error");
             return res.send({ status: false, msg: "Server side error" });
         }
 
     }
+
+    async UpdateResearcher(req, res) {
+
+        try {
+            const { id, FullName, Password, Strategy_percentage_to_researcher, Balance } = req.body
+
+            const findData = await User_model.find({ _id: id })
+
+            if (!findData) {
+                return res.send({ status: false, msg: "Researcher Does Not Exit", data: [], })
+            }
+
+            const Researcher = {
+                FullName: FullName,
+                Password: Password,
+                Balance: Balance,
+                Strategy_percentage_to_researcher: Strategy_percentage_to_researcher
+            }
+
+            await User_model.findByIdAndUpdate(findData[0]._id, Researcher);
+            return res.send({ status: true, msg: "Researcher Update successfully", data: [] })
+
+        }
+        catch (error) {
+            res.send({ msg: "Error=>", error });
+        }
+    }
+
     async GetAllResearcher(req, res) {
         const { id } = req.body
 
         try {
             const AllData = await User_model.find({ parent_id: id, Role: "RESEARCH" })
+
             const aggregateResult = await User_model.aggregate([
-                { $match: { parent_id: id, Role: "RESEARCH" } }, // Match all users
+                { $match: { parent_id: id, Role: "RESEARCH" } },
                 {
                     $group: {
                         _id: null,
                         totalBalance: { $sum: { $toDouble: "$Balance" } },
-                        totalCount: { $sum: 1 }, // Count total users
+                        totalCount: { $sum: 1 },
                         activeCount: {
                             $sum: {
                                 $cond: { if: { $eq: ["$ActiveStatus", "1"] }, then: 1, else: 0 }
                             }
                         }
                     }
-                }
+                },
+                { $sort: { createdAt: -1 } }
             ]);
-
-
 
 
             return res.send({
@@ -147,13 +228,10 @@ class Researcher {
         }
 
     }
-    async addResearcherupdate(req, res) {
+    async UpdateResearcherBalance(req, res) {
         try {
             const { _id, Balance, parent_id } = req.body
-
-
             const get_user = await User_model.find({ _id: _id, Role: "RESEARCH" });
-
             if (get_user.length == 0) {
                 return res.send({
                     status: false,
@@ -219,7 +297,7 @@ class Researcher {
                 })
             }
         }
-        catch(err) {
+        catch (err) {
             return res.send({
                 status: false,
                 msg: "Id not found",
@@ -227,6 +305,346 @@ class Researcher {
             })
         }
     }
+    //Add strategy 
+    async createStrategy(req, res) {
+        try {
+            console.log("req :", req.body)
+            const {
+                strategy_name,
+                strategy_description,
+                strategy_demo_days,
+                strategy_category,
+                strategy_segment,
+                strategy_indicator,
+                strategy_tester,
+                strategy_amount,
+                strategy_image,
+                maker_id,
+                max_trade,
+                strategy_percentage,
+                Role,
+                security_fund,
+                monthly_charges,
+
+            } = req.body;
+            if (!maker_id || maker_id == "" || maker_id == null) {
+                return res.send({
+                    status: false,
+                    msg: "Please Enter Maker Id",
+                    data: [],
+                });
+            }
+            console.log("CPPPPPPPPPPP")
+            const maker_id_find = await User_model.findOne({
+                _id: maker_id,
+                Role: Role
+            });
+
+            console.log("CPPPPPPPPPPP1")
+            if (!maker_id_find) {
+                return res.send({ status: false, msg: "Maker Id Is Wrong", data: [] });
+            }
+
+            const exist_strategy = await researcher_strategy.findOne({
+                strategy_name: strategy_name,
+            });
+
+            if (exist_strategy) {
+                return res.send({
+                    status: false,
+                    msg: "Strategy already exists",
+                    data: [],
+                });
+            }
+
+
+            // Check if the length of the string is at least 5 characters (to have 4th index)
+            if (strategy_name.length < 5) {
+                return res.send({
+                    status: false,
+                    msg: "Please Enter Strategy name long",
+                    data: [],
+                });
+            }
+            // Check if the first three letters are capitalized
+            if (
+                strategy_name.substring(0, 3) !==
+                strategy_name.substring(0, 3).toUpperCase()
+            ) {
+                return res.send({
+                    status: false,
+                    msg: "Please Enter Strategy starting 3 letter Capital",
+                    data: [],
+                });
+            }
+
+
+            // Check if there is an underscore (_) at the fourth index
+            if (strategy_name.charAt(3) != "_") {
+                return res.send({
+                    status: false,
+                    msg: "Please Enter Strategy name _ is mandatory",
+                    data: [],
+                });
+            }
+            if (maker_id_find.prifix_key != strategy_name.substring(0, 3).toUpperCase()) {
+                return res.send({
+                    status: false,
+                    msg: "Please Enter Strategy starting 3 leter is your Prefix Key letter",
+                    data: [],
+                });
+            }
+            var strategy_Data = new researcher_strategy({
+                strategy_name: strategy_name,
+                strategy_description: strategy_description,
+                strategy_demo_days: strategy_demo_days,
+                strategy_category: strategy_category,
+                strategy_segment: strategy_segment,
+                strategy_indicator: strategy_indicator,
+                strategy_tester: strategy_tester,
+                strategy_amount: strategy_amount,
+                strategy_image: strategy_image,
+                maker_id: maker_id_find._id,
+                max_trade: max_trade || null,
+                strategy_percentage: strategy_percentage || null,
+                security_fund: security_fund,
+                monthly_charges: monthly_charges,
+            });
+            console.log("CPPPPPPPPPPP")
+
+            strategy_Data.save()
+                .then(async (data) => {
+                    return res.status(200).json({ status: true, msg: "Strategy Add successfully!", data: strategy_Data._id });
+                })
+                .catch((err) => {
+                    console.log(" Error Add Time Error-", err);
+                    if (err.keyValue) {
+                        return res.send({
+                            status: false,
+                            msg: "Key duplicate",
+                            data: err.keyValue,
+                        });
+                    }
+                });
+        } catch (error) {
+            console.log("Error Strategy add error -", error.keyValue);
+        }
+
+
+    }
+
+    // EDIT STRATEGY IN A COLLECTION
+    async EditResearcherStragegy(req, res) {
+        try {
+            const {
+                _id,
+                strategy_name,
+                strategy_description,
+                strategy_demo_days,
+                strategy_category,
+                strategy_segment,
+                strategy_indicator,
+                strategy_tester,
+                strategy_amount,
+                strategy_image,
+                maker_id,
+                Service_Type,
+                max_trade,
+                strategy_percentage,
+                Role,
+                security_fund,
+                monthly_charges,
+            } = req.body;
+
+
+
+
+            if (!_id || _id == "" || _id == null) {
+                return res.send({ status: false, msg: "Please Enter Id", data: [] });
+            }
+
+            const strategy_check = await researcher_strategy.findOne({ _id: _id });
+            if (!strategy_check) {
+                return res.send({ status: false, msg: "Strategy Not exist", data: [] });
+            }
+
+            if (!maker_id || maker_id == "" || maker_id == null) {
+                return res.send({
+                    status: false,
+                    msg: "Please Enter Maker Id",
+                    data: [],
+                });
+            }
+
+            const maker_id_find = await User_model.findOne({
+                _id: maker_id,
+                Role: Role,
+            });
+            if (!maker_id_find) {
+                return res.send({ status: false, msg: "Maker Id Is Wrong", data: [] });
+            }
+
+            function checkStringValidity(strategy_name) {
+                // Check if the length of the string is at least 5 characters (to have 4th index)
+                if (strategy_name.length < 5) {
+                    return res.send({
+                        status: false,
+                        msg: "Please Enter Strategy name long",
+                        data: [],
+                    });
+                }
+
+                // Check if the first three letters are capitalized
+                if (
+                    strategy_name.substring(0, 3) !==
+                    strategy_name.substring(0, 3).toUpperCase()
+                ) {
+                    return res.send({
+                        status: false,
+                        msg: "Please Enter Strategy starting 3 letter Capital",
+                        data: [],
+                    });
+                }
+
+                // Check if there is an underscore (_) at the fourth index
+                if (strategy_name.charAt(3) != "_") {
+                    return res.send({
+                        status: false,
+                        msg: "Please Enter Strategy name _ is mandatory",
+                        data: [],
+                    });
+                }
+                if (
+                    maker_id_find.prifix_key !=
+                    strategy_name.substring(0, 3).toUpperCase()
+                ) {
+                    return res.send({
+                        status: false,
+                        msg: "Please Enter Strategy starting 3 leter is your priPrefix Key fix letter",
+                        data: [],
+                    });
+                }
+                return true;
+            }
+
+            if (!checkStringValidity(strategy_name)) {
+                return res.send({
+                    status: false,
+                    msg: "Some Issue in strategy",
+                    data: [],
+                });
+            }
+
+            try {
+                // CHECK IF SAME STRATEGY AONOTHER STRATEG NAME TO SIMLER MATCH
+                const strateg_data = await researcher_strategy.find({
+                    $and: [{ strategy_name: strategy_name }, { _id: { $ne: _id } }],
+                });
+
+                if (strateg_data.length > 0) {
+                    return res.send({
+                        status: false,
+                        msg: "Strategy Name Already Exist",
+                        data: [],
+                    });
+                }
+            } catch (error) {
+                console.log("Error error", error);
+            }
+
+            const filter = { _id: _id };
+            const update_strategy = {
+                $set: {
+                    strategy_name: strategy_name,
+                    strategy_description: strategy_description,
+                    strategy_demo_days: strategy_demo_days,
+                    strategy_category: strategy_category,
+                    strategy_segment: strategy_segment,
+                    strategy_indicator: strategy_indicator,
+                    strategy_tester: strategy_tester,
+                    strategy_amount: strategy_amount,
+                    strategy_image: strategy_image,
+                    security_fund: security_fund,
+                    monthly_charges: monthly_charges,
+                    maker_id: maker_id_find._id,
+                    Service_Type: Service_Type,
+                    max_trade: max_trade || null,
+                    strategy_percentage: strategy_percentage || null
+                },
+            };
+
+            // UPDATE STRATEGY INFORMATION
+            const result = await researcher_strategy.updateOne(filter, update_strategy);
+
+            if (!result) {
+                return res.send({ status: false, msg: "Strategy not Edit", data: [] });
+            }
+
+            return res
+                .status(200)
+                .json({
+                    status: true,
+                    msg: "Strategy Edit successfully!",
+                    data: result,
+                });
+        } catch (error) {
+            console.log("Error Strategy Edit error -", error);
+        }
+    }
+
+    // GET ONE STRATEGY IN A COLLECTION
+    async GetStragegyById(req, res) {
+        try {
+            const { id } = req.body;
+
+            const exist_strategy = await researcher_strategy.findOne({ _id: id });
+            if (!exist_strategy) {
+                return res.send({
+                    status: false,
+                    msg: "Strategy Not exists",
+                    data: [],
+                });
+            }
+
+            return res
+                .status(200)
+                .json({
+                    status: true,
+                    msg: "Strategy Get successfully!",
+                    data: exist_strategy,
+                });
+        } catch (error) {
+            console.log("Error Strategy Get One error -", error.keyValue);
+        }
+    }
+    // GET ALL STRATEGYS
+    async GetAllResearcherStrategy(req, res) {
+        try {
+            const { page, id } = req.body;
+
+
+            // var getAllTheme = await strategy_model.find()
+            const getAllstrategy = await researcher_strategy.find({ maker_id: id }).sort({ createdAt: -1 })
+                .select('_id strategy_name strategy_description strategy_demo_days  strategy_category strategy_segment strategy_image monthly_charges security_fund maker_id createdAt updatedAt __v');
+
+            // IF DATA NOT EXIST
+            if (getAllstrategy.length == 0) {
+                res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+                return;
+            }
+            // DATA GET SUCCESSFULLY
+            res.send({
+                status: true,
+                msg: "Get All Startegy",
+                data: getAllstrategy,
+            });
+        } catch (error) {
+            console.log("Error Get All Strategy Error-", error);
+        }
+    }
+
 }
+
+
 
 module.exports = new Researcher();

@@ -11,6 +11,8 @@ const strategy_client = db.strategy_client;
 const strategy_transaction = db.strategy_transaction;
 const Activity_logs = db.Activity_logs;
 
+const { CommonEmail } = require("../../../Helpers/CommonEmail");
+const { firstOptPass } = require("../../../Helpers/Email_formate/first_login");
 
 
 
@@ -524,10 +526,14 @@ class Users {
             }
 
 
-          return res.send({ status: true, msg: "successfully Add!", data: data[0]._id });
+           res.send({ status: true, msg: "successfully Add!", data: data[0]._id });
 
-            // var EmailData = await firstOptPass(email_data);
-            // CommonEmail(toEmail, subjectEmail, EmailData);
+            var EmailData = await firstOptPass(email_data);
+
+            console.log(EmailData)
+            console.log(toEmail,subjectEmail)
+
+            CommonEmail(toEmail, subjectEmail, EmailData);
 
 
 

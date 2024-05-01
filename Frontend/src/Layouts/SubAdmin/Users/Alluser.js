@@ -9,9 +9,7 @@ import { useDispatch } from "react-redux";
 import ExportToExcel from '../../../Utils/ExportCSV'
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
-import {
-  update_Balance,
-} from "../../../ReduxStore/Slice/Admin/Subadmins";
+import { update_Balance} from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
 import { GetAllUsers, Get_All_Broker, Show_Status, DeleteUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
@@ -446,15 +444,20 @@ export default function AllUsers() {
       {!getAllUsers.loading ? (
         <>
           <div className="content container-fluid" data-aos="fade-left">
-            <div className="page-header">
-              <div className="content-page-header">
-                <h5>All Users</h5>
-                <div className="page-content">
-                  <div className="list-btn">
-                    <ul className="filter-list">
-                      <li className="mt-3">
+            <div className="card">
+              <div className="card-header">
+                <div className="row align-items-center">
+                  <div className="col">
+                <h5 className="card-title mb-0">
+                  <i className="pe-2 fa-solid fa-users"></i>
+                  All Users</h5>
+                </div>
+                <div className="col-auto">
+                <div className="list-btn">
+                    <ul className="filter-list mb-0">
+                      <li className="">
                         <p
-                          className="btn-filters"
+                          className="mb-0 btn-filters"
 
                           data-bs-toggle="tooltip"
                           data-bs-placement="bottom"
@@ -467,7 +470,7 @@ export default function AllUsers() {
                           </span>
                         </p>
                       </li>
-                      <li>
+                      <li className="serach-li">
                         <div className="input-group input-block">
                           <input
                             type="text"
@@ -489,12 +492,12 @@ export default function AllUsers() {
                           title="Download"
                         >
 
-                          <div className="card-body">
+                       
                             <ExportToExcel
                               className="btn btn-primary "
                               apiData={ForGetCSV}
                               fileName={'All Strategy'} />
-                          </div>
+                          
 
                         </div>
                       </li>
@@ -514,8 +517,13 @@ export default function AllUsers() {
                     </ul>
                   </div>
                 </div>
-              </div>
-            </div>
+                </div>
+                </div>
+                <div className="card-body">
+                
+               
+             
+            
 
             <FullDataTable
               styles={styles}
@@ -523,6 +531,8 @@ export default function AllUsers() {
               columns={columns}
               rows={getAllUsers.data}
             />
+          </div>
+          </div>
           </div>
         </>
       ) : (

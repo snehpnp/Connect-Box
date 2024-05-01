@@ -5,7 +5,8 @@ const User_model = db.user;
 const Role_model = db.role;
 const SubAdminCompanyInfo = db.SubAdminCompanyInfo;
 const strategy_transaction = db.strategy_transaction;
-
+const { CommonEmail } = require("../../../Helpers/CommonEmail");
+const { firstOptPass } = require("../../../Helpers/Email_formate/first_login");
 
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
@@ -27,7 +28,6 @@ class Subadmin {
         Email,
         PhoneNo,
         password,
-        prifix_key,
         subadmin_service_type,
         strategy_Percentage,
         Per_trade,
@@ -37,6 +37,33 @@ class Subadmin {
       } = req.body;
 
       const Role = "SUBADMIN";
+
+
+      async function generateUniquePrefix() {
+        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let prefix = '';
+
+        // Retrieve all existing prefix keys from the database
+        const existingPrefixKeys = (await User_model.find().select('prefix_key')).map(user => user.prefix_key);
+
+        // Generate a new prefix key until it's unique
+        do {
+          prefix = '';
+          for (let i = 0; i < 3; i++) {
+            const randomIndex = Math.floor(Math.random() * alphabet.length);
+            prefix += alphabet[randomIndex];
+          }
+        } while (existingPrefixKeys.includes(prefix)); // Check if the generated prefix is already in use
+
+        return prefix;
+      }
+
+      // Example usage:
+      const prifix_key = await generateUniquePrefix();
+
+
+
+
 
       if (prifix_key.length > 3) {
         return res.send({ status: false, msg: "prifix_key Omly 3 Digits" });
@@ -49,7 +76,7 @@ class Subadmin {
       }
 
       // Check if username, email, phone number, and prefix key already exist
-      const existingUsername = await User_model.findOne({  UserName:UserName });
+      const existingUsername = await User_model.findOne({ UserName: UserName });
       if (existingUsername) {
         return res.send({ status: false, msg: "Username already exists" });
       }
@@ -107,7 +134,7 @@ class Subadmin {
         Per_trade,
         Balance,
         broker: 2,
-        employee_id:parent_id
+        employee_id: parent_id
       });
 
       // Save new user and count licenses
@@ -127,16 +154,34 @@ class Subadmin {
 
       await Subadmin_company.save();
 
-      return res.status(200).send({
+      res.status(200).send({
         status: true,
         msg: "Successfully added!",
         data: { UserId: savedUser.user_id },
       });
+
+
+
+      var toEmail = Email;
+      var subjectEmail = "User ID and Password";
+      var email_data = {
+        FullName: FullName,
+        Email: Email,
+        Password: password,
+        // : subadmin_service_type == 1 ? "Trade wise" : subadmin_service_type == 2 ? "Strategy Wise" : "Trade wise"
+      };
+
+      var EmailData = await firstOptPass(email_data);
+      CommonEmail(toEmail, subjectEmail, EmailData);
     } catch (error) {
       console.error("Error:", error);
       return res.send({ msg: "Internal server error", error });
     }
   }
+
+
+
+
 
   // EDIT SUBADMIN
   async EditSubadmin(req, res) {
@@ -179,6 +224,10 @@ class Subadmin {
       res.send({ msg: "Error=>", error });
     }
   }
+
+
+
+
 
   async getallSubadmin(req, res) {
     try {
@@ -282,21 +331,34 @@ class Subadmin {
     }
   }
 
-  async GetAllRechargeDetails(req, res) {
+  async  GetAllRechargeDetails(req, res) {
     try {
-      const { Role } = req.body;
-
+      let { Role } = req.body;
+  
       if (!Role) {
         return res.send({
           status: false,
           msg: "Role is required in the request body",
         });
       }
-
+  
+      let matchStage;
+      if (Role === "SUBADMIN") {
+        matchStage = {
+          $match: {
+            Role: { $in: ["SUBADMIN", "RESEARCH"] },
+          },
+        };
+      } else {
+        matchStage = {
+          $match: {
+            Role: Role,
+          },
+        };
+      }
+  
       const rechargeDetails = await count_licenses.aggregate([
-        {
-          $match: { Role },
-        },
+        matchStage,
         {
           $lookup: {
             from: "users",
@@ -315,12 +377,14 @@ class Subadmin {
             Role: 1,
             Mode: 1,
             createdAt: 1,
-
             username: "$user.UserName",
           },
         },
+        {
+          $sort: { createdAt: -1 } // Sort by createdAt field in descending order
+        }
       ]);
-
+  
       res.send({
         status: true,
         msg: "Recharge details fetched successfully",
@@ -331,6 +395,7 @@ class Subadmin {
       res.send({ status: false, msg: "Internal Server Error" });
     }
   }
+  
 
   async GetAllRechargeDetailsById(req, res) {
     try {

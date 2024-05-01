@@ -82,7 +82,7 @@ export default function Help() {
     {
       field: "UserName",
       headerName: "User Name",
-      width: 160,
+      width: 200,
       headerClassName: styles.boldHeader,
     },
     {
@@ -107,7 +107,7 @@ export default function Help() {
     {
       field: "subadmin_service_type",
       headerName: "Service-Type",
-      width: 200,
+      width: 160,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div> <b>{params.value == 2 ? "PER STRATEGY" : "PER TRADE"}</b></div>
@@ -115,16 +115,35 @@ export default function Help() {
     },
     {
       field: "Balance",
-      headerName: "Balance",
-      width: 120,
+      headerName: "Add Balance",
+      width: 150,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div onClick={() => { setmodal(true); setInitialRowData(params.row); }}>
-          <span className="text-success-light">
-            <IndianRupee style={{ height: "19px" }} />
-            {"+"+params.value || '-'}
+        <div
+          style={{
+            backgroundColor: '#4CAF50', // Green
+            border: 'none',
+            color: 'white',
+            width: "150px",
+            padding: '8px 18px', // Adjusted padding
+            textAlign: 'center',
+            textDecoration: 'none',
+            display: 'inline-block',
+            fontSize: '16px',
+            margin: '4px 2px',
+            cursor: 'pointer',
+            borderRadius: '10px', // Rounded border radius
+            transition: 'background-color 0.3s ease',
+          }}
+          onClick={() => { setmodal(true); setInitialRowData(params.row); }}
+        >
+          <span style={{ fontWeight: 'bold', verticalAlign: 'middle' }}> +
+            <IndianRupee style={{ height: "16px", marginBottom: '-4px', marginRight: '0px' ,padding:"0"}} /> 
+            {params.value || '-'}
           </span>
         </div>
+
+
       ),
     },
 
@@ -277,23 +296,7 @@ export default function Help() {
           setAllSubadmins({
             loading: true,
             data: inputSearch ? filterData : formattedData,
-            data1: [
-              { name: "Total Subadmins", count: response.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
-              { name: "Active Subadmins", count: response.ActiveCount || 0, Icon: "fe fe-check-square", color: "#1e8edf" },
-              {
-                name: "InActive Subadmins",
-                count: response.InActiveCount || 0
-                , Icon: "fe fe-x-circle",
-                color: "#ed3a3a"
-              },
-              {
-                name: "Total Used Balance",
-                count: response.ActiveUseBalance || 0
-                , Icon: "fas fa-dollar-sign"
-                , color: "#1d8147"
-
-              },
-            ],
+            data1: [],
           });
 
         } else {
@@ -425,28 +428,7 @@ export default function Help() {
               </div>
             </div>
 
-            {/* <div className="super-admin-list-head">
-              <div className="row">
-                {getAllSubadmins &&
-                  getAllSubadmins.data1.map((data, index) => (
-                    <div className="col-xl-3 col-md-6 d-flex" key={index}>
-                      <div className="card w-100">
-                        <div className="card-body">
-                          <div className="grid-info-item total-items">
-                            <div className="grid-info">
-                              <span>{data.name}</span>
-                              <h4 style={{ color: data.color }} >{data.count}</h4>
-                            </div>
-                            <div className="grid-head-icon">
-                              <i className={data.Icon} style={{ color: data.color }} />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div> */}
+
 
             <FullDataTable
               styles={styles}

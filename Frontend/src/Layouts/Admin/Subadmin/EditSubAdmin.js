@@ -109,14 +109,7 @@ const EditClient = () => {
   });
 
   const fields = [
-    {
-      name: "profile_img",
-      label: "Profile Image",
-      type: "file",
-      label_size: 6,
-      col_size: 12,
-      disable: false,
-    },
+  
    
     {
       name: "fullName",
@@ -150,14 +143,7 @@ const EditClient = () => {
       col_size: 6,
       disable: true,
     },
-    {
-      name: "prifix_key",
-      label: "Prefix Key",
-      type: "text",
-      label_size: 12,
-      col_size: 6,
-      disable: true,
-    },
+    
     {
       name: "subadmin_servic_type",
       label: "Subadmin Service Type",

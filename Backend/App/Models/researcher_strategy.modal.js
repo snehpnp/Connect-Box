@@ -1,12 +1,8 @@
 const mongoose = require('mongoose');
 
 const { Schema, model } = require('mongoose');
-const strategySchema = Schema({
+const researcher_strategySchema = Schema({
     strategy_name: {
-        type: String,
-       
-    },
-    stgname_adminid: {
         type: String,
         unique: true
     },
@@ -18,22 +14,7 @@ const strategySchema = Schema({
         type: String,
         default: 0
     },
-    strategy_amount_month: {     //ID :1
-        type: String,
-        default: null
-    },
-    strategy_amount_quarterly: {  //ID :2
-        type: String,
-        default: null
-    },
-    strategy_amount_half_early: { //ID :3
-        type: String,
-        default: null
-    },
-    strategy_amount_early: {   //ID :4
-        type: String,
-        default: null
-    },
+     
 
     strategy_category: {
         type: String,
@@ -63,11 +44,6 @@ const strategySchema = Schema({
         ref: "USER",
         default: null
     },
-    researcher_id: {
-        type: Schema.Types.ObjectId,
-        ref: "USER",
-        default: null
-    },
     max_trade: {
         type: String,
         default: null
@@ -76,6 +52,20 @@ const strategySchema = Schema({
         type: String,
         default: null
     },
+    monthly_charges: {
+        type: String,
+        default: null
+    },
+    security_fund: {
+        type: String,
+        default: null
+    },
+    collaboration_id:[ 
+        {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user"
+       }
+    ],
     Service_Type: {
         type: String,
         enum: ['0','1', '2'], // 0 = No Use , 1= Fixed , 2= per trade
@@ -91,5 +81,5 @@ const strategySchema = Schema({
     timestamps: true
 });
 
-const strategy = model('strategy', strategySchema);
-module.exports = strategy;
+const researcher_strategy = model('researcher_strategy', researcher_strategySchema);
+module.exports = researcher_strategy;

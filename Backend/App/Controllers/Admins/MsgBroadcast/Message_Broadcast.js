@@ -40,13 +40,13 @@ class MessageController {
             Role,
           });
           await msg.save();
-          io.emit("message_updated", msg);
+          // io.emit("message_updated", msg);
         }
       } else if (Role === "SUBADMIN") {
         msg = new msgdata({
           ownerId,
-          strategyId :strategyId ? strategyId :null,
-          brokerId :brokerId ? brokerId :null,
+          strategyId: strategyId ? strategyId : null,
+          brokerId: brokerId ? brokerId : null,
           messageTitle,
           Role,
         });
@@ -75,58 +75,269 @@ class MessageController {
 
       let matchCondition = {};
 
-      if (key === 1) {
+      // KEY 1 = ADMIN 
+      // KEY 2 = SUBADMIN SEND
+      // KEY 3 = SUBADMIN SENT
+      // KEY 4 = USER RECIVED MESSAGE
+
+
+      if (key == 1) {
         matchCondition = {
           $or: [
-            { Role: "SUBADMIN", ownerId: new ObjectId(ownerId) },
-            { Role: "ADMIN", subAdminId: { $in: [new ObjectId(ownerId)] } }
+            { Role: "ADMIN" },
+
           ]
         };
-      } else if (key === 2) {
-        matchCondition = {
-          $or: [
-            { Role: "SUBADMIN" },
-            { Role: "ADMIN" }
-          ]
-        };
-      } else {
-        return res.status(400).json({
-          status: false,
-          msg: "Invalid role key",
-          data: []
+
+
+
+        const pipeline = [
+          { $match: matchCondition },
+          {
+            $lookup: {
+              from: "users",
+              localField: "ownerId",
+              foreignField: "_id",
+              as: "makerInfo",
+            },
+          },
+          { $unwind: "$makerInfo" },
+          {
+            $addFields: {
+              UserName: "$makerInfo.UserName",
+            },
+          },
+
+          {
+            $lookup: {
+              from: "users",
+              localField: "subAdminId",
+              foreignField: "_id",
+              as: "makerInfo",
+            },
+          },
+          { $unwind: "$makerInfo" },
+          {
+            $addFields: {
+              FullName: "$makerInfo.UserName",
+            },
+          },
+          {
+            $project: {
+              makerInfo: 0,
+            },
+          },
+          { $sort: { createdAt: -1 } }
+        ];
+
+        const getMessages = await msgdata.aggregate(pipeline);
+
+        return res.send({
+          status: true,
+          msg: "Messages retrieved successfully",
+          data: getMessages,
         });
-      }
 
-      const pipeline = [
-        { $match: matchCondition },
-        {
-          $lookup: {
-            from: "users",
-            localField: "ownerId",
-            foreignField: "_id",
-            as: "makerInfo",
-          },
-        },
-        { $unwind: "$makerInfo" },
-        {
-          $addFields: {
-            UserName: "$makerInfo.UserName",
-          },
-        },
-        {
-          $project: {
-            makerInfo: 0,
-          },
-        },
-      ];
 
-      const getMessages = await msgdata.aggregate(pipeline);
+      } else if (key == 2) {
+        matchCondition = {
+          $or: [
+            { Role: "SUBADMIN", ownerId: new ObjectId(ownerId) }
+          ]
+        };
 
-      res.send({
-        status: true,
-        msg: "Messages retrieved successfully",
-        data: getMessages,
-      });
+
+        console.log("HIII")
+
+        const pipeline = [
+          { $match: matchCondition },
+          {
+            $lookup: {
+              from: "strategies",
+              localField: "strategyId",
+              foreignField: "_id",
+              as: "makerInfo",
+            },
+          },
+          { $unwind: { path: "$makerInfo", preserveNullAndEmptyArrays: true } },
+          {
+            $lookup: {
+              from: "api_create_infos",
+              localField: "brokerId",
+              foreignField: "_id",
+              as: "brokerinfo",
+            },
+          },
+          { $unwind: { path: "$brokerinfo", preserveNullAndEmptyArrays: true } },
+          {
+            $addFields: {
+              StrategyName: "$makerInfo.strategy_name",
+              BrokerName: "$brokerinfo.title",
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              Balance: 1,
+              Role: 1,
+              Mode: 1,
+              messageTitle:1,
+              createdAt: 1,
+              StrategyName: 1,
+              BrokerName: 1
+            }
+          },
+          { $sort: { createdAt: -1 } }
+        ];
+        
+        const getMessages = await msgdata.aggregate(pipeline);
+        
+
+
+
+        return res.send({
+          status: true,
+          msg: "Messages retrieved successfully",
+          data: getMessages,
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      } else if (key == 3) {
+        matchCondition = {
+          $or: [
+            { Role: "ADMIN", subAdminId: new ObjectId(ownerId) }
+
+          ]
+        };
+
+
+
+        const pipeline = [
+          { $match: matchCondition },
+          {
+            $lookup: {
+              from: "users",
+              localField: "ownerId",
+              foreignField: "_id",
+              as: "makerInfo",
+            },
+          },
+          { $unwind: "$makerInfo" },
+          {
+            $addFields: {
+              UserName: "$makerInfo.UserName",
+            },
+          },
+
+          {
+            $lookup: {
+              from: "users",
+              localField: "subAdminId",
+              foreignField: "_id",
+              as: "makerInfo",
+            },
+          },
+          { $unwind: "$makerInfo" },
+          {
+            $addFields: {
+              FullName: "$makerInfo.UserName",
+            },
+          },
+          {
+            $project: {
+              makerInfo: 0,
+            },
+          },
+          { $sort: { createdAt: -1 } }
+        ];
+
+        const getMessages = await msgdata.aggregate(pipeline);
+
+        return res.send({
+          status: true,
+          msg: "Messages retrieved successfully",
+          data: getMessages,
+        });
+
+
+      } else if (key == 4) {
+        // matchCondition = {
+        //   $or: [
+        //     { Role: "ADMIN", subAdminId: new ObjectId(ownerId) }
+
+        //   ]
+        // };
+
+
+
+        // const pipeline = [
+        //   { $match: matchCondition },
+        //   {
+        //     $lookup: {
+        //       from: "users",
+        //       localField: "ownerId",
+        //       foreignField: "_id",
+        //       as: "makerInfo",
+        //     },
+        //   },
+        //   { $unwind: "$makerInfo" },
+        //   {
+        //     $addFields: {
+        //       UserName: "$makerInfo.UserName",
+        //     },
+        //   },
+
+        //   {
+        //     $lookup: {
+        //       from: "users",
+        //       localField: "subAdminId",
+        //       foreignField: "_id",
+        //       as: "makerInfo",
+        //     },
+        //   },
+        //   { $unwind: "$makerInfo" },
+        //   {
+        //     $addFields: {
+        //       FullName: "$makerInfo.UserName",
+        //     },
+        //   },
+        //   {
+        //     $project: {
+        //       makerInfo: 0,
+        //     },
+        //   },
+        //   { $sort: { createdAt: -1 } }
+        // ];
+
+        // const getMessages = await msgdata.aggregate(pipeline);
+
+        // return res.send({
+        //   status: true,
+        //   msg: "Messages retrieved successfully",
+        //   data: getMessages,
+        // });
+
+
+      } 
+
+
+
     } catch (error) {
       console.error("Error retrieving messages:", error);
       res.status(500).json({
@@ -142,19 +353,15 @@ class MessageController {
     try {
       const { id } = req.body;
       if (!id) {
-        return res
-          .status(400)
-          .send({ message: "Message ID is required in the request body" });
+        return res.send({ message: "Message ID is required in the request body" });
       }
       const result = await msgdata.findByIdAndDelete(id);
       if (!result) {
-        return res
-          .status(404)
-          .send({ status: false, message: "Message not found" });
+        return res.send({ status: false, message: "Message not found" });
       }
       res.send({ status: true, message: "Message deleted successfully" });
     } catch (error) {
-      res.status(500).send({
+      res.send({
         status: false,
         message: "Error deleting message",
         error: error.message,
@@ -167,16 +374,14 @@ class MessageController {
       const { id, messageTitle } = req.body;
       const existingMsg = await msgdata.findById(id);
       if (!existingMsg) {
-        return res
-          .status(404)
-          .json({ status: false, msg: "Message not found", data: null });
+        return res.json({ status: false, msg: "Message not found", data: null });
       }
       existingMsg.messageTitle = messageTitle;
       const updatedMsg = await existingMsg.save();
-      return res.status(200).json({ status: true, msg: "Message updated successfully", data: updatedMsg });
+      return res.json({ status: true, msg: "Message updated successfully", data: updatedMsg });
     } catch (error) {
       console.error("Error updating message:", error);
-      return res.status(500).json({
+      return res.json({
         status: false,
         msg: "Error updating message",
         error: error.message,

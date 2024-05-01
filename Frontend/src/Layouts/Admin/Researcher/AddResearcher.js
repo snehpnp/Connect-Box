@@ -22,7 +22,7 @@ const AddResearcher = () => {
       email: '',
       password: '',
       strategy_percentage: '',
-      prifix_key: '',
+      // prifix_key: '',
       Balance: '',
     },
     validate: (values) => {
@@ -49,9 +49,9 @@ const AddResearcher = () => {
       if (!values.strategy_percentage) {
         errors.strategy_percentage = "Please Enter strategy percentage"
       }
-      if (!values.prifix_key) {
-        errors.prifix_key = "Please Enter Unique Prifx key"
-      }
+      // if (!values.prifix_key) {
+      //   errors.prifix_key = "Please Enter Unique Prifx key"
+      // }
       if (!values.Balance) {
         errors.Balance = "Please Enter Balance"
       }
@@ -60,14 +60,13 @@ const AddResearcher = () => {
     onSubmit: async (values) => {
       try {
         const data = {
-          profile_img: '',
           FullName: values.fullName,
           UserName: values.userName,
           Email: values.email,
           PhoneNo: values.PhoneNo,
           Password: values.password,
           Strategy_percentage_to_researcher: values.strategy_percentage,
-          prifix_key: values.prifix_key,
+          // prifix_key: values.prifix_key,
           user_id: user_id,
           Balance: values.Balance,
         };
@@ -105,14 +104,7 @@ const AddResearcher = () => {
 
 
   const fields = [
-    {
-      name: "profile_img",
-      label: "Profile Image",
-      type: "file",
-      label_size: 6,
-      col_size: 12,
-      disable: false,
-    },
+ 
     {
       name: "fullName",
       label: "Full Name",
@@ -154,14 +146,14 @@ const AddResearcher = () => {
       col_size: 6,
       disable: false,
     },
-    {
-      name: "prifix_key",
-      label: "Prefix Key",
-      type: "text2",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
+    // {
+    //   name: "prifix_key",
+    //   label: "Prefix Key",
+    //   type: "text2",
+    //   label_size: 12,
+    //   col_size: 6,
+    //   disable: false,
+    // },
     {
       name: "Balance",
       label: "Balance",

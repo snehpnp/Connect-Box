@@ -41,20 +41,19 @@ const AddClient = () => {
 
   const formik = useFormik({
     initialValues: {
-      profile_img: "",
       fullName: "",
       username: "",
       email: "",
       phone: "",
       balance: "",
       password: "",
-      prefix_key: null,
+      // prefix_key: null,
       subadmin_servic_type: "0",
       strategy_Percentage: "0",
       Per_trade: "0",
       parent_id: null,
       parent_role: null,
-      prefix_key:''
+      // prefix_key:''
     },
     validate: (values) => {
       let errors = {};
@@ -88,14 +87,13 @@ const AddClient = () => {
         errors.strategy_Percentage = "Please Enter strategy percentage value";
       }
 
-      if (!values.prefix_key) {
-        errors.prefix_key = "Please Enter Prefix Key";
-      }
+      // if (!values.prefix_key) {
+      //   errors.prefix_key = "Please Enter Prefix Key";
+      // }
       return errors;
     },
     onSubmit: async (values, { setSubmitting }) => {
       const data = {
-        ProfileImg: values.profile_img,
         FullName: values.fullName,
         UserName: values.username,
         Email: values.email,
@@ -104,7 +102,7 @@ const AddClient = () => {
         subadmin_service_type: values.subadmin_servic_type,
         strategy_Percentage: values.strategy_Percentage,
         Per_trade: values.Per_trade,
-        prifix_key: values.prefix_key,
+        // prifix_key: values.prefix_key,
         password: values.password,
         parent_id: user_id || "65feb434ce02a722ac3b997d",
         parent_role: Role || "ADMIN",
@@ -151,14 +149,7 @@ const AddClient = () => {
   });
 
   const fields = [
-    {
-      name: "profile_img",
-      label: "Profile Image",
-      type: "file",
-      label_size: 6,
-      col_size: 12,
-      disable: false,
-    },
+   
     {
       name: "fullName",
       label: "Full Name",
@@ -207,15 +198,15 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    {
+    // {
 
-      name: "prefix_key",
-      label: "Prefix Key",
-      type: "text2",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
+    //   name: "prefix_key",
+    //   label: "Prefix Key",
+    //   type: "text2",
+    //   label_size: 12,
+    //   col_size: 6,
+    //   disable: false,
+    // },
     {
       name: "subadmin_servic_type",
       label: "Subadmin Service Type",
@@ -271,7 +262,7 @@ const AddClient = () => {
         fields={fields.filter(
           (field) => !field.showWhen || field.showWhen(formik.values)
         )}
-        ProfileShow={formik.values.profile_img}
+    
         page_title="Add New Subadmin"
         btn_name="Add Subadmin"
         btn_name1="Cancel"

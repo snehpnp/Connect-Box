@@ -223,5 +223,30 @@ export async function GetAllServicesForEmployee(data, token) {
 }
 
 
+export async function StrategyPurchaseBySubadmin(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}strategy/order/create`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
 
+    }
+}
+
+
+export async function strategyOrderUpdate(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}strategy/order/update`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
 

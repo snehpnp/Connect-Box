@@ -54,3 +54,61 @@ export async function DELETE_RESEARCHER(data){
         return await err;
     }
 }
+export async function ADD_RESEARCHER_STRATEGY(data){
+    try{
+        const res= await axios.post(`${Config.base_url}researcher/addstrategy`, data,{
+            data:{}
+        })
+        return await res?.data
+    }
+    catch(err){
+        return await err;
+    }
+}
+
+export async function EDIT_RESEARCHER_STRATEGY(data){
+    try{
+        const res= await axios.post(`${Config.base_url}researcher/editstrategy`, data,{
+            data:{}
+        })
+        return await res?.data
+    }
+    catch(err){
+        return await err;
+    }
+}
+
+export async function GET_ONE_RESEARCHER_STRATEGY(data){
+    try{
+        const res= await axios.post(`${Config.base_url}researcher/getonestrategy`, data,{
+            data:{}
+        })
+        return await res?.data
+    }
+    catch(err){
+        return await err;
+    }
+}
+
+export async function GET_ALL_RESEARCHER_STRATEGY(data){
+    try{
+        const res= await axios.post(`${Config.base_url}researcher/getll`, data, {
+            data:{}
+        })
+        return await res?.data
+    }
+    catch(err){
+        return await err;
+    }
+}
+export async function UPDATE_RESEARCHER(data){
+    try{
+        const res = await axios.post(`${Config.base_url}researcher/edit` , data , {
+            data: {}
+        })
+        return res?.data
+    }
+    catch(err){
+        return await err
+    }
+}

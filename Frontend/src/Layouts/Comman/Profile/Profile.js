@@ -99,7 +99,7 @@ const Profile = () => {
     "wolf (1).png",
   ];
 
- const handleAvatarClick = async (avatarUrl) => {
+  const handleAvatarClick = async (avatarUrl) => {
     try {
       var data = { user_id: user_id, profile_img: avatarUrl };
       const response = await dispatch(ProfilImage(data)).unwrap();
@@ -353,22 +353,7 @@ const Profile = () => {
               </div>
               <div className="row">
                 <div className="col-lg-4">
-                  <div className="card card-body">
-                    <h5>Complete your profile</h5>
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div className="progress progress-md flex-grow-1">
-                        <div
-                          className="progress-bar bg-primary"
-                          role="progressbar"
-                          style={{ width: "30%" }}
-                          aria-valuenow={30}
-                          aria-valuemin={0}
-                          aria-valuemax={100}
-                        />
-                      </div>
-                      <span className="ms-4">30%</span>
-                    </div>
-                  </div>
+
                   <div className="card">
                     <div className="card-header">
                       <h5 className="card-title d-flex justify-content-between">
@@ -535,40 +520,29 @@ const Profile = () => {
                       {info &&
                         info.map((item, index) => (
                           <ul key={index} className="list-unstyled mb-0">
-                            <li className="pt-2 pb-0">
-                              <h6>Company Name</h6>
-                              <li> {item.CompanyName} </li>
+                            <li className="pb-0">
+                              <h6><span><b>Company Name</b>  : {item.CompanyName} </span></h6>
                             </li>
-                            <br />
-
-                            <li></li>
-                            <li className="pt-2 pb-0">
-                              <h6>Address</h6>
-                              <li> {item.Address} </li>
+                            <li className=" pb-0">
+                              <h6><span><b>Address</b> : {item.Address} </span></h6>
+                            </li>                        
+                            <li className="pb-0">
+                              <h6><span><b>DOB</b>: {fDate(item.DOB || "")}</span></h6>
                             </li>
-                            <br />
+                          
 
-                            <li className="pt-2 pb-0">
-                              <h6>DOB</h6>
-                              <li> {fDate(item.DOB || '')} </li>
+                            <li className=" pb-0">
+                              <h6><span><b>Location</b> :  {item.Location} </span></h6>                            
                             </li>
-                            <br />
+                            
 
-                            <li className="pt-2 pb-0">
-                              <h6>Location</h6>
-                              <li> {item.Location} </li>
+                            <li className=" pb-0">
+                              <h6><span><b>State</b> : {item.State} </span></h6>
                             </li>
-                            <br />
+                          
 
-                            <li className="pt-2 pb-0">
-                              <h6>State</h6>
-                              <li> {item.State} </li>
-                            </li>
-                            <br />
-
-                            <li className="pt-2 pb-0">
-                              <h6>Country</h6>
-                              <li> {item.Country} </li>
+                            <li className="pb-0">
+                              <h6><span><b>Country</b> : {item.Country} </span></h6>
                             </li>
                           </ul>
                         ))}
@@ -587,17 +561,22 @@ const Profile = () => {
                           .map((item, index) => (
                             <li key={index} className="feed-item">
                               <div className="feed-date d-flex justify-content-between">
-                                <span className="feed-text">{fDateTime(item.createdAt)}</span> 
+                                <span className="feed-text">
+                                  {fDateTime(item.createdAt)}
+                                </span>
                                 <span className="feed-text ">
-                                  <a href="#" style={{ color: "blue" }}>{item.system_ip}</a>
+                                  <a href="#" style={{ color: "blue" }}>
+                                    {item.system_ip}
+                                  </a>
                                 </span>
                               </div>
                               <span className="feed-text">
-                                <a href="#" style={{ color: "blue" }}>{item.role}</a>{" "}
+                                <a href="#" style={{ color: "blue" }}>
+                                  {item.role}
+                                </a>{" "}
                                 {item.trading_status}
                               </span>
                             </li>
-
                           ))}
                       </ul>
                     </div>

@@ -20,14 +20,29 @@ let helpmessage = new mongoose.Schema({
   Role: {
     type: String,
     required: true,
-},
-prifix_key :{
-  type: String,
-  
-}
+  },
+  admin_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'users'
+  },
 
+
+  prifix_key: {
+    type: String,
+
+  },
+
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+
+} ,{
+  // This enables Mongoose to handle the _id field automatically
+  _id: true,
+  timestamps: true
 });
 
 
-const messageHelpData = mongoose.model("Help",helpmessage)
+const messageHelpData = mongoose.model("Help", helpmessage)
 module.exports = messageHelpData;

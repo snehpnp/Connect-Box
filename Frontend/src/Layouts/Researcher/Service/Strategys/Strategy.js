@@ -2,18 +2,14 @@ import React, { useState, useEffect } from 'react'
 import AddForm from '../../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
 import { GetStretgyWithImg, AddStrategy, DELETE_STRATEGY } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
-import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice'
+import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice';
+import { AddResearcherStrategy, GetAllResearcherStrategys } from '../../../../ReduxStore/Slice/Researcher/ResearcherSlice'
 
 import Swal from 'sweetalert2';
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { IndianRupee } from 'lucide-react';
 import Loader from '../../../../Utils/Loader'
-
-
-
-
-
 
 
 const Strategy = () => {
@@ -139,7 +135,22 @@ const Strategy = () => {
             col_size: 6,
             disable: false,
         },
-
+        {
+            name: "monthly_charges",
+            label: "Monthly Charges",
+            type: "text3",
+            label_size: 12,
+            col_size: 6,
+            disable: false,
+        },
+        {
+            name: "security_fund",
+            label: "Security Fund",
+            type: "text3",
+            label_size: 12,
+            col_size: 6,
+            disable: false,
+        },
 
     ];
 
@@ -155,8 +166,8 @@ const Strategy = () => {
             max_trade: '',
             strategy_percentage: '',
             maker_id: user_id,
-
-
+            security_fund: '',
+            monthly_charges: ''
         },
         validate: (values) => {
             let errors = {};
@@ -181,13 +192,15 @@ const Strategy = () => {
             if (!values.strategy_percentage) {
                 errors.strategy_percentage = "Please enter strategy percentage";
             }
-
+            if (!values.monthly_charges) {
+                errors.monthly_charges = "Please enter monthly charges";
+            }
+            if (!values.security_fund) {
+                errors.security_fund = "Please enter security fund";
+            }
             return errors;
-
-
         },
         onSubmit: async (values, { resetForm }) => {
-
             const data = {
                 strategy_name: values.strategy_name,
                 strategy_category: values.strategy_category,
@@ -200,11 +213,12 @@ const Strategy = () => {
                 strategy_percentage: values.strategy_percentage,
                 max_trade: values.max_trade,
                 maker_id: user_id,
-                Service_Type: 0,
-                Role: "RESEARCH"
+                Role: "RESEARCH",
+                security_fund: values.security_fund,
+                monthly_charges: values.monthly_charges,
             };
-            
-            await dispatch(AddStrategy(data))
+
+            await dispatch(AddResearcherStrategy(data))
                 .unwrap()
                 .then(async (response) => {
                     if (response.status) {
@@ -246,7 +260,7 @@ const Strategy = () => {
     const getAllStrategy = async () => {
         try {
             var data = { id: user_id }
-            const response = await dispatch(GetStretgyWithImg(data)).unwrap();
+            const response = await dispatch(GetAllResearcherStrategys(data)).unwrap();
 
             if (response.status) {
                 const formattedData = response.data.map((row, index) => ({
@@ -356,8 +370,10 @@ const Strategy = () => {
             <div className="content container-fluid">
 
                 {/* PAGE HEADER */}
+
+
                 <div className="page-header">
-                    <div className="content-page-header mb-0">
+                    <div className="content-page-header">
                         <h5>Strategies</h5>
                         <div className="page-content">
                             <div className="list-btn">
@@ -379,17 +395,16 @@ const Strategy = () => {
                                         <div className="input-group input-block">
                                             <input
                                                 type="text"
-                                                className="form-control "
+                                                className="form-control"
                                                 placeholder="Search..."
                                                 aria-label="Search"
                                                 aria-describedby="search-addon"
-                                            // onChange={(e) => setSearchInput(e.target.value)}
-                                            // value={searchInput}
-
+                                            // onChange={(e) => setInputSearch(e.target.value)}
+                                            // value={inputSearch}
                                             />
-
                                         </div>
                                     </li>
+
 
 
                                     <li>
@@ -399,25 +414,28 @@ const Strategy = () => {
                                             data-bs-placement="bottom"
                                             title="Download"
                                         >
-                                            <li>
-                                                <div className="card-body">
-                                                    {/* <ExportToExcel
-                                                        className="btn btn-primary "
-                                                        apiData={ForGetCSV}
-                                                        fileName={'All Strategy'} /> */}
-                                                </div>
-                                            </li>
+
+                                            <div className="card-body">
+                                                {/* <ExportToExcel
+                              className="btn btn-primary "
+                              apiData={ForGetCSV}
+                              fileName={'All Strategy'} /> */}
+                                            </div>
+
                                         </div>
                                     </li>
 
                                     <li>
-                                        <p
+                                        <Link
+                                            to={"/admin/subadmin/add"}
                                             className="btn btn-primary"
-                                            onClick={(e) => setShowCreateStrategyModal(true)}
                                         >
-                                            <i className="fa fa-plus-circle me-2" aria-hidden="true" />
+                                            <i
+                                                className="fa fa-plus-circle me-2"
+                                                aria-hidden="true"
+                                            />
                                             Create Strategy
-                                        </p>
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -540,7 +558,7 @@ const Strategy = () => {
                     <div className="modal custom-modal custom-lg-modal d-block">
                         <div className="modal-dialog modal-dialog-centered modal-md">
                             <div className="modal-content">
-                                <div className="modal-header border-0 mb-0 pb-0 pt-5 mx-3">
+                                <div className="modal-header border-0 mb-0 pb-0  ">
                                     <div className="form-header modal-header-title text-start mb-0">
                                         <h4 className="mb-0">Add Strategy</h4>
                                     </div>

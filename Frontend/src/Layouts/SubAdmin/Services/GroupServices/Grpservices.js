@@ -13,6 +13,7 @@ import ToastButton from '../../../../Components/ExtraComponents/Alert_Toast'
 import ExportToExcel from '../../../../Utils/ExportCSV'
 import Modal from '../../../../Components/Dashboard/Models/Model'
 import { IndianRupee } from 'lucide-react';
+import Swal from 'sweetalert2';
 
 
 
@@ -46,6 +47,8 @@ function GroupStrategy() {
     const [refresh, setrefresh] = useState(false)
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [modalId, setModalId] = useState('')
+    const [searchInput, setSearchInput] = useState("");
+
 
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
@@ -74,116 +77,57 @@ function GroupStrategy() {
         navigate('/subadmin/group-service/edit/' + row._id)
     };
 
-    const handleDelete = async (row) => {
-        var req = {
-            id: modalId,
-        }
 
 
-        await dispatch(Delete_GroupServices(req)).unwrap()
-            .then((response) => {
+
+    // DELETE SWEET ALERT 2
+    const handleDelete = async (id) => {
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        });
+
+        if (result.isConfirmed) {
+            var data = { id: id };
+            try {
+                const response = await dispatch(Delete_GroupServices(data)).unwrap();
                 if (response.status) {
-                    toast.success(response.msg);
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success",
+                        timer: 1000,
+                        timerProgressBar: true,
+
+                    });
                     setrefresh(!refresh)
-                    setModalId('');
-                    setShowDeleteModal(false)
+                     
+
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: response.msg,
+                        icon: "error",
+                        timer: 1000,
+                        timerProgressBar: true,
+                    });
 
                 }
-                else {
-                    toast.error(response.msg)
-                }
-            })
-            .catch((error) => {
-                console.log("Error in Delete Group",error)
-            })
-
-
-
-
-    };
-
-
-    const columns = [
-        { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
-        {
-            field: 'name',
-            headerName: 'Group Service Name',
-            width: 250,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    {params.value}
-                </div>
-            )
-        },
-        {
-            field: 'description',
-            headerName: 'Group Description',
-            width: 400,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    {params.value}
-                </div>
-            )
-        },
-
-
-        {
-            field: 'resultCount',
-            headerName: 'Service Count',
-            width: 200,
-            headerClassName: styles.boldHeader,
-            renderCell: (params) => (
-                <div>
-                    {params.value || '-'}
-                </div>
-            )
-        },
-        {
-            field: 'descripto',
-            headerName: 'Service',
-            width: 200,
-            headerClassName: styles.boldHeader,
-            renderCell: (row) => (
-                <div>
-                    <GanttChartSquare size={20} onClick={(e) => GetAllServicesName(row)} color="#198754" strokeWidth={2} className="mx-1" />
-                </div>
-            )
-        },
-        {
-            field: 'descriptio',
-            headerName: 'Client Using',
-            width: 200,
-            headerClassName: styles.boldHeader,
-            renderCell: (row) => (
-                <div>
-                    <GanttChartSquare size={20} onClick={(e) => GetAllServicesUserName(row)} color="#198754" strokeWidth={2} className="mx-1" />
-                </div>
-            )
-        },
-
-        {
-            field: 'actions',
-            headerName: 'Actions',
-            width: 200,
-            renderCell: (params) => (
-                <div>
-                    <IconButton aria-label="edit" size="small" onClick={() => handleEdit(params.row)}>
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton
-                        aria-label="delete"
-                        size="small"
-                        onClick={() => { setShowDeleteModal(true); setModalId(params.row._id) }}>
-                        <DeleteIcon />
-                    </IconButton>
-                </div>
-            ),
-            headerClassName: styles.boldHeader,
-        },
-
-    ];
+            } catch (error) {
+                console.error('There was a problem with the API request:', error);
+                Swal.fire({
+                    title: "Error!",
+                    text: "There was an error processing your request.",
+                    icon: "error"
+                });
+            }
+        };
+    }
 
 
     const GetAllServicesUserName = (row) => {
@@ -291,10 +235,7 @@ function GroupStrategy() {
         getservice();
     }, []);
 
-    const RefreshHandle = () => {
-        setrefresh(!refresh)
-        SetInputSearch('')
-    }
+
 
     const forCSVdata = () => {
         let csvArr = []
@@ -349,7 +290,11 @@ function GroupStrategy() {
         },
     ]
 
- 
+    const RefreshHandle = () => {
+        setrefresh(!refresh)
+        setSearchInput('')
+    }
+
 
 
 
@@ -358,18 +303,18 @@ function GroupStrategy() {
 
         <>
             <div className="content container-fluid">
-
-                {/* PAGE HEADER */}
-                <div className="page-header">
-                    <div className="content-page-header">
-                        <h5>Group Services</h5>
-                        <div className="page-content">
-                            <div className="list-btn">
-                                <ul className="filter-list">
-                                    <li className="mt-3">
+                <div className="card">
+                    <div className="card-header">
+                   
+                    <div className="row align-items-center">
+                        <div className="col">
+                        <h5 className="card-title mb-0"><i class="pe-2 fa-solid fa-gears" ></i>Group Services</h5>
+                        </div>
+                        <div className="col-auto"> <div className="list-btn">
+                                <ul className="mb-0 filter-list justify-content-lg-end">
+                                    <li className="">
                                         <p
-                                            className="btn-filters"
-
+                                            className="mb-0 btn-filters"
                                             data-bs-toggle="tooltip"
                                             data-bs-placement="bottom"
                                             title="Refresh"
@@ -384,15 +329,13 @@ function GroupStrategy() {
                                         <div className="input-group input-block">
                                             <input
                                                 type="text"
-                                                className="form-control"
+                                                className="form-control "
                                                 placeholder="Search..."
                                                 aria-label="Search"
                                                 aria-describedby="search-addon"
-                                                onChange={(e) => SetInputSearch(e.target.value || '')}
+                                                onChange={(e) => SetInputSearch(e.target.value)}
                                                 value={inputSearch}
-
                                             />
-
                                         </div>
                                     </li>
                                     <li>
@@ -403,11 +346,11 @@ function GroupStrategy() {
                                             title="Download"
                                         >
                                             <li>
-                                                <div className="card-body">
+                                                <div className="">
                                                     <ExportToExcel
                                                         className="btn btn-primary "
                                                         apiData={ForGetCSV}
-                                                        fileName={'All Strategy'} />
+                                                        fileName={'Group services'} />
                                                 </div>
                                             </li>
                                         </div>
@@ -419,154 +362,128 @@ function GroupStrategy() {
                                             to={'/subadmin/group_service/add'}
                                         >
                                             <i className="fa fa-plus-circle me-2" aria-hidden="true" />
-                                            Add GroupService
+                                            Add Group
                                         </Link>
                                     </li>
                                 </ul>
-                            </div>
+                            </div></div>
+                    </div>
+                    </div>
+                    <div className="card-body">
+                        <div className="page-content">
+                           
                         </div>
+
+
+                        {/* PAGE HEADER */}
+
+                        {
+                            allGroupService.loading ? (
+                                <>
+
+
+                                    <div className="content container-fluid pb-0">
+                                        <div className="row d-flex align-items-center justify-content-center">
+
+                                            {allGroupService.data.map((stg) => {
+                                                return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                                    <div className="packages card" data-aos="fade-down">
+                                                        <div className="package-header  ">
+                                                            <div className="d-flex w-100">
+
+                                                                <span className="icon-frame d-flex align-items-center justify-content-center">
+
+                                                                    <img src={stg.strategy_image ? stg.strategy_image : `assets/img/icons/price-0${Math.floor(Math.random() * 4) + 1}.svg`} alt="img" />
+
+                                                                </span>
+
+                                                            </div>
+                                                            <div className="">
+
+                                                                <h2 className="my-2">{stg.name}</h2>
+                                                                <p>{stg.description}</p>
+
+                                                            </div>
+                                                        </div>
+
+
+                                                        {/* <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6> */}
+                                                        <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+
+                                                                <i className=" " style={{ marginRight: '10px' }}></i>
+                                                                <span >Serivce Count</span>
+                                                                <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.resultCount}</span>
+                                                            </li>
+                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                <i className="" style={{ marginRight: '10px' }}></i>
+                                                                <span >Serivce</span>
+                                                                <span style={{ marginLeft: 'auto', color: '#999' }}><GanttChartSquare size={20} onClick={(e) => GetAllServicesName(stg)} color="#198754" strokeWidth={2} className="mx-1" /></span>
+                                                            </li>
+                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                <i className="" style={{ marginRight: '10px' }}></i>
+                                                                <span >Client Using</span>
+                                                                <span style={{ marginLeft: 'auto', color: '#999' }}><GanttChartSquare size={20} onClick={(e) => GetAllServicesUserName(stg)} color="#198754" strokeWidth={2} className="mx-1" /></span>
+                                                            </li>
+
+                                                        </ul>
+
+                                                        <div className="d-flex justify-content-center package-edit">
+
+
+                                                            <a className="btn-action-icon me-2"  >
+                                                                <i className="fe fe-edit"
+                                                                    onClick={() => handleEdit(stg)}
+
+                                                                />
+                                                            </a>
+
+                                                            <a className="btn-action-icon"
+                                                                onClick={() => {  handleDelete(stg._id) }}
+                                                            >
+                                                                <i className="fe fe-trash-2" />
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            })}
+
+
+
+                                        </div>
+                                    </div>
+                                </>
+
+                            ) : <Loader />
+                        }
+
+                        {showModal ?
+                            <>
+                                <Modal
+                                    isOpen={showModal}
+                                    backdrop="static"
+                                    size="ms-6"
+                                    title="Services"
+                                    hideBtn={true}
+                                    handleClose={() => setShowModal(false)
+
+                                    }
+                                >
+                                    <FullDataTable
+                                        styles={styles}
+                                        columns={column1}
+                                        rows={serviceName && serviceName.data}
+
+
+                                    />
+
+                                </Modal >
+                            </>
+                            : ""}
+
+
                     </div>
                 </div>
-                {
-                    allGroupService.loading ? (
-                        <>
-
-                            {/* <FullDataTable
-                                styles={styles}
-                                columns={columns}
-                                rows={allGroupService.data}
-                                checkboxSelection={false}
-                            /> */}
-                            <div className="content container-fluid pb-0">
-                                <div className="row d-flex align-items-center justify-content-center">
-
-                                    {allGroupService.data.map((stg) => {
-                                        return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
-                                            <div className="packages card" data-aos="fade-down">
-                                                <div className="package-header  ">
-                                                    <div className="d-flex w-100">
-
-                                                        <span className="icon-frame d-flex align-items-center justify-content-center">
-
-                                                            <img src={stg.strategy_image ? stg.strategy_image : `assets/img/icons/price-0${Math.floor(Math.random() * 4) + 1}.svg`} alt="img" />
-
-                                                        </span>
-
-                                                    </div>
-                                                    <div className="">
-
-                                                        <h2 className="my-2">{stg.name}</h2>
-                                                        <p>{stg.description}</p>
-
-                                                    </div>
-                                                </div>
-
-
-                                                {/* <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6> */}
-                                                <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
-                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-
-                                                        <i className=" " style={{ marginRight: '10px' }}></i>
-                                                        <span >Serivce Count</span>
-                                                        <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.resultCount}</span>
-                                                    </li>
-                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                        <i className="" style={{ marginRight: '10px' }}></i>
-                                                        <span >Serivce</span>
-                                                        <span style={{ marginLeft: 'auto', color: '#999' }}><GanttChartSquare size={20} onClick={(e) => GetAllServicesName(stg)} color="#198754" strokeWidth={2} className="mx-1" /></span>
-                                                    </li>
-                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                        <i className="" style={{ marginRight: '10px' }}></i>
-                                                        <span >Client Using</span>
-                                                        <span style={{ marginLeft: 'auto', color: '#999' }}><GanttChartSquare size={20} onClick={(e) => GetAllServicesUserName(stg)} color="#198754" strokeWidth={2} className="mx-1" /></span>
-                                                    </li>
-                                                     
-                                                </ul>
-
-                                                <div className="d-flex justify-content-center package-edit">
-
-
-                                                    <a className="btn-action-icon me-2"  >
-                                                        <i className="fe fe-edit"
-                                                        onClick={() => handleEdit(stg)}
-                                                       
-                                                        />
-                                                    </a>
-
-                                                    <a className="btn-action-icon"
-                                                     onClick={() => { setShowDeleteModal(true); setModalId(stg._id) }}
-                                                    >
-                                                        <i className="fe fe-trash-2" />
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    })}
-
-
-
-                                </div>
-                            </div>
-                        </>
-
-                    ) : <Loader />
-                }
-
-                {showModal ?
-                    <>
-                        <Modal
-                            isOpen={showModal}
-                            backdrop="static"
-                            size="ms-6"
-                            title="Services"
-                            hideBtn={true}
-                            handleClose={() => setShowModal(false)
-
-                            }
-                        >
-                            <FullDataTable
-                                styles={styles}
-                                columns={column1}
-                                rows={serviceName && serviceName.data}
-
-
-                            />
-
-                        </Modal >
-                    </>
-                    : ""}
-
-                {showDeleteModal && (
-
-
-                    <div className="modal custom-modal modal-delete d-block" >
-                        <div className="modal-dialog modal-dialog-centered modal-md">
-                            <div className="modal-content">
-                                <div className="modal-body">
-                                    <div className="form-header">
-                                        <div className="delete-modal-icon">
-                                            <span>
-                                                <i className="fe fe-check-circle" />
-                                            </span>
-                                        </div>
-                                        <h3>Are You Sure?</h3>
-                                        <p>You want delete company</p>
-                                    </div>
-                                    <div className="modal-btn delete-action">
-                                        <div className="modal-footer justify-content-center p-0">
-                                            <button type="submit" onClick={() => handleDelete()} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
-                                            <button type="button" onClick={() => setShowDeleteModal(false)} className="btn btn-back cancel-btn">No, Cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-
-
-
             </div>
             < ToastButton />
         </>

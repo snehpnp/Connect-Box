@@ -46,12 +46,16 @@ const Strategies = () => {
         <div>
             <div className="content container-fluid pb-0">
 
-                <div className="page-header">
-                    <div className="content-page-header">
-                        <h5>Plans List</h5>
-                        <div className="page-content">
-                            <div className="list-btn">
-                                <ul className="filter-list">
+                <div className="card">
+                    <div className="card-header">
+                    <div className='row align-center'>
+                    <div className="col">
+                        
+                        <h5 className='card-title mb-0'><i className="pe-2 fas fa-list"></i>Plans List </h5>
+                        </div>
+                        <div className="col auto">
+                        <div className="list-btn float-lg-end mt-0">
+                                <ul className="filter-list mb-0">
 
                                     <li>
                                         <p
@@ -67,8 +71,10 @@ const Strategies = () => {
                                 </ul>
                             </div>
                         </div>
-                    </div>
-                </div>
+                        </div>
+                        </div>
+                        <div className="card-body">
+                        
 
                 <div className="row d-flex align-items-center justify-content-center">
 
@@ -123,7 +129,10 @@ const Strategies = () => {
 
                 </div>
             </div>
-
+ 
+            </div>
+                    
+                    </div>
 
         </div>
     )

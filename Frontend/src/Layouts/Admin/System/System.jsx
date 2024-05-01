@@ -147,9 +147,9 @@ function System() {
       </div>
 
       <div className="row">
-        <div className="col-lg-4 col-md-4" data-aos="fade-right">
+        <div className="subsystem col-lg-4 col-md-4" data-aos="fade-right">
           <div className="card">
-            <div className="card-body">
+            <div className="card-body fghtfh">
               <div data-aos="fade-down" className="gif-div h-100">
                 <img
                   src="/assets/img/Investdark.png"
@@ -282,7 +282,7 @@ function System() {
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
                       <p>
-                      Favicon{" "}
+                        Favicon{" "}
                         <img
                           src={getCompanyData && getCompanyData[0].favicon}
                           alt="favicon"
@@ -431,14 +431,14 @@ function System() {
 
                         <div className="col-lg-6 col-md-12">
                           <div className="input-block mb-3">
-                            <label>EMAIL</label>
+                            <label>EMAIL Password</label>
                             <input
                               type="email"
                               className="form-control"
-                              name="email"
-                              placeholder="Enter Email"
+                              name="smtp_password"
+                              placeholder="Enter Email Password"
                               defaultValue={
-                                (getCompanyData && getCompanyData[0].email) ||
+                                (getCompanyData && getCompanyData[0].smtp_password) ||
                                 ""
                               }
                               onChange={handleInputChange}

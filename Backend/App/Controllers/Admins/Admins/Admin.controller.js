@@ -243,6 +243,30 @@ class Admin {
         console.log("Error Get all Info error-", error);
     }
 }
+async GetAll_Broker(req, res) {
+  try {
+      // THEME LIST DATA
+      const getAllpanel = await ApiCreateInfo
+          .find({})
+
+
+      // IF DATA NOT EXIST
+      if (getAllpanel.length == 0) {
+          res.send({ status: false, msg: "Empty data", data: getAllpanel })
+      }
+
+      // DATA GET SUCCESSFULLY
+      res.send({
+          status: true,
+          msg: "Get All Api Info",
+          data: getAllpanel,
+      })
+
+
+  } catch (error) {
+      console.log("Error Get all Info error-", error);
+  }
+}
 
     
 }

@@ -18,8 +18,6 @@ const FullDataTable = ({ tableData, TableColumns, tableoptions, selectRow, keyFi
     };
 
 
-
-
     return <>
         <div className=''>
 
@@ -33,6 +31,8 @@ const FullDataTable = ({ tableData, TableColumns, tableoptions, selectRow, keyFi
                 headerClasses="text-primary text-center header-class"
                 rowClasses={`text-center`}
                 rowStyle={rowStyle}
+
+
             />
         </div>
     </>

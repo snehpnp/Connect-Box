@@ -6,7 +6,14 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { Add_Employee,GetEmployeeStrategy,GetEmployeeServices } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import * as valid_err from "../../../Utils/Common_Messages";
+
+import {
+  Email_regex,
+  Mobile_regex,
+  Name_regex,
+} from "../../../Utils/Common_regex";
+import { Add_Employee, GetEmployeeStrategy, GetEmployeeServices } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 
 const AddEmployee = () => {
   const dispatch = useDispatch();
@@ -27,11 +34,23 @@ const AddEmployee = () => {
 
   const [state, setstate] = useState([]);
   const [state1, setstate1] = useState([]);
-  
+
+
+  const isValidEmail = (email) => {
+    return Email_regex(email);
+  };
+  const isValidContact = (mobile) => {
+    return Mobile_regex(mobile);
+  };
+
+  const isValidName = (mobile) => {
+    return Name_regex(mobile);
+  };
 
   const formik = useFormik({
     initialValues: {
       fullName: "",
+      userName: "",
       email: "",
       password: "",
       phone: "",
@@ -54,17 +73,27 @@ const AddEmployee = () => {
     validate: (values) => {
       let errors = {};
       if (!values.fullName) {
-        errors.fullName = "Full Name is required";
+        errors.fullName = valid_err.FULLNAME_ERROR;
+      } else if(!isValidName(values.fullName)){
+        errors.fullName = valid_err.INVALID_ERROR
       }
       if (!values.email) {
-        errors.email = "Email is required";
+        errors.email = valid_err.EMPTY_EMAIL_ERROR;
+      } else if (!isValidEmail(values.email)) {
+        errors.email = valid_err.INVALID_EMAIL_ERROR;
+      }
+      if (!values.userName) {
+        errors.userName = valid_err.USERNAME_ERROR;
       }
       if (!values.password) {
-        errors.password = "Password is required";
+        errors.password = valid_err.PASSWORD_ERROR;
       }
       if (!values.phone) {
-        errors.phone = "Phone is required";
+        errors.phone = valid_err.CONTACT_ERROR;
+      }else if (!isValidContact(values.phone)) {
+        errors.phone = valid_err.INVALID_CONTACT_ERROR;
       }
+ 
       if (values.Strategy) {
         if (!values.addemployee && !values.editemployee) {
           errors.addemployee = "select Add Client Also";
@@ -90,6 +119,7 @@ const AddEmployee = () => {
       const req = {
         FullName: values.fullName,
         Email: values.email,
+        UserName: values.userName,
         password: values.password,
         PhoneNo: values.phone,
         parent_id: user_id,
@@ -97,16 +127,17 @@ const AddEmployee = () => {
         prifix_key: prfix,
         Subadmin_permision_data: {
           employee_add: values.addemployee ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
-          Update_Api_Key: values.updateapikeys ? "1" : values.all ? "1" : "0",
+          Update_Api_Key: values.updateapikeys ? "1" : "0",
           employee_edit: values.editemployee ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
-          license_permision: values.licence ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
-          go_To_Dashboard: values.gotodashboard ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           trade_history_old: values.tradehistory ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           detailsinfo: values.detailsinfo ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           strategy: state1,
           group_services: state,
         },
       };
+
+
+      return
 
       try {
         const response = await dispatch(Add_Employee(req)).unwrap();
@@ -126,10 +157,21 @@ const AddEmployee = () => {
       }
     },
   });
+
+
+
   const fields = [
     {
       name: "fullName",
       label: "Full Name",
+      type: "text",
+      label_size: 6,
+      col_size: 6,
+      disable: false,
+    },
+    {
+      name: "userName",
+      label: "User Name",
       type: "text",
       label_size: 6,
       col_size: 6,
@@ -160,6 +202,14 @@ const AddEmployee = () => {
       disable: false,
     },
     {
+      name: "phone",
+      label: "Phone Number",
+      type: "dammy",
+      label_size: 12,
+      col_size: 12,
+      disable: false,
+    },
+    {
       name: "all",
       label: "All Permission",
       type: "checkbox",
@@ -168,36 +218,19 @@ const AddEmployee = () => {
     },
     {
       name: "addemployee",
-      label: "Add Employee",
+      label: "Add Client",
       type: "checkbox",
       label_size: 12,
       col_size: 3,
-      check_box_true:formik.values.all || formik.values.addemployee ? true : false,
+      check_box_true: formik.values.all || formik.values.addemployee ? true : false,
     },
     {
       name: "editemployee",
-      label: "Edit Employee",
+      label: "Edit Client",
       type: "checkbox",
       label_size: 12,
       col_size: 3,
-      check_box_true:formik.values.all || formik.values.editemployee ? true : false,
-    },
-    {
-      name: "licence",
-      label: "Licence  Permission",
-      type: "checkbox",
-      label_size: 12,
-      col_size: 3,
-      check_box_true: formik.values.all || formik.values.licence ? true : false,
-    },
-    {
-      name: "gotodashboard",
-      label: "Go To Dashboard",
-      type: "checkbox",
-      label_size: 12,
-      col_size: 3,
-      check_box_true:
-        formik.values.all || formik.values.gotodashboard ? true : false,
+      check_box_true: formik.values.all || formik.values.editemployee ? true : false,
     },
     {
       name: "tradehistory",
@@ -205,7 +238,7 @@ const AddEmployee = () => {
       type: "checkbox",
       label_size: 12,
       col_size: 3,
-      check_box_true:formik.values.all || formik.values.tradehistory ? true : false,
+      check_box_true: formik.values.all || formik.values.tradehistory ? true : false,
     },
     {
       name: "detailsinfo",
@@ -213,14 +246,14 @@ const AddEmployee = () => {
       type: "checkbox",
       label_size: 12,
       col_size: 3,
-      check_box_true:formik.values.all || formik.values.detailsinfo ? true : false,
+      check_box_true: formik.values.all || formik.values.detailsinfo ? true : false,
     },
 
     {
       name: "groupservice",
       label: "Group Service Permission",
       type: "checkbox",
-      check_box_true:formik.values.all || formik.values.groupservice ? true : false,
+      check_box_true: formik.values.all || formik.values.groupservice ? true : false,
       label_size: 12,
       col_size: 3,
     },
@@ -231,7 +264,7 @@ const AddEmployee = () => {
       type: "checkbox",
       label_size: 12,
       col_size: 3,
-      check_box_true:formik.values.all || formik.values.Strategy ? true : false,
+      check_box_true: formik.values.all || formik.values.Strategy ? true : false,
     },
     {
       name: "updateapikeys",
@@ -242,7 +275,7 @@ const AddEmployee = () => {
       check_box_true: formik.values.updateapikeys ? true : false,
     },
   ];
-  
+
   const data = async () => {
     await dispatch(
       GetEmployeeStrategy({
@@ -279,114 +312,105 @@ const AddEmployee = () => {
     if (formik.values.all) {
       formik.setFieldValue("addemployee", true);
       formik.setFieldValue("editemployee", true);
-      formik.setFieldValue("gotodashboard", true);
-      formik.setFieldValue("licence", true);
-      formik.setFieldValue("group", true);
       formik.setFieldValue("groupservice", true);
       formik.setFieldValue("Strategy", true);
       formik.setFieldValue("detailsinfo", true);
       formik.setFieldValue("tradehistory", true);
-    } else {
+      formik.setFieldValue("updateapikeys", false);
+    }
+    else if (!formik.values.all) {
       formik.setFieldValue("addemployee", false);
       formik.setFieldValue("editemployee", false);
-      formik.setFieldValue("gotodashboard", false);
-      formik.setFieldValue("licence", false);
-      formik.setFieldValue("group", false);
       formik.setFieldValue("groupservice", false);
       formik.setFieldValue("Strategy", false);
       formik.setFieldValue("detailsinfo", false);
       formik.setFieldValue("tradehistory", false);
-      formik.setFieldValue("all", false);
     }
   }, [formik.values.all]);
 
+
+
   useEffect(() => {
     if (formik.values.updateapikeys) {
-      formik.setFieldValue("all", false);
       formik.setFieldValue("addemployee", false);
+      formik.setFieldValue("all", false);
       formik.setFieldValue("editemployee", false);
-      formik.setFieldValue("gotodashboard", false);
-      formik.setFieldValue("licence", false);
-      formik.setFieldValue("group", false);
       formik.setFieldValue("groupservice", false);
       formik.setFieldValue("Strategy", false);
+      formik.setFieldValue("detailsinfo", false);
       formik.setFieldValue("tradehistory", false);
     }
-  }, [formik.values.updateapikeys, formik.values.all]);
+  }, [formik.values.updateapikeys]);
 
   useEffect(() => {
+
+     
     if (
-      formik.values.addemployee ||
-      formik.values.editemployee ||
-      formik.values.Strategy ||
-      formik.values.groupservice ||
-      formik.values.detailsinfo ||
-      formik.values.tradehistory ||
-      formik.values.gotodashboard
-    ) {
+      formik.values.addemployee || formik.values.editemployee || formik.values.Strategy || formik.values.groupservice || formik.values.detailsinfo || formik.values.tradehistory  ) {
       formik.setFieldValue("updateapikeys", false);
       setstate([]);
-      setstate1([]);
-      return;
+      setstate1([]); 
     }
 
+    if (formik.values.addemployee ) {
+      formik.setFieldValue("groupservice", true);
+      formik.setFieldValue("Strategy", true);
+      return 
+    }
     if (formik.values.Strategy) {
       formik.setFieldValue("Strategy", true);
-      return;
+      return 
     }
     if (formik.values.groupservice) {
       formik.setFieldValue("groupservice", true);
-      return;
+      return 
     }
+   
 
-    if (formik.values.addemployee || formik.values.editemployee) {
+    if (formik.values.editemployee ) {
       formik.setFieldValue("groupservice", true);
       formik.setFieldValue("Strategy", true);
-      setstate([]);
-      setstate1([]);
-      return;
-    } else if (!formik.values.addemployee) {
+ 
+    }
+   
+    else if (!formik.values.addemployee) {
       formik.setFieldValue("groupservice", false);
       formik.setFieldValue("Strategy", false);
       formik.setFieldValue("strateg_servcice", "");
       formik.setFieldValue("grouper_servcice", "");
-      setstate([]);
-      setstate1([]);
+     
     } else {
       formik.setFieldValue("groupservice", false);
       formik.setFieldValue("Strategy", false);
-      setstate([]);
-      setstate1([]);
+       
       return;
     }
-  }, [
-    formik.values.editemployee,
-    formik.values.addemployee,
-    formik.values.detailsinfo,
-    formik.values.tradehistory,
-    formik.values.gotodashboard,
-    formik.values.Strategy,
-    formik.values.groupservice,
-  ]);
+  }, [formik.values.editemployee, formik.values.addemployee, formik.values.detailsinfo, formik.values.tradehistory, formik.values.Strategy, formik.values.groupservice]);
+
+
 
   const handleGroupChange = (event) => {
     const strategyId = event.target.value;
-    const strategyName = event.target.name;
+   
     if (event.target.checked) {
       setstate([...state, strategyId]);
     } else {
-      setstate(state.filter((id) => id !== strategyId));
+      setstate(state.filter((id) => id != strategyId));
     }
+    
   };
+ 
 
-  useEffect(() => {
-    if (state.length > 1) {
-      formik.setFieldValue("grouper_servcice", "");
-    }
-    if (state1.length > 1) {
-      formik.setFieldValue("grouper_servcice", "");
-    }
-  }, [state, state1]);
+  // useEffect(() => {
+   
+    
+  //   if (state.length > 1) {
+  //     formik.setFieldValue("grouper_servcice", "");
+  //   }
+  //   if (state1.length > 1) {
+  //     formik.setFieldValue("grouper_servcice", "");
+  //   }
+  // }, [state, state1]);
 
   const handleStrategyChange = (event) => {
     const strategyId = event.target.value;
@@ -396,6 +420,35 @@ const AddEmployee = () => {
       setstate1(state1.filter((id) => id !== strategyId));
     }
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
   return (
     <>
@@ -446,9 +499,9 @@ const AddEmployee = () => {
               ""
             )}
             {formik.values.Strategy ||
-            formik.values.all ||
-            formik.values.addemployee ||
-            formik.values.editemployee ? (
+              formik.values.all ||
+              formik.values.addemployee ||
+              formik.values.editemployee ? (
               <>
                 <h6>All Strategy</h6>
 
@@ -475,6 +528,8 @@ const AddEmployee = () => {
                     </div>
                   </div>
                 ))}
+
+                 
 
                 {formik.errors.strateg_servcice && (
                   <div style={{ color: "red" }}>

@@ -179,19 +179,25 @@ function Clientservice() {
 
 
   return (
+    <>
     <div className="content container-fluid" data-aos="fade-left">
 
       {/* PAGE HEADER */}
-      <div className="page-header">
-        <div className="content-page-header">
-          <h5>All Users</h5>
-          <div className="page-content">
-            <div className="list-btn">
-              <ul className="filter-list">
+      <div className="card">
 
-                <li>
+          <div className="card-header">
+            <div className="row align-center">
+              <div className="col">
+                <h5 className="card-title mb-0"><i className="pe-2 fa-solid fa-users"></i>All Users</h5>
+                </div>
+                <div className="col-auto">
+                  
+                <div className="list-btn">
+              <ul className="filter-list mb-0">
+
+                <li className='toggle-li'>
                   <div className="status-toggle " style={{ display: 'flex', alignItems: 'center' }}>
-                    <span style={{ marginRight: '10px', fontSize: '16px', fontWeight: 'bold', color: getLoginStatus ? "green" : "red" }}>TRADING STATUS</span>
+                    <span  className= {getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} style={{   }}>Trading Status</span>
                     <input
                       id="1"
                       className="check"
@@ -205,9 +211,9 @@ function Clientservice() {
                 </li>
 
 
-                <li className="mt-3">
+                <li className="">
                   <p
-                    className="btn-filters"
+                    className="btn-filters mb-0"
 
                     data-bs-toggle="tooltip"
                     data-bs-placement="bottom"
@@ -220,7 +226,7 @@ function Clientservice() {
                     </span>
                   </p>
                 </li>
-                <li>
+                <li className='serach-li'>
                   <div className="input-group input-block">
                     <input
                       type="text"
@@ -244,17 +250,14 @@ function Clientservice() {
 
               </ul>
             </div>
-          </div>
-        </div>
-      </div>
-
-
-      <div className='card-body'>
-        <section className="pricing-section p-0">
-          <div className="container">
-            <div className="sec-title">
-              <h3></h3>
-            </div>
+               </div></div></div>
+          <div className="card-body">
+           
+         
+     
+        <section className="pricing-section pt-3 px-5">
+         
+          
 
 
             <div className="outer-box">
@@ -269,19 +272,28 @@ function Clientservice() {
                   }
                   return (
                     <div key={index} className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
-                      <div className="inner-box" style={{ borderBottom: "20px solid " + randomColor }}>
-                        <div className="icon-box" style={{ background: randomColor }}>
+                      <div className="inner-box" style={{ borderBottom: "8px solid " + randomColor }}>
+                        {/* <div className="icon-box" style={{ background: randomColor }}>
                           <div className="icon-outer">
                             <i className="fas fa-paper-plane" style={{ border: " 5px solid " + randomColor, color: randomColor }} />
                           </div>
-                        </div>
-                        <div className="price-box">
+                        </div> */}
+                        <div className="price-box d-flex align-items-center justify-content-between">
                           <div className="title">{item.service.name}</div>
-                          <div className="d-flex justify-content-center price">
-                            <div className="form-check form-switch">
-                              <input className="form-check-input" type="checkbox" defaultChecked={item.active_status == 1 ? true : false} />
-                            </div>
-                          </div>
+                          <div className="stock-edit-icon bg-primary-light" onClick={(e) => {
+                          setModal(!modal); setData({
+                            maxQty: item.lot_size,
+                            orderType: item.order_type,
+                            productType: item.product_type,
+                            seriveId: item.service._id,
+                            id: item._id,
+                            strategyId: item.strategy_id,
+                            quantity: item.quantity,
+                            serviceName: item.service.name
+                          });
+                        }}>
+                          <SquarePen />
+                        </div>
                         </div>
                         <ul className="features">
                           <li className="true">
@@ -305,20 +317,12 @@ function Clientservice() {
                             </div>
                           </li>
                         </ul>
-                        <div className="d-flex justify-content-center" onClick={(e) => {
-                          setModal(!modal); setData({
-                            maxQty: item.lot_size,
-                            orderType: item.order_type,
-                            productType: item.product_type,
-                            seriveId: item.service._id,
-                            id: item._id,
-                            strategyId: item.strategy_id,
-                            quantity: item.quantity,
-                            serviceName: item.service.name
-                          });
-                        }}>
-                          <SquarePen />
-                        </div>
+                        <div className=" price">
+                            <div className="form-check form-switch">
+                              <input className="form-check-input" type="checkbox" defaultChecked={item.active_status == 1 ? true : false} />
+                            </div>
+                          </div>
+                     
                       </div>
                     </div>
                   );
@@ -327,119 +331,126 @@ function Clientservice() {
               </div>
             </div>
 
-          </div>
+         
         </section>
       </div>
 
+</div>
 
+      
+    </div >
+    {modal && (
+      <div className="modal custom-modal d-block" id="add_vendor" role="dialog" data-aos="fade-down">
+        <div className="modal-dialog modal-dialog-centered modal-md">
+          <div className="modal-content">
+            <div className="modal-header border-0 pb-0">
+              <div className="form-header modal-header-title text-start mb-0">
+                <h4 className="mb-0">Edit Stock List</h4>
+              </div>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+                onClick={(e) => { setModal(!modal); emptyState(); }}
+              ></button>
+            </div>
+            <div>
+              <div className="modal-body">
+                <div className="row">
+                  <div className="col-lg-12 col-sm-12 mb-3">
+                    <h6 style={{ fontWeight: 600, color: 'black' }}>Symbol Name : {data.serviceName}</h6>
+                  </div>
+                 
+                    <div className="col-lg-6 col-4">
+                      <h6 className='mb-3'>Lot Size : </h6>
+                    </div>
+                    <div className="col-lg-6 col-8 ps-0">
+                      <h6> {data.quantity}</h6>
+                    </div>
+                    <div className="col-lg-6 col-4">
+                      <h6 className=''>Max Qty	 :</h6>
+                      </div>
+                      <div className="col-lg-6 col-8 ps-0 mb-3">
+                      <input type="text" className='form-control ' defaultValue={1} value={data.maxQty} onChange={e => handleInputChange('maxQty', e.target.value)} />
+                    </div>
+                 
+                
+                    <div className="col-lg-6 col-4">
+                      <h6 className='col-lg-6 ,b-3'>Strategy :</h6>
+                    </div>
+                    <div className='col-lg-6 col-8 ps-0'>
+                      <button onClick={(e) => setShowStretgy(!showstrategy)} className="btn btn-outline-primary mb-2">
+                        Select Strategy
+                      </button>
+                      {
+                        showstrategy && <div id="myDropdown" class="dropdown-content">
+                          {
+                            getAllClientStrategy.data.strategy.map((data1, index) => {
+                              return (
+                                <>
+                                  <div key={index} className={data.strategyId.includes(data1.result._id) ? "text-success" : "text-danger"}>
+                                    <input
+                                      type="checkbox"
+                                      defaultChecked={data.strategyId.includes(data1.result._id)}
+                                      onChange={(e) => handleInputChange("strategyId", data1.result._id)}
 
-      {modal && (
-        <div className="modal custom-modal d-block" id="add_vendor" role="dialog" data-aos="fade-down">
-          <div className="modal-dialog modal-dialog-centered modal-md">
-            <div className="modal-content">
-              <div className="modal-header border-0 pb-0">
-                <div className="form-header modal-header-title text-start mb-0">
-                  <h4 className="mb-0">Edit Stock List</h4>
+                                    />
+                                    {data1.result.strategy_name}
+                                  </div>
+
+                                </>
+                              )
+                            })}
+                        </div>
+                      }
+                    </div>
+                 
+                  <div className="col-lg-12 col-sm-12 d-flex mb-3">
+                    <h6 className='col-lg-6 col-4'>Order Type :</h6>
+                    <select className="form-select" value={data.orderType} onChange={e => handleInputChange('orderType', e.target.value)}>
+                      <option value="1">Market</option>
+                      <option value="2">Limit</option>
+                      <option value="3">Stoploss Limit</option>
+                      <option value="4">Stoploss Market</option>
+                    </select>
+                  </div>
+                  <div className="col-lg-12 col-sm-12 d-flex mb-3">
+                    <h6 className='col-lg-6 col-4 '>Product Type :</h6>
+                    <select className="form-select " value={data.productType} onChange={e => handleInputChange('productType', e.target.value)}>
+                      <option value="1">CNC</option>
+                      <option value="2">MIS</option>
+                      <option value="3">BO</option>
+                      <option value="4">CO</option>
+                    </select>
+                  </div>
+
                 </div>
+              </div>
+              <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn-close"
                   data-bs-dismiss="modal"
-                  aria-label="Close"
+                  className="btn btn-back cancel-btn me-2"
                   onClick={(e) => { setModal(!modal); emptyState(); }}
-                ></button>
-              </div>
-              <div>
-                <div className="modal-body">
-                  <div className="row">
-                    <div className="col-lg-12 col-sm-12 mb-3">
-                      <h6 style={{ fontWeight: 600, color: 'black' }}>Symbol Name : {data.serviceName}</h6>
-                    </div>
-                    <div className="col-lg-12 col-sm-12 d-flex">
-                      <div className="col-lg-6 col-sm-12">
-                        <h6>Lot Size : {data.quantity}</h6>
-                      </div>
-                      <div className="col-lg-6 col-sm-12 d-flex">
-                        <h6 className='col-lg-4'>Max Qty	 :</h6>
-                        <input type="text" className='form-control' defaultValue={1} value={data.maxQty} onChange={e => handleInputChange('maxQty', e.target.value)} />
-                      </div>
-                    </div>
-                    <div className="col-lg-12 col-sm-12 d-flex mb-3 mt-3">
-                      <div className="col-lg-6 col-sm-12">
-                        <h6 className='col-lg-6'>Strategy :</h6>
-                      </div>
-                      <div className='col-lg-6'>
-                        <button onClick={(e) => setShowStretgy(!showstrategy)} className="p-1 rounded col-lg-12 mb-2">
-                          Select Strategy
-                        </button>
-                        {
-                          showstrategy && <div id="myDropdown" class="dropdown-content">
-                            {
-                              getAllClientStrategy.data.strategy.map((data1, index) => {
-                                return (
-                                  <>
-                                    <div key={index} className={data.strategyId.includes(data1.result._id) ? "text-success" : "text-danger"}>
-                                      <input
-                                        type="checkbox"
-                                        defaultChecked={data.strategyId.includes(data1.result._id)}
-                                        onChange={(e) => handleInputChange("strategyId", data1.result._id)}
-
-                                      />
-                                      {data1.result.strategy_name}
-                                    </div>
-
-                                  </>
-                                )
-                              })}
-                          </div>
-                        }
-                      </div>
-                    </div>
-                    <div className="col-lg-12 col-sm-12 d-flex mb-3">
-                      <h6 className='col-lg-6'>Order Type :</h6>
-                      <select className="form-select" value={data.orderType} onChange={e => handleInputChange('orderType', e.target.value)}>
-                        <option value="1">Market</option>
-                        <option value="2">Limit</option>
-                        <option value="3">Stoploss Limit</option>
-                        <option value="4">Stoploss Market</option>
-                      </select>
-                    </div>
-                    <div className="col-lg-12 col-sm-12 d-flex mb-3">
-                      <h6 className='col-lg-6'>Product Type :</h6>
-                      <select className="form-select " value={data.productType} onChange={e => handleInputChange('productType', e.target.value)}>
-                        <option value="1">CNC</option>
-                        <option value="2">MIS</option>
-                        <option value="3">BO</option>
-                        <option value="4">CO</option>
-                      </select>
-                    </div>
-
-                  </div>
-                </div>
-                <div className="modal-footer">
-                  <button
-                    type="button"
-                    data-bs-dismiss="modal"
-                    className="btn btn-back cancel-btn me-2"
-                    onClick={(e) => { setModal(!modal); emptyState(); }}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    data-bs-dismiss="modal"
-                    className="btn btn-primary paid-continue-btn"
-                    onClick={handleOnSubmit}
-                  >
-                    Update
-                  </button>
-                </div>
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  data-bs-dismiss="modal"
+                  className="btn btn-primary paid-continue-btn"
+                  onClick={handleOnSubmit}
+                >
+                  Update
+                </button>
               </div>
             </div>
           </div>
         </div>
-      )}
-    </div >
+      </div>
+    )}
+   </>
   );
 }
 
