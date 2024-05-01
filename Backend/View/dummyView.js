@@ -3801,7 +3801,6 @@ db.createView("open_position", "mainsignals",
           },
       },
   },
-
   {
       $addFields: {
           exit_time_test: {
