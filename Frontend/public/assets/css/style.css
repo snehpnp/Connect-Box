@@ -5463,7 +5463,7 @@ span.select2-container.select2-container--default.select2-container--open {
 }
 
 .notifications .notification-list li .media-body {
-    width: calc(100% - 44px)
+    width: calc(100% - 0px)
 }
 
 .notifications .notification-list li .noti-title {

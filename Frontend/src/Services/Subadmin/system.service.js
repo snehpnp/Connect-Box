@@ -76,3 +76,34 @@ export async function GetInfo_strategyHistory(data, token) {
     }
 
 }
+
+
+export async function update_broker_info(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}update/Brokerinfo`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}
+
+
+
+export async function Get_broker_info(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}get/Brokerinfo`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}

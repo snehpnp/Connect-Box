@@ -5,6 +5,7 @@ import Trackpanel from "./Logs/Trackpanel";
 import System from "../../../Layouts/SubAdmin/Systems/System";
 import AdminSystem from "../../../Layouts/Admin/System/System";
 
+import Setbrokerinfo from "../../../Layouts/Comman/Setting_Page/Setbrokerinfo/Setbrokerinfo";
 
 
 
@@ -29,20 +30,6 @@ const Settings = () => {
                                     role="tablist"
                                     aria-orientation="vertical"
                                 >
-                                    <a
-                                        className="nav-link active show mb-1"
-                                        id="v-pills-account-tab"
-                                        data-bs-toggle="pill"
-                                        href="#v-pills-account"
-                                        role="tab"
-                                        aria-controls="v-pills-account"
-                                        aria-selected="true"
-                                        style={{ color: "black" }}
-
-                                    >
-
-                                        Account Settings
-                                    </a>
                                     <a
                                         className="nav-link mb-1"
                                         id="v-pills-company-tab"
@@ -127,6 +114,18 @@ const Settings = () => {
                                     >
                                         Api Create Information
                                     </a>
+                                    <a
+                                        className="nav-link mb-1"
+                                        id="v-pills-Broker-info-tab"
+                                        data-bs-toggle="pill"
+                                        href="#v-pills-Broker-info"
+                                        role="tab"
+                                        aria-controls="v-pills-Broker-info"
+                                        aria-selected="false"
+                                        style={{ color: "black" }}
+                                    >
+                                        Set Broker Information
+                                    </a>
                                 </div>
 
                             </div>
@@ -134,128 +133,6 @@ const Settings = () => {
                                 <div className="tab-content">
 
 
-                                    {/* Account Settings */}
-                                    <div
-                                        className="tab-pane fade active show"
-                                        id="v-pills-account"
-                                        role="tabpanel"
-                                        aria-labelledby="v-pills-account-tab"
-                                    >
-                                        <div className="col-xl-12 col-md-12">
-                                            <div className="card">
-                                                <div className="card-body w-100">
-                                                    <div className="content-page-header">
-                                                        <h5 className="setting-menu">Account Settings</h5>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="profile-picture">
-                                                            <div className="upload-profile me-2">
-                                                                <div className="profile-img">
-                                                                    <img
-                                                                        id="blah"
-                                                                        className="avatar"
-                                                                        src="assets/img/profiles/avatar-10.jpg"
-                                                                        alt="profile-img"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="img-upload">
-                                                                <label className="btn btn-primary">
-                                                                    Upload new picture <input type="file" />
-                                                                </label>
-                                                                <a className="btn btn-danger">Delete</a>
-                                                                <p className="mt-1">
-                                                                    Logo Should be minimum 152 * 152 Supported File format
-                                                                    JPG,PNG,SVG
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-12">
-                                                            <div className="form-title">
-                                                                <h5>General Information</h5>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>First Name</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter First Name"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Last Name</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter Last Name"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Email</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter Email Address"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Mobile Number</label>
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="Enter Mobile Number"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-0">
-                                                                <label>Gender</label>
-                                                                <select className="select form-control">
-                                                                    <option>Select Gender</option>
-                                                                    <option>Male</option>
-                                                                    <option>Female</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-lg-6 col-12">
-                                                            <div className="input-block mb-3">
-                                                                <label>Date of Birth</label>
-                                                                <div className="cal-icon cal-icon-info">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="datetimepicker form-control"
-                                                                        placeholder="Select Date"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div className="col-lg-12">
-                                                            <div className="btn-path text-end">
-                                                                <a
-                                                                    href="javascript:void(0);"
-                                                                    className="btn btn-cancel bg-primary-light me-3"
-                                                                >
-                                                                    Cancel
-                                                                </a>
-                                                                <a href="javascript:void(0);" className="btn btn-primary">
-                                                                    Save Changes
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
                                     {/* Company Settings */}
                                     <div
@@ -272,7 +149,7 @@ const Settings = () => {
                                                     </div>
 
                                                     <div className='subadminset'>
-                                                      {Role == "ADMIN" ? <AdminSystem/>  : Role == "SUBADMIN" ? <System /> :""}
+                                                        {Role == "ADMIN" ? <AdminSystem /> : Role == "SUBADMIN" ? <System /> : ""}
                                                     </div>
 
 
@@ -852,96 +729,8 @@ const Settings = () => {
                                                     <div className="content-page-header">
                                                         <h5>Payment Settings</h5>
                                                     </div>
-                                                    <div className="form-group-item">
-                                                        <div className="row">
-                                                            <div className="col-12">
-                                                                <div className="payment-toggle">
-                                                                    <h5 className="form-title">Strip</h5>
-                                                                    <div className="status-toggle">
-                                                                        <input
-                                                                            id="rating_1"
-                                                                            className="check"
-                                                                            type="checkbox"
-                                                                            defaultChecked=""
-                                                                        />
-                                                                        <label htmlFor="rating_1" className="checktoggle checkbox-bg">
 
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-lg-6 col-12">
-                                                                <div className="input-block mb-3">
-                                                                    <label>Stripe Key</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="Enter Stripe Key"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-lg-6 col-12">
-                                                                <div className="input-block mb-3">
-                                                                    <label>Stripe Secret</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="Enter Stripe Secret"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="form-group-item">
-                                                        <div className="row">
-                                                            <div className="col-12">
-                                                                <div className="payment-toggle">
-                                                                    <h5 className="form-title">Paypal</h5>
-                                                                    <div className="status-toggle">
-                                                                        <input
-                                                                            id="rating_2"
-                                                                            className="check"
-                                                                            type="checkbox"
-                                                                            defaultChecked=""
-                                                                        />
-                                                                        <label htmlFor="rating_2" className="checktoggle checkbox-bg">
-
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-lg-4 col-12">
-                                                                <div className="input-block mb-3">
-                                                                    <label>Paypal Client Id</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="Enter Paypal Client Id"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-lg-4 col-12">
-                                                                <div className="input-block mb-3">
-                                                                    <label>Paypal Secret</label>
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="Enter Paypal Secret"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="col-lg-4 col-12">
-                                                                <div className="input-block mb-3">
-                                                                    <label>Paypal Mode</label>
-                                                                    <select className="select form-control">
-                                                                        <option>Select Paypal Mode</option>
-                                                                        <option>Debit Card</option>
-                                                                        <option>Credit Card</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                    {/* RAZORPAY */}
                                                     <div className="form-group-item border-0 p-0">
                                                         <div className="row">
                                                             <div className="col-12">
@@ -982,6 +771,50 @@ const Settings = () => {
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    {/* STRIPE */}
+                                                    <div className="form-group-item">
+                                                        <div className="row">
+                                                            <div className="col-12">
+                                                                <div className="payment-toggle">
+                                                                    <h5 className="form-title">Strip</h5>
+                                                                    <div className="status-toggle">
+                                                                        <input
+                                                                            id="rating_1"
+                                                                            className="check"
+                                                                            type="checkbox"
+                                                                            defaultChecked=""
+                                                                        />
+                                                                        <label htmlFor="rating_1" className="checktoggle checkbox-bg">
+
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-lg-6 col-12">
+                                                                <div className="input-block mb-3">
+                                                                    <label>Stripe Key</label>
+                                                                    <input
+                                                                        type="text"
+                                                                        className="form-control"
+                                                                        placeholder="Enter Stripe Key"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-lg-6 col-12">
+                                                                <div className="input-block mb-3">
+                                                                    <label>Stripe Secret</label>
+                                                                    <input
+                                                                        type="text"
+                                                                        className="form-control"
+                                                                        placeholder="Enter Stripe Secret"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
                                                     <div className="col-lg-12">
                                                         <div className="btn-path text-end">
                                                             <a
@@ -1340,6 +1173,18 @@ const Settings = () => {
                                         </div>
                                         <Apicreate_info />
                                     </div>
+
+
+                                    {/* SET BROKER INFORMATION */}
+                                    <div className="tab-pane fade" id="v-pills-Broker-info" role="tabpanel" aria-labelledby="v-pills-Broker-info-tab">
+
+                                        <Setbrokerinfo />
+
+
+                                    </div>
+
+
+
                                 </div>
                             </div>
                         </div>
