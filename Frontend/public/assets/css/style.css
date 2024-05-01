@@ -34719,14 +34719,14 @@ input:disabled {
     cursor: pointer;
 }
 
-@keyframes spin 
+/* @keyframes spin 
 0% {
         transform: rotate(0deg);
     }
 
     100% {
         transform: rotate(360deg);
-    }
+    } */
 
 [data-layout-mode=dark] .MuiTablePagination-toolbar ,[data-layout-mode=dark] .MuiTab-textColorPrimary ,[data-layout-mode=dark] .MuiSelect-icon{
     color: #fff;
@@ -34742,12 +34742,11 @@ a.user-a:hover span {
 }
 .left-side 
 {
-    width:250px;
-     height:100%;
-
-      display: inline-block;
-       float: left; 
-       position:sticky;
+        width:250px;
+        height:100%;
+        display: inline-block;
+        float: left; 
+        position:sticky;
         top:150px;
 
 }
