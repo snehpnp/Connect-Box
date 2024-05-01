@@ -372,7 +372,7 @@ class Auth {
 
             // return
             if (!validPassword) {
-                res.status(409).send({ success: 'false', message: 'old Password Not Match' });
+                res.send({ success: 'false', message: 'old Password Not Match' });
                 return
             } else {
                 const hashedPassword = await bcrypt.hash(newpassword, 8);
@@ -471,6 +471,57 @@ class Auth {
         }
 
     }
+
+
+    // changed password
+
+    async PasswordChanged(req, res) {
+        try {
+            const { userid, NewPassword, CurrentPassword, ConfirmNewPassword } = req.body;
+            
+            if (CurrentPassword === NewPassword) {
+                return res.status(400).send({ success: false, message: "New password must be different from old password" });
+            }
+            
+            if (NewPassword !== ConfirmNewPassword) {
+                return res.status(400).send({ success: false, message: "New password and confirm password do not match" });
+            }
+    
+            const user = await User.findById(userid);
+    
+            if (!user) {
+                return res.status(404).send({ success: false, message: 'User not found' });
+            }
+    
+            const validPassword = await bcrypt.compare(CurrentPassword.toString(), user.Password.toString());
+    
+            if (!validPassword) {
+                return res.status(409).send({ success: false, message: 'Old password does not match' });
+            }
+    
+            const hashedPassword = await bcrypt.hash(NewPassword, 8);
+            await User.findByIdAndUpdate(
+                user._id,
+                {
+                    Password: hashedPassword,
+                    Otp: NewPassword
+                },
+                { new: true }
+            );
+    
+            // logger.info('Password updated successfully', { role: user.Role, user_id: user._id });
+    
+            res.send({ success: true, message: "Password updated successfully" });
+        } catch (error) {
+            console.error("Error resetting password:", error); // Log the specific error
+            res.send({ success: false, message: "An error occurred while Updating password" });
+        }
+    }
+    
+    
+    
+    
+
 
 
 

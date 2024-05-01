@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { SIGN_IN_USER , SIGN_UP_USER} from "../../../Services/Auth/Auth.service";
+import { SIGN_IN_USER , SIGN_UP_USER,PasswordChange} from "../../../Services/Auth/Auth.service";
 
 
 
@@ -126,6 +126,15 @@ export const SignUpUser = createAsyncThunk("signup", async (data) => {
 
 
 
+export const ChangedPassword = createAsyncThunk("Password change", async (data) => {
+  try {
+    const res = await PasswordChange(data);
+     
+    return await res;
+  } catch (err) {
+    return err;
+  }
+});
 
 
 
@@ -136,6 +145,7 @@ const AuthSlice = createSlice({
     isError: false,
     signIn : [],
     signup_user : null,
+    ChangedPassword:null,
      
   },
 
@@ -156,6 +166,16 @@ const AuthSlice = createSlice({
       .addCase(SignUpUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.signup_user = action.payload;
+      }).addCase(ChangedPassword.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(ChangedPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.ChangedPassword = action.payload;
+      })
+      .addCase(ChangedPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
       })
   },
    

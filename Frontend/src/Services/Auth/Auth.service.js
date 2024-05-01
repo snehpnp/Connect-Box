@@ -171,6 +171,26 @@ export async function SIGN_UP_USER(data, token) {
 // }
 
 
+// change password
+
+
+export async function PasswordChange(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}PasswordChanged`, data, {
+           
+            data: {data},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        console.log("error", err);
+        return err
+
+        // custom error
+    }
+
+}
+
 
 
 
