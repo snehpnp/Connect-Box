@@ -153,8 +153,8 @@ const Edit_Employee = () => {
         Subadmin_permision_data: {
           employee_add: values.addemployee ? "1" : values.all ? "1" : "0",
           employee_edit: values.editemployee ? "1" : values.all ? "1" : "0",
-          license_permision: values.licence ? "1" : values.all ? "1" : "0",
-          go_To_Dashboard: values.gotodashboard ? "1" : values.all ? "1" : "0",
+         
+         
           trade_history_old: values.tradehistory ? "1" : values.all ? "1" : "0",
           detailsinfo: values.detailsinfo ? "1" : values.all ? "1" : "0",
           strategy: selectedStrategyIds,
@@ -252,23 +252,8 @@ const Edit_Employee = () => {
       check_box_true:
         formik.values.all || formik.values.editemployee ? true : false,
     },
-    {
-      name: "licence",
-      label: "Licence  Permission",
-      type: "checkbox",
-      label_size: 12,
-      col_size: 3,
-      check_box_true: formik.values.all || formik.values.licence ? true : false,
-    },
-    {
-      name: "gotodashboard",
-      label: "Go To Dashboard",
-      type: "checkbox",
-      label_size: 12,
-      col_size: 3,
-      check_box_true:
-        formik.values.all || formik.values.gotodashboard ? true : false,
-    },
+     
+     
     {
       name: "tradehistory",
       label: "Trade History",
@@ -306,130 +291,22 @@ const Edit_Employee = () => {
         formik.values.all || formik.values.Strategy ? true : false,
     },
 
-    // {
-    //   name: "updateapikeys",
-    //   label: "Update Client API Key",
-    //   type: "checkbox",
-    //   label_size: 12,
-    //   col_size: 3,
-    //   check_box_true: formik.values.updateapikeys ? true : false,
-    // },
+    {
+      name: "updateapikeys",
+      label: "Update Client API Key",
+      type: "checkbox",
+      label_size: 12,
+      col_size: 3,
+      check_box_true: formik.values.updateapikeys ? true : false,
+    },
   ];
 
-
-  useEffect(() => {
-    if (UserData.data[0] !== undefined) {
-      const userStrategyIds = UserData.data[0].subadmin_permissions[0];
-
-      formik.setFieldValue("fullName", UserData.data[0].FullName || '');
-      formik.setFieldValue("UserName", UserData.data[0].UserName || '');
-
-      formik.setFieldValue("email", UserData.data[0].Email || '');
-      formik.setFieldValue("phone", UserData.data[0].PhoneNo || '');
-      formik.setFieldValue("password", UserData.data[0].Otp || '');
-
-      formik.setFieldValue("addemployee", userStrategyIds.employee_add === 1);
-      formik.setFieldValue("editemployee", userStrategyIds.employee_edit === 1);
-      formik.setFieldValue("detailsinfo", userStrategyIds.detailsinfo === 1);
-      formik.setFieldValue("gotodashboard", userStrategyIds.go_To_Dashboard === 1);
-      formik.setFieldValue("licence", userStrategyIds.license_permision === 1);
-      formik.setFieldValue("updateapikeys", userStrategyIds.Update_Api_Key === 1);
-      formik.setFieldValue("tradehistory", userStrategyIds.trade_history_old === 1);
-
-      formik.setFieldValue("Strategy", userStrategyIds.strategy && userStrategyIds.strategy.length > 0);
-      formik.setFieldValue("groupservice", userStrategyIds.group_services && userStrategyIds.group_services.length !== 0);
-    }
-  }, [UserData.data]);
+  
 
 
-  // useEffect(() => {
-  //   if (formik.values.updateapikeys) {
-  //     formik.setFieldValue("all", false);
-  //     formik.setFieldValue("addemployee", false);
-  //     formik.setFieldValue("editemployee", false);
-  //     formik.setFieldValue("gotodashboard", false);
-  //     formik.setFieldValue("licence", false);
-  //     formik.setFieldValue("group", false);
-  //     formik.setFieldValue("groupservice", false);
-  //     formik.setFieldValue("Strategy", false);
-  //     formik.setFieldValue("tradehistory", false);
-  //   }
-  // }, [formik.values.updateapikeys]);
+  
 
-  // useEffect(() => {
-  //   if (
-  //     formik.values.addemployee ||
-  //     formik.values.editemployee ||
-  //     formik.values.Strategy ||
-  //     formik.values.groupservice ||
-  //     formik.values.detailsinfo ||
-  //     formik.values.tradehistory ||
-  //     formik.values.gotodashboard
-  //   ) {
-  //     formik.setFieldValue("updateapikeys", false);
-  //     setstate([]);
-  //     setstate1([]);
-  //     return;
-  //   }
-
-  //   if (formik.values.Strategy) {
-  //     formik.setFieldValue("Strategy", true);
-  //     return;
-  //   }
-
-  //   if (formik.values.groupservice) {
-  //     formik.setFieldValue("groupservice", true);
-  //     return;
-  //   }
-
-  //   if (formik.values.addemployee || formik.values.editemployee) {
-  //     formik.setFieldValue("groupservice", true);
-  //     formik.setFieldValue("Strategy", true);
-  //     setstate([]);
-  //     setstate1([]);
-  //     return;
-  //   } else if (!formik.values.addemployee) {
-  //     formik.setFieldValue("groupservice", false);
-  //     formik.setFieldValue("Strategy", false);
-  //     formik.setFieldValue("strateg_servcice", "");
-  //     formik.setFieldValue("grouper_servcice", "");
-  //     setstate([]);
-  //     setstate1([]);
-  //   } else {
-  //     formik.setFieldValue("groupservice", false);
-  //     formik.setFieldValue("Strategy", false);
-  //     setstate([]);
-  //     setstate1([]);
-  //     return;
-  //   }
-  // }, [
-  //   formik.values.editemployee,
-  //   formik.values.addemployee,
-  //   formik.values.detailsinfo,
-  //   formik.values.tradehistory,
-  //   formik.values.gotodashboard,
-  //   formik.values.Strategy,
-  //   formik.values.groupservice,
-  // ]);
-
-  useEffect(() => {
-    if (formik.values.all) {
-      formik.setFieldValue("editemployee", true);
-      formik.setFieldValue("gotodashboard", true);
-      formik.setFieldValue("licence", true);
-      formik.setFieldValue("group", true);
-      formik.setFieldValue("groupservice", true);
-      formik.setFieldValue("Strategy", true);
-    } else {
-      formik.setFieldValue("editemployee", false);
-      formik.setFieldValue("updateapikeys", false);
-      formik.setFieldValue("gotodashboard", false);
-      formik.setFieldValue("licence", false);
-      formik.setFieldValue("group", false);
-      formik.setFieldValue("groupservice", false);
-      formik.setFieldValue("Strategy", false);
-    }
-  }, [formik.values.all]);
+ 
 
 
 

@@ -10,6 +10,7 @@ import Profile from '../Layouts/Comman/Profile/Profile';
 import Faqs from '../Layouts/Comman/Faqs';
 
 import Empdashboard from '../Layouts/Employee/Dashboard/Empdashboard';
+import AllUsers from '../Layouts/Employee/Users/Alluser';
 
 
 
@@ -25,8 +26,8 @@ const Employee_Routing = () => {
             <div className='page-wrapper' >
                 <Routes>
                     <Route exact path="/dashboard" element={<Empdashboard />} />
-
                     <Route exact path="/profile" element={<Profile />} />
+                    <Route exact path="/allusers" element={<AllUsers />} />
                     <Route exact path="/faqs" element={<Faqs />} />
 
                 </Routes>
