@@ -103,6 +103,43 @@ export async function getOrders_data(data, token) {
 
 }
 
+
+
+//Trade Orders From SubAdmin
+export async function getTrade_data(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}trade/data`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+
+}
+
+
+//Trade Orders From SubAdmin
+export async function UpdateTrade(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}update/trade`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+
+}
+
+
+
 export async function GetClientsOrderBy_Prefix(data, token) {
     try {
         const res = await axios.post(`${Config.base_url}client/Order`, data, {  
