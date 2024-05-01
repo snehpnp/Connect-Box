@@ -1042,10 +1042,6 @@ const Makecall = () => {
 
     const selectCatagoryId = (e) => {
 
-        
-        
-
-
         setStrikePrice('');
         setOptionType('');
         setExpiryOnChange('')
@@ -1684,8 +1680,18 @@ const Makecall = () => {
 
         }
 
-       
-        alert("Done")
+
+        var Tr_Price = '0.00'
+        var Sq_Value = '0.00'
+        var Sl_Value = '0.00'
+        var TSL = '0.00'
+
+
+
+        // set price
+        //alert("Done")
+        //Trade At price -------- AT
+        if (EntryPriceBA == 'at') {
 
             // const currentTimestamp = Math.floor(Date.now() / 1000);
             //     let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice==''?'100':strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${target1}|StopLoss:${stoploss}|ExitTime:${selectedTimeExit}|sl_status:1|Demo:demo`
@@ -1741,8 +1747,210 @@ const Makecall = () => {
                     // console.log(error.response.data);
                 });
 
-       }
 
+
+
+
+
+        }
+
+        // TRADE RANGE --------
+        else if (EntryPriceBA == 'range') {
+            if (EntryPriceRange_one == '') {
+                // alert("Please Enter a price from")
+                
+                Swal.fire({
+                    text: "Please Enter a price from",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
+                return
+            }
+            if (EntryPriceRange_two == '') {
+                // alert("Please Enter a price to")
+                Swal.fire({
+                    text: "Please Enter a price to",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
+                return
+            }
+
+            // markettime - after market order
+
+            SetForDisabledSubmit(true)
+            await dispatch(AddDataAboveBelowRange(
+                {
+                    req: {
+
+                        user_id: UserLocalDetails.user_id,
+                        Symbol: scriptname,
+                        TType: tradeType,
+                        Tr_Price: Tr_Price,
+                        Price: price,
+                        EntryPrice: EntryPrice,
+                        Sq_Value: Sq_Value,
+                        Sl_Value: Sl_Value,
+                        TSL: TSL,
+                        Segment: scriptSegment,
+                        Strike: strikePrice == '' ? '100' : strikePrice,
+                        OType: optionType,
+                        Expiry: expiryOnChange,
+                        Strategy: selectStrategy,
+                        Quntity: '100',
+                        Key: UserDetails && UserDetails[0].client_key,
+                        TradeType: 'MAKECALL',
+                        Target: Target == 0 ? 0 : Target.toFixed(2),
+                        StopLoss: StopLoss == 0 ? 0 : StopLoss.toFixed(2),
+                        ExitTime: selectedTimeExit,
+                        NoTradeTime: selectedTimeNoTrade,
+                        sl_status: sl_status,
+                        token: liveToken.current,
+                        EntryPriceRange_one: EntryPriceRange_one,
+                        EntryPriceRange_two: EntryPriceRange_two,
+                        ABR_TYPE: EntryPriceBA,
+                        marketTimeAmo: markettime,
+
+                    },
+
+                    token: UserLocalDetails.token
+                }
+            ))
+                .unwrap()
+                .then((response) => {
+
+                    if (response.status) {
+                        Swal.fire({
+                            title: "Data Add Successful!",
+                            text: response.msg,
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true
+                          });
+                          setRefreshscreen(!refreshscreen);
+                          setTimeout(() => {
+                            window.location.reload()
+                          }, 2000);
+
+                     } else {
+                       
+                        Swal.fire({
+                            title: "Error",
+                            text: response.msg,
+                            icon: "error",
+                            timer: 1500,
+                            timerProgressBar: true
+                          });
+                          setRefreshscreen(!refreshscreen);
+                         
+
+
+                     }
+                });
+
+
+        }
+
+        // TRADE ABOVE BELOW ------------
+        else if (EntryPriceBA == 'above' || EntryPriceBA == 'below') {
+            if (EntryPrice == '') {
+                // alert("Please Enter a Entry Price")
+                Swal.fire({
+                    text: "Please Enter a Entry Price",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                  });
+                return
+            } else {
+                price = EntryPrice
+            }
+
+
+
+
+            // markettime - after market order
+            //alert(liveToken.current)
+            SetForDisabledSubmit(true)
+            await dispatch(AddDataAboveBelowRange(
+                {
+                    req: {
+
+                        user_id: UserLocalDetails.user_id,
+                        Symbol: scriptname,
+                        TType: tradeType,
+                        Tr_Price: Tr_Price,
+                        Price: price,
+                        EntryPrice: EntryPrice,
+                        Sq_Value: Sq_Value,
+                        Sl_Value: Sl_Value,
+                        TSL: TSL,
+                        Segment: scriptSegment,
+                        Strike: strikePrice == '' ? '100' : strikePrice,
+                        OType: optionType,
+                        Expiry: expiryOnChange,
+                        Strategy: selectStrategy,
+                        Quntity: '100',
+                        Key: UserDetails && UserDetails[0].client_key,
+                        TradeType: 'MAKECALL',
+                        Target: Target == 0 ? 0 : Target.toFixed(2),
+                        StopLoss: StopLoss == 0 ? 0 : StopLoss.toFixed(2),
+                        ExitTime: selectedTimeExit,
+                        NoTradeTime: selectedTimeNoTrade,
+                        sl_status: sl_status,
+                        token: liveToken.current,
+                        EntryPriceRange_one: "",
+                        EntryPriceRange_two: "",
+                        ABR_TYPE: EntryPriceBA,
+                        marketTimeAmo: markettime,
+
+                    },
+
+                    token: UserLocalDetails.token
+                }
+            ))
+                .unwrap()
+                .then((response) => {
+                    // console.log("response ",response.data)
+                     if (response.status) {
+                        Swal.fire({
+                            title: "Data Add Successful!",
+                            text: response.msg,
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true
+                          });
+                          setRefreshscreen(!refreshscreen);
+                          setTimeout(() => {
+                            window.location.reload()
+                          }, 2000);
+
+                     } else {
+                       
+                        Swal.fire({
+                            title: "Error",
+                            text: response.msg,
+                            icon: "error",
+                            timer: 1500,
+                            timerProgressBar: true
+                          });
+                          setRefreshscreen(!refreshscreen);
+                         
+
+
+                     }
+                });
+
+
+
+
+
+
+        }
+
+    }
 
 
 
@@ -2263,204 +2471,32 @@ const Makecall = () => {
                                             <div className="invoice-total-box border">
                                                 <div className="invoice-total-inner">
                                                     <div className="inventory-table">
-                                                        <table className="table table-center table-hover datatable">
-                                                            <thead className="thead-light">
-                                                                <tr>
-                                                                    <th>#</th>
-                                                                    <th>Item</th>
-                                                                    <th>Code</th>
-                                                                    <th>Units</th>
-                                                                    <th>Quantity</th>
-                                                                    <th>Selling Price</th>
-                                                                    <th>Purchase Price</th>
-                                                                    <th className="no-sort">Action</th>
 
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>1</td>
-                                                                    <td>Nike Jordan</td>
-                                                                    <td>P125390</td>
-                                                                    <td>Pieces</td>
-                                                                    <td>2</td>
-                                                                    <td>$1360.00</td>
-                                                                    <td>$1350.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>2</td>
-                                                                    <td>Lobar Handy</td>
-                                                                    <td>P125393</td>
-                                                                    <td>Inches</td>
-                                                                    <td>5</td>
-                                                                    <td>$155.00</td>
-                                                                    <td>$150.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>3</td>
-                                                                    <td>Iphone 14 Pro</td>
-                                                                    <td>P125398</td>
-                                                                    <td>Inches</td>
-                                                                    <td>7</td>
-                                                                    <td>$764.00</td>
-                                                                    <td>$750.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>4</td>
-                                                                    <td>Black Slim 200</td>
-                                                                    <td>P125395</td>
-                                                                    <td>Inches</td>
-                                                                    <td>3</td>
-                                                                    <td>$255.00</td>
-                                                                    <td>$250.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>5</td>
-                                                                    <td>Bold V3.2</td>
-                                                                    <td>P125397</td>
-                                                                    <td>Pieces</td>
-                                                                    <td>6</td>
-                                                                    <td>$1055.00</td>
-                                                                    <td>$1050.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>6</td>
-                                                                    <td>Woodcraft Sandal</td>
-                                                                    <td>P125394</td>
-                                                                    <td>Pieces</td>
-                                                                    <td>8</td>
-                                                                    <td>$175.00</td>
-                                                                    <td>$140.00</td>
-                                                                    <td className="d-flex align-items-center">
-                                                                        <a href="#" className="btn btn-greys bg-success-light me-2" data-bs-toggle="modal" data-bs-target="#stock_in">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock in
-                                                                        </a>
-                                                                        <a href="#" className="btn btn-greys bg-danger-light me-2" data-bs-toggle="modal" data-bs-target="#stock_out">
-                                                                            <i className="fa fa-plus-circle me-1"></i> Stock out
-                                                                        </a>
-                                                                        <div className="dropdown dropdown-action">
-                                                                            <a href="#" className=" btn-action-icon " data-bs-toggle="dropdown" aria-expanded="false"><i className="fas fa-ellipsis-v"></i></a>
-                                                                            <div className="dropdown-menu dropdown-menu-right">
-                                                                                <ul>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="#"><i className="far fa-edit me-2"></i>Edit</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a className="dropdown-item" href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#delete_stock"><i className="far fa-trash-alt me-2"></i>Delete</a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
+
+                                                        <FullDataTable
+                                                            keyField="_id"
+                                                            TableColumns={columns}
+                                                            tableData={aboveBelowRangData.data}
+                                                            pagination1={true}
+                                                            selectRow={selectRow}
+                                                        />
                                                     </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div className="tab-pane" id="solid-tab2">
+
+                                        <div className="d-flex">
+                                        <div className="preview-boxs mb-3">
+                                                    <button type="submit" className="btn btn-primary" onClick={() => update_data('above')}>
+                                                        Update
+                                                    </button>
+                                                </div>
+                                                <div className="preview-boxs mb-3 ms-2 ">
+                                                    <button type="submit" className="btn btn-primary" onClick={() => delete_data('above')}>
+                                                        Delete
+                                                    </button>
                                                 </div>
                                                 </div>     
 
