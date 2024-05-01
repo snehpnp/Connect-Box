@@ -3,7 +3,7 @@
 
 const router = require("express").Router()
 
-const { AddSubadmin,EditSubadmin,getallSubadmin,getallSubadminClients,getOneSubadmin,GetAllRechargeDetails,UpdateActiveStatusSubadmin,AddBalanceSubadmin,getallSubadminName,GetAllRechargeDetailsById} = require('../../Controllers/Admins/Subadmins/subadmin.controller')
+const { AddSubadmin,EditSubadmin,getallSubadmin,getallSubadminClients,getOneSubadmin,GetAllRechargeDetails,UpdateActiveStatusSubadmin,AddBalanceSubadmin,getallSubadminName,GetAllRechargeDetailsById,UpdateBrokerInfo,GetBrokerInfo} = require('../../Controllers/Admins/Subadmins/subadmin.controller')
 
 const {DashboardChartData,DashboardBalanceData} =require('../../Controllers/SubAdmins/DashBoardData/DashboardData')
 const {ProfileImagedata,updateProfile,profileId,Profilestatus }=require("../../Controllers//Admins/Profile/ProfileImage")
@@ -13,6 +13,10 @@ const {ProfileImagedata,updateProfile,profileId,Profilestatus }=require("../../C
 
 router.post('/subadmin/add', AddSubadmin);
 router.post('/subadmin/edit', EditSubadmin);
+
+router.post('/get/Brokerinfo', GetBrokerInfo);
+router.post('/update/Brokerinfo', UpdateBrokerInfo);
+
 
 router.post('/subadmin/getall', getallSubadmin);
 router.post('/subadmin/name/getall', getallSubadminName);

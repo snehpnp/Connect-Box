@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetInfo_Company,Edit_Company_info,GetInfo_strategyTransaction,GetInfo_strategyHistory,GetInfo_strategyTransactionUser } from "../../../Services/Subadmin/system.service";
+import { GetInfo_Company, Edit_Company_info, GetInfo_strategyTransaction, GetInfo_strategyHistory, GetInfo_strategyTransactionUser, update_broker_info,Get_broker_info } from "../../../Services/Subadmin/system.service";
 
 export const infocompany = createAsyncThunk(
     "subadmin/company/getone",
     async (data) => {
-        
+
         try {
             const res = await GetInfo_Company(data);
             return res;
@@ -17,7 +17,7 @@ export const infocompany = createAsyncThunk(
 export const edit_company_info = createAsyncThunk(
     "subadmin/company/edit",
     async (data) => {
-        
+
         try {
             const res = await Edit_Company_info(data);
             return res;
@@ -30,7 +30,7 @@ export const edit_company_info = createAsyncThunk(
 export const FindStgTranscData = createAsyncThunk(
     "strategy/transaction",
     async (data) => {
-        
+
         try {
             const res = await GetInfo_strategyTransaction(data);
             return res;
@@ -43,7 +43,7 @@ export const FindStgTranscData = createAsyncThunk(
 export const FindStgTranscDataUser = createAsyncThunk(
     "user/strategy/transaction",
     async (data) => {
-        
+
         try {
             const res = await GetInfo_strategyTransactionUser(data);
             return res;
@@ -56,7 +56,7 @@ export const FindStgTranscDataUser = createAsyncThunk(
 export const FindStgHistoryData = createAsyncThunk(
     "strategy/history",
     async (data) => {
-        
+
         try {
             const res = await GetInfo_strategyHistory(data);
             return res;
@@ -65,6 +65,34 @@ export const FindStgHistoryData = createAsyncThunk(
         }
     }
 );
+
+
+export const update_broker_Data = createAsyncThunk(
+    "update/Brokerinfo",
+    async (data) => {
+
+        try {
+            const res = await update_broker_info(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const Get_broker_Data = createAsyncThunk(
+    "get/Brokerinfo",
+    async (data) => {
+
+        try {
+            const res = await Get_broker_info(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
 
 
 const SystemSlice = createSlice({
@@ -157,6 +185,14 @@ const SystemSlice = createSlice({
 
                 state.isLoading = false;
                 state.isError = true;
+            })
+            .addCase(update_broker_Data.fulfilled, (state, action) => {
+
+                state.isLoading = false;
+            })
+            .addCase(Get_broker_Data.fulfilled, (state, action) => {
+
+                state.isLoading = false;
             })
     },
 });
