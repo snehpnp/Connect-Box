@@ -24,6 +24,8 @@ import toast, { Toaster } from 'react-hot-toast';
 
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 
+import Swal from 'sweetalert2';
+
 function Option_Chain() {
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -623,6 +625,7 @@ function Option_Chain() {
                 method: 'post',
                 maxBodyLength: Infinity,
                 url: 'http://localhost:8800/broker-signals',
+               // url: 'http://localhost:8800/broker-signals',
                 // url: `${getBrokerUrl && getBrokerUrl}`,
                 headers: {
                     'Content-Type': 'text/plain'
@@ -631,47 +634,40 @@ function Option_Chain() {
             };
 
             console.log("config", config)
-            // axios.request(config)
-            //     .then((response) => {
+            axios.request(config)
+            .then(async (response) => {
+                //console.log("response ", response);
+                if (response.status) {
+                    Swal.fire({
+                        title: "Data Add Successful!",
+                        text: response.msg,
+                        icon: "success",
+                        timer: 1500,
+                        timerProgressBar: true
+                      });
+                     
+                      setTimeout(() => {
+                        window.location.reload()
+                      }, 2000);
+
+                 } else {
+                   
+                    Swal.fire({
+                        title: "Error",
+                        text: response.msg,
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                      });
+                     
+                     
 
 
-
-            //        // console.log("cpppp", response.data.status)
-
-            //         if (response.data.status) {
-
-            //             toast.success("Order Place Sucessfully");
-            //             setRefresh(!refresh)
-            //             setButtonDisabled(!ButtonDisabled)
-            //             setshowModal(false)
-            //             // setButtonDisabled(false)
-
-            //             setCreateSignalRequest([])
-
-
-            //             OptionChainData.data && OptionChainData.data.filter((item) => {
-            //                 const element1 = $('.button_call_sell_' + item.call_token);
-            //                 element1.removeClass('active');
-            //                 const element2 = $('.button_call_buy_' + item.call_token);
-            //                 element2.removeClass('active');
-            //                 const element4 = $('.button_put_sell_' + item.put_token);
-            //                 element4.removeClass('active');
-            //                 const element3 = $('.button_put_buy_' + item.put_token);
-            //                 element3.removeClass('active');
-            //             })
-
-            //             navigate("/admin/openposition")
-            //         }
-            //         else {
-
-            //             toast.danger(response.data.msg);
-
-            //         }
-
-            //     })
-            //     .catch((error) => {
-            //         console.log(error);
-            //     });
+                 }
+            })
+            .catch((error) => {
+                // console.log(error.response.data);
+            });
 
         })
 
@@ -712,6 +708,8 @@ function Option_Chain() {
 
     const ExcuteTradeButton = () => {
 
+       
+
         const currentDate = new Date();
         const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         const weekday = weekdays[currentDate.getDay()];
@@ -726,7 +724,17 @@ function Option_Chain() {
         // if (!holidays.isHoliday(currentDate) && weekday !== 'Sunday' && weekday !== 'Saturday' && isAfterCutoffTime) {
         //     alert("Market Time Is Off")
         // } else {
-        if (UserDetails !== undefined && UserDetails[0].TradingStatus === "on") {
+
+      //  if (UserDetails !== undefined && UserDetails[0].TradingStatus === "on") {
+
+
+      console.log("livePriceDataDetails.demate_user_id",livePriceDataDetails.demate_user_id)
+      console.log("livePriceDataDetails.access_token",livePriceDataDetails.access_token)
+      console.log("livePriceDataDetails.trading_status",livePriceDataDetails.trading_status)
+
+        if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
+
+       
             let Arr = []
 
 
