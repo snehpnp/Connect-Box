@@ -27,48 +27,50 @@ class AliceBlue {
             if (Get_User[0].TradingStatus != "on") {
 
                 var apiSecret = ''
-              
+
                 if (Get_User[0].Role == "USER") {
+
                     var subadmin = await User.find({ parent_id: Get_User[0].parent_id }).select('TradingStatus parent_id api_secret Role');
-                apiSecret = subadmin[0].api_secret
-                }else{
-                    apiSecret = Get_User[0].api_secret
+
+                    apiSecret = subadmin[0].api_secret;
+
+                } else {
+                    apiSecret = Get_User[0].api_secret;
                 }
-     
+
 
                 var hosts = req.headers.host;
-    
+
                 var redirect = hosts.split(':')[0];
                 var redirect_uri = '';
-                   
-                // console.log("apiSecret ",apiSecret)
-                // console.log("Get_User ",Get_User)
+
+      
 
                 if (Get_User.length > 0) {
-    
+
                     if (redirect == "localhost") {
                         redirect_uri = "http://localhost:3000"
-    
+
                         if (Get_User[0].Role == "ADMIN") {
                             redirect_uri = "http://localhost:3000/#/subadmin/position"
-    
+
                         } else {
                             redirect_uri = "http://localhost:3000"
-    
+
                         }
                     } else {
                         if (Get_User[0].Role == "ADMIN") {
                             redirect_uri = `https://${redirect}/#/subadmin/position`
-    
+
                         } else {
                             redirect_uri = `https://${redirect}/#/user/stock`
-    
+
                         }
                     }
-    
+
                     var Encrypted_data = sha256(userId + authCode + apiSecret);
                     var data = { "checkSum": Encrypted_data }
-    
+
                     var config = {
                         method: 'post',
                         url: 'https://ant.aliceblueonline.com/rest/AliceBlueAPIService/sso/getUserDetails',
@@ -77,15 +79,15 @@ class AliceBlue {
                         },
                         data: data
                     };
-    
-    
+
+
                     axios(config)
                         .then(async function (response) {
-    
+
                             if (response.data.userSession) {
-    
+
                                 if (Get_User[0].Role == "USER") {
-    
+
                                     let result = await User.findByIdAndUpdate(
                                         Get_User[0]._id,
                                         {
@@ -97,51 +99,51 @@ class AliceBlue {
                                         trading_status: "Trading On",
                                         role: Get_User[0].Role,
                                         device: "WEB",
-    
+
                                     })
                                     await user_login.save();
                                     return res.redirect(redirect_uri);
-    
+
                                 } else {
-    
+
                                     let result = await User.findByIdAndUpdate(
                                         Get_User[0]._id,
                                         {
                                             access_token: response.data.userSession,
                                             TradingStatus: "on"
                                         })
-    
+
                                     if (result != "") {
-    
+
                                         const Subadmin_login = new subadmin_logs({
                                             user_Id: Get_User[0]._id,
                                             trading_status: "Trading On",
                                             role: Get_User[0].Role,
                                             device: "WEB",
-    
+
                                         })
                                         await Subadmin_login.save();
                                         if (Subadmin_login) {
                                             return res.redirect(redirect_uri);
-    
+
                                         }
                                     }
-    
+
                                 }
-    
-    
-    
-    
+
+
+
+
                             } else {
                                 return res.send(redirect_uri);
                             }
-    
-    
-    
+
+
+
                         })
                         .catch(function (error) {
                         });
-    
+
                 }
 
 
