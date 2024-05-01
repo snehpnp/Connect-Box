@@ -9490,7 +9490,7 @@ table .badge {
 
 [data-sidebar=dark][data-layout=horizontal] body .sidebar .sidebar-menu ul li a:hover span.menu-arrow,
 [data-sidebar=dark][data-layout=horizontal] body .sidebar .sidebar-menu ul li a.active span.menu-arrow {
-    color: #fff;
+    color: #000;
 }
 
 [data-sidebar=dark] body .sidebar-twocol.sidebar .sidebar-left {
@@ -33485,11 +33485,6 @@ table.table.bg-none::before {
     background-color: #7539ff !important;
     border-color: #7539ff !important;
 }
-
-
-
-
-
 a,
 a:hover,
 a:focus,
@@ -33995,7 +33990,6 @@ img {
 
 .ultimite .price {
     background: #DD4B5E;
-
 }
 
 
@@ -34639,9 +34633,10 @@ button[aria-label="edit"] {
 
 
 
-[data-layout-mode=dark] .MuiDataGrid-cell {
+  [data-layout-mode=dark] .MuiDataGrid-cell {
     color: #ddd !important;
 }
+
 
 
 .mainDiv {
@@ -34724,12 +34719,35 @@ input:disabled {
     cursor: pointer;
 }
 
-@keyframes spin {
-    0% {
+@keyframes spin 
+0% {
         transform: rotate(0deg);
     }
 
     100% {
         transform: rotate(360deg);
     }
+
+[data-layout-mode=dark] .MuiTablePagination-toolbar ,[data-layout-mode=dark] .MuiTab-textColorPrimary ,[data-layout-mode=dark] .MuiSelect-icon{
+    color: #fff;
+}
+a.user-a:hover span {
+    color: #7539ff;
+}
+[data-layout-mode=light] body .btn-primary:hover{
+    color: #7539ff  !important;
+    background: #fff;
+    border-color: #7539ff;
+    box-shadow: inset 0 50px 0 0 #fff;
+}
+.left-side 
+{
+    width:250px;
+     height:100%;
+
+      display: inline-block;
+       float: left; 
+       position:sticky;
+        top:150px;
+
 }

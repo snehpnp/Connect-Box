@@ -314,6 +314,47 @@ export default function AllEmployees() {
 
                             <div className="card-body">
                                 <div className="row ">
+                                    <div className="input-block col-lg-2 ms-4 mt-3 mb-3">
+                                        <label>From Date</label>
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            placeholder="Search..."
+                                            aria-label="Search"
+                                            aria-describedby="search-addon"
+                                            onChange={(e) => SetInputSearch(e.target.value || '')}
+                                            value={inputSearch}
+                                        />
+                                    </div>
+                                    <div className="input-block col-lg-2 mt-3 mb-3">
+                                        <label>To Date</label>
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            placeholder="Search..."
+                                            aria-label="Search"
+                                            aria-describedby="search-addon"
+                                            onChange={(e) => SetInputSearch(e.target.value || '')}
+                                            value={inputSearch}
+                                        />
+                                    </div>
+
+
+
+
+                                    <FullDataTable
+                                        styles={styles}
+                                        label={label}
+                                        columns={columns}
+                                        rows={tableData.data}
+                                    />
+                                </div>
+                            </div>
+
+
+
+                            <div className="card-body">
+                                <div className="row ">
                                     <div className="input-block col-lg-2 mt-3 mb-3">
                                         <label>From Date</label>
                                         <input
@@ -390,6 +431,7 @@ export default function AllEmployees() {
                             rows={tableData.data}
                         />
                     </div> */}
+
 
 
                 </>
