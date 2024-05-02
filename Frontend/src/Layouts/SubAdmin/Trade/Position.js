@@ -6,7 +6,7 @@ import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
 import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/Userinfo";
-import { Orders_Details } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Trade_history_data } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { fDateTime } from "../../../Utils/Date_formet";
 import { ipAddress } from '../../../Utils/Ipaddress';
@@ -15,14 +15,16 @@ import { ipAddress } from '../../../Utils/Ipaddress';
 
 export default function AllEmployees() {
     const userDetails = JSON.parse(localStorage.getItem("user_details"));
-
+    const [SelectService, setSelectService] = useState("null");
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [refresh, setrefresh] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [ForGetCSV, setForGetCSV] = useState([]);
     const [ip, setIp] = useState(null);
-
+    const [fromDate, setFromDate] = useState("");
+    const [toDate, setToDate] = useState("");
+    const [StrategyClientStatus, setStrategyClientStatus] = useState("null");
 
     const [tableData, setTableData] = useState({
         loading: false,
@@ -47,7 +49,13 @@ export default function AllEmployees() {
             marginRight: 8,
         },
     };
+    const handleFromDateChange = (e) => {
+        setFromDate(e.target.value);
+    };
 
+    const handleToDateChange = (e) => {
+        setToDate(e.target.value);
+    };
 
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
@@ -99,11 +107,14 @@ export default function AllEmployees() {
     }, []);
 
 
+
+
+
     // LOGOUT TRADING 
     const handleTradingOff = async (id) => {
-      
-        let data = { id: id,system_ip:ip };
-   
+
+        let data = { id: id, system_ip: ip };
+
         await dispatch(Trading_Off_Btn(data)).unwrap()
             .then((response) => {
                 if (response.status) {
@@ -162,11 +173,38 @@ export default function AllEmployees() {
             ),
         },
         {
-            field: "type",
-            headerName: "Type",
-            width: 100,
-            headerClassName: styles.boldHeader,
+            field: "entry_qty",
+            headerName: "Entry Qty",
+            width: 120,
+            renderCell: (params) => (
+                <span className="text">{params.value !== "" ? parseInt(params.value) : "-"}</span>
+            ),
+        },
+        {
+            field: "exit_qty",
+            headerName: "Exit Qty",
+            width: 120,
+            renderCell: (params) => (
+                <span className="text">{params.value !== "" ? parseInt(params.value) : "-"}</span>
+            ),
+        },
+        {
+            field: "entry_price",
+            headerName: "Entry Price",
+            width: 160,
 
+            renderCell: (params) => (
+                <div>{params.value !== "" ? parseFloat(params.value).toFixed(2) : "-"}</div>
+            ),
+        },
+        {
+            field: "exit_price",
+            headerName: "Exit Price",
+            width: 160,
+
+            renderCell: (params) => (
+                <div>{params.value !== "" ? parseFloat(params.value).toFixed(2) : "-"}</div>
+            ),
         },
 
         {
@@ -176,13 +214,7 @@ export default function AllEmployees() {
             headerClassName: styles.boldHeader,
 
         },
-        {
-            field: "price",
-            headerName: "Price ",
-            width: 140,
-            headerClassName: styles.boldHeader,
 
-        },
 
         {
             field: "strategy",
@@ -192,9 +224,34 @@ export default function AllEmployees() {
 
         },
         {
+            field: "UPL",
+            headerName: "Un-Realised",
+            width: 160,
+
+            renderCell: (params) => (
+                <div>
+                    <span className={`fw-bold UPL_${params.row.token}_${params.row._id}`}></span>
+
+
+                </div>
+            ),
+        },
+
+        {
+            field: "TPL",
+            headerName: "Total",
+            width: 160,
+
+            renderCell: (params) => (
+                <div>
+                    <span className={`fw-bold  TPL_${params.row.token}_${params.row._id}`}></span>
+                </div>
+            ),
+        },
+        {
             field: "qty_percent",
             headerName: "qty_percent ",
-            width: 150,
+            width: 160,
             headerClassName: styles.boldHeader,
 
         },
@@ -208,19 +265,41 @@ export default function AllEmployees() {
 
     ];
 
+    const ResetDate = (e) => {
+        e.preventDefault();
+        setFromDate("");
+        setStrategyClientStatus("");
+        setSelectService("");
+        setToDate("");
 
+    };
 
     const RefreshHandle = () => {
         setrefresh(!refresh);
         setSearchInput("");
     };
 
-
+    const getActualDateFormate = (date) => {
+        const dateParts = date.split("-");
+        const formattedDate = `${dateParts[0]}/${parseInt(
+            dateParts[1],
+            10
+        )}/${parseInt(dateParts[2], 10)}`;
+        return formattedDate;
+    };
 
 
     const userDataRes = async () => {
+        let abc = new Date();
+        let month = abc.getMonth() + 1;
+        let date = abc.getDate();
+        let year = abc.getFullYear();
+        let full = `${year}/${month}/${date}`;
+
+        let startDate = getActualDateFormate(fromDate);
+        let endDate = getActualDateFormate(toDate);
         const subadminId = userDetails.user_id
-        await dispatch(Orders_Details({ subadminId }))
+        await dispatch(Trade_history_data({ subadminId: userDetails.user_id, startDate: !fromDate ? full : startDate, endDate: !toDate ? fromDate ? "" : full : endDate, service: SelectService, strategy: StrategyClientStatus, }))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
@@ -235,26 +314,30 @@ export default function AllEmployees() {
     };
 
     useEffect(() => {
-        userDataRes()
+        userDataRes(refresh, fromDate, toDate, SelectService, StrategyClientStatus)
     }, [])
 
+
+
+
+    // FIND IP ADDRESS
     useEffect(() => {
         const fetchIP = async () => {
-          try {
-            const ip = await ipAddress();
-            setIp(ip);
-          } catch (error) {
-            console.error('Failed to fetch IP address:', error);
-          }
+            try {
+                const ip = await ipAddress();
+                setIp(ip);
+            } catch (error) {
+                console.error('Failed to fetch IP address:', error);
+            }
         };
-    
+
         fetchIP();
-    
+
         // Clean up function
         return () => {
-    
+
         };
-      }, []);
+    }, []);
 
     return (
         <>
@@ -336,35 +419,58 @@ export default function AllEmployees() {
                             </div>
 
                             <div className="card-body">
-                            <div className="row ">
-                                <div className="input-block col-lg-2 mt-3 mb-3">
-                                    <label>From Date</label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        placeholder="Search..."
-                                        aria-label="Search"
-                                        aria-describedby="search-addon"
-                                        onChange={(e) => SetInputSearch(e.target.value || '')}
-                                        value={inputSearch}
-                                    />
+                                <div className="row ">
+                                    <div className="input-block col-lg-2 mt-3 mb-3">
+                                        <label>From Date</label>
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            placeholder="Search..."
+                                            aria-label="Search"
+                                            aria-describedby="search-addon"
+                                            onChange={(e) => SetInputSearch(e.target.value || '')}
+                                            value={inputSearch}
+                                        />
+                                    </div>
+                                    <div className="input-block col-lg-2 mt-3 mb-3">
+                                        <label>To Date</label>
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            placeholder="Search..."
+                                            aria-label="Search"
+                                            aria-describedby="search-addon"
+                                            onChange={(e) => SetInputSearch(e.target.value || '')}
+                                            value={inputSearch}
+                                        />
+                                    </div>
+                                    <div className="input-block col-lg-2 mt-3 mb-3">
+                                        <label>Strategy</label>
+                                        <label for="select" class="form-label">
+                                            Strategy
+                                        </label>
+                                        <select
+                                            class="default-select wide form-control"
+                                            aria-label="Default select example"
+                                            id="select"
+                                            // onChange={(e) => setStrategyClientStatus(e.target.value)}
+                                            // value={StrategyClientStatus}
+                                        >
+                                            <option value="null" selected >All</option>
+                                            {/* {getAllStrategyName.data &&
+                                                getAllStrategyName.data.map((item) => {
+                                                    return (
+                                                        <option value={item.strategy_name}>
+                                                            {item.strategy_name}
+                                                        </option>
+                                                    );
+                                                })} */}
+                                        </select>
+                                    </div>
                                 </div>
-                                <div className="input-block col-lg-2 mt-3 mb-3">
-                                    <label>To Date</label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        placeholder="Search..."
-                                        aria-label="Search"
-                                        aria-describedby="search-addon"
-                                        onChange={(e) => SetInputSearch(e.target.value || '')}
-                                        value={inputSearch}
-                                    />
-                                </div>
-                            </div>
 
-                            
-                               
+
+
                                 <FullDataTable
                                     styles={styles}
                                     label={label}
