@@ -491,6 +491,7 @@ function Option_Chain() {
         let type = { loginType: "API" };
         let channelList = TokenSymbolChain && TokenSymbolChain
 
+        console.log("channelList ", channelList)
         console.log("UserDetails ", UserDetails)
         console.log("livePriceDataDetails ", livePriceDataDetails.demate_user_id)
         console.log("access_token ", livePriceDataDetails.access_token)
@@ -503,11 +504,12 @@ function Option_Chain() {
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
             const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
-
+          
+        // console.log("res.data.stat",res.data.stat)
 
             if (res.data.stat) {
                 const handleResponse = async (response, socket) => {
-                    console.log("response.tk ", response.tk, " socket ", socket)
+                   // console.log("response.tk ", response.tk, " socket ", socket)
                     socket.onclose = async function (event) {
                         if (event.wasClean) {
                             // alert("IFFF CLOSE")
@@ -564,7 +566,7 @@ function Option_Chain() {
                     };
                 }
 
-                await ConnctSocket(handleResponse, channelList, UserDetails[0].demat_userid, UserDetails[0].access_token).then((res) => { });
+                await ConnctSocket(handleResponse, channelList, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token).then((res) => { });
             } else {
                 setUserIdSocketRun('DONE')
             }
@@ -617,9 +619,17 @@ function Option_Chain() {
         handleClickDisabled();
 
         const currentTimestamp = Math.floor(Date.now() / 1000);
-
+     
         ExecuteTradeData.data && ExecuteTradeData.data.map((item) => {
-            let req = `DTime:${currentTimestamp}|Symbol:${symbol && symbol}|TType:${item.trading_type}|Tr_Price:131|Price:${item.price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${item.segment}|Strike:${item.strike}|OType:${item.call_type}|Expiry:${expiry && expiry}|Strategy:${strategy && strategy}|Quntity:${item.entry_qty}|Key:${UserDetails && UserDetails[0].client_key}|TradeType:OPTION_CHAIN|Demo:demo`
+
+
+            let price =  $('.Call_Price_' + item.token).html();
+             if(item.call_type.toUpperCase() == "PUT"){
+             price =  $('.Put_Price_' + item.token).html();
+             }
+
+
+            let req = `DTime:${currentTimestamp}|Symbol:${symbol && symbol}|TType:${item.trading_type}|Tr_Price:131|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${item.segment}|Strike:${item.strike}|OType:${item.call_type}|Expiry:${expiry && expiry}|Strategy:${strategy && strategy}|Quntity:${item.entry_qty}|Key:${UserDetails && UserDetails[0].client_key}|TradeType:OPTION_CHAIN|Demo:demo`
 
             let config = {
                 method: 'post',
@@ -647,7 +657,8 @@ function Option_Chain() {
                       });
                      
                       setTimeout(() => {
-                        window.location.reload()
+                        navigate("/subadmin/open-position")
+                       // window.location.reload()
                       }, 2000);
 
                  } else {
