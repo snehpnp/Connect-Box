@@ -14,6 +14,8 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 const db_GET_VIEW = client.db(process.env.DB_NAME);
 const makecallabrView_excute_view = db_GET_VIEW.collection('makecallabrView_excute');
 const open_position_excute = db_GET_VIEW.collection('open_position_excute');
+const makecall_NotradeTime_status_excute = db_GET_VIEW.collection('makecall_NotradeTime_status_excute');
+
 
 const ObjectId = mongoose.Types.ObjectId;
 const user_logs = db.user_logs;
@@ -936,7 +938,33 @@ async function run() {
          
         
         
+      }
+
+      const noTradeTimeExcuteSetStatus = async () => {
+        try {
+        
+          var NotradeTimeExucuted = await makecall_NotradeTime_status_excute.find().toArray();
+
+          if (NotradeTimeExucuted.length > 0) {
+          const ids = NotradeTimeExucuted.map(item=>item._id)
+          console.log("ids ",ids)
+
+          const result = await makecallABR.updateMany(
+            { _id: { $in: ids } },
+            { $set: { status : 1 } } 
+          );
+         
+        //  console.log("result ",result)
+          return
+    
+          } else{
+            return
+          }
+        } catch (error) {
+          console.log("Error in Open Position",error);
         }
+           
+       }
 
     
     // Run the function initially
@@ -948,6 +976,7 @@ async function run() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       await makecallabrView_excute_run();
       await exitOpentrade();
+      await noTradeTimeExcuteSetStatus()
     }
   } finally {
     // Close the client when you're done
@@ -956,7 +985,7 @@ async function run() {
 
 }
 
-run().catch(console.error);
+//run().catch(console.error);
 
 
 //////////////////----- makecallabrView_excute_run --//////////////////////////////
