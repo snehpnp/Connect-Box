@@ -601,7 +601,7 @@ export const research_header = [
         Data: []
     },
     {
-        id: 9,
+        id: 18,
         name: 'FAQs',
         route: "/research/faqs",
         Icon: "fe fe-help-circle",
