@@ -152,7 +152,7 @@ function Strategy() {
         {
             name: "strategy_demo_days",
             label: "Strategy demo days",
-            type: "text3",
+            type: "text5",
             label_size: 12,
             col_size: 6,
             disable: false,

@@ -118,6 +118,23 @@ export default function Help() {
         <div> <b>{params.value == 2 ? "PER STRATEGY" : "PER TRADE"}</b></div>
       ),
     },
+     {
+      field: "actions",
+      headerName: "Actions",
+      width: 130,
+      renderCell: (params) => (
+        <div>
+          <IconButton
+            aria-label="edit"
+            size="small"
+            onClick={() => handleEdit(params.row)}
+          >
+            <EditIcon />
+          </IconButton>
+        </div>
+      ),
+      headerClassName: styles.boldHeader,
+    },
     {
       field: "Balance",
       headerName: "Add Balance",
@@ -171,23 +188,7 @@ export default function Help() {
       ),
     },
 
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 130,
-      renderCell: (params) => (
-        <div>
-          <IconButton
-            aria-label="edit"
-            size="small"
-            onClick={() => handleEdit(params.row)}
-          >
-            <EditIcon />
-          </IconButton>
-        </div>
-      ),
-      headerClassName: styles.boldHeader,
-    },
+  
     {
       field: "Create_Date",
       headerName: "Account Created At",
