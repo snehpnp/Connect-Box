@@ -88,6 +88,8 @@ const AddEmployee = () => {
         errors.phone = valid_err.INVALID_CONTACT_ERROR;
       }
  
+
+      console.log("values.Strategy :" ,values.Strategy)
       if (values.Strategy) {
         if (!values.addemployee && !values.editemployee) {
           errors.addemployee = "select Add Client Also";

@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import Loader from "../../../Utils/Loader";
 import * as valid_err from "../../../Utils/Common_Messages";
-import { Email_regex, Mobile_regex,Name_regex} from "../../../Utils/Common_regex";
+import { Email_regex, Mobile_regex, Name_regex } from "../../../Utils/Common_regex";
 
 import {
   Update_Employee,
@@ -32,6 +32,7 @@ const Edit_Employee = () => {
   const [selectedGroupIds, setSelectedGroupIds] = useState([]);
   const [state, setstate] = useState([]);
   const [state1, setstate1] = useState([]);
+  const [repeatCode, setRepeatCode] = useState('');
 
   const [AllGroupServices, setAllGroupServices] = useState({
     loading: true,
@@ -46,7 +47,9 @@ const Edit_Employee = () => {
     loading: true,
     data: [],
   });
-  
+
+
+ 
 
   const isValidEmail = (email) => {
     return Email_regex(email);
@@ -84,13 +87,12 @@ const Edit_Employee = () => {
   const formik = useFormik({
     initialValues: {
       fullName: "",
+      userName: '',
       email: "",
       password: "",
       phone: "",
       Strategy: false,
       select_strategy: [],
-      gotodashboard: false,
-      licence: false,
       detailsinfo: false,
       all: false,
       editemployee: false,
@@ -104,10 +106,11 @@ const Edit_Employee = () => {
       strateg_servcice: "",
     },
     validate: (values) => {
+     
       let errors = {};
       if (!values.fullName) {
         errors.fullName = valid_err.FULLNAME_ERROR;
-      } else if(!isValidName(values.fullName)){
+      } else if (!isValidName(values.fullName)) {
         errors.fullName = valid_err.INVALID_ERROR
       }
       if (!values.email) {
@@ -123,18 +126,22 @@ const Edit_Employee = () => {
       }
       if (!values.phone) {
         errors.phone = valid_err.CONTACT_ERROR;
-      }else if (!isValidContact(values.phone)) {
+      } else if (!isValidContact(values.phone)) {
         errors.phone = valid_err.INVALID_CONTACT_ERROR;
       }
+
+ 
+
       if (values.Strategy) {
         if (!values.addemployee && !values.editemployee) {
-          errors.addemployee = "select Add Client Also";
+          errors.addemployee = "select Add Client Also 1";
           errors.editemployee = "select Edit Client Also";
         }
       }
+
       if (values.groupservice) {
         if (!values.addemployee && !values.editemployee) {
-          errors.addemployee = "select Add Client Also";
+          errors.addemployee = "select Add Client Also 2";
           errors.editemployee = "select Edit Client Also";
         }
       }
@@ -145,6 +152,7 @@ const Edit_Employee = () => {
         id: id,
         FullName: values.fullName,
         Email: values.email,
+        UserName: values.userName,
         Password: values.password,
         PhoneNo: values.phone,
         Role: "EMPLOYEE",
@@ -152,16 +160,17 @@ const Edit_Employee = () => {
         parent_id: user_id,
         id: id,
         Subadmin_permision_data: {
-          employee_add: values.addemployee ? "1" : values.all ? "1" : "0",
-          employee_edit: values.editemployee ? "1" : values.all ? "1" : "0",
-         
-         
-          trade_history_old: values.tradehistory ? "1" : values.all ? "1" : "0",
-          detailsinfo: values.detailsinfo ? "1" : values.all ? "1" : "0",
-          strategy: selectedStrategyIds,
-          group_services: selectedGroupIds,
+          employee_add: values.addemployee ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
+          Update_Api_Key: values.updateapikeys ? "1" : "0",
+          employee_edit: values.editemployee ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
+          trade_history_old: values.tradehistory ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
+          detailsinfo: values.detailsinfo ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
+          strategy: values.updateapikeys ? [] :selectedStrategyIds,
+          group_services: values.updateapikeys ? [] :selectedGroupIds,
         },
       };
+
+      console.log("values.updateapikeys :" ,req)
       if (values.password.trim() !== "") {
         req.Password = values.password;
       }
@@ -186,6 +195,107 @@ const Edit_Employee = () => {
   });
 
 
+
+
+   useEffect(() => {
+    formik.setFieldValue("fullName", UserData.data[0] && UserData.data[0].FullName)
+    formik.setFieldValue("userName", UserData.data[0] && UserData.data[0].UserName)
+    formik.setFieldValue("email", UserData.data[0] && UserData.data[0].Email)
+    formik.setFieldValue("password", UserData.data[0] && UserData.data[0].Otp)
+    formik.setFieldValue("phone", UserData.data[0] && UserData.data[0].PhoneNo)
+    formik.setFieldValue("updateapikeys", UserData.data[0] && UserData.data[0].subadmin_permissions[0].Update_Api_Key == 1 ? true : false)
+    formik.setFieldValue("all", UserData.data[0] && UserData.data[0].subadmin_permissions[0].all == 1 ? true : false)
+    formik.setFieldValue("addemployee", UserData.data[0] && UserData.data[0].subadmin_permissions[0].employee_add == 1 ? true : false)
+    formik.setFieldValue("editemployee", UserData.data[0] && UserData.data[0].subadmin_permissions[0].employee_edit== 1 ? true : false)
+    formik.setFieldValue("tradehistory", UserData.data[0] && UserData.data[0].subadmin_permissions[0].trade_history_old == 1 ? true :false)
+    formik.setFieldValue("detailsinfo", UserData.data[0] && UserData.data[0].subadmin_permissions[0].detailsinfo == 1 ? true :false)
+    formik.setFieldValue("groupservice", UserData.data[0] && UserData.data[0].subadmin_permissions[0].group_services.length>0  ? true :false)
+    formik.setFieldValue("Strategy", UserData.data[0] && UserData.data[0].subadmin_permissions[0].strategy.length> 0 ? true :false)
+  },[UserData.data ])
+
+
+  useEffect(() => {
+    if (formik.values.all) {
+      formik.setFieldValue("addemployee", true);
+      formik.setFieldValue("editemployee", true);
+      formik.setFieldValue("groupservice", true);
+      formik.setFieldValue("Strategy", true);
+      formik.setFieldValue("detailsinfo", true);
+      formik.setFieldValue("tradehistory", true);
+      formik.setFieldValue("updateapikeys", false);
+    }
+    else if (!formik.values.all) {
+      formik.setFieldValue("addemployee", false);
+      formik.setFieldValue("editemployee", false);
+      formik.setFieldValue("groupservice", false);
+      formik.setFieldValue("Strategy", false);
+      formik.setFieldValue("detailsinfo", false);
+      formik.setFieldValue("tradehistory", false);
+    }
+  }, [formik.values.all]);
+
+
+  useEffect(() => {
+    if (formik.values.updateapikeys) {
+      formik.setFieldValue("addemployee", false);
+      formik.setFieldValue("all", false);
+      formik.setFieldValue("editemployee", false);
+      formik.setFieldValue("groupservice", false);
+      formik.setFieldValue("Strategy", false);
+      formik.setFieldValue("detailsinfo", false);
+      formik.setFieldValue("tradehistory", false);
+    }
+  }, [formik.values.updateapikeys]);
+
+
+
+ 
+  useEffect(() => {
+
+     
+    if (
+      formik.values.addemployee || formik.values.editemployee || formik.values.Strategy || formik.values.groupservice || formik.values.detailsinfo || formik.values.tradehistory  ) {
+      formik.setFieldValue("updateapikeys", false);
+      setstate([]);
+      setstate1([]); 
+    }
+
+    if (formik.values.addemployee ) {
+      formik.setFieldValue("groupservice", true);
+      formik.setFieldValue("Strategy", true);
+      return 
+    }
+    if (formik.values.Strategy) {
+      formik.setFieldValue("Strategy", true);
+      return 
+    }
+    if (formik.values.groupservice) {
+      formik.setFieldValue("groupservice", true);
+      return 
+    }
+   
+
+    if (formik.values.editemployee ) {
+      formik.setFieldValue("groupservice", true);
+      formik.setFieldValue("Strategy", true);
+ 
+    }
+   
+    else if (!formik.values.addemployee) {
+      formik.setFieldValue("groupservice", false);
+      formik.setFieldValue("Strategy", false);
+      formik.setFieldValue("strateg_servcice", "");
+      formik.setFieldValue("grouper_servcice", "");
+     
+    } else {
+      formik.setFieldValue("groupservice", false);
+      formik.setFieldValue("Strategy", false);
+       
+      return;
+    }
+  }, [formik.values.editemployee, formik.values.addemployee, formik.values.detailsinfo, formik.values.tradehistory, formik.values.Strategy, formik.values.groupservice]);
+
+
   const fields = [
     {
       name: "fullName",
@@ -196,7 +306,7 @@ const Edit_Employee = () => {
       disable: false,
     },
     {
-      name: "UserName",
+      name: "userName",
       label: "UserName",
       type: "text",
       label_size: 6,
@@ -229,11 +339,19 @@ const Edit_Employee = () => {
       disable: false,
     },
     {
+      name: "phone",
+      label: "Phone Number",
+      type: "dammy",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+    },
+    {
       name: "all",
       label: "All Permissions",
       type: "checkbox",
       label_size: 12,
-      col_size: 12,
+      col_size: 3,
     },
     {
       name: "addemployee",
@@ -253,8 +371,8 @@ const Edit_Employee = () => {
       check_box_true:
         formik.values.all || formik.values.editemployee ? true : false,
     },
-     
-     
+
+
     {
       name: "tradehistory",
       label: "Trade History",
@@ -301,13 +419,13 @@ const Edit_Employee = () => {
       check_box_true: formik.values.updateapikeys ? true : false,
     },
   ];
-
-
-
-
   
 
- 
+
+
+
+
+
 
 
 
@@ -382,7 +500,7 @@ const Edit_Employee = () => {
     setSelectedStrategyIds((prevIds) => {
       if (prevIds.includes(strategyId)) {
         let abc = prevIds.filter((id) => id !== strategyId);
-        console.log("abc", abc);
+      
         return abc;
       } else {
         return [...prevIds, strategyId];
