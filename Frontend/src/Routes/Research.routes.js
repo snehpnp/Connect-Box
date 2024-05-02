@@ -17,6 +17,8 @@ import OptionChain from '../Layouts/SubAdmin/Option/Option_Chain'
 import MakeCall from '../Layouts/Comman/Make/Makecall'
 import MessageBroadCast from '../Layouts/SubAdmin/MessageBroadCast/MessageBroadCast'
 import Help from '../Layouts/Comman/Help/Helpsubadmin.js';
+import Sthtrans from '../Layouts/Researcher/Strategy_transaction/Strategy_transaction.js';
+
 
 
 
@@ -48,6 +50,8 @@ const Research = () => {
                     <Route exact path='/make-call' element = {<MakeCall/>}/>
                     <Route exact path='/message_broadcast' element = {<MessageBroadCast/>}/>
                     <Route exact path='/help' element = {<Help/>}/>
+                    <Route exact path='/strategys/transaction' element = {<Sthtrans/>}/>
+
 
 
 

@@ -426,16 +426,17 @@ const Strategy = () => {
                                     </li>
 
                                     <li>
-                                        <Link
-                                            to={"/admin/subadmin/add"}
+                                        <p
+                                          
                                             className="btn btn-primary"
+                                            onClick={(e)=>setShowCreateStrategyModal(true)}
                                         >
                                             <i
                                                 className="fa fa-plus-circle me-2"
                                                 aria-hidden="true"
                                             />
                                             Create Strategy
-                                        </Link>
+                                        </p>
                                     </li>
                                 </ul>
                             </div>

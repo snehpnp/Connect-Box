@@ -12,6 +12,7 @@ import { fDateTime } from "../../../Utils/Date_formet";
 
 
 
+
 export default function AllEmployees() {
     const userDetails = JSON.parse(localStorage.getItem("user_details"));
 
@@ -52,7 +53,9 @@ export default function AllEmployees() {
 
     const [profileData, setProfileData] = useState([]);
 
-    const [inputSearch, SetInputSearch] = useState('');
+    const [fromDate, setFromDate] = useState('');
+    const [toDate, setToDate] = useState('');
+
     const [getLoginStatus, setLoginStatus] = useState({
         loading: false,
         data: [],
@@ -127,10 +130,7 @@ export default function AllEmployees() {
 
         }
 
-
     }
-
-
     const columns = [
         {
             field: "id",
@@ -205,7 +205,7 @@ export default function AllEmployees() {
 
 
     const RefreshHandle = () => {
-        setrefresh(!refresh);
+        setrefresh(!refresh);   
         setSearchInput("");
     };
 
@@ -218,9 +218,26 @@ export default function AllEmployees() {
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
-                    setTableData({ loading: true, data: response.data });
+                        const filterData = response.data.filter((item) => {
+                            const searchInputMatch =
+                              searchInput == '' ||
+                              item.type.toLowerCase().includes(searchInput.toLowerCase()) ||
+                              item.symbol.toLowerCase().includes(searchInput.toLowerCase()) ||
+                              item.price.toLowerCase().includes(searchInput.toLowerCase()) ||
+                              item.qty_percent.toLowerCase().includes(searchInput.toLowerCase())
+                
+                            return searchInputMatch
+                          })
+
+                    setTableData({ 
+                        loading: true, 
+                        data: searchInput ? filterData : response.data 
+                    });
                 } else {
-                    toast.error(response.msg);
+                    setTableData({ 
+                        loading: true, 
+                        data: []
+                    });
                 }
             })
             .catch((error) => {
@@ -230,8 +247,36 @@ export default function AllEmployees() {
 
     useEffect(() => {
         userDataRes()
-    }, [])
+    }, [searchInput])
 
+
+    const forCSVdata = () => {
+        let csvArr = []
+        if (tableData.data.length > 0) {
+          tableData.data.map((item) => {
+            return csvArr.push({
+              "Signal Time": item.createdAt,
+              "Type": item.type,
+              "trade symbol": item.trade_symbol,
+              "Price": item.price,
+              "strategy": item.strategy,
+              "qty_percent": item.strategy,
+              "Trade Type" : item.TradeType
+            })
+          })
+    
+          setForGetCSV(csvArr)
+        }
+    
+      }
+    
+      useEffect(() => {
+        forCSVdata()
+      }, [tableData.data])
+
+
+
+      
 
 
     return (
@@ -239,6 +284,7 @@ export default function AllEmployees() {
             {tableData.loading ? (
                 <>
                     <div className="content container-fluid" data-aos="fade-left">
+
                         <div className="card">
                             <div className="card-header">
                                 <div className="row align-center">
@@ -248,26 +294,7 @@ export default function AllEmployees() {
                                     <div className="col-auto">
                                         <div className="list-btn">
                                             <ul className="filter-list mb-0">
-
-                                                {/* <li className="toggle-li">
-                                                    <div className="status-toggle pe-2" style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <span className={getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} >Trading Status</span>
-                                                        <input
-                                                            id="1"
-                                                            className="check"
-                                                            type="checkbox"
-                                                            onChange={(e) => LogIn_WIth_Api(e.target.checked,
-                                                                profileData.data[0].broker,
-                                                                profileData.data[0].TradingStatus,
-                                                                profileData.data[0])}
-                                                            defaultChecked={getLoginStatus}
-                                                            style={{ marginRight: '5px' }}
-                                                        />
-                                                        <label htmlFor="1" className="checktoggle checkbox-bg"></label>
-                                                    </div>
-                                                </li> */}
-
-
+ 
                                                 <li className="">
                                                     <p
                                                         className=" mb-0 btn-filters"
@@ -291,19 +318,18 @@ export default function AllEmployees() {
                                                             placeholder="Search..."
                                                             aria-label="Search"
                                                             aria-describedby="search-addon"
-                                                            onChange={(e) => SetInputSearch(e.target.value || '')}
-                                                            value={inputSearch}
+                                                            onChange={(e) => setSearchInput(e.target.value)}
+                                                            value={searchInput}
 
                                                         />
 
                                                     </div>
                                                 </li>
                                                 <li>
-
                                                     <ExportToExcel
                                                         className="btn btn-primary "
                                                         apiData={ForGetCSV}
-                                                        fileName={'All Strategy'} />
+                                                        fileName={'Order '} />
 
                                                 </li>
                                             </ul>
@@ -312,47 +338,7 @@ export default function AllEmployees() {
                                 </div>
                             </div>
 
-                     <div className="card-body">
-                            <div className="row ">
-                                <div className="input-block col-lg-2 ms-4 mt-3 mb-3">
-                                    <label>From Date</label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        placeholder="Search..."
-                                        aria-label="Search"
-                                        aria-describedby="search-addon"
-                                        onChange={(e) => SetInputSearch(e.target.value || '')}
-                                        value={inputSearch}
-                                    />
-                                </div>
-                                <div className="input-block col-lg-2 mt-3 mb-3">
-                                    <label>To Date</label>
-                                    <input
-                                        type="date"
-                                        className="form-control"
-                                        placeholder="Search..."
-                                        aria-label="Search"
-                                        aria-describedby="search-addon"
-                                        onChange={(e) => SetInputSearch(e.target.value || '')}
-                                        value={inputSearch}
-                                    />
-                                </div>
-                         
-                      
-
-
-                        <FullDataTable
-                            styles={styles}
-                            label={label}
-                            columns={columns}
-                            rows={tableData.data}
-                        />
-                    </div>
-                    </div>
-                    
-
-                            <div className="card-body">
+                         <div className="card-body">
                                 <div className="row ">
                                     <div className="input-block col-lg-2 mt-3 mb-3">
                                         <label>From Date</label>
@@ -362,8 +348,8 @@ export default function AllEmployees() {
                                             placeholder="Search..."
                                             aria-label="Search"
                                             aria-describedby="search-addon"
-                                            onChange={(e) => SetInputSearch(e.target.value || '')}
-                                            value={inputSearch}
+                                            onChange={(e) => setFromDate(e.target.value)}
+                                            value={fromDate}
                                         />
                                     </div>
                                     <div className="input-block col-lg-2 mt-3 mb-3">
@@ -374,12 +360,11 @@ export default function AllEmployees() {
                                             placeholder="Search..."
                                             aria-label="Search"
                                             aria-describedby="search-addon"
-                                            onChange={(e) => SetInputSearch(e.target.value || '')}
-                                            value={inputSearch}
+                                            onChange={(e) => setToDate(e.target.value)}
+                                            value={toDate}
                                         />
                                     </div>
                                 </div>
-
 
 
                                 <FullDataTable
@@ -390,12 +375,9 @@ export default function AllEmployees() {
                                 />
                             </div>
                         </div>
+     
+
                     </div>
-
-
-
-
-
                 </>
             ) : (
                 <Loader />

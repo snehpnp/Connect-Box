@@ -312,11 +312,13 @@ function Login() {
                           </a>
                         </div>
                       </div> */}
+                    
 
                       <div className="text-center dont-have">
                         Don't have an account yet?{" "}
                         <Link to="/register">Register</Link>
                       </div>
+                      <Link to="/forget">Forget Password</Link>
                     </div>
                   </div>
                 </div>
