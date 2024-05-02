@@ -75,7 +75,7 @@ export async function SIGN_UP_USER(data, token) {
 // FORGET PASSWORD
 export async function FORGET_PASSWORD(data, token) {
     try {
-        const res = await axios.post(`${Config.base_url}forgetpassword`, data, {
+        const res = await axios.post(`${Config.base_url}ForgetPassword`, data, {
             // headers: header(token),
             data: {},
         })

@@ -93,7 +93,7 @@ export const SignUpUser = createAsyncThunk("signup", async (data) => {
 
 
 //  Forget Password
-export const ForgetPassword = createAsyncThunk("forgetpassword", async (data) => {
+export const ForgetPassword = createAsyncThunk("ForgetPassword", async (data) => {
   try {
     const res = await FORGET_PASSWORD(data)
     return res;

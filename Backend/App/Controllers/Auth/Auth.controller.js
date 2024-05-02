@@ -288,34 +288,37 @@ class Auth {
 
     async ForgetPassword(req, res) {
         try {
-
-            const { Email, Device } = req.body;
-
-            // // IF Login Time Email CHECK
-            var EmailCheck = await User.findOne({ Email: Email })
-            var CompanyInformation = await company_information.findOne()
-
+            const { Email} = req.body;
+    
+            // Check if the user exists
+            const EmailCheck = await User.findOne({ Email: Email });
+            const CompanyInformation = await company_information.findOne();
+    
             if (!EmailCheck) {
-                return res.send({ status: false, msg: 'User Not exists', data: [] });
+                return res.send({ status: false, msg: 'User does not exist', data: [] });
             }
+    
+            // Generate reset password URL
+            const userid = Buffer.from(JSON.stringify(EmailCheck._id)).toString('base64');
+            const redirectUrl = `${CompanyInformation.domain_url_https}/#/update/${userid}`;
 
 
-            var userid = Buffer.from(JSON.stringify(EmailCheck._id)).toString('base64');
-            var redirectUrl = `https://${CompanyInformation.domain_url}/#/update/${userid}`
-
-            var toEmail = Email;
-            var subjectEmail = "Forget Password";
-            var htmlEmail = "URL - " + redirectUrl;
-            CommonEmail(toEmail, subjectEmail, htmlEmail)
-
-
+    
+            // Send email
+            const toEmail = Email;
+            const subjectEmail = "Forget Password";
+            const htmlEmail = "URL - " + redirectUrl;
+            await CommonEmail(toEmail, subjectEmail, htmlEmail);
+    
+            // Send success response
+            return res.send({ status: true, msg: "Mail sent successfully", data: redirectUrl });
         } catch (error) {
-
+            // Handle errors
+            console.error("Error in ForgetPassword:", error);
+            return res.status(500).send({ status: false, msg: "An error occurred", data: [] });
         }
-
-        return res.send({ status: true, msg: "Mail send successfully", data: redirectUrl })
     }
-
+    
 
     // Update Password
     async UpdatePassword(req, res) {
