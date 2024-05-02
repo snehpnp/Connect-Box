@@ -14,6 +14,7 @@ import Login from '../Layouts/Auth/Login';
 import Register from '../Layouts/Auth/Register';
 
 
+
 const Routing = () => {
     const location = useLocation();
     const navigate = useNavigate();
@@ -25,6 +26,7 @@ const Routing = () => {
             navigate("/register");
             return;
         }
+
         // Check if user details exist
         if (!user_details || !roles || user_details === "null" || roles === "null" || location.pathname === "/login") {
             navigate("/login");
@@ -86,6 +88,7 @@ const Routing = () => {
             {/* Add other routes here */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+          
         </Routes>
     );
 }

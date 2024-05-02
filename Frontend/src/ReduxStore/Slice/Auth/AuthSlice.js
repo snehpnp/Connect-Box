@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { SIGN_IN_USER , SIGN_UP_USER,PasswordChange} from "../../../Services/Auth/Auth.service";
+import { SIGN_IN_USER , SIGN_UP_USER,PasswordChange, FORGET_PASSWORD} from "../../../Services/Auth/Auth.service";
 
 
 
@@ -92,16 +92,16 @@ export const SignUpUser = createAsyncThunk("signup", async (data) => {
 // });
 
 
-// //  Forget Password
-// export const Get_Panel_Informtion = createAsyncThunk("/get/panelinfo", async (data) => {
-//   try {
-//     const res = await GET_PANEL_INFORMATION(data)
-//     return res;
-//   }
-//   catch (err) {
-//     return err;
-//   }
-// });
+//  Forget Password
+export const ForgetPassword = createAsyncThunk("forgetpassword", async (data) => {
+  try {
+    const res = await FORGET_PASSWORD(data)
+    return res;
+  }
+  catch (err) {
+    return err;
+  }
+});
 
 // //  OTP_SEND_USEHERE
 // export const OTP_SEND_USEHERES = createAsyncThunk("/session/clear", async (data) => {
@@ -146,6 +146,7 @@ const AuthSlice = createSlice({
     signIn : [],
     signup_user : null,
     ChangedPassword:null,
+    ForgetPassword:null,
      
   },
 
@@ -174,6 +175,16 @@ const AuthSlice = createSlice({
         state.ChangedPassword = action.payload;
       })
       .addCase(ChangedPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      }).addCase(ForgetPassword.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(ForgetPassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.ForgetPassword = action.payload;
+      })
+      .addCase(ForgetPassword.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       })

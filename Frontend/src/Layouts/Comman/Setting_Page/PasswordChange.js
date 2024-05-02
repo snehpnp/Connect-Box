@@ -5,51 +5,70 @@ import Swal from "sweetalert2";
 
 const PasswordChange = () => {
   const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("user_details"));
 
+ 
   const [password, setPassword] = useState({
     CurrentPassword: "",
     NewPassword: "",
     ConfirmNewPassword: "",
   });
 
-  //password post
-  const postPassword = async () => {
-    await dispatch(
-      ChangedPassword({
-        CurrentPassword: password.CurrentPassword,
-        NewPassword: password.NewPassword,
-        ConfirmNewPassword: password.ConfirmNewPassword,
-      })
-    )
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          setPassword(response.data);
-          console.log("response",response.data)
-        .then((result) => {
-            console.log("error")
-          });
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await dispatch(
+        ChangedPassword({
+          userid: user.user_id,
+          CurrentPassword: password.CurrentPassword,
+          NewPassword: password.NewPassword,
+          ConfirmNewPassword: password.ConfirmNewPassword,
+        })
+      ).unwrap();
+      
+      if (response.success) {
+        setPassword({
+          CurrentPassword:"",
+          NewPassword: "",
+          ConfirmNewPassword:"",
+        }); 
+        
+        Swal.fire({
+          title: "Password Changed",
+          icon: "success",
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: response.message || "Failed to change password",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      console.log("Error", error);
+      Swal.fire({
+        title: "Error",
+        text: "An unexpected error occurred",
+        icon: "error",
       });
+    }
   };
-
+  
+  
   return (
     <div>
       <div className="cardStyle">
-        <form action="" method="post" name="signupForm" id="signupForm">
+        <form onSubmit={handleSubmit} name="passwordChangeForm" id="passwordChangeForm">
           <h5 className="formTitle">Change Password</h5>
           <div className="inputDiv">
-            <label className="inputLabel" htmlFor="password">
+            <label className="inputLabel" htmlFor="currentPassword">
               Current Password
             </label>
             <input
               type="password"
-              id="password"
-              name="password"
-              required=""
+              id="currentPassword"
+              name="currentPassword"
+              required
               value={password.CurrentPassword}
               onChange={(e) =>
                 setPassword({ ...password, CurrentPassword: e.target.value })
@@ -57,34 +76,41 @@ const PasswordChange = () => {
             />
           </div>
           <div className="inputDiv">
-            <label className="inputLabel" htmlFor="password">
+            <label className="inputLabel" htmlFor="newPassword" >
               New Password
             </label>
-            <input type="password" id="password" name="password" required="" 
+            <input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              required
               value={password.NewPassword}
               onChange={(e) =>
                 setPassword({ ...password, NewPassword: e.target.value })
               }
-            
             />
           </div>
           <div className="inputDiv">
-            <label className="inputLabel" htmlFor="confirmPassword">
+            <label className="inputLabel" htmlFor="confirmNewPassword">
               Confirm New Password
             </label>
             <input
               type="password"
-              id="confirmPassword"
-              name="confirmPassword"
+              id="confirmNewPassword"
+              name="confirmNewPassword"
+              required
               value={password.ConfirmNewPassword}
               onChange={(e) =>
-                setPassword({ ...password,ConfirmNewPassword:e.target.value })
+                setPassword({
+                  ...password,
+                  ConfirmNewPassword: e.target.value,
+                })
               }
             />
           </div>
           <div className="buttonWrapper">
-            <button type="submit" id="submitButton" className="submitButton">
-              <span onClick={postPassword}>Submit</span>
+            <button type="submit" className="submitButton">
+              Submit
             </button>
           </div>
         </form>

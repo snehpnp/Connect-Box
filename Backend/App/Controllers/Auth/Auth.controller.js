@@ -2,7 +2,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-// const { CommonEmail } = require('../../Helper/CommonEmail')
+const { CommonEmail } = require('../../Helpers/CommonEmail')
 const { firstOptPass, disclaimer } = require("../../Helpers/Email_formate/first_login");
 
 const db = require('../../Models');
@@ -509,7 +509,7 @@ class Auth {
                 { new: true }
             );
     
-            // logger.info('Password updated successfully', { role: user.Role, user_id: user._id });
+    
     
             res.send({ success: true, message: "Password updated successfully" });
         } catch (error) {
