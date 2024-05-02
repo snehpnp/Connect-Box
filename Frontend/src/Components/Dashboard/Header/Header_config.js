@@ -200,7 +200,7 @@ export const subamdin_header = [
             },
             {
                 id: 62,
-                name: 'Position',
+                name: 'Trade History',
                 route: "/subadmin/position",
                 Icon: "fe fe-map-pin",
                 Data: []
