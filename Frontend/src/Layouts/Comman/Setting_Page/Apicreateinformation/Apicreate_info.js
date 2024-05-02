@@ -19,7 +19,6 @@ function Apicreate_info() {
     await dispatch(brokerdetail({}))
       .unwrap()
       .then((response) => {
-        console.log("ajay", response.data);
         if (response.status) {
           setUserDetails({
             loading: false,

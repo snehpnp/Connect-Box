@@ -72,21 +72,21 @@ export async function SIGN_UP_USER(data, token) {
 // }
 
 
-// // FORGET PASSWORD
-// export async function FORGET_PASSWORD(data, token) {
-//     try {
-//         const res = await axios.post(`${Config.base_url}forgetpassword`, data, {
-//             // headers: header(token),
-//             data: {},
-//         })
-//         // console.log("res", res);
-//         return await res?.data;
-//     }
-//     catch (err) {
-//         return err
-//     }
+// FORGET PASSWORD
+export async function FORGET_PASSWORD(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}ForgetPassword`, data, {
+            // headers: header(token),
+            data: {},
+        })
+        // console.log("res", res);
+        return await res?.data;
+    }
+    catch (err) {
+        return err
+    }
 
-// }
+}
 
 
 // // UPDATE  PASSWORD
@@ -170,6 +170,25 @@ export async function SIGN_UP_USER(data, token) {
 
 // }
 
+
+// change password
+
+
+export async function PasswordChange(data,token) {
+    try {
+        const res = await axios.post(`${Config.base_url}PasswordChanged`, data, {
+           
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        console.log("error", err);
+        return err
+
+    }
+
+}
 
 
 
