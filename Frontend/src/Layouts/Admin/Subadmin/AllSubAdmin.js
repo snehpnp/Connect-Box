@@ -54,17 +54,22 @@ export default function Help() {
       justifyContent: "center",
       alignItems: "center",
       height: "80vh",
+     
     },
     card: {
       width: "auto",
     },
     boldHeader: {
       fontWeight: 800,
+     
+     
+      
     },
     headerButton: {
       marginRight: 8,
-
+      
     },
+    
   };
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
