@@ -9,8 +9,8 @@ import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
 import { Userinfo } from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { Trade_Details, Update_Signals } from "../../../ReduxStore/Slice/Subadmin/Strategy";
-import { fDateTimeSuffix } from "../../../Utils/Date_formet";
-
+import { fDateTimeSuffix ,GetMarketOpenDays,convert_string_to_month} from "../../../Utils/Date_formet";
+import $ from "jquery";
 
 
 export default function AllEmployees() {
@@ -25,6 +25,9 @@ export default function AllEmployees() {
     const [profileData, setProfileData] = useState([]);
     const [fromDate, setFromDate] = useState('');
     const [toDate, setToDate] = useState('');
+    const [showModal, setshowModal] = useState(false);
+    const [CreateSignalRequest, setCreateSignalRequest] = useState([]);
+
     const [getLoginStatus, setLoginStatus] = useState({
         loading: false,
         data: [],
@@ -334,7 +337,7 @@ export default function AllEmployees() {
 
 
 
-
+    // UPDATE STOPLOSS PRIZE 
     const UpdateStopLoss = async () => {
 
         const filteredArray2 = tradeHistoryAllData.data.filter(item => selected1.some(obj => obj._id === item._id));
@@ -343,7 +346,7 @@ export default function AllEmployees() {
         // let MarketOpenToday = GetMarketOpenDays();
 
         // if (MarketOpenToday) {
-        //     if (UserDetails && UserDetails.trading_status == "off") {
+        //     if (profileData && profileData.trading_status == "off") {
         //         alert("Please Trading On First")
         //     }
         //     else {
@@ -367,7 +370,7 @@ export default function AllEmployees() {
                         setSelected([])
                     }
                     toast.success(response.msg);
-                
+
                     //  window.location.reload()
                 });
         }
@@ -378,19 +381,70 @@ export default function AllEmployees() {
 
     }
 
+var PanelKey ="TEST"
+
+    // ----------------------------- SQUARE OFF ----------------------------
+    const SquareOfAll = () => {
+
+        let MarketOpenToday = GetMarketOpenDays();
+
+        if (MarketOpenToday) {
+            if (profileData && profileData.trading_status == "off") {
+                alert("Please Trading On First")
+            } else {
+                if (selected1.length > 0) {
+                    setshowModal(true)
+
+                    selected1.map((rowdata) => {
 
 
 
+                        // const buy = $('.BP1_Put_Price_' + rowdata.token).html();
+                        // const sell = $('.SP1_Call_Price_' + rowdata.token).html();
 
+                        const buy = $('.LivePrice_' + rowdata.token).html();
+                        const sell = $('.LivePrice_' + rowdata.token).html();
 
-
-
-
-
-
-
-
-
+                        const show_expiry = convert_string_to_month(rowdata.expiry)
+                        var pre_tag = {
+                            client_persnal_key: rowdata.client_persnal_key ? rowdata.client_persnal_key : PanelKey && PanelKey.client_key,
+                            TradeType: rowdata.TradeType,
+                            option_type: rowdata.option_type,
+                            type: rowdata.entry_type === "LE" ? "LX" : rowdata.entry_type === "SE" ? 'SX' : "",
+                            trade_symbol: `${rowdata.symbol}${show_expiry}${rowdata.strike}${rowdata.option_type === "CALL" ? "CE" : rowdata.option_type === "PUT" ? "PE" : ""}`,
+                            showexpiry: rowdata.expiry,
+                            token: rowdata.token,
+                            indexcallput: rowdata.option_type === "CALL" ? `${rowdata.option_type}_${rowdata.token}` : `${rowdata.option_type}_${rowdata.token}`,
+                            segment: rowdata.segment,
+                            strike: rowdata.strike,
+                            price: rowdata.entry_type === "LE" ? buy : rowdata.entry_type === "SE" ? sell : "",
+                            symbol: rowdata.symbol,
+                            expiry: rowdata.expiry,
+                            strategy: rowdata.strategy,
+                            old_qty_persent: rowdata.entry_qty_percent && rowdata.exit_qty_percent ? (parseInt(rowdata.entry_qty_percent) - parseInt(rowdata.exit_qty_percent)) : rowdata.entry_qty_percent ? rowdata.entry_qty_percent : rowdata.exit_qty_percent,
+                            new_qty_persent: rowdata.entry_qty_percent ? rowdata.entry_qty_percent : rowdata.exit_qty_percent
+                        };
+                        if (rowdata.entry_type === "") {
+                            setCreateSignalRequest(oldValues => {
+                                return oldValues.filter(item => item.token !== rowdata.token)
+                            })
+                        }
+                        else {
+                            setCreateSignalRequest(oldValues => {
+                                return oldValues.filter(item => item.indexcallput !== (rowdata.option_type === "CALL" ? `${rowdata.option_type}_${rowdata.token}` : `${rowdata.option_type}_${rowdata.token}`))
+                            })
+                            setCreateSignalRequest((oldArray) => [pre_tag, ...oldArray]);
+                        }
+                    })
+                } else {
+                    alert("Emplty Data")
+                }
+            }
+        }
+        else {
+            alert('Market Is Closed Today');
+        }
+    }
 
 
 
@@ -447,7 +501,7 @@ export default function AllEmployees() {
 
     useEffect(() => {
         userDataRes()
-    }, [searchInput,refresh])
+    }, [searchInput, refresh])
 
 
     const forCSVdata = () => {
@@ -541,7 +595,7 @@ export default function AllEmployees() {
                                     onClick={(e) => UpdateStopLoss()}
                                 >Update Price</button>
                                 <button className="btn btn-primary mb-4 ms-auto"
-                                //  onClick={(e) => SquareOfAll()}
+                                    onClick={(e) => SquareOfAll()}
                                 >Square Off</button>
                                 <FullDataTable
                                     keyField="_id"
