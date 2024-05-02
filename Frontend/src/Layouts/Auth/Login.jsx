@@ -318,6 +318,7 @@ function Login() {
                         Don't have an account yet?{" "}
                         <Link to="/register">Register</Link>
                       </div>
+                      <Link to="/forget">Forget Password</Link>
                     </div>
                   </div>
                 </div>

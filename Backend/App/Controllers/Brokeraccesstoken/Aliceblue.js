@@ -6,7 +6,6 @@ var dateTime = require('node-datetime');
 const db = require('../../Models');
 const User = db.user;
 const user_logs = db.user_logs;
-const subadmin_logs = db.subadmin_activity_logs;
 
 
 
@@ -115,7 +114,7 @@ class AliceBlue {
 
                                     if (result != "") {
 
-                                        const Subadmin_login = new subadmin_logs({
+                                        const Subadmin_login = new user_logs({
                                             user_Id: Get_User[0]._id,
                                             trading_status: "Trading On",
                                             role: Get_User[0].Role,

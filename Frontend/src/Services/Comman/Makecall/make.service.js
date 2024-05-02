@@ -112,5 +112,67 @@ export async function GET_LIVE_DATA_SESSION(data, token) {
 }
 
 
+//Ad data above below range 
+export async function ADD_DATA_MAKECALL_ABR(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}make/AddDataAboveBelowRange`, data, {  
+            // data: {},
+            headers: header(token),
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+
+//Get data above below range 
+export async function GET_DATA_MAKECALL_ABR(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}make/GetDataAboveBelowRange`, data, {  
+            // data: {},
+            headers: header(token),
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+//Delete data above below range 
+export async function DELETE_DATA_MAKECALL_ABR(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}make/DeleteDataMakeCall`, data, {  
+            // data: {},
+            headers: header(token),
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+//Updaye data above below range 
+export async function UPDATE_DATA_MAKECALL_ABR(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}make/UpdateDataMakeCall`, data, {  
+            // data: {},
+            headers: header(token),
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+
 
 

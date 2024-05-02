@@ -244,7 +244,7 @@ export default function AllEmployees() {
                             <div className="card-header">
                                 <div className="row align-center">
                                     <div className="col">
-                                        <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Position</h5>
+                                        <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Trade History</h5>
                                     </div>
                                     <div className="col-auto">
                                         <div className="list-btn">
