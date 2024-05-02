@@ -406,9 +406,35 @@ class strategy {
       }else if(key == 2){
 
         const findUser = await User.find({Role:"SUBADMIN",_id:id}).select('prifix_key')
-        console.log("findUser",findUser[0].prifix_key)
         const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
-        console.log("prefix",prefix)
+
+
+        const getAllstrategy = await strategy_model.find(
+            { strategy_name: { $regex: '^' + prefix } } // Using regex to match the starting 3 letters
+        )
+        .sort({ createdAt: -1 })
+        .select('_id strategy_name Service_Type');
+
+
+
+        // IF DATA NOT EXIST
+        if (getAllstrategy.length == 0) {
+          res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+          return;
+        }
+  
+        // DATA GET SUCCESSFULLY
+       return res.send({
+          status: true,
+          msg: "Get All Startegy",
+          data: getAllstrategy,
+        });
+      }else{
+        
+        const findUser = await User.find({Role:"SUBADMIN",_id:id}).select('prifix_key')
+
+        const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
+    
 
         const getAllstrategy = await strategy_model.find(
             { strategy_name: { $regex: '^' + prefix } } // Using regex to match the starting 3 letters
