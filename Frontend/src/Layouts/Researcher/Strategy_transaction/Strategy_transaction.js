@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { RechargeDetailsGets } from "../../../ReduxStore/Slice/Admin/SubAdminCompanyInfo";
+import { Strategy_Transaction_Details } from "../../../ReduxStore/Slice/Researcher/ResearcherSlice";
 import { useDispatch } from "react-redux";
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
 import Content from '../../../Components/Dashboard/Content/Content';
@@ -7,16 +7,18 @@ import Loader from '../../../Utils/Loader';
 import { fDateTime } from '../../../Utils/Date_formet';
 import CompanyChange from '../../../Components/ExtraComponents/Models/CompanyChange';
 import { IndianRupee } from 'lucide-react';
+import { json } from "react-router-dom";
 
 function Strategy_transaction() {
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
   const [selectedRow, setSelectedRow] = useState(null);
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
 
   const [companyData, setCompanyData] = useState({
-    loading: false,
+    loading: true,
     data: [],
   });
 
@@ -114,8 +116,8 @@ function Strategy_transaction() {
 
   const getCompanyData = async () => {
     try {
-      var data = { Role: "SUBADMIN" }
-      const response = await dispatch(RechargeDetailsGets(data)).unwrap();
+      var data = { id: user_id }
+      const response = await dispatch(Strategy_Transaction_Details(data)).unwrap();
 
       if (response.status) {
         const formattedData = response.data.map((row, index) => ({
@@ -123,7 +125,7 @@ function Strategy_transaction() {
           id: index + 1,
         }));
         setCompanyData({
-          loading: true,
+          loading: false,
           data: formattedData,
         });
       }
@@ -144,7 +146,7 @@ function Strategy_transaction() {
 
   return (
     <>
-      {companyData.loading ? (
+      {!companyData.loading ? (
         <div data-aos="fade-left">
         <Content
           Card_title="Strategy transaction"

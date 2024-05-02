@@ -112,3 +112,15 @@ export async function UPDATE_RESEARCHER(data){
         return await err
     }
 }
+
+export async function STRATEGY_TRANSACTION_DETAILS(data){
+    try{
+        const res = await axios.post(`${Config.base_url}strategy/order/get` , data , {
+            data: {}
+        })
+        return res?.data
+    }
+    catch(err){
+        return await err
+    }
+}
