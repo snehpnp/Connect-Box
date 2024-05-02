@@ -396,7 +396,7 @@ const AddClient = () => {
   }, [formik.values.groupservice]);
 
   const GetAllStrategy = async () => {
-    var data = { id: user_id };
+    var data = { id: user_id,key:"1" };
     await dispatch(GetSubStrategys(data))
       .unwrap()
       .then((response) => {

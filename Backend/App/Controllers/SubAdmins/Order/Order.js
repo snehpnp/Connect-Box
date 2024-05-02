@@ -2,6 +2,8 @@ const signals = require("../../../Models/Signals.model");
 const db = require("../../../Models");
 const Mainsignals = db.MainSignals;
 const User_model = db.user;
+const Strategies = db.Strategies;
+
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -12,11 +14,17 @@ class SignalController {
     try {
       const { subadminId } = req.body;
       const ObjSubAdminId = new ObjectId(subadminId);
-      const resultUser = await User_model.findOne({
-        _id: ObjSubAdminId,
-      }).select("client_key");
+
+      const resultUser = await Strategies.find({
+        maker_id: ObjSubAdminId,
+      }).select('strategy_name')
+
+
+
 
       console.log("resultUser", resultUser)
+
+
       if (!resultUser) {
         return res.status(404).send({
           status: false,
@@ -24,9 +32,12 @@ class SignalController {
         });
       }
 
+      // Extracting strategy names from resultUser array
+      const strategyNames = resultUser.map(user => user.strategy_name);
+
       const pipeline = [
         {
-          $match: { client_persnal_key: resultUser.client_key },
+          $match: { strategy: { $in: strategyNames } }
         },
         {
           $project: {
@@ -36,7 +47,6 @@ class SignalController {
             strategy: 1,
             symbol: 1,
             TradeType: 1,
-            segment: 1,
             tr_price: 1,
             createdAt: 1,
             type: 1,
@@ -46,14 +56,12 @@ class SignalController {
             expiry: 1,
             segment: 1,
             client_persnal_key: 1,
-            TradeType: 1,
             token: 1,
-            lot_size: 1,
-
-
-          },
-        },
+            lot_size: 1
+          }
+        }
       ];
+
       const results = await signals.aggregate(pipeline);
       res.send({
         status: true,

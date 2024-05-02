@@ -345,7 +345,7 @@ function Option_Chain() {
 
 
     const GetAllStrategyName = async (e) => {
-        var data = { id: user_id }
+        var data = { id: user_id ,key:"2"}
         await dispatch(Get_All_Strategy_for_Client(data))
             .unwrap()
             .then((response) => {
