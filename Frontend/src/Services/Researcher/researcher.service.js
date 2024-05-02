@@ -101,3 +101,14 @@ export async function GET_ALL_RESEARCHER_STRATEGY(data){
         return await err;
     }
 }
+export async function UPDATE_RESEARCHER(data){
+    try{
+        const res = await axios.post(`${Config.base_url}researcher/edit` , data , {
+            data: {}
+        })
+        return res?.data
+    }
+    catch(err){
+        return await err
+    }
+}

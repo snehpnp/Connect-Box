@@ -14,7 +14,7 @@ import {
 
 } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
-import { GetBrokerDatas} from "../../../ReduxStore/Slice/Comman/Userinfo";
+import { GetBrokerDatas } from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { CreateSocketSession, ConnctSocket, GetAccessToken, ConnctSocket_user } from "../../../Utils/Alice_Socket";
 
 
@@ -120,7 +120,7 @@ const Makecall = () => {
 
     useEffect(() => {
         GetBrokerLiveData(userIdSocketRun)
-     }, [userIdSocketRun]);
+    }, [userIdSocketRun]);
 
 
     const GetBrokerLiveData = async (userIdSocketRun) => {
@@ -132,8 +132,8 @@ const Makecall = () => {
                 req:
                 {
                     id: UserLocalDetails.user_id,
-                    exist_user : userIdSocketRun,
-                    exist_user_details : livePriceDataDetails
+                    exist_user: userIdSocketRun,
+                    exist_user_details: livePriceDataDetails
                 },
 
                 token: UserLocalDetails.token
@@ -144,7 +144,7 @@ const Makecall = () => {
                 // console.log("demate_user_id ",response.data.demate_user_id)
                 // console.log("access_token ",response.data.access_token)
                 // console.log("trading_status ",response.data.trading_status
-                
+
                 if (response.status) {
                     setLivePriceDataDetails(response.data)
                     if (response.data && response.data.demate_user_id !== undefined && response.data && response.data.access_token !== undefined && response.data.trading_status == "on") {
@@ -174,7 +174,7 @@ const Makecall = () => {
                                 // console.log("inside ",socket)
                                 socket.onmessage = async function (msg) {
                                     var response = JSON.parse(msg.data)
-                                  //  console.log("response ", response)
+                                    //  console.log("response ", response)
                                     if (response.tk) {
                                         if (response.lp != undefined) {
                                             //console.log('response token', response.lp)
@@ -234,20 +234,20 @@ const Makecall = () => {
 
                                     } else {
                                         setUserIdSocketRun('DONE')
-                                        
+
                                     }
-                                  };
-              
-                                 socket.onerror = function (error) {
+                                };
+
+                                socket.onerror = function (error) {
                                     setUserIdSocketRun('DONE')
-                                     
-                                 };
+
+                                };
 
 
                             }
-                        }else{
-                         setUserIdSocketRun('DONE')
-                         setSockets(null)
+                        } else {
+                            setUserIdSocketRun('DONE')
+                            setSockets(null)
                         }
                     }
                 }
@@ -501,7 +501,7 @@ const Makecall = () => {
             }
 
         }
-       
+
 
 
     }, [selectCatagoryid])
@@ -509,8 +509,8 @@ const Makecall = () => {
 
     const selectCatagoryId = (e) => {
 
-        
-        
+
+
 
 
         setStrikePrice('');
@@ -744,9 +744,9 @@ const Makecall = () => {
 
         if (scriptSegment != "") {
             if (scriptSegment == "C") {
-        
-            const data = { symbol: symbol, categorie_id: selectCatagoryid, segment: scriptSegment }
-             await dispatch(gettokenbysocket(
+
+                const data = { symbol: symbol, categorie_id: selectCatagoryid, segment: scriptSegment }
+                await dispatch(gettokenbysocket(
                     {
                         req: data,
                         token: UserLocalDetails.token
@@ -793,12 +793,12 @@ const Makecall = () => {
                         token: UserLocalDetails.token
                     }
                 ))
-                 .unwrap()
-                 .then((response) => {
-                 // console.log("FUTURE token", response);
+                    .unwrap()
+                    .then((response) => {
+                        // console.log("FUTURE token", response);
                         if (response.status) {
                             if (sockets != null) {
-                               // console.log("previousToken.current", previousToken.current);
+                                // console.log("previousToken.current", previousToken.current);
                                 let json1 = {
                                     k: previousToken.current,
                                     t: "u",
@@ -833,11 +833,11 @@ const Makecall = () => {
                 ))
                     .unwrap()
                     .then((response) => {
-                       // console.log("Option token", response);
+                        // console.log("Option token", response);
                         if (response.status) {
 
                             if (sockets != null) {
-                              //  console.log("previousToken.current", previousToken.current);
+                                //  console.log("previousToken.current", previousToken.current);
                                 let json1 = {
                                     k: previousToken.current,
                                     t: "u",
@@ -1022,7 +1022,7 @@ const Makecall = () => {
 
         }
 
-       
+
         alert("Done")
 
         // const currentTimestamp = Math.floor(Date.now() / 1000);
@@ -1052,7 +1052,7 @@ const Makecall = () => {
                 // console.log(error.response.data);
             });
 
-       }
+    }
 
 
 
@@ -1061,16 +1061,16 @@ const Makecall = () => {
         <div>
             <div className="content container-fluid">
                 <div className="card">
-                <div className="card-header d-flex justify-content-between align-items-center border-bottom">
-                            <h5 className="card-title mb-0 w-auto">
+                    <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                        <h5 className="card-title mb-0 w-auto">
 
-                                <i className="fas fa-money-bill-wave pe-2" />
-                                Make Call
-                            </h5>
-                            <div className="pay-btn text-end w-auto" />
-                        </div>
+                            <i className="fas fa-money-bill-wave pe-2" />
+                            Make Call
+                        </h5>
+                        <div className="pay-btn text-end w-auto" />
+                    </div>
                     <div className="card-body">
-                       
+
 
                         <div className="row">
                             <div className="col-md-12">
@@ -1117,7 +1117,7 @@ const Makecall = () => {
                                                                 >
                                                                     <option name="none" disabled="">Select Script Name</option>
                                                                     {
-                                                                    AllServices.data && AllServices.data.map((x) => {
+                                                                        AllServices.data && AllServices.data.map((x) => {
                                                                             return <option value={x.name}>{x.name}</option>
                                                                         })
                                                                     }
@@ -1284,7 +1284,7 @@ const Makecall = () => {
 
                                                     <div className="row mt-2">
                                                         {
-                                                           showmarkettime == 1 ?
+                                                            showmarkettime == 1 ?
                                                                 <div className="col-sm-4 col-lg-3">
                                                                     <div className="radio">
                                                                         <label htmlFor="at_check">
@@ -1392,7 +1392,7 @@ const Makecall = () => {
 
                                                             <div className="col-lg-4 col-md-4 col-sm-12">
                                                                 <label for="exampleFormControlSelect1" > No Trade Time : &nbsp; </label>
-                                                                
+
                                                                 <input type="time" id="appt" className="form-control" name="appt"
                                                                     min="09:15"
                                                                     max="15:15"
@@ -1545,8 +1545,8 @@ const Makecall = () => {
 
 
                                             <div className="invoice-total-box border">
-                                                <div className="invoice-total-inner">
-                                                    <div className="inventory-table">
+                                                <div className="invoice-total-inner ">
+                                                    <div className="inventory-table table-responsive">
                                                         <table className="table table-center table-hover datatable">
                                                             <thead className="thead-light">
                                                                 <tr>
