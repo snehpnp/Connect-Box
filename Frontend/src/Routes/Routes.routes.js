@@ -22,6 +22,12 @@ const Routing = () => {
     const user_details = JSON.parse(localStorage.getItem("user_details"));
 
     useEffect(() => {
+
+        if (location.pathname === "/forget") {
+            navigate("/forget");
+            return;
+        }
+
         if (location.pathname === "/register") {
             navigate("/register");
             return;
