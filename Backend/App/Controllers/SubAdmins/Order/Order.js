@@ -1,13 +1,13 @@
 const signals = require("../../../Models/Signals.model");
 const db = require("../../../Models");
-// const {signals} = db.Signals.model;
+const Mainsignals = db.MainSignals;
 const User_model = db.user;
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 class SignalController {
-  
+
   async Signal_data(req, res) {
     try {
       const { subadminId } = req.body;
@@ -16,6 +16,7 @@ class SignalController {
         _id: ObjSubAdminId,
       }).select("client_key");
 
+      console.log("resultUser", resultUser)
       if (!resultUser) {
         return res.status(404).send({
           status: false,
@@ -132,6 +133,93 @@ class SignalController {
       });
     }
   }
+
+  async MainSignal_data(req, res) {
+    try {
+      const { subadminId } = req.body;
+      const ObjSubAdminId = new ObjectId(subadminId);
+      const resultUser = await User_model.findOne({
+        _id: ObjSubAdminId,
+      }).select("client_key");
+
+      console.log("resultUser", resultUser)
+      if (!resultUser) {
+        return res.status(404).send({
+          status: false,
+          msg: "User not found",
+        });
+      }
+
+      const pipeline = [
+        {
+          $match: { client_persnal_key: resultUser.client_key },
+        },
+
+      ];
+      const results = await Mainsignals.aggregate(pipeline);
+      res.send({
+        status: true,
+        msg: "Data Retrieved Successfully",
+        data: results,
+      });
+    } catch (error) {
+      console.log("Error retrieving data:", error);
+      res.status(500).send({
+        status: false,
+        msg: "Internal Server Error",
+      });
+    }
+  }
+
+  // UPDATE STOPLOASS
+  async update_stop_loss(req, res) {
+    try {
+
+      const { data } = req.body;
+
+      data.forEach(async (signal) => {
+
+        const filter = { _id: signal._id };
+        const updateOperation = { $set: signal };
+        const result = await Mainsignals.updateOne(filter, updateOperation);
+
+      })
+
+      return res.send({ status: true, msg: 'Update SuccessFully', data: [] });
+
+    } catch (error) {
+      return res.send({ status: false, msg: 'error ', data: error });
+
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 module.exports = new SignalController();

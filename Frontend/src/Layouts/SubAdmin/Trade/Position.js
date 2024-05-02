@@ -9,6 +9,7 @@ import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/User
 import { Orders_Details } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { fDateTime } from "../../../Utils/Date_formet";
+import { ipAddress } from '../../../Utils/Ipaddress';
 
 
 
@@ -20,6 +21,7 @@ export default function AllEmployees() {
     const [refresh, setrefresh] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [ForGetCSV, setForGetCSV] = useState([]);
+    const [ip, setIp] = useState(null);
 
 
     const [tableData, setTableData] = useState({
@@ -97,9 +99,11 @@ export default function AllEmployees() {
     }, []);
 
 
+    // LOGOUT TRADING 
     const handleTradingOff = async (id) => {
-        let data = { id: id };
-
+      
+        let data = { id: id,system_ip:ip };
+   
         await dispatch(Trading_Off_Btn(data)).unwrap()
             .then((response) => {
                 if (response.status) {
@@ -114,6 +118,8 @@ export default function AllEmployees() {
             })
 
     }
+
+    // LOGIN DEMAT WITH API
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
 
         if (check) {
@@ -232,7 +238,23 @@ export default function AllEmployees() {
         userDataRes()
     }, [])
 
-
+    useEffect(() => {
+        const fetchIP = async () => {
+          try {
+            const ip = await ipAddress();
+            setIp(ip);
+          } catch (error) {
+            console.error('Failed to fetch IP address:', error);
+          }
+        };
+    
+        fetchIP();
+    
+        // Clean up function
+        return () => {
+    
+        };
+      }, []);
 
     return (
         <>
@@ -244,7 +266,7 @@ export default function AllEmployees() {
                             <div className="card-header">
                                 <div className="row align-center">
                                     <div className="col">
-                                        <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Position</h5>
+                                        <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Trade History</h5>
                                     </div>
                                     <div className="col-auto">
                                         <div className="list-btn">

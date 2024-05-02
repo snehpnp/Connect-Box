@@ -25,7 +25,8 @@ const AllResearcherStrategy = () => {
 
 
     const getAllStrategy = async () => {
-        await dispatch(Get_All_Researcher_Strategy()).unwrap()
+        var data = {id:userDetails.user_id}
+        await dispatch(Get_All_Researcher_Strategy(data)).unwrap()
             .then((response) => {
                 if (response.status) {
                     setrefresh(!refresh)

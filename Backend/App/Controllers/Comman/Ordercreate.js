@@ -142,7 +142,74 @@ class Ordercreate {
 
 
 
+    // GET ORDER DATA
+    async GetResearcheOrder(req, res) {
+        try {
 
+            const { id } = req.body;
+
+            const GetResearcherData = await strategy_Order_modal.aggregate([
+                {
+                    $match: { admin_id: new ObjectId(id) }
+                },
+                {
+                    $lookup: {
+                        from: "users", 
+                        localField: "admin_id", 
+                        foreignField: "_id",
+                        as: "userData" 
+                    }
+                },
+                {
+                    $unwind: "$userData" 
+                },
+                {
+                    $lookup: {
+                        from: "users", 
+                        localField: "user_id", 
+                        foreignField: "_id",
+                        as: "userData" 
+                    }
+                },
+                {
+                    $unwind: "$userData1" 
+                },
+                
+                {
+                    $project: {
+                        _id: 0, 
+                        Admin_name: "$userData.UserName",
+                        // User_name: "$userData1.UserName",
+                        // plan_name:1,
+                        // strategy_name:1,
+                        // order_id:1,
+                        // amount:1,
+                        // receipt:1,
+                        // razorpay_order_id:1,
+                        // razorpay_payment_id:1,
+                        // razorpay_signature:1,
+                        // order_status:1,
+                        // createdAt:1,
+                        // updatedAt:1
+                       
+                    }
+                }
+            ]);
+            
+            console.log(GetResearcherData);
+            
+
+            if (!GetResearcherData) {
+                return res.send({ status: false, data: [], msg: "Empty Data" });
+
+            }
+
+            return res.send({ status: true, data: GetResearcherData, msg: "Reacher Data" });
+        } catch (error) {
+            console.error('Error updating order:', error);
+            res.status(500).send({ status: false, data: error, msg: "Update failed" });
+        }
+    }
 
 
 
