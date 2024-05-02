@@ -42,7 +42,7 @@ class Userinfo {
 
   async TradingOff(req, res) {
     try {
-      const { id } = req.body
+      const { id, system_ip } = req.body
 
 
 
@@ -71,6 +71,7 @@ class Userinfo {
             trading_status: "Trading Off",
             role: Get_User[0].Role,
             device: "WEB",
+            system_ip: system_ip
 
           })
           await user_login.save();
@@ -92,11 +93,12 @@ class Userinfo {
 
             if (result != "") {
 
-              const Subadmin_login = new subadmin_logs({
+              const Subadmin_login = new user_logs({
                 user_Id: Get_User[0]._id,
                 trading_status: "Trading Off",
                 role: Get_User[0].Role,
                 device: "WEB",
+                system_ip: system_ip
 
               })
               await Subadmin_login.save();

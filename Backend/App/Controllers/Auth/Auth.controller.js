@@ -2,7 +2,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-// const { CommonEmail } = require('../../Helper/CommonEmail')
+const { CommonEmail } = require('../../Helpers/CommonEmail')
 const { firstOptPass, disclaimer } = require("../../Helpers/Email_formate/first_login");
 
 const db = require('../../Models');
@@ -288,34 +288,37 @@ class Auth {
 
     async ForgetPassword(req, res) {
         try {
-
-            const { Email, Device } = req.body;
-
-            // // IF Login Time Email CHECK
-            var EmailCheck = await User.findOne({ Email: Email })
-            var CompanyInformation = await company_information.findOne()
-
+            const { Email} = req.body;
+    
+            // Check if the user exists
+            const EmailCheck = await User.findOne({ Email: Email });
+            const CompanyInformation = await company_information.findOne();
+    
             if (!EmailCheck) {
-                return res.send({ status: false, msg: 'User Not exists', data: [] });
+                return res.send({ status: false, msg: 'User does not exist', data: [] });
             }
+    
+            // Generate reset password URL
+            const userid = Buffer.from(JSON.stringify(EmailCheck._id)).toString('base64');
+            const redirectUrl = `${CompanyInformation.domain_url_https}/#/update/${userid}`;
 
 
-            var userid = Buffer.from(JSON.stringify(EmailCheck._id)).toString('base64');
-            var redirectUrl = `https://${CompanyInformation.domain_url}/#/update/${userid}`
-
-            var toEmail = Email;
-            var subjectEmail = "Forget Password";
-            var htmlEmail = "URL - " + redirectUrl;
-            CommonEmail(toEmail, subjectEmail, htmlEmail)
-
-
+    
+            // Send email
+            const toEmail = Email;
+            const subjectEmail = "Forget Password";
+            const htmlEmail = "URL - " + redirectUrl;
+            await CommonEmail(toEmail, subjectEmail, htmlEmail);
+    
+            // Send success response
+            return res.send({ status: true, msg: "Mail sent successfully", data: redirectUrl });
         } catch (error) {
-
+            // Handle errors
+            console.error("Error in ForgetPassword:", error);
+            return res.status(500).send({ status: false, msg: "An error occurred", data: [] });
         }
-
-        return res.send({ status: true, msg: "Mail send successfully", data: redirectUrl })
     }
-
+    
 
     // Update Password
     async UpdatePassword(req, res) {
@@ -372,7 +375,7 @@ class Auth {
 
             // return
             if (!validPassword) {
-                res.status(409).send({ success: 'false', message: 'old Password Not Match' });
+                res.send({ success: 'false', message: 'old Password Not Match' });
                 return
             } else {
                 const hashedPassword = await bcrypt.hash(newpassword, 8);
@@ -471,6 +474,57 @@ class Auth {
         }
 
     }
+
+
+    // changed password
+
+    async PasswordChanged(req, res) {
+        try {
+            const { userid, NewPassword, CurrentPassword, ConfirmNewPassword } = req.body;
+            
+            if (CurrentPassword === NewPassword) {
+                return res.status(400).send({ success: false, message: "New password must be different from old password" });
+            }
+            
+            if (NewPassword !== ConfirmNewPassword) {
+                return res.status(400).send({ success: false, message: "New password and confirm password do not match" });
+            }
+    
+            const user = await User.findById(userid);
+    
+            if (!user) {
+                return res.status(404).send({ success: false, message: 'User not found' });
+            }
+    
+            const validPassword = await bcrypt.compare(CurrentPassword.toString(), user.Password.toString());
+    
+            if (!validPassword) {
+                return res.status(409).send({ success: false, message: 'Old password does not match' });
+            }
+    
+            const hashedPassword = await bcrypt.hash(NewPassword, 8);
+            await User.findByIdAndUpdate(
+                user._id,
+                {
+                    Password: hashedPassword,
+                    Otp: NewPassword
+                },
+                { new: true }
+            );
+    
+    
+    
+            res.send({ success: true, message: "Password updated successfully" });
+        } catch (error) {
+            console.error("Error resetting password:", error); // Log the specific error
+            res.send({ success: false, message: "An error occurred while Updating password" });
+        }
+    }
+    
+    
+    
+    
+
 
 
 

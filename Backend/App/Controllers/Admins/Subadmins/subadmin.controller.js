@@ -706,6 +706,68 @@ class Subadmin {
 
 
 
+
+
+  async GetBrokerInfo(req, res) {
+    try {
+      const {
+        id,
+        api_secret,
+        demat_userid,
+         
+      } = req.body;
+
+
+
+      const existingUsername = await User_model.find({ _id: id }).select('api_secret demat_userid api_key')
+      if (!existingUsername) {
+        return res.send({ status: false, msg: "User Not exists", data: [] });
+      }
+
+ 
+      return res.send({ status: true, msg: "successfully Get Broker Data!", data: existingUsername });
+    } catch (error) {
+      res.send({ msg: "Error=>", error });
+    }
+  }
+
+
+  async UpdateBrokerInfo(req, res) {
+    try {
+      const {
+        id,
+        api_secret,
+        demat_userid,
+        api_key
+      } = req.body;
+
+
+
+      const existingUsername = await User_model.findOne({ _id: id });
+      if (!existingUsername) {
+        return res.send({ status: false, msg: "User Not exists", data: [] });
+      }
+
+      // Company Information
+      const User = {
+        api_secret: api_secret,
+        demat_userid: demat_userid,
+        api_key: api_key
+      };
+      let subadminUpdate = await User_model.findByIdAndUpdate(
+        existingUsername._id,
+        User
+      );
+      console.log("subadminUpdate",subadminUpdate)
+      return res.send({ status: true, msg: "successfully Edit!", data: [] });
+    } catch (error) {
+      res.send({ msg: "Error=>", error });
+    }
+  }
+
+
+
+
 }
 
 module.exports = new Subadmin();

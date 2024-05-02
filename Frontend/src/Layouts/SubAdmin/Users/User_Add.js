@@ -513,10 +513,6 @@ const AddClient = () => {
                     ))}
                 </div>
 
-
-
-
-
                 {subadmin_service_type1 == 2 ?
                   (<div className="row mt-4">
                     <div class="input-block ">

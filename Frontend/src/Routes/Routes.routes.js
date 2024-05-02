@@ -12,6 +12,8 @@ import SuperadminRouting from './Superadmin.routes';
 
 import Login from '../Layouts/Auth/Login';
 import Register from '../Layouts/Auth/Register';
+import Forget from '../Layouts/Auth/Forget';
+
 
 
 const Routing = () => {
@@ -21,10 +23,17 @@ const Routing = () => {
     const user_details = JSON.parse(localStorage.getItem("user_details"));
 
     useEffect(() => {
+
+        if (location.pathname === "/forget") {
+            navigate("/forget");
+            return;
+        }
+
         if (location.pathname === "/register") {
             navigate("/register");
             return;
         }
+
         // Check if user details exist
         if (!user_details || !roles || user_details === "null" || roles === "null" || location.pathname === "/login") {
             navigate("/login");
@@ -86,6 +95,8 @@ const Routing = () => {
             {/* Add other routes here */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+          
+            <Route path="/forget" element={<Forget />} />
         </Routes>
     );
 }

@@ -1,5 +1,5 @@
-export const EMPTY_EMAIL_ERROR = 'Please Enter Email ';
-export const INVALID_EMAIL_ERROR = 'please Enter A Valid Email ';
+export const EMPTY_EMAIL_ERROR = 'Please Enter Email ID ';
+export const INVALID_EMAIL_ERROR = 'please Enter A Valid Email ID ';
 export const PASSWORD_ERROR = 'Please Enter Password ';
 export const USERNAME_ERROR = 'Please Enter Username ';
 export const FULLNAME_ERROR = 'Please Enter FullName ';

@@ -5,8 +5,9 @@ var dateTime = require('node-datetime');
 "use strict";
 const db = require('../../Models');
 const User = db.user;
-const user_logs = db.user_logs;
+const user_logs = db.user_activity_logs;
 const subadmin_logs = db.subadmin_activity_logs;
+const live_price_token = db.live_price_token;
 
 
 
@@ -22,53 +23,55 @@ class AliceBlue {
             const authCode = req.query.authCode;
             var userId = req.query.userId;
 
-            var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role');
+            var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role broker');
+
+
 
             if (Get_User[0].TradingStatus != "on") {
 
                 var apiSecret = ''
-              
+
                 if (Get_User[0].Role == "USER") {
                     var subadmin = await User.find({ parent_id: Get_User[0].parent_id }).select('TradingStatus parent_id api_secret Role');
-                apiSecret = subadmin[0].api_secret
-                }else{
+                    apiSecret = subadmin[0].api_secret
+                } else {
                     apiSecret = Get_User[0].api_secret
                 }
-     
+
 
                 var hosts = req.headers.host;
-    
+
                 var redirect = hosts.split(':')[0];
                 var redirect_uri = '';
-                   
+
                 // console.log("apiSecret ",apiSecret)
                 // console.log("Get_User ",Get_User)
 
                 if (Get_User.length > 0) {
-    
+
                     if (redirect == "localhost") {
                         redirect_uri = "http://localhost:3000"
-    
+
                         if (Get_User[0].Role == "ADMIN") {
                             redirect_uri = "http://localhost:3000/#/subadmin/position"
-    
+
                         } else {
                             redirect_uri = "http://localhost:3000"
-    
+
                         }
                     } else {
                         if (Get_User[0].Role == "ADMIN") {
                             redirect_uri = `https://${redirect}/#/subadmin/position`
-    
+
                         } else {
                             redirect_uri = `https://${redirect}/#/user/stock`
-    
+
                         }
                     }
-    
+
                     var Encrypted_data = sha256(userId + authCode + apiSecret);
                     var data = { "checkSum": Encrypted_data }
-    
+
                     var config = {
                         method: 'post',
                         url: 'https://ant.aliceblueonline.com/rest/AliceBlueAPIService/sso/getUserDetails',
@@ -77,71 +80,69 @@ class AliceBlue {
                         },
                         data: data
                     };
-    
-    
+
                     axios(config)
                         .then(async function (response) {
-    
                             if (response.data.userSession) {
-    
-                                if (Get_User[0].Role == "USER") {
-    
-                                    let result = await User.findByIdAndUpdate(
-                                        Get_User[0]._id,
-                                        {
-                                            access_token: response.data.userSession,
-                                            TradingStatus: "on"
-                                        })
+                                if (Get_User[0].Role === "USER") {
+                                    await User.findByIdAndUpdate(Get_User[0]._id, {
+                                        access_token: response.data.userSession,
+                                        TradingStatus: "on"
+                                    });
                                     const user_login = new user_logs({
                                         user_Id: Get_User[0]._id,
                                         trading_status: "Trading On",
                                         role: Get_User[0].Role,
-                                        device: "WEB",
-    
-                                    })
+                                        device: "WEB"
+                                    });
                                     await user_login.save();
-                                    return res.redirect(redirect_uri);
-    
                                 } else {
-    
-                                    let result = await User.findByIdAndUpdate(
-                                        Get_User[0]._id,
-                                        {
+                                    await User.findByIdAndUpdate(Get_User[0]._id, {
+                                        access_token: response.data.userSession,
+                                        TradingStatus: "on"
+                                    });
+
+                                    const user_logs1 = new user_logs({
+                                        user_Id: Get_User[0]._id,
+                                        trading_status: "Trading On",
+                                        role: Get_User[0].Role,
+                                        device: "WEB"
+                                    });
+                                    await user_logs1.save();
+
+                                    
+                                    const exist_user = await live_price_token.findOne({ demate_user_id: userId }).select('access_token');
+                                    if (!exist_user) {
+                                        const live_price_token_data = new live_price_token({
+                                            user_id: Get_User[0]._id,
+                                            broker_id: Get_User[0].broker,
+                                            demate_user_id: userId,
+                                            demate_user_id_second: userId,
                                             access_token: response.data.userSession,
-                                            TradingStatus: "on"
-                                        })
-    
-                                    if (result != "") {
-    
-                                        const Subadmin_login = new subadmin_logs({
-                                            user_Id: Get_User[0]._id,
-                                            trading_status: "Trading On",
-                                            role: Get_User[0].Role,
-                                            device: "WEB",
-    
-                                        })
-                                        await Subadmin_login.save();
-                                        if (Subadmin_login) {
-                                            return res.redirect(redirect_uri);
-    
-                                        }
+                                            trading_status: "on",
+                                            Role: Get_User[0].Role
+                                        });
+                                        await live_price_token_data.save();
+                                    } else {
+                                        await live_price_token.findOneAndUpdate(
+                                            { demate_user_id: userId },
+                                            { $set: { access_token: response.data.userSession } },
+                                            { new: true }
+                                        );
                                     }
-    
+                                  
                                 }
-    
-    
-    
-    
+                                return res.redirect(redirect_uri);
                             } else {
                                 return res.send(redirect_uri);
                             }
-    
-    
-    
                         })
                         .catch(function (error) {
+                            console.error("Error occurred:", error);
+                            return res.status(500).send("Internal Server Error");
                         });
-    
+
+
                 }
 
 
@@ -447,6 +448,3 @@ class AliceBlue {
 
 
 module.exports = new AliceBlue();
-
-
-

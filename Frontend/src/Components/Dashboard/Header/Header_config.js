@@ -42,7 +42,7 @@ export const admin_header = [
                 name: 'All Researcher',
                 Icon: "fe fe-user-plus",
                 route: "/admin/allresearch",
-            }, 
+            },
         ]
     },
     // {
@@ -112,7 +112,7 @@ export const subamdin_header = [
         route: "/subadmin/dashboard",
         Data: []
     },
-    
+
     {
         id: 3,
         name: 'Employees',
@@ -169,7 +169,7 @@ export const subamdin_header = [
                 Icon: "fa-solid fa-signal",
                 route: "/subadmin/strategys",
             },
-           
+
             {
                 'id': 53,
                 name: 'All Services',
@@ -200,7 +200,7 @@ export const subamdin_header = [
             },
             {
                 id: 62,
-                name: 'Position',
+                name: 'Trade History',
                 route: "/subadmin/position",
                 Icon: "fe fe-map-pin",
                 Data: []
@@ -221,7 +221,7 @@ export const subamdin_header = [
         Icon: "fe fe-credit-card",
         Data: []
     },
-   
+
     {
         id: 9,
         name: 'Trades',
@@ -257,7 +257,7 @@ export const subamdin_header = [
             },
         ]
     },
-    
+
     {
         id: 12,
         name: 'Researcher Strategy',
@@ -265,7 +265,7 @@ export const subamdin_header = [
         Icon: "fe fe-target",
         Data: []
     },
-    
+
     {
         id: 25,
         name: 'More',
@@ -292,7 +292,7 @@ export const subamdin_header = [
                 Icon: "fe fe-help-circle",
                 Data: []
             },
-           
+
         ]
     },
 ];
@@ -353,7 +353,7 @@ export const User_header = [
         id: 7,
         name: 'Broker Response',
         route: "/user/broker-response",
-        Icon: "fe fe-grid",
+        Icon: "fa-brands fa-slack",
         Data: []
     },
     {
@@ -404,7 +404,7 @@ export const employee_header = [
                 id: 42,
                 name: 'All Users',
                 Icon: "fe fe-users",
-                route: "/employee/users",
+                route: "/employee/allusers",
             },
         ]
     },
@@ -422,8 +422,8 @@ export const employee_header = [
         Icon: "fe fe-map-pin",
         Data: []
     },
-  
- 
+
+
     {
         id: 10,
         name: 'Message Broadcast',
@@ -465,7 +465,7 @@ export const superadmin_header = [
         Icon: "fe fe-message-circle",
         Data: []
     },
- 
+
 
     {
         id: 9,
@@ -473,7 +473,7 @@ export const superadmin_header = [
         route: "/superadmin/faqs",
         Icon: "fe fe-help-circle",
         Data: []
-    },{
+    }, {
         id: 9,
         name: 'History',
         route: "/superadmin/history",
@@ -494,19 +494,21 @@ export const research_header = [
         route: "/research/dashboard",
         Data: []
     },
+
+
     {
         id: 5,
         name: 'Services',
         Icon: "fe fe-target",
         Data: [
-          
+
             {
                 id: 52,
                 name: 'Strategy',
                 Icon: "fa-solid fa-signal",
                 route: "/research/strategys",
             },
-           
+
             {
                 'id': 53,
                 name: 'All Services',
