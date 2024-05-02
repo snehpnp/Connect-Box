@@ -174,10 +174,17 @@ const Makecall = () => {
     
 
     const inputChangeTargetStoplos = (e, type, row) => {
+
+
+           
       
          let name = e.target.name;
          let value = e.target.value;
          let id = row._id;
+
+         if(type == "ExitTime" || type == "NoTradeTime"){
+          value = (e.target.value).replace(":", "")
+         }
     
         setUpdatedDataPriceTS((prevData) => ({
           ...prevData,
@@ -229,14 +236,14 @@ const Makecall = () => {
             dataField: "ExitTime",
             text: "Exit Time",
             formatter: (cell, row, rowIndex) => (
-                <div>
-                    {row.ExitTime != "" ?
-                        <span>{row.ExitTime}</span>
-
-                        :
-                        "-"
-                    }
-                </div>
+                <div className="col-12"><input type="time"
+                    name="ExitTime"
+                    defaultValue={row.ExitTime.substring(0, 2) + ":" + row.ExitTime.substring(2)}
+                    onChange={(e) => {
+                        inputChangeTargetStoplos(e, "ExitTime", row);
+                    }}
+                    />
+                    </div>
             ),
 
         },
@@ -245,14 +252,13 @@ const Makecall = () => {
             dataField: "NoTradeTime",
             text: "No Trade Time",
             formatter: (cell, row, rowIndex) => (
-                <div>
-                    {row.NoTradeTime != "" ?
-                        <span>{row.NoTradeTime}</span>
-
-                        :
-                        "-"
-                    }
-                </div>
+                <div className="col-12"><input type="time"
+                    name="NoTradeTime"
+                    defaultValue={row.NoTradeTime.substring(0, 2) + ":" + row.NoTradeTime.substring(2)}
+                    onChange={(e) => {
+                        inputChangeTargetStoplos(e, "NoTradeTime", row);
+                    }}
+                    /></div>
             ),
 
         },
@@ -325,6 +331,28 @@ const Makecall = () => {
                         <span>SELL</span>
                     }
                 </div>
+            ),
+        },
+        {
+            dataField: "WiseTypeDropdown",
+            text: "Wise Type",
+            formatter: (cell, row, rowIndex) => (
+
+                <select className="form-select" name="WiseTypeDropdown" onChange={(e) => { inputChangeTargetStoplos(e, "WiseTypeDropdown", row)}}>
+                          
+                              <option value="" selected={row.WiseTypeDropdown==""} >---</option>
+                              <option value="1" selected={row.WiseTypeDropdown=="1"} >%</option>
+                              <option value="2"  selected={row.WiseTypeDropdown=="2"}>Points</option>
+                              
+               </select>
+                // <div>
+                //     {row.WiseTypeDropdown == "LE" ?
+                //         <span>BUY</span>
+                //         :
+                //         <span>SELL</span>
+                //     }
+                // </div>
+                
             ),
         },
 
@@ -411,6 +439,9 @@ const Makecall = () => {
 
 
 
+
+
+   
     const handleOnSelect = (row, isSelect) => {
         if (isSelect) {
             setSelected([...selected, row._id]);
@@ -1650,33 +1681,33 @@ const Makecall = () => {
 
 
 
-            if (WiseTypeDropdown == '1') {
-                if (parseFloat(target1) != 0 && target1 != '') {
+            // if (WiseTypeDropdown == '1') {
+            //     if (parseFloat(target1) != 0 && target1 != '') {
 
-                    let percent_value = parseFloat(price) * (target1 / 100)
-                    Target = parseFloat(price) + parseFloat(percent_value)
-                    sl_status = 1
-                }
-                if (parseFloat(stoploss) != 0 && stoploss != '') {
-                    let percent_value = parseFloat(price) * (stoploss / 100)
-                    StopLoss = parseFloat(price) - parseFloat(percent_value)
-                    sl_status = 1
-                }
-            }
+            //         let percent_value = parseFloat(price) * (target1 / 100)
+            //         Target = parseFloat(price) + parseFloat(percent_value)
+            //         sl_status = 1
+            //     }
+            //     if (parseFloat(stoploss) != 0 && stoploss != '') {
+            //         let percent_value = parseFloat(price) * (stoploss / 100)
+            //         StopLoss = parseFloat(price) - parseFloat(percent_value)
+            //         sl_status = 1
+            //     }
+            // }
 
-            else if (WiseTypeDropdown == '2') {
-                // Points
-                if (parseFloat(target1) != 0 && target1 != '') {
-                    Target = parseFloat(price) + parseFloat(target1)
-                    sl_status = 1
-                }
-                if (parseFloat(stoploss) != 0 && stoploss != '') {
-                    StopLoss = parseFloat(price) - parseFloat(stoploss)
-                    sl_status = 1
-                }
+            // else if (WiseTypeDropdown == '2') {
+            //     // Points
+            //     if (parseFloat(target1) != 0 && target1 != '') {
+            //         Target = parseFloat(price) + parseFloat(target1)
+            //         sl_status = 1
+            //     }
+            //     if (parseFloat(stoploss) != 0 && stoploss != '') {
+            //         StopLoss = parseFloat(price) - parseFloat(stoploss)
+            //         sl_status = 1
+            //     }
 
 
-            }
+            // }
 
         }
 
@@ -1778,6 +1809,18 @@ const Makecall = () => {
                 return
             }
 
+            
+            if (parseFloat(target1) != 0 && target1 != '') {
+
+                Target = parseFloat(target1)
+                sl_status = 1
+            }
+            if (parseFloat(stoploss) != 0 && stoploss != '') {
+
+                StopLoss = parseFloat(stoploss)
+                sl_status = 1
+            }
+
             // markettime - after market order
 
             SetForDisabledSubmit(true)
@@ -1812,6 +1855,7 @@ const Makecall = () => {
                         EntryPriceRange_two: EntryPriceRange_two,
                         ABR_TYPE: EntryPriceBA,
                         marketTimeAmo: markettime,
+                        WiseTypeDropdown:WiseTypeDropdown,
 
                     },
 
@@ -1869,6 +1913,18 @@ const Makecall = () => {
             }
 
 
+            if (parseFloat(target1) != 0 && target1 != '') {
+
+                Target = parseFloat(target1)
+                sl_status = 1
+            }
+            if (parseFloat(stoploss) != 0 && stoploss != '') {
+
+                StopLoss = parseFloat(stoploss)
+                sl_status = 1
+            }
+
+
 
 
             // markettime - after market order
@@ -1905,6 +1961,7 @@ const Makecall = () => {
                         EntryPriceRange_two: "",
                         ABR_TYPE: EntryPriceBA,
                         marketTimeAmo: markettime,
+                        WiseTypeDropdown:WiseTypeDropdown,
 
                     },
 
@@ -2544,14 +2601,11 @@ const Makecall = () => {
                                             <div className="card-header d-flex justify-content-between align-items-center border-bottom">
                                                 <h5 className="card-title mb-0 w-auto">  <i className="fa-regular fa-image pe-2"></i>Range</h5>
                                                 <div className="pay-btn text-end w-auto">
-                                                    {/* <button className="btn btn-primary " data-bs-toggle="modal"
-                                                        data-bs-target="#back">
-                                                        Update Images
-                                                    </button> */}
+                                                  
                                                 </div>
                                             </div>
-
-                                            <div className="invoice-total-box border">
+<div className="card-body table-responsive">
+<div className="invoice-total-box border">
                                                 <div className="invoice-total-inner">
                                                     <div className="inventory-table">
                                                         <FullDataTable
@@ -2566,6 +2620,8 @@ const Makecall = () => {
                                                     </div>
                                                 </div>
                                             </div>
+</div>
+                                           
 
 
                                         </div>

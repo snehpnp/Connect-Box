@@ -56,5 +56,9 @@ app.get('/tokenget', (req, res) => {
 
 // Starting the server
 server.listen(process.env.PORT, () => {
+const { Alice_Socket } = require("./App/Helpers/Alice_Socket");
+  
+ //Alice_Socket()
+
   console.log(`Server is running on http://0.0.0.0:${process.env.PORT}`);
 });

@@ -13,6 +13,7 @@ const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db_GET_VIEW = client.db(process.env.DB_NAME);
 const makecallabrView_excute_view = db_GET_VIEW.collection('makecallabrView_excute');
+const open_position_excute = db_GET_VIEW.collection('open_position_excute');
 
 const ObjectId = mongoose.Types.ObjectId;
 const user_logs = db.user_logs;
@@ -489,13 +490,13 @@ class Makecall {
         StopLoss,
         ExitTime,
         NoTradeTime,
-        ExitTime_dt,
         sl_status,
         token,
         EntryPriceRange_one,
         EntryPriceRange_two,
         ABR_TYPE,
         marketTimeAmo,
+        WiseTypeDropdown
       } = req.body;
          
            //crete data
@@ -519,15 +520,15 @@ class Makecall {
           TradeType:TradeType,
           Target:Target,
           StopLoss:StopLoss,
-          ExitTime:ExitTime,
-          NoTradeTime:NoTradeTime,
-          ExitTime_dt:ExitTime_dt,
+          ExitTime:ExitTime.replace(":", ""),
+          NoTradeTime:NoTradeTime.replace(":", ""),
           sl_status:sl_status,
           token:token,
           EntryPriceRange_one:EntryPriceRange_one,
           EntryPriceRange_two:EntryPriceRange_two,
           ABR_TYPE:ABR_TYPE,
           marketTimeAmo:marketTimeAmo,
+          WiseTypeDropdown:WiseTypeDropdown
         });
   
         // Save new user and count licenses
@@ -701,66 +702,101 @@ async function run() {
   console.log("RUN -----")
   try {
 
-     const makecallabrView_excute_run = async () => {
+      const makecallabrView_excute_run = async () => {
        try {
         
         
       let rr=true
       if (rr) {
-        console.log("DONEEEEEEE ")
+       // console.log("DONEEEEEEE ")
      // if (holidays.isHoliday(currentDate) && weekday != 'Sunday' && weekday != 'Saturday') {
 
         // const viewName = 'open_position_excute';
         var makecallabrView_excute_result = await makecallabrView_excute_view.find().toArray();
+
+        //console.log("makecallabrView_excute_result ",makecallabrView_excute_result)
       
          if(makecallabrView_excute_result.length > 0){
 
+         
+
           // [
           //   {
-          //     _id: new ObjectId('662cb8600f527d7cdc19d919'),
+          //     _id: new ObjectId('66335258559fd8cbfd6aa184'),
           //     user_id: new ObjectId('662b6ec4e8a32c05bc0ae639'),
-          //     Symbol: 'AXISBANK',
+          //     Symbol: 'BANKNIFTY',
           //     TType: 'LE',
           //     Tr_Price: '0.00',
-          //     Price: '15',
-          //     EntryPrice: '15',
+          //     Price: '0',
+          //     EntryPrice: '',
           //     Sq_Value: '0.00',
           //     Sl_Value: '0.00',
           //     TSL: '0.00',
-          //     Segment: 'F',
-          //     Strike: '100',
-          //     OType: '',
-          //     Expiry: '30052024',
+          //     Segment: 'O',
+          //     Strike: '49200',
+          //     OType: 'CALL',
+          //     Expiry: '08052024',
           //     Strategy: 'SHK_DEMO',
           //     Quntity: '100',
           //     Key: 'SHK796872240426',
           //     TradeType: 'MAKECALL',
-          //     Target: '0',
+          //     Target: '10.00',
           //     StopLoss: '0',
           //     ExitTime: '15:25',
-          //     sl_status: '0',
-          //     token: '50928',
-          //     EntryPriceRange_one: '',
-          //     EntryPriceRange_two: '',
-          //     ABR_TYPE: 'below',
+          //     sl_status: '1',
+          //     token: '43763',
+          //     EntryPriceRange_one: '445',
+          //     EntryPriceRange_two: '480',
+          //     ABR_TYPE: 'range',
           //     marketTimeAmo: '1',
+          //     WiseTypeDropdown: '1',
           //     status: 0,
           //     above_price: null,
-          //     below_price: 15,
-          //     stockInfo_lp: 14,
-          //     stockInfo_curtime: '1841',
+          //     below_price: null,
+          //     stockInfo_lp: 451.15,
+          //     stockInfo_curtime: '1416',
           //     isAbove: false,
-          //     isBelow: true,
-          //     isRange: false
+          //     isBelow: false,
+          //     isRange: true
           //   }
           // ]
-          
-          
-          console.log("DONEEEEEEE ",makecallabrView_excute_result)
+
+         
+       
           makecallabrView_excute_result && makecallabrView_excute_result.map(async(item) => {
+            
+            let Target = 0
+            let StopLoss = 0
+            if(item.sl_status == "1"){
+             
+            if (item.WiseTypeDropdown == '1') {
+               if(item.Target != "0"){
+                let percent_value = parseFloat(item.stockInfo_lp) * (item.Target / 100)
+                Target = parseFloat(item.stockInfo_lp) + parseFloat(percent_value)
+               }
+               if (item.StopLoss != '0') {
+                let percent_value = parseFloat(item.stockInfo_lp) * (item.StopLoss / 100)
+                StopLoss = parseFloat(item.stockInfo_lp) - parseFloat(percent_value)
+               
+              }
+
+            }
+
+            else if (item.WiseTypeDropdown == '2') {
+              if (item.Target != "0") {
+                Target = parseFloat(item.stockInfo_lp) + parseFloat(item.Target)
+              }
+              if (item.StopLoss != '0') {
+                StopLoss = parseFloat(item.stockInfo_lp) - parseFloat(item.StopLoss)
+              }
+
+             }
+
+           }
+
 
             const currentTimestamp = Math.floor(Date.now() / 1000);
-            let req = `DTime:${currentTimestamp}|Symbol:${item.Symbol}|TType:${item.TType}|Tr_Price:${item.Tr_Price}|Price:${item.stockInfo_lp}|Sq_Value:${item.Sq_Value}|Sl_Value:${item.Sl_Value}|TSL:${item.TSL}|Segment:${item.Segment}|Strike:${item.Strike}|OType:${item.OType}|Expiry:${item.Expiry}|Strategy:${item.Strategy}|Quntity:${item.Quntity}|Key:${item.Key}|TradeType:${item.TradeType}|Target:${item.Target}|StopLoss:${item.StopLoss}|ExitTime:${item.ExitTime}|sl_status:${item.sl_status}|Demo:demo`
+            let req = `DTime:${currentTimestamp}|Symbol:${item.Symbol}|TType:${item.TType}|Tr_Price:${item.Tr_Price}|Price:${item.stockInfo_lp}|Sq_Value:${item.Sq_Value}|Sl_Value:${item.Sl_Value}|TSL:${item.TSL}|Segment:${item.Segment}|Strike:${item.Strike}|OType:${item.OType}|Expiry:${item.Expiry}|Strategy:${item.Strategy}|Quntity:${item.Quntity}|Key:${item.Key}|TradeType:${item.TradeType}|Target:${Target}|StopLoss:${StopLoss}|ExitTime:${item.ExitTime}|sl_status:${item.sl_status}|Demo:demo`
                
             const resultUpdateId = await makecallABR.updateMany(
               { _id: item._id }, // Condition: IDs from the view
@@ -832,6 +868,76 @@ async function run() {
       
       }
 
+      const exitOpentrade = async () => {
+        try {
+        
+          var openPosition = await open_position_excute.find().toArray();
+        
+          console.log("openPosition ",openPosition)
+          if (openPosition.length > 0) {
+        
+            openPosition && openPosition.map((item) => {
+              const currentTimestamp = Math.floor(Date.now() / 1000);
+              let req = `DTime:${currentTimestamp}|Symbol:${item.symbol}|TType:${item.entry_type == "SE" ? "SX" : "LX"}|Tr_Price:131|Price:${item.stockInfo_lp}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${item.segment}|Strike:${item.strike}|OType:${item.option_type}|Expiry:${item.expiry}|Strategy:${item.strategy}|Quntity:${item.entry_qty_percent}|Key:${item.client_persnal_key}|TradeType:${item.TradeType}|Demo:demo`
+                 
+      
+              
+      
+              console.log("req ",req)
+             
+              console.log("process.env.BROKER_URL ",process.env.BROKER_URL)
+            
+              let config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'http://localhost:8800/broker-signals',
+                // url: 'https://trade.pandpinfotech.com/signal/broker-signals',
+               // url: `${process.env.BROKER_URL}`,
+                headers: {
+                  'Content-Type': 'text/plain'
+                },
+                data: req
+              };
+        
+              axios.request(config)
+                .then(async(response) => {
+      
+                  //  let tradeSymbol;
+                  //  if(item.segment.toLowerCase() == 'o' || item.segment.toLowerCase() == 'co' || item.segment.toLowerCase() == 'fo' || item.segment.toLowerCase() == 'mo')
+                  //  {
+                  //   tradeSymbol = item.symbol+"  "+item.expiry+"  "+item.strike+"  "+item.option_type+"  "+" [ "+item.segment+" ] ";
+                  //  }
+                  //  else if(item.segment.toLowerCase() == 'f' || item.segment.toLowerCase() == 'cf' || item.segment.toLowerCase() == 'mf')
+                  //  {
+                  //   tradeSymbol = item.symbol+"  "+item.expiry+"  "+" [ "+item.segment+" ] ";
+                  //  }
+                  //  else{
+                  //   tradeSymbol = item.symbol+"  "+" [ "+item.segment+" ] ";
+                  //  }
+                  //  const io = await getIO();
+                  //  io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
+        
+                   console.log("response Trade Excuted - ", response.data)
+        
+                })
+                .catch((error) => {
+                  // console.log(error.response.data);
+                });
+        
+        
+            })
+        
+          } else{
+            return
+          }
+        } catch (error) {
+          console.log("Error in Open Position",error);
+        }
+         
+        
+        
+        }
+
     
     // Run the function initially
     await makecallabrView_excute_run();
@@ -841,6 +947,7 @@ async function run() {
       // Delay for 1000 milliseconds (1 second)
       await new Promise(resolve => setTimeout(resolve, 1000));
       await makecallabrView_excute_run();
+      await exitOpentrade();
     }
   } finally {
     // Close the client when you're done
@@ -849,7 +956,7 @@ async function run() {
 
 }
 
-//run().catch(console.error);
+run().catch(console.error);
 
 
 //////////////////----- makecallabrView_excute_run --//////////////////////////////
