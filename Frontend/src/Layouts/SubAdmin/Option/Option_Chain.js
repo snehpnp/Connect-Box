@@ -21,6 +21,7 @@ import { Get_Option_All_Round_token, Get_Option_Symbols, Get_Symbol_Expiry, Get_
 
 import axios from "axios"
 import toast, { Toaster } from 'react-hot-toast';
+import * as Config from "../../../Utils/Config";
 
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 
@@ -634,9 +635,8 @@ function Option_Chain() {
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'http://localhost:8800/broker-signals',
-               // url: 'http://localhost:8800/broker-signals',
-                // url: `${getBrokerUrl && getBrokerUrl}`,
+                url: Config.broker_backend,
+           
                 headers: {
                     'Content-Type': 'text/plain'
                 },
