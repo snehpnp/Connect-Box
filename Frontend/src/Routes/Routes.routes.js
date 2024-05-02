@@ -12,6 +12,7 @@ import SuperadminRouting from './Superadmin.routes';
 
 import Login from '../Layouts/Auth/Login';
 import Register from '../Layouts/Auth/Register';
+import Forget from '../Layouts/Auth/Forget';
 
 
 const Routing = () => {
@@ -86,6 +87,7 @@ const Routing = () => {
             {/* Add other routes here */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forget" element={<Forget />} />
         </Routes>
     );
 }

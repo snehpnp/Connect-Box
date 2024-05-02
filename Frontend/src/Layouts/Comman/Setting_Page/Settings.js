@@ -240,6 +240,7 @@ const Settings = () => {
                                                
 
                                                 <div className="page-content">
+
                                                     <div className="mainDiv">
                                                         <div className="cardStyle">
                                                             <form action="" method="post" name="signupForm" id="signupForm">
@@ -281,7 +282,7 @@ const Settings = () => {
                                                 </div>
                                             </div>
 
-                                        </div>
+                                       </div>
 
                                     </div>
 
