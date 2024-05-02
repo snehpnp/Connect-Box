@@ -388,7 +388,6 @@ export const employee_header = [
         route: "/employee/dashboard",
         Data: []
     },
-
     {
         id: 4,
         name: 'Users',
@@ -422,8 +421,6 @@ export const employee_header = [
         Icon: "fe fe-map-pin",
         Data: []
     },
-
-
     {
         id: 10,
         name: 'Message Broadcast',
