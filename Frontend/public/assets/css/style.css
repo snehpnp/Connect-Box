@@ -33485,14 +33485,10 @@ table.table.bg-none::before {
     background-color: #7539ff !important;
     border-color: #7539ff !important;
 }
-<<<<<<<<< Temporary merge branch 1
-=========
 
 
 
 
-
->>>>>>>>> Temporary merge branch 2
 a,
 a:hover,
 a:focus,
@@ -34650,7 +34646,6 @@ button[aria-label="edit"] {
   [data-layout-mode=dark] .MuiDataGrid-cell {
     color: #ddd !important;
 }
-<<<<<<<<< Temporary merge branch 1
 [data-layout-mode=dark] .MuiTablePagination-toolbar ,[data-layout-mode=dark] .MuiTab-textColorPrimary ,[data-layout-mode=dark] .MuiSelect-icon
 {
     color: #fff;
@@ -34670,7 +34665,7 @@ a.user-a:hover span {
      /* background:#ddd; */
       display:inline-block;
        float:left; position:sticky; top:150px;
-=========
+
 
 [data-layout-mode=dark] .MuiDataGrid-cell ,
 [data-layout-mode=dark] .MuiTablePagination-toolbar,
@@ -34767,13 +34762,4 @@ input:disabled {
     cursor: pointer;
 }
 
-/* @keyframes spin 
-0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
->>>>>>>>> Temporary merge branch 2
 }
