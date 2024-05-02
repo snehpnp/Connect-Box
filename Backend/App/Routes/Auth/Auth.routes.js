@@ -4,7 +4,7 @@
 const router = require("express").Router()
 const {verifyToken}= require('../../Middlewares/autt.middleware')
 
-const { login,verifyUser,logoutUser,ForgetPassword,ResetPassword,UpdatePassword , SignUpUser} = require('../../Controllers/Auth/Auth.controller')
+const { login,verifyUser,logoutUser,ForgetPassword,ResetPassword,UpdatePassword , SignUpUser,PasswordChanged} = require('../../Controllers/Auth/Auth.controller')
 
 
 
@@ -15,6 +15,7 @@ router.post('/forgetpassword', ForgetPassword)
 router.post('/resetpassword', ResetPassword)
 router.post('/update', UpdatePassword)
 router.post('/signup', SignUpUser)
+router.post('/PasswordChanged', PasswordChanged)
 
 
 

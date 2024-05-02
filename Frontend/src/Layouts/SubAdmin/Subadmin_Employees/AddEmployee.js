@@ -433,7 +433,7 @@ const AddEmployee = () => {
         fields={fields.filter(
           (fld) => !fld.showWhen || fld.showWhen(formik.values)
         )}
-        page_title="Add Employee"
+        page_title="Add New Employee"
         btn_name="Add"
         btn_name1="Cancel"
         btn_name1_route="/subadmin/employees"

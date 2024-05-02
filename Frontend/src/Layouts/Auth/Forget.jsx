@@ -1,6 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
+import { ForgetPassword } from '../../ReduxStore/Slice/Auth/AuthSlice';
+import Swal from "sweetalert2";
 
 const Forget = () => {
+    const dispatch = useDispatch();
+    
+    const [forgetemail,setForgetemail] = useState({
+        Email:""
+    })
+
+   
+    const forgetbtn = async (e) => {
+        e.preventDefault();
+        try {
+          const response = await dispatch(
+            ForgetPassword({
+                Email:forgetemail.Email
+            })
+          ).unwrap();
+          
+          if (response.success) {
+            // console.log("response",response.data)
+            setForgetemail({
+                Email:""
+            }); 
+            
+            Swal.fire({
+              title: "reset password is send to your mail",
+              icon: "success",
+            });
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: response.message || "Failed to send Email",
+              icon: "error",
+            });
+          }
+        } catch (error) {
+          console.log("Error", error);
+          Swal.fire({
+            title: "Error",
+            text: "An unexpected error occurred",
+            icon: "error",
+          });
+        }
+      };
+
   return (
     
           <div >
@@ -34,15 +80,24 @@ const Forget = () => {
                                               <div className='pt-5' data-aos="fade-left">
                                                   <div className=" input-block mb-3">
                                                       <label className="form-control-label d-flex justify-content-start" htmlFor="email">Email Address</label>
-                                                      <input type="email" id="email" className="form-control" />
+                                                      <input type="email" id="email" className="form-control"
+                                                      
+                                                        value={forgetemail.Email}
+                                                        onChange={(e)=>{setForgetemail({...forgetemail,Email:e.target.value})
+                                                            console.log("setForgetemail",setForgetemail)
+                                                        }
+                                                      
+                                                    }
+                                                      
+                                                      />
                                                   </div>
 
 
                                                  
 
                                                   <div class="add-customer-btns d-flex justify-content-between text-end mt-3">
-                                                      <button className="btn customer-btn-save"  >
-                                                        Reset
+                                                      <button className="btn customer-btn-save" onClick={forgetbtn} >
+                                                        Send
                                                       </button>
                                                   </div>
                                               </div>
