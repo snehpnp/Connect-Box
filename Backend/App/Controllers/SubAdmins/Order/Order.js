@@ -146,11 +146,11 @@ class SignalController {
     try {
       const { subadminId } = req.body;
       const ObjSubAdminId = new ObjectId(subadminId);
+
       const resultUser = await User_model.findOne({
         _id: ObjSubAdminId,
       }).select("client_key");
 
-      console.log("resultUser", resultUser)
       if (!resultUser) {
         return res.status(404).send({
           status: false,
@@ -158,13 +158,65 @@ class SignalController {
         });
       }
 
-      const pipeline = [
+      // const pipeline = [
+      //   {
+      //     $match: { client_persnal_key: resultUser.client_key },
+      //   },
+
+      // ];
+      // const results = await Mainsignals.aggregate(pipeline);
+      var today = new Date();
+      var formattedDate = today.getFullYear() + '/' + (today.getMonth() + 1).toString()+ '/' + today.getDate().toString();
+
+
+
+      var results = await Mainsignals.aggregate([
         {
           $match: { client_persnal_key: resultUser.client_key },
         },
+        {
+            $addFields: {
+                entry_qty_percent_int: { $toInt: "$entry_qty_percent" },
+                exit_qty_percent_int: {
+                    $cond: {
+                        if: {
+                            $or: [
+                                { $eq: ["$exit_qty_percent", ""] },
+                                { $eq: ["$exit_qty_percent", null] },
+                            ],
+                        },
+                        then: 0,
+                        else: { $toInt: "$exit_qty_percent" },
+                    },
+                },
+            },
+        },
+        {
+            $match: {
+                $expr: {
+                    $and: [
+                        { $gt: ["$entry_qty_percent_int", "$exit_qty_percent_int"] },
+                        { $eq: ["$dt_date", formattedDate] }
+                    ]
+                }
+            }
+        },
 
-      ];
-      const results = await Mainsignals.aggregate(pipeline);
+        {
+            $lookup: {
+              from: 'strategies',
+              localField: 'strategy',
+              foreignField: 'strategy_name', // Assuming this is the field in collection2 which corresponds to the _id of collection1
+              as: 'StrategyData'
+            }
+          },
+          {
+            $unwind: '$StrategyData',
+          },
+
+    ]);
+
+
       res.send({
         status: true,
         msg: "Data Retrieved Successfully",
