@@ -9,6 +9,7 @@ import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/User
 import { Orders_Details } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { fDateTime } from "../../../Utils/Date_formet";
+import { ipAddress } from '../../../Utils/Ipaddress';
 
 
 
@@ -20,6 +21,7 @@ export default function AllEmployees() {
     const [refresh, setrefresh] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [ForGetCSV, setForGetCSV] = useState([]);
+    const [ip, setIp] = useState(null);
 
 
     const [tableData, setTableData] = useState({
@@ -97,9 +99,11 @@ export default function AllEmployees() {
     }, []);
 
 
+    // LOGOUT TRADING 
     const handleTradingOff = async (id) => {
-        let data = { id: id };
-
+      
+        let data = { id: id,system_ip:ip };
+   
         await dispatch(Trading_Off_Btn(data)).unwrap()
             .then((response) => {
                 if (response.status) {
@@ -114,6 +118,8 @@ export default function AllEmployees() {
             })
 
     }
+
+    // LOGIN DEMAT WITH API
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
 
         if (check) {
@@ -129,7 +135,6 @@ export default function AllEmployees() {
 
 
     }
-
 
     const columns = [
         {
@@ -147,7 +152,7 @@ export default function AllEmployees() {
         {
             field: "createdAt",
             headerName: "Signal Time",
-            width: 260,
+            width: 250,
             headerClassName: styles.boldHeader,
             renderCell: (params) => (
                 <div>
@@ -159,7 +164,7 @@ export default function AllEmployees() {
         {
             field: "type",
             headerName: "Type",
-            width: 140,
+            width: 100,
             headerClassName: styles.boldHeader,
 
         },
@@ -167,14 +172,14 @@ export default function AllEmployees() {
         {
             field: "trade_symbol",
             headerName: "Trade Symbol",
-            width: 160,
+            width: 300,
             headerClassName: styles.boldHeader,
 
         },
         {
             field: "price",
             headerName: "Price ",
-            width: 160,
+            width: 140,
             headerClassName: styles.boldHeader,
 
         },
@@ -182,14 +187,14 @@ export default function AllEmployees() {
         {
             field: "strategy",
             headerName: "strategy ",
-            width: 160,
+            width: 180,
             headerClassName: styles.boldHeader,
 
         },
         {
             field: "qty_percent",
             headerName: "qty_percent ",
-            width: 160,
+            width: 150,
             headerClassName: styles.boldHeader,
 
         },
@@ -202,6 +207,7 @@ export default function AllEmployees() {
         },
 
     ];
+
 
 
     const RefreshHandle = () => {
@@ -232,7 +238,23 @@ export default function AllEmployees() {
         userDataRes()
     }, [])
 
-
+    useEffect(() => {
+        const fetchIP = async () => {
+          try {
+            const ip = await ipAddress();
+            setIp(ip);
+          } catch (error) {
+            console.error('Failed to fetch IP address:', error);
+          }
+        };
+    
+        fetchIP();
+    
+        // Clean up function
+        return () => {
+    
+        };
+      }, []);
 
     return (
         <>

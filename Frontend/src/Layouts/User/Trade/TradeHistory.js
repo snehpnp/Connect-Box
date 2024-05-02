@@ -10,7 +10,7 @@ import { Orders_Details } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { fDateTime } from "../../../Utils/Date_formet";
 
-
+import { ipAddress } from '../../../Utils/Ipaddress';
 
 export default function AllEmployees() {
     const userDetails = JSON.parse(localStorage.getItem("user_details"));
@@ -20,6 +20,7 @@ export default function AllEmployees() {
     const [refresh, setrefresh] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [ForGetCSV, setForGetCSV] = useState([]);
+    const [ip, setIp] = useState(null);
 
 
     const [tableData, setTableData] = useState({
@@ -97,9 +98,11 @@ export default function AllEmployees() {
     }, []);
 
 
+    // TRADING OFF 
     const handleTradingOff = async (id) => {
-        let data = { id: id };
-
+        let data = { id: id,system_ip:ip };
+console.log("data",data)
+        return
         await dispatch(Trading_Off_Btn(data)).unwrap()
             .then((response) => {
                 if (response.status) {
@@ -114,6 +117,9 @@ export default function AllEmployees() {
             })
 
     }
+
+
+    // TRADING ON FUNCTION
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
 
         if (check) {
@@ -233,7 +239,23 @@ export default function AllEmployees() {
     }, [])
 
 
-
+    useEffect(() => {
+        const fetchIP = async () => {
+          try {
+            const ip = await ipAddress();
+            setIp(ip);
+          } catch (error) {
+            console.error('Failed to fetch IP address:', error);
+          }
+        };
+    
+        fetchIP();
+    
+        // Clean up function
+        return () => {
+    
+        };
+      }, []);
     return (
         <>
             {tableData.loading ? (

@@ -1,18 +1,12 @@
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import AddForm from "../../../Components/ExtraComponents/forms/AddForm";
-import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 import { useDispatch } from "react-redux";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import * as valid_err from "../../../Utils/Common_Messages";
 
-import {
-  Email_regex,
-  Mobile_regex,
-  Name_regex,
-} from "../../../Utils/Common_regex";
+import {Email_regex, Mobile_regex, Name_regex} from "../../../Utils/Common_regex";
 import { Add_Employee, GetEmployeeStrategy, GetEmployeeServices } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 
 const AddEmployee = () => {
@@ -94,6 +88,8 @@ const AddEmployee = () => {
         errors.phone = valid_err.INVALID_CONTACT_ERROR;
       }
  
+
+      console.log("values.Strategy :" ,values.Strategy)
       if (values.Strategy) {
         if (!values.addemployee && !values.editemployee) {
           errors.addemployee = "select Add Client Also";
@@ -136,27 +132,38 @@ const AddEmployee = () => {
         },
       };
 
+        await dispatch(Add_Employee(req)).unwrap()
+        .then((response)=>{
+          if (response.status) {
+            Swal.fire({
+              title: "Create Successful!",
+              text: response.msg,
+              icon: "success",
+              timer: 1500,
+              timerProgressBar: true,
+            }).then(() => {
+              navigate("/subadmin/employees");
+            });
+          }
+          else{
+            Swal.fire({
+              title: "Error !",
+              text: response.msg,
+              icon: "error",
+              timer: 1500,
+              timerProgressBar: true,
+            })
 
-      return
-
-      try {
-        const response = await dispatch(Add_Employee(req)).unwrap();
-        if (response.status) {
-          Swal.fire({
-            title: "Create Successful!",
-            text: response.msg,
-            icon: "success",
-            timer: 1500,
-            timerProgressBar: true,
-          }).then(() => {
-            navigate("/subadmin/employees");
-          });
-        }
-      } catch (error) {
-        console.log("Error:", error);
-      }
-    },
-  });
+          }
+          
+        })
+       .catch((err)=>{
+        console.log("Error in add employee", err)
+       }) 
+      
+    
+  }
+})
 
 
 
@@ -401,16 +408,14 @@ const AddEmployee = () => {
   };
  
 
-  // useEffect(() => {
-   
-    
-  //   if (state.length > 1) {
-  //     formik.setFieldValue("grouper_servcice", "");
-  //   }
-  //   if (state1.length > 1) {
-  //     formik.setFieldValue("grouper_servcice", "");
-  //   }
-  // }, [state, state1]);
+  useEffect(() => {
+    if (state.length > 1) {
+      formik.setFieldValue("grouper_servcice", "");
+    }
+    if (state1.length > 1) {
+      formik.setFieldValue("grouper_servcice", "");
+    }
+  }, [state, state1]);
 
   const handleStrategyChange = (event) => {
     const strategyId = event.target.value;
@@ -420,34 +425,6 @@ const AddEmployee = () => {
       setstate1(state1.filter((id) => id !== strategyId));
     }
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
 
   return (

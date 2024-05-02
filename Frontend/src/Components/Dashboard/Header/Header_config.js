@@ -404,7 +404,7 @@ export const employee_header = [
                 id: 42,
                 name: 'All Users',
                 Icon: "fe fe-users",
-                route: "/employee/users",
+                route: "/employee/allusers",
             },
         ]
     },
