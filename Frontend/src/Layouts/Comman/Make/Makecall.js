@@ -2468,7 +2468,8 @@ const Makecall = () => {
                         </div>
                     </div>
                 </div>
-                <div className='card'>
+                
+                 <div className='card'>
                     <div className='card-body'>
                         
                         <div className="col-lg-12 col-md-12" data-aos="fade-right">
@@ -2655,7 +2656,7 @@ const Makecall = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                 </div>
             </div>
 
         </div>
