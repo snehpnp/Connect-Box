@@ -239,7 +239,7 @@ function Option_Chain() {
         {
             dataField: 'CALL/LP',
             text: 'CALL/LP',
-            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
                 parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
                 <div >
@@ -255,7 +255,7 @@ function Option_Chain() {
             formatter: (cell, row, rowIndex) => (
 
                 <div >
-                    <span className={`fw-bold`}>{cell}</span>
+                    <span className={``}>{cell}</span>
                 </div>
             ),
         },
@@ -277,7 +277,7 @@ function Option_Chain() {
         {
             dataField: 'PUT',
             text: 'BUY/SELL',
-            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
                 parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
                     { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
@@ -844,9 +844,9 @@ function Option_Chain() {
                     Content={
                         <>
                             <div className="row d-flex mb-3">
-                                <div className="col-md-2 text-secondary input-block">
-                                    <label className="text-secondary"
-                                        style={{ fontWeight: "bold", color: "black" }}
+                                <div className="col-md-2  input-block">
+                                    <label className=""
+                                       
                                     >SYMBOLS</label>
                                     <select
                                         name="symbols_filter"
@@ -870,10 +870,10 @@ function Option_Chain() {
                                         })}
                                     </select>
                                 </div>
-                                <div className="col-md-2 text-secondary input-block">
+                                <div className="col-md-2  input-block">
                                     <label
-                                        className="text-secondary"
-                                        style={{ fontWeight: "bold", color: "black" }}
+                                        className=""
+                                       
                                     >
                                         EXPIRY DATE
                                     </label>
@@ -891,8 +891,8 @@ function Option_Chain() {
                                 </div>
                                 <div className="col-md-2 input-block ">
                                     <label
-                                        className="text-secondary"
-                                        style={{ fontWeight: "bold", color: "black" }}
+                                        className=""
+                                       
                                     >
                                         STRATEGY
                                     </label>
@@ -916,10 +916,10 @@ function Option_Chain() {
                                             })}
                                     </select>
                                 </div>
-                                <div className="col-md-2 input-block  text-secondary ">
+                                <div className="col-md-2 input-block   ">
                                     <label
-                                        className="text-secondary"
-                                        style={{ fontWeight: "bold", color: "black" }}
+                                        className=""
+                                        
                                     > Price
                                     </label>
                                     <input type="number" className="new-input-control form-control" />
@@ -946,14 +946,14 @@ function Option_Chain() {
                                     </div>
                                 </div>
                             </div>
-
+                            <div className="borderless-table">
                             <FullDataTable
                                 styles={styles}
                                 TableColumns={columns}
                                 tableData={OptionChainData.data}
                                 pagination1={true}>
                             </FullDataTable>
-
+                            </div>
 
                         </>
 
