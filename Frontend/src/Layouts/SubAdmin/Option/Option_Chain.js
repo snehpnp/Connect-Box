@@ -254,7 +254,10 @@ function Option_Chain() {
             formatter: (cell, row, rowIndex) => (
                 <div >
                     <span className={`Call_Price_${row.call_token} `}></span>
-                    <span className={`SP1_Call_Price_${row.call_token} d-none`}></span>
+                    <span className={`SP1_Call_Price_${row.call_token} d-none`}></span> 
+                    <div>
+                    <span>10%</span>
+                    </div>
                 </div>
             ),
         },
@@ -281,6 +284,9 @@ function Option_Chain() {
                 >
                     <span className={`Put_Price_${row.put_token} `}></span>
                     <span className={`BP1_Put_Price_${row.put_token} d-none`}></span>
+                    <div>
+                        <span>10%</span>
+                    </div>
                 </div>
             ),
         },
@@ -296,6 +302,7 @@ function Option_Chain() {
                 >
                     <span className={`Put_volume_${row.put_token} `}></span>
                     <span className={`BP1_Put_volume_${row.put_token} d-none`}></span>
+                    
                 </div>
             ),
         },
