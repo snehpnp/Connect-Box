@@ -452,7 +452,7 @@ const DynamicForm = ({
                                         <div
                                           className={`col-lg-${field.col_size}`}
                                         >
-                                          <div className="form-check custom-checkbox input-block ">
+                                          <div className="form-check custom-checkbox input-block  ">
                                             <input
                                               type={field.type}
                                               className="form-check-input"
@@ -468,7 +468,7 @@ const DynamicForm = ({
                                               {option.label}
                                             </label>
                                             {formik.errors[field.name] && (
-                                              <div style={{ color: "red" }}>
+                                              <div style={{ color: "red"}}>
                                                 {formik.errors[field.name]}
                                               </div>
                                             )}
@@ -484,9 +484,10 @@ const DynamicForm = ({
                               <div className={`col-lg-${field.col_size}`}>
                                 <div className="row d-flex justify-content-start">
                                   <div
-                                  //  className={`col-lg-${field.col_size}`}
+                                  //  className={`col-lg-${field.col_size}`} 
+                                
                                   >
-                                    <div className="form-check custom-checkbox mb-3">
+                                    <div className="form-check custom-checkbox mb-3 ">
                                       <input
                                         type={field.type}
                                         className="form-check-input"
