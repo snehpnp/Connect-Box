@@ -586,20 +586,20 @@ export const research_header = [
             },
         ]
     },
-    {
-        id: 10,
-        name: 'Message Broadcast',
-        route: "/research/message_broadcast",
-        Icon: "fe fe-message-circle",
-        Data: []
-    },
-    {
-        id: 11,
-        name: 'Help',
-        route: "/research/help",
-        Icon: "fa-solid fa-circle-info",
-        Data: []
-    },
+    // {
+    //     id: 10,
+    //     name: 'Message Broadcast',
+    //     route: "/research/message_broadcast",
+    //     Icon: "fe fe-message-circle",
+    //     Data: []
+    // },
+    // {
+    //     id: 11,
+    //     name: 'Help',
+    //     route: "/research/help",
+    //     Icon: "fa-solid fa-circle-info",
+    //     Data: []
+    // },
     {
         id: 18,
         name: 'FAQs',
