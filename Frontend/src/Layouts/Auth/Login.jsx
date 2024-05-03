@@ -318,7 +318,7 @@ function Login() {
                         Don't have an account yet?{" "}
                         <Link to="/register">Register</Link>
                       </div>
-                      <Link to="/forget">Forget Password</Link>
+                      <Link to="/forget" className='text-center d-block'>Forget Password</Link>
                     </div>
                   </div>
                 </div>

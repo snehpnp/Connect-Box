@@ -6,25 +6,19 @@ import FullDataTable from '../../../Components/ExtraComponents/Tables/DataTable'
 import Loader from '../../../Utils/Loader';
 import { get_three_digit_month } from '../../../Utils/Date_formet'
 import { get_thre_digit_month, convert_string_to_month } from "../../../Utils/Date_formet";
-
 import { CreateSocketSession, ConnctSocket, GetAccessToken, } from "../../../Utils/Alice_Socket";
 import Modal from "../../../Components/ExtraComponents/Modal";
 import { Trash2 } from 'lucide-react';
 import { GetBrokerDatas } from "../../../ReduxStore/Slice/Comman/Userinfo";
-
 import { GetBrokerLiveDatas } from "../../../ReduxStore/Slice/Comman/Makecall/make";
-
 import $ from "jquery";
 import Holidays from "date-holidays"
 import { useNavigate } from 'react-router-dom';
 import { Get_Option_All_Round_token, Get_Option_Symbols, Get_Symbol_Expiry, Get_Company_Infos, Get_All_Strategy_for_Client } from '../../../ReduxStore/Slice/Subadmin/OptionChainSlice'
-
 import axios from "axios"
 import toast, { Toaster } from 'react-hot-toast';
 import * as Config from "../../../Utils/Config";
-
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
-
 import Swal from 'sweetalert2';
 
 function Option_Chain() {
@@ -245,7 +239,7 @@ function Option_Chain() {
         {
             dataField: 'CALL/LP',
             text: 'CALL/LP',
-            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
                 parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
                 <div >
@@ -261,7 +255,7 @@ function Option_Chain() {
             formatter: (cell, row, rowIndex) => (
 
                 <div >
-                    <span className={`fw-bold`}>{cell}</span>
+                    <span className={``}>{cell}</span>
                 </div>
             ),
         },
@@ -283,7 +277,7 @@ function Option_Chain() {
         {
             dataField: 'PUT',
             text: 'BUY/SELL',
-            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
                 parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
                     { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
@@ -850,9 +844,9 @@ function Option_Chain() {
                     Content={
                         <>
                             <div className="row d-flex mb-3">
-                                <div className="col-md-2 text-secondary input-block">
-                                    <label className="text-secondary"
-                                        style={{ fontWeight: "bold", color: "black" }}
+                                <div className="col-md-2  input-block">
+                                    <label className=""
+                                       
                                     >SYMBOLS</label>
                                     <select
                                         name="symbols_filter"
@@ -876,10 +870,10 @@ function Option_Chain() {
                                         })}
                                     </select>
                                 </div>
-                                <div className="col-md-2 text-secondary input-block">
+                                <div className="col-md-2  input-block">
                                     <label
-                                        className="text-secondary"
-                                        style={{ fontWeight: "bold", color: "black" }}
+                                        className=""
+                                       
                                     >
                                         EXPIRY DATE
                                     </label>
@@ -897,8 +891,8 @@ function Option_Chain() {
                                 </div>
                                 <div className="col-md-2 input-block ">
                                     <label
-                                        className="text-secondary"
-                                        style={{ fontWeight: "bold", color: "black" }}
+                                        className=""
+                                       
                                     >
                                         STRATEGY
                                     </label>
@@ -922,10 +916,10 @@ function Option_Chain() {
                                             })}
                                     </select>
                                 </div>
-                                <div className="col-md-2 input-block  text-secondary ">
+                                <div className="col-md-2 input-block   ">
                                     <label
-                                        className="text-secondary"
-                                        style={{ fontWeight: "bold", color: "black" }}
+                                        className=""
+                                        
                                     > Price
                                     </label>
                                     <input type="number" className="new-input-control form-control" />
@@ -952,14 +946,14 @@ function Option_Chain() {
                                     </div>
                                 </div>
                             </div>
-
+                            <div className="borderless-table">
                             <FullDataTable
                                 styles={styles}
                                 TableColumns={columns}
                                 tableData={OptionChainData.data}
                                 pagination1={true}>
                             </FullDataTable>
-
+                            </div>
 
                         </>
 

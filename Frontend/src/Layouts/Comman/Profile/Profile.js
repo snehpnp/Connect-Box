@@ -574,7 +574,7 @@ const Profile = () => {
                                 <a href="#" style={{ color: "blue" }}>
                                   {item.role}
                                 </a>{" "}
-                                {item.trading_status}
+                                {item.trading_status ? item.trading_status : item.login_status }
                               </span>
                             </li>
                           ))}
