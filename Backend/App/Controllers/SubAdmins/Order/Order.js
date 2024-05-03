@@ -3,6 +3,8 @@ const db = require("../../../Models");
 const Mainsignals = db.MainSignals;
 const User_model = db.user;
 const Strategies = db.Strategies;
+const researcher_strategy = db.researcher_strategy;
+
 
 
 const mongoose = require("mongoose");
@@ -12,62 +14,136 @@ class SignalController {
 
   async Signal_data(req, res) {
     try {
-      const { subadminId } = req.body;
+      const { subadminId,Role} = req.body;
       const ObjSubAdminId = new ObjectId(subadminId);
 
-      const resultUser = await Strategies.find({
-        maker_id: ObjSubAdminId,
-      }).select('strategy_name')
 
-
-
-
-      console.log("resultUser", resultUser)
-
-
-      if (!resultUser) {
-        return res.status(404).send({
-          status: false,
-          msg: "User not found",
-        });
-      }
-
-      // Extracting strategy names from resultUser array
-      const strategyNames = resultUser.map(user => user.strategy_name);
-
-      const pipeline = [
-        {
-          $match: { strategy: { $in: strategyNames } }
-        },
-        {
-          $project: {
-            _id: 0,
-            trade_symbol: 1,
-            qty_percent: 1,
-            strategy: 1,
-            symbol: 1,
-            TradeType: 1,
-            tr_price: 1,
-            createdAt: 1,
-            type: 1,
-            price: 1,
-            option_type: 1,
-            strike: 1,
-            expiry: 1,
-            segment: 1,
-            client_persnal_key: 1,
-            token: 1,
-            lot_size: 1
-          }
+      if(Role =="SUBADMIN"){
+        const resultUser = await Strategies.find({
+          maker_id: ObjSubAdminId,
+        }).select('strategy_name')
+  
+  
+  
+  
+        console.log("resultUser", resultUser)
+  
+  
+        if (!resultUser) {
+          return res.status(404).send({
+            status: false,
+            msg: "User not found",
+          });
         }
-      ];
-
+  
+        // Extracting strategy names from resultUser array
+        const strategyNames = resultUser.map(user => user.strategy_name);
+  
+        const pipeline = [
+          {
+            $match: { strategy: { $in: strategyNames } }
+          },
+          {
+            $project: {
+              _id: 0,
+              trade_symbol: 1,
+              qty_percent: 1,
+              strategy: 1,
+              symbol: 1,
+              TradeType: 1,
+              tr_price: 1,
+              createdAt: 1,
+              type: 1,
+              price: 1,
+              option_type: 1,
+              strike: 1,
+              expiry: 1,
+              segment: 1,
+              client_persnal_key: 1,
+              token: 1,
+              lot_size: 1
+            }
+          }
+        ];
+        
       const results = await signals.aggregate(pipeline);
       res.send({
         status: true,
         msg: "Data Retrieved Successfully",
         data: results,
       });
+
+      }else if(Role == "RESEARCH"){
+
+
+        const resultUser = await researcher_strategy.find({
+          maker_id: ObjSubAdminId,
+        }).select('strategy_name')
+  
+  
+  
+  
+        console.log("resultUser", resultUser)
+  
+  
+        if (!resultUser) {
+          return res.status(404).send({
+            status: false,
+            msg: "User not found",
+          });
+        }
+  
+        // Extracting strategy names from resultUser array
+        const strategyNames = resultUser.map(user => user.strategy_name);
+  
+        const pipeline = [
+          {
+            $match: { strategy: { $in: strategyNames } }
+          },
+          {
+            $project: {
+              _id: 0,
+              trade_symbol: 1,
+              qty_percent: 1,
+              strategy: 1,
+              symbol: 1,
+              TradeType: 1,
+              tr_price: 1,
+              createdAt: 1,
+              type: 1,
+              price: 1,
+              option_type: 1,
+              strike: 1,
+              expiry: 1,
+              segment: 1,
+              client_persnal_key: 1,
+              token: 1,
+              lot_size: 1
+            }
+          }
+        ];
+
+
+        const results = await signals.aggregate(pipeline);
+        res.send({
+          status: true,
+          msg: "Data Retrieved Successfully",
+          data: results,
+        });
+
+      }else if(Role == "USER"){
+
+      }else if(Role == "EMPLOYEE"){
+
+      }
+
+
+
+
+
+
+
+
     } catch (error) {
       console.log("Error retrieving data:", error);
       res.status(500).send({

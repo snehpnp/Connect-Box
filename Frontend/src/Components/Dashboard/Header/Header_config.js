@@ -580,7 +580,7 @@ export const research_header = [
             {
                 id: 94,
                 name: 'Open Position',
-                route: "/research/open-position",
+                route: "/research/open/position",
                 Icon: "fe fe-grid",
                 Data: []
             },
