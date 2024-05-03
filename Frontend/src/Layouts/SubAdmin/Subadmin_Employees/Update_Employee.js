@@ -163,8 +163,8 @@ const Edit_Employee = () => {
           employee_edit: values.editemployee ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           trade_history_old: values.tradehistory ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           detailsinfo: values.detailsinfo ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
-          strategy: values.updateapikeys ? [] :selectedStrategyIds,
-          group_services: values.updateapikeys ? [] :selectedGroupIds,
+          strategy: values.Strategy ? selectedStrategyIds: [],
+          group_services: values.groupservice ? selectedGroupIds : [],
         },
       };
 
@@ -419,12 +419,9 @@ const Edit_Employee = () => {
   
  
   const data = async () => {
-    await dispatch(
-      GetEmployeeStrategy({
-        req: {},
-        id,
-      })
-    )
+    const data = {id : user_id}
+
+    await dispatch( GetEmployeeStrategy(data))
       .unwrap()
       .then((response) => {
         if (response.status) {
@@ -434,7 +431,7 @@ const Edit_Employee = () => {
           });
         }
       });
-    await dispatch(GetEmployeeServices())
+    await dispatch(GetEmployeeServices(data))
       .unwrap()
       .then((response) => {
         if (response.status) {

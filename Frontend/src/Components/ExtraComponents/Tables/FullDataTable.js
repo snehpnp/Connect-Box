@@ -17,6 +17,10 @@ const FullDataTable = ({
   const backgroundColor = themeMode === "light" ? "white" : "#16191c";
   const Color = themeMode === "light" ? "black" : "white";
 
+
+
+
+ 
   return (
     <>
 
