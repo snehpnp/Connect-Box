@@ -201,6 +201,13 @@ export default function AllEmployees() {
             headerClassName: styles.boldHeader,
 
         },
+        {
+            field: "exit_status",
+            headerName: "Entry/Exit Status ",
+            width: 150,
+            headerClassName: styles.boldHeader,
+
+        },
 
     ];
 

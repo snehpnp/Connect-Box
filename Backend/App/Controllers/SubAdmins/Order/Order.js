@@ -61,7 +61,8 @@ class SignalController {
               segment: 1,
               client_persnal_key: 1,
               token: 1,
-              lot_size: 1
+              lot_size: 1,
+              exit_status: 1
             }
           }
         ];
@@ -478,6 +479,7 @@ class SignalController {
               stop_loss:1,
               exit_time:1,
               exit_time1:1,
+              exit_status:1,
               sl_status:1,
               complete_trade:1,
               signals_id:1,
@@ -511,6 +513,7 @@ class SignalController {
               "result.token":1,
               "result.lot_size":1,
               "result.MakeStartegyName":1,
+              "result.exit_status":1,
               "result.createdAt":1,
               "result.updatedAt":1,
 

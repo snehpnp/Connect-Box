@@ -197,6 +197,10 @@ export default function AllEmployees() {
             text: "Symbol",
         },
         {
+            dataField: "strategy",
+            text: "Strategy",
+        },
+        {
             dataField: "entry_qty",
             text: "Entry Qty",
             formatter: (cell, row, rowIndex) => (
@@ -283,10 +287,27 @@ export default function AllEmployees() {
                 </div>
             ),
         },
-
         {
-            dataField: "strategy",
-            text: "Strategy",
+            dataField: "",
+            text: "Entry Status",
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <span>{row.result[0].exit_status}</span>
+
+
+                </div>
+            ),
+        },
+        {
+            dataField: "exit_status",
+            text: "Exit Status",
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <span>{row.exit_status}</span>
+
+
+                </div>
+            ),
         },
 
         {

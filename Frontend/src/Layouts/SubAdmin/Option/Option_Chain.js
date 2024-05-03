@@ -629,7 +629,8 @@ function Option_Chain() {
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: Config.broker_backend,
+               // url: Config.broker_backend,
+                url: 'http://localhost:8800/broker-signals',
            
                 headers: {
                     'Content-Type': 'text/plain'
