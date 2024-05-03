@@ -51,25 +51,7 @@ const Strategies = () => {
                     <div className='row align-center'>
                     <div className="col">
                         
-                        <h5 className='card-title mb-0'><i className="pe-2 fas fa-list"></i>Plans List </h5>
-                        </div>
-                        <div className="col auto">
-                        <div className="list-btn float-lg-end mt-0">
-                                <ul className="filter-list mb-0">
-
-                                    <li>
-                                        <p
-                                            className="btn btn-primary"
-
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#add_newpackage"
-                                        >
-                                            <i className="fa fa-plus-circle me-2" aria-hidden="true" />
-                                            Add Plan
-                                        </p>
-                                    </li>
-                                </ul>
-                            </div>
+                        <h5 className='card-title mb-0'><i className="pe-2 fas fa-list"></i>Strategies</h5>
                         </div>
                         </div>
                         </div>
