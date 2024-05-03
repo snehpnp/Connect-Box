@@ -241,7 +241,7 @@ function MessageBroadcast() {
 
     const ownerId = datas.user_id
 
-    await dispatch(admin_Msg_Get({ ownerId, key: 2 }))
+    await dispatch(admin_Msg_Get({ ownerId, key: 1 }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {

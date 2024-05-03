@@ -6,24 +6,19 @@ import FullDataTable from '../../../Components/ExtraComponents/Tables/DataTable'
 import Loader from '../../../Utils/Loader';
 import { get_three_digit_month } from '../../../Utils/Date_formet'
 import { get_thre_digit_month, convert_string_to_month } from "../../../Utils/Date_formet";
-
 import { CreateSocketSession, ConnctSocket, GetAccessToken, } from "../../../Utils/Alice_Socket";
 import Modal from "../../../Components/ExtraComponents/Modal";
 import { Trash2 } from 'lucide-react';
 import { GetBrokerDatas } from "../../../ReduxStore/Slice/Comman/Userinfo";
-
 import { GetBrokerLiveDatas } from "../../../ReduxStore/Slice/Comman/Makecall/make";
-
 import $ from "jquery";
 import Holidays from "date-holidays"
 import { useNavigate } from 'react-router-dom';
 import { Get_Option_All_Round_token, Get_Option_Symbols, Get_Symbol_Expiry, Get_Company_Infos, Get_All_Strategy_for_Client } from '../../../ReduxStore/Slice/Subadmin/OptionChainSlice'
-
 import axios from "axios"
 import toast, { Toaster } from 'react-hot-toast';
-
+import * as Config from "../../../Utils/Config";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
-
 import Swal from 'sweetalert2';
 
 function Option_Chain() {
@@ -634,9 +629,8 @@ function Option_Chain() {
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'http://localhost:8800/broker-signals',
-               // url: 'http://localhost:8800/broker-signals',
-                // url: `${getBrokerUrl && getBrokerUrl}`,
+                url: Config.broker_backend,
+           
                 headers: {
                     'Content-Type': 'text/plain'
                 },

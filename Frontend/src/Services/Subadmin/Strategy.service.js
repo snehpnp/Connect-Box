@@ -287,3 +287,19 @@ export async function strategyOrderUpdate(data, token) {
     }
 }
 
+
+//Trade HISTORY Orders From SubAdmin
+export async function Tradehistory_data(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}tradehistory/data`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+
+}

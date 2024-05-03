@@ -1,7 +1,14 @@
 
 "use strict";
 require('dotenv').config();
+
+// require('../BACKEND/App/Connections/mongo_connection')
+// const db = require('../BACKEND/App/Models');
+
 require('../Backend/App/Connections/mongo_connection')
+const db = require('../Backend/App/Models');
+
+
 const express = require("express");
 const app = express();
 const path = require('path');
@@ -35,8 +42,6 @@ var CryptoJS = require("crypto-js");
 
 
 
-// const db = require('./Models');
-const db = require('../Backend/App/Models');
 const services = db.services;
 const Users = db.user;
 const Alice_token = db.Alice_token;
