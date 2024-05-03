@@ -419,7 +419,7 @@ class Researcher {
                     return res.status(200).json({ status: true, msg: "Strategy Add successfully!", data: strategy_Data._id });
                 })
                 .catch((err) => {
-                    console.log(" Error Add Time Error", err);
+                    console.log(" Error Add Time Error-", err);
                     if (err.keyValue) {
                         return res.send({
                             status: false,
@@ -684,7 +684,7 @@ class Researcher {
 
             // var getAllTheme = await strategy_model.find()
             const getAllstrategy = await researcher_strategy.find({ maker_id: id }).sort({ createdAt: -1 })
-                .select('_id strategy_name strategy_description strategy_demo_days  strategy_category strategy_segment strategy_image monthly_charges security_fund maker_id createdAt updatedAt __v');
+                .select('_id strategy_name strategy_description strategy_demo_days  strategy_percentage max_trade strategy_category strategy_segment strategy_image monthly_charges security_fund maker_id createdAt updatedAt __v');
 
             // IF DATA NOT EXIST
             if (getAllstrategy.length == 0) {

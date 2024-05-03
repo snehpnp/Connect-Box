@@ -467,8 +467,9 @@ const Strategy = () => {
                                         <div className="package-header d-flex justify-content-between">
                                             <div className="d-flex justify-content-between w-100">
                                                 <div className="">
+                                                <h2 className="my-2">{stg.strategy_name}</h2>
                                                     <h6>Segment: {stg.strategy_segment}</h6>
-                                                    <h2 className="my-2">{stg.strategy_name}</h2>
+                                                   
                                                 </div>
                                                 <span className="icon-frame d-flex align-items-center justify-content-center">
                                                     <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
@@ -491,8 +492,8 @@ const Strategy = () => {
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Strategy Segment</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.strategy_segment}</span>
+                                                <span >Monthly Charges</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.monthly_charges}</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
@@ -506,17 +507,10 @@ const Strategy = () => {
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Strategy Percentage</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.strategy_percentage}</span>
-                                            </li><li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Strategy Percentage</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.strategy_percentage}</span>
-                                            </li><li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Strategy Percentage</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.strategy_percentage}</span>
+                                                <span >Security Fund</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.security_fund}</span>
                                             </li>
+                                             
                                         </ul>
                                         <div className="d-flex justify-content-center package-edit">
                                             <a className="btn-action-icon me-2"  >
