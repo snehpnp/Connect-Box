@@ -4661,7 +4661,9 @@ span.select2-container.select2-container--default.select2-container--open {
 }
 
 
-.sidebar .sidebar-menu ul li a.active, .sidebar .sidebar-menu ul li a.subdrop, .sidebar .sidebar-menu ul li a:hover {
+.sidebar .sidebar-menu ul li a.active,
+.sidebar .sidebar-menu ul li a.subdrop,
+.sidebar .sidebar-menu ul li a:hover {
     /* margin: 1px; */
     color: #7539ff;
     border-radius: 2px;
@@ -9332,7 +9334,7 @@ table .badge {
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul.links>li>a .menu-arrow {
     top: 21px;
-    right: -2px;
+    right: -4px;
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul li.submenu .noti-dot:before {
@@ -11059,7 +11061,6 @@ table .badge {
     cursor: pointer;
     font-size: 0;
     height: 15px;
-    margin-left: 10px;
     top: 3px;
     margin-bottom: 0;
     position: absolute;
@@ -33994,7 +33995,7 @@ img {
 
 .ultimite .price {
     background: #DD4B5E;
-   
+
 }
 
 
@@ -34294,8 +34295,7 @@ img {
     color: #ddd !important;
 }
 
-button[aria-label="delete"]
-{
+button[aria-label="delete"] {
     background-color: rgba(255, 218, 218, .49) !important;
     color: red !important;
     margin: 0px 5px;
@@ -34305,21 +34305,49 @@ button[aria-label="delete"]
 }
 
 .button_sell {
-    background-color: rgba(255, 218, 218, .49) !important;
+    background-color: red !important;
+    color: #fff !important;
+    margin: 0px 5px;
+    padding: 5px 8px;
+    border-radius: 4px;
+}
+
+.button_sell:hover {
+    background-color: #fff !important;
     color: red !important;
     margin: 0px 5px;
     padding: 5px 8px;
-    border: 1px solid !important;
     border-radius: 4px;
+    border: 1px solid red;
 }
+
+
 .button_BUY {
-    background-color: #e1ffed !important;
-    color: #33b469 !important;
+    background-color: green !important;
+    color: #fff !important;
     border: none;
     padding: 5px 8px;
-    border: 1px solid;
     border-radius: 4px;
 }
+
+.button_BUY:hover {
+    background-color: #fff !important;
+    color: green !important;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: 1px solid green;
+}
+
+.button_BUY .active {
+    background-color: #fff !important;
+    color: green !important;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 4px;
+}
+
+
 
 .button_sell {
     border: none;
@@ -34526,6 +34554,7 @@ button[aria-label="edit"] {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
+
 .css-az8st9-MuiDataGrid-root {
 
     color: unset !important;
@@ -34657,133 +34686,165 @@ button[aria-label="edit"] {
 
 
 
-  [data-layout-mode=dark] .MuiDataGrid-cell {
+[data-layout-mode=dark] .MuiDataGrid-cell {
     color: #ddd !important;
 }
-[data-layout-mode=dark] .MuiTablePagination-toolbar ,[data-layout-mode=dark] .MuiTab-textColorPrimary ,[data-layout-mode=dark] .MuiSelect-icon
-{
-    color: #fff;
-}
-a.user-a:hover span {
-    color: #7539ff;
-}
-.borderless-table .table tbody tr td {
-    border-color: transparent;
-    border: none !important;
-    padding: 10px 15px;
-}
-.borderless-table .table {
-    /* border-color: transparent; */
-    border:1px solid rgb(135, 138, 153);
-    
-}
-[data-layout-mode=light] body .btn-primary:hover{
-    color: #7539ff  !important;
-    background: #fff;
-    border-color: #7539ff;
-    box-shadow: inset 0 50px 0 0 #fff;
-}
-.left-side 
-{
-    width:250px; height:100%;
-     /* background:#ddd; */
-      display:inline-block;
-       float:left; position:sticky; top:150px;
 
-
-[data-layout-mode=dark] .MuiDataGrid-cell ,
 [data-layout-mode=dark] .MuiTablePagination-toolbar,
-[data-layout-mode=dark] .MuiTablePagination-selectIcon{
-    color: #ddd !important;
+[data-layout-mode=dark] .MuiTab-textColorPrimary,
+[data-layout-mode=dark] .MuiSelect-icon {
+    color: #fff;
 }
+
 a.user-a:hover span {
     color: #7539ff;
 }
-.btn-primary:hover{
+
+[data-layout-mode=light] body .btn-primary:hover {
     color: #7539ff !important;
-    background: #fff;
-    border-color: #7539ff;
-    box-shadow: inset 0 50px 0 0 #fff !important;
+
+    .borderless-table .table tbody tr td {
+        border-color: transparent;
+        border: none !important;
+        padding: 10px 15px;
+    }
+
+    .borderless-table .table {
+        /* border-color: transparent; */
+        border: 1px solid rgb(135, 138, 153);
+
+    }
+
+    [data-layout-mode=light] body .btn-primary:hover {
+        color: #7539ff !important;
+        background: #fff;
+        border-color: #7539ff;
+        box-shadow: inset 0 50px 0 0 #fff;
+    }
+
+    .left-side {
+        width: 250px;
+        height: 100%;
+        /* background:#ddd; */
+        display: inline-block;
+        float: left;
+        position: sticky;
+        top: 150px;
+
+
+        [data-layout-mode=dark] .MuiDataGrid-cell,
+        [data-layout-mode=dark] .MuiTablePagination-toolbar,
+        [data-layout-mode=dark] .MuiTablePagination-selectIcon {
+            color: #ddd !important;
+        }
+
+        a.user-a:hover span {
+            color: #7539ff;
+        }
+
+        .btn-primary:hover {
+            color: #7539ff !important;
+            background: #fff;
+            border-color: #7539ff;
+            box-shadow: inset 0 50px 0 0 #fff !important;
+        }
+
+        .mainDiv {
+            display: flex;
+            min-height: 100%;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .cardStyle {
+            width: 500px;
+            border-color: white;
+            background: #fff;
+            padding: 36px 0;
+            border-radius: 4px;
+            margin: 30px 0;
+            box-shadow: 0px 0 2px 0 rgba(0, 0, 0, 0.25);
+        }
+
+        #signupLogo {
+            max-height: 100px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .formTitle {
+            font-weight: 600;
+            margin-top: 20px;
+            color: #2F2D3B;
+            text-align: center;
+        }
+
+        .inputLabel {
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 6px;
+            margin-top: 24px;
+        }
+
+        .inputDiv {
+            width: 70%;
+            display: flex;
+            flex-direction: column;
+            margin: auto;
+        }
+
+        input {
+            height: 40px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: none;
+            border: solid 1px #ccc;
+            padding: 0 11px;
+        }
+
+        input:disabled {
+            cursor: not-allowed;
+            border: solid 1px #eee;
+        }
+
+        .buttonWrapper {
+            margin-top: 40px;
+        }
+
+        .submitButton {
+            width: 70%;
+            height: 40px;
+            margin: auto;
+            display: block;
+            color: #fff;
+            background-color: #7539ff;
+            border-color: #065492;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.035);
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+    }
+
+    .MuiDataGrid-columnHeaderTitle.css-t89xny-MuiDataGrid-columnHeaderTitle {
+        font-weight: bold;
+    }
 }
 
-.mainDiv {
-    display: flex;
-    min-height: 100%;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    font-family: 'Open Sans', sans-serif;
-}
 
-.cardStyle {
-    width: 500px;
-    border-color: white;
-    background: #fff;
-    padding: 36px 0;
+
+.active {
+
+    background-color: #fff !important;
+    color: red !important;
+    margin: 0px 5px;
+    padding: 5px 8px;
     border-radius: 4px;
-    margin: 30px 0;
-    box-shadow: 0px 0 2px 0 rgba(0, 0, 0, 0.25);
+    border: 1px solid red;
 }
 
-#signupLogo {
-    max-height: 100px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-}
-
-.formTitle {
-    font-weight: 600;
-    margin-top: 20px;
-    color: #2F2D3B;
-    text-align: center;
-}
-
-.inputLabel {
-    font-size: 12px;
-    color: #555;
-    margin-bottom: 6px;
-    margin-top: 24px;
-}
-
-.inputDiv {
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    margin: auto;
-}
-
-input {
-    height: 40px;
-    font-size: 16px;
-    border-radius: 4px;
-    border: none;
-    border: solid 1px #ccc;
-    padding: 0 11px;
-}
-
-input:disabled {
-    cursor: not-allowed;
-    border: solid 1px #eee;
-}
-
-.buttonWrapper {
-    margin-top: 40px;
-}
-
-.submitButton {
-    width: 70%;
-    height: 40px;
-    margin: auto;
-    display: block;
-    color: #fff;
-    background-color: #7539ff;
-    border-color: #065492;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
-    box-shadow: 0 2px 0 rgba(0, 0, 0, 0.035);
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-}
