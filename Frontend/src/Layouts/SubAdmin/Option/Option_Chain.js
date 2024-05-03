@@ -523,6 +523,7 @@ function Option_Chain() {
                     if (response.tk) {
                         if (response.lp !== undefined) {
 
+                            console.log("response",response)
                             $(".Call_Price_" + response.tk).html(response.lp);
                             $(".Put_Price_" + response.tk).html(response.lp);
 
