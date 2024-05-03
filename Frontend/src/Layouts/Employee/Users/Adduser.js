@@ -1,15 +1,12 @@
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
 import AddForm from "../../../Components/ExtraComponents/forms/AddForm";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 import {   GET_ALL_SERVICES_GIVEN } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
- 
 import { AddUsers, Get_All_Broker, } from "../../../ReduxStore/Slice/Subadmin/UsersSlice";
 import { Get_Permission } from '../../../ReduxStore/Slice/Employee/EmployeeSlice'
 import Loader from "../../../Utils/Loader";
-
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
@@ -25,18 +22,12 @@ const AddClient = () => {
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   var subadmin_service_type1 = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
 
-  const [employeeNames, setEmployeeNames] = useState({
-    loading: true,
-    data: [],
-  });
+  
   const [serviceName, setServiceName] = useState({
     loading: true,
     data: [],
   });
-  const [getAllStategy, setgetallStrategy] = useState({
-    loading: true,
-    data: [],
-  });
+   
   const [getPermission, setPermission] = useState({
     loading: true,
     data: [],
@@ -46,10 +37,7 @@ const AddClient = () => {
 
  
 
-  const [allGroupService, setAllGroupService] = useState({
-    loading: true,
-    data: [],
-  });
+  
   const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
   const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState(
     []
@@ -260,7 +248,7 @@ const AddClient = () => {
         Per_trade: null,
         Strategies: selectedCheckboxesAndPlan,
         parent_id: user_id,
-        parent_role: Role || "SUBADMIN",
+        parent_role: Role ,
         demat_userid: values.demat_userid,
         group_service: values.groupservice,
         broker: values.broker,
@@ -281,7 +269,7 @@ const AddClient = () => {
               timerProgressBar: true
             });
             setTimeout(() => {
-              navigate("/subadmin/users");
+              navigate("/employee/allusers");
             }, 1500);
           } else {
             toast.error(response.msg);
@@ -379,6 +367,7 @@ const AddClient = () => {
   };
 
   const handleStrategyChange = (id) => {
+    console.log("id :", id)
     if (selectedCheckboxes.includes(id)) {
       setSelectedCheckboxes(
         selectedCheckboxes.filter((checkboxId) => checkboxId !== id)
@@ -415,8 +404,6 @@ const AddClient = () => {
   }, []);
 
 
-
-
   return (
 
     <>
@@ -428,7 +415,7 @@ const AddClient = () => {
         btn_name="Add User"
         btn_name1="Cancel"
         formik={formik}
-        btn_name1_route={"/subadmin/users"}
+        btn_name1_route={"/employee/allusers"}
         additional_field={
           <>
             {serviceName.data.length > 0 ? <div class="input-block "> <label>All Group Service</label> </div> : ""}
@@ -437,30 +424,23 @@ const AddClient = () => {
               {serviceName &&
                 serviceName.data.map((item) => (
                   <>
-
                     <div className={`col-lg-2 `} key={item.serviceId}>
-
                       <label
                         className="alert alert-primary py-2 "
                         style={{ fontSize: "10px" }}
                         for={item.serviceName}
                       >{`${item.serviceName}[${item.categoryName}]`}</label>
-
                     </div>
-
                   </>
-
                 ))}
             </div>
-
-
 
 
 
             {subadmin_service_type1 == 2 ?
               (<div className="row mt-4">
                 <div class="input-block ">
-                  <label>All Strategies</label>
+                  <label>All Strategies 1</label>
                 </div>
                 {getPermission.strategyName.map((strategy) => (
                   <div className={`col-lg-3 mt-2`} key={strategy.id}>
@@ -471,9 +451,9 @@ const AddClient = () => {
                             type="checkbox"
                             className="form-check-input"
                             name={strategy.strategy_name}
-                            value={strategy._id}
+                            value={strategy.id}
                             onChange={() =>
-                              handleStrategyChange(strategy._id)
+                              handleStrategyChange(strategy.id)
                             }
                           />
                           <label
@@ -485,10 +465,10 @@ const AddClient = () => {
 
                           {formik.values.licence == 1 || formik.values.licence == 0
                             ? ""
-                            : selectedCheckboxes.includes(strategy._id) && (
+                            : selectedCheckboxes.includes(strategy.id) && (
                               <>
                                 <div
-                                  className=""
+                                 
                                   style={{
                                     display: "flex",
                                     flexDirection: "column",
@@ -499,10 +479,10 @@ const AddClient = () => {
                                     <div className="d-flex align-items-center">
                                       <input
                                         type="radio"
-                                        name={`option_${strategy._id}`}
+                                        name={`option_${strategy.id}`}
                                         value="1"
                                         defaultChecked
-                                        id={`${strategy._id}_1`}
+                                        id={`${strategy.id}_1`}
                                         onChange={(e) =>
                                           PlanSetinState(e.target.id)
                                         }
@@ -519,9 +499,9 @@ const AddClient = () => {
                                     <div className="d-flex align-items-center">
                                       <input
                                         type="radio"
-                                        name={`option_${strategy._id}`}
+                                        name={`option_${strategy.id}`}
                                         value="2"
-                                        id={`${strategy._id}_2`}
+                                        id={`${strategy.id}_2`}
                                         onChange={(e) =>
                                           PlanSetinState(e.target.id)
                                         }
@@ -538,9 +518,9 @@ const AddClient = () => {
                                     <div className="d-flex align-items-center">
                                       <input
                                         type="radio"
-                                        name={`option_${strategy._id}`}
+                                        name={`option_${strategy.id}`}
                                         value="3"
-                                        id={`${strategy._id}_3`}
+                                        id={`${strategy.id}_3`}
                                         onChange={(e) =>
                                           PlanSetinState(e.target.id)
                                         }
@@ -557,9 +537,9 @@ const AddClient = () => {
                                     <div className="d-flex align-items-center">
                                       <input
                                         type="radio"
-                                        name={`option_${strategy._id}`}
+                                        name={`option_${strategy.id}`}
                                         value="3"
-                                        id={`${strategy._id}_4`}
+                                        id={`${strategy.id}_4`}
                                         onChange={(e) =>
                                           PlanSetinState(e.target.id)
                                         }
@@ -591,7 +571,7 @@ const AddClient = () => {
                 {getPermission.strategyName.map((strategy) => (
 
                   strategy.Service_Type == formik.values.Service_Type && (
-                    <div className={`col-lg-3 mt-2`} key={strategy._id}>
+                    <div className={`col-lg-3 mt-2`} key={strategy.id}>
                       <div className="row">
                         <div className="col-lg-12">
                           <div className="form-check custom-checkbox mb-3">
@@ -599,9 +579,9 @@ const AddClient = () => {
                               type="checkbox"
                               className="form-check-input"
                               name={strategy.strategy_name}
-                              value={strategy._id}
+                              value={strategy.id}
                               // defaultChecked={}
-                              onChange={() => handleStrategyChange(strategy._id)}
+                              onChange={() => handleStrategyChange(strategy.id)}
                             />
                             <label
                               className="form-check-label"
@@ -613,7 +593,7 @@ const AddClient = () => {
                             {formik.values.licence == 1 || formik.values.licence == 0 ? (
                               ""
                             ) : (
-                              selectedCheckboxes.includes(strategy._id) && (
+                              selectedCheckboxes.includes(strategy.id) && (
                                 <>
                                   <div
                                     className=""
@@ -627,10 +607,10 @@ const AddClient = () => {
                                       <div className="d-flex align-items-center">
                                         <input
                                           type="radio"
-                                          name={`option_${strategy._id}`}
+                                          name={`option_${strategy.id}`}
                                           value="1"
                                           defaultChecked
-                                          id={`${strategy._id}_1`}
+                                          id={`${strategy.id}_1`}
                                           onChange={(e) => PlanSetinState(e.target.id)}
                                         />
                                         <label
@@ -645,9 +625,9 @@ const AddClient = () => {
                                       <div className="d-flex align-items-center">
                                         <input
                                           type="radio"
-                                          name={`option_${strategy._id}`}
+                                          name={`option_${strategy.id}`}
                                           value="2"
-                                          id={`${strategy._id}_2`}
+                                          id={`${strategy.id}_2`}
                                           onChange={(e) => PlanSetinState(e.target.id)}
                                         />
                                         <label
@@ -662,9 +642,9 @@ const AddClient = () => {
                                       <div className="d-flex align-items-center">
                                         <input
                                           type="radio"
-                                          name={`option_${strategy._id}`}
+                                          name={`option_${strategy.id}`}
                                           value="3"
-                                          id={`${strategy._id}_3`}
+                                          id={`${strategy.id}_3`}
                                           onChange={(e) => PlanSetinState(e.target.id)}
                                         />
                                         <label
@@ -679,9 +659,9 @@ const AddClient = () => {
                                       <div className="d-flex align-items-center">
                                         <input
                                           type="radio"
-                                          name={`option_${strategy._id}`}
+                                          name={`option_${strategy.id}`}
                                           value="3"
-                                          id={`${strategy._id}_4`}
+                                          id={`${strategy.id}_4`}
                                           onChange={(e) => PlanSetinState(e.target.id)}
                                         />
                                         <label

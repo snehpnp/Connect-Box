@@ -9,9 +9,11 @@ import { useDispatch } from "react-redux";
 import ExportToExcel from '../../../Utils/ExportCSV'
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
-import { update_Balance} from "../../../ReduxStore/Slice/Admin/Subadmins";
+import { update_Balance } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
+import { Get_Permission } from '../../../ReduxStore/Slice/Employee/EmployeeSlice'
+
 import { GetAllUsers, Get_All_Broker, Show_Status, DeleteUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 
 
@@ -35,7 +37,14 @@ export default function AllUsers() {
   const [searchInput, setSearchInput] = useState('');
   const [ForGetCSV, setForGetCSV] = useState([])
   const [getAllBroker, setAllBroker] = useState([]);
+  const [getPermission, setPermission] = useState({
+    loading: true,
+    data: [],
 
+  });
+
+
+  console.log("getPermission :", getPermission.data.employee_edit)
   const [ShowDeleteModal, setShowDeleteModal] = useState(false);
 
 
@@ -49,12 +58,7 @@ export default function AllUsers() {
     data1: [],
   });
 
-
-
-
-
   const label = { inputProps: { "aria-label": "Switch demo" } };
-
 
   const styles = {
     container: {
@@ -108,12 +112,13 @@ export default function AllUsers() {
 
 
 
-  const columns = [
+  let columns = [
     {
       field: "id",
       headerName: "ID",
       width: 70,
       headerClassName: styles.boldHeader,
+      hideColumn:true,
       renderCell: (params) => (
         <div> <b>{params.value + 1}</b></div>
       ),
@@ -122,67 +127,82 @@ export default function AllUsers() {
       field: "FullName",
       headerName: "Full Name",
       width: 160,
+      hideColumn:true,
       headerClassName: styles.boldHeader,
+     
     },
     {
       field: "UserName",
       headerName: "User name",
       width: 160,
+      hideColumn:true,
       headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>{getPermission.data && getPermission.data.detailsinfo ? params.value : params.value.substring(0, 2)+ "******" +params.value.substring(params.value.length - 2) }</div>
+      ),
     },
     {
       field: "Email",
       headerName: "Email ID",
       width: 220,
+      hideColumn:true,
       headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>{getPermission.data && getPermission.data.detailsinfo ? params.value : params.value.substring(0, 2)+ "******" +params.value.substring(params.value.length - 2) }</div>
+      ),
     },
 
     {
       field: "PhoneNo",
       headerName: "Phone Number",
       width: 180,
+      hideColumn:true,
       headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div> {getPermission.data && getPermission.data.detailsinfo ? params.value : params.value.substring(0, 2)+ "******" +params.value.substring(params.value.length - 2) }</div>
+      ),
     },
-    {
-      field: "client_key",
-      headerName: "Client Key",
-      width: 200,
-      headerClassName: styles.boldHeader,
-    },
+    
     {
       field: "broker",
       headerName: "Broker",
       width: 120,
       headerClassName: styles.boldHeader,
       renderCell: (params) => showBrokerName(params.row),
+      hideColumn:true,
+       
     },
     {
       field: 'license_type',
       headerName: "License Type",
       width: 120,
       headerClassName: styles.boldHeader,
+      hideColumn:true,
       renderCell: (params) => showLicenceName(params.row),
+      
     },
 
 
-    {
-      field: "ActiveStatus",
-      headerName: "Status",
-      width: 120,
-      headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div className="status-toggle">
-          <input
-            id={`rating_${params.row.id}`}
-            className="check"
-            type="checkbox"
-            onChange={(event) => handleSwitchChange(event, params.row._id)}
-            defaultChecked={params.value == 1}
-          />
-          <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg"></label>
-        </div>
-      ),
-    },
+    // {
+    //   field: "ActiveStatus",
+    //   headerName: "Status",
+    //   width: 120,
+    //   headerClassName: styles.boldHeader,
+    //   hideColumn:true,
+    //   renderCell: (params) => (
+    //     <div className="status-toggle">
+    //       <input
+    //         id={`rating_${params.row.id}`}
+    //         className="check"
+    //         type="checkbox"
+    //         onChange={(event) => handleSwitchChange(event, params.row._id)}
+    //         defaultChecked={params.value == 1}
+    //       />
+    //       <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg"></label>
+    //     </div>
+    //   ),
+    // },
+    
 
     {
       field: "actions",
@@ -200,34 +220,67 @@ export default function AllUsers() {
           <IconButton
             aria-label="delete"
             size="small"
-            onClick={() => {
-
-
-              handleDeleteConfirmation(params.row._id)
-            }}
+            onClick={() => handleDeleteConfirmation(params.row._id)}
           >
             <DeleteIcon />
           </IconButton>
         </div>
       ),
       headerClassName: styles.boldHeader,
+      hideColumn:  getPermission.data && getPermission.data.employee_edit==1 ? true : false 
+      
     },
+    
 
     {
       field: "Create_Date",
       headerName: "Created At",
       width: 250,
       headerClassName: styles.boldHeader,
+      hideColumn:true,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
     },
   ];
 
 
+  
+ 
+
   const handleEdit = async (row) => {
     navigate('/subadmin/user/edit/' + row._id);
-
   };
 
+
+  console.log("getPermission.data.employee_edit :", getPermission.data.employee_edit)
+
+  const getpermission = async () => {
+    const data = { id: user_id }
+    await dispatch(Get_Permission(data)).unwrap()
+      .then((response) => {
+        if (response.status) {
+          setPermission({
+            loading: false,
+            data: response.data,
+
+          })
+        }
+        else {
+          setPermission({
+            loading: false,
+            data: [],
+
+
+          })
+        }
+      })
+      .catch((err) => {
+        console.log("Error in fatching in permission ", err)
+      })
+  }
+
+  useEffect(() => {
+    getpermission();
+  }, [])
 
 
 
@@ -439,6 +492,8 @@ export default function AllUsers() {
   }, [refresh, searchInput]);
 
 
+ 
+
   return (
     <>
       {!getAllUsers.loading ? (
@@ -448,91 +503,93 @@ export default function AllUsers() {
               <div className="card-header">
                 <div className="row align-items-center">
                   <div className="col">
-                <h5 className="card-title mb-0">
-                  <i className="pe-2 fa-solid fa-users"></i>
-                  All Users</h5>
-                </div>
-                <div className="col-auto">
-                <div className="list-btn">
-                    <ul className="filter-list mb-0">
-                      <li className="">
-                        <p
-                          className="mb-0 btn-filters"
+                    <h5 className="card-title mb-0">
+                      <i className="pe-2 fa-solid fa-users"></i>
+                      All Users</h5>
+                  </div>
+                  <div className="col-auto">
+                    <div className="list-btn">
+                      <ul className="filter-list mb-0">
+                        <li className="">
+                          <p
+                            className="mb-0 btn-filters"
 
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Refresh"
-                          onClick={RefreshHandle}
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            title="Refresh"
+                            onClick={RefreshHandle}
 
-                        >
-                          <span>
-                            <i className="fe fe-refresh-ccw" />
-                          </span>
-                        </p>
-                      </li>
-                      <li className="serach-li">
-                        <div className="input-group input-block">
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Search..."
-                            aria-label="Search"
-                            aria-describedby="search-addon"
-                            onChange={(e) => setSearchInput(e.target.value)}
-                            value={searchInput}
+                          >
+                            <span>
+                              <i className="fe fe-refresh-ccw" />
+                            </span>
+                          </p>
+                        </li>
+                        <li className="serach-li">
+                          <div className="input-group input-block">
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Search..."
+                              aria-label="Search"
+                              aria-describedby="search-addon"
+                              onChange={(e) => setSearchInput(e.target.value)}
+                              value={searchInput}
 
-                          />
-                        </div>
-                      </li>
-                      <li>
-                        <div
-                          className="dropdown dropdown-action"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Download"
-                        >
+                            />
+                          </div>
+                        </li>
+                        <li>
+                          <div
+                            className="dropdown dropdown-action"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            title="Download"
+                          >
 
-                       
+
                             <ExportToExcel
                               className="btn btn-primary "
                               apiData={ForGetCSV}
                               fileName={'All Strategy'} />
-                          
 
-                        </div>
-                      </li>
 
-                      <li>
-                        <Link
-                          to={"/subadmin/User/add"}
-                          className="btn btn-primary"
-                        >
-                          <i
-                            className="fa fa-plus-circle me-2"
-                            aria-hidden="true"
-                          />
-                          Add Users
-                        </Link>
-                      </li>
-                    </ul>
+                          </div>
+                        </li>
+                        {getPermission.data.employee_add ?
+                          <li>
+                            <Link
+                              to={"/employee/user/add"}
+                              className="btn btn-primary"
+                            >
+                              <i
+                                className="fa fa-plus-circle me-2"
+                                aria-hidden="true"
+                              />
+                              Add Users
+                            </Link>
+                          </li> : ''}
+
+                      </ul>
+                    </div>
                   </div>
                 </div>
-                </div>
-                </div>
-                <div className="card-body">
-                
-               
-             
-            
+              </div>
+              <div className="card-body">
 
-            <FullDataTable
-              styles={styles}
-              label={label}
-              columns={columns}
-              rows={getAllUsers.data}
-            />
-          </div>
-          </div>
+
+
+
+
+                <FullDataTable
+                  styles={styles}
+                  label={label}
+                  columns={columns.filter(column => column.hideColumn === true)}
+                  
+                  rows={getAllUsers.data}
+                />
+              </div>
+            </div>
           </div>
         </>
       ) : (
