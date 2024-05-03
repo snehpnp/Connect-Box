@@ -1,6 +1,8 @@
 "use strict";
 const db = require("../../../Models");
 const strategy_model = db.Strategies;
+const researcher_strategy = db.researcher_strategy;
+
 const User = db.user;
 const strategy_client_model = db.strategy_client;
 const mongoose = require("mongoose");
@@ -377,7 +379,7 @@ class strategy {
   // GET ALL STRATEGYS
   async GetAllSubadminStrategy(req, res) {
     try {
-      const { page, limit, id, key } = req.body;
+      const { page, limit, id, key,Role } = req.body;
 
       const skip = (page - 1) * limit;
 
@@ -405,30 +407,57 @@ class strategy {
 
       } else if (key == 2) {
 
-        const findUser = await User.find({ Role: "SUBADMIN", _id: id }).select('prifix_key')
+        const findUser = await User.find({  _id: id }).select('prifix_key Role')
         const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
 
-
-        const getAllstrategy = await strategy_model.find(
-          { strategy_name: { $regex: '^' + prefix } } // Using regex to match the starting 3 letters
-        )
-          .sort({ createdAt: -1 })
-          .select('_id strategy_name Service_Type');
-
-
-
-        // IF DATA NOT EXIST
-        if (getAllstrategy.length == 0) {
-          res.send({ status: false, msg: "Empty data", data: getAllstrategy });
-          return;
+        // console.log("findUser",findUser[0].Role)
+        if(findUser[0].Role == "SUBADMIN"){
+          const getAllstrategy = await strategy_model.find(
+            { strategy_name: { $regex: '^' + prefix } } // Using regex to match the starting 3 letters
+          )
+            .sort({ createdAt: -1 })
+            .select('_id strategy_name Service_Type');
+  
+  
+  
+          // IF DATA NOT EXIST
+          if (getAllstrategy.length == 0) {
+            res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+            return;
+          }
+  
+          // DATA GET SUCCESSFULLY
+          return res.send({
+            status: true,
+            msg: "Get All Startegy",
+            data: getAllstrategy,
+          });
+        }else if(findUser[0].Role == "RESEARCH"){
+          const getAllstrategy = await researcher_strategy.find(
+            { maker_id: findUser[0]._id } 
+          )
+            .sort({ createdAt: -1 })
+            .select('_id strategy_name');
+  
+  
+  
+          // IF DATA NOT EXIST
+          if (getAllstrategy.length == 0) {
+            res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+            return;
+          }
+  
+          // DATA GET SUCCESSFULLY
+          return res.send({
+            status: true,
+            msg: "Get All Startegy",
+            data: getAllstrategy,
+          });
         }
 
-        // DATA GET SUCCESSFULLY
-        return res.send({
-          status: true,
-          msg: "Get All Startegy",
-          data: getAllstrategy,
-        });
+    
+
+
       } else {
 
         const findUser = await User.find({ Role: "SUBADMIN", _id: id }).select('prifix_key')

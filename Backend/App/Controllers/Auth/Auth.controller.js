@@ -18,7 +18,7 @@ class Auth {
     // Login User
     async login(req, res) {
         try {
-            const { Email, Password, device,ip } = req.body;
+            const { Email, Password, device, ip } = req.body;
             // IF Login Time Email CHECK
 
 
@@ -73,13 +73,13 @@ class Auth {
                 'Email': EmailCheck.Email,
                 'user_id': EmailCheck._id,
                 'token': token,
-                'mobile': EmailCheck.PhoneNo, 
+                'mobile': EmailCheck.PhoneNo,
                 Role: EmailCheck.Role,
                 "broker": EmailCheck.broker,
                 "type": EmailCheck.license_type,
                 "UserName": EmailCheck.UserName,
                 "prifix_key": EmailCheck.prifix_key,
-                "subadmin_service_type": EmailCheck.Role =="RESEARCH" ? "0" : EmailCheck.subadmin_service_type
+                "subadmin_service_type": EmailCheck.Role == "RESEARCH" ? "0" : EmailCheck.subadmin_service_type
 
             };
 
@@ -98,17 +98,17 @@ class Auth {
                 { new: true }
             )
 
-                const user_login = new user_logs({
-                    user_Id: EmailCheck._id,
-                    admin_Id: EmailCheck.parent_id,
-                    login_status: "Panel On",
-                    role: EmailCheck.Role,
-                    device: "WEB",
-                    system_ip:ip
+            const user_login = new user_logs({
+                user_Id: EmailCheck._id,
+                admin_Id: EmailCheck.parent_id,
+                login_status: "Panel On",
+                role: EmailCheck.Role,
+                device: "WEB",
+                system_ip: ip
 
-                })
-                await user_login.save();
-       
+            })
+            await user_login.save();
+
 
 
             try {
@@ -227,25 +227,28 @@ class Auth {
     // Logout User
     async logoutUser(req, res) {
         try {
-            const { userId, Device } = req.body;
+            const { userId, Device, system_ip } = req.body;
             var addData = {}
 
             // IF Login Time Email CHECK
-            const EmailCheck = await User.findById(userId);
-            if (!EmailCheck) {
+            const EmailCheck = await User.find({ _id: userId });
+            if (EmailCheck.length === 0) {
                 return res.send({ status: false, msg: 'User Not exists', data: [] });
             }
+
+            // console.log("EmailCheck", EmailCheck[0]);
+
 
 
             try {
                 // WHERE LOGIN CHECK
                 if (Device.toUpperCase() == "APP") {                  //App Login Check
-                    if (EmailCheck.AppLoginStatus == 0) {
+                    if (EmailCheck[0].AppLoginStatus == 0) {
                     } else {
                         addData["AppLoginStatus"] = 0;
                     }
                 } else if (Device.toUpperCase() == "WEB") {          //Web login check
-                    if (EmailCheck.WebLoginStatus == 0) {
+                    if (EmailCheck[0].WebLoginStatus == 0) {
                         // return res.send({ status: false, msg: 'You are already log Out on the Web.', data: [] });
                     } else {
                         addData["WebLoginStatus"] = 0;
@@ -256,19 +259,24 @@ class Auth {
                 console.log("Error Verfiy error", error);
             }
 
+            addData = { ...addData, web_login_token: '' }
+            console.log("addData", addData)
 
             // Update Successfully
-            const result = await User.updateOne(
-                { Email: EmailCheck.Email },
+            const result = await User.updateMany(
+                { Email: EmailCheck[0].Email },
                 { $set: addData }
             );
 
+
             const user_login = new user_logs({
-                user_Id: EmailCheck._id,
-                admin_Id: EmailCheck.parent_id,
+                user_Id: EmailCheck[0]._id,
+                admin_Id: EmailCheck[0].parent_id,
                 login_status: "Panel off",
-                role: EmailCheck.Role
+                role: EmailCheck[0].Role,
+                system_ip: system_ip
             })
+            console.log("user_login",user_login)
             await user_login.save();
 
             // If Not Update User
@@ -288,28 +296,28 @@ class Auth {
 
     async ForgetPassword(req, res) {
         try {
-            const { Email} = req.body;
-    
+            const { Email } = req.body;
+
             // Check if the user exists
             const EmailCheck = await User.findOne({ Email: Email });
             const CompanyInformation = await company_information.findOne();
-    
+
             if (!EmailCheck) {
                 return res.send({ status: false, msg: 'User does not exist', data: [] });
             }
-    
+
             // Generate reset password URL
             const userid = Buffer.from(JSON.stringify(EmailCheck._id)).toString('base64');
             const redirectUrl = `${CompanyInformation.domain_url_https}/#/update/${userid}`;
 
 
-    
+
             // Send email
             const toEmail = Email;
             const subjectEmail = "Forget Password";
             const htmlEmail = "URL - " + redirectUrl;
             await CommonEmail(toEmail, subjectEmail, htmlEmail);
-    
+
             // Send success response
             return res.send({ status: true, msg: "Mail sent successfully", data: redirectUrl });
         } catch (error) {
@@ -318,7 +326,7 @@ class Auth {
             return res.status(500).send({ status: false, msg: "An error occurred", data: [] });
         }
     }
-    
+
 
     // Update Password
     async UpdatePassword(req, res) {
@@ -481,27 +489,27 @@ class Auth {
     async PasswordChanged(req, res) {
         try {
             const { userid, NewPassword, CurrentPassword, ConfirmNewPassword } = req.body;
-            
+
             if (CurrentPassword === NewPassword) {
                 return res.status(400).send({ success: false, message: "New password must be different from old password" });
             }
-            
+
             if (NewPassword !== ConfirmNewPassword) {
                 return res.status(400).send({ success: false, message: "New password and confirm password do not match" });
             }
-    
+
             const user = await User.findById(userid);
-    
+
             if (!user) {
                 return res.status(404).send({ success: false, message: 'User not found' });
             }
-    
+
             const validPassword = await bcrypt.compare(CurrentPassword.toString(), user.Password.toString());
-    
+
             if (!validPassword) {
                 return res.status(409).send({ success: false, message: 'Old password does not match' });
             }
-    
+
             const hashedPassword = await bcrypt.hash(NewPassword, 8);
             await User.findByIdAndUpdate(
                 user._id,
@@ -511,19 +519,19 @@ class Auth {
                 },
                 { new: true }
             );
-    
-    
-    
+
+
+
             res.send({ success: true, message: "Password updated successfully" });
         } catch (error) {
             console.error("Error resetting password:", error); // Log the specific error
             res.send({ success: false, message: "An error occurred while Updating password" });
         }
     }
-    
-    
-    
-    
+
+
+
+
 
 
 

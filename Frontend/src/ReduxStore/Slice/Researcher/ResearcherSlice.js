@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER , ADD_RESEARCHER_STRATEGY, EDIT_RESEARCHER_STRATEGY, GET_ONE_RESEARCHER_STRATEGY, GET_ALL_RESEARCHER_STRATEGY , UPDATE_RESEARCHER} from '../../../Services/Researcher/researcher.service'
+import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER ,STRATEGY_TRANSACTION_DETAILS ,  ADD_RESEARCHER_STRATEGY, EDIT_RESEARCHER_STRATEGY, GET_ONE_RESEARCHER_STRATEGY, GET_ALL_RESEARCHER_STRATEGY , UPDATE_RESEARCHER , Delete_Strategy} from '../../../Services/Researcher/researcher.service'
 
 
 export const Add_Researcher = createAsyncThunk("researcher/add",
@@ -103,7 +103,32 @@ async (data)=>{
   catch(err){
     return await err
   }
+
 })
+
+export const Strategy_Transaction_Details=createAsyncThunk('strategy/order/get',
+async (data)=>{
+  try{
+    const res = await STRATEGY_TRANSACTION_DETAILS(data)
+    return await res;
+  }
+  catch(err){
+    return await err
+  }
+})
+
+export const DELETE_STRATEGY = createAsyncThunk("researcher/strategy/delete",
+    async (data) => {
+        
+        try {
+            const res = await Delete_Strategy(data);
+            
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
 
 
 
@@ -121,6 +146,8 @@ const ResearcherSlice = createSlice({
     getOneResearcherStrategys:null,
     getallResearcherStrategys: null,
     updateResearcher :null,
+    strategy_transation_details:null,
+    delete_strategy :null,
     
 
 
@@ -172,6 +199,14 @@ const ResearcherSlice = createSlice({
       .addCase(Update_Researcher.fulfilled, (state, action) => {
         state.isLoading = false;
         state.updateResearcher = action.payload;
+      })
+      .addCase(Strategy_Transaction_Details.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.strategy_transation_details = action.payload;
+      })
+      .addCase(DELETE_STRATEGY.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.delete_strategy = action.payload;
       })
   },
 });

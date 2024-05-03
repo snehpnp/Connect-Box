@@ -561,7 +561,7 @@ export default function AllEmployees() {
 
     return (
         <>
-            {tableData.loading ? (
+            {tradeHistoryData.loading ? (
                 <>
                     <div className="content container-fluid" data-aos="fade-left">
 
@@ -664,6 +664,7 @@ export default function AllEmployees() {
                                             value={inputSearch}
                                         />
                                     </div>
+
                                     <div className="input-block col-lg-2 mt-3 mb-3">
                                         <label>Strategy</label>
                                         <label for="select" class="form-label">
@@ -687,6 +688,32 @@ export default function AllEmployees() {
                                                 })} */}
                                         </select>
                                     </div>
+
+                                    <div className="input-block col-lg-2 mt-3 mb-3">
+                                        <label>Symbol</label>
+                                        <label for="select" class="form-label">
+                                            Symbol
+                                        </label>
+                                        <select
+                                            class="default-select wide form-control"
+                                            aria-label="Default select example"
+                                            id="select"
+                                        // onChange={(e) => setSymbolClientStatus(e.target.value)}
+                                        // value={SymbolClientStatus}
+                                        >
+                                            <option value="null" selected >All</option>
+                                            {/* {getAllSymbolName.data &&
+                                                getAllSymbolName.data.map((item) => {
+                                                    return (
+                                                        <option value={item.Symbol_name}>
+                                                            {item.Symbol_name}
+                                                        </option>
+                                                    );
+                                                })} */}
+                                        </select>
+                                    </div>
+
+
                                 </div>
 
                                 <div className="card-body table-responsive">
