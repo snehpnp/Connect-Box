@@ -419,12 +419,9 @@ const Edit_Employee = () => {
   
  
   const data = async () => {
-    await dispatch(
-      GetEmployeeStrategy({
-        req: {},
-        id,
-      })
-    )
+    const data = {id : user_id}
+
+    await dispatch( GetEmployeeStrategy(data))
       .unwrap()
       .then((response) => {
         if (response.status) {
@@ -434,7 +431,7 @@ const Edit_Employee = () => {
           });
         }
       });
-    await dispatch(GetEmployeeServices())
+    await dispatch(GetEmployeeServices(data))
       .unwrap()
       .then((response) => {
         if (response.status) {
