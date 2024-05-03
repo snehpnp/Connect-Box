@@ -181,11 +181,11 @@ function MessageBroadcast() {
 
   const fetchStrategies = async () => {
     try {
-      await dispatch(allStrategy_subAd())
+      const data = {id: ownerId }
+      await dispatch(allStrategy_subAd(data))
         .unwrap()
         .then((response) => {
           if (response.status) {
-            console.log("aa",response.data)
             toast.success(response.msg);
             setStrategies(response.data);
           } else {
@@ -301,8 +301,8 @@ function MessageBroadcast() {
 
       if (response.status) {
 
-        console.log("response.data", response.data)
-        console.log("value", value)
+        // console.log("response.data", response.data)
+        // console.log("value", value)
 
         let filteredData = [];
         // if (value == 2) {
@@ -313,7 +313,7 @@ function MessageBroadcast() {
         //     (Array.isArray(item.strategyId) && item.strategyId.includes(ownerId))
         //   );
         // }
-        console.log("filteredData", filteredData)
+        // console.log("filteredData", filteredData)
         setPipelineData(response.data);
       } else {
         toast.error(response.msg);
