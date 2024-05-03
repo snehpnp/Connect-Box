@@ -176,7 +176,7 @@ const Edit_Employee = () => {
         const response = await dispatch(Update_Employee(req)).unwrap();
         if (response.status) {
           Swal.fire({
-            title: "Create Successful!",
+            title: "Update Successful!",
             text: response.msg,
             icon: "success",
             timer: 1500,
