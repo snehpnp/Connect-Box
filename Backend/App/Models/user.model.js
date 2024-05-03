@@ -234,24 +234,7 @@ const userModel = Schema({
         type: String,
         default: null
     },
-    CurrentPassword: {
-        type: String,
-        required: true,
-        trim: true,
-        default: null
-    },
-    NewPassword: {
-        type: String,
-        required: true,
-        trim: true,
-        default: null
-    },
-    ConfirmNewPassword: {
-        type: String,
-        required: true,
-        trim: true,
-        default: null
-    },
+  
 },
     {
         timestamps: true

@@ -852,6 +852,7 @@ const DynamicForm = ({
                     </React.Fragment>
                   ))}
                   {additional_field}
+           
                   <div className="add-customer-btns text-end mt-3">
                     {btn_name1 ? (
                       <Link
@@ -872,11 +873,8 @@ const DynamicForm = ({
                           btn_name2 ? <button type="submit" className="btn customer-btn-save">
                             {btn_name2}
                           </button> : ''
-
                         }
-
                       </>
-
                     }
                   </div>
                 </div>

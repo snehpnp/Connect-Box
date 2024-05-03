@@ -405,7 +405,7 @@ class strategy {
   
       }else if(key == 2){
 
-        const findUser = await User.find({Role:"SUBADMIN",_id:id}).select('prifix_key')
+        const findUser = await User.find({_id:id}).select('prifix_key')
         const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
 
 
@@ -429,9 +429,9 @@ class strategy {
           msg: "Get All Startegy",
           data: getAllstrategy,
         });
-      }else{
+      } else if(key == 3){
         
-        const findUser = await User.find({Role:"SUBADMIN",_id:id}).select('prifix_key')
+        const findUser = await User.find({Role:"RESEARCH",_id:id}).select('prifix_key')
 
         const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
     
