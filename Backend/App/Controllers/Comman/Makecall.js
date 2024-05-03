@@ -798,7 +798,7 @@ async function run() {
 
 
             const currentTimestamp = Math.floor(Date.now() / 1000);
-            let req = `DTime:${currentTimestamp}|Symbol:${item.Symbol}|TType:${item.TType}|Tr_Price:${item.Tr_Price}|Price:${item.stockInfo_lp}|Sq_Value:${item.Sq_Value}|Sl_Value:${item.Sl_Value}|TSL:${item.TSL}|Segment:${item.Segment}|Strike:${item.Strike}|OType:${item.OType}|Expiry:${item.Expiry}|Strategy:${item.Strategy}|Quntity:${item.Quntity}|Key:${item.Key}|TradeType:${item.TradeType}|Target:${Target}|StopLoss:${StopLoss}|ExitTime:${item.ExitTime}|sl_status:${item.sl_status}|Demo:demo`
+            let req = `DTime:${currentTimestamp}|Symbol:${item.Symbol}|TType:${item.TType}|Tr_Price:${item.Tr_Price}|Price:${item.stockInfo_lp}|Sq_Value:${item.Sq_Value}|Sl_Value:${item.Sl_Value}|TSL:${item.TSL}|Segment:${item.Segment}|Strike:${item.Strike}|OType:${item.OType}|Expiry:${item.Expiry}|Strategy:${item.Strategy}|Quntity:${item.Quntity}|Key:${item.Key}|TradeType:${item.TradeType}|Target:${Target}|StopLoss:${StopLoss}|ExitTime:${item.ExitTime}|sl_status:${item.sl_status}|ExitStatus:${item.ABR_TYPE}|Demo:demo`
                
             const resultUpdateId = await makecallABR.updateMany(
               { _id: item._id }, // Condition: IDs from the view
@@ -877,10 +877,30 @@ async function run() {
         
           console.log("openPosition ",openPosition)
           if (openPosition.length > 0) {
+
+            
         
             openPosition && openPosition.map((item) => {
+
+
+
+              let ExitStatus = 'TS'   
+              if(item.isLpInRangeTarget==true){
+              ExitStatus = "TARGET"
+              }else if(item.isLpInRangeStoploss == true){
+              ExitStatus = "STOPLOSS"
+              }else if(item.isLpInRange == 1){
+              ExitStatus = "EXIT TIME"
+              }
+              else if(item.isLpInRange == 0){
+                ExitStatus = "EXIT TIME"
+              }
+
+
+
+
               const currentTimestamp = Math.floor(Date.now() / 1000);
-              let req = `DTime:${currentTimestamp}|Symbol:${item.symbol}|TType:${item.entry_type == "SE" ? "SX" : "LX"}|Tr_Price:131|Price:${item.stockInfo_lp}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${item.segment}|Strike:${item.strike}|OType:${item.option_type}|Expiry:${item.expiry}|Strategy:${item.strategy}|Quntity:${item.entry_qty_percent}|Key:${item.client_persnal_key}|TradeType:${item.TradeType}|Demo:demo`
+              let req = `DTime:${currentTimestamp}|Symbol:${item.symbol}|TType:${item.entry_type == "SE" ? "SX" : "LX"}|Tr_Price:131|Price:${item.stockInfo_lp}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${item.segment}|Strike:${item.strike}|OType:${item.option_type}|Expiry:${item.expiry}|Strategy:${item.strategy}|Quntity:${item.entry_qty_percent}|Key:${item.client_persnal_key}|TradeType:${item.TradeType}|ExitStatus:${ExitStatus}|Demo:demo`
                  
       
               
@@ -985,7 +1005,7 @@ async function run() {
 
 }
 
-//run().catch(console.error);
+run().catch(console.error);
 
 
 //////////////////----- makecallabrView_excute_run --//////////////////////////////
