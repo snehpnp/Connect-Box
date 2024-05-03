@@ -154,12 +154,12 @@ export const subamdin_header = [
     {
         id: 5,
         name: 'Services',
-        Icon: "fe fe-target",
+        Icon: "fa-solid fa-gears",
         Data: [
             {
                 id: 51,
                 name: 'Group Service',
-                Icon: "fa-solid fa-gears",
+                Icon: "fa-solid fa-bolt",
                 route: "/subadmin/group-service",
             },
 
@@ -188,7 +188,7 @@ export const subamdin_header = [
                 id: 61,
                 name: 'Orders',
                 route: "/subadmin/orders",
-                Icon: "fe fe-list",
+                Icon: "fa-brands fa-first-order",
                 Data: []
             },
             {
@@ -269,7 +269,6 @@ export const subamdin_header = [
     {
         id: 25,
         name: 'More',
-        Icon: "fa-solid fa-ellipsis-vertical",
         Data: [
             {
                 id: 10,
