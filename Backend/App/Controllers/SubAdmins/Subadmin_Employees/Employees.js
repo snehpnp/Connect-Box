@@ -24,10 +24,6 @@ class Employee {
         });
       }
 
-
-
-
-
       const pipeline = [
         {
           $match: {
@@ -45,8 +41,8 @@ class Employee {
         },
         {
           $sort: {
-            createdAt: -1 
-          }
+            createdAt: -1,
+          },
         },
         {
           $project: {
@@ -71,15 +67,15 @@ class Employee {
       const results = await User_model.aggregate(pipeline);
 
       if (results.length > 0) {
-        await Promise.all(results.map(async (data) => {
-          var usernameGet = await User_model.find({ employee_id: data._id.toString() }).select('UserName');
-          data.Users = usernameGet;
-        }));
+        await Promise.all(
+          results.map(async (data) => {
+            var usernameGet = await User_model.find({
+              employee_id: data._id.toString(),
+            }).select("UserName");
+            data.Users = usernameGet;
+          })
+        );
       }
-
-
-
-
 
       return res.send({
         status: true,
@@ -137,7 +133,8 @@ class Employee {
       // Create new user
       const newUser = new User_model({
         FullName: FullName,
-        UserName: FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ""),
+        UserName:
+          FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ""),
         Email,
         PhoneNo,
         Password: hashedPassword,
@@ -149,7 +146,7 @@ class Employee {
         parent_id,
         Is_First_login: "1",
         subadmin_service_type: existingPrefix.subadmin_service_type,
-        employee_id: parent_id
+        employee_id: parent_id,
       });
 
       // Save the new user
@@ -275,7 +272,6 @@ class Employee {
         group_services: Subadmin_permision_data.group_services,
       };
 
-
       const filter = { user_id: existingUsername._id };
 
       const updateOperation = { $set: SubadminPermision };
@@ -380,9 +376,11 @@ class Employee {
 
   async GetAllStrategyForEmployee(req, res) {
     try {
-      const totalCount = await strategy_model.countDocuments();
+      const { id } = req.body;
 
-      const getAllstrategy = await strategy_model.find({}, "_id strategy_name");
+      const getAllstrategy = await strategy_model.find({
+        maker_id: id,
+      });
 
       if (getAllstrategy.length == 0) {
         res.send({ status: false, msg: "Empty data", data: getAllstrategy });
@@ -398,38 +396,83 @@ class Employee {
     }
   }
 
-  async getAllgroupServices(req, res) {
-    try {
-      const pipeline = [
-        {
-          $lookup: {
-            from: "servicegroup_services_ids",
-            localField: "_id",
-            foreignField: "Servicegroup_id",
-            as: "result",
-          },
-        },
-        {
-          $addFields: {
-            resultCount: { $size: "$result" },
-          },
-        },
-      ];
+  // async getAllgroupServices(req, res) {
+  //   try {
+  //     const pipeline = [
+  //       {
+  //         $lookup: {
+  //           from: "servicegroup_services_ids",
+  //           localField: "_id",
+  //           foreignField: "Servicegroup_id",
+  //           as: "result",
+  //         },
+  //       },
+  //       {
+  //         $addFields: {
+  //           resultCount: { $size: "$result" },
+  //         },
+  //       },
+  //     ];
 
-      const result = await serviceGroupName.aggregate(pipeline);
+  //     const result = await serviceGroupName.aggregate(pipeline);
 
-      if (result.length > 0) {
-        res.send({ status: true, data: result, msg: "Get All successfully" });
-      } else {
-        res.send({ status: false, data: [], msg: "false" });
+  //     if (result.length > 0) {
+  //       res.send({ status: true, data: result, msg: "Get All successfully" });
+  //     } else {
+  //       res.send({ status: false, data: [], msg: "false" });
+  //     }
+  //   } catch (error) {
+  //     console.log("Get All Group Services Error - ", error);
+  //     res
+  //       .status(500)
+  //       .send({ status: false, data: [], msg: "An error occurred" });
+  //   }
+  // }
+
+    async getAllgroupServices(req, res) {
+      try {
+          // Assuming id is in the req.body
+          const { id } = req.body;
+          // Check if id is provided
+          if (!id) {
+              return res.status(400).send({ status: false, data: [], msg: "ID is missing in the request body" });
+          }
+
+          const pipeline = [
+              {
+                  $match: {
+                    maker_id: new ObjectId(id)
+                  }
+              },
+              {
+                  $lookup: {
+                      from: "servicegroup_services_ids",
+                      localField: "_id",
+                      foreignField: "Servicegroup_id",
+                      as: "result",
+                  },
+              },
+              {
+                  $addFields: {
+                      resultCount: { $size: "$result" },
+                  },
+              },
+          ];
+
+
+          const result = await serviceGroupName.aggregate(pipeline);
+
+          if (result.length > 0) {
+              res.send({ status: true, data: result, msg: "Get All successfully" });
+          } else {
+              res.send({ status: false, data: [], msg: "No data found" });
+          }
+      } catch (error) {
+          console.error("Error in getAllgroupServices:", error);
+          res.status(500).send({ status: false, data: [], msg: "An error occurred" });
       }
-    } catch (error) {
-      console.log("Get All Group Services Error - ", error);
-      res
-        .status(500)
-        .send({ status: false, data: [], msg: "An error occurred" });
-    }
   }
+
 }
 
 module.exports = new Employee();

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-// import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/DataTable";
 
 import { useDispatch } from "react-redux";
@@ -10,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { Userinfo } from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { Trade_Details, Update_Signals } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { fDateTimeSuffix, GetMarketOpenDays, convert_string_to_month } from "../../../Utils/Date_formet";
-import { CreateSocketSession, ConnctSocket, GetAccessToken } from "../../../Utils/Alice_Socket";
+import { CreateSocketSession, ConnctSocket } from "../../../Utils/Alice_Socket";
 import { ShowColor1 } from "../../../Utils/ShowTradeColor";
 import Swal from 'sweetalert2';
 import $ from "jquery";
@@ -18,10 +17,12 @@ import Modal from "../../../Components/ExtraComponents/Modal";
 import * as Config from "../../../Utils/Config";
 import axios from "axios"
 
+import { GetBrokerLiveDatas } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
 export default function AllEmployees() {
-    const userDetails = JSON.parse(localStorage.getItem("user_details"));
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+    const token = JSON.parse(localStorage.getItem('user_details')).token
+
     const [ButtonDisabled, setButtonDisabled] = useState(false);
 
     const navigate = useNavigate();
@@ -35,9 +36,11 @@ export default function AllEmployees() {
     const [showModal, setshowModal] = useState(false);
     const [CreateSignalRequest, setCreateSignalRequest] = useState([]);
     const [SocketState, setSocketState] = useState("null");
-
+    const [tradeHistoryData, setTradeHistoryData] = useState({ loading: true, data: [] });
+    const [tradeHistoryAllData, setTradeHistoryAllData] = useState({ loading: true, data: [] });
+    const [selected, setSelected] = useState([]);
+    const [selected1, setSelected1] = useState([]);
     const [disabled, setDisabled] = useState(false);
-
     const [getLoginStatus, setLoginStatus] = useState({
         loading: false,
         data: [],
@@ -47,29 +50,40 @@ export default function AllEmployees() {
         data: [],
     });
 
-    const [tradeHistoryData, setTradeHistoryData] = useState({ loading: true, data: [] });
-    const [tradeHistoryAllData, setTradeHistoryAllData] = useState({ loading: true, data: [] });
-    const [selected, setSelected] = useState([]);
-    const [selected1, setSelected1] = useState([]);
 
-    const label = { inputProps: { "aria-label": "Switch demo" } };
-    const styles = {
-        container: {
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "80vh",
-        },
-        card: {
-            width: "auto",
-        },
-        boldHeader: {
-            fontWeight: "bold",
-        },
-        headerButton: {
-            marginRight: 8,
-        },
+    const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
+    const [userIdSocketRun, setUserIdSocketRun] = useState("none");
+
+    useEffect(() => {
+        GetBrokerLiveData(userIdSocketRun)
+    }, [userIdSocketRun]);
+
+    const GetBrokerLiveData = async (userIdSocketRun) => {
+
+        //alert(userIdSocketRun)
+        await dispatch(GetBrokerLiveDatas(
+
+            {
+                req:
+                {
+                    id: user_id,
+                    exist_user: userIdSocketRun,
+                    exist_user_details: livePriceDataDetails
+                },
+
+                token: token
+            }
+        ))
+            .unwrap()
+            .then(async (response) => {
+                if (response.status) {
+                    console.log("Data --- ", response.data)
+                    setLivePriceDataDetails(response.data)
+                }
+            });
     };
+
+
 
     const columns = [
         {
@@ -238,6 +252,7 @@ export default function AllEmployees() {
     ];
 
 
+
     const fetchData = async () => {
         try {
             let data = { "id": user_id };
@@ -264,6 +279,8 @@ export default function AllEmployees() {
     useEffect(() => {
         fetchData();
     }, []);
+
+
 
 
 
@@ -398,7 +415,6 @@ export default function AllEmployees() {
         mode: 'checkbox',
         clickToSelect: true,
         selected: selected,
-        // nonSelectable: forMCXandCurrencyMarketTrade(),
         nonSelectableStyle: { backgroundColor: 'aliceblue' },
         onSelect: handleOnSelect,
         onSelectAll: handleOnSelectAll
@@ -411,53 +427,51 @@ export default function AllEmployees() {
     // UPDATE STOPLOSS PRIZE 
     const UpdateStopLoss = async () => {
 
-        console.log("selected1", selected1 && selected1)
-        console.log("tradeHistoryAllData", tradeHistoryAllData.data && tradeHistoryAllData.data)
 
 
         const filteredArray2 = tradeHistoryAllData.data.filter(item => selected1.some(obj => obj._id === item._id));
 
 
-        // let MarketOpenToday = GetMarketOpenDays();
+        let MarketOpenToday = GetMarketOpenDays();
 
-        // if (MarketOpenToday) {
-        //     if (profileData && profileData.trading_status == "off") {
-        //         alert("Please Trading On First")
-        //     }
-        //     else {
-        if (filteredArray2.length === 0) {
-            alert("Please Select Atleast One Symbol")
-        }
-        else {
-            // return
-            await dispatch(
-                Update_Signals({
-                    data: filteredArray2,
-                    // token: token,
-                })
+        if (MarketOpenToday) {
+            if (livePriceDataDetails && livePriceDataDetails.trading_status == "off") {
+                alert("Please Trading On First")
+            }
+            else {
+                if (filteredArray2.length === 0) {
+                    alert("Please Select Atleast One Symbol")
+                }
+                else {
+                    // return
+                    await dispatch(
+                        Update_Signals({
+                            data: filteredArray2,
+                            // token: token,
+                        })
 
-            ).unwrap()
-                .then((response) => {
-                    if (response.status) {
-                        Swal.fire({
-                            title: "Update Successfully!",
-                            text: response.msg,
-                            icon: "success",
-                            timer: 800,
-                            timerProgressBar: true
+                    ).unwrap()
+                        .then((response) => {
+                            if (response.status) {
+                                Swal.fire({
+                                    title: "Update Successfully!",
+                                    text: response.msg,
+                                    icon: "success",
+                                    timer: 800,
+                                    timerProgressBar: true
+                                });
+                                setrefresh(!refresh)
+                                setSelected1([])
+                                setSelected([])
+                            }
+
+
                         });
-                        setrefresh(!refresh)
-                        setSelected1([])
-                        setSelected([])
-                    }
-
-
-                });
+                }
+            }
+        } else {
+            alert('Market Is Closed Today');
         }
-        //     }
-        // } else {
-        //     alert('Market Is Closed Today');
-        // }
 
     }
 
@@ -469,7 +483,7 @@ export default function AllEmployees() {
         let MarketOpenToday = GetMarketOpenDays();
 
         if (MarketOpenToday) {
-            if (profileData && profileData.data[0].TradingStatus == "off") {
+            if (livePriceDataDetails && livePriceDataDetails.TradingStatus == "off") {
                 alert("Please Trading On First")
             } else {
                 if (selected1.length > 0) {
@@ -537,11 +551,13 @@ export default function AllEmployees() {
     const ShowLivePrice = async () => {
         let type = { loginType: "API" };
         let channelList = CreatechannelList;
+        console.log("rubnnn")
 
-        if (profileData && profileData.data[0].demat_userid !== undefined && profileData.data[0].access_token !== undefined && profileData.data[0].TradingStatus == "on") {
+        if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
+            console.log("------------rubnnn")
 
-            const res = await CreateSocketSession(type, profileData.data[0].demat_userid, profileData.data[0].access_token);
+            const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
 
             if (res.status === 200) {
                 setSocketState("Ok");
@@ -637,7 +653,7 @@ export default function AllEmployees() {
 
                         // }
                     };
-                    await ConnctSocket(handleResponse, channelList, profileData.data[0].demat_userid, profileData.data[0].access_token).then((res) => { });
+                    await ConnctSocket(handleResponse, channelList, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token).then((res) => { });
                 } else {
                     // $(".UPL_").html("-");
                     // $(".show_rpl_").html("-");
@@ -645,6 +661,7 @@ export default function AllEmployees() {
                 }
             }
         }
+
 
     };
 
@@ -772,7 +789,7 @@ export default function AllEmployees() {
 
     useEffect(() => {
         ShowLivePrice();
-    }, [tradeHistoryData.data, SocketState, profileData.data]);
+    }, [tradeHistoryData.data, SocketState, livePriceDataDetails]);
 
 
     return (
@@ -899,7 +916,7 @@ export default function AllEmployees() {
                                                         dataField: "old_qty_persent",
                                                         text: "Remaining Qty Persent",
                                                     },
-                                                   
+
                                                     {
                                                         dataField: "option_type",
                                                         text: "Call Type",

@@ -11,6 +11,8 @@ import Faqs from '../Layouts/Comman/Faqs';
 
 import Empdashboard from '../Layouts/Employee/Dashboard/Empdashboard';
 import AllUsers from '../Layouts/Employee/Users/Alluser';
+import AddUser  from '../Layouts/Employee/Users/Adduser';
+import Edituser from '../Layouts/Employee/Users/Edituser'
 
 
 
@@ -28,6 +30,10 @@ const Employee_Routing = () => {
                     <Route exact path="/dashboard" element={<Empdashboard />} />
                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/allusers" element={<AllUsers />} />
+                    <Route exact path="/user/add" element={<AddUser />} />
+                    <Route exact path="/user/edit/:id" element={<Edituser />} />
+
+                    
                     <Route exact path="/faqs" element={<Faqs />} />
 
                 </Routes>

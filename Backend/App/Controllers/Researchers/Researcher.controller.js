@@ -9,6 +9,8 @@ var dateTime = require("node-datetime");
 var dt = dateTime.create();
 const count_licenses = db.count_licenses;
 const researcher_strategy = db.researcher_strategy;
+const client_service = db.client_service
+const strategy = db.Strategies
 
 const { CommonEmail } = require("../../Helpers/CommonEmail");
 const { firstOptPass } = require("../../Helpers/Email_formate/first_login");
@@ -308,7 +310,7 @@ class Researcher {
     //Add strategy 
     async createStrategy(req, res) {
         try {
-            console.log("req :", req.body)
+             
             const {
                 strategy_name,
                 strategy_description,
@@ -334,13 +336,13 @@ class Researcher {
                     data: [],
                 });
             }
-            console.log("CPPPPPPPPPPP")
+        
             const maker_id_find = await User_model.findOne({
                 _id: maker_id,
                 Role: Role
             });
 
-            console.log("CPPPPPPPPPPP1")
+           
             if (!maker_id_find) {
                 return res.send({ status: false, msg: "Maker Id Is Wrong", data: [] });
             }
@@ -410,7 +412,7 @@ class Researcher {
                 security_fund: security_fund,
                 monthly_charges: monthly_charges,
             });
-            console.log("CPPPPPPPPPPP")
+           
 
             strategy_Data.save()
                 .then(async (data) => {
@@ -592,6 +594,63 @@ class Researcher {
         }
     }
 
+   
+
+    // DELETE STRATEGY IN A COLLECTION
+  async DeleteResearcherStrategy(req, res) {
+    try {
+      const { _id } = req.body;
+
+      // CHECK IF STRATEGY EXISTS
+      const strategy_check = await researcher_strategy.findOne({ _id: _id });
+       
+      
+ 
+      if (!strategy_check) {
+        return res.send({
+          status: false,
+          msg: "Strategy does not exist",
+          data: [],
+        });
+      }
+
+
+      // CHECK IF STRATEGY EXISTS IN STRATEGY CLIENT
+      const strategy_client_check = await strategy.findOne({
+        strategy_id: _id,
+      });
+      if (strategy_client_check) {
+        return res.send({
+          status: false,
+          msg: "It cannot be deleted because it is assigned to a client.",
+          data: [],
+        });
+      }
+
+      // Delete the strategy
+      const deleteResult = await researcher_strategy.deleteOne({ _id: _id });
+      if (deleteResult.deletedCount === 1) {
+        return res
+          .status(200)
+          .send({
+            status: true,
+            msg: "Strategy deleted successfully!",
+            data: [],
+          });
+      } else {
+        return res
+          .status(500)
+          .send({ status: false, msg: "Error deleting strategy", data: [] });
+      }
+    }
+    catch (error) {
+      console.log("Error Delete Strategy Error:", error);
+      return res
+        .status(500)
+        .send({ status: false, msg: "An error occurred", data: [] });
+    }
+  }
+
     // GET ONE STRATEGY IN A COLLECTION
     async GetStragegyById(req, res) {
         try {
@@ -625,7 +684,7 @@ class Researcher {
 
             // var getAllTheme = await strategy_model.find()
             const getAllstrategy = await researcher_strategy.find({ maker_id: id }).sort({ createdAt: -1 })
-                .select('_id strategy_name strategy_description strategy_demo_days  strategy_category strategy_segment strategy_image monthly_charges security_fund maker_id createdAt updatedAt __v');
+                .select('_id strategy_name strategy_description strategy_demo_days  strategy_percentage max_trade strategy_category strategy_segment strategy_image monthly_charges security_fund maker_id createdAt updatedAt __v');
 
             // IF DATA NOT EXIST
             if (getAllstrategy.length == 0) {

@@ -26,10 +26,12 @@ function Strategy() {
     const [opneModal, setopneModal] = useState(false);
     const [deleteModal, setdeleteModal] = useState(false);
     const [getStgDescription, setStgDescription] = useState('');
+    const [showError, setShowError] = useState(false);
     const [GetAllSgments, setGetAllSgments] = useState({
         loading: true,
         data: [],
     });
+
 
 
 
@@ -51,7 +53,7 @@ function Strategy() {
         data: [],
     });
 
-    console.log("cp:", allStategy)
+
 
     // Function to open the modal
     const openModal = () => {
@@ -84,7 +86,7 @@ function Strategy() {
 
 
     const handleDelete = async (id) => {
-        console.log("stg._id", id)
+
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -144,15 +146,21 @@ function Strategy() {
         {
             name: "strategy_category",
             label: "Category",
-            type: "text",
+            type: "select",
+            options: [
+                { label: "Low Risk", value: "Low Risk" },
+                { label: "Medium Risk", value: "Medium Risk" },
+                { label: "High Risk", value: "High Risk" },
+            ],
             label_size: 12,
             col_size: 6,
             disable: false,
+
         },
         {
             name: "strategy_demo_days",
             label: "Strategy demo days",
-            type: "text3",
+            type: "text5",
             label_size: 12,
             col_size: 6,
             disable: false,
@@ -295,9 +303,7 @@ function Strategy() {
             if (!values.strategy_amount_half_early) {
                 errors.strategy_amount_half_early = "amount is required";
             }
-            if (!getStgDescription) {
-                errors.getStgDescription = "Please enter strategy description";
-            }
+
             if (!values.strategy_amount_early) {
                 errors.strategy_amount_early = "amount is required";
             }
@@ -309,7 +315,7 @@ function Strategy() {
 
         },
         onSubmit: async (values, { resetForm }) => {
-            console.log("values.Service_Type", values.Service_Type)
+
             const data = {
                 strategy_name: values.strategy_name,
                 strategy_category: values.strategy_category,
@@ -330,9 +336,19 @@ function Strategy() {
             };
 
 
+            if (!getStgDescription.length) {
+                Swal.fire({
+                    title: "Error !",
+                    text: 'enter strategy description',
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                });
+                return
+            }
+            else{
 
-
-            await dispatch(AddStrategy(data))
+                await dispatch(AddStrategy(data))
                 .unwrap()
                 .then(async (response) => {
                     if (response.status) {
@@ -364,6 +380,11 @@ function Strategy() {
                     console.log("Error", error);
                     setStgDescription('')
                 });
+
+            }
+        
+
+            
         },
     });
 
@@ -471,78 +492,78 @@ function Strategy() {
                 <div className="card">
                     <div className="card-header ">
                         <div className="row align-items-center">
-                              <div className="col">
-                              <h5 className="card-title mb-0"><i className=" pe-2 fas fa-chart-line"></i>Strategies</h5>
+                            <div className="col">
+                                <h5 className="card-title mb-0"><i className=" pe-2 fas fa-chart-line"></i>Strategies</h5>
 
-                              </div>
-                              <div className="col-auto">
-                              <div className="list-btn">
-                                <ul className="mb-0 filter-list justify-content-lg-end">
-                                    <li className="">
-                                        <p
-                                            className="mb-0 btn-filters"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="Refresh"
-                                            onClick={RefreshHandle}
-                                        >
-                                            <span>
-                                                <i className="fe fe-refresh-ccw" />
-                                            </span>
-                                        </p>
-                                    </li>
-                                    <li className="serach-li">
-                                        <div className="input-group input-block">
-                                            <input
-                                                type="text"
-                                                className="form-control "
-                                                placeholder="Search..."
-                                                aria-label="Search"
-                                                aria-describedby="search-addon"
-                                                onChange={(e) => setSearchInput(e.target.value)}
-                                                value={searchInput}
-
-                                            />
-
-                                        </div>
-                                    </li>
-
-
-                                    <li>
-                                        <div
-                                            className="dropdown dropdown-action"
-                                            data-bs-toggle="tooltip"
-                                            data-bs-placement="bottom"
-                                            title="Download"
-                                        >
-                                            <li>
-                                                <div className="">
-                                                    <ExportToExcel
-                                                        className="btn btn-primary "
-                                                        apiData={ForGetCSV}
-                                                        fileName={'All Strategy'} />
-                                                </div>
-                                            </li>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <p
-                                            className="btn btn-primary"
-                                            onClick={openModal}
-                                        >
-                                            <i className="fa fa-plus-circle me-2" aria-hidden="true" />
-                                            Create Strategy
-                                        </p>
-                                    </li>
-                                </ul>
                             </div>
-                              </div>
+                            <div className="col-auto">
+                                <div className="list-btn">
+                                    <ul className="mb-0 filter-list justify-content-lg-end">
+                                        <li className="">
+                                            <p
+                                                className="mb-0 btn-filters"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom"
+                                                title="Refresh"
+                                                onClick={RefreshHandle}
+                                            >
+                                                <span>
+                                                    <i className="fe fe-refresh-ccw" />
+                                                </span>
+                                            </p>
+                                        </li>
+                                        <li className="serach-li">
+                                            <div className="input-group input-block">
+                                                <input
+                                                    type="text"
+                                                    className="form-control "
+                                                    placeholder="Search..."
+                                                    aria-label="Search"
+                                                    aria-describedby="search-addon"
+                                                    onChange={(e) => setSearchInput(e.target.value)}
+                                                    value={searchInput}
+
+                                                />
+
+                                            </div>
+                                        </li>
+
+
+                                        <li>
+                                            <div
+                                                className="dropdown dropdown-action"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom"
+                                                title="Download"
+                                            >
+                                                <li>
+                                                    <div className="">
+                                                        <ExportToExcel
+                                                            className="btn btn-primary "
+                                                            apiData={ForGetCSV}
+                                                            fileName={'All Strategy'} />
+                                                    </div>
+                                                </li>
+                                            </div>
+                                        </li>
+
+                                        <li>
+                                            <p
+                                                className="btn btn-primary"
+                                                onClick={openModal}
+                                            >
+                                                <i className="fa fa-plus-circle me-2" aria-hidden="true" />
+                                                Create Strategy
+                                            </p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        </div>
-                        <div className="card-body">
-                     <div className="page-content">
-                         
+                    </div>
+                    <div className="card-body">
+                        <div className="page-content">
+
                         </div>
 
 
@@ -569,8 +590,8 @@ function Strategy() {
                                                         </span>
                                                     </div>
                                                 </div>
-                                             { stg.researcher_id != null ?  <span><i>Researcher :</i> {stg.researcher_id && stg.researcher_id.UserName }</span> :""}
-                                             
+                                                {stg.researcher_id != null ? <span><i>Researcher :</i> {stg.researcher_id && stg.researcher_id.UserName}</span> : ""}
+
                                                 <p class="text-dark"><b>{stg.strategy_description}</b></p>
 
                                                 <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
@@ -623,30 +644,31 @@ function Strategy() {
                             </div>
 
                         ) : (<Loader />)}
+                   
                         <nav aria-label="Page navigation example">
                             <ul className="pagination d-flex justify-content-center">
                                 <li className="page-item">
-                                    <a className="page-link" href="#">
+                                    <a className="page-link">
                                         Previous
                                     </a>
                                 </li>
                                 <li className="page-item">
-                                    <a className="page-link" href="#">
+                                    <a className="page-link">
                                         1
                                     </a>
                                 </li>
                                 <li className="page-item">
-                                    <a className="page-link" href="#">
+                                    <a className="page-link">
                                         2
                                     </a>
                                 </li>
                                 <li className="page-item">
-                                    <a className="page-link" href="#">
+                                    <a className="page-link">
                                         3
                                     </a>
                                 </li>
                                 <li className="page-item">
-                                    <a className="page-link" href="#">
+                                    <a className="page-link">
                                         Next
                                     </a>
                                 </li>
@@ -669,9 +691,12 @@ function Strategy() {
                                             <button
                                                 type="button"
                                                 className="btn-close"
-                                                onClick={closeModal}
+                                                // onClick={closeModal, formik.resetForm()}
+                                                onClick={(e) => { setShowModal(false); setrefresh(!refresh); setShowError(false); formik.resetForm(); }}
                                             ></button>
                                         </div>
+
+
                                         <div className="modal-body m-0 p-0">
                                             <AddForm
                                                 ProfileShow={formik.values.strategy_image}
@@ -680,17 +705,21 @@ function Strategy() {
                                                 btn_name="Add Strategy"
                                                 additional_field={
                                                     <>
-
                                                         <label>Strategy Description</label>
-                                                        <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description" onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}>
+                                                        <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description"
+                                                            onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}
+                                                            onClick={(e) => { setShowError(true) }}
+                                                        >
                                                         </textarea>
-                                                        {
-                                                            formik.errors.getStgDescription ? (
+
+                                                        {showError && !getStgDescription.length ?
+                                                            (
                                                                 <div style={{ color: "red" }}>
-                                                                    {formik.errors.getStgDescription}
+                                                                    {"Please enter strategy description"}
                                                                 </div>
                                                             ) : null
                                                         }
+
                                                     </>
 
                                                 }

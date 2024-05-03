@@ -4713,8 +4713,8 @@ span.select2-container.select2-container--default.select2-container--open {
 
 .sidebar .sidebar-menu ul li a span {
     padding: 0 10px;
-    font-size: 14px;
-    font-weight: 400;
+    font-size: 15px;
+    font-weight: 500;
     line-height: 18px
 }
 
@@ -34295,17 +34295,31 @@ img {
     color: #ddd !important;
 }
 
-button[aria-label="delete"],
+button[aria-label="delete"]
+{
+    background-color: rgba(255, 218, 218, .49) !important;
+    color: red !important;
+    margin: 0px 5px;
+    /* padding: 10px; */
+    /* border: 1px solid !important; */
+    /* border-radius: 4px; */
+}
+
 .button_sell {
     background-color: rgba(255, 218, 218, .49) !important;
     color: red !important;
     margin: 0px 5px;
+    padding: 5px 8px;
+    border: 1px solid !important;
+    border-radius: 4px;
 }
-
 .button_BUY {
     background-color: #e1ffed !important;
     color: #33b469 !important;
     border: none;
+    padding: 5px 8px;
+    border: 1px solid;
+    border-radius: 4px;
 }
 
 .button_sell {
@@ -34661,6 +34675,18 @@ a.user-a:hover span {
 
 [data-layout-mode=light] body .btn-primary:hover {
     color: #7539ff !important;
+.borderless-table .table tbody tr td {
+    border-color: transparent;
+    border: none !important;
+    padding: 10px 15px;
+}
+.borderless-table .table {
+    /* border-color: transparent; */
+    border:1px solid rgb(135, 138, 153);
+    
+}
+[data-layout-mode=light] body .btn-primary:hover{
+    color: #7539ff  !important;
     background: #fff;
     border-color: #7539ff;
     box-shadow: inset 0 50px 0 0 #fff;
@@ -34777,4 +34803,5 @@ a.user-a:hover span {
 
 .MuiDataGrid-columnHeaderTitle.css-t89xny-MuiDataGrid-columnHeaderTitle {
     font-weight: bold;
+}
 }

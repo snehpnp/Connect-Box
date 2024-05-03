@@ -109,7 +109,6 @@ function Option_Chain() {
 
     const GetBrokerLiveData = async (userIdSocketRun) => {
 
-        //alert(userIdSocketRun)
         await dispatch(GetBrokerLiveDatas(
 
             {
@@ -126,7 +125,6 @@ function Option_Chain() {
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
-                    console.log("Data --- ", response.data)
                     setLivePriceDataDetails(response.data)
                 }
             });
@@ -237,9 +235,21 @@ function Option_Chain() {
             ),
         },
         {
+            dataField: 'CE_Volume',
+            text: 'Volume',
+            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+            formatter: (cell, row, rowIndex) => (
+                <div >
+                    <span className={`Call_volume_${row.call_token} `}></span>
+                    <span className={`SP1_Call_volume_${row.call_token} d-none`}></span>
+                </div>
+            ),
+        },
+        {
             dataField: 'CALL/LP',
             text: 'CALL/LP',
-            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
                 parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
                 <div >
@@ -255,7 +265,7 @@ function Option_Chain() {
             formatter: (cell, row, rowIndex) => (
 
                 <div >
-                    <span className={`fw-bold`}>{cell}</span>
+                    <span className={``}>{cell}</span>
                 </div>
             ),
         },
@@ -275,9 +285,24 @@ function Option_Chain() {
             ),
         },
         {
+            dataField: 'PE_Volume',
+            text: 'Volume',
+            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+
+            formatter: (cell, row, rowIndex) => (
+                <div
+
+                >
+                    <span className={`Put_volume_${row.put_token} `}></span>
+                    <span className={`BP1_Put_volume_${row.put_token} d-none`}></span>
+                </div>
+            ),
+        },
+        {
             dataField: 'PUT',
             text: 'BUY/SELL',
-            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
                 parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
                     { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
@@ -486,25 +511,15 @@ function Option_Chain() {
         let type = { loginType: "API" };
         let channelList = TokenSymbolChain && TokenSymbolChain
 
-        console.log("channelList ", channelList)
-        console.log("UserDetails ", UserDetails)
-        console.log("livePriceDataDetails ", livePriceDataDetails.demate_user_id)
-        console.log("access_token ", livePriceDataDetails.access_token)
-        console.log("trading_status ", livePriceDataDetails.trading_status)
 
-        // if (UserDetails && UserDetails[0].demat_userid !== undefined && UserDetails && UserDetails[0].access_token !== undefined && UserDetails && UserDetails[0].TradingStatus == "on") {
-
-        //     const res = await CreateSocketSession(type, UserDetails[0].demat_userid, UserDetails[0].access_token);
 
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
             const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
           
-        // console.log("res.data.stat",res.data.stat)
 
             if (res.data.stat) {
                 const handleResponse = async (response, socket) => {
-                   // console.log("response.tk ", response.tk, " socket ", socket)
                     socket.onclose = async function (event) {
                         if (event.wasClean) {
                             // alert("IFFF CLOSE")
@@ -526,12 +541,30 @@ function Option_Chain() {
                     const old_val_call = $('.Call_Price_' + response.tk).html();
                     const old_val_put = $('.Put_Price_' + response.tk).html();
 
+
+                
+
+
                     $('.SP1_Call_Price_' + response.tk).html(response.sp1 ? response.sp1 : response.lp);
                     $('.BP1_Put_Price_' + response.tk).html(response.bp1 ? response.bp1 : response.lp);
+                   
 
                     if (response.tk) {
                         if (response.lp !== undefined) {
 
+
+                            function formatVolume(volume) {
+                                return volume >= 1e7 ? (volume / 1e7).toFixed(2) + ' Cr' : (volume >= 1e5 ? (volume / 1e5).toFixed(2) + ' Lakh' : volume);
+                            }
+
+                            $('.Call_volume_' + response.tk).html(formatVolume(response.v || 0))
+                            $('.SP1_Call_volume_' + response.tk).html(formatVolume(response.v || 0))
+
+                            $('.Put_volume_' + response.tk).html(formatVolume(response.v || 0))
+                            $('.BP1_Put_volume_' + response.tk).html(formatVolume(response.v || 0))
+
+
+                            console.log("response",response)
                             $(".Call_Price_" + response.tk).html(response.lp);
                             $(".Put_Price_" + response.tk).html(response.lp);
 
@@ -637,10 +670,8 @@ function Option_Chain() {
                 data: req
             };
 
-            console.log("config", config)
             axios.request(config)
             .then(async (response) => {
-                //console.log("response ", response);
                 if (response.status) {
                     Swal.fire({
                         title: "Data Add Successful!",
@@ -726,17 +757,7 @@ function Option_Chain() {
         const isAfterCutoffTime = new Date(currentDateIST).getTime() > cutoffTimeIST.getTime();
 
 
-        // if (!holidays.isHoliday(currentDate) && weekday !== 'Sunday' && weekday !== 'Saturday' && isAfterCutoffTime) {
-        //     alert("Market Time Is Off")
-        // } else {
-
-      //  if (UserDetails !== undefined && UserDetails[0].TradingStatus === "on") {
-
-
-      console.log("livePriceDataDetails.demate_user_id",livePriceDataDetails.demate_user_id)
-      console.log("livePriceDataDetails.access_token",livePriceDataDetails.access_token)
-      console.log("livePriceDataDetails.trading_status",livePriceDataDetails.trading_status)
-
+        
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
        
@@ -784,30 +805,6 @@ function Option_Chain() {
 
 
 
-    const Set_Entry_Exit_Qty = (row, event, symbol) => {
-        let newValue = parseInt(event); // Convert input value to an integer
-
-        if (isNaN(newValue) || newValue < 0) {
-            alert('Please enter a valid positive number.');
-            return;
-        }
-
-        setExecuteTradeData((prev) => ({
-            ...prev,
-            loading: false,
-            data: prev.data.map((item) => {
-                if (item.Symbol === symbol) { // Assuming 'symbol' is the unique identifier
-                    return {
-                        ...item,
-                        entry_qty: newValue.toString() || '100',
-                    };
-                }
-                return item;
-            }),
-        })
-        )
-    }
-
     const Cancel_Request = () => {
         setExecuteTradeData({
             loading: false,
@@ -844,9 +841,9 @@ function Option_Chain() {
                     Content={
                         <>
                             <div className="row d-flex mb-3">
-                                <div className="col-md-2 text-secondary input-block">
-                                    <label className="text-secondary"
-                                        style={{ fontWeight: "bold", color: "black" }}
+                                <div className="col-md-2  input-block">
+                                    <label className=""
+                                       
                                     >SYMBOLS</label>
                                     <select
                                         name="symbols_filter"
@@ -870,10 +867,10 @@ function Option_Chain() {
                                         })}
                                     </select>
                                 </div>
-                                <div className="col-md-2 text-secondary input-block">
+                                <div className="col-md-2  input-block">
                                     <label
-                                        className="text-secondary"
-                                        style={{ fontWeight: "bold", color: "black" }}
+                                        className=""
+                                       
                                     >
                                         EXPIRY DATE
                                     </label>
@@ -891,8 +888,8 @@ function Option_Chain() {
                                 </div>
                                 <div className="col-md-2 input-block ">
                                     <label
-                                        className="text-secondary"
-                                        style={{ fontWeight: "bold", color: "black" }}
+                                        className=""
+                                       
                                     >
                                         STRATEGY
                                     </label>
@@ -916,10 +913,10 @@ function Option_Chain() {
                                             })}
                                     </select>
                                 </div>
-                                <div className="col-md-2 input-block  text-secondary ">
+                                <div className="col-md-2 input-block   ">
                                     <label
-                                        className="text-secondary"
-                                        style={{ fontWeight: "bold", color: "black" }}
+                                        className=""
+                                        
                                     > Price
                                     </label>
                                     <input type="number" className="new-input-control form-control" />
@@ -946,14 +943,14 @@ function Option_Chain() {
                                     </div>
                                 </div>
                             </div>
-
+                            <div className="borderless-table">
                             <FullDataTable
                                 styles={styles}
                                 TableColumns={columns}
                                 tableData={OptionChainData.data}
                                 pagination1={true}>
                             </FullDataTable>
-
+                            </div>
 
                         </>
 

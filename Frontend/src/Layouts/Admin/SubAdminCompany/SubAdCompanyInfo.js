@@ -60,11 +60,9 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div className="company-avatar avatar-md me-2 companies company-icon">
-            <img className="avatar-img rounded-circle company" src={params.value ? params.value : "assets/img/companies/company-05.svg"} alt="Company Image" />
-          </div>
+  
           <div>
-            <a href="#">{params.row.makerInfo.FullName}</a>
+            <a href="#"  style={{ color: '#333' }}>{params.row.makerInfo.FullName}</a>
           </div>
         </div>
       )
@@ -96,7 +94,7 @@ function Payment() {
 
     {
       field: "change",
-      headerName: "Change",
+      headerName: "Action",
       width: 150,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (

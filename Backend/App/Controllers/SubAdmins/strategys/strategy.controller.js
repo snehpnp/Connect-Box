@@ -1,6 +1,8 @@
 "use strict";
 const db = require("../../../Models");
 const strategy_model = db.Strategies;
+const researcher_strategy = db.researcher_strategy;
+
 const User = db.user;
 const strategy_client_model = db.strategy_client;
 const mongoose = require("mongoose");
@@ -377,7 +379,7 @@ class strategy {
   // GET ALL STRATEGYS
   async GetAllSubadminStrategy(req, res) {
     try {
-      const { page, limit, id,key } = req.body;
+      const { page, limit, id, key,Role } = req.body;
 
       const skip = (page - 1) * limit;
 
@@ -385,7 +387,7 @@ class strategy {
         res.send({ status: false, msg: "Enter Please Id", data: [] });
       }
 
-      if(key == 1){
+      if (key == 1) {
         const getAllstrategy = await strategy_model.find({ maker_id: id }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
 
 
@@ -395,52 +397,79 @@ class strategy {
           res.send({ status: false, msg: "Empty data", data: getAllstrategy });
           return;
         }
-  
+
         // DATA GET SUCCESSFULLY
-       return res.send({
+        return res.send({
           status: true,
           msg: "Get All Startegy",
           data: getAllstrategy,
         });
-  
-      }else if(key == 2){
 
-        const findUser = await User.find({Role:"SUBADMIN",_id:id}).select('prifix_key')
+      } else if (key == 2) {
+
+        const findUser = await User.find({  _id: id }).select('prifix_key Role')
         const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
 
-
-        const getAllstrategy = await strategy_model.find(
+        // console.log("findUser",findUser[0].Role)
+        if(findUser[0].Role == "SUBADMIN"){
+          const getAllstrategy = await strategy_model.find(
             { strategy_name: { $regex: '^' + prefix } } // Using regex to match the starting 3 letters
-        )
-        .sort({ createdAt: -1 })
-        .select('_id strategy_name Service_Type');
-
-
-
-        // IF DATA NOT EXIST
-        if (getAllstrategy.length == 0) {
-          res.send({ status: false, msg: "Empty data", data: getAllstrategy });
-          return;
-        }
+          )
+            .sort({ createdAt: -1 })
+            .select('_id strategy_name Service_Type');
   
-        // DATA GET SUCCESSFULLY
-       return res.send({
-          status: true,
-          msg: "Get All Startegy",
-          data: getAllstrategy,
-        });
-      }else{
-        
-        const findUser = await User.find({Role:"SUBADMIN",_id:id}).select('prifix_key')
+  
+  
+          // IF DATA NOT EXIST
+          if (getAllstrategy.length == 0) {
+            res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+            return;
+          }
+  
+          // DATA GET SUCCESSFULLY
+          return res.send({
+            status: true,
+            msg: "Get All Startegy",
+            data: getAllstrategy,
+          });
+        }else if(findUser[0].Role == "RESEARCH"){
+          const getAllstrategy = await researcher_strategy.find(
+            { maker_id: findUser[0]._id } 
+          )
+            .sort({ createdAt: -1 })
+            .select('_id strategy_name');
+  
+  
+  
+          // IF DATA NOT EXIST
+          if (getAllstrategy.length == 0) {
+            res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+            return;
+          }
+  
+          // DATA GET SUCCESSFULLY
+          return res.send({
+            status: true,
+            msg: "Get All Startegy",
+            data: getAllstrategy,
+          });
+        }
 
-        const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
     
 
+
+      } else {
+
+        const findUser = await User.find({ Role: "SUBADMIN", _id: id }).select('prifix_key')
+
+        const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
+
+
         const getAllstrategy = await strategy_model.find(
-            { strategy_name: { $regex: '^' + prefix } } // Using regex to match the starting 3 letters
+          { strategy_name: { $regex: '^' + prefix } } // Using regex to match the starting 3 letters
         )
-        .sort({ createdAt: -1 })
-        .select('_id strategy_name Service_Type');
+          .sort({ createdAt: -1 })
+          .select('_id strategy_name Service_Type');
 
 
 
@@ -449,15 +478,15 @@ class strategy {
           res.send({ status: false, msg: "Empty data", data: getAllstrategy });
           return;
         }
-  
+
         // DATA GET SUCCESSFULLY
-       return res.send({
+        return res.send({
           status: true,
           msg: "Get All Startegy",
           data: getAllstrategy,
         });
       }
-  
+
 
 
     } catch (error) {
@@ -468,6 +497,7 @@ class strategy {
   // GET ALL STRATEGYS FOR CLIENT
   async GetAllStrategyForClient(req, res) {
     try {
+      
       const totalCount = await strategy_model.countDocuments();
 
       // THEME LIST DATA
@@ -742,8 +772,6 @@ class strategy {
 
     const { id } = req.body
 
-// const findSelected_str
-
     const researchUsersWithStrategies = await User.aggregate([
       {
         $match: {
@@ -762,6 +790,17 @@ class strategy {
         $unwind: "$strategies"
       },
       {
+        $addFields: {
+          stg_active: {
+            $cond: {
+              if: { $in: [new ObjectId(id), "$strategies.collaboration_id"] }, 
+              then: 1,
+              else: 0
+            }
+          }
+        }
+      },
+      {
         $project: {
           _id: "$strategies._id",
           strategy_name: "$strategies.strategy_name",
@@ -777,10 +816,11 @@ class strategy {
           strategy_percentage: "$strategies.strategy_percentage",
           security_fund: "$strategies.security_fund",
           monthly_charges: "$strategies.monthly_charges",
-          maker_id: "$strategies.maker_id",
+          stg_active: "$stg_active"
         }
       }
     ]);
+    
 
 
 

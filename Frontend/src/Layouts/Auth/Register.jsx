@@ -3,9 +3,9 @@ import ToastButton from '../../Components/ExtraComponents/Alert_Toast'
 import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from "formik";
 import toast from "react-hot-toast";
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { SignUpUser } from '../../ReduxStore/Slice/Auth/AuthSlice'
+import Swal from 'sweetalert2';
 
 
 import AddForm from "../../Components/ExtraComponents/forms/LoginForm";
@@ -47,7 +47,21 @@ const SignUp = () => {
                 .unwrap()
                 .then((response) => {
                     if (response.status) {
-                        toast.success(response.msg);
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 1200,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
+                        Toast.fire({
+                            icon: "success",
+                            title: "Signed in successfully"
+                        });
                         setTimeout(() => {
                             navigate('/login')
 

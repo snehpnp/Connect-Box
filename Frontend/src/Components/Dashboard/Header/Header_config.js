@@ -387,7 +387,6 @@ export const employee_header = [
         route: "/employee/dashboard",
         Data: []
     },
-
     {
         id: 4,
         name: 'Users',
@@ -397,7 +396,7 @@ export const employee_header = [
                 id: 41,
                 name: 'Add User',
                 Icon: "fe fe-user-plus",
-                route: "/employee/User/add",
+                route: "/employee/user/add",
             },
             {
                 id: 42,
@@ -421,8 +420,6 @@ export const employee_header = [
         Icon: "fe fe-map-pin",
         Data: []
     },
-
-
     {
         id: 10,
         name: 'Message Broadcast',
@@ -582,28 +579,28 @@ export const research_header = [
             {
                 id: 94,
                 name: 'Open Position',
-                route: "/research/open-position",
+                route: "/research/open/position",
                 Icon: "fe fe-grid",
                 Data: []
             },
         ]
     },
+    // {
+    //     id: 10,
+    //     name: 'Message Broadcast',
+    //     route: "/research/message_broadcast",
+    //     Icon: "fe fe-message-circle",
+    //     Data: []
+    // },
+    // {
+    //     id: 11,
+    //     name: 'Help',
+    //     route: "/research/help",
+    //     Icon: "fa-solid fa-circle-info",
+    //     Data: []
+    // },
     {
-        id: 10,
-        name: 'Message Broadcast',
-        route: "/research/message_broadcast",
-        Icon: "fe fe-message-circle",
-        Data: []
-    },
-    {
-        id: 11,
-        name: 'Help',
-        route: "/research/help",
-        Icon: "fa-solid fa-circle-info",
-        Data: []
-    },
-    {
-        id: 9,
+        id: 18,
         name: 'FAQs',
         route: "/research/faqs",
         Icon: "fe fe-help-circle",

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { RechargeDetailsGets } from "../../../ReduxStore/Slice/Admin/SubAdminCompanyInfo";
+import { Strategy_Transaction_Details } from "../../../ReduxStore/Slice/Researcher/ResearcherSlice";
 import { useDispatch } from "react-redux";
 import FullDataTable from '../../../Components/ExtraComponents/Tables/FullDataTable';
 import Content from '../../../Components/Dashboard/Content/Content';
@@ -7,16 +7,18 @@ import Loader from '../../../Utils/Loader';
 import { fDateTime } from '../../../Utils/Date_formet';
 import CompanyChange from '../../../Components/ExtraComponents/Models/CompanyChange';
 import { IndianRupee } from 'lucide-react';
+import { json } from "react-router-dom";
 
 function Strategy_transaction() {
   const dispatch = useDispatch();
 
   const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
   const [selectedRow, setSelectedRow] = useState(null);
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
 
   const [companyData, setCompanyData] = useState({
-    loading: false,
+    loading: true,
     data: [],
   });
 
@@ -56,9 +58,9 @@ function Strategy_transaction() {
       ),
     },
     {
-      field: 'username',
-      headerName: 'User Name',
-      width: 210,
+      field: 'strategy_name',
+      headerName: 'Strategy Name',
+      width: 180,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -67,9 +69,9 @@ function Strategy_transaction() {
       )
     },
     {
-      field: 'Role',
-      headerName: 'Role',
-      width: 250,
+      field: 'User_name',
+      headerName: 'User Name',
+      width: 180,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -78,21 +80,31 @@ function Strategy_transaction() {
       )
     },
     {
-      field: 'Mode',
-      headerName: 'Mode',
+      field: 'plan_name',
+      headerName: 'Plan Name',
+      width: 180,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+        {params.value || '-'}
+      </div>
+      )
+    },
+    {
+      field: 'order_id',
+      headerName: 'Order Id',
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          <span className="badge bg-success-light">{params.value || '-'}</span>
-
-        </div>
+        {params.value || '-'}
+      </div>
       )
     },
     {
-      field: 'Balance',
-      headerName: 'Balance',
-      width: 250,
+      field: 'amount',
+      headerName: 'Amount',
+      width: 150,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -101,6 +113,23 @@ function Strategy_transaction() {
         </div>
       )
     },
+    {
+      field: 'order_status',
+      headerName: 'Order Status',
+      width: 150,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          {params.value == 'Success' ?  
+          <span className="text-success-light">{params.value }</span> : 
+          <span className="text-danger">{"Pending"}</span> }
+         
+
+       
+      </div>
+      )
+    },
+     
     {
       field: 'createdAt', headerName: 'createdAt', width: 250, headerClassName: styles.boldHeader,
       renderCell: (params) => (
@@ -114,8 +143,8 @@ function Strategy_transaction() {
 
   const getCompanyData = async () => {
     try {
-      var data = { Role: "SUBADMIN" }
-      const response = await dispatch(RechargeDetailsGets(data)).unwrap();
+      var data = { id: user_id }
+      const response = await dispatch(Strategy_Transaction_Details(data)).unwrap();
 
       if (response.status) {
         const formattedData = response.data.map((row, index) => ({
@@ -123,7 +152,7 @@ function Strategy_transaction() {
           id: index + 1,
         }));
         setCompanyData({
-          loading: true,
+          loading: false,
           data: formattedData,
         });
       }
@@ -144,7 +173,7 @@ function Strategy_transaction() {
 
   return (
     <>
-      {companyData.loading ? (
+      {!companyData.loading ? (
         <div data-aos="fade-left">
         <Content
           Card_title="Strategy transaction"
