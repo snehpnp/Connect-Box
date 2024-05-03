@@ -130,8 +130,6 @@ const Edit_Employee = () => {
         errors.phone = valid_err.INVALID_CONTACT_ERROR;
       }
 
- 
-
       if (values.Strategy) {
         if (!values.addemployee && !values.editemployee) {
           errors.addemployee = "select Add Client Also 1";
@@ -170,7 +168,6 @@ const Edit_Employee = () => {
         },
       };
 
-      console.log("values.updateapikeys :" ,req)
       if (values.password.trim() !== "") {
         req.Password = values.password;
       }
@@ -211,7 +208,7 @@ const Edit_Employee = () => {
     formik.setFieldValue("detailsinfo", UserData.data[0] && UserData.data[0].subadmin_permissions[0].detailsinfo == 1 ? true :false)
     formik.setFieldValue("groupservice", UserData.data[0] && UserData.data[0].subadmin_permissions[0].group_services.length>0  ? true :false)
     formik.setFieldValue("Strategy", UserData.data[0] && UserData.data[0].subadmin_permissions[0].strategy.length> 0 ? true :false)
-  },[UserData.data ])
+  },[UserData.data])
 
 
   useEffect(() => {
@@ -420,15 +417,7 @@ const Edit_Employee = () => {
     },
   ];
   
-
-
-
-
-
-
-
-
-
+ 
   const data = async () => {
     await dispatch(
       GetEmployeeStrategy({

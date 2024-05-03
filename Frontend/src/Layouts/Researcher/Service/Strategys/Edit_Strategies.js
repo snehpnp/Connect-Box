@@ -78,13 +78,19 @@ function Edit_Strategies() {
         disable: false,
     },
     {
-        name: "strategy_category",
-        label: "Catagory",
-        type: "text",
-        label_size: 12,
-        col_size: 6,
-        disable: false,
-    },
+      name: "strategy_category",
+      label: "Category",
+      type: "select",
+      options: [
+          { label: "Low Risk", value: "Low Risk" },
+          { label: "Medium Risk", value: "Medium Risk" },
+          { label: "High Risk", value: "High Risk" },
+      ],
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+      
+  },
     {
         name: "strategy_demo_days",
         label: "Strategy demo days",

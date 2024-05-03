@@ -36,6 +36,8 @@ const TradeHistory = () => {
 
     const token = JSON.parse(localStorage.getItem("user_details")).token;
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+    const Role = JSON.parse(localStorage.getItem("user_details")).Role;
+
 
     const [showModal, setshowModal] = useState(false);
     const [refresh, setrefresh] = useState(false);
@@ -82,7 +84,7 @@ const TradeHistory = () => {
 
     const userDataRes = async () => {
         const subadminId = user_id
-        await dispatch(Orders_Details({ subadminId }))
+        await dispatch(Orders_Details({ subadminId:subadminId,Role:Role }))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
@@ -151,7 +153,7 @@ const TradeHistory = () => {
 
     const Get_Position = async (e) => {
         const subadminId = user_id
-        await dispatch(Orders_Details({ subadminId }))
+        await dispatch(Orders_Details({ subadminId:subadminId,Role:Role }))
             .unwrap()
             .then((response) => {
 

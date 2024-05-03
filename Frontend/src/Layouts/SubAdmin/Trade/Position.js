@@ -561,7 +561,7 @@ export default function AllEmployees() {
 
     return (
         <>
-            {tableData.loading ? (
+            {tradeHistoryData.loading ? (
                 <>
                     <div className="content container-fluid" data-aos="fade-left">
 
@@ -664,8 +664,8 @@ export default function AllEmployees() {
                                             value={inputSearch}
                                         />
                                     </div>
+
                                     <div className="input-block col-lg-2 mt-3 mb-3">
-                                        <label>Strategy</label>
                                         <label for="select" class="form-label">
                                             Strategy
                                         </label>
@@ -687,6 +687,9 @@ export default function AllEmployees() {
                                                 })} */}
                                         </select>
                                     </div>
+
+
+
                                 </div>
 
                                 <div className="card-body table-responsive">
