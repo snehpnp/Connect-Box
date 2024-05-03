@@ -470,6 +470,7 @@ const AddClient = () => {
     var data = { id: user_id ,key:"1"}
     await dispatch(GetSubStrategys(data)).unwrap()
       .then((response) => {
+        // console.log(" response.data", response.data)
         if (response.status) {
           setgetallStrategy({
             loading: true,
@@ -595,7 +596,7 @@ const AddClient = () => {
   //   setSelectedCheckboxes([])
   // }, [formik.values.Service_Type])
 
-
+console.log("formik.values.Service_Type",formik.values.Service_Type)
   return (
     <>
       {
@@ -776,7 +777,7 @@ const AddClient = () => {
                         <div class="input-block ">
                           <label>All Strategy</label>
                         </div>
-                        {getAllStategy.data.map((strategy) => (
+                        {getAllStategy && getAllStategy.data.map((strategy) => (
                           strategy.Service_Type == formik.values.Service_Type && (
                             <div className={`col-lg-3 mt-2`} key={strategy._id}>
                               <div className="row">

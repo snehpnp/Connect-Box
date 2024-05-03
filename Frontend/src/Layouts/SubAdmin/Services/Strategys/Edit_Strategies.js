@@ -75,10 +75,10 @@ function Edit_Strategies() {
     {
       name: "strategy_name",
       label: "Strategy Name",
-      type: "text1",
+      type: "text",
       label_size: 6,
       col_size: 6,
-      disable: false,
+      disable: true,
     },
     {
       name: "strategy_category",
