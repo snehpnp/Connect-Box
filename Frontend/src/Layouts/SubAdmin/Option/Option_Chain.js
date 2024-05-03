@@ -265,7 +265,7 @@ function Option_Chain() {
         {
             dataField: 'PUT/LP',
             text: 'PUT/LP',
-            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#f5f5dc54' } :
                 parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
 
             formatter: (cell, row, rowIndex) => (

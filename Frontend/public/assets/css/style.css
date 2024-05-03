@@ -34674,8 +34674,7 @@ a.user-a:hover span {
 }
 .borderless-table .table {
     /* border-color: transparent; */
-    border:1px solid rgb(135, 138, 153);
-    
+    border: 1px solid #ddd;
 }
 [data-layout-mode=light] body .btn-primary:hover{
     color: #7539ff  !important;
@@ -34786,4 +34785,18 @@ input:disabled {
     cursor: pointer;
 }
 
+}
+.borderless-table .table-bordered>:not(caption)>* {
+    /* border-width: var(--bs-border-width) 0; */
+    border-color: #ddd !important;
+}
+[data-layout-mode=dark] body .borderless-table .table-bordered>:not(caption)>*{
+    border-color: rgb(235 215 215 / 27%) !important;
+}
+
+[data-layout-mode=dark] body .button_BUY   {
+    background: rgba(40, 178, 77, 0.1) !important;
+}
+[data-layout-mode=dark] body .button_sell {
+    background: rgba(230, 33, 33, 0.1) !important;
 }
