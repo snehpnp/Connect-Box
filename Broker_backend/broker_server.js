@@ -264,7 +264,7 @@ app.post('/broker-signals', async (req, res) => {
 
 
 
-  const resultUsers = await Users.find({
+  const reusltUsers = await Users.find({
     $or: [
       { Role: "SUBADMIN" },
       { Role: "RESEARCH" }

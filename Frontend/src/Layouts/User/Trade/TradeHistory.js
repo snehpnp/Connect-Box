@@ -14,6 +14,7 @@ import { ipAddress } from '../../../Utils/Ipaddress';
 
 export default function AllEmployees() {
     const userDetails = JSON.parse(localStorage.getItem("user_details"));
+    const Role = JSON.parse(localStorage.getItem("user_details")).Role;
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -220,7 +221,7 @@ console.log("data",data)
 
     const userDataRes = async () => {
         const subadminId = userDetails.user_id
-        await dispatch(Orders_Details({ subadminId }))
+        await dispatch(Orders_Details({ subadminId:subadminId,Role:Role }))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
