@@ -497,6 +497,7 @@ class strategy {
   // GET ALL STRATEGYS FOR CLIENT
   async GetAllStrategyForClient(req, res) {
     try {
+      
       const totalCount = await strategy_model.countDocuments();
 
       // THEME LIST DATA
