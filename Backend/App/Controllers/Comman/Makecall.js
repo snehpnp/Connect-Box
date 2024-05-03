@@ -566,7 +566,10 @@ class Makecall {
            $match: {
             user_id: UserId,
             ABR_TYPE: ABR,
-            status: 0,
+            $or: [
+              { status: 0 },
+              { status: 2 }
+            ]
           },
         },
         ];
@@ -971,7 +974,7 @@ async function run() {
 
           const result = await makecallABR.updateMany(
             { _id: { $in: ids } },
-            { $set: { status : 1 } } 
+            { $set: { status : 2 } } 
           );
          
         //  console.log("result ",result)

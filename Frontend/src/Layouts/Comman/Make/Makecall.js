@@ -1705,8 +1705,6 @@ const Makecall = () => {
             //         StopLoss = parseFloat(price) - parseFloat(stoploss)
             //         sl_status = 1
             //     }
-
-
             // }
 
         }
@@ -1724,6 +1722,33 @@ const Makecall = () => {
         //Trade At price -------- AT
         if (EntryPriceBA == 'at') {
 
+
+            
+            if (WiseTypeDropdown == '1') {
+                if (parseFloat(target1) != 0 && target1 != '') {
+
+                    let percent_value = parseFloat(price) * (target1 / 100)
+                    Target = parseFloat(price) + parseFloat(percent_value)
+                    sl_status = 1
+                }
+                if (parseFloat(stoploss) != 0 && stoploss != '') {
+                    let percent_value = parseFloat(price) * (stoploss / 100)
+                    StopLoss = parseFloat(price) - parseFloat(percent_value)
+                    sl_status = 1
+                }
+            }
+
+            else if (WiseTypeDropdown == '2') {
+                // Points
+                if (parseFloat(target1) != 0 && target1 != '') {
+                    Target = parseFloat(price) + parseFloat(target1)
+                    sl_status = 1
+                }
+                if (parseFloat(stoploss) != 0 && stoploss != '') {
+                    StopLoss = parseFloat(price) - parseFloat(stoploss)
+                    sl_status = 1
+                }
+            }
             // const currentTimestamp = Math.floor(Date.now() / 1000);
             //     let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice==''?'100':strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${target1}|StopLoss:${stoploss}|ExitTime:${selectedTimeExit}|sl_status:1|Demo:demo`
             SetForDisabledSubmit(true)
@@ -1756,8 +1781,9 @@ const Makecall = () => {
                           });
                           setRefreshscreen(!refreshscreen);
                           setTimeout(() => {
-                            window.location.reload()
-                          }, 2000);
+                            navigate("/subadmin/open-position")
+                            //window.location.reload()
+                          }, 1500);
 
                      } else {
                        
@@ -1875,8 +1901,9 @@ const Makecall = () => {
                           });
                           setRefreshscreen(!refreshscreen);
                           setTimeout(() => {
-                            window.location.reload()
-                          }, 2000);
+                            navigate("/subadmin/open-position")
+                            //window.location.reload()
+                          }, 1500);
 
                      } else {
                        
@@ -1981,8 +2008,9 @@ const Makecall = () => {
                           });
                           setRefreshscreen(!refreshscreen);
                           setTimeout(() => {
-                            window.location.reload()
-                          }, 2000);
+                            navigate("/subadmin/open-position")
+                            //window.location.reload()
+                          }, 1500);
 
                      } else {
                        
@@ -2017,7 +2045,6 @@ const Makecall = () => {
                 <div className="card">
                     <div className="card-header d-flex justify-content-between align-items-center border-bottom">
                         <h5 className="card-title mb-0 w-auto">
-
                             <i className="fas fa-money-bill-wave pe-2" />
                             Make Call
                         </h5>
@@ -2035,8 +2062,6 @@ const Makecall = () => {
                                                 <div className="col-lg-4 col-md-6 col-sm-12">
                                                     <div className="input-block mb-3">
                                                         <label>Script Type * </label>
-
-
                                                         <select className="form-select" onChange={(e) => {
 
                                                             selectCatagoryId(e);
@@ -2051,7 +2076,6 @@ const Makecall = () => {
                                                                     return <option key={x._id} name={x.segment} value={x._id}>{x.name}</option>
                                                                 }
                                                             })}
-
                                                         </select>
                                                     </div>
                                                 </div>
