@@ -4711,8 +4711,8 @@ span.select2-container.select2-container--default.select2-container--open {
 
 .sidebar .sidebar-menu ul li a span {
     padding: 0 10px;
-    font-size: 14px;
-    font-weight: 400;
+    font-size: 15px;
+    font-weight: 500;
     line-height: 18px
 }
 
@@ -33485,14 +33485,10 @@ table.table.bg-none::before {
     background-color: #7539ff !important;
     border-color: #7539ff !important;
 }
-<<<<<<<<< Temporary merge branch 1
-=========
 
 
 
 
-
->>>>>>>>> Temporary merge branch 2
 a,
 a:hover,
 a:focus,
@@ -34298,17 +34294,31 @@ img {
     color: #ddd !important;
 }
 
-button[aria-label="delete"],
+button[aria-label="delete"]
+{
+    background-color: rgba(255, 218, 218, .49) !important;
+    color: red !important;
+    margin: 0px 5px;
+    /* padding: 10px; */
+    /* border: 1px solid !important; */
+    /* border-radius: 4px; */
+}
+
 .button_sell {
     background-color: rgba(255, 218, 218, .49) !important;
     color: red !important;
     margin: 0px 5px;
+    padding: 5px 8px;
+    border: 1px solid !important;
+    border-radius: 4px;
 }
-
 .button_BUY {
     background-color: #e1ffed !important;
     color: #33b469 !important;
     border: none;
+    padding: 5px 8px;
+    border: 1px solid;
+    border-radius: 4px;
 }
 
 .button_sell {
@@ -34650,13 +34660,22 @@ button[aria-label="edit"] {
   [data-layout-mode=dark] .MuiDataGrid-cell {
     color: #ddd !important;
 }
-<<<<<<<<< Temporary merge branch 1
 [data-layout-mode=dark] .MuiTablePagination-toolbar ,[data-layout-mode=dark] .MuiTab-textColorPrimary ,[data-layout-mode=dark] .MuiSelect-icon
 {
     color: #fff;
 }
 a.user-a:hover span {
     color: #7539ff;
+}
+.borderless-table .table tbody tr td {
+    border-color: transparent;
+    border: none !important;
+    padding: 10px 15px;
+}
+.borderless-table .table {
+    /* border-color: transparent; */
+    border:1px solid rgb(135, 138, 153);
+    
 }
 [data-layout-mode=light] body .btn-primary:hover{
     color: #7539ff  !important;
@@ -34670,7 +34689,7 @@ a.user-a:hover span {
      /* background:#ddd; */
       display:inline-block;
        float:left; position:sticky; top:150px;
-=========
+
 
 [data-layout-mode=dark] .MuiDataGrid-cell ,
 [data-layout-mode=dark] .MuiTablePagination-toolbar,
@@ -34767,13 +34786,4 @@ input:disabled {
     cursor: pointer;
 }
 
-/* @keyframes spin 
-0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
->>>>>>>>> Temporary merge branch 2
 }

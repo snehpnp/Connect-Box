@@ -121,16 +121,16 @@ export default function Help() {
       renderCell: (params) => (
         <div
           style={{
-            backgroundColor: '#4CAF50', // Green
+            backgroundColor: '#E1FFED', // Green
             border: 'none',
-            color: 'white',
-            width: "150px",
-            padding: '8px 18px', // Adjusted padding
+            color: '#33B469',
+            // width: "150px",
+            padding: '6px 10px', // Adjusted padding
             textAlign: 'center',
             textDecoration: 'none',
             display: 'inline-block',
-            fontSize: '16px',
-            margin: '4px 2px',
+            fontSize: '13px',
+            // margin: '4px 2px',
             cursor: 'pointer',
             borderRadius: '10px', // Rounded border radius
             transition: 'background-color 0.3s ease',
@@ -359,13 +359,15 @@ export default function Help() {
           <div className="content container-fluid" data-aos="fade-left">
             <div className="card">
             <div className="card-header">
-              <div className="row">
+              <div className="row align-items-center">
                 <div className="col">
-                <h5 className="card-title mb-0">All Sub-Admins</h5>
+                <h5 className="card-title mb-0">
+                <i class="fe fe-users pe-2" ></i>
+                  All Sub-Admins</h5>
                 </div>
                 <div className="col-auto">
                 <div className="list-btn">
-                    <ul className="filter-list">
+                    <ul className="filter-list mb-0">
                       <li className="">
                         <p
                           className="btn-filters mb-0"
