@@ -185,6 +185,7 @@ function MessageBroadcast() {
         .unwrap()
         .then((response) => {
           if (response.status) {
+            console.log("aa",response.data)
             toast.success(response.msg);
             setStrategies(response.data);
           } else {

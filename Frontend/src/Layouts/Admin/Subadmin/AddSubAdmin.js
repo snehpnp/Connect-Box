@@ -131,7 +131,7 @@ const AddClient = () => {
           else {
             Swal.fire({
               title: "Error !",
-              text: "subadmin add error",
+              text: response.msg || "subadmin add error",
               icon: "error",
               timer: 1000,
               timerProgressBar: true,
