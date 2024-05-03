@@ -2,22 +2,15 @@ import React, { useState, useEffect } from 'react';
 
 import { SignIn } from "../../ReduxStore/Slice/Auth/AuthSlice";
 import { useDispatch } from "react-redux";
-import toast from "react-hot-toast";
-import ToastButton from "../../Components/ExtraComponents/Alert_Toast";
+
 import Modal from '../../Components/Dashboard/Models/Model'
 import OtpInput from "react-otp-input";
-import Lodding from '../../Utils/Loader';
 import Swal from 'sweetalert2';
 import { ipAddress } from '../../Utils/Ipaddress';
-import { FaExclamationTriangle } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
-import { AiOutlineCloseCircle } from 'react-icons/ai'; // Importing close circle icon from React Icons
-import { AiOutlineUserDelete } from 'react-icons/ai'; // Importing delete user icon from React Icons
-import { FaServer } from 'react-icons/fa';
-import { BsExclamationTriangle } from 'react-icons/bs'; // Importing Bootstrap icon
-import { FaUserTimes } from 'react-icons/fa';
 
+import ReCAPTCHA from 'react-google-recaptcha';
 
 function Login() {
 
@@ -25,32 +18,52 @@ function Login() {
   const navigate = useNavigate()
   var theme_mode = localStorage.getItem('theme_mode')
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   const [showPassword, setShowPassword] = useState(false);
-
   const [typeOtp, setTypeOtp] = useState("");
-
   const [getData, SetData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [ip, setIp] = useState(null);
+  const [isVerified, setIsVerified] = useState(false);
 
+
+  var sitekey = "6LeLC88pAAAAAM8P1WFYgAHJOwwlZ3MLfV9hyStu"
+
+  
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+
+
+  const handleRecaptchaChange = (value) => {
+    setIsVerified(!!value);
   };
 
   const verifyOTP = () => {
     var Otp = getData && getData.mobile.slice(-4);
 
     if (typeOtp.length !== 4) {
-      toast.error("Please Fill Otp");
+      Swal.fire({
+        icon: 'error',
+        title: 'Fill OTP',
+        showConfirmButton: false,
+        timer: 800 
+      });
+      
+
     } else if (Otp !== typeOtp) {
-      toast.error("Otp Is Incorect");
+      Swal.fire({
+        icon: 'error',
+        title: 'Otp Is Incorrect',
+        showConfirmButton: false,
+        timer: 800 
+      });
+      
     } else {
-      toast.success("login Successful");
+      
       localStorage.setItem("user_details", JSON.stringify(getData));
       localStorage.setItem("user_role", JSON.stringify(getData.Role));
       setIsLoggedIn(true);
@@ -93,49 +106,76 @@ function Login() {
     setPassword(event.target.value);
   };
 
+
+
   const handleSubmit = async () => {
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
-  
-    if (!trimmedEmail || !trimmedPassword) {
-      toast.error("Please enter the credentials to login.");
+
+    if (!trimmedEmail ||!trimmedPassword) {
+      Swal.fire({
+        title: 'Error',
+        text: 'Enter the credentials to login.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
       return;
     }
-  
+
     if (!/^\S+@\S+\.\S+$/.test(trimmedEmail)) {
-      toast.error("Please enter a valid email address.");
+      Swal.fire({
+        title: 'Error',
+        text: 'Enter a valid email address.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
       return;
     }
-  
+
+    if (isVerified) {
+      // Proceed with login or form submission
+      console.log('reCAPTCHA verified. Submitting form...');
+    } else {
+      Swal.fire({
+        title: 'Oops!',
+        text: 'Please verify that you are not a robot.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+      return;
+    }
+    
+
+
     const req = {
       Email: email,
       Password: password,
       device: "WEB",
       ip: ip,
     };
-  
+
     try {
       const response = await dispatch(SignIn(req)).unwrap();
-  
+
       if (response.status) {
         SetData(response.data);
         setShowModal(true);
       } else {
         switch (response.msg) {
           case "Password Not Match":
-            showErrorModal("Incorrect Password", "Please enter the correct password.");
+            showErrorModal("Incorrect Password", "Enter the correct password.");
             break;
-          case "please contact admin you are inactive.":
+          case "Contact admin you are inactive.":
             showInactiveAccountModal();
             break;
           case "User Not exists":
             showErrorModal("User Not Exists", "The user you are trying to access does not exist.");
             break;
           case "Server Side error":
-            showErrorModal("Server Side Error", "Oops! Something went wrong on the server. Please try again later.");
+            showErrorModal("Server Side Error", "Oops! Something went wrong on the server. try again later.");
             break;
-          case "your service is terminated please contact to admin":
-            showErrorModal("Service Terminated", "Your service has been terminated. Please contact the administrator for assistance.");
+          case "your service is terminated contact to admin":
+            showErrorModal("Service Terminated", "Your service has been terminated. Contact the administrator for assistance.");
             break;
           default:
             showSlowInternetModal();
@@ -147,7 +187,7 @@ function Login() {
       showSlowInternetModal();
     }
   };
-  
+
   const showErrorModal = (title, message) => {
     Swal.fire({
       icon: 'error',
@@ -157,28 +197,28 @@ function Login() {
       confirmButtonText: '<span style="background-color: #3085d6; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px;">OK</span>'
     });
   };
-  
+
   const showInactiveAccountModal = () => {
     Swal.fire({
       icon: 'warning',
       title: '<span style="font-size: 24px; color: #ff9900;"><BsExclamationTriangle /></span> Inactive Account',
-      html: '<span style="font-size: 18px; color: #333;">Please contact admin as your account is inactive.</span>',
+      html: '<span style="font-size: 18px; color: #333;"> Contact admin as your account is inactive.</span>',
       showCloseButton: true,
       confirmButtonColor: '#3085d6',
       confirmButtonText: '<span style="background-color: #3085d6; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px;">OK</span>'
     });
   };
-  
+
   const showSlowInternetModal = () => {
     Swal.fire({
       icon: 'warning',
       title: '<span style="font-size: 24px; color: #ff9900;"><FaWifi /></span> Slow Internet Connection',
-      html: '<span style="font-size: 18px; color: #333;">Your internet connection seems to be slow. Please try again later.</span>',
+      html: '<span style="font-size: 18px; color: #333;">Your internet connection seems to be slow. Try again later.</span>',
       confirmButtonColor: '#3085d6',
       confirmButtonText: 'OK'
     });
   };
-  
+
 
 
 
@@ -231,7 +271,7 @@ function Login() {
       handleSubmit();
     }
   };
-  
+
   return (
 
     <div >
@@ -289,8 +329,13 @@ function Login() {
                           </div>
                         </div>
 
+                        <ReCAPTCHA
+                          sitekey={sitekey}
+                        onChange={handleRecaptchaChange}
+                        />
+
                         <div class="add-customer-btns d-flex justify-content-between text-end mt-3">
-                          <button className="btn customer-btn-save" onClick={handleSubmit}  onKeyPress={handleKeyPress} >
+                          <button className="btn customer-btn-save" onClick={handleSubmit} onKeyPress={handleKeyPress} >
                             Login
                           </button>
                         </div>
@@ -312,7 +357,7 @@ function Login() {
                           </a>
                         </div>
                       </div> */}
-                    
+
 
                       <div className="text-center dont-have">
                         Don't have an account yet?{" "}
@@ -329,7 +374,6 @@ function Login() {
           </div>
         </div>
 
-        <ToastButton />
 
 
 
