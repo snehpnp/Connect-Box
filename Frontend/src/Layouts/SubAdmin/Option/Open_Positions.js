@@ -84,7 +84,7 @@ export default function AllEmployees() {
         width: '100px',
         height: '35px',
         // backgroundColor: 'lightgray', // Example background color
-    };
+    }
 
     const [updatedDataPriceTS, setUpdatedDataPriceTS] = useState({});
     console.log("updatedDataPriceTS  ", updatedDataPriceTS)
@@ -123,9 +123,16 @@ export default function AllEmployees() {
             text: "Status",
             formatter: (cell, row, rowIndex) => (
 
-                <select style={containerStyle1} className="form-select" name="status" onChange={(e) => { inputChangeTargetStoplos(e, "status", row)}}>
-                              <option value="0" selected={row.status==0} >OPEN</option>
-                              <option value="2" selected={row.status==2}>CLOSE</option>
+                <select style={{
+                              width:"105px",
+                              height:"33px",
+                              color:row.status==0?'green':'red'
+                              }}  
+                              className="form-select"
+                              name="status" 
+                              onChange={(e) => { inputChangeTargetStoplos(e, "status", row)}}>
+                              <option value="0" style={{color:"green"}}  selected={row.status==0} >OPEN</option>
+                              <option value="2" style={{color:"red"}}  selected={row.status==2}>CLOSE</option>
                               
                </select>   
             ),
