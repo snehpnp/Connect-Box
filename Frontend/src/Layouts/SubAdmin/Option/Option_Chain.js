@@ -486,21 +486,12 @@ function Option_Chain() {
         let type = { loginType: "API" };
         let channelList = TokenSymbolChain && TokenSymbolChain
 
-        console.log("channelList ", channelList)
-        console.log("UserDetails ", UserDetails)
-        console.log("livePriceDataDetails ", livePriceDataDetails.demate_user_id)
-        console.log("access_token ", livePriceDataDetails.access_token)
-        console.log("trading_status ", livePriceDataDetails.trading_status)
 
-        // if (UserDetails && UserDetails[0].demat_userid !== undefined && UserDetails && UserDetails[0].access_token !== undefined && UserDetails && UserDetails[0].TradingStatus == "on") {
-
-        //     const res = await CreateSocketSession(type, UserDetails[0].demat_userid, UserDetails[0].access_token);
 
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
             const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
           
-        // console.log("res.data.stat",res.data.stat)
 
             if (res.data.stat) {
                 const handleResponse = async (response, socket) => {
