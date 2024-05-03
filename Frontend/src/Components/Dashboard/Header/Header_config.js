@@ -397,7 +397,7 @@ export const employee_header = [
                 id: 41,
                 name: 'Add User',
                 Icon: "fe fe-user-plus",
-                route: "/employee/User/add",
+                route: "/employee/user/add",
             },
             {
                 id: 42,
