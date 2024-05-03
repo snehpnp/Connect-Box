@@ -4,10 +4,6 @@ import { GetAllclientDetails, UPDATE_CLIENT_SERVICE_DATA } from '../../../ReduxS
 import { SquarePen } from 'lucide-react';
 import Swal from 'sweetalert2';
 
-import { Link } from "react-router-dom";
-import ExportToExcel from '../../../Utils/ExportCSV'
-
-
 function Clientservice() {
   const dispatch = useDispatch()
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
@@ -94,7 +90,7 @@ function Clientservice() {
       .then((response) => {
 
         if (response.status) {
-
+console.log("response",response)
           const filterData = response.services.filter((item) => {
             const searchInputMatch =
               searchInput == '' ||
@@ -125,6 +121,8 @@ function Clientservice() {
       })
 
   }
+
+
 
   useEffect(() => {
     GetAllClientServiceDetails();
@@ -168,6 +166,8 @@ function Clientservice() {
       })
 
   }
+
+
   const RefreshHandle = () => {
     setRefresh(!refresh)
     setSearchInput('')
