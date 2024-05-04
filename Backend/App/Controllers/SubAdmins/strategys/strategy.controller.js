@@ -478,30 +478,55 @@ class strategy {
   }
 
   // GET ALL STRATEGYS FOR CLIENT
+  // async GetAllStrategyForClient(req, res) {
+  //   try {
+  //       const {id} = req.body
+  //     // const totalCount = await strategy_model.countDocuments();
+
+  //     // THEME LIST DATA
+  //     // var getAllTheme = await strategy_model.find()
+  //     const getAllstrategy = await strategy_model.find({maker_id:id }, "_id strategy_name");
+
+  //     // IF DATA NOT EXIST
+  //     if (getAllstrategy.length == 0) {
+  //       res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+  //     }
+
+  //     // DATA GET SUCCESSFULLY
+  //     res.send({
+  //       status: true,
+  //       msg: "Get All Startegy",
+  //       data: getAllstrategy,
+  //     });
+  //   } catch (error) {
+  //     console.log("Error Get All Strategy Error-", error);
+  //   }
+  // }
+
   async GetAllStrategyForClient(req, res) {
     try {
-      
-      const totalCount = await strategy_model.countDocuments();
-
-      // THEME LIST DATA
-      // var getAllTheme = await strategy_model.find()
-      const getAllstrategy = await strategy_model.find({}, "_id strategy_name");
-
-      // IF DATA NOT EXIST
-      if (getAllstrategy.length == 0) {
-        res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+      const { id } = req.body;
+      console.log("req.body",req.body)
+      // Retrieve strategies based on maker_id
+      const getAllStrategies = await strategy_model.find({ maker_id: id }, "_id strategy_name");
+    
+      // Check if data exists
+      if (getAllStrategies.length === 0) {
+        return res.send({ status: false, msg: "Empty data", data: getAllStrategies });
       }
-
-      // DATA GET SUCCESSFULLY
+  
+      // Data retrieval successful
       res.send({
         status: true,
-        msg: "Get All Startegy",
-        data: getAllstrategy,
+        msg: "Get All Strategy",
+        data: getAllStrategies,
       });
     } catch (error) {
-      console.log("Error Get All Strategy Error-", error);
+      console.log("Error getting all strategies:", error);
+      res.status(500).send({ status: false, msg: "Internal Server Error" });
     }
   }
+  
 
   // DELETE STRATEGY IN A COLLECTION
   async DeleteStragegy(req, res) {

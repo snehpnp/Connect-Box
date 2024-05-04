@@ -16,7 +16,7 @@ router.post('/strategy/add', AddStragegy);
 router.post('/strategy/get', GetOneStragegy);
 router.post('/strategy/edit', EditStragegy);
 router.post('/strategy/getall', GetAllStrategy);
-router.get('/strategy_for_add_client/getall', GetAllStrategyForClient);
+router.post('/strategy_for_add_client/getall', GetAllStrategyForClient);
 router.post('/strategy/delete', DeleteStragegy);
 router.post('/strategy/client/get', ClientsAccordingToStrategy);
 router.post('/sub/strategy/getall', GetAllSubadminStrategy);

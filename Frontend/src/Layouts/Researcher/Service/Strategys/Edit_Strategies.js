@@ -94,7 +94,7 @@ function Edit_Strategies() {
     {
         name: "strategy_demo_days",
         label: "Strategy demo days",
-        type: "text3",
+        type: "text5",
         label_size: 12,
         col_size: 6,
         disable: false,
@@ -138,7 +138,7 @@ function Edit_Strategies() {
     {
         name: "max_trade",
         label: "Maximum Trades",
-        type: "text3",
+        type: "text5",
         label_size: 12,
         col_size: 6,
         disable: false,
@@ -146,7 +146,7 @@ function Edit_Strategies() {
     {
         name: "strategy_percentage",
         label: "Strategy Percentage",
-        type: "text3",
+        type: "text5",
         label_size: 12,
         col_size: 6,
         disable: false,
@@ -154,7 +154,7 @@ function Edit_Strategies() {
     {
         name: "monthly_charges",
         label: "Monthly Charges",
-        type: "text3",
+        type: "text5",
         label_size: 12,
         col_size: 6,
         disable: false,
@@ -162,7 +162,7 @@ function Edit_Strategies() {
     {
         name: "security_fund",
         label: "Security Fund",
-        type: "text3",
+        type: "text5",
         label_size: 12,
         col_size: 6,
         disable: false,
