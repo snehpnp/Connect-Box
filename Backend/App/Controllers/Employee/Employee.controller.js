@@ -7,12 +7,10 @@ const User_model = db.user;
 const Role_modal = db.role;
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
-const count_licenses = db.count_licenses;
-const researcher_strategy = db.researcher_strategy;
-const client_service = db.client_service
 const strategyDB = db.Strategies
 const serviceGroupName = db.serviceGroupName
 const Subadmin_Permission = db.Subadmin_Permission;
+const strategy_client = db.strategy_client;
 
 
 
@@ -65,9 +63,19 @@ class Employee {
             const {id}  = req.body;
 
             if(!id){
-                return res.send({status: true, msg : 'Id is not found', data : []})
+                return res.send({status: false, msg : 'Id is not found', data : []})
             }
-            
+
+            const findData = await User_model.findOne({ _id : id})
+            if(!findData){
+                return res.send({status:false , msg : 'Incorrect User Id', data : []})
+            }
+
+            const findStrategy = await strategy_client.findMany({user_id : id})
+
+
+        console.log(findStrategy)
+
 
 
         }
