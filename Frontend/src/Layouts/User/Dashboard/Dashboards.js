@@ -392,12 +392,12 @@ const Dashboards = () => {
                             </td>
                             <td>{fDateTime(data1.createdAt)}</td>
                             <td className="text-end">
-                              <a
-                                href="companies.html"
+                              <Link
+                                to="/user/strategy"
                                 className="view-companies btn"
                               >
                                 View
-                              </a>
+                              </Link>
                             </td>
                           </tr>
                         })}
