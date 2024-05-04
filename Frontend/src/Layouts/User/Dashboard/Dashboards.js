@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { GetUserDashboardData } from '../../../ReduxStore/Slice/Users/Userdashboard.Slice'
 import { fDateTime } from "../../../Utils/Date_formet";
 import { Link } from "react-router-dom"
+import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
+import { Orders_Details } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 
 const Dashboards = () => {
 
@@ -10,6 +12,8 @@ const Dashboards = () => {
 
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
   var user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+  var Role = JSON.parse(localStorage.getItem("user_details")).Role;
+
 
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
@@ -17,6 +21,30 @@ const Dashboards = () => {
     loading: false,
     data: []
   });
+
+  const [tableData, setTableData] = useState({
+    loading: false,
+    data: [],
+  });
+  const label = { inputProps: { "aria-label": "Switch demo" } };
+
+  const styles = {
+    container: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "50vh",
+    },
+    card: {
+      width: "auto",
+    },
+    boldHeader: {
+      fontWeight: "bold",
+    },
+    headerButton: {
+      marginRight: 8,
+    },
+  };
 
 
   const getGreetingMessage = () => {
@@ -30,6 +58,78 @@ const Dashboards = () => {
       return { greeting: "Good Evening", icon: "fe-moon" };
     }
   };
+
+  const columns = [
+    {
+      field: "id",
+      headerName: "ID",
+      width: 70,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          {" "}
+          <b>{params.value + 1}</b>
+        </div>
+      ),
+    },
+    {
+      field: "createdAt",
+      headerName: "Signal Time",
+      width: 260,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          {" "}
+          <b>{fDateTime(params.value)}</b>
+        </div>
+      ),
+    },
+    {
+      field: "type",
+      headerName: "Type",
+      width: 110,
+      headerClassName: styles.boldHeader,
+
+    },
+
+    {
+      field: "trade_symbol",
+      headerName: "Trade Symbol",
+      width: 320,
+      headerClassName: styles.boldHeader,
+
+    },
+    {
+      field: "price",
+      headerName: "Price ",
+      width: 160,
+      headerClassName: styles.boldHeader,
+
+    },
+
+    {
+      field: "strategy",
+      headerName: "strategy ",
+      width: 160,
+      headerClassName: styles.boldHeader,
+
+    },
+    {
+      field: "qty_percent",
+      headerName: "qty_percent ",
+      width: 160,
+      headerClassName: styles.boldHeader,
+
+    },
+    {
+      field: "TradeType",
+      headerName: "Trade Type ",
+      width: 160,
+      headerClassName: styles.boldHeader,
+
+    },
+
+  ];
 
 
   const { greeting, icon } = getGreetingMessage();
@@ -57,11 +157,30 @@ const Dashboards = () => {
 
 
 
+  const userDataRes = async () => {
+    await dispatch(Orders_Details({ subadminId: user_id, Role: Role }))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          setTableData({ loading: true, data: response.data });
+        } else {
+          setTableData({ loading: true, data: [] });
+
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+  };
+
+  useEffect(() => {
+    userDataRes()
+  }, [])
 
 
   const UserdashboardDATA = async () => {
 
-    var data = { "id": user_id};
+    var data = { "id": user_id };
     await dispatch(GetUserDashboardData(data)).unwrap()
       .then((response) => {
 
@@ -312,33 +431,12 @@ const Dashboards = () => {
 
                 <div className="card-body p-0 mr-2" style={{ maxHeight: "300px", overflowY: "auto" }}>
                   <div className="table-responsive">
-                    <table className="table table-striped table-hover">
-                      <thead>
-                        <tr>
-                          <th>Stock Symbol</th>
-                          <th>Company Name</th>
-                          <th>Quantity</th>
-                          <th>Average Price</th>
-                          <th>Total Investment</th>
-                          <th>Current Price</th>
-                          <th>Market Value</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {/* JavaScript loop */}
-                        {[...Array(50)].map((_, index) => (
-                          <tr key={index}>
-                            <td>AAPL</td>
-                            <td>Apple Inc.</td>
-                            <td>100</td>
-                            <td>$120.50</td>
-                            <td>$12,050.00</td>
-                            <td>$130.00</td>
-                            <td>$13,000.00</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                    <FullDataTable
+                      styles={styles}
+                      label={label}
+                      columns={columns}
+                      rows={tableData.data}
+                    />
                   </div>
                 </div>
 
