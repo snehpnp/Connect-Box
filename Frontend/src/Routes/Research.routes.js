@@ -19,6 +19,7 @@ import MessageBroadCast from '../Layouts/SubAdmin/MessageBroadCast/MessageBroadC
 import Help from '../Layouts/Comman/Help/Helpsubadmin.js';
 import Sthtrans from '../Layouts/Researcher/Strategy_transaction/Strategy_transaction.js';
 
+import OprnPosition from '../Layouts/SubAdmin/Option/Open_Positions.js';
 
 
 
@@ -44,10 +45,16 @@ const Research = () => {
                     <Route exact path="/strategys" element={<AllStrategy />} />
                     <Route exact path="/edit/strategies/:id" element={<Edit_Strategies />} />
                     <Route exact path="/allservice" element={<AllServices />} />
+                    
+                    
                     <Route exact path="/orders" element={<Orders />} />
                     <Route exact path="/position" element={<Position />} />
                     <Route exact path='/option-chain' element = {<OptionChain/>}/>
                     <Route exact path='/make-call' element = {<MakeCall/>}/>
+                    <Route exact path='/open/position' element = {<OprnPosition/>}/>
+
+
+                    
                     <Route exact path='/message_broadcast' element = {<MessageBroadCast/>}/>
                     <Route exact path='/help' element = {<Help/>}/>
                     <Route exact path='/strategys/transaction' element = {<Sthtrans/>}/>

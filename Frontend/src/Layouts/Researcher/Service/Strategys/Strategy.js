@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import AddForm from '../../../../Components/ExtraComponents/forms/AddForm'
 import { useFormik } from 'formik';
-import { GetStretgyWithImg, AddStrategy, DELETE_STRATEGY } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
+import { GetStretgyWithImg, AddStrategy,  } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
 import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice';
-import { AddResearcherStrategy, GetAllResearcherStrategys } from '../../../../ReduxStore/Slice/Researcher/ResearcherSlice'
+import { AddResearcherStrategy, GetAllResearcherStrategys , DELETE_STRATEGY } from '../../../../ReduxStore/Slice/Researcher/ResearcherSlice'
 
 import Swal from 'sweetalert2';
 import { useDispatch } from "react-redux";
@@ -26,6 +26,7 @@ const Strategy = () => {
     const [searchInput, setSearchInput] = useState("");
     const [deleteModal, setdeleteModal] = useState(false);
     const [refresh, setrefresh] = useState(false)
+    const [showError, setShowError] = useState(false);
     const [allStategy, setAllStategy] = useState({
         loading: true,
         data: [],
@@ -69,11 +70,17 @@ const Strategy = () => {
 
         {
             name: "strategy_category",
-            label: "Catagory",
-            type: "text",
+            label: "Category",
+            type: "select",
+            options: [
+                { label: "Low Risk", value: "Low Risk" },
+                { label: "Medium Risk", value: "Medium Risk" },
+                { label: "High Risk", value: "High Risk" },
+            ],
             label_size: 12,
             col_size: 6,
             disable: false,
+
         },
         {
             name: "strategy_demo_days",
@@ -186,9 +193,7 @@ const Strategy = () => {
             if (!values.max_trade) {
                 errors.max_trade = "Please enter maximum trade";
             }
-            if (!getStgDescription) {
-                errors.getStgDescription = "Please enter strategy description";
-            }
+
             if (!values.strategy_percentage) {
                 errors.strategy_percentage = "Please enter strategy percentage";
             }
@@ -218,38 +223,50 @@ const Strategy = () => {
                 monthly_charges: values.monthly_charges,
             };
 
-            await dispatch(AddResearcherStrategy(data))
-                .unwrap()
-                .then(async (response) => {
-                    if (response.status) {
-                        Swal.fire({
-                            title: "Create Successful!",
-                            text: response.msg,
-                            icon: "success",
-                            timer: 1500,
-                            timerProgressBar: true
-                        });
-                        setShowCreateStrategyModal(false)
-                        setrefresh(!refresh)
-                        resetForm();
-                        setStgDescription('')
-
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: response.msg,
-                            timer: 1500,
-                            timerProgressBar: true
-                        });
-                        setStgDescription('')
-                    }
-
-                })
-                .catch((error) => {
-                    console.log("Error", error);
-                    setStgDescription('')
+            if (!getStgDescription.length) {
+                Swal.fire({
+                    title: "Error !",
+                    text: 'enter strategy description',
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
                 });
+                return
+            }
+            else {
+                await dispatch(AddResearcherStrategy(data))
+                    .unwrap()
+                    .then(async (response) => {
+                        if (response.status) {
+                            Swal.fire({
+                                title: "Create Successful!",
+                                text: response.msg,
+                                icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true
+                            });
+                            setShowCreateStrategyModal(false)
+                            setrefresh(!refresh)
+                            resetForm();
+                            setStgDescription('')
+
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: response.msg,
+                                timer: 1500,
+                                timerProgressBar: true
+                            });
+                            setStgDescription('')
+                        }
+
+                    })
+                    .catch((error) => {
+                        console.log("Error", error);
+                        setStgDescription('')
+                    });
+            }
         },
     });
 
@@ -313,7 +330,7 @@ const Strategy = () => {
     };
 
     const handleDelete = async (id) => {
-        console.log("stg._id", id)
+
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -370,8 +387,6 @@ const Strategy = () => {
             <div className="content container-fluid">
 
                 {/* PAGE HEADER */}
-
-
                 <div className="page-header">
                     <div className="content-page-header">
                         <h5>Strategies</h5>
@@ -399,8 +414,8 @@ const Strategy = () => {
                                                 placeholder="Search..."
                                                 aria-label="Search"
                                                 aria-describedby="search-addon"
-                                            // onChange={(e) => setInputSearch(e.target.value)}
-                                            // value={inputSearch}
+                                                // onChange={(e) => setInputSearch(e.target.value)}
+                                                // value={inputSearch}
                                             />
                                         </div>
                                     </li>
@@ -417,19 +432,17 @@ const Strategy = () => {
 
                                             <div className="card-body">
                                                 {/* <ExportToExcel
-                              className="btn btn-primary "
-                              apiData={ForGetCSV}
-                              fileName={'All Strategy'} /> */}
+                                                    className="btn btn-primary "
+                                                    apiData={ForGetCSV}
+                                                    fileName={'All Strategy'} /> */}
                                             </div>
 
                                         </div>
                                     </li>
-
                                     <li>
                                         <p
-                                          
                                             className="btn btn-primary"
-                                            onClick={(e)=>setShowCreateStrategyModal(true)}
+                                            onClick={(e) => setShowCreateStrategyModal(true)}
                                         >
                                             <i
                                                 className="fa fa-plus-circle me-2"
@@ -448,24 +461,19 @@ const Strategy = () => {
                 {!allStategy.loading ? (
                     <div className="content container-fluid pb-0">
                         <div className="row d-flex align-items-center justify-content-center">
-
                             {allStategy.data.map((stg) => {
                                 return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
                                     <div className="packages card" data-aos="fade-down">
                                         <div className="package-header d-flex justify-content-between">
                                             <div className="d-flex justify-content-between w-100">
                                                 <div className="">
+                                                <h2 className="my-2">{stg.strategy_name}</h2>
                                                     <h6>Segment: {stg.strategy_segment}</h6>
-
-                                                    <h2 className="my-2">{stg.strategy_name}</h2>
-
+                                                   
                                                 </div>
                                                 <span className="icon-frame d-flex align-items-center justify-content-center">
-
                                                     <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
-
                                                 </span>
-
                                             </div>
                                         </div>
                                         <p>{stg.strategy_description}</p>
@@ -479,35 +487,37 @@ const Strategy = () => {
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Month</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_month}/month</span>
+                                                <span >Category</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.strategy_category}</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Quarterly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_quarterly}/Quarterly</span>
+                                                <span >Monthly Charges</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.monthly_charges}</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Half Yearly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_half_early}/half year</span>
+                                                <span >Maximum Trades</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.max_trade}</span>
                                             </li>
                                             <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                 <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                <span >Yearly</span>
-                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_early}/year</span>
+                                                <span >Strategy Percentage</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.strategy_percentage}</span>
                                             </li>
+                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                <span >Security Fund</span>
+                                                <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.security_fund}</span>
+                                            </li>
+                                             
                                         </ul>
-
                                         <div className="d-flex justify-content-center package-edit">
-
-
                                             <a className="btn-action-icon me-2"  >
                                                 <i className="fe fe-edit"
                                                     onClick={() => handleEditPackage({ id: stg._id })}
                                                 />
                                             </a>
-
                                             <a className="btn-action-icon"
                                                 onClick={() => { handleDelete(stg._id); }}
                                             >
@@ -517,9 +527,6 @@ const Strategy = () => {
                                     </div>
                                 </div>
                             })}
-
-
-
                         </div>
                     </div>
 
@@ -566,7 +573,7 @@ const Strategy = () => {
                                     <button
                                         type="button"
                                         className="btn-close"
-                                        onClick={(e) => { setShowCreateStrategyModal(false); setrefresh(!refresh); formik.resetForm(); }}
+                                        onClick={(e) => { setShowCreateStrategyModal(false); setrefresh(!refresh); setShowError(false); formik.resetForm(); }}
                                     ></button>
                                 </div>
                                 <div className="modal-body m-0 p-0">
@@ -580,17 +587,17 @@ const Strategy = () => {
                                                 <label>Strategy Description</label>
                                                 <textarea className="rounded" name="strategy" rows="4" cols="50" placeholder="Enter Strategy Description"
                                                     onChange={(e) => setStgDescription(e.target.value)} value={getStgDescription}
+                                                    onClick={(e) => { setShowError(true) }}
                                                 >
                                                 </textarea>
-                                                {
-                                                    formik.errors.getStgDescription ? (
+                                                {showError && !getStgDescription.length ?
+                                                    (
                                                         <div style={{ color: "red" }}>
-                                                            {formik.errors.getStgDescription}
+                                                            {"Please enter strategy description"}
                                                         </div>
                                                     ) : null
                                                 }
                                             </>
-
                                         }
                                     />
                                 </div>

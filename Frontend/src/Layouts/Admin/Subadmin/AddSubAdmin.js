@@ -110,19 +110,16 @@ const AddClient = () => {
 
       console.log("prefix_key :", data)
 
-
- 
-
-
       setSubmitting(false);
 
       await dispatch(AddSubadmin(data))
         .unwrap()
         .then(async (response) => {
           if (response.status) {
+           
             Swal.fire({
               title: "Subadmin Added!",
-              text: "subadmin added successfully",
+              text:"subadmin added successfully",
               icon: "success",
               timer: 1000,
               timerProgressBar: true,
@@ -236,7 +233,7 @@ const AddClient = () => {
             ? "Per Trade Value"
             : "% Per Strategy"
           : "",
-      type: "text3",
+      type: "text4",
       placeholder:
         formik.values.subadmin_servic_type === "1" ||
           formik.values.subadmin_servic_type === "2"

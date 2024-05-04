@@ -467,7 +467,7 @@ const AddClient = () => {
 
   // GET ALL STRATEGY
   const GetAllStrategy = async () => {
-    var data = { id: user_id ,key:"1"}
+    var data = { id: user_id }
     await dispatch(GetSubStrategys(data)).unwrap()
       .then((response) => {
         if (response.status) {

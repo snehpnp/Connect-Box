@@ -15,6 +15,7 @@ import { fDateTime } from "../../../Utils/Date_formet";
 
 export default function AllEmployees() {
     const userDetails = JSON.parse(localStorage.getItem("user_details"));
+    const Role = JSON.parse(localStorage.getItem("user_details")).Role;
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -147,7 +148,7 @@ export default function AllEmployees() {
         {
             field: "createdAt",
             headerName: "Signal Time",
-            width: 260,
+            width: 250,
             headerClassName: styles.boldHeader,
             renderCell: (params) => (
                 <div>
@@ -159,7 +160,7 @@ export default function AllEmployees() {
         {
             field: "type",
             headerName: "Type",
-            width: 140,
+            width: 100,
             headerClassName: styles.boldHeader,
 
         },
@@ -167,14 +168,14 @@ export default function AllEmployees() {
         {
             field: "trade_symbol",
             headerName: "Trade Symbol",
-            width: 160,
+            width: 300,
             headerClassName: styles.boldHeader,
 
         },
         {
             field: "price",
             headerName: "Price ",
-            width: 160,
+            width: 140,
             headerClassName: styles.boldHeader,
 
         },
@@ -182,14 +183,14 @@ export default function AllEmployees() {
         {
             field: "strategy",
             headerName: "strategy ",
-            width: 160,
+            width: 180,
             headerClassName: styles.boldHeader,
 
         },
         {
             field: "qty_percent",
             headerName: "qty_percent ",
-            width: 160,
+            width: 150,
             headerClassName: styles.boldHeader,
 
         },
@@ -214,7 +215,7 @@ export default function AllEmployees() {
 
     const userDataRes = async () => {
         const subadminId = userDetails.user_id
-        await dispatch(Orders_Details({ subadminId }))
+        await dispatch(Orders_Details({ subadminId:subadminId,Role:Role }))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {

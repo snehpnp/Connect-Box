@@ -182,20 +182,7 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    {
-      name: "Employees",
-      label: "Employees",
-      type: "select1",
-      options:
-        employeeNames.data &&
-        employeeNames.data.map((item) => ({
-          label: item.UserName,
-          value: item._id,
-        })),
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
+    
   ];
 
   const formik = useFormik({
@@ -396,7 +383,7 @@ const AddClient = () => {
   }, [formik.values.groupservice]);
 
   const GetAllStrategy = async () => {
-    var data = { id: user_id,key:"1" };
+    var data = { id: user_id };
     await dispatch(GetSubStrategys(data))
       .unwrap()
       .then((response) => {
@@ -512,6 +499,10 @@ const AddClient = () => {
 
                     ))}
                 </div>
+
+
+
+
 
                 {subadmin_service_type1 == 2 ?
                   (<div className="row mt-4">
