@@ -1,22 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Sidebar from "../Sidebar/Sidebars";
 import Trackpanel from "./Logs/Trackpanel";
 import System from "../../../Layouts/SubAdmin/Systems/System";
 import AdminSystem from "../../../Layouts/Admin/System/System";
-
 import Setbrokerinfo from "../../../Layouts/Comman/Setting_Page/Setbrokerinfo/Setbrokerinfo";
 import Emailtemp from "../../../Layouts/Comman/Setting_Page/Emailtemp";
 import Invoicetemp from "../../../Layouts/Comman/Setting_Page/Invoicetemp";
 import Payment from "../../../Layouts/Comman/Setting_Page/Payment";
-
-
-
-
-
-
 import Apicreate_info from "./Apicreateinformation/Apicreate_info";
 import PasswordChange from "./PasswordChange";
+import Usersetbrokerinfo from "../../../Layouts/Comman/Setting_Page/Setbrokerinfo/Usersetbrokerinfo";
+
+
 
 const Settings = () => {
 
@@ -30,14 +24,15 @@ const Settings = () => {
                     <div className="card-body">
                         <div className="row">
                             <div className="col-sm-3 left-side">
-                            
+
+
                                 <div
                                     className="nav flex-column nav-pills nav-pills-tab"
                                     id="v-pills-tab"
                                     role="tablist"
                                     aria-orientation="vertical"
                                 >
-                                    <a
+                                    {Role == "ADMIN" || Role == "SUBADMIN" && (<a
                                         className="nav-link mb-1 active"
                                         id="v-pills-company-tab"
                                         data-bs-toggle="pill"
@@ -48,8 +43,9 @@ const Settings = () => {
                                         style={{ color: "black" }}
                                     >
                                         Company Settings
-                                    </a>
-                                    <a
+                                    </a>)}
+
+                                    {Role == "ADMIN" && (<a
                                         className="nav-link mb-1"
                                         id="v-pills-invoice-tab"
                                         data-bs-toggle="pill"
@@ -60,8 +56,9 @@ const Settings = () => {
                                         style={{ color: "dark" }}
                                     >
                                         Invoice Templates
-                                    </a>
-                                    <a
+                                    </a>)}
+
+                                    {Role == "ADMIN" && (<a
                                         className="nav-link mb-1"
                                         id="v-pills-payment-tab"
                                         data-bs-toggle="pill"
@@ -72,8 +69,8 @@ const Settings = () => {
                                         style={{ color: "black" }}
                                     >
                                         Payment Methods
-                                    </a>
-                                    <a
+                                    </a>)}
+                                    {Role == "ADMIN" && (<a
                                         className="nav-link mb-1"
                                         id="v-pills-email-tab"
                                         data-bs-toggle="pill"
@@ -84,7 +81,7 @@ const Settings = () => {
                                         style={{ color: "black" }}
                                     >
                                         Email Templates
-                                    </a>
+                                    </a>)}
                                     <a
                                         className="nav-link mb-1"
                                         id="v-pills-logs-tab"
@@ -121,7 +118,7 @@ const Settings = () => {
                                     >
                                         Api Create Information
                                     </a>
-                                    <a
+                                    {Role == "SUBADMIN" || Role == "USER" || (<a
                                         className="nav-link mb-1"
                                         id="v-pills-Broker-info-tab"
                                         data-bs-toggle="pill"
@@ -132,8 +129,12 @@ const Settings = () => {
                                         style={{ color: "black" }}
                                     >
                                         Set Broker Information
-                                    </a>
+                                    </a>)}
+
                                 </div>
+
+
+
 
                             </div>
                             <div className="col-sm-9">
@@ -247,13 +248,13 @@ const Settings = () => {
                                                 <div className="page-content">
 
                                                     <div className="mainDiv">
-                                                    <PasswordChange/>
+                                                        <PasswordChange />
                                                     </div>
 
                                                 </div>
                                             </div>
 
-                                       </div>
+                                        </div>
 
                                     </div>
 
@@ -285,7 +286,7 @@ const Settings = () => {
                                     {/* SET BROKER INFORMATION */}
                                     <div className="tab-pane fade" id="v-pills-Broker-info" role="tabpanel" aria-labelledby="v-pills-Broker-info-tab">
 
-                                        <Setbrokerinfo />
+                                        {Role == "SUBADMIN" ? <Setbrokerinfo /> : <Usersetbrokerinfo />}
 
 
                                     </div>
