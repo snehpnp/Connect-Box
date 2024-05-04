@@ -878,7 +878,6 @@ async function run() {
         
           var openPosition = await open_position_excute.find().toArray();
         
-          console.log("openPosition ",openPosition)
           if (openPosition.length > 0) {
 
             
