@@ -20,6 +20,7 @@ import Subscriptiondata from '../Layouts/User/Subscription/Subscriptiondata';
 
 
 
+
 // strategydesc
 const User_Routing = () => {
 
@@ -44,8 +45,9 @@ const User_Routing = () => {
                     <Route exact path="/orders" element={<Orders />} />
                     <Route exact path="/positions" element={<TradeHistory />} />
                     <Route exact path="/subscription" element={<Subscriptiondata />} />
-
-
+                   
+                    
+                     
 
 
 

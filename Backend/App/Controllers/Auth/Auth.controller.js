@@ -299,9 +299,8 @@ class Auth {
             const { Email } = req.body;
 
             // Check if the user exists
-            const EmailCheck = await User.findOne({ Email: Email });
+            const EmailCheck = await User.findOne({ Email:Email});
             const CompanyInformation = await company_information.findOne();
-
             if (!EmailCheck) {
                 return res.send({ status: false, msg: 'User does not exist', data: [] });
             }
@@ -323,7 +322,7 @@ class Auth {
         } catch (error) {
             // Handle errors
             console.error("Error in ForgetPassword:", error);
-            return res.status(500).send({ status: false, msg: "An error occurred", data: [] });
+            return res.send({ status: false, msg: "An error occurred", data: [] });
         }
     }
 

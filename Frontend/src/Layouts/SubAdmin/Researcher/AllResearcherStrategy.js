@@ -199,7 +199,7 @@ const AllResearcherStrategy = () => {
                                                     <h6>{stg.strategy_segment}</h6>
                                                 </div>
                                                 <div className='d-flex justify-content-between'>
-                                                    <h6>Strategy category :</h6>
+                                                    <h6>category :</h6>
                                                     <h6>{stg.strategy_category}</h6>
                                                 </div>
                                                 <div className='d-flex justify-content-between'>
@@ -230,7 +230,10 @@ const AllResearcherStrategy = () => {
                                                 {stg.stg_active != 1 ? <div className="d-flex justify-content-center package-edit">
                                                     <button type='submit' className='btn btn-primary' onClick={(e) => { setShowModal(true); setSelectStrategy(stg) }}>BUY</button>
 
-                                                </div> : ""}
+                                                </div> :<div className="d-flex justify-content-center package-edit">
+                                                    <button type='submit' className='btn btn-primary' >BUYED</button>
+
+                                                </div>}
 
                                             </div>
                                         </div>
