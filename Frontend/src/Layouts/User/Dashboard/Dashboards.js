@@ -33,7 +33,7 @@ const Dashboards = () => {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      height: "50vh",
+      height: "80vh",
     },
     card: {
       width: "auto",
