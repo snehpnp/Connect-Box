@@ -760,7 +760,6 @@ class Subadmin {
         existingUsername._id,
         User
       );
-      console.log("subadminUpdate", subadminUpdate)
       return res.send({ status: true, msg: "successfully Edit!", data: [] });
     } catch (error) {
       res.send({ msg: "Error=>", error });

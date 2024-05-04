@@ -20,7 +20,7 @@ async function createViewMaxProfitLoss() {
 
   const collectionName  = 'mainsignals';
   const collection = db.collection(collectionName);
-  console.log("okkk createViewMaxProfitLoss")
+
  
   // All Client Trading on view
   try {
@@ -362,7 +362,6 @@ async function createViewMaxProfitLoss() {
 
 
 
-    //console.log(result);
     console.log("okkk done")
       
     

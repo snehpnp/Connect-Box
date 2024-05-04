@@ -74,7 +74,6 @@ class Employee {
             const findStrategy = await strategy_client.findMany({user_id : id})
 
 
-        console.log(findStrategy)
 
 
 

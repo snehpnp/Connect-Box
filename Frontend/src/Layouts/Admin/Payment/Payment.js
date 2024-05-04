@@ -134,24 +134,29 @@ function Payment() {
       const response = await dispatch(RechargeDetailsGets(data)).unwrap();
   
       if (response.status) {
-        let formattedData;
-        console.log("first", first);
-        
-        if (first === "all") {
-          formattedData = response.data.map((row, index) => ({
-            ...row,
-            id: index + 1,
-          }));
-        } else {
-          formattedData = response.data
-            .filter(row => row.Role === first)
-            .map((row, index) => ({
-              ...row,
-              id: index + 1,
-              matched: true
-            }));
+        let formattedData = response.data;
+  
+        console.log("inputSearch", inputSearch);
+  
+        if (first !== "all") {
+          formattedData = formattedData.filter(row => row.Role === first);
         }
   
+        if (inputSearch) {
+          formattedData = formattedData.filter(row => {
+            return (
+              row.username.toLowerCase().includes(inputSearch.toLowerCase()) ||
+              row.Balance.toString().toLowerCase().includes(inputSearch.toLowerCase()) ||
+              row.createdAt.toLowerCase().includes(inputSearch.toLowerCase())
+            );
+          });
+        }
+  
+        formattedData = formattedData.map((row, index) => ({
+          ...row,
+          id: index + 1,
+          matched: true
+        }));
   
         setCompanyData({
           loading: true,
@@ -171,7 +176,7 @@ function Payment() {
 
   useEffect(() => {
     getCompanyData();
-  }, [first]);
+  }, [first,inputSearch]);
 
   const handleRefresh = () => {
     setInputSearch('')

@@ -14,7 +14,6 @@ const db = client.db(process.env.DB_NAME); // Replace with your actual database 
 
 async function createViewDhan() {
 
-console.log("111")
   // All Client Trading on view
   try {
 
@@ -299,7 +298,6 @@ console.log("111")
       }
     ];
    
-    console.log("pipeline",pipeline)
     // Create the view
     await db.createCollection('swastikaView', { viewOn: 'users', pipeline });
 

@@ -28,7 +28,6 @@ class Ordercreate {
     // CREATE ORDER
     async CreateOder(req, res) {
 
-        console.log(" CREATE ORDER ", req.body)
 
         const companyInformation = await company_information.aggregate([
             {
@@ -42,12 +41,10 @@ class Ordercreate {
             }
         ]);
 
-        console.log("companyInformation ", companyInformation[0].razor_payment_key)
 
 
         const { strategy_name, user_id, admin_id, strategy_id, type, amount, currency, receipt } = req.body;
 
-        console.log(receipt)
         const options = {
             amount: amount, // in paise
             currency: currency,
@@ -114,7 +111,6 @@ class Ordercreate {
                 researcher_id: findStg.maker_id
             });
 
-            console.log("strategy_Data", strategy_Data);
 
             // Save the new strategy document
             await strategy_Data.save();
@@ -125,7 +121,7 @@ class Ordercreate {
                 $push: { collaboration_id: req.body.user_id }
             };
             const update_token1 = await researcher_strategy.updateOne(filter1, update1);
-            console.log("update_token1", update_token1);
+         
 
             // Update strategy_Order_modal collection
             const filter = { _id: req.body.id };
@@ -196,7 +192,6 @@ class Ordercreate {
                 }
             ]);
             
-            console.log(GetResearcherData);
             
 
             if (!GetResearcherData) {

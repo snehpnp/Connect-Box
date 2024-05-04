@@ -236,7 +236,6 @@ class Auth {
                 return res.send({ status: false, msg: 'User Not exists', data: [] });
             }
 
-            // console.log("EmailCheck", EmailCheck[0]);
 
 
 
@@ -260,7 +259,7 @@ class Auth {
             }
 
             addData = { ...addData, web_login_token: '' }
-            console.log("addData", addData)
+
 
             // Update Successfully
             const result = await User.updateMany(
@@ -276,7 +275,6 @@ class Auth {
                 role: EmailCheck[0].Role,
                 system_ip: system_ip
             })
-            console.log("user_login",user_login)
             await user_login.save();
 
             // If Not Update User
@@ -299,7 +297,7 @@ class Auth {
             const { Email } = req.body;
 
             // Check if the user exists
-            const EmailCheck = await User.findOne({ Email:Email});
+            const EmailCheck = await User.findOne({ Email: Email });
             const CompanyInformation = await company_information.findOne();
             if (!EmailCheck) {
                 return res.send({ status: false, msg: 'User does not exist', data: [] });

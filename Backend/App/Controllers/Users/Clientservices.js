@@ -206,7 +206,6 @@ class Clientservice {
                 product_type: productType
             };
 
-            console.log("clientService", clientService)
 
             const filter = { _id: id, user_id: userId, service_id: seriveId };
             const update = {
@@ -242,22 +241,25 @@ class Clientservice {
 
     async GetAllStrategy(req, res) {
 
-        const { prefix_key } = req.body
+        const { id, prefix_key } = req.body
 
         try {
-            if (!prefix_key || prefix_key == undefined || prefix_key == null) {
+            if (!id || id == undefined || id == null) {
                 return res.send({
                     status: false,
-                    msg: "Prefix key requir",
+                    msg: "id is  require",
                     data: []
                 })
             }
+
+
+            const UserData = await User_model.findOne({ _id: new ObjectId(id) }).select("parent_id")
 
             const subadminStrategies = await User_model.aggregate([
                 {
                     $match: {
                         Role: "SUBADMIN",
-                        prifix_key: prefix_key
+                        _id: new ObjectId(UserData.parent_id)
 
                     }
                 },
@@ -290,6 +292,7 @@ class Clientservice {
                 }
             ]);
 
+
             if (!subadminStrategies) {
                 return res.send({ status: false, msg: "strategy Find Error", data: [] })
             }
@@ -299,13 +302,13 @@ class Clientservice {
             }
 
         }
-        catch(err){
-            console.log("Error to fatch the strategy ",err)
-            return res.send({status: false, msg: "strategy does not exit !", data:[]})
+        catch (err) {
+            console.log("Error to fatch the strategy ", err)
+            return res.send({ status: false, msg: "strategy does not exit !", data: [] })
         }
-     
 
-        
+
+
     }
 
 
