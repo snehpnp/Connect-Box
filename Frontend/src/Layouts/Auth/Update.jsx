@@ -2,10 +2,20 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { UpdatePassword } from '../../ReduxStore/Slice/Auth/AuthSlice';
 import Swal from "sweetalert2";
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { encode, decode } from 'js-base64';
+import { useNavigate } from "react-router-dom";
 
 const Update = () => {
   const dispatch = useDispatch();
+
+
+
+  const navigate = useNavigate()
+  const {id} = useParams();
+
+const dcoded_UsrId = (decode(id)).replace(/"/g,"")
+  
 
   // State for storing email input
   const [Password, setPassword] = useState({
@@ -20,10 +30,19 @@ const Update = () => {
     e.preventDefault();
     try {
 
+      if (Password.NewPassword !== Password.ConfirmPassword) {
+        Swal.fire({
+          title: "Error",
+          text: "New password and confirm password do not match",
+          icon: "error",
+        });
+        return; 
+      }
+
       const response = await dispatch(
         UpdatePassword({
-           userid: "",
-           NewPassword: Password.NewPassword,
+           userid:dcoded_UsrId,
+           NewPassword:Password.NewPassword,
            ConfirmPassword:Password.ConfirmPassword
            })
       ).unwrap();
@@ -31,10 +50,14 @@ const Update = () => {
         setPassword({
           NewPassword:"",
           ConfirmPassword:""
+          
         });
         Swal.fire({
-          title: "Reset Password link has been Sent To Your Email",
+          title: "Password Changed",
           icon: "success",
+        }).then(() => {
+          // Navigate to the login page after success
+          navigate("/login");
         });
       } else {
         Swal.fire({
@@ -99,7 +122,7 @@ const Update = () => {
                           Update
                         </button>
                       </div>
-                  <Link to="/login" className='text-center d-block'>Go To Login</Link>
+                       <Link to="/login" className='text-center d-block'>Go To Login</Link>
 
                     </div>
 

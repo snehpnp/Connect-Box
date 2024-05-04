@@ -506,7 +506,7 @@ class strategy {
   async GetAllStrategyForClient(req, res) {
     try {
       const { id } = req.body;
-      console.log("req.body",req.body)
+     
       // Retrieve strategies based on maker_id
       const getAllStrategies = await strategy_model.find({ maker_id: id }, "_id strategy_name");
     
