@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { ForgetPassword } from '../../ReduxStore/Slice/Auth/AuthSlice';
+import { UpdatePassword } from '../../ReduxStore/Slice/Auth/AuthSlice';
 import Swal from "sweetalert2";
 import { Link } from 'react-router-dom';
 
@@ -8,38 +8,49 @@ const Update = () => {
   const dispatch = useDispatch();
 
   // State for storing email input
-  const [Password, setPassword] = useState("");
-  const [ConPassword, setConPassword] = useState("");
-
+  const [Password, setPassword] = useState({
+    userid:"",
+    NewPassword:"",
+    ConfirmPassword:""
+  });
+ 
+  
 
   const handleForget = async (e) => {
     e.preventDefault();
-    // try {
+    try {
 
-    //   const response = await dispatch(
-    //      ForgetPassword({ id:id,Password: Password })
-    //   ).unwrap();
-    //   if (response.status) {
-    //     setEmail("");
-    //     Swal.fire({
-    //       title: "Reset Password link has been Sent To Your Email",
-    //       icon: "success",
-    //     });
-    //   } else {
-    //     Swal.fire({
-    //       title: "Error",
-    //       text: response.msg || "Failed to send email",
-    //       icon: "error",
-    //     });
-    //   }
-    // } catch (error) {
-    //   console.log("Error", error);
-    //   Swal.fire({
-    //     title: "Error",
-    //     text: "An unexpected error occurred",
-    //     icon: "error",
-    //   });
-    // }
+      const response = await dispatch(
+        UpdatePassword({
+           userid: "",
+           NewPassword: Password.NewPassword,
+           ConfirmPassword:Password.ConfirmPassword
+           })
+      ).unwrap();
+      if (response.status) {
+        setPassword({
+          NewPassword:"",
+          ConfirmPassword:""
+        });
+        Swal.fire({
+          title: "Reset Password link has been Sent To Your Email",
+          icon: "success",
+        });
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: response.msg || "Failed to send email",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      console.log("Error", error);
+      Swal.fire({
+        title: "Error",
+        text: "An unexpected error occurred",
+        icon: "error",
+      });
+    }
   };
 
   return (
@@ -64,13 +75,13 @@ const Update = () => {
                     </div>
                     <div className='pt-5' data-aos="fade-left">
                       <div className="input-block mb-3">
-                        <label className="form-control-label d-flex justify-content-start" htmlFor="Password">Password</label>
+                        <label className="form-control-label d-flex justify-content-start" htmlFor="Password">New Password</label>
                         <input
                           type="Password"
                           id="Password"
                           className="form-control"
-                          value={Password}
-                          onChange={(e) => setPassword(e.target.value)}
+                          value={Password.NewPassword}
+                          onChange={(e) => setPassword({...Password,NewPassword:e.target.value})}
                         />
                       </div>
                       <div className="input-block mb-3">
@@ -79,8 +90,8 @@ const Update = () => {
                           type="ConPassword"
                           id="Password"
                           className="form-control"
-                          value={ConPassword}
-                          onChange={(e) => setConPassword(e.target.value)}
+                          value={Password.ConfirmPassword}
+                          onChange={(e) => setPassword({...Password,ConfirmPassword:e.target.value})}
                         />
                       </div>
                       <div className="add-customer-btns d-flex justify-content-between text-end mt-3">

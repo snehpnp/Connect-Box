@@ -330,7 +330,7 @@ class Auth {
     // Update Password
     async UpdatePassword(req, res) {
         try {
-            const { userid, newpassword, confirmpassword } = req.body;
+            const { userid, NewPassword, ConfirmPassword } = req.body;
 
 
             // // IF Login Time Email CHECK
@@ -340,7 +340,7 @@ class Auth {
                 return res.send({ status: false, msg: 'User Not exists', data: [] });
             }
 
-            if (newpassword !== confirmpassword) {
+            if (NewPassword !== ConfirmPassword) {
                 return res.send({ status: false, msg: 'New Password and Confirm Password Not Match', data: [] });
             }
 
@@ -349,7 +349,7 @@ class Auth {
                 EmailCheck._id,
                 {
                     Password: hashedPassword,
-                    Otp: newpassword
+                    Otp: NewPassword
                 },
                 { new: true }
             )
