@@ -926,14 +926,7 @@ function Option_Chain() {
                                             })}
                                     </select>
                                 </div>
-                                <div className="col-md-2 input-block   ">
-                                    <label
-                                        className=""
-
-                                    > Price
-                                    </label>
-                                    <input type="number" className="new-input-control form-control" />
-                                </div>
+                                
 
                                 <div className="col-md-4 d-flex justify-content-end align-items-center">
                                     <div className=" ">
