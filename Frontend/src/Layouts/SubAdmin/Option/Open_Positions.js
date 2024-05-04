@@ -1237,8 +1237,7 @@ export default function AllEmployees() {
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                // url: Config.broker_backend,
-                url: 'http://localhost:8800/broker-signals',
+                url: Config.broker_backend,
                 headers: {
                     'Content-Type': 'text/plain'
                 },

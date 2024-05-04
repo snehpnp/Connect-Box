@@ -3,9 +3,9 @@
 
 export const react_domain = `${window.location.origin}`;
 
-export const base_url = `http://localhost:7700/`;
-// export const base_url = `https://connectbox.tradestreet.in/backend/`;
-
+// export const base_url = `http://localhost:7700/`;
+export const base_url = `https://connectbox.tradestreet.in/backend/`;
+// 
 
 
 

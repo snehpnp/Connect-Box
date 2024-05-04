@@ -16,9 +16,7 @@ import Holidays from "date-holidays"
 import { useNavigate } from 'react-router-dom';
 import { Get_Option_All_Round_token, Get_Option_Symbols, Get_Symbol_Expiry, Get_Company_Infos, Get_All_Strategy_for_Client } from '../../../ReduxStore/Slice/Subadmin/OptionChainSlice'
 import axios from "axios"
-import toast, { Toaster } from 'react-hot-toast';
 import * as Config from "../../../Utils/Config";
-import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 import Swal from 'sweetalert2';
 
 function Option_Chain() {
