@@ -318,12 +318,11 @@ export default function AllEmployees() {
         },
         
     ]
-
+    
     if (iscolumntPrice == true) {
         console.log("iscolumntPrice", iscolumntPrice)
         columnsM = columnsM.filter(column => column.dataField !== "Price");
     }
-
 
     const handleOnSelectM = (row, isSelect) => {
         if (isSelect) {
@@ -896,10 +895,7 @@ export default function AllEmployees() {
     // UPDATE STOPLOSS PRIZE 
     const UpdateStopLoss = async () => {
 
-
-
         const filteredArray2 = tradeHistoryAllData.data.filter(item => selected1.some(obj => obj._id === item._id));
-
 
         let MarketOpenToday = GetMarketOpenDays();
 
