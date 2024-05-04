@@ -22,7 +22,7 @@ class Userinfo {
         return res.send({ status: false, msg: "Please Enter Id", data: [] });
       }
 
-      const UserInfo = await User_model.find({ _id: subid }).select('broker api_secret TradingStatus app_id api_key app_key api_type demat_userid ')
+      const UserInfo = await User_model.find({ _id: subid }).select('broker api_secret TradingStatus app_id api_key app_key api_type demat_userid access_token')
 
       // IF DATA NOT EXIST
       if (UserInfo.length == 0) {

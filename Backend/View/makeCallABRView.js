@@ -70,6 +70,12 @@ async function makecallabrView() {
                      as: 'stockInfo',
                  },
              },
+
+             {
+                $match: {
+                  stockInfo: { $ne: [] } // Filter documents where 'stockInfo' array is not empty
+                }
+              },
          
              {
                  $addFields: {
@@ -369,6 +375,12 @@ db.createView("makecall_a_b_r", "makecallabrs",
              as: 'stockInfo',
          },
      },
+
+     {
+        $match: {
+          stockInfo: { $ne: [] } // Filter documents where 'stockInfo' array is not empty
+        }
+      },
  
      {
          $addFields: {

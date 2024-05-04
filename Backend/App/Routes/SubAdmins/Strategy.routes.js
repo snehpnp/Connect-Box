@@ -26,10 +26,10 @@ router.post('/sub/strategy/getall', GetAllSubadminStrategy);
 router.post('/data/dashboard', GetDashboardData);
 
 //Order Releated Routes
-router.post('/orders/data', Signal_data);
-router.post('/trade/data', MainSignal_data);
+// router.post('/orders/data', Signal_data);
+// router.post('/trade/data', MainSignal_data);
 
-router.post('/client/Order', getAllSignalByPrefix);
+// router.post('/client/Order', getAllSignalByPrefix);
 
 
 //Employee Related Routes

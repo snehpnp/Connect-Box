@@ -34687,7 +34687,9 @@ a.user-a:hover span {
     width:250px; height:100%;
      /* background:#ddd; */
       display:inline-block;
-       float:left; position:sticky; top:150px;
+       float:left;
+        position:sticky;
+         top:150px;
 
 
 [data-layout-mode=dark] .MuiDataGrid-cell ,
