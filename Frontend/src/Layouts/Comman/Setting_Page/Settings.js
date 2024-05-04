@@ -118,7 +118,8 @@ const Settings = () => {
                                     >
                                         Api Create Information
                                     </a>
-                                    {Role == "SUBADMIN" || Role == "USER" || (<a
+
+                                    {Role == "SUBADMIN" || Role == "USER"  && (<a
                                         className="nav-link mb-1"
                                         id="v-pills-Broker-info-tab"
                                         data-bs-toggle="pill"
@@ -286,7 +287,7 @@ const Settings = () => {
                                     {/* SET BROKER INFORMATION */}
                                     <div className="tab-pane fade" id="v-pills-Broker-info" role="tabpanel" aria-labelledby="v-pills-Broker-info-tab">
 
-                                        {Role == "SUBADMIN" ? <Setbrokerinfo /> : <Usersetbrokerinfo />}
+                                        {Role == "SUBADMIN" ? <Setbrokerinfo /> : Role == "USER" ? <Usersetbrokerinfo /> : ""}
 
 
                                     </div>

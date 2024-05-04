@@ -20,8 +20,9 @@ import Update from '../Layouts/Auth/Update';
 const Routing = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const roles = JSON.parse(localStorage.getItem('user_role'));
+    const roles = JSON.parse(localStorage.getItem('user_role')).Role
     const user_details = JSON.parse(localStorage.getItem("user_details"));
+
 
     useEffect(() => {
         if (location.pathname === "/update") {
@@ -37,9 +38,13 @@ const Routing = () => {
             navigate("/register");
             return;
         }
+        if (location.pathname === "/") {
+            navigate("/login");
+          }
+
 
         // Check if user details exist
-        if (!user_details || !roles || user_details === "null" || roles === "null" || location.pathname === "/login") {
+        if (!user_details || user_details === "null" || location.pathname === "/login") {
             navigate("/login");
             return;
         }
@@ -101,7 +106,7 @@ const Routing = () => {
             <Route path="/register" element={<Register />} />
           
             <Route path="/forget" element={<Forget />} />
-            <Route path="/update/:id" element={<Update/>}/>
+            <Route path="/update" element={<Update/>}/>
         </Routes>
     );
 }
