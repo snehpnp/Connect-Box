@@ -13,6 +13,7 @@ import SuperadminRouting from './Superadmin.routes';
 import Login from '../Layouts/Auth/Login';
 import Register from '../Layouts/Auth/Register';
 import Forget from '../Layouts/Auth/Forget';
+import Update from '../Layouts/Auth/Update';
 
 
 
@@ -23,7 +24,10 @@ const Routing = () => {
     const user_details = JSON.parse(localStorage.getItem("user_details"));
 
     useEffect(() => {
-
+        if (location.pathname === "/update") {
+            navigate("/update");
+            return;
+        }
         if (location.pathname === "/forget") {
             navigate("/forget");
             return;
@@ -97,6 +101,7 @@ const Routing = () => {
             <Route path="/register" element={<Register />} />
           
             <Route path="/forget" element={<Forget />} />
+            <Route path="/update/:id" element={<Update/>}/>
         </Routes>
     );
 }
