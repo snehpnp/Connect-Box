@@ -7,6 +7,7 @@ import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 import { GetAll_Group_Servics, GET_ALL_SERVICES_GIVEN, Get_All_Employee_Names } from "../../../ReduxStore/Slice/Subadmin/GroupServicesSlice";
 import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import { AddUsers, Get_All_Broker, } from "../../../ReduxStore/Slice/Subadmin/UsersSlice";
+import {Get_Permission} from '../../../ReduxStore/Slice/Employee/EmployeeSlice'
 import Loader from "../../../Utils/Loader";
 
 import { useFormik } from "formik";
@@ -14,11 +15,7 @@ import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 import * as valid_err from "../../../Utils/Common_Messages";
 
-import {
-  Email_regex,
-  Mobile_regex,
-  Name_regex,
-} from "../../../Utils/Common_regex";
+import { Email_regex, Mobile_regex, Name_regex, } from "../../../Utils/Common_regex";
 
 const AddClient = () => {
   const dispatch = useDispatch();
@@ -37,6 +34,10 @@ const AddClient = () => {
     data: [],
   });
   const [getAllStategy, setgetallStrategy] = useState({
+    loading: true,
+    data: [],
+  });
+  const [getPermission, setPermission] = useState({
     loading: true,
     data: [],
   });
@@ -287,6 +288,32 @@ const AddClient = () => {
     },
   });
 
+ const getpermission =  async ()=>{
+  const data = {id : user_id}
+  await dispatch(Get_Permission(data)).unwrap()
+  .then((response)=>{
+    if(response.status){
+      setPermission({
+        loading:false,
+        data: response.data
+      })
+    }
+    else{
+      setPermission({
+        loading:false,
+        data: []
+      })
+    }
+  })
+  .catch((err)=>{
+    console.log("Error in fatching in permission ", err)
+  })
+ }
+
+ useEffect(()=>{
+  getpermission();
+ },[])
+
 
   const getAllGroupService = async () => {
     try {
@@ -462,10 +489,7 @@ const AddClient = () => {
 
 
   return (
-    <>
-      {getAllStategy.loading ? (
-        <Loader />
-      ) : (
+   
         <>
           <AddForm
             fields={fields.filter(
@@ -763,8 +787,7 @@ const AddClient = () => {
           />
           <ToastButton />
         </>
-      )}
-    </>
+    
   );
 };
 export default AddClient;

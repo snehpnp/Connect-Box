@@ -30,8 +30,8 @@ const Employee_Routing = () => {
                     <Route exact path="/dashboard" element={<Empdashboard />} />
                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/allusers" element={<AllUsers />} />
-                    <Route exact path="/User/add" element={<AddUser />} />
-                    <Route exact path="/User/edit/:id" element={<Edituser />} />
+                    <Route exact path="/user/add" element={<AddUser />} />
+                    <Route exact path="/user/edit/:id" element={<Edituser />} />
 
                     
                     <Route exact path="/faqs" element={<Faqs />} />

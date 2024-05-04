@@ -105,7 +105,7 @@ function MessageBroadcast() {
 
     {
       field: "createdAt",
-      headerName: "createdAt",
+      headerName: "created BY",
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
@@ -149,7 +149,7 @@ function MessageBroadcast() {
 
     {
       field: "createdAt",
-      headerName: "createdAt",
+      headerName: "created AT",
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
@@ -185,6 +185,7 @@ function MessageBroadcast() {
         .unwrap()
         .then((response) => {
           if (response.status) {
+            console.log("aa",response.data)
             toast.success(response.msg);
             setStrategies(response.data);
           } else {

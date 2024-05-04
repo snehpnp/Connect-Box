@@ -47,6 +47,7 @@ export default function AllEmployees() {
     headerButton: {
       marginRight: 8,
     },
+    
   };
   const handleEdit = async (row) => {
     const result = await Swal.fire({

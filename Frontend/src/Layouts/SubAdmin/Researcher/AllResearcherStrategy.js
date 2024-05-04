@@ -68,9 +68,7 @@ const AllResearcherStrategy = () => {
     const handleClose = () => setShowModal(false);
 
     const handleSubmit = async () => {
-        console.log("RUNNNNNNNNNNNNNNNN", selectStrategy)
-
-        console.log("selectedOption", selectedOption)
+        
 
 
         var req = {
@@ -118,8 +116,7 @@ const AllResearcherStrategy = () => {
                                 order_status: "Success"
                             }
 
-                            console.log("req ===>", req)
-
+                            
                             await dispatch(
                                 update_Stg_order(req)
                             )
