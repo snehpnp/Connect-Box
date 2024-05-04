@@ -228,7 +228,7 @@ const EditClient = () => {
   return (
     <>
       <EditForm
-        page_title="Update Subadmin Details"
+        page_title="Update Sub-Admin Details"
         formik={formik}
         btn_name="Update"
         fromDate={formik.values.fromDate}

@@ -32684,7 +32684,10 @@ button.btn.btn-primary a {
 .MuiDataGrid-cell,
 .MuiDataGrid-columnHeader {
     outline: none ! important;
+    font-weight: bold;
 }
+
+
 
 .MuiDataGrid-columnHeaderTitle {
     outline: none ! important;
@@ -34835,9 +34838,10 @@ a.user-a:hover span {
         font-weight: bold;
     }
 }
-.button_BUY .active{
+
+.button_BUY .active {
     background-color: #fff !important;
-    color: green  !important;
+    color: green !important;
     margin: 0px 5px;
     padding: 5px 8px;
     border-radius: 4px;
@@ -34845,14 +34849,14 @@ a.user-a:hover span {
 
 }
 
-.button_sell .active{
+.button_sell .active {
 
-       background-color: #fff !important;
-        color: red !important;
-        margin: 0px 5px;
-        padding: 5px 8px;
-        border-radius: 4px;
-        border: 1px solid red;
+    background-color: #fff !important;
+    color: red !important;
+    margin: 0px 5px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: 1px solid red;
 }
 
 .active {

@@ -8,19 +8,19 @@ export const admin_header = [
     },
     {
         id: 3,
-        name: 'Sub Admin',
+        name: 'Sub-Admin',
         Icon: "fe fe-users",
         Data: [
             {
                 id: 31,
-                name: 'Add Subadmin',
+                name: 'Add Sub-Admin',
                 Icon: "fe fe-user-plus",
                 route: "/admin/subadmin/add",
             },
 
             {
                 id: 32,
-                name: 'All Subadmins',
+                name: 'All Sub-Admins',
                 Icon: "fe fe-users",
                 route: "/admin/allsubadmin",
             },
@@ -68,7 +68,7 @@ export const admin_header = [
     // },
     {
         id: 5,
-        name: 'Subadmin Details',
+        name: 'Sub-Admin Details',
         route: "/admin/subadmin/company",
         Icon: "fe fe-credit-card",
         Data: []

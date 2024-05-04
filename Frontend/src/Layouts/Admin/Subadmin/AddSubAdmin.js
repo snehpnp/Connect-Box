@@ -260,7 +260,7 @@ const AddClient = () => {
           (field) => !field.showWhen || field.showWhen(formik.values)
         )}
     
-        page_title="Add New Subadmin"
+        page_title="Add New Sub-Admin"
         btn_name="Add Subadmin"
         btn_name1="Cancel"
         formik={formik}
