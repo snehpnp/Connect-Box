@@ -10,7 +10,7 @@ import { ipAddress } from '../../Utils/Ipaddress';
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 
-// import ReCAPTCHA from 'react-google-recaptcha';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 function Login() {
 
@@ -329,10 +329,10 @@ function Login() {
                           </div>
                         </div>
 
-                        {/* <ReCAPTCHA
+                        <ReCAPTCHA
                           sitekey={sitekey}
                         onChange={handleRecaptchaChange}
-                        /> */}
+                        />
 
                         <div class="add-customer-btns d-flex justify-content-between text-end mt-3">
                           <button className="btn customer-btn-save" onClick={handleSubmit} onKeyPress={handleKeyPress} >
