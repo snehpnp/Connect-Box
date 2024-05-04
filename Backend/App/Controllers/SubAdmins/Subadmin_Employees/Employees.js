@@ -169,7 +169,6 @@ class Employee {
       // Save subadmin permission
       await SubadminPermision.save();
 
-      console.log("savedUser from add employee", savedUser);
       return res.send({
         status: true,
         msg: "Employee successfully added!",
@@ -245,7 +244,7 @@ class Employee {
         });
       }
       const ByCryptrand_password = await bcrypt.hash(Password, 10);
-      console.log("L220 Ok", ByCryptrand_password);
+     
       // Company Information
       const User = {
         FullName: FullName,
@@ -392,7 +391,6 @@ class Employee {
         data: getAllstrategy,
       });
     } catch (error) {
-      console.log("Get All Strategy Error-", error);
     }
   }
 
@@ -422,7 +420,6 @@ class Employee {
   //       res.send({ status: false, data: [], msg: "false" });
   //     }
   //   } catch (error) {
-  //     console.log("Get All Group Services Error - ", error);
   //     res
   //       .status(500)
   //       .send({ status: false, data: [], msg: "An error occurred" });

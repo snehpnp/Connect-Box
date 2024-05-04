@@ -116,3 +116,17 @@ export async function ProfileActive(data, token) {
     }
 
 }
+
+export async function UpdateUserBrokerInfo(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}user/update/brokerinfo`, data, {
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}

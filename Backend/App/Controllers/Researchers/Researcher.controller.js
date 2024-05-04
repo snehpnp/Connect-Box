@@ -154,7 +154,6 @@ class Researcher {
             var EmailData = await firstOptPass(email_data);
             CommonEmail(toEmail, subjectEmail, EmailData);
         } catch (error) {
-            console.log(error, "Server side Error");
             return res.send({ status: false, msg: "Server side error" });
         }
 

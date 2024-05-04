@@ -317,8 +317,7 @@ class Dashboard {
 
 
       var dateData = getDateRange(selectedOption)
-      console.log("=>>>",dateData);
-
+     
       let topSubadmins = await User_model.aggregate([
         { $match: { Role: "SUBADMIN" } },
         {
@@ -373,14 +372,12 @@ class Dashboard {
       //     user.percentage = (Math.round(percentage * 100) / 100)
       // });
       
-      console.log("Updated Result:", topSubadmins);
       const updatedResult = topSubadmins.map(user => ({
         name: user.name,
         percentage: (Math.round((user.totalBalance / overallTotal) * 10000) / 100)
 
     }));
     
-    console.log("Updated Result:", updatedResult);
     
 
 

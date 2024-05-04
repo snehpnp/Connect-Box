@@ -130,6 +130,42 @@ class Userinfo {
   }
 
 
+
+  async Update_User_Broker_Keys(req, res) {
+    try {
+      var userdata = req.body.data;
+      var _id = req.body.id;
+
+      var findUser = await User_model.find({ _id: new ObjectId(_id) })
+
+      if (!findUser) {
+        return res.send({ status: false, msg: "Id not match", data: [] });
+      }
+      console.log("userdata",userdata)
+
+      const filter = { _id: _id };
+      const updateOperation = { $set: userdata };
+      const result = await User_model.updateOne(filter, updateOperation);
+      if (!result) {
+        return res.send({ status: false, msg: "Key not update", data: [] });
+      }
+      console.log("result",result)
+
+      return res.send({
+        status: true,
+        msg: "Update Keys  Successfully.",
+        data: [],
+      });
+    
+  } catch(error) {
+    console.log("Error Theme error-", error);
+  }
+}
+
+
+
+
+
 }
 
 module.exports = new Userinfo();

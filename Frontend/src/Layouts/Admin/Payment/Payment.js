@@ -83,6 +83,17 @@ function Payment() {
       )
     },
     {
+      field: 'subadmin_service_type',
+      headerName: 'Service Type',
+      width: 250,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          {params.row.Role == "SUBADMIN" ? params.value == "1" ? "Trade wise" :"Strategy Wise" : "-"}
+        </div>
+      )
+    },
+    {
       field: 'Mode',
       headerName: 'Mode',
       width: 250,
@@ -121,16 +132,32 @@ function Payment() {
     try {
       var data = { Role: "SUBADMIN" }
       const response = await dispatch(RechargeDetailsGets(data)).unwrap();
-
+  
       if (response.status) {
-        const formattedData = response.data.map((row, index) => ({
+        let formattedData = response.data;
+  
+        console.log("inputSearch", inputSearch);
+  
+        if (first !== "all") {
+          formattedData = formattedData.filter(row => row.Role === first);
+        }
+  
+        if (inputSearch) {
+          formattedData = formattedData.filter(row => {
+            return (
+              row.username.toLowerCase().includes(inputSearch.toLowerCase()) ||
+              row.Balance.toString().toLowerCase().includes(inputSearch.toLowerCase()) ||
+              row.createdAt.toLowerCase().includes(inputSearch.toLowerCase())
+            );
+          });
+        }
+  
+        formattedData = formattedData.map((row, index) => ({
           ...row,
           id: index + 1,
-          matched: row.Role === first
+          matched: true
         }));
-
-        console.log("first", formattedData)
-
+  
         setCompanyData({
           loading: true,
           data: formattedData,
@@ -144,11 +171,12 @@ function Payment() {
       });
     }
   };
+  
 
 
   useEffect(() => {
     getCompanyData();
-  }, [first]);
+  }, [first,inputSearch]);
 
   const handleRefresh = () => {
     setInputSearch('')
@@ -178,7 +206,7 @@ function Payment() {
     forCSVdata()
   }, [companyData.data])
 
-  var Rols = ['RESEARCHER', "SUBADMIN"]
+  var Rols = ['RESEARCH', "SUBADMIN"]
   return (
     <>
       {companyData.loading ? (

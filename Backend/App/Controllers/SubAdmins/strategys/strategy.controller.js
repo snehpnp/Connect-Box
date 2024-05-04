@@ -43,7 +43,6 @@ class strategy {
       }
 
 
-      console.log("Role :", Role)
       const maker_id_find = await User.findOne({
         _id: maker_id,
         Role: Role
@@ -393,7 +392,6 @@ class strategy {
         const findUser = await User.find({  _id: id }).select('prifix_key Role')
         const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
 
-        // console.log("findUser",findUser[0].Role)
         if(findUser[0].Role == "SUBADMIN"){
           const getAllstrategy = await strategy_model.find(
             { strategy_name: { $regex: '^' + prefix } } // Using regex to match the starting 3 letters
@@ -499,7 +497,6 @@ class strategy {
   //       data: getAllstrategy,
   //     });
   //   } catch (error) {
-  //     console.log("Error Get All Strategy Error-", error);
   //   }
   // }
 

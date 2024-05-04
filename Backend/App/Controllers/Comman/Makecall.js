@@ -40,7 +40,6 @@ class Makecall {
   //  GetAllCatagory
   async GetallCatagory(req, res) {
 
-    //console.log("Ok",req.body)
     const pipeline = [
       {
         $project: {
@@ -52,7 +51,6 @@ class Makecall {
 
     const result = await categorie.aggregate(pipeline);
 
-    // console.log( "result ",result)
 
     if (result.length > 0) {
       res.send({ status: true, data: result });
@@ -69,7 +67,6 @@ class Makecall {
   async GetServiceByCatagory(req, res) {
 
 
-    //console.log("id",req.body.category_id)
 
     if (req.body.category_id == '' || req.body.category_id == null) {
       return res.send({ status: false, msg: "Category not fount service", data: [] })
@@ -114,7 +111,6 @@ class Makecall {
 
     const result = await services.aggregate(pipeline);
 
-    //console.log("result services",result)
 
     if (result.length > 0) {
       return res.send({ status: true, msg: "Get Succefully", data: result })
@@ -131,7 +127,6 @@ class Makecall {
   async Getgetexpirymanualtrade(req, res) {
 
 
-    //console.log("req",req.body)
 
     try {
 
@@ -172,7 +167,6 @@ class Makecall {
 
       const category_details = await categorie.aggregate(pipeline_category);
 
-      //console.log("category_details",category_details[0].segment)
 
 
       const pipeline = [
@@ -224,7 +218,6 @@ class Makecall {
 
       const result = await Alice_token.aggregate(pipeline);
 
-    //  console.log("result expiry", result)
 
       if (result.length > 0) {
         return res.send({ status: true, msg: "Get Succefully", data: result })
@@ -233,7 +226,6 @@ class Makecall {
       }
 
     } catch (error) {
-      console.log("Error:", error);
       return res.status(500).json({ status: false, msg: 'Server error', data: [] });
     }
 
@@ -251,8 +243,6 @@ class Makecall {
   //get expiry
   async GetgetAllStrikePriceApi(req, res) {
 
-
-    //console.log("req",req.body)
 
     try {
 
@@ -306,7 +296,6 @@ class Makecall {
       const result = await Alice_token.aggregate(pipeline);
 
 
-    //  console.log("result ", result)
 
 
       if (result.length > 0) {
@@ -316,7 +305,6 @@ class Makecall {
       }
 
     } catch (error) {
-      console.log("Error:", error);
       return res.status(500).json({ status: false, msg: 'Server error', data: [] });
     }
 
@@ -342,7 +330,6 @@ class Makecall {
       }
 
     } catch (error) {
-      //console.log("Error Get All Strategy Error-", error);
       return res.send({ status: false, msg: "Server Error" });
     }
 
@@ -355,8 +342,7 @@ class Makecall {
 
 
     try {
-    //  console.log("req body",req.body)
-      //console.log("req body",req.body)
+
 
       let segment = req.body.segment
       let symbol = req.body.symbol
@@ -365,7 +351,7 @@ class Makecall {
       if(req.body.segment == "C"){
 
         const result = await services.findOne({ name: symbol }).select('instrument_token exch_seg');
-       // console.log("result",result)
+    
         if (result != null) {
         return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
         } else {
@@ -381,7 +367,7 @@ class Makecall {
         let expiry = req.body.expiry;
 
         const result = await Alice_token.findOne({ symbol : symbol , segment : segment , expiry : expiry }).select('instrument_token exch_seg');
-       // console.log("result",result)
+
         if (result != null) {
         return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
         } else {
@@ -403,7 +389,7 @@ class Makecall {
       }
         
         const result = await Alice_token.findOne({ symbol : symbol , segment : segment , expiry : expiry , strike : strike_price , option_type : option_type }).select('instrument_token exch_seg');
-       // console.log("result",result)
+
         if (result != null) {
         return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
         } else {
@@ -415,7 +401,6 @@ class Makecall {
 
 
     } catch (error) {
-      //console.log("Error Get token by socket Error-", error);
       return res.send({ status: false, msg: "Server Error" });
     }
 
@@ -425,7 +410,6 @@ class Makecall {
    //get token by socket Data
    async GetLiveDataSession(req, res) {
 
-   // console.log("req - ",req.body)
     try {
 
 
@@ -442,7 +426,6 @@ class Makecall {
        
              }
              
-             // console.log("result - ",result)
 
          
             if (result != null) {
@@ -454,7 +437,6 @@ class Makecall {
 
 
     } catch (error) {
-     // console.log("Error Get token by socket Error-", error);
      return res.send({ status: false, msg: "Server Error" });
     }
 
@@ -466,7 +448,6 @@ class Makecall {
   //Add data above beleow range
   async AddDataAboveBelowRange(req, res) {
 
-     console.log("req  ABR",req.body)
      try {
 
 
@@ -535,7 +516,7 @@ class Makecall {
   
         // Save new user and count licenses
         const result = await makecallABR_insert.save();
-        // console.log("result",result)
+   
         if (result != null) {
               return res.send({ status: true, msg: "Data Add Successfully....", data: result });
             }else{
@@ -545,7 +526,6 @@ class Makecall {
 
  
      } catch (error) {
-       //console.log("Data Insert MakeAbovebeloveRange-", error);
        return res.send({ status: false, msg: "Server Error" });
      }
  
@@ -556,7 +536,6 @@ class Makecall {
    //Get data above beleow range
   async GetDataAboveBelowRange(req, res) {
 
-    //console.log("req  ABR",req.body)
   
     try {  
       const { user_id, ABR } = req.body;  
@@ -576,7 +555,6 @@ class Makecall {
   
          const result = await makecallABR.aggregate(pipeline);
            
-        // console.log("result",result)
           if (result.length > 0) {
              return res.send({ status: true, msg: "Data Add Successfully....", data: result });
            }else{
@@ -597,12 +575,11 @@ class Makecall {
    //Delete data above beleow range
    async DeleteDataMakeCall(req, res) {
 
-    // console.log("req  Delete ",req.body)
       
     try {  
        
            const AllIds = req.body.row.map(item => new ObjectId(item._id))
-          //console.log("req  ids  ",AllIds)
+      
            const result = await makecallABR.deleteMany({ _id: { $in: AllIds } })
            return res.send({ status: true, msg: "Data Delete Successfully...." });
            
@@ -610,7 +587,6 @@ class Makecall {
 
 
     } catch (error) {
-      //console.log("Delete MakeAbovebeloveRange-", error);
       return res.send({ status: false, msg: "Server Error" });
     }
 
@@ -622,13 +598,10 @@ class Makecall {
 
     try {  
 
-        //console.log("req  Update ",req.body)
 
         for (let id in req.body.row) {
         const updates = req.body.row[id];
 
-        // console.log('ID:', id);
-        // console.log('Updates:', updates);
 
          const filter = { _id: new ObjectId(id) };
          const update = { $set: updates };
@@ -640,7 +613,6 @@ class Makecall {
           
 
     } catch (error) {
-     // console.log("Data update MakeAbovebeloveRange-", error);
      return res.send({ status: false, msg: "server Error" });
     }
 
@@ -703,8 +675,7 @@ const holidays = new Holidays();
 const currentDate = new Date();
 
 async function run() {
-  //
-  console.log("RUN -----")
+
   try {
 
       const makecallabrView_excute_run = async () => {
@@ -713,13 +684,11 @@ async function run() {
         
       let rr=true
       if (rr) {
-       // console.log("DONEEEEEEE ")
      // if (holidays.isHoliday(currentDate) && weekday != 'Sunday' && weekday != 'Saturday') {
 
         // const viewName = 'open_position_excute';
         var makecallabrView_excute_result = await makecallabrView_excute_view.find().toArray();
 
-        //console.log("makecallabrView_excute_result ",makecallabrView_excute_result)
       
          if(makecallabrView_excute_result.length > 0){
 
@@ -809,16 +778,11 @@ async function run() {
             );
             
     
-             console.log("req ",req)
-           
-             console.log("process.env.BROKER_URL ",process.env.BROKER_URL)
           
               let config = {
               method: 'post',
               maxBodyLength: Infinity,
-              url: 'http://localhost:8800/broker-signals',
-              // url: 'https://trade.pandpinfotech.com/signal/broker-signals',
-              // url: `${process.env.BROKER_URL}`,
+              url: `${process.env.BROKER_URL}`,
               headers: {
                 'Content-Type': 'text/plain'
               },
@@ -843,11 +807,9 @@ async function run() {
                 // const io = await getIO();
                 // io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
       
-                 console.log("response Trade Excuted - ", response.data)
       
               })
               .catch((error) => {
-                // console.log(error.response.data);
               });
       
       
@@ -857,12 +819,10 @@ async function run() {
 
            
         }else{
-          //console.log("ELSEEEE ",makecallabrView_excute_result)
         }
 
 
       } else {
-       // console.log('The stock market is Closed!');
       }
 
       } catch (error) {
@@ -907,9 +867,6 @@ async function run() {
       
               
       
-              console.log("req ",req)
-             
-              console.log("process.env.BROKER_URL ",process.env.BROKER_URL)
             
               let config = {
                 method: 'post',
@@ -941,11 +898,9 @@ async function run() {
                   //  const io = await getIO();
                   //  io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
         
-                   console.log("response Trade Excuted - ", response.data)
         
                 })
                 .catch((error) => {
-                  // console.log(error.response.data);
                 });
         
         
@@ -969,14 +924,13 @@ async function run() {
 
           if (NotradeTimeExucuted.length > 0) {
           const ids = NotradeTimeExucuted.map(item=>item._id)
-          console.log("ids ",ids)
+    
 
           const result = await makecallABR.updateMany(
             { _id: { $in: ids } },
             { $set: { status : 2 } } 
           );
          
-        //  console.log("result ",result)
           return
     
           } else{

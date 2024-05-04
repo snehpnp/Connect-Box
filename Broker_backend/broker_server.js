@@ -104,7 +104,7 @@ const ConnectSocket = async (EXCHANGE, instrument_token) => {
   var channel_List = `${EXCHANGE}|${instrument_token}`
 
   var broker_infor = await live_price.findOne({ broker_name: "ALICE_BLUE", trading_status: "on" });
-  console.log(broker_infor);
+ 
   if (broker_infor) {
 
     var aliceBaseUrl = "https://ant.aliceblueonline.com/rest/AliceBlueAPIService/api/"
@@ -156,7 +156,6 @@ const ConnectSocket = async (EXCHANGE, instrument_token) => {
             socket.send(JSON.stringify(initCon))
           }
 
-          // console.log("Connect Socket");
           socket.onmessage = async function (msg) {
             var response = JSON.parse(msg.data);
 
@@ -198,7 +197,6 @@ const ConnectSocket = async (EXCHANGE, instrument_token) => {
 
 
             } else {
-              // console.log("else", response);
             }
 
             if (response.s === 'OK') {
@@ -213,14 +211,12 @@ const ConnectSocket = async (EXCHANGE, instrument_token) => {
           }
 
         } catch (error) {
-          //console.log("Error-", error.response);
 
         }
       }
 
 
     }).catch((error) => {
-      // console.log("Error -", error.response.data);
       return error.response.data
     })
 
@@ -275,9 +271,6 @@ app.post('/broker-signals', async (req, res) => {
   const prifix_key_array = reusltUsers.map(item => item.prifix_key)
 
   const client_key_array = reusltUsers.map(item => item.client_key)
-
-  console.log("prifix_key_array", prifix_key_array)
-  console.log("client_key_array", client_key_array)
 
 
 
@@ -395,7 +388,6 @@ app.post('/broker-signals', async (req, res) => {
 
       var demo = signals.Demo;
 
-      console.log("signals", signals)
 
 
       // IF CLIENT KEY UNDEFINED
@@ -406,7 +398,6 @@ app.post('/broker-signals', async (req, res) => {
         // IF SIGNEL KEY NOT MATCH CHECK
         if (prifix_key_array.includes(FIRST3_KEY)) {
 
-          console.log("FIRST3_KEY", FIRST3_KEY, "client_key ", client_key)
 
 
           // SIGNEL REQUEST
@@ -504,7 +495,6 @@ app.post('/broker-signals', async (req, res) => {
           }
 
 
-          // console.log("findSignal ",findSignal)
           // TOKEN SET IN TOKEN
           if (segment == 'C' || segment == 'c') {
             token = await services.find(instrument_query).maxTimeMS(20000).exec();
@@ -583,13 +573,10 @@ app.post('/broker-signals', async (req, res) => {
           }
 
 
-          console.log("client_key ", client_key)
-          // console.log("client_key ",client_key)
 
           // HIT TRADE IN BROKER SERVER
           if (client_key_array.includes(client_key)) {
 
-            console.log("Inside  admin trade", client_key)
 
             //Process Alice Blue admin client
             try {
@@ -1040,7 +1027,6 @@ app.post('/broker-signals', async (req, res) => {
 
           }
 
-          //console.log("findSignal -- strike",findSignal)
 
           // ENTRY OR EXIST CHECK
           if (type == "LE" || type == "le" || type == "SE" || type == "Se") {
@@ -1122,8 +1108,6 @@ app.post('/broker-signals', async (req, res) => {
               ...findSignal,
               exit_qty_percent: "" // Adding the exit_qty_percent field with an empty string value
             };
-
-            //console.log("updatedFindSignal ",updatedFindSignal)
 
 
             var ExitMainSignals = await MainSignals.find(updatedFindSignal)
