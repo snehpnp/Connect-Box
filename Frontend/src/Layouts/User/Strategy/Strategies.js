@@ -59,7 +59,7 @@ const Strategies = () => {
                         </div>
                     </div>
 
-                  {!getAllStrategy.loading ?  <div className="card-body">
+                    {!getAllStrategy.loading ? <div className="card-body">
 
 
                         <div className="row d-flex align-items-center justify-content-center">
@@ -98,14 +98,15 @@ const Strategies = () => {
                                             </li>
                                         </ul>
                                         <div className="d-flex justify-content-center package-edit">
-                                            <a
+                                            {item.stg_status == 0 ? <a
                                                 className="btn btn-primary"
-                                                href="javascript:void(0);"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#edit_package"
                                             >
                                                 BUY
-                                            </a>
+                                            </a> : <a
+                                                className="btn btn-primary"
+                                            >
+                                                BUYED
+                                            </a>}
 
                                         </div>
                                     </div>
@@ -114,7 +115,7 @@ const Strategies = () => {
 
 
                         </div>
-                    </div> : <Loader/>}
+                    </div> : <Loader />}
 
                 </div>
 

@@ -239,28 +239,30 @@ class Clientservice {
         }
     }
 
-    async GetAllStrategy(req, res) {
 
-        const { id, prefix_key } = req.body
+
+    // GET AAL USER STRATEGY
+    async GetAllStrategy(req, res) {
+        const { id } = req.body;
 
         try {
-            if (!id || id == undefined || id == null) {
+            if (!id) {
                 return res.send({
                     status: false,
-                    msg: "id is  require",
+                    msg: "id is required",
                     data: []
-                })
+                });
             }
 
-
-            const UserData = await User_model.findOne({ _id: new ObjectId(id) }).select("parent_id")
-
+            const UserData = await User_model.findOne({ _id: new ObjectId(id) }).select("parent_id");
+            const UserStgData = await strategy_client.find({ user_id: new ObjectId(id), ActiveStatus: "1" }).select("strategy_id");
+            const UserStgIds = UserStgData.map(data => data.strategy_id);
+        
             const subadminStrategies = await User_model.aggregate([
                 {
                     $match: {
                         Role: "SUBADMIN",
                         _id: new ObjectId(UserData.parent_id)
-
                     }
                 },
                 {
@@ -287,29 +289,28 @@ class Clientservice {
                         maker_id: "$strategies.maker_id",
                         createdAt: "$strategies.createdAt",
                         max_trade: "$strategies.max_trade",
-                        strategy_percentage: "$strategies.strategy_percentage"
+                        strategy_percentage: "$strategies.strategy_percentage",
+                        stg_status: {
+                            $cond: { if: { $in: ["$strategies._id", UserStgIds] }, then: 1, else: 0 }
+                        }
                     }
                 }
             ]);
 
 
-            if (!subadminStrategies) {
-                return res.send({ status: false, msg: "strategy Find Error", data: [] })
+            if (!subadminStrategies || subadminStrategies.length === 0) {
+                return res.send({ status: false, msg: "No strategies found", data: [] });
             }
 
-            if (subadminStrategies) {
-                return res.send({ status: true, msg: "fetch all stategy successfully !", data: subadminStrategies })
-            }
 
+            return res.send({ status: true, msg: "Fetched all strategies successfully!", data: subadminStrategies });
+        } catch (err) {
+            console.log("Error fetching the strategy: ", err);
+            return res.send({ status: false, msg: "Error fetching strategies", data: [] });
         }
-        catch (err) {
-            console.log("Error to fatch the strategy ", err)
-            return res.send({ status: false, msg: "strategy does not exit !", data: [] })
-        }
-
-
-
     }
+
+
 
 
 
