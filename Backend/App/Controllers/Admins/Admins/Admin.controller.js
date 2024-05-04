@@ -223,7 +223,7 @@ class Admin {
     try {
         // THEME LIST DATA
         const getAllpanel = await ApiCreateInfo
-            .find({}).select("title  broker_id _id ")
+            .find({active_status:"1"}).select("title  broker_id _id ")
 
 
         // IF DATA NOT EXIST

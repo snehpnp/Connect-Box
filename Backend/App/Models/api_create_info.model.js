@@ -54,7 +54,11 @@ const panelSchema = new mongoose.Schema({
         // unique: true
     },
 
-
+    active_status: {
+        type: String,
+        // required: true,
+        // unique: true
+    },
 
 }, {
     timestamps: true

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate ,useHistory } from "react-router-dom";
+import { useNavigate  } from "react-router-dom";
 import axios from "axios";
 import CryptoJS from "crypto-js";
 import $ from "jquery";
@@ -33,7 +33,6 @@ import Swal from 'sweetalert2';
 const Makecall = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const history = useHistory();
     const [ForDisabledSubmit, SetForDisabledSubmit] = useState(false)
     const [UserDetails, seUserDetails] = useState('')
     const [AllServices, setAllServices] = useState({ loading: true, data: [] });
