@@ -24,7 +24,7 @@ const Bresponse = () => {
                                         <li>
                                             <strong>Symbol: </strong>BankNifty                               </li>
                                         <li>
-                                            <strong>Type: </strong> Lx
+                                            <strong>Type: </strong> LX
                                         </li>
                                         <li>
                                             <strong>Broker Name :</strong> Upstox                                </li>
@@ -57,7 +57,7 @@ const Bresponse = () => {
                                         <li>
                                             <strong>Symbol: </strong>BankNifty                               </li>
                                         <li>
-                                            <strong>Type: </strong> Lx
+                                            <strong>Type: </strong> LX
                                         </li>
                                         <li>
                                             <strong>Broker Name :</strong> Upstox                                </li>
@@ -89,7 +89,7 @@ const Bresponse = () => {
                                         <li>
                                             <strong>Symbol: </strong>BankNifty                               </li>
                                         <li>
-                                            <strong>Type: </strong> Lx
+                                            <strong>Type: </strong> LX
                                         </li>
                                         <li>
                                             <strong>Broker Name :</strong> Upstox                                </li>
@@ -120,7 +120,7 @@ const Bresponse = () => {
                                         <li>
                                             <strong>Symbol: </strong>BankNifty                               </li>
                                         <li>
-                                            <strong>Type: </strong> Lx
+                                            <strong>Type: </strong> LX
                                         </li>
                                         <li>
                                             <strong>Broker Name :</strong> Upstox                                </li>
