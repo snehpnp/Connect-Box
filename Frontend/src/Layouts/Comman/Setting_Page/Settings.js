@@ -32,18 +32,21 @@ const Settings = () => {
                                     role="tablist"
                                     aria-orientation="vertical"
                                 >
-                                    {Role == "ADMIN" || Role == "SUBADMIN" && (<a
-                                        className="nav-link mb-1 active"
-                                        id="v-pills-company-tab"
-                                        data-bs-toggle="pill"
-                                        href="#v-pills-company"
-                                        role="tab"
-                                        aria-controls="v-pills-company"
-                                        aria-selected="true"
-                                        style={{ color: "black" }}
-                                    >
-                                        Company Settings
-                                    </a>)}
+                                    {(Role === "ADMIN" || Role === "SUBADMIN") && (
+                                        <a
+                                            className="nav-link mb-1 active"
+                                            id="v-pills-company-tab"
+                                            data-bs-toggle="pill"
+                                            href="#v-pills-company"
+                                            role="tab"
+                                            aria-controls="v-pills-company"
+                                            aria-selected="true"
+                                            style={{ color: "black" }}
+                                        >
+                                            Company Settings
+                                        </a>
+                                    )}
+
 
                                     {Role == "ADMIN" && (<a
                                         className="nav-link mb-1"
@@ -118,18 +121,22 @@ const Settings = () => {
                                     >
                                         Api Create Information
                                     </a>
-                                    {Role == "SUBADMIN" || Role == "USER" || (<a
-                                        className="nav-link mb-1"
-                                        id="v-pills-Broker-info-tab"
-                                        data-bs-toggle="pill"
-                                        href="#v-pills-Broker-info"
-                                        role="tab"
-                                        aria-controls="v-pills-Broker-info"
-                                        aria-selected="false"
-                                        style={{ color: "black" }}
-                                    >
-                                        Set Broker Information
-                                    </a>)}
+
+                                    {(Role === "SUBADMIN" || Role === "USER") && (
+                                        <a
+                                            className="nav-link mb-1"
+                                            id="v-pills-Broker-info-tab"
+                                            data-bs-toggle="pill"
+                                            href="#v-pills-Broker-info"
+                                            role="tab"
+                                            aria-controls="v-pills-Broker-info"
+                                            aria-selected="false"
+                                            style={{ color: "black" }}
+                                        >
+                                            Set Broker Information
+                                        </a>
+                                    )}
+
 
                                 </div>
 
@@ -286,7 +293,7 @@ const Settings = () => {
                                     {/* SET BROKER INFORMATION */}
                                     <div className="tab-pane fade" id="v-pills-Broker-info" role="tabpanel" aria-labelledby="v-pills-Broker-info-tab">
 
-                                        {Role == "SUBADMIN" ? <Setbrokerinfo /> : <Usersetbrokerinfo />}
+                                        {Role == "SUBADMIN" ? <Setbrokerinfo /> : Role == "USER" ? <Usersetbrokerinfo /> : ""}
 
 
                                     </div>

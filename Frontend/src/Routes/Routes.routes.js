@@ -24,10 +24,12 @@ const Routing = () => {
     const user_details = JSON.parse(localStorage.getItem("user_details"));
 
     useEffect(() => {
-        if (location.pathname === "/update") {
-            navigate("/update");
+        console.log("location.pathname",location.pathname)
+        if (location.pathname.startsWith("/updatepassword")) {
+            navigate(location.pathname);
             return;
         }
+        
         if (location.pathname === "/forget") {
             navigate("/forget");
             return;
@@ -101,7 +103,7 @@ const Routing = () => {
             <Route path="/register" element={<Register />} />
           
             <Route path="/forget" element={<Forget />} />
-            <Route path="/update/:id" element={<Update/>}/>
+            <Route path="/updatepassword/:id" element={<Update/>}/>
         </Routes>
     );
 }

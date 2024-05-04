@@ -13,6 +13,9 @@ const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db_GET_VIEW = client.db(process.env.DB_NAME);
 const makecallabrView_excute_view = db_GET_VIEW.collection('makecallabrView_excute');
+const open_position_excute = db_GET_VIEW.collection('open_position_excute');
+const makecall_NotradeTime_status_excute = db_GET_VIEW.collection('makecall_NotradeTime_status_excute');
+
 
 const ObjectId = mongoose.Types.ObjectId;
 const user_logs = db.user_logs;
@@ -37,7 +40,6 @@ class Makecall {
   //  GetAllCatagory
   async GetallCatagory(req, res) {
 
-    //console.log("Ok",req.body)
     const pipeline = [
       {
         $project: {
@@ -49,7 +51,6 @@ class Makecall {
 
     const result = await categorie.aggregate(pipeline);
 
-    // console.log( "result ",result)
 
     if (result.length > 0) {
       res.send({ status: true, data: result });
@@ -66,7 +67,6 @@ class Makecall {
   async GetServiceByCatagory(req, res) {
 
 
-    //console.log("id",req.body.category_id)
 
     if (req.body.category_id == '' || req.body.category_id == null) {
       return res.send({ status: false, msg: "Category not fount service", data: [] })
@@ -111,7 +111,6 @@ class Makecall {
 
     const result = await services.aggregate(pipeline);
 
-    //console.log("result services",result)
 
     if (result.length > 0) {
       return res.send({ status: true, msg: "Get Succefully", data: result })
@@ -128,7 +127,6 @@ class Makecall {
   async Getgetexpirymanualtrade(req, res) {
 
 
-    //console.log("req",req.body)
 
     try {
 
@@ -169,7 +167,6 @@ class Makecall {
 
       const category_details = await categorie.aggregate(pipeline_category);
 
-      //console.log("category_details",category_details[0].segment)
 
 
       const pipeline = [
@@ -221,7 +218,6 @@ class Makecall {
 
       const result = await Alice_token.aggregate(pipeline);
 
-    //  console.log("result expiry", result)
 
       if (result.length > 0) {
         return res.send({ status: true, msg: "Get Succefully", data: result })
@@ -230,7 +226,6 @@ class Makecall {
       }
 
     } catch (error) {
-      console.log("Error:", error);
       return res.status(500).json({ status: false, msg: 'Server error', data: [] });
     }
 
@@ -248,8 +243,6 @@ class Makecall {
   //get expiry
   async GetgetAllStrikePriceApi(req, res) {
 
-
-    //console.log("req",req.body)
 
     try {
 
@@ -303,7 +296,6 @@ class Makecall {
       const result = await Alice_token.aggregate(pipeline);
 
 
-    //  console.log("result ", result)
 
 
       if (result.length > 0) {
@@ -313,7 +305,6 @@ class Makecall {
       }
 
     } catch (error) {
-      console.log("Error:", error);
       return res.status(500).json({ status: false, msg: 'Server error', data: [] });
     }
 
@@ -339,7 +330,6 @@ class Makecall {
       }
 
     } catch (error) {
-      //console.log("Error Get All Strategy Error-", error);
       return res.send({ status: false, msg: "Server Error" });
     }
 
@@ -352,8 +342,7 @@ class Makecall {
 
 
     try {
-    //  console.log("req body",req.body)
-      //console.log("req body",req.body)
+
 
       let segment = req.body.segment
       let symbol = req.body.symbol
@@ -362,7 +351,7 @@ class Makecall {
       if(req.body.segment == "C"){
 
         const result = await services.findOne({ name: symbol }).select('instrument_token exch_seg');
-       // console.log("result",result)
+    
         if (result != null) {
         return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
         } else {
@@ -378,7 +367,7 @@ class Makecall {
         let expiry = req.body.expiry;
 
         const result = await Alice_token.findOne({ symbol : symbol , segment : segment , expiry : expiry }).select('instrument_token exch_seg');
-       // console.log("result",result)
+
         if (result != null) {
         return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
         } else {
@@ -400,7 +389,7 @@ class Makecall {
       }
         
         const result = await Alice_token.findOne({ symbol : symbol , segment : segment , expiry : expiry , strike : strike_price , option_type : option_type }).select('instrument_token exch_seg');
-       // console.log("result",result)
+
         if (result != null) {
         return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
         } else {
@@ -412,7 +401,6 @@ class Makecall {
 
 
     } catch (error) {
-      //console.log("Error Get token by socket Error-", error);
       return res.send({ status: false, msg: "Server Error" });
     }
 
@@ -422,7 +410,6 @@ class Makecall {
    //get token by socket Data
    async GetLiveDataSession(req, res) {
 
-   // console.log("req - ",req.body)
     try {
 
 
@@ -439,7 +426,6 @@ class Makecall {
        
              }
              
-             // console.log("result - ",result)
 
          
             if (result != null) {
@@ -451,7 +437,6 @@ class Makecall {
 
 
     } catch (error) {
-     // console.log("Error Get token by socket Error-", error);
      return res.send({ status: false, msg: "Server Error" });
     }
 
@@ -463,7 +448,6 @@ class Makecall {
   //Add data above beleow range
   async AddDataAboveBelowRange(req, res) {
 
-     console.log("req  ABR",req.body)
      try {
 
 
@@ -489,13 +473,13 @@ class Makecall {
         StopLoss,
         ExitTime,
         NoTradeTime,
-        ExitTime_dt,
         sl_status,
         token,
         EntryPriceRange_one,
         EntryPriceRange_two,
         ABR_TYPE,
         marketTimeAmo,
+        WiseTypeDropdown
       } = req.body;
          
            //crete data
@@ -519,20 +503,20 @@ class Makecall {
           TradeType:TradeType,
           Target:Target,
           StopLoss:StopLoss,
-          ExitTime:ExitTime,
-          NoTradeTime:NoTradeTime,
-          ExitTime_dt:ExitTime_dt,
+          ExitTime:ExitTime.replace(":", ""),
+          NoTradeTime:NoTradeTime.replace(":", ""),
           sl_status:sl_status,
           token:token,
           EntryPriceRange_one:EntryPriceRange_one,
           EntryPriceRange_two:EntryPriceRange_two,
           ABR_TYPE:ABR_TYPE,
           marketTimeAmo:marketTimeAmo,
+          WiseTypeDropdown:WiseTypeDropdown
         });
   
         // Save new user and count licenses
         const result = await makecallABR_insert.save();
-        // console.log("result",result)
+   
         if (result != null) {
               return res.send({ status: true, msg: "Data Add Successfully....", data: result });
             }else{
@@ -542,7 +526,6 @@ class Makecall {
 
  
      } catch (error) {
-       //console.log("Data Insert MakeAbovebeloveRange-", error);
        return res.send({ status: false, msg: "Server Error" });
      }
  
@@ -553,7 +536,6 @@ class Makecall {
    //Get data above beleow range
   async GetDataAboveBelowRange(req, res) {
 
-    //console.log("req  ABR",req.body)
   
     try {  
       const { user_id, ABR } = req.body;  
@@ -563,14 +545,16 @@ class Makecall {
            $match: {
             user_id: UserId,
             ABR_TYPE: ABR,
-            status: 0,
+            $or: [
+              { status: 0 },
+              { status: 2 }
+            ]
           },
         },
         ];
   
          const result = await makecallABR.aggregate(pipeline);
            
-        // console.log("result",result)
           if (result.length > 0) {
              return res.send({ status: true, msg: "Data Add Successfully....", data: result });
            }else{
@@ -591,12 +575,11 @@ class Makecall {
    //Delete data above beleow range
    async DeleteDataMakeCall(req, res) {
 
-    // console.log("req  Delete ",req.body)
       
     try {  
        
            const AllIds = req.body.row.map(item => new ObjectId(item._id))
-          //console.log("req  ids  ",AllIds)
+      
            const result = await makecallABR.deleteMany({ _id: { $in: AllIds } })
            return res.send({ status: true, msg: "Data Delete Successfully...." });
            
@@ -604,7 +587,6 @@ class Makecall {
 
 
     } catch (error) {
-      //console.log("Delete MakeAbovebeloveRange-", error);
       return res.send({ status: false, msg: "Server Error" });
     }
 
@@ -616,13 +598,10 @@ class Makecall {
 
     try {  
 
-        //console.log("req  Update ",req.body)
 
         for (let id in req.body.row) {
         const updates = req.body.row[id];
 
-        // console.log('ID:', id);
-        // console.log('Updates:', updates);
 
          const filter = { _id: new ObjectId(id) };
          const update = { $set: updates };
@@ -634,7 +613,6 @@ class Makecall {
           
 
     } catch (error) {
-     // console.log("Data update MakeAbovebeloveRange-", error);
      return res.send({ status: false, msg: "server Error" });
     }
 
@@ -697,70 +675,102 @@ const holidays = new Holidays();
 const currentDate = new Date();
 
 async function run() {
-  //
-  console.log("RUN -----")
+
   try {
 
-     const makecallabrView_excute_run = async () => {
+      const makecallabrView_excute_run = async () => {
        try {
         
         
       let rr=true
       if (rr) {
-        console.log("DONEEEEEEE ")
      // if (holidays.isHoliday(currentDate) && weekday != 'Sunday' && weekday != 'Saturday') {
 
         // const viewName = 'open_position_excute';
         var makecallabrView_excute_result = await makecallabrView_excute_view.find().toArray();
+
       
          if(makecallabrView_excute_result.length > 0){
 
+         
+
           // [
           //   {
-          //     _id: new ObjectId('662cb8600f527d7cdc19d919'),
+          //     _id: new ObjectId('66335258559fd8cbfd6aa184'),
           //     user_id: new ObjectId('662b6ec4e8a32c05bc0ae639'),
-          //     Symbol: 'AXISBANK',
+          //     Symbol: 'BANKNIFTY',
           //     TType: 'LE',
           //     Tr_Price: '0.00',
-          //     Price: '15',
-          //     EntryPrice: '15',
+          //     Price: '0',
+          //     EntryPrice: '',
           //     Sq_Value: '0.00',
           //     Sl_Value: '0.00',
           //     TSL: '0.00',
-          //     Segment: 'F',
-          //     Strike: '100',
-          //     OType: '',
-          //     Expiry: '30052024',
+          //     Segment: 'O',
+          //     Strike: '49200',
+          //     OType: 'CALL',
+          //     Expiry: '08052024',
           //     Strategy: 'SHK_DEMO',
           //     Quntity: '100',
           //     Key: 'SHK796872240426',
           //     TradeType: 'MAKECALL',
-          //     Target: '0',
+          //     Target: '10.00',
           //     StopLoss: '0',
           //     ExitTime: '15:25',
-          //     sl_status: '0',
-          //     token: '50928',
-          //     EntryPriceRange_one: '',
-          //     EntryPriceRange_two: '',
-          //     ABR_TYPE: 'below',
+          //     sl_status: '1',
+          //     token: '43763',
+          //     EntryPriceRange_one: '445',
+          //     EntryPriceRange_two: '480',
+          //     ABR_TYPE: 'range',
           //     marketTimeAmo: '1',
+          //     WiseTypeDropdown: '1',
           //     status: 0,
           //     above_price: null,
-          //     below_price: 15,
-          //     stockInfo_lp: 14,
-          //     stockInfo_curtime: '1841',
+          //     below_price: null,
+          //     stockInfo_lp: 451.15,
+          //     stockInfo_curtime: '1416',
           //     isAbove: false,
-          //     isBelow: true,
-          //     isRange: false
+          //     isBelow: false,
+          //     isRange: true
           //   }
           // ]
-          
-          
-          console.log("DONEEEEEEE ",makecallabrView_excute_result)
+
+         
+       
           makecallabrView_excute_result && makecallabrView_excute_result.map(async(item) => {
+            
+            let Target = 0
+            let StopLoss = 0
+            if(item.sl_status == "1"){
+             
+            if (item.WiseTypeDropdown == '1') {
+               if(item.Target != "0"){
+                let percent_value = parseFloat(item.stockInfo_lp) * (item.Target / 100)
+                Target = parseFloat(item.stockInfo_lp) + parseFloat(percent_value)
+               }
+               if (item.StopLoss != '0') {
+                let percent_value = parseFloat(item.stockInfo_lp) * (item.StopLoss / 100)
+                StopLoss = parseFloat(item.stockInfo_lp) - parseFloat(percent_value)
+               
+              }
+
+            }
+
+            else if (item.WiseTypeDropdown == '2') {
+              if (item.Target != "0") {
+                Target = parseFloat(item.stockInfo_lp) + parseFloat(item.Target)
+              }
+              if (item.StopLoss != '0') {
+                StopLoss = parseFloat(item.stockInfo_lp) - parseFloat(item.StopLoss)
+              }
+
+             }
+
+           }
+
 
             const currentTimestamp = Math.floor(Date.now() / 1000);
-            let req = `DTime:${currentTimestamp}|Symbol:${item.Symbol}|TType:${item.TType}|Tr_Price:${item.Tr_Price}|Price:${item.stockInfo_lp}|Sq_Value:${item.Sq_Value}|Sl_Value:${item.Sl_Value}|TSL:${item.TSL}|Segment:${item.Segment}|Strike:${item.Strike}|OType:${item.OType}|Expiry:${item.Expiry}|Strategy:${item.Strategy}|Quntity:${item.Quntity}|Key:${item.Key}|TradeType:${item.TradeType}|Target:${item.Target}|StopLoss:${item.StopLoss}|ExitTime:${item.ExitTime}|sl_status:${item.sl_status}|Demo:demo`
+            let req = `DTime:${currentTimestamp}|Symbol:${item.Symbol}|TType:${item.TType}|Tr_Price:${item.Tr_Price}|Price:${item.stockInfo_lp}|Sq_Value:${item.Sq_Value}|Sl_Value:${item.Sl_Value}|TSL:${item.TSL}|Segment:${item.Segment}|Strike:${item.Strike}|OType:${item.OType}|Expiry:${item.Expiry}|Strategy:${item.Strategy}|Quntity:${item.Quntity}|Key:${item.Key}|TradeType:${item.TradeType}|Target:${Target}|StopLoss:${StopLoss}|ExitTime:${item.ExitTime}|sl_status:${item.sl_status}|ExitStatus:${item.ABR_TYPE}|Demo:demo`
                
             const resultUpdateId = await makecallABR.updateMany(
               { _id: item._id }, // Condition: IDs from the view
@@ -768,16 +778,11 @@ async function run() {
             );
             
     
-             console.log("req ",req)
-           
-             console.log("process.env.BROKER_URL ",process.env.BROKER_URL)
           
               let config = {
               method: 'post',
               maxBodyLength: Infinity,
-              url: 'http://localhost:8800/broker-signals',
-              // url: 'https://trade.pandpinfotech.com/signal/broker-signals',
-              // url: `${process.env.BROKER_URL}`,
+              url: `${process.env.BROKER_URL}`,
               headers: {
                 'Content-Type': 'text/plain'
               },
@@ -802,11 +807,9 @@ async function run() {
                 // const io = await getIO();
                 // io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
       
-                 console.log("response Trade Excuted - ", response.data)
       
               })
               .catch((error) => {
-                // console.log(error.response.data);
               });
       
       
@@ -816,12 +819,10 @@ async function run() {
 
            
         }else{
-          //console.log("ELSEEEE ",makecallabrView_excute_result)
         }
 
 
       } else {
-       // console.log('The stock market is Closed!');
       }
 
       } catch (error) {
@@ -832,6 +833,115 @@ async function run() {
       
       }
 
+      const exitOpentrade = async () => {
+        try {
+        
+          var openPosition = await open_position_excute.find().toArray();
+        
+          if (openPosition.length > 0) {
+
+            
+        
+            openPosition && openPosition.map((item) => {
+
+
+
+              let ExitStatus = 'TS'   
+              if(item.isLpInRangeTarget==true){
+              ExitStatus = "TARGET"
+              }else if(item.isLpInRangeStoploss == true){
+              ExitStatus = "STOPLOSS"
+              }else if(item.isLpInRange == 1){
+              ExitStatus = "EXIT TIME"
+              }
+              else if(item.isLpInRange == 0){
+                ExitStatus = "EXIT TIME"
+              }
+
+
+
+
+              const currentTimestamp = Math.floor(Date.now() / 1000);
+              let req = `DTime:${currentTimestamp}|Symbol:${item.symbol}|TType:${item.entry_type == "SE" ? "SX" : "LX"}|Tr_Price:131|Price:${item.stockInfo_lp}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${item.segment}|Strike:${item.strike}|OType:${item.option_type}|Expiry:${item.expiry}|Strategy:${item.strategy}|Quntity:${item.entry_qty_percent}|Key:${item.client_persnal_key}|TradeType:${item.TradeType}|ExitStatus:${ExitStatus}|Demo:demo`
+                 
+      
+              
+      
+            
+              let config = {
+                method: 'post',
+                maxBodyLength: Infinity,
+                url: 'http://localhost:8800/broker-signals',
+                // url: 'https://trade.pandpinfotech.com/signal/broker-signals',
+               // url: `${process.env.BROKER_URL}`,
+                headers: {
+                  'Content-Type': 'text/plain'
+                },
+                data: req
+              };
+        
+              axios.request(config)
+                .then(async(response) => {
+      
+                  //  let tradeSymbol;
+                  //  if(item.segment.toLowerCase() == 'o' || item.segment.toLowerCase() == 'co' || item.segment.toLowerCase() == 'fo' || item.segment.toLowerCase() == 'mo')
+                  //  {
+                  //   tradeSymbol = item.symbol+"  "+item.expiry+"  "+item.strike+"  "+item.option_type+"  "+" [ "+item.segment+" ] ";
+                  //  }
+                  //  else if(item.segment.toLowerCase() == 'f' || item.segment.toLowerCase() == 'cf' || item.segment.toLowerCase() == 'mf')
+                  //  {
+                  //   tradeSymbol = item.symbol+"  "+item.expiry+"  "+" [ "+item.segment+" ] ";
+                  //  }
+                  //  else{
+                  //   tradeSymbol = item.symbol+"  "+" [ "+item.segment+" ] ";
+                  //  }
+                  //  const io = await getIO();
+                  //  io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
+        
+        
+                })
+                .catch((error) => {
+                });
+        
+        
+            })
+        
+          } else{
+            return
+          }
+        } catch (error) {
+          console.log("Error in Open Position",error);
+        }
+         
+        
+        
+      }
+
+      const noTradeTimeExcuteSetStatus = async () => {
+        try {
+        
+          var NotradeTimeExucuted = await makecall_NotradeTime_status_excute.find().toArray();
+
+          if (NotradeTimeExucuted.length > 0) {
+          const ids = NotradeTimeExucuted.map(item=>item._id)
+    
+
+          const result = await makecallABR.updateMany(
+            { _id: { $in: ids } },
+            { $set: { status : 2 } } 
+          );
+         
+          return
+    
+          } else{
+            return
+          }
+        } catch (error) {
+          console.log("Error in Open Position",error);
+        }
+           
+       }
+
     
     // Run the function initially
     await makecallabrView_excute_run();
@@ -841,6 +951,8 @@ async function run() {
       // Delay for 1000 milliseconds (1 second)
       await new Promise(resolve => setTimeout(resolve, 1000));
       await makecallabrView_excute_run();
+      await exitOpentrade();
+      await noTradeTimeExcuteSetStatus()
     }
   } finally {
     // Close the client when you're done
@@ -849,7 +961,7 @@ async function run() {
 
 }
 
-//run().catch(console.error);
+run().catch(console.error);
 
 
 //////////////////----- makecallabrView_excute_run --//////////////////////////////

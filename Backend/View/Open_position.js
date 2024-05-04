@@ -107,7 +107,7 @@ async function createView() {
                                     //         '$dt_date',
                                     //     ],
                                     // },
-                                    { $eq: ['$livePrice.trading_status', 'on'] },
+                                    // { $eq: ['$livePrice.trading_status', 'on'] },
                                     {
                                         $gt: [
                                             { $toDouble: '$entry_qty' }, // Convert entry_qty to number

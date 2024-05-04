@@ -340,7 +340,6 @@ async function DashboardView() {
         // Create a MongoDB view named "dashboard_data1"
         await db.createCollection("dashboard_data", { viewOn: "users", pipeline });
 
-        console.log('View created successfully.');
 
     } catch (error) {
         // Handle errors
@@ -358,7 +357,6 @@ async function deleteDashboard() {
         // Drop the view if it exists
         await db.collection('dashboard_data').drop();
 
-        console.log('dashboard_data view deleted successfully');
 
     } catch (error) {
         console.log('Error:', error);

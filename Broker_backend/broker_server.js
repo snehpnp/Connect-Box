@@ -104,7 +104,7 @@ const ConnectSocket = async (EXCHANGE, instrument_token) => {
   var channel_List = `${EXCHANGE}|${instrument_token}`
 
   var broker_infor = await live_price.findOne({ broker_name: "ALICE_BLUE", trading_status: "on" });
-  console.log(broker_infor);
+ 
   if (broker_infor) {
 
     var aliceBaseUrl = "https://ant.aliceblueonline.com/rest/AliceBlueAPIService/api/"
@@ -156,7 +156,6 @@ const ConnectSocket = async (EXCHANGE, instrument_token) => {
             socket.send(JSON.stringify(initCon))
           }
 
-          // console.log("Connect Socket");
           socket.onmessage = async function (msg) {
             var response = JSON.parse(msg.data);
 
@@ -198,7 +197,6 @@ const ConnectSocket = async (EXCHANGE, instrument_token) => {
 
 
             } else {
-              // console.log("else", response);
             }
 
             if (response.s === 'OK') {
@@ -213,14 +211,12 @@ const ConnectSocket = async (EXCHANGE, instrument_token) => {
           }
 
         } catch (error) {
-          //console.log("Error-", error.response);
 
         }
       }
 
 
     }).catch((error) => {
-      // console.log("Error -", error.response.data);
       return error.response.data
     })
 
@@ -275,9 +271,6 @@ app.post('/broker-signals', async (req, res) => {
   const prifix_key_array = reusltUsers.map(item => item.prifix_key)
 
   const client_key_array = reusltUsers.map(item => item.client_key)
-
-  console.log("prifix_key_array", prifix_key_array)
-  console.log("client_key_array", client_key_array)
 
 
 
@@ -360,10 +353,14 @@ app.post('/broker-signals', async (req, res) => {
       var TradeType = signals.TradeType;
 
 
+      let ExitStatus = '-'
 
+      if(signals.ExitStatus != undefined){
+        ExitStatus = signals.ExitStatus
+      } 
 
-
-      var sl_status = "1";
+     
+      var sl_status = 0;
       if (signals.sl_status != undefined) {
         sl_status = signals.sl_status;
       }
@@ -391,7 +388,6 @@ app.post('/broker-signals', async (req, res) => {
 
       var demo = signals.Demo;
 
-      console.log("signals", signals)
 
 
       // IF CLIENT KEY UNDEFINED
@@ -402,7 +398,6 @@ app.post('/broker-signals', async (req, res) => {
         // IF SIGNEL KEY NOT MATCH CHECK
         if (prifix_key_array.includes(FIRST3_KEY)) {
 
-          console.log("FIRST3_KEY", FIRST3_KEY, "client_key ", client_key)
 
 
           // SIGNEL REQUEST
@@ -500,7 +495,6 @@ app.post('/broker-signals', async (req, res) => {
           }
 
 
-          // console.log("findSignal ",findSignal)
           // TOKEN SET IN TOKEN
           if (segment == 'C' || segment == 'c') {
             token = await services.find(instrument_query).maxTimeMS(20000).exec();
@@ -579,13 +573,10 @@ app.post('/broker-signals', async (req, res) => {
           }
 
 
-          console.log("client_key ", client_key)
-          // console.log("client_key ",client_key)
 
           // HIT TRADE IN BROKER SERVER
           if (client_key_array.includes(client_key)) {
 
-            console.log("Inside  admin trade", client_key)
 
             //Process Alice Blue admin client
             try {
@@ -1025,7 +1016,8 @@ app.post('/broker-signals', async (req, res) => {
               TradeType: TradeType,
               token: instrument_token,
               lot_size: find_lot_size,
-              MakeStartegyName: MakeStartegyName
+              MakeStartegyName: MakeStartegyName,
+              exit_status:ExitStatus
             }
 
             let Signal_req1 = new Signals(Signal_req)
@@ -1035,7 +1027,6 @@ app.post('/broker-signals', async (req, res) => {
 
           }
 
-          //console.log("findSignal -- strike",findSignal)
 
           // ENTRY OR EXIST CHECK
           if (type == "LE" || type == "le" || type == "SE" || type == "Se") {
@@ -1046,39 +1037,40 @@ app.post('/broker-signals', async (req, res) => {
             // MainSignals FIND IN COLLECTION
             // if (findMainSignals.length == 0) {
 
-            var Entry_MainSignals_req = {
-              symbol: input_symbol,
-              entry_type: type,
-              exit_type: "",
-              entry_price: parseFloat(price),
-              exit_price: "",
-              entry_qty_percent: parseFloat(qty_percent),
-              entry_qty: Number(find_lot_size) * (Math.ceil(Number(qty_percent) / 100)),
-              exit_qty: 0,
-              exit_qty_percent: "",
-              entry_dt_date: current_date,
-              exit_dt_date: "",
-              dt: Math.round(+new Date() / 1000),
-              dt_date: dt_date,
-              exchange: EXCHANGE,
-              strategy: strategy,
-              option_type: option_type,
-              strike: strike,
-              expiry: expiry,
-              segment: segment,
-              trade_symbol: trade_symbol + "[" + segment1 + "]",
-              client_persnal_key: client_persnal_key,
-              TradeType: TradeType,
-              signals_id: SignalSave._id,
-              token: instrument_token,
-              lot_size: find_lot_size,
-              target: Target,
-              stop_loss: StopLoss,
-              exit_time: ExitTime,
-              exit_time1: 0,
-              complete_trade: 0,
-              sl_status: sl_status,
-              MakeStartegyName: MakeStartegyName
+              var Entry_MainSignals_req = {
+                symbol: input_symbol,
+                entry_type: type,
+                exit_type: "",
+                entry_price: parseFloat(price),
+                exit_price: "",
+                entry_qty_percent: parseFloat(qty_percent),
+                entry_qty: Number(find_lot_size) * (Math.ceil(Number(qty_percent) / 100)),
+                exit_qty: 0,
+                exit_qty_percent: "",
+                entry_dt_date: current_date,
+                exit_dt_date: "",
+                dt: Math.round(+new Date() / 1000),
+                dt_date: dt_date,
+                exchange: EXCHANGE,
+                strategy: strategy,
+                option_type: option_type,
+                strike: strike,
+                expiry: expiry,
+                segment: segment,
+                trade_symbol: trade_symbol + "[" + segment1 + "]",
+                client_persnal_key: client_persnal_key,
+                TradeType: TradeType,
+                signals_id: SignalSave._id,
+                token: instrument_token,
+                lot_size: find_lot_size,
+                target: Target,
+                stop_loss: StopLoss,
+                exit_time: ExitTime,
+                exit_time1: 0,
+                complete_trade: 0,
+                sl_status: sl_status,
+                MakeStartegyName: MakeStartegyName,
+              
 
             }
             const Entry_MainSignals = new MainSignals(Entry_MainSignals_req)
@@ -1117,8 +1109,6 @@ app.post('/broker-signals', async (req, res) => {
               exit_qty_percent: "" // Adding the exit_qty_percent field with an empty string value
             };
 
-            //console.log("updatedFindSignal ",updatedFindSignal)
-
 
             var ExitMainSignals = await MainSignals.find(updatedFindSignal)
 
@@ -1149,7 +1139,8 @@ app.post('/broker-signals', async (req, res) => {
                   exit_price: parseFloat(price) + (isNaN(ExitMainSignals[0].exit_price) || ExitMainSignals[0].exit_price === "" ? 0 : parseFloat(ExitMainSignals[0].exit_price)),
                   exit_qty_percent: exit_qty_percent1,
                   exit_qty: result,
-                  exit_dt_date: current_date
+                  exit_dt_date: current_date,
+                  exit_status:ExitStatus
                 }
                 updatedData.$addToSet = { signals_id: SignalSave._id };
 
@@ -1170,7 +1161,8 @@ app.post('/broker-signals', async (req, res) => {
 
                     exit_qty_percent: (parseFloat(qty_percent) + (isNaN(ExitMainSignals[0].exit_qty_percent) || ExitMainSignals[0].exit_qty_percent === "" ? 0 : parseFloat(ExitMainSignals[0].exit_qty_percent))),
                     exit_qty: result,
-                    exit_dt_date: current_date
+                    exit_dt_date: current_date,
+                    exit_status:ExitStatus
                   }
                   updatedData.$addToSet = { signals_id: SignalSave._id };
 
