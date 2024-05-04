@@ -34835,16 +34835,30 @@ a.user-a:hover span {
         font-weight: bold;
     }
 }
-
-
-
-.active {
-
+.button_BUY .active{
     background-color: #fff !important;
-    color: red !important;
+    color: green  !important;
     margin: 0px 5px;
     padding: 5px 8px;
     border-radius: 4px;
-    border: 1px solid red;
+    border: 1px solid green;
+
 }
 
+.button_sell .active{
+
+       background-color: #fff !important;
+        color: red !important;
+        margin: 0px 5px;
+        padding: 5px 8px;
+        border-radius: 4px;
+        border: 1px solid red;
+}
+
+.active {
+    /* background-color: #fff !important;
+    color: #fff !important;
+    margin: 0px 5px;
+    padding: 5px 8px;
+    border-radius: 4px; */
+}
