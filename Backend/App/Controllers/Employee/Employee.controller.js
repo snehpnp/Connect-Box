@@ -36,13 +36,13 @@ class Employee {
             const strategies = findData.strategy;
             const matchedStrategies = await strategyDB.aggregate([
                 { $match: { _id: { $in: strategies } } },
-                { $project: { id: '$_id', strategy_name: 1, _id: 0 } }
+                { $project: { id: '$_id', strategy_name: 1, _id: 0,Service_Type:1  } }
             ]);
     
             const groupService = findData.group_services;
             const matchedGroupservice = await serviceGroupName.aggregate([
                 { $match: { _id: { $in: groupService } } },
-                { $project: { id: '$_id', name: 1, _id: 0 } }
+                { $project: { id: '$_id', name: 1, _id: 0} }
             ]);
 
             
@@ -58,6 +58,23 @@ class Employee {
             console.log("Error occurred while fetching permissions:", err);
             return res.status(500).send({ status: false, msg: "Internal server error" });
         }
+    }
+
+    async GetEmployeeById(req,res){
+        try{
+            const {id}  = req.body;
+
+            if(!id){
+                return res.send({status: true, msg : 'Id is not found', data : []})
+            }
+            
+
+
+        }
+        catch{
+
+        }
+
     }
     
 }

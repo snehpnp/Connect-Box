@@ -14,10 +14,7 @@ const AddResearcher = () => {
   
   const location = useLocation();
   const { rowData } = location.state;
-
-  console.log(rowData)
-
-
+ 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user_id = JSON.parse(localStorage.getItem('user_details')).user_id
