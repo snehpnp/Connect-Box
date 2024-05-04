@@ -109,7 +109,6 @@ function Option_Chain() {
 
     const GetBrokerLiveData = async (userIdSocketRun) => {
 
-        //alert(userIdSocketRun)
         await dispatch(GetBrokerLiveDatas(
 
             {
@@ -126,7 +125,6 @@ function Option_Chain() {
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
-                    console.log("Data --- ", response.data)
                     setLivePriceDataDetails(response.data)
                 }
             });
@@ -237,6 +235,18 @@ function Option_Chain() {
             ),
         },
         {
+            dataField: 'CE_Volume',
+            text: 'Volume',
+            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+            formatter: (cell, row, rowIndex) => (
+                <div >
+                    <span className={`Call_volume_${row.call_token} `}></span>
+                    <span className={`SP1_Call_volume_${row.call_token} d-none`}></span>
+                </div>
+            ),
+        },
+        {
             dataField: 'CALL/LP',
             text: 'CALL/LP',
             style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
@@ -245,6 +255,9 @@ function Option_Chain() {
                 <div >
                     <span className={`Call_Price_${row.call_token} `}></span>
                     <span className={`SP1_Call_Price_${row.call_token} d-none`}></span>
+                    <div>
+                        <span className={`Call_per_${row.call_token} `}></span>
+                    </div>
                 </div>
             ),
         },
@@ -262,7 +275,7 @@ function Option_Chain() {
         {
             dataField: 'PUT/LP',
             text: 'PUT/LP',
-            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#f5f5dc54' } :
                 parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
 
             formatter: (cell, row, rowIndex) => (
@@ -271,6 +284,25 @@ function Option_Chain() {
                 >
                     <span className={`Put_Price_${row.put_token} `}></span>
                     <span className={`BP1_Put_Price_${row.put_token} d-none`}></span>
+                    <div>
+                        <span className={`Put_per_${row.call_token} `}></span>
+                    </div>
+                </div>
+            ),
+        },
+        {
+            dataField: 'PE_Volume',
+            text: 'Volume',
+            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'beige' } :
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+
+            formatter: (cell, row, rowIndex) => (
+                <div
+
+                >
+                    <span className={`Put_volume_${row.put_token} `}></span>
+                    <span className={`BP1_Put_volume_${row.put_token} d-none`}></span>
+
                 </div>
             ),
         },
@@ -340,7 +372,7 @@ function Option_Chain() {
 
 
     const GetAllStrategyName = async (e) => {
-        var data = { id: user_id ,key:"2"}
+        var data = { id: user_id, key: "2" }
         await dispatch(Get_All_Strategy_for_Client(data))
             .unwrap()
             .then((response) => {
@@ -486,25 +518,15 @@ function Option_Chain() {
         let type = { loginType: "API" };
         let channelList = TokenSymbolChain && TokenSymbolChain
 
-        console.log("channelList ", channelList)
-        console.log("UserDetails ", UserDetails)
-        console.log("livePriceDataDetails ", livePriceDataDetails.demate_user_id)
-        console.log("access_token ", livePriceDataDetails.access_token)
-        console.log("trading_status ", livePriceDataDetails.trading_status)
 
-        // if (UserDetails && UserDetails[0].demat_userid !== undefined && UserDetails && UserDetails[0].access_token !== undefined && UserDetails && UserDetails[0].TradingStatus == "on") {
-
-        //     const res = await CreateSocketSession(type, UserDetails[0].demat_userid, UserDetails[0].access_token);
 
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
             const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
-          
-        // console.log("res.data.stat",res.data.stat)
+
 
             if (res.data.stat) {
                 const handleResponse = async (response, socket) => {
-                   // console.log("response.tk ", response.tk, " socket ", socket)
                     socket.onclose = async function (event) {
                         if (event.wasClean) {
                             // alert("IFFF CLOSE")
@@ -526,12 +548,36 @@ function Option_Chain() {
                     const old_val_call = $('.Call_Price_' + response.tk).html();
                     const old_val_put = $('.Put_Price_' + response.tk).html();
 
+
+
+
+
                     $('.SP1_Call_Price_' + response.tk).html(response.sp1 ? response.sp1 : response.lp);
                     $('.BP1_Put_Price_' + response.tk).html(response.bp1 ? response.bp1 : response.lp);
+
 
                     if (response.tk) {
                         if (response.lp !== undefined) {
 
+
+                            function formatVolume(volume) {
+                                return volume >= 1e7 ? (volume / 1e7).toFixed(2) + ' Cr' : (volume >= 1e5 ? (volume / 1e5).toFixed(2) + ' Lakh' : volume);
+                            }
+
+
+                            $('.Call_volume_' + response.tk).html(formatVolume(response.v || 0))
+                            $('.SP1_Call_volume_' + response.tk).html(formatVolume(response.v || 0))
+                            $('.Call_per_' + response.tk).html(response.pc || 0)
+                            $('.Put_per_' + response.tk).html(response.pc || 0)
+
+
+
+
+                            $('.Put_volume_' + response.tk).html(formatVolume(response.v || 0))
+                            $('.BP1_Put_volume_' + response.tk).html(formatVolume(response.v || 0))
+
+
+                            console.log("response", response)
                             $(".Call_Price_" + response.tk).html(response.lp);
                             $(".Put_Price_" + response.tk).html(response.lp);
 
@@ -614,14 +660,14 @@ function Option_Chain() {
         handleClickDisabled();
 
         const currentTimestamp = Math.floor(Date.now() / 1000);
-     
+
         ExecuteTradeData.data && ExecuteTradeData.data.map((item) => {
 
 
-            let price =  $('.Call_Price_' + item.token).html();
-             if(item.call_type.toUpperCase() == "PUT"){
-             price =  $('.Put_Price_' + item.token).html();
-             }
+            let price = $('.Call_Price_' + item.token).html();
+            if (item.call_type.toUpperCase() == "PUT") {
+                price = $('.Put_Price_' + item.token).html();
+            }
 
 
             let req = `DTime:${currentTimestamp}|Symbol:${symbol && symbol}|TType:${item.trading_type}|Tr_Price:131|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${item.segment}|Strike:${item.strike}|OType:${item.call_type}|Expiry:${expiry && expiry}|Strategy:${strategy && strategy}|Quntity:${item.entry_qty}|Key:${UserDetails && UserDetails[0].client_key}|TradeType:OPTION_CHAIN|Demo:demo`
@@ -629,16 +675,14 @@ function Option_Chain() {
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-               // url: Config.broker_backend,
-                url: 'http://localhost:8800/broker-signals',
-           
+                url: Config.broker_backend,
+
                 headers: {
                     'Content-Type': 'text/plain'
                 },
                 data: req
             };
 
-            console.log("config", config)
             axios.request(config)
             .then(async (response) => {
                 //console.log("response ", response);
@@ -656,24 +700,29 @@ function Option_Chain() {
                        // window.location.reload()
                       }, 1500);
 
-                 } else {
-                   
-                    Swal.fire({
-                        title: "Error",
-                        text: response.msg,
-                        icon: "error",
-                        timer: 1500,
-                        timerProgressBar: true
-                      });
-                     
-                     
+                        setTimeout(() => {
+                            navigate("/subadmin/open-position")
+                            // window.location.reload()
+                        }, 2000);
+
+                    } else {
+
+                        Swal.fire({
+                            title: "Error",
+                            text: response.msg,
+                            icon: "error",
+                            timer: 1500,
+                            timerProgressBar: true
+                        });
 
 
-                 }
-            })
-            .catch((error) => {
-                // console.log(error.response.data);
-            });
+
+
+                    }
+                })
+                .catch((error) => {
+                    // console.log(error.response.data);
+                });
 
         })
 
@@ -714,7 +763,7 @@ function Option_Chain() {
 
     const ExcuteTradeButton = () => {
 
-       
+
 
         const currentDate = new Date();
         const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -727,20 +776,10 @@ function Option_Chain() {
         const isAfterCutoffTime = new Date(currentDateIST).getTime() > cutoffTimeIST.getTime();
 
 
-        // if (!holidays.isHoliday(currentDate) && weekday !== 'Sunday' && weekday !== 'Saturday' && isAfterCutoffTime) {
-        //     alert("Market Time Is Off")
-        // } else {
-
-      //  if (UserDetails !== undefined && UserDetails[0].TradingStatus === "on") {
-
-
-      console.log("livePriceDataDetails.demate_user_id",livePriceDataDetails.demate_user_id)
-      console.log("livePriceDataDetails.access_token",livePriceDataDetails.access_token)
-      console.log("livePriceDataDetails.trading_status",livePriceDataDetails.trading_status)
 
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
-       
+
             let Arr = []
 
 
@@ -785,30 +824,6 @@ function Option_Chain() {
 
 
 
-    const Set_Entry_Exit_Qty = (row, event, symbol) => {
-        let newValue = parseInt(event); // Convert input value to an integer
-
-        if (isNaN(newValue) || newValue < 0) {
-            alert('Please enter a valid positive number.');
-            return;
-        }
-
-        setExecuteTradeData((prev) => ({
-            ...prev,
-            loading: false,
-            data: prev.data.map((item) => {
-                if (item.Symbol === symbol) { // Assuming 'symbol' is the unique identifier
-                    return {
-                        ...item,
-                        entry_qty: newValue.toString() || '100',
-                    };
-                }
-                return item;
-            }),
-        })
-        )
-    }
-
     const Cancel_Request = () => {
         setExecuteTradeData({
             loading: false,
@@ -847,7 +862,7 @@ function Option_Chain() {
                             <div className="row d-flex mb-3">
                                 <div className="col-md-2  input-block">
                                     <label className=""
-                                       
+
                                     >SYMBOLS</label>
                                     <select
                                         name="symbols_filter"
@@ -874,7 +889,7 @@ function Option_Chain() {
                                 <div className="col-md-2  input-block">
                                     <label
                                         className=""
-                                       
+
                                     >
                                         EXPIRY DATE
                                     </label>
@@ -893,7 +908,7 @@ function Option_Chain() {
                                 <div className="col-md-2 input-block ">
                                     <label
                                         className=""
-                                       
+
                                     >
                                         STRATEGY
                                     </label>
@@ -917,14 +932,7 @@ function Option_Chain() {
                                             })}
                                     </select>
                                 </div>
-                                <div className="col-md-2 input-block   ">
-                                    <label
-                                        className=""
-                                        
-                                    > Price
-                                    </label>
-                                    <input type="number" className="new-input-control form-control" />
-                                </div>
+                                
 
                                 <div className="col-md-4 d-flex justify-content-end align-items-center">
                                     <div className=" ">
@@ -948,12 +956,12 @@ function Option_Chain() {
                                 </div>
                             </div>
                             <div className="borderless-table">
-                            <FullDataTable
-                                styles={styles}
-                                TableColumns={columns}
-                                tableData={OptionChainData.data}
-                                pagination1={true}>
-                            </FullDataTable>
+                                <FullDataTable
+                                    styles={styles}
+                                    TableColumns={columns}
+                                    tableData={OptionChainData.data}
+                                    pagination1={true}>
+                                </FullDataTable>
                             </div>
 
                         </>

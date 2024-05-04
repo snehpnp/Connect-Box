@@ -154,12 +154,12 @@ export const subamdin_header = [
     {
         id: 5,
         name: 'Services',
-        Icon: "fe fe-target",
+        Icon: "fa-solid fa-gears",
         Data: [
             {
                 id: 51,
                 name: 'Group Service',
-                Icon: "fa-solid fa-gears",
+                Icon: "fa-solid fa-bolt",
                 route: "/subadmin/group-service",
             },
 
@@ -188,7 +188,7 @@ export const subamdin_header = [
                 id: 61,
                 name: 'Orders',
                 route: "/subadmin/orders",
-                Icon: "fe fe-list",
+                Icon: "fa-brands fa-first-order",
                 Data: []
             },
             {
@@ -269,7 +269,6 @@ export const subamdin_header = [
     {
         id: 25,
         name: 'More',
-        Icon: "fa-solid fa-ellipsis-vertical",
         Data: [
             {
                 id: 10,
@@ -390,22 +389,10 @@ export const employee_header = [
     },
     {
         id: 4,
-        name: 'Users',
-        Icon: "fe fe-user",
-        Data: [
-            {
-                id: 41,
-                name: 'Add User',
-                Icon: "fe fe-user-plus",
-                route: "/employee/User/add",
-            },
-            {
-                id: 42,
-                name: 'All Users',
-                Icon: "fe fe-users",
-                route: "/employee/allusers",
-            },
-        ]
+        name: 'All Users',
+        Icon: "fe fe-users",
+        route: '/employee/allusers',
+        Data: []
     },
     {
         id: 61,
@@ -421,20 +408,20 @@ export const employee_header = [
         Icon: "fe fe-map-pin",
         Data: []
     },
-    {
-        id: 10,
-        name: 'Message Broadcast',
-        route: "/employee/message-broadcast",
-        Icon: "fe fe-message-circle",
-        Data: []
-    },
-    {
-        id: 11,
-        name: 'Help',
-        route: "/employee/help",
-        Icon: "fe fe-help-circle",
-        Data: []
-    },
+    // {
+    //     id: 10,
+    //     name: 'Message Broadcast',
+    //     route: "/employee/message-broadcast",
+    //     Icon: "fe fe-message-circle",
+    //     Data: []
+    // },
+    // {
+    //     id: 11,
+    //     name: 'Help',
+    //     route: "/employee/help",
+    //     Icon: "fe fe-help-circle",
+    //     Data: []
+    // },
     {
         id: 9,
         name: 'FAQs',

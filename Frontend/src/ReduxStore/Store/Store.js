@@ -13,6 +13,7 @@ import OptionChainSlice from '../Slice/Subadmin/OptionChainSlice'
 import TradeDetailsSlice from '../Slice/Subadmin/TradeDetailsSlice'
 import ResearcherSlice from '../Slice/Researcher/ResearcherSlice'
 import AllResearcherStrategySlice from "../Slice/Subadmin/AllResearcherStrategySlice";
+import EmployeeSlice from '../Slice/Employee/EmployeeSlice'
 
 
 
@@ -34,7 +35,8 @@ const store = configureStore({
     TradeDetailsSlice : TradeDetailsSlice.reducer,
     Userinfo1Slice: Userinfo1Slice.reducer,
     ResearcherSlice : ResearcherSlice.reducer,
-    AllResearcherStrategySlice : AllResearcherStrategySlice.reducer
+    AllResearcherStrategySlice : AllResearcherStrategySlice.reducer,
+    EmployeeSlice : EmployeeSlice.reducer
   },
 });
 

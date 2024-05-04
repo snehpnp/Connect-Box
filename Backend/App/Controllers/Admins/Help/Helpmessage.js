@@ -91,7 +91,7 @@ class Helpmessage {
   async getuserhelpdata(req, res) {
     try {
 
-      let messagedata = await help.find({ Role: "USER" });
+      let messagedata = await help.find({ Role: "USER" }).sort({createdAt:-1})
       if (!messagedata) {
         return res.send({ status: false, msg: "message not getting", data: [] });
       }

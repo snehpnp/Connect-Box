@@ -94,6 +94,7 @@ const AddEmployee = () => {
         if (!values.addemployee && !values.editemployee) {
           errors.addemployee = "select Add Client Also";
           errors.editemployee = "select Edit Client Also";
+         
         }
       }
       if (values.groupservice) {
@@ -127,6 +128,7 @@ const AddEmployee = () => {
           employee_edit: values.editemployee ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           trade_history_old: values.tradehistory ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           detailsinfo: values.detailsinfo ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
+          
           strategy: state1,
           group_services: state,
         },
@@ -284,11 +286,10 @@ const AddEmployee = () => {
   ];
 
   const data = async () => {
+    const data = {id:user_id}
+   
     await dispatch(
-      GetEmployeeStrategy({
-        req: {},
-      })
-    )
+      GetEmployeeStrategy(data))
       .unwrap()
       .then((response) => {
         if (response.status) {
@@ -299,7 +300,7 @@ const AddEmployee = () => {
         }
       });
 
-    await dispatch(GetEmployeeServices())
+    await dispatch(GetEmployeeServices(data))
       .unwrap()
       .then((response) => {
         if (response.status) {

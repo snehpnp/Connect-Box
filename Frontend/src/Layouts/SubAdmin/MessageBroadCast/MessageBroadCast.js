@@ -105,7 +105,7 @@ function MessageBroadcast() {
 
     {
       field: "createdAt",
-      headerName: "createdAt",
+      headerName: "created BY",
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
@@ -149,7 +149,7 @@ function MessageBroadcast() {
 
     {
       field: "createdAt",
-      headerName: "createdAt",
+      headerName: "created AT",
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
@@ -181,7 +181,8 @@ function MessageBroadcast() {
 
   const fetchStrategies = async () => {
     try {
-      await dispatch(allStrategy_subAd())
+      const data = {id: ownerId }
+      await dispatch(allStrategy_subAd(data))
         .unwrap()
         .then((response) => {
           if (response.status) {
@@ -300,8 +301,8 @@ function MessageBroadcast() {
 
       if (response.status) {
 
-        console.log("response.data", response.data)
-        console.log("value", value)
+        // console.log("response.data", response.data)
+        // console.log("value", value)
 
         let filteredData = [];
         // if (value == 2) {
@@ -312,7 +313,7 @@ function MessageBroadcast() {
         //     (Array.isArray(item.strategyId) && item.strategyId.includes(ownerId))
         //   );
         // }
-        console.log("filteredData", filteredData)
+        // console.log("filteredData", filteredData)
         setPipelineData(response.data);
       } else {
         toast.error(response.msg);

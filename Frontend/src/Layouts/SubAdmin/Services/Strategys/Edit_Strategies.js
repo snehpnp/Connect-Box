@@ -75,10 +75,10 @@ function Edit_Strategies() {
     {
       name: "strategy_name",
       label: "Strategy Name",
-      type: "text1",
+      type: "text",
       label_size: 6,
       col_size: 6,
-      disable: false,
+      disable: true,
     },
     {
       name: "strategy_category",
@@ -155,7 +155,7 @@ function Edit_Strategies() {
     {
       name: "strategy_amount_month",
       label: "Monthly",
-      type: "text3",
+      type: "text5",
       label_size: 3,
       col_size: 3,
       disable: false,
@@ -163,7 +163,7 @@ function Edit_Strategies() {
     {
       name: "strategy_amount_quarterly",
       label: "Quaterly",
-      type: "text3",
+      type: "text5",
       label_size: 3,
       col_size: 3,
       disable: false,
@@ -171,7 +171,7 @@ function Edit_Strategies() {
     {
       name: "strategy_amount_half_early",
       label: "Half Yearly",
-      type: "text3",
+      type: "text5",
       label_size: 3,
       col_size: 3,
       disable: false,
@@ -179,7 +179,7 @@ function Edit_Strategies() {
     {
       name: "strategy_amount_early",
       label: "Yearly",
-      type: "text3",
+      type: "text5",
       label_size: 3,
       col_size: 3,
       disable: false,
