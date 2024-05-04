@@ -331,17 +331,17 @@ class Subadmin {
     }
   }
 
-  async  GetAllRechargeDetails(req, res) {
+  async GetAllRechargeDetails(req, res) {
     try {
       let { Role } = req.body;
-  
+
       if (!Role) {
         return res.send({
           status: false,
           msg: "Role is required in the request body",
         });
       }
-  
+
       let matchStage;
       if (Role === "SUBADMIN") {
         matchStage = {
@@ -356,7 +356,7 @@ class Subadmin {
           },
         };
       }
-  
+
       const rechargeDetails = await count_licenses.aggregate([
         matchStage,
         {
@@ -378,13 +378,15 @@ class Subadmin {
             Mode: 1,
             createdAt: 1,
             username: "$user.UserName",
+            subadmin_service_type: "$user.subadmin_service_type",
+
           },
         },
         {
           $sort: { createdAt: -1 } // Sort by createdAt field in descending order
         }
       ]);
-  
+
       res.send({
         status: true,
         msg: "Recharge details fetched successfully",
@@ -395,7 +397,7 @@ class Subadmin {
       res.send({ status: false, msg: "Internal Server Error" });
     }
   }
-  
+
 
   async GetAllRechargeDetailsById(req, res) {
     try {
@@ -714,7 +716,7 @@ class Subadmin {
         id,
         api_secret,
         demat_userid,
-         
+
       } = req.body;
 
 
@@ -724,7 +726,7 @@ class Subadmin {
         return res.send({ status: false, msg: "User Not exists", data: [] });
       }
 
- 
+
       return res.send({ status: true, msg: "successfully Get Broker Data!", data: existingUsername });
     } catch (error) {
       res.send({ msg: "Error=>", error });
@@ -758,7 +760,7 @@ class Subadmin {
         existingUsername._id,
         User
       );
-      console.log("subadminUpdate",subadminUpdate)
+      console.log("subadminUpdate", subadminUpdate)
       return res.send({ status: true, msg: "successfully Edit!", data: [] });
     } catch (error) {
       res.send({ msg: "Error=>", error });
