@@ -307,7 +307,7 @@ class Auth {
 
             // Generate reset password URL
             const userid = Buffer.from(JSON.stringify(EmailCheck._id)).toString('base64');
-            const redirectUrl = `${CompanyInformation.domain_url_https}/#/update/${userid}`;
+            const redirectUrl = `${CompanyInformation.domain_url_https}/#/updatepassword/${userid}`;
 
 
 
