@@ -8,6 +8,8 @@ router.post('/permission/getall', GetPermission);
 router.post('/getEmployee/byid', GetEmployeeById);
 
 
+
+
 module.exports = router;
 
 

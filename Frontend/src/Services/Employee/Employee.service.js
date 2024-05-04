@@ -19,4 +19,18 @@ export async function GET_PERMISSION(data) {
     }
 }
 
+export async function GET_USER_DATA(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}getEmployee/byid`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch (err) {
+        console.log("err", err);
+        return await err;
+
+    }
+}
+
  
