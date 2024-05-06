@@ -1670,7 +1670,8 @@ div#global-loader,
 }
 
 .nav-pills.flex-column .nav-link.active {
-    background: #7539ff
+    background: #7539ff;
+    color:#fff !important;
 }
 
 .nav-tabs.nav-bordered .nav-link.active {
