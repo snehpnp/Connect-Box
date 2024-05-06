@@ -12,7 +12,7 @@ const live_price_token = db.live_price_token;
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
-// const { Alice_Socket } = require("../../Helper/Alice_Socket");
+const { Alice_Socket } = require("../../Helpers/Alice_Socket");
 
 class AliceBlue {
 
@@ -43,8 +43,7 @@ class AliceBlue {
                 var redirect = hosts.split(':')[0];
                 var redirect_uri = '';
 
-                // console.log("apiSecret ",apiSecret)
-                // console.log("Get_User ",Get_User)
+   
 
                 if (Get_User.length > 0) {
 

@@ -4,9 +4,10 @@ var CryptoJS = require("crypto-js");
 
 const db = require('../Models');
 
-const { ALice_View_data } = require('./ALice_View_data');
+// const { ALice_View_data } = require('./ALice_View_data');
 
 const live_price = db.live_price;
+const live_price_token = db.live_price_token;
 const UserMakeStrategy = db.UserMakeStrategy;
 const mongoose = require('mongoose');
 const MongoClient = require('mongodb').MongoClient;
@@ -23,11 +24,11 @@ const dbTradeTools = client.db(process.env.DB_TRADETOOLS);
 let socketObject = null;
 
 const Alice_Socket = async () => {
-// console.log("ddddddddddddddddddd")
   var rr = 0;
     const url = "wss://ws1.aliceblueonline.com/NorenWS/"
     var socket = null
-    var broker_infor = await live_price.findOne({ broker_name: "ALICE_BLUE" });
+    var broker_infor = await live_price_token.find({ broker_id: "2" , trading_status :"on" });
+
   const stock_live_price = db_main.collection('token_chain');
     const updateToken = await stock_live_price.find({}).toArray();
 
@@ -45,16 +46,17 @@ const Alice_Socket = async () => {
     var alltokenchannellist = channelstr.substring(0, channelstr.length - 1);
 
     var aliceBaseUrl = "https://ant.aliceblueonline.com/rest/AliceBlueAPIService/api/"
-    var userid = broker_infor.user_id
-    var userSession1 = broker_infor.access_token
-    var trading_status = broker_infor.trading_status
+    var userid = broker_infor[0].demate_user_id
+    var userSession1 = broker_infor[0].access_token
+    var trading_status = broker_infor[0].trading_status
     var channelList = alltokenchannellist
+
     // var channelList = "NSE|14366#NFO|43227"
     var type = { "loginType": "API" }
 
     //  Step -1
 
-  if(broker_infor.user_id !== undefined && broker_infor.access_token !== undefined && broker_infor.trading_status == "on"){
+  if(broker_infor[0].user_id !== undefined && broker_infor[0].access_token !== undefined && broker_infor[0].trading_status == "on"){
     try {
 
         await axios.post(`${aliceBaseUrl}ws/createSocketSess`, type, {
@@ -65,7 +67,6 @@ const Alice_Socket = async () => {
 
         }).then(res => {
 
-            //console.log("res - ",res)
 
             if (res.data.stat == "Ok") {
 
@@ -87,7 +88,6 @@ const Alice_Socket = async () => {
 
                         var response = JSON.parse(msg.data)
 
-                       // console.log("response - ",response)
 
 
 
@@ -137,7 +137,6 @@ const Alice_Socket = async () => {
 
 
                         } else {
-                            // console.log("else", response)
                         }
 
                         if (response.s === 'OK') {

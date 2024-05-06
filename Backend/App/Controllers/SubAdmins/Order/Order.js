@@ -4,6 +4,8 @@ const Mainsignals = db.MainSignals;
 const User_model = db.user;
 const Strategies = db.Strategies;
 const researcher_strategy = db.researcher_strategy;
+const client_service = db.client_service;
+
 
 
 
@@ -24,9 +26,7 @@ class SignalController {
         }).select('strategy_name')
   
   
-  
-  
-        console.log("resultUser", resultUser)
+
   
   
         if (!resultUser) {
@@ -61,7 +61,8 @@ class SignalController {
               segment: 1,
               client_persnal_key: 1,
               token: 1,
-              lot_size: 1
+              lot_size: 1,
+              exit_status: 1
             }
           }
         ];
@@ -83,7 +84,6 @@ class SignalController {
   
   
   
-        console.log("resultUser", resultUser)
   
   
         if (!resultUser) {
@@ -132,6 +132,103 @@ class SignalController {
         });
 
       }else if(Role == "USER"){
+
+
+
+
+        var currentDate = new Date();
+
+        currentDate.setHours(0, 0, 0, 0);
+        var endOfDay = new Date(currentDate);
+        endOfDay.setHours(23, 59, 59, 999);
+
+
+        const pipeline = [
+            {
+                $match: {
+                    user_id: ObjSubAdminId,
+                },
+            },
+            {
+                $lookup: {
+                    from: "services",
+                    localField: "service_id",
+                    foreignField: "_id",
+                    as: "service",
+                },
+            },
+            {
+                $unwind: '$service',
+            },
+            {
+                $lookup: {
+                    from: "strategies",
+                    localField: "strategy_id",
+                    foreignField: "_id",
+                    as: "strategys",
+                },
+            },
+            {
+                $unwind: '$strategys',
+            },
+            {
+                $lookup: {
+                    from: "signals",
+                    let: {
+                        service_name: '$service.name',
+                        strategy_name: '$strategys.strategy_name',
+                        // currentDate: currentDate,
+                        // endOfDay: endOfDay,
+                    },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ['$symbol', '$$service_name'] },
+                                        { $eq: ['$strategy', '$$strategy_name'] },
+                                        // { $gte: ['$createdAt', '$$currentDate'] },
+                                        // { $lte: ['$createdAt', '$$endOfDay'] },
+                                    ],
+                                },
+                            },
+                        },
+                        {
+                            $sort: {
+                                createdAt: -1 // 1 for ascending order, -1 for descending
+                            }
+                        },
+                    ],
+                    as: 'signals',
+                },
+            },
+            {
+                $group: {
+                    _id: null,
+                    allSignals: { $push: '$signals' },
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    allSignals: 1,
+                },
+            },
+        ];
+
+        const GetAllClientServices = await client_service.aggregate(pipeline);
+
+    
+        if (GetAllClientServices[0].allSignals.flat().length > 0) {
+
+          const sortedAndFilteredArray = GetAllClientServices[0].allSignals.flat()
+          .sort((a, b) => b.createdAt - a.createdAt);
+
+
+          return res.send({ status: true, data: sortedAndFilteredArray, msg: "Get Signals" })
+      } else {
+          return res.send({ status: false, data: [], msg: "Data Empty" })
+      }
 
       }else if(Role == "EMPLOYEE"){
 
@@ -478,6 +575,7 @@ class SignalController {
               stop_loss:1,
               exit_time:1,
               exit_time1:1,
+              exit_status:1,
               sl_status:1,
               complete_trade:1,
               signals_id:1,
@@ -511,6 +609,7 @@ class SignalController {
               "result.token":1,
               "result.lot_size":1,
               "result.MakeStartegyName":1,
+              "result.exit_status":1,
               "result.createdAt":1,
               "result.updatedAt":1,
 

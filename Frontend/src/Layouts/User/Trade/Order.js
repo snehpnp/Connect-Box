@@ -160,7 +160,7 @@ export default function AllEmployees() {
         {
             field: "type",
             headerName: "Type",
-            width: 140,
+            width: 110,
             headerClassName: styles.boldHeader,
 
         },
@@ -168,7 +168,7 @@ export default function AllEmployees() {
         {
             field: "trade_symbol",
             headerName: "Trade Symbol",
-            width: 160,
+            width: 320,
             headerClassName: styles.boldHeader,
 
         },
@@ -221,7 +221,8 @@ export default function AllEmployees() {
                 if (response.status) {
                     setTableData({ loading: true, data: response.data });
                 } else {
-                    toast.error(response.msg);
+                    setTableData({ loading: true, data: [] });
+
                 }
             })
             .catch((error) => {

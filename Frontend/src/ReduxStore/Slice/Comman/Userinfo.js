@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { GetBrokerData } from "../../../Services/Comman/Optionchain";
 
-import { GetUserInfo, TRADING_OFF_BTN ,ProfileData,updateprofiledata,ProfileuserId,ProfileActive} from "../../../Services/Comman/comman";
+import { GetUserInfo, TRADING_OFF_BTN ,ProfileData,updateprofiledata,ProfileuserId,ProfileActive,UpdateUserBrokerInfo} from "../../../Services/Comman/comman";
 
 export const Userinfo = createAsyncThunk(
     "get/userinfo",
@@ -110,6 +110,22 @@ export const ActiveProfile = createAsyncThunk(
 
 
 
+
+export const UpdateUserBrokerInfoData = createAsyncThunk(
+    "user/update/brokerinfo",
+    async (data) => {
+        
+        try {
+            const res = await UpdateUserBrokerInfo(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+
+
 const Userinfo1Slice = createSlice({
     name: "UserinfoSlice",
     initialState: {
@@ -199,6 +215,10 @@ const Userinfo1Slice = createSlice({
                 state.isLoading = true;
                 state.isError = false;
             }).addCase(ActiveProfile.rejected, (state, action) => {
+
+                state.isLoading = false;
+                state.isError = true;
+            }).addCase(UpdateUserBrokerInfoData.rejected, (state, action) => {
 
                 state.isLoading = false;
                 state.isError = true;

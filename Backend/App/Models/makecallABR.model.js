@@ -111,6 +111,10 @@ const MakecallABRsSchema = Schema({
         type: String,
         default: null
     },
+    WiseTypeDropdown: {
+        type: String,
+        default: null
+    },
     status: {
         type: Number,
         default: '0'

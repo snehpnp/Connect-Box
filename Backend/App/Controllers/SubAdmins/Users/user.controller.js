@@ -530,8 +530,6 @@ class Users {
 
             var EmailData = await firstOptPass(email_data);
 
-            console.log(EmailData)
-            console.log(toEmail,subjectEmail)
 
             CommonEmail(toEmail, subjectEmail, EmailData);
 
@@ -722,7 +720,6 @@ class Users {
 
 
 
-      console.log("add_startegy", add_startegy)
 
 
       var delete_startegy = [];
@@ -733,7 +730,6 @@ class Users {
         }
       });
 
-      console.log("delete_startegy", delete_startegy);
 
 
       var Exist_strategy = ExistStrategy.filter(strategy =>
@@ -744,7 +740,6 @@ class Users {
         })
       );
 
-      console.log("Exist_strategy", Exist_strategy);
 
 
       var Exist_strategy1 = req.Strategies.filter(strategy =>
@@ -756,7 +751,6 @@ class Users {
       );
 
 
-      console.log("Exist_strategy1", Exist_strategy1);
 
 
 
@@ -774,8 +768,6 @@ class Users {
             });
 
 
-
-            // console.log("deleteStrategy",deleteStrategy.acknowledged)
 
             const Activity_logsData = new Activity_logs({
               user_Id: existingUsername._id,
@@ -1012,7 +1004,6 @@ class Users {
 
                 EndDate1 = end_date_2days;
 
-                console.log("data", data)
                 // STRATEGY ADD
                 const User_strategy_client = new strategy_client({
                   strategy_id: matchedStrategy._id,
