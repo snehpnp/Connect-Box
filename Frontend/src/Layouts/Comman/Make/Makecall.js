@@ -981,13 +981,11 @@ const Makecall = () => {
 
     const getAllServicesFun = async () => {
 
-
-
         await dispatch(getAllServices(
             {
                 req:
                 {
-                    category_id: selectCatagoryid
+                    category_id: selectCatagoryid,
                 },
 
                 token: UserLocalDetails.token
@@ -1025,6 +1023,7 @@ const Makecall = () => {
             }
         })
 
+        
         //  console.log("datra ---- ",datra)
         // let datra = scriptdata && scriptdata.filter((x) => {
         //   if ((selectCatagoryid) == parseInt(x.id)) {
@@ -1073,6 +1072,11 @@ const Makecall = () => {
 
 
     const selectCatagoryId = (e) => {
+      
+         
+
+       //alert(e.target.value)
+
 
         setStrikePrice('');
         setOptionType('');
@@ -1101,11 +1105,17 @@ const Makecall = () => {
 
         if (scriptSegment == 'C') {
             gettoken(selectCatagoryid, e.target.value, scriptSegment);
+        }else if(scriptSegment == 'FO'){
+           // alert("okkk ")
+            gettoken(selectCatagoryid, e.target.value, scriptSegment);
         }
 
     }
 
     const getExpirybackend = async (selectCatagoryid, symbol) => {
+          
+       // alert(selectCatagoryid)
+       // alert(symbol)
 
         if (selectCatagoryid != '' && symbol != '') {
             // console.log("selectCatagoryid ", selectCatagoryid)
@@ -1322,6 +1332,47 @@ const Makecall = () => {
                     .unwrap()
                     .then((response) => {
                         //console.log("cash token", response);
+                        if (response.status) {
+
+                            if (sockets != null) {
+                                //console.log("previousToken.current", previousToken.current);
+                                let json1 = {
+                                    k: previousToken.current,
+                                    t: "u",
+                                };
+                                sockets.send(JSON.stringify(json1));
+                                previousToken.current = response.exchange + "|" + response.token;
+
+                                liveToken.current = response.token;
+                                let json = {
+                                    k: response.exchange + "|" + response.token,
+                                    t: "t",
+                                };
+                                sockets.send(JSON.stringify(json));
+
+                            } else {
+                                liveToken.current = response.token;
+                                console.log("sockets closeeee");
+                            }
+
+                        } else {
+
+                        }
+                    });
+
+            }
+            else if (scriptSegment == "FO") {
+
+                const data = { symbol: symbol, categorie_id: selectCatagoryid, segment: scriptSegment }
+                await dispatch(gettokenbysocket(
+                    {
+                        req: data,
+                        token: UserLocalDetails.token
+                    }
+                ))
+                    .unwrap()
+                    .then((response) => {
+                        console.log("FO token", response);
                         if (response.status) {
 
                             if (sockets != null) {
@@ -2071,9 +2122,11 @@ const Makecall = () => {
 
                                                             {CatagoryData.data && CatagoryData.data?.map((x, index) => {
 
-                                                                if (x.segment !== "FO") {
-                                                                    return <option key={x._id} name={x.segment} value={x._id}>{x.name}</option>
-                                                                }
+                                                             if (x.segment !== "FO") {
+                                                               return <option key={x._id} name={x.segment} value={x._id}>{x.name}</option>
+                                                        
+                                                             }
+
                                                             })}
                                                         </select>
                                                     </div>
