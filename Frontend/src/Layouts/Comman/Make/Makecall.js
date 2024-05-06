@@ -322,7 +322,7 @@ const Makecall = () => {
         },
         {
             dataField: "TType",
-            text: "T Type",
+            text: "Type",
             formatter: (cell, row, rowIndex) => (
                 <div>
                     {row.TType == "LE" ?
@@ -2496,7 +2496,7 @@ const Makecall = () => {
                                                 </div>
                                                 </div>     
 
-                                            <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                                            <div className="card-header d-flex justify-content-between align-items-center border-bottom mb-3">
                                                 <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-landmark pe-2"></i>Below</h5>
                                                 <div className="pay-btn text-end w-auto">
                                                     {/* <button className="btn btn-primary " data-bs-toggle="modal"
@@ -2539,7 +2539,7 @@ const Makecall = () => {
                                                 </div>
                                                 </div>     
 
-                                            <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                                            <div className="card-header d-flex justify-content-between align-items-center border-bottom mb-3">
 
                                                 <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-envelope pe-2"></i>Above</h5>
                                                 <div className="pay-btn text-end w-auto">
@@ -2580,7 +2580,7 @@ const Makecall = () => {
                                                     </button>
                                                 </div>
                                                 </div>       
-                                            <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                                            <div className="card-header d-flex justify-content-between align-items-center border-bottom mb-3">
                                                 <h5 className="card-title mb-0 w-auto">  <i className="fa-regular fa-image pe-2"></i>Range</h5>
                                                 <div className="pay-btn text-end w-auto">
                                                   

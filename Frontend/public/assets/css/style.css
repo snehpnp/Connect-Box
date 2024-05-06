@@ -6580,7 +6580,7 @@ table .badge {
 .sidebar-menu-three {
     border-bottom: none
 }
-
+           
 .sidebar-menu-three>ul {
     border-bottom: none
 }
@@ -32684,10 +32684,14 @@ button.btn.btn-primary a {
 .MuiDataGrid-cell,
 .MuiDataGrid-columnHeader {
     outline: none ! important;
+
 }
+
+
 
 .MuiDataGrid-columnHeaderTitle {
     outline: none ! important;
+    font-weight: bold !important;
 }
 
 section.section1 {
@@ -32749,6 +32753,7 @@ li.submenu {
     font-size: 16px !important;
     font-weight: 700;
     margin-top: 10px;
+    
     color: #fff;
     text-align: center;
     background: #0070F4;
@@ -34828,7 +34833,7 @@ a.user-a:hover span {
         }
 
         input {
-            height: 40px;
+          
             font-size: 16px;
             border-radius: 4px;
             border: none;
@@ -34862,13 +34867,19 @@ a.user-a:hover span {
 
     }
 
-    .MuiDataGrid-columnHeaderTitle.css-t89xny-MuiDataGrid-columnHeaderTitle {
-        font-weight: bold;
-    }
 }
 
+.button_BUY .active {
+    background-color: #fff !important;
+    color: green !important;
+    margin: 0px 5px;
+    padding: 5px 8px;
+    border-radius: 4px;
+    border: 1px solid green;
 
+}
 
+/* .button_sell .active { */
 /* .active {
 
     background-color: #fff !important;
@@ -34880,6 +34891,13 @@ a.user-a:hover span {
 }
  */
 
+/* .active { */
+    /* background-color: #fff !important;
+    color: #fff !important;
+    margin: 0px 5px;
+    padding: 5px 8px;
+    border-radius: 4px; */
+}
 #signupLogo {
     max-height: 100px;
     margin: auto;
@@ -34941,7 +34959,7 @@ input:disabled {
     cursor: pointer;
 }
 
-}
+
 .borderless-table .table-bordered>:not(caption)>* {
     /* border-width: var(--bs-border-width) 0; */
     border-color: #ddd !important;
@@ -34956,3 +34974,4 @@ input:disabled {
 [data-layout-mode=dark] body .button_sell {
     background: rgba(230, 33, 33, 0.1) !important;
 }
+

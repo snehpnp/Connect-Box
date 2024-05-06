@@ -231,20 +231,7 @@ const DropDown = () => {
             type="button"
             data-bs-dismiss="modal"
             className="btn btn-primary cancel-btn me-2 mt-2 iconclass"
-            style={{
-
-              backgroundColor: "#7539FF",
-
-              color: "white",
-              border: "none",
-              display: "flex",
-              alignItems: "center",
-              padding: "10px 20px",
-              borderRadius: "10px",
-              boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-              cursor: "pointer"
-            }}
-
+          
           >
             {showFunds ? (
               <span>
@@ -269,8 +256,8 @@ const DropDown = () => {
 
 
 
-        <li className="nav-item dropdown  flag-nav dropdown-heads iconclass">
-          <a className="nav-link" data-bs-toggle="dropdown" aria-expanded="false">
+        <li className="nav-item dropdown  flag-nav dropdown-heads">
+          <a className="nav-link iconclass" data-bs-toggle="dropdown" aria-expanded="false">
             <i className="fe fe-bell" /> <span className="badge rounded-pill" />
           </a>
           <div className="dropdown-menu notifications">
