@@ -906,14 +906,14 @@ function Option_Chain() {
 
 
                                 <div className="col-md-4 d-flex justify-content-end align-items-center">
-                                    <div className=" ">
+                                    {/* <div className=" ">
                                         <button
                                             className="btn btn-primary me-2"
                                         // onClick={(e) => SelectOptionStock()}
                                         >
                                             Select Option Stock
                                         </button>
-                                    </div>
+                                    </div> */}
                                     <div className="   ">
                                         <button
                                             className="btn btn-primary me-2"
