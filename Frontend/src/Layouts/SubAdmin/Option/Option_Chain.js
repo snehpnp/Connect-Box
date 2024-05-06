@@ -199,6 +199,8 @@ function Option_Chain() {
         {
             dataField: 'CALL',
             text: 'BUY/SELL',
+            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
+            parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
                 <div key={rowIndex}>
                     <button
@@ -273,9 +275,9 @@ function Option_Chain() {
         {
             dataField: 'PUT/LP',
             text: 'PUT/LP',
-            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#f5f5dc54' } :
-                parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
-
+            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
+            parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
+                { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
                 <div
 
@@ -291,8 +293,9 @@ function Option_Chain() {
         {
             dataField: 'PE_Volume',
             text: 'Volume',
-            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: 'eef5ff' } :
-                parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
+            parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
+                { backgroundColor: '' },
 
             formatter: (cell, row, rowIndex) => (
                 <div
