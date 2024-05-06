@@ -43,7 +43,7 @@ const Strategies = () => {
     }, [])
 
 
-    console.log("getAllStrategy:", getAllStrategy)
+    // console.log("getAllStrategy:", getAllStrategy)
 
     return (
         <div>
