@@ -368,8 +368,8 @@ const Dashboards = () => {
                     <table className="table table-stripped table-hover">
                       <tbody>
 
-                        {getDashboardData.data.Latest_Strategies && getDashboardData.data.Latest_Strategies.map((data1) => {
-                          return <tr>
+                        {getDashboardData.data.Latest_Strategies && getDashboardData.data.Latest_Strategies.map((data1 ,index) => {
+                          return <tr key={index} >
                             <td>
                               <h2 className="table-avatar">
                                 <a

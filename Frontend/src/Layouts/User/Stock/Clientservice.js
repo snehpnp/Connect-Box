@@ -90,7 +90,7 @@ function Clientservice() {
       .then((response) => {
 
         if (response.status) {
-console.log("response",response)
+          console.log("response", response)
           const filterData = response.services.filter((item) => {
             const searchInputMatch =
               searchInput == '' ||
@@ -180,188 +180,206 @@ console.log("response",response)
 
   return (
     <>
-    <div className="content container-fluid" data-aos="fade-left">
+      <div className="content container-fluid" data-aos="fade-left">
 
-      {/* PAGE HEADER */}
-      <div className="card">
+        {/* PAGE HEADER */}
+        <div className="card">
 
           <div className="card-header">
             <div className="row align-center">
               <div className="col">
                 <h5 className="card-title mb-0"><i className="pe-2 fa-solid fa-users"></i>All Users</h5>
-                </div>
-                <div className="col-auto">
-                  
+              </div>
+              <div className="col-auto">
+
                 <div className="list-btn">
-              <ul className="filter-list mb-0">
+                  <ul className="filter-list mb-0">
 
-                <li className='toggle-li'>
-                  <div className="status-toggle " style={{ display: 'flex', alignItems: 'center' }}>
-                    <span  className= {getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} style={{   }}>Trading Status</span>
-                    <input
-                      id="1"
-                      className="check"
-                      type="checkbox"
-                      onChange={() => setLoginStatus(prevState => !prevState)}
-                      checked={getLoginStatus}
-                      style={{ marginRight: '5px' }}
-                    />
-                    <label htmlFor="1" className="checktoggle checkbox-bg"></label>
-                  </div>
-                </li>
-
-
-                <li className="">
-                  <p
-                    className="btn-filters mb-0"
-
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="bottom"
-                    title="Refresh"
-                    onClick={RefreshHandle}
-
-                  >
-                    <span>
-                      <i className="fe fe-refresh-ccw" />
-                    </span>
-                  </p>
-                </li>
-                <li className='serach-li'>
-                  <div className="input-group input-block">
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Search..."
-                      aria-label="Search"
-                      aria-describedby="search-addon"
-                      onChange={(e) => setSearchInput(e.target.value)}
-                      value={searchInput}
-                    />
-                  </div>
-                </li>
+                    <li className='toggle-li'>
+                      <div className="status-toggle " style={{ display: 'flex', alignItems: 'center' }}>
+                        <span className={getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} style={{}}>Trading Status</span>
+                        <input
+                          id="1"
+                          className="check"
+                          type="checkbox"
+                          onChange={() => setLoginStatus(prevState => !prevState)}
+                          checked={getLoginStatus}
+                          style={{ marginRight: '5px' }}
+                        />
+                        <label htmlFor="1" className="checktoggle checkbox-bg"></label>
+                      </div>
+                    </li>
 
 
-                <li className="btn btn-primary">
-                  <i className="fa fa-filter me-2" aria-hidden="true" /> {/* Filter icon */}
-                  Filter
-                </li>
+                    <li className="">
+                      <p
+                        className="btn-filters mb-0"
+
+                        data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        title="Refresh"
+                        onClick={RefreshHandle}
+
+                      >
+                        <span>
+                          <i className="fe fe-refresh-ccw" />
+                        </span>
+                      </p>
+                    </li>
+                    <li className='serach-li'>
+                      <div className="input-group input-block">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Search..."
+                          aria-label="Search"
+                          aria-describedby="search-addon"
+                          onChange={(e) => setSearchInput(e.target.value)}
+                          value={searchInput}
+                        />
+                      </div>
+                    </li>
+
+
+                    <li className="btn btn-primary">
+                      <i className="fa fa-filter me-2" aria-hidden="true" /> {/* Filter icon */}
+                      Filter
+                    </li>
 
 
 
-              </ul>
-            </div>
-               </div></div></div>
+                  </ul>
+                </div>
+              </div></div></div>
           <div className="card-body">
-           
-         
-     
-        <section className="pricing-section pt-3 px-5">
-         
-          
 
 
-            <div className="outer-box">
-              <div className="row">
-                {/* Pricing Block */}
 
-                {getAllClientService.data && getAllClientService.data.map((item, index) => {
+            <section className="pricing-section pt-3 px-5">
 
-                  var randomColor = colors[index]
-                  if (item.active_status == 0) {
-                    randomColor = "red"
-                  }
-                  return (
-                    <div key={index} className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
-                      <div className="inner-box" style={{ borderBottom: "8px solid " + randomColor }}>
-                        {/* <div className="icon-box" style={{ background: randomColor }}>
-                          <div className="icon-outer">
-                            <i className="fas fa-paper-plane" style={{ border: " 5px solid " + randomColor, color: randomColor }} />
+
+
+
+              <div className="outer-box">
+                <div className="row">
+                  {/* Pricing Block */}
+
+                  {getAllClientService.data && getAllClientService.data.map((item, index) => {
+
+                    var randomColor = colors[index]
+                    if (item.active_status == 0) {
+                      randomColor = "red"
+                    }
+
+                    return (
+                      <div key={index} className="pricing-block col-lg-3 col-md-6 col-sm-12 wow fadeInUp">
+                        <div className="inner-box" style={{ borderBottom: "8px solid " + randomColor }}>
+
+                          <div className="price-box d-flex align-items-center justify-content-between">
+                            <div className="title">{item.service.name}</div>
+                            <div className="stock-edit-icon bg-primary-light" onClick={(e) => {
+                              setModal(!modal); setData({
+                                maxQty: item.lot_size,
+                                orderType: item.order_type,
+                                productType: item.product_type,
+                                seriveId: item.service._id,
+                                id: item._id,
+                                strategyId: item.strategy_id,
+                                quantity: item.quantity,
+                                serviceName: item.service.name
+                              });
+                            }}>
+                              <SquarePen />
+                            </div>
                           </div>
-                        </div> */}
-                        <div className="price-box d-flex align-items-center justify-content-between">
-                          <div className="title">{item.service.name}</div>
-                          <div className="stock-edit-icon bg-primary-light" onClick={(e) => {
-                          setModal(!modal); setData({
-                            maxQty: item.lot_size,
-                            orderType: item.order_type,
-                            productType: item.product_type,
-                            seriveId: item.service._id,
-                            id: item._id,
-                            strategyId: item.strategy_id,
-                            quantity: item.quantity,
-                            serviceName: item.service.name
-                          });
-                        }}>
-                          <SquarePen />
-                        </div>
-                        </div>
-                        <ul className="features">
-                          <li className="true">
-                            <div className='d-flex justify-content-between'>
-                              <p>Quantity:</p>
-                              {/* <p>{Number(item.lot_size) * Number(item.quantity)}</p> */}
-                              <p>{Number(item.lot_size)}</p>
+                          <ul className="features">
+                            <li className="true">
+                              <div className='d-flex justify-content-between'>
+                                <p>Quantity:</p>
+                                {/* <p>{Number(item.lot_size) * Number(item.quantity)}</p> */}
+                                <p>{Number(item.lot_size)}</p>
 
-                            </div>
-                          </li>
-                          <li className="true">
-                            <div className='d-flex justify-content-between'>
-                              <p>Order Type:</p>
-                              <p>{item.order_type == 1 ? "MARKET" : item.order_type == 2 ? "LIMIT" : item.order_type == 3 ? "STOPLOSS LIMIT" : item.order_type == 4 ? "STOPLOSS MARKET" : "MARKET"}</p>
-                            </div>
-                          </li>
-                          <li>
-                            <div className='d-flex justify-content-between'>
-                              <p>Product Type:</p>
-                              <p>{item.product_type == 1 ? "CNC" : item.product_type == 2 ? "MIS" : item.product_type == 3 ? "BO" : item.product_type == 4 ? "CO" : "CNC"}</p>
-                            </div>
-                          </li>
-                        </ul>
-                        <div className=" price">
+                              </div>
+                            </li>
+                            <li className="true">
+                              <div className='d-flex justify-content-between'>
+                                <p>Strategy:</p>
+                                <select
+                                  className="default-select wide form-control"
+                                  id="validationCustom05"
+                                  style={{ width: "150px" }}
+                                >
+                                  {getAllClientStrategy.data.strategy &&
+                                    getAllClientStrategy.data.strategy.map((data1, index) => {
+
+                                      return (
+                                        <option key={data1.result._id} value={data1.result.strategy_name} style={{ color: item.strategy_id.includes(data1.result._id) ? "green" : "red" }}>
+                                          {data1.result.strategy_name}
+                                        </option>
+                                      );
+                                    })}
+                                </select>
+                              </div>
+                            </li>
+
+                            <li className="true">
+                              <div className='d-flex justify-content-between'>
+                                <p>Order Type:</p>
+                                <p>{item.order_type == 1 ? "MARKET" : item.order_type == 2 ? "LIMIT" : item.order_type == 3 ? "STOPLOSS LIMIT" : item.order_type == 4 ? "STOPLOSS MARKET" : "MARKET"}</p>
+                              </div>
+                            </li>
+                            <li>
+                              <div className='d-flex justify-content-between'>
+                                <p>Product Type:</p>
+                                <p>{item.product_type == 1 ? "CNC" : item.product_type == 2 ? "MIS" : item.product_type == 3 ? "BO" : item.product_type == 4 ? "CO" : "CNC"}</p>
+                              </div>
+                            </li>
+                          </ul>
+                          <div className=" price">
                             <div className="form-check form-switch">
                               <input className="form-check-input" type="checkbox" defaultChecked={item.active_status == 1 ? true : false} />
                             </div>
                           </div>
-                     
+
+                        </div>
                       </div>
+                    );
+                  })}
+
+                </div>
+              </div>
+
+
+            </section>
+          </div>
+
+        </div>
+
+
+      </div >
+      {modal && (
+        <div className="modal custom-modal d-block" id="add_vendor" role="dialog" data-aos="fade-down">
+          <div className="modal-dialog modal-dialog-centered modal-md">
+            <div className="modal-content">
+              <div className="modal-header border-0 pb-0">
+                <div className="form-header modal-header-title text-start mb-0">
+                  <h4 className="mb-0">Edit Stock List</h4>
+                </div>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  onClick={(e) => { setModal(!modal); emptyState(); }}
+                ></button>
+              </div>
+              <div>
+                <div className="modal-body">
+                  <div className="row">
+                    <div className="col-lg-12 col-sm-12 mb-3">
+                      <h6 style={{ fontWeight: 600, color: 'black' }}>Symbol Name : {data.serviceName}</h6>
                     </div>
-                  );
-                })}
 
-              </div>
-            </div>
-
-         
-        </section>
-      </div>
-
-</div>
-
-      
-    </div >
-    {modal && (
-      <div className="modal custom-modal d-block" id="add_vendor" role="dialog" data-aos="fade-down">
-        <div className="modal-dialog modal-dialog-centered modal-md">
-          <div className="modal-content">
-            <div className="modal-header border-0 pb-0">
-              <div className="form-header modal-header-title text-start mb-0">
-                <h4 className="mb-0">Edit Stock List</h4>
-              </div>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                onClick={(e) => { setModal(!modal); emptyState(); }}
-              ></button>
-            </div>
-            <div>
-              <div className="modal-body">
-                <div className="row">
-                  <div className="col-lg-12 col-sm-12 mb-3">
-                    <h6 style={{ fontWeight: 600, color: 'black' }}>Symbol Name : {data.serviceName}</h6>
-                  </div>
-                 
                     <div className="col-lg-6 col-4">
                       <h6 className='mb-3'>Lot Size : </h6>
                     </div>
@@ -370,12 +388,12 @@ console.log("response",response)
                     </div>
                     <div className="col-lg-6 col-4">
                       <h6 className=''>Max Qty	 :</h6>
-                      </div>
-                      <div className="col-lg-6 col-8 ps-0 mb-3">
+                    </div>
+                    <div className="col-lg-6 col-8 ps-0 mb-3">
                       <input type="text" className='form-control ' defaultValue={1} value={data.maxQty} onChange={e => handleInputChange('maxQty', e.target.value)} />
                     </div>
-                 
-                
+
+
                     <div className="col-lg-6 col-4">
                       <h6 className='col-lg-6 ,b-3'>Strategy :</h6>
                     </div>
@@ -405,52 +423,52 @@ console.log("response",response)
                         </div>
                       }
                     </div>
-                 
-                  <div className="col-lg-12 col-sm-12 d-flex mb-3">
-                    <h6 className='col-lg-6 col-4'>Order Type :</h6>
-                    <select className="form-select" value={data.orderType} onChange={e => handleInputChange('orderType', e.target.value)}>
-                      <option value="1">Market</option>
-                      <option value="2">Limit</option>
-                      <option value="3">Stoploss Limit</option>
-                      <option value="4">Stoploss Market</option>
-                    </select>
-                  </div>
-                  <div className="col-lg-12 col-sm-12 d-flex mb-3">
-                    <h6 className='col-lg-6 col-4 '>Product Type :</h6>
-                    <select className="form-select " value={data.productType} onChange={e => handleInputChange('productType', e.target.value)}>
-                      <option value="1">CNC</option>
-                      <option value="2">MIS</option>
-                      <option value="3">BO</option>
-                      <option value="4">CO</option>
-                    </select>
-                  </div>
 
+                    <div className="col-lg-12 col-sm-12 d-flex mb-3">
+                      <h6 className='col-lg-6 col-4'>Order Type :</h6>
+                      <select className="form-select" value={data.orderType} onChange={e => handleInputChange('orderType', e.target.value)}>
+                        <option value="1">Market</option>
+                        <option value="2">Limit</option>
+                        <option value="3">Stoploss Limit</option>
+                        <option value="4">Stoploss Market</option>
+                      </select>
+                    </div>
+                    <div className="col-lg-12 col-sm-12 d-flex mb-3">
+                      <h6 className='col-lg-6 col-4 '>Product Type :</h6>
+                      <select className="form-select " value={data.productType} onChange={e => handleInputChange('productType', e.target.value)}>
+                        <option value="1">CNC</option>
+                        <option value="2">MIS</option>
+                        <option value="3">BO</option>
+                        <option value="4">CO</option>
+                      </select>
+                    </div>
+
+                  </div>
                 </div>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  data-bs-dismiss="modal"
-                  className="btn btn-back cancel-btn me-2"
-                  onClick={(e) => { setModal(!modal); emptyState(); }}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  data-bs-dismiss="modal"
-                  className="btn btn-primary paid-continue-btn"
-                  onClick={handleOnSubmit}
-                >
-                  Update
-                </button>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    data-bs-dismiss="modal"
+                    className="btn btn-back cancel-btn me-2"
+                    onClick={(e) => { setModal(!modal); emptyState(); }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    data-bs-dismiss="modal"
+                    className="btn btn-primary paid-continue-btn"
+                    onClick={handleOnSubmit}
+                  >
+                    Update
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    )}
-   </>
+      )}
+    </>
   );
 }
 

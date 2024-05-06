@@ -132,7 +132,6 @@ const Helpuser = () => {
         prifix_key: help.prifix_key,
         Role: "USER",
       })).unwrap()
-      console.log("response", response)
       if (response.status) {
 
         setHelp({ Message: "" })
@@ -156,7 +155,6 @@ const Helpuser = () => {
         }).then((result) => {
           /* Read more about handling dismissals below */
           if (result.dismiss === Swal.DismissReason.timer) {
-            console.log("I was closed by the timer");
           }
         });
       }

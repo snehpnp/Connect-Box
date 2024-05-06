@@ -261,8 +261,6 @@ function Edit_Strategies() {
         Service_Type: values.Service_Type == '' ? 0 : values.Service_Type
       };
 
-      console.log("cp :", data)
-
       await dispatch(EditSubStrategys(data))
         .unwrap()
         .then(async (response) => {
