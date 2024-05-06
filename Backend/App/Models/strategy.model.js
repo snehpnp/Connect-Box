@@ -18,19 +18,35 @@ const strategySchema = Schema({
         type: String,
         default: 0
     },
-    strategy_amount_month: {     //ID :1
+    security_fund_month: {     //ID :1
         type: String,
         default: null
     },
-    strategy_amount_quarterly: {  //ID :2
+    security_fund_quarterly: {  //ID :2
         type: String,
         default: null
     },
-    strategy_amount_half_early: { //ID :3
+    security_fund_half_early: { //ID :3
         type: String,
         default: null
     },
-    strategy_amount_early: {   //ID :4
+    security_fund_early: {   //ID :4
+        type: String,
+        default: null
+    },
+    fixed_amount_per_trade_month: {     //ID :1
+        type: String,
+        default: null
+    },
+    fixed_amount_per_trade_quarterly: {  //ID :2
+        type: String,
+        default: null
+    },
+    fixed_amount_per_trade_half_early: { //ID :3
+        type: String,
+        default: null
+    },
+    fixed_amount_per_trade_early: {   //ID :4
         type: String,
         default: null
     },

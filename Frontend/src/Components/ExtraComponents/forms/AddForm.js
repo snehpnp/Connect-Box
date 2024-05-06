@@ -976,7 +976,20 @@ const DynamicForm = ({
                             </div>
                           </div>
                         </>
+                      ) : field.type === 'security' ? (
+                        <>
+                          <div className={`col-lg-${field.col_size}`}>
+                            <div className="input-block mb-3 flex-column">
+                              <label className={`col-lg-${field.label_size}`}>
+                                {field.label}
+                                
+                              </label>
+                            </div>
+                          </div>
+                        </>
+
                       ) : (
+                      
                         <>
                           <div className={`col-lg-${field.col_size}`}>
                             <div className="input-block mb-3"></div>

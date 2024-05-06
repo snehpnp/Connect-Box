@@ -309,7 +309,7 @@ const Bresponse = () => {
                                             <strong>Symbol: </strong>BankNifty
                                         </li>
                                         <li>
-                                            <strong>Type: </strong> Lx
+                                            <strong>Type: </strong> LX
                                         </li>
                                         <li>
                                             <strong>Broker Name :</strong> Upstox
@@ -344,7 +344,7 @@ const Bresponse = () => {
                                             <strong>Symbol: </strong>BankNifty
                                         </li>
                                         <li>
-                                            <strong>Type: </strong> Lx
+                                            <strong>Type: </strong> LX
                                         </li>
                                         <li>
                                             <strong>Broker Name :</strong> Upstox
@@ -378,7 +378,7 @@ const Bresponse = () => {
                                             <strong>Symbol: </strong>BankNifty
                                         </li>
                                         <li>
-                                            <strong>Type: </strong> Lx
+                                            <strong>Type: </strong> LX
                                         </li>
                                         <li>
                                             <strong>Broker Name :</strong> Upstox
@@ -411,7 +411,7 @@ const Bresponse = () => {
                                             <strong>Symbol: </strong>BankNifty
                                         </li>
                                         <li>
-                                            <strong>Type: </strong> Lx
+                                            <strong>Type: </strong> LX
                                         </li>
                                         <li>
                                             <strong>Broker Name :</strong> Upstox
