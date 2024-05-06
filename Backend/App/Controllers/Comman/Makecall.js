@@ -681,15 +681,16 @@ async function run() {
       const makecallabrView_excute_run = async () => {
        try {
         
-        
+        // console.log("makecall")
       let rr=true
       if (rr) {
      // if (holidays.isHoliday(currentDate) && weekday != 'Sunday' && weekday != 'Saturday') {
 
         // const viewName = 'open_position_excute';
         var makecallabrView_excute_result = await makecallabrView_excute_view.find().toArray();
-
-      
+           
+        //console.log("makecallabrView_excute_result ",makecallabrView_excute_result)
+          
          if(makecallabrView_excute_result.length > 0){
 
          
@@ -778,11 +779,13 @@ async function run() {
             );
             
     
-          
+            // console.log("req makecall abr -",req)
               let config = {
               method: 'post',
               maxBodyLength: Infinity,
-              url: `${process.env.BROKER_URL}`,
+              url: 'http://localhost:8800/broker-signals',
+                // url: 'https://trade.pandpinfotech.com/signal/broker-signals',
+               // url: `${process.env.BROKER_URL}`,
               headers: {
                 'Content-Type': 'text/plain'
               },
@@ -791,25 +794,27 @@ async function run() {
       
                axios.request(config)
               .then(async(response) => {
-    
-                 let tradeSymbol;
-                 if(item.segment.toLowerCase() == 'o' || item.segment.toLowerCase() == 'co' || item.segment.toLowerCase() == 'fo' || item.segment.toLowerCase() == 'mo')
-                 {
-                  tradeSymbol = item.symbol+"  "+item.expiry+"  "+item.strike+"  "+item.option_type+"  "+" [ "+item.segment+" ] ";
-                 }
-                 else if(item.segment.toLowerCase() == 'f' || item.segment.toLowerCase() == 'cf' || item.segment.toLowerCase() == 'mf')
-                 {
-                  tradeSymbol = item.symbol+"  "+item.expiry+"  "+" [ "+item.segment+" ] ";
-                 }
-                 else{
-                  tradeSymbol = item.symbol+"  "+" [ "+item.segment+" ] ";
-                 }
+                console.log(" response ",response)
+                //  let tradeSymbol;
+                //  if(item.Segment.toLowerCase() == 'o' || item.Segment.toLowerCase() == 'co' || item.Segment.toLowerCase() == 'fo' || item.Segment.toLowerCase() == 'mo')
+                //  {
+                //   tradeSymbol = item.Symbol+"  "+item.expiry+"  "+item.strike+"  "+item.option_type+"  "+" [ "+item.Segment+" ] ";
+                //  }
+                //  else if(item.Segment.toLowerCase() == 'f' || item.Segment.toLowerCase() == 'cf' || item.Segment.toLowerCase() == 'mf')
+                //  {
+                //   tradeSymbol = item.Symbol+"  "+item.expiry+"  "+" [ "+item.Segment+" ] ";
+                //  }
+                //  else{
+                //   tradeSymbol = item.Symbol+"  "+" [ "+item.Segment+" ] ";
+                //  }
                 // const io = await getIO();
                 // io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
       
       
               })
               .catch((error) => {
+
+                console.log(" error makecall abr ",error)
               });
       
       

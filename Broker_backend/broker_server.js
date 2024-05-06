@@ -352,7 +352,7 @@ app.post('/broker-signals', async (req, res) => {
       var client_key = signals.Key;
       var TradeType = signals.TradeType;
 
-
+    // console.log("signals - ",signals)
       let ExitStatus = '-'
 
       if(signals.ExitStatus != undefined){
@@ -377,7 +377,8 @@ app.post('/broker-signals', async (req, res) => {
 
       var ExitTime = 0;
       if (signals.ExitTime != undefined) {
-        ExitTime = signals.ExitTime.replace(/-/g, ':');
+       // ExitTime = signals.ExitTime.replace(/-/g, ':');
+        ExitTime = signals.ExitTime;
       }
 
       var MakeStartegyName = ""

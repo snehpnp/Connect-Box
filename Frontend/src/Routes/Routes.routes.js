@@ -19,12 +19,12 @@ import Update from '../Layouts/Auth/Update';
 
 const Routing = () => {
     const location = useLocation();
+    
     const navigate = useNavigate();
     const roles = JSON.parse(localStorage.getItem('user_role'));
     const user_details = JSON.parse(localStorage.getItem("user_details"));
 
     useEffect(() => {
-        console.log("location.pathname",location.pathname)
         if (location.pathname.startsWith("/updatepassword")) {
             navigate(location.pathname);
             return;

@@ -21,7 +21,7 @@ export const getCatogries = createAsyncThunk(
         const {req,token} = data
 
         // console.log("req ",req)
-        // console.log("token ",token)
+        
         const res = await GET_ALL_Catagory(req,token);
         return res;
       } catch (err) {
@@ -37,7 +37,7 @@ export const getexpirymanualtrade = createAsyncThunk(
         const {req,token} = data
 
       //  console.log("req ",req)
-       // console.log("token ",token)
+       
         const res = await GET_EXPIRY_BY_SCRIPT(req,token);
         return res;
       } catch (err) {
@@ -54,7 +54,7 @@ export const getexpirymanualtrade = createAsyncThunk(
         const {req,token} = data
 
       //  console.log("req ",req)
-       // console.log("token ",token)
+       
         const res = await GET_ALL_STRIKE_PRICE(req,token);
         return res;
       } catch (err) {
@@ -70,7 +70,7 @@ export const getexpirymanualtrade = createAsyncThunk(
         const {req,token} = data
 
       //  console.log("req ",req)
-       // console.log("token ",token)
+       
         const res = await GET_STRATEGY_DATA(req,token);
         return res;
       } catch (err) {
@@ -86,7 +86,7 @@ export const getexpirymanualtrade = createAsyncThunk(
         const {req,token} = data
 
       //  console.log("req ",req)
-       // console.log("token ",token)
+       
         const res = await GET_TOKEN_BY_SOCKET(req,token);
         return res;
       } catch (err) {
@@ -100,7 +100,7 @@ export const getexpirymanualtrade = createAsyncThunk(
     async (data) => {
       try {
         const {req,token} = data
-       // console.log("token ",token)
+       
         const res = await GET_LIVE_DATA_SESSION(req,token);
         return res;
       } catch (err) {
@@ -116,7 +116,7 @@ export const getexpirymanualtrade = createAsyncThunk(
     async (data) => {
       try {
         const {req,token} = data
-       // console.log("token ",token)
+       
         const res = await ADD_DATA_MAKECALL_ABR(req,token);
         return res;
       } catch (err) {
@@ -131,7 +131,7 @@ export const getexpirymanualtrade = createAsyncThunk(
     async (data) => {
       try {
         const {req,token} = data
-       // console.log("token ",token)
+       
         const res = await GET_DATA_MAKECALL_ABR(req,token);
         return res;
       } catch (err) {
@@ -147,7 +147,7 @@ export const getexpirymanualtrade = createAsyncThunk(
     async (data) => {
       try {
         const {req,token} = data
-       // console.log("token ",token)
+       
         const res = await DELETE_DATA_MAKECALL_ABR(req,token);
         return res;
       } catch (err) {
@@ -162,7 +162,7 @@ export const getexpirymanualtrade = createAsyncThunk(
     async (data) => {
       try {
         const {req,token} = data
-       // console.log("token ",token)
+       
         const res = await UPDATE_DATA_MAKECALL_ABR(req,token);
         return res;
       } catch (err) {

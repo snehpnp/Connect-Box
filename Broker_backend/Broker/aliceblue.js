@@ -3,7 +3,8 @@ var qs = require('qs');
 var path = require('path');
 const { exec } = require('child_process');
 const fs = require('fs');
-const db = require('../../BACKEND/App/Models');
+//const db = require('../../BACKEND/App/Models');
+const db = require('../../Backend/App/Models');
 const services = db.services;
 const Alice_token = db.Alice_token;
 const Signals = db.Signals;
@@ -14,7 +15,7 @@ var dateTime = require('node-datetime');
 
 const place_order = async (AllClientData, signals, token, filePath, signal_req) => {
      
-
+     //console.log("inside alice blue")
       
 
     try {
@@ -64,7 +65,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
         const filePath_aliceblue = path.join(__dirname, '..', 'AllInstrumentToken', filePath_token);
 
        const command = `grep ,${pattern}, ${filePath_aliceblue}`;
-     //   const command = `findstr ,${pattern}, ${filePath_aliceblue}`;
+     // const command = `findstr ,${pattern}, ${filePath_aliceblue}`;
 
         console.log("command ", command)
 
@@ -137,6 +138,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
 
             
             const requestPromises = AllClientData.map(async (item) => {
+                //console.log("symbol_id", token[0].instrument_token)
 
             item.postdata.symbol_id = token[0].instrument_token;
 
@@ -149,7 +151,6 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                 item.postdata.transtype = 'SELL';
             }
 
-            // console.log("price", price)
             //console.log("item.client_services.order_type", item.client_services.order_type)
 
             if (item.client_services.order_type == "2" || item.client_services.order_type == "3") {
@@ -658,10 +659,10 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
         data: JSON.stringify([item.postdata])
 
     };
-    // console.log(config);
+     //console.log("config",config);
     axios(config)
         .then(async (response) => {
-            // console.log("respose ENTRY", response.data)
+           //  console.log("respose ENTRY", response.data)
             fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE AFTER PLACE ORDER USER ENTRY - ' + item.UserName + ' RESPONSE -' + JSON.stringify(response.data) + '\n', function (err) {
                 if (err) {
                     return console.log(err);
@@ -731,6 +732,8 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
 
         })
         .catch(async (error) => {
+
+           // console.log("catch",error);
             fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE AFTER PLACE ORDER CATCH ENTRY - ' + item.UserName + ' ERROR -' + JSON.stringify(error) + '\n', function (err) {
                 if (err) {
                     return console.log(err);
