@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate ,useHistory } from "react-router-dom";
+import { useNavigate  } from "react-router-dom";
 import axios from "axios";
 import CryptoJS from "crypto-js";
 import $ from "jquery";
+import * as Config from "../../../Utils/Config";
+
 import {
     getAllServices,
     getCatogries,
@@ -31,7 +33,6 @@ import Swal from 'sweetalert2';
 const Makecall = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const history = useHistory();
     const [ForDisabledSubmit, SetForDisabledSubmit] = useState(false)
     const [UserDetails, seUserDetails] = useState('')
     const [AllServices, setAllServices] = useState({ loading: true, data: [] });
@@ -1760,9 +1761,7 @@ const Makecall = () => {
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'http://localhost:8800/broker-signals',
-                //url: 'https://trade.pandpinfotech.com/signal/broker-signals',
-                // url: `${process.env.BROKER_URL}`,
+                url: Config.broker_backend,
                 headers: {
                     'Content-Type': 'text/plain'
                 },

@@ -183,7 +183,6 @@ export async function PasswordChange(data,token) {
         return await res?.data;
     }
     catch (err) {
-        console.log("error", err);
         return err
 
     }

@@ -149,11 +149,9 @@ export default function AllEmployees() {
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
 
         if (check) {
-            console.log("Trading On")
             loginWithApi(brokerid, UserDetails);
 
         } else {
-            console.log("Trading Off")
             handleTradingOff(user_id);
 
 

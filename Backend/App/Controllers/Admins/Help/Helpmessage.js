@@ -140,7 +140,6 @@ class Helpmessage {
   async getuserdelete(req, res) {
     const { id } = req.body;
 
-    // console.log("hello")
     try {
       // Assuming the message ID is passed as a route parameter
       const messagedata = await help.findByIdAndDelete(id)

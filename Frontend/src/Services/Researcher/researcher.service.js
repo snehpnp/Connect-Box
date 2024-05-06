@@ -13,7 +13,6 @@ export async function ADD_RESEARCHER(data) {
         return await res?.data
     }
     catch (err) {
-        console.log("err", err);
         return await err;
 
     }

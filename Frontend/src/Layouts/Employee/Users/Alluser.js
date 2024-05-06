@@ -247,7 +247,7 @@ export default function AllUsers() {
  
 
   const handleEdit = async (row) => {
-    navigate('/subadmin/user/edit/' + row._id);
+    navigate(`/employee/user/edit/${row._id}`, {state : {rowData : row}} );
   };
 
 
@@ -351,13 +351,6 @@ export default function AllUsers() {
   useState(() => {
     AllBroker();
   }, [])
-
-
-
-
-
-
-
 
 
 
@@ -576,10 +569,6 @@ export default function AllUsers() {
                 </div>
               </div>
               <div className="card-body">
-
-
-
-
 
                 <FullDataTable
                   styles={styles}

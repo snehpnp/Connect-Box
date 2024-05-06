@@ -43,8 +43,7 @@ class AliceBlue {
                 var redirect = hosts.split(':')[0];
                 var redirect_uri = '';
 
-                // console.log("apiSecret ",apiSecret)
-                // console.log("Get_User ",Get_User)
+   
 
                 if (Get_User.length > 0) {
 

@@ -423,7 +423,6 @@ export default function AllUsers() {
         }
       })
       .catch((error) => {
-        console.log("Error", error);
 
         setAllUsers({
           loading: true,

@@ -253,7 +253,7 @@ const Helpsubadmin = () => {
 
   const userprefixBydata = async () => {
     var data = { prifix_key: userdataprifix_key };
-    console.log("userprifix_key", data)
+ 
     await dispatch(userprifix_key(data))
       .unwrap()
       .then(async (response) => {

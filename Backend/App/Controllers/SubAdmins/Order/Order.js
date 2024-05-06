@@ -84,7 +84,6 @@ class SignalController {
   
   
   
-        console.log("resultUser", resultUser)
   
   
         if (!resultUser) {

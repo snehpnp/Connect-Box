@@ -221,7 +221,8 @@ export default function AllEmployees() {
                 if (response.status) {
                     setTableData({ loading: true, data: response.data });
                 } else {
-                    toast.error(response.msg);
+                    setTableData({ loading: true, data: [] });
+
                 }
             })
             .catch((error) => {

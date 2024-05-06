@@ -147,7 +147,6 @@ class MessageController {
         };
 
 
-        console.log("HIII")
 
         const pipeline = [
           { $match: matchCondition },

@@ -138,15 +138,14 @@ const MainSignalsRemainToken = async () => {
     const result = await MainSignals_modal.aggregate(pipeline)
     
      result.forEach(async(element) => {
-    
-     console.log("element ",element.token , "exch_seg" ,element.exch_seg)   
+     
     
     const filter = { _id: element.token };
     const update = {
         $set: { _id: element.token, exch: element.exch_seg },
     };
     const update_token = await token_chain_collection.updateOne(filter, update, { upsert: true });
-    //console.log("update_token",update_token)
+
     });
     
     
@@ -161,7 +160,6 @@ const MainSignalsRemainToken = async () => {
       
       const TruncateTableTokenChainAdd_fiveMinute = async () => {
       
-          // console.log("TESTTTTT")
          
            const drop = await db_main.collection('token_chain').deleteMany({}); 
            
@@ -178,7 +176,6 @@ const MainSignalsRemainToken = async () => {
 
 const TruncateTableTokenChainAdd = async () => {
 
-// console.log("TESTTTTT")
 
     const drop = await db_main.collection('token_chain').deleteMany({}); 
     
@@ -806,7 +803,7 @@ const TokenSymbolUpdate = () => {
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
                     var Update_Stock_chain = await Alice_token.updateOne(filter, updateOperation, { upsert: true });
-                    console.log("Update_Stock_chain",Update_Stock_chain)
+                 
 
                 } else if (element.instrumenttype == 'FUTIDX' && element.exch_seg == "NFO") {
 
@@ -1292,7 +1289,6 @@ const AccelpixTokenUpdate = async () => {
 
         })
         .catch((error) => {
-            console.log(error);
         });
 }
 
