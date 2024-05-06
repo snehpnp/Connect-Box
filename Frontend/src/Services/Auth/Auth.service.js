@@ -211,6 +211,23 @@ export async function PasswordChange(data,token) {
 // }
 
 
+// change password
+
+
+export async function PasswordChange(data,token) {
+    try {
+        const res = await axios.post(`${Config.base_url}PasswordChanged`, data, {
+           
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return err
+
+    }
+
+}
 
 
 

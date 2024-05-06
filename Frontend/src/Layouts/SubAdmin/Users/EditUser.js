@@ -336,7 +336,7 @@ const AddClient = () => {
 
             })
             .catch((error) => {
-              console.log("Error in Update User", error);
+              
             });
         } else if (result.isDenied) {
 

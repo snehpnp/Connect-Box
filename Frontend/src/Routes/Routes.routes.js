@@ -25,7 +25,6 @@ const Routing = () => {
     const user_details = JSON.parse(localStorage.getItem("user_details"));
 
     useEffect(() => {
-        console.log("location.pathname",location.pathname)
         if (location.pathname.startsWith("/updatepassword")) {
             navigate(location.pathname);
             return;

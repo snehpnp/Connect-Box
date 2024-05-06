@@ -107,9 +107,8 @@ export async function ConnctSocket_user(userId1, userSession1) {
             uid: userId1 + "_" + "API",
             source: "API"
         }
-        console.log("initCon",initCon)
         socket.send(JSON.stringify(initCon))
-        console.log("inside ",socket)
+    
         return socket
     }
     

@@ -22,19 +22,43 @@ class Userinfo {
         return res.send({ status: false, msg: "Please Enter Id", data: [] });
       }
 
-      const UserInfo = await User_model.find({ _id: subid }).select('broker api_secret TradingStatus app_id api_key app_key api_type demat_userid access_token')
+      let UserInfo = await User_model.find({ _id: subid }).select('Role parent_id broker api_secret TradingStatus app_id api_key app_key api_type demat_userid access_token')
 
       // IF DATA NOT EXIST
       if (UserInfo.length == 0) {
         return res.send({ status: false, msg: "Empty data", data: [] });
       }
 
-      // DATA GET SUCCESSFULLY
-      res.send({
-        status: true,
-        msg: "Get User",
-        data: UserInfo,
-      });
+      if (UserInfo[0].Role == "USER" && UserInfo[0].broker == '2') {
+
+
+        const ParentInfo = await User_model.findOne({ _id: UserInfo[0].parent_id }).select('Role parent_id broker api_secret TradingStatus app_id api_key app_key api_type demat_userid access_token')
+        
+        UserInfo[0].api_key = ParentInfo.api_key
+        
+
+        // DATA GET SUCCESSFULLY
+        return res.send({
+          status: true,
+          msg: "Get User",
+          data: UserInfo,
+        });
+
+      } else {
+        // DATA GET SUCCESSFULLY
+        return res.send({
+          status: true,
+          msg: "Get User",
+          data: UserInfo,
+        });
+      }
+
+
+
+
+
+
+
     } catch (error) {
       console.log("Error get UserInfo error -", error);
     }
@@ -133,15 +157,16 @@ class Userinfo {
 
   async Update_User_Broker_Keys(req, res) {
     try {
-      var userdata = req.body.data;
-      var _id = req.body.id;
+
+
+      var userdata = req.body.req.data;
+      var _id = req.body.req.id;
 
       var findUser = await User_model.find({ _id: new ObjectId(_id) })
 
       if (!findUser) {
         return res.send({ status: false, msg: "Id not match", data: [] });
       }
-      console.log("userdata",userdata)
 
       const filter = { _id: _id };
       const updateOperation = { $set: userdata };
@@ -149,18 +174,17 @@ class Userinfo {
       if (!result) {
         return res.send({ status: false, msg: "Key not update", data: [] });
       }
-      console.log("result",result)
 
       return res.send({
         status: true,
         msg: "Update Keys  Successfully.",
         data: [],
       });
-    
-  } catch(error) {
-    console.log("Error Theme error-", error);
+
+    } catch (error) {
+      console.log("Error Theme error-", error);
+    }
   }
-}
 
 
 
