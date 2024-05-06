@@ -30,6 +30,8 @@ function Edit_Strategies() {
     data: [],
   });
 
+  var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
+
 
 
   const fetchData = async () => {
@@ -69,7 +71,7 @@ function Edit_Strategies() {
   }, []);
 
 
-  console.log("-=====", allStrategy)
+ 
 
   const fields = [
     {
@@ -85,16 +87,16 @@ function Edit_Strategies() {
       label: "Category",
       type: "select",
       options: [
-          { label: "Low Risk", value: "Low Risk" },
-          { label: "Medium Risk", value: "Medium Risk" },
-          { label: "High Risk", value: "High Risk" },
+        { label: "Low Risk", value: "Low Risk" },
+        { label: "Medium Risk", value: "Medium Risk" },
+        { label: "High Risk", value: "High Risk" },
       ],
       label_size: 12,
       col_size: 6,
       disable: allStrategy && allStrategy.researcher_id != null,
-      
-  },
-     
+
+    },
+
     {
       name: "strategy_demo_days",
       label: "Strategy Demo Days",
@@ -102,7 +104,7 @@ function Edit_Strategies() {
       label_size: 12,
       col_size: 6,
       disable: allStrategy && allStrategy.researcher_id != null,
-      showWhen: (values) => allStrategy && allStrategy.researcher_id == null 
+      showWhen: (values) => allStrategy && allStrategy.researcher_id == null
     },
     {
       name: "strategy_segment",
@@ -124,7 +126,7 @@ function Edit_Strategies() {
       label_size: 12,
       col_size: 6,
       disable: allStrategy && allStrategy.researcher_id != null,
-      showWhen: (values) => allStrategy && allStrategy.researcher_id == null 
+      showWhen: (values) => allStrategy && allStrategy.researcher_id == null
     },
     {
       name: "strategy_tester",
@@ -133,7 +135,7 @@ function Edit_Strategies() {
       label_size: 12,
       col_size: 6,
       disable: allStrategy && allStrategy.researcher_id != null,
-      showWhen: (values) => allStrategy && allStrategy.researcher_id == null 
+      showWhen: (values) => allStrategy && allStrategy.researcher_id == null
     },
     {
       name: "strategy_image",
@@ -142,7 +144,7 @@ function Edit_Strategies() {
       label_size: 12,
       col_size: 6,
       disable: allStrategy && allStrategy.researcher_id != null,
-      showWhen: (values) => allStrategy && allStrategy.researcher_id == null 
+      showWhen: (values) => allStrategy && allStrategy.researcher_id == null
     },
     {
       name: "max_trade",
@@ -153,62 +155,134 @@ function Edit_Strategies() {
       disable: allStrategy && allStrategy.researcher_id != null,
     },
     {
-      name: "strategy_amount_month",
-      label: "Monthly",
-      type: "text5",
-      label_size: 3,
-      col_size: 3,
-      disable: false,
-    },
-    {
-      name: "strategy_amount_quarterly",
-      label: "Quaterly",
-      type: "text5",
-      label_size: 3,
-      col_size: 3,
-      disable: false,
-    },
-    {
-      name: "strategy_amount_half_early",
-      label: "Half Yearly",
-      type: "text5",
-      label_size: 3,
-      col_size: 3,
-      disable: false,
-    },
-    {
-      name: "strategy_amount_early",
-      label: "Yearly",
-      type: "text5",
-      label_size: 3,
-      col_size: 3,
-      disable: false,
-    },
-    {
       name: "Service_Type",
       label: "Service Type",
       type: "test",
       label_size: 12,
       col_size: 12,
       disable: false,
+  },
+    {
+      name: "security_fund",
+      label: "Strategy Plan",
+      type: 'security',
+      showWhen: (values) => formik.values.Service_Type == 1,
+    },
+    {
+      name: "security_fund",
+      label: "Security fund",
+      type: 'security',
+      showWhen: (values) => formik.values.Service_Type == 2,
+    },
+    {
+      name: "security_fund_month",
+      label: "Monthly",
+      type: "text3",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
+      showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+
+    },
+    {
+      name: "security_fund_quarterly",
+      label: "Quaterly",
+      type: "text3",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
+      showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+
+    },
+    {
+      name: "security_fund_half_early",
+      label: "Half Yearly",
+      type: "text3",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
+      showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+
+    },
+    {
+      name: "security_fund_early",
+      label: "Yearly",
+      type: "text3",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
+      showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+
+    },
+    {
+      name: "security_fund_fixed",
+      label: "Per trade fixed amount",
+      type: 'security',
+      showWhen: (values) => formik.values.Service_Type == 2,
+
+    },
+    {
+      name: "fixed_amount_per_trade_month",
+      label: "Monthly",
+      type: "text3",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
+      showWhen: (values) => formik.values.Service_Type == 2,
+
+    },
+    {
+      name: "fixed_amount_per_trade_quarterly",
+      label: "Quaterly",
+      type: "text3",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
+      showWhen: (values) => formik.values.Service_Type == 2,
+
+    },
+    {
+      name: "fixed_amount_per_trade_half_early",
+      label: "Half Yearly",
+      type: "text3",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
+      showWhen: (values) => formik.values.Service_Type == 2,
+
+    },
+    {
+      name: "fixed_amount_per_trade_early",
+      label: "Yearly",
+      type: "text3",
+      label_size: 3,
+      col_size: 3,
+      disable: false,
+      showWhen: (values) => formik.values.Service_Type == 2,
+
     },
   ];
 
   const formik = useFormik({
     initialValues: {
-      strategy_name: "",
-      strategy_category: "",
-      strategy_segment: "",
-      strategy_tester: "",
-      strategy_indicator: "",
-      strategy_image: "",
-      strategy_description: "",
-      strategy_amount_month: "",
-      strategy_amount_quarterly: "",
-      strategy_amount_half_early: "",
-      strategy_amount_early: "",
-      strategy_demo_days: "",
-      Service_Type: ''
+      strategy_name: '',
+      strategy_category: '',
+      strategy_segment: '',
+      strategy_tester: '',
+      strategy_indicator: '',
+      strategy_image: '',
+      strategy_description: '',
+      security_fund_month: '',
+      security_fund_quarterly: '',
+      security_fund_half_early: '',
+      security_fund_early: '',
+      fixed_amount_per_trade_month: '',
+      fixed_amount_per_trade_quarterly: '',
+      fixed_amount_per_trade_half_early: '',
+      fixed_amount_per_trade_early: '',
+      strategy_demo_days: '',
+      Service_Type: "",
+      max_trade: '',
     },
     validate: (values) => {
       let errors = {};
@@ -224,23 +298,47 @@ function Edit_Strategies() {
       if (!values.strategy_segment) {
         errors.strategy_segment = "strategy segment is required";
       }
-
-      if (!values.strategy_amount_month) {
-        errors.strategy_amount_month = "amount is required";
-      }
-      if (!values.strategy_amount_quarterly) {
-        errors.strategy_amount_quarterly = "amount is required";
-      }
-      if (!values.strategy_amount_half_early) {
-        errors.strategy_amount_half_early = "amount is required";
+      if (!values.max_trade) {
+        errors.max_trade = "Please enter maximum trade";
       }
 
-      if (!values.strategy_amount_early) {
-        errors.strategy_amount_early = "amount is required";
+      if (subadmin_service_type == 1 && !values.security_fund_month) {
+        errors.security_fund_month = "amount is required";
       }
+      if (subadmin_service_type == 1 && !values.security_fund_quarterly) {
+        errors.security_fund_quarterly = "amount is required";
+      }
+      if (subadmin_service_type == 1 && !values.security_fund_half_early) {
+        errors.security_fund_half_early = "amount is required";
+      }
+
+      if (subadmin_service_type == 1 && !values.security_fund_early) {
+        errors.security_fund_early = "amount is required";
+      }
+
+      if (subadmin_service_type == 1 && !values.security_fund_early) {
+        errors.security_fund_early = "amount is required";
+      }
+      if (subadmin_service_type == 1 && !values.fixed_amount_per_trade_month) {
+        errors.fixed_amount_per_trade_month = "amount is required";
+      }
+      if (subadmin_service_type == 1 && !values.fixed_amount_per_trade_quarterly) {
+        errors.fixed_amount_per_trade_quarterly = "amount is required";
+      }
+      if (subadmin_service_type == 1 && !values.fixed_amount_per_trade_early) {
+        errors.fixed_amount_per_trade_early = "amount is required";
+      }
+      if (subadmin_service_type == 1 && !values.fixed_amount_per_trade_half_early) {
+        errors.fixed_amount_per_trade_half_early = "amount is required";
+
+      }
+
       return errors;
+
+
     },
-    onSubmit: async (values) => {
+    onSubmit: async (values, { resetForm }) => {
+
       const data = {
         _id: id,
         strategy_name: values.strategy_name,
@@ -251,17 +349,19 @@ function Edit_Strategies() {
         strategy_indicator: values.strategy_indicator,
         strategy_image: values.strategy_image,
         strategy_description: getStgDescription,
-        strategy_amount_month: values.strategy_amount_month,
-        strategy_amount_quarterly: values.strategy_amount_quarterly,
-        strategy_amount_half_early: values.strategy_amount_half_early,
-        strategy_amount_early: values.strategy_amount_early,
+        security_fund_month: values.security_fund_month,
+        security_fund_quarterly: values.security_fund_quarterly,
+        security_fund_half_early: values.security_fund_half_early,
+        security_fund_early: values.security_fund_early,
+        fixed_amount_per_trade_month: values.fixed_amount_per_trade_month,
+        fixed_amount_per_trade_quarterly: values.fixed_amount_per_trade_quarterly,
+        fixed_amount_per_trade_half_early: values.fixed_amount_per_trade_half_early,
+        fixed_amount_per_trade_early: values.fixed_amount_per_trade_early,
         maker_id: makerId.user_id,
         max_trade: values.max_trade,
         Role: "SUBADMIN",
         Service_Type: values.Service_Type == '' ? 0 : values.Service_Type
       };
-
-      console.log("cp :", data)
 
       await dispatch(EditSubStrategys(data))
         .unwrap()
@@ -292,10 +392,14 @@ function Edit_Strategies() {
       formik.setFieldValue("max_trade", allStrategy.max_trade);
       formik.setFieldValue("strategy_indicator", allStrategy.strategy_indicator);
       formik.setFieldValue("strategy_image", allStrategy.strategy_image);
-      formik.setFieldValue("strategy_amount_month", allStrategy.strategy_amount_month);
-      formik.setFieldValue("strategy_amount_quarterly", allStrategy.strategy_amount_quarterly);
-      formik.setFieldValue("strategy_amount_half_early", allStrategy.strategy_amount_half_early);
-      formik.setFieldValue("strategy_amount_early", allStrategy.strategy_amount_early);
+      formik.setFieldValue("security_fund_month", allStrategy.security_fund_month);
+      formik.setFieldValue("security_fund_quarterly", allStrategy.security_fund_quarterly);
+      formik.setFieldValue("security_fund_half_early", allStrategy.security_fund_half_early);
+      formik.setFieldValue("security_fund_early", allStrategy.security_fund_early);
+      formik.setFieldValue("fixed_amount_per_trade_month", allStrategy.fixed_amount_per_trade_month);
+      formik.setFieldValue("fixed_amount_per_trade_quarterly", allStrategy.fixed_amount_per_trade_quarterly);
+      formik.setFieldValue("fixed_amount_per_trade_half_early", allStrategy.fixed_amount_per_trade_half_early);
+      formik.setFieldValue("fixed_amount_per_trade_early", allStrategy.fixed_amount_per_trade_early);
       formik.setFieldValue("strategy_demo_days", allStrategy.strategy_demo_days);
     }
   }, [allStrategy]);

@@ -23,10 +23,14 @@ class strategy {
         strategy_tester,
         strategy_amount,
         strategy_image,
-        strategy_amount_month,
-        strategy_amount_quarterly,
-        strategy_amount_half_early,
-        strategy_amount_early,
+        security_fund_month,
+        security_fund_quarterly,
+        security_fund_half_early,
+        security_fund_early,
+        fixed_amount_per_trade_early,
+        fixed_amount_per_trade_month,
+        fixed_amount_per_trade_quarterly,
+        fixed_amount_per_trade_half_early,
         maker_id,
         Service_Type,
         max_trade,
@@ -116,10 +120,14 @@ class strategy {
         strategy_tester: strategy_tester,
         strategy_amount: strategy_amount,
         strategy_image: strategy_image,
-        strategy_amount_month: strategy_amount_month,
-        strategy_amount_quarterly: strategy_amount_quarterly,
-        strategy_amount_half_early: strategy_amount_half_early,
-        strategy_amount_early: strategy_amount_early,
+        security_fund_month: security_fund_month,
+        security_fund_quarterly: security_fund_quarterly,
+        security_fund_half_early: security_fund_half_early,
+        security_fund_early: security_fund_early,
+        fixed_amount_per_trade_month: fixed_amount_per_trade_month,
+        fixed_amount_per_trade_quarterly: fixed_amount_per_trade_quarterly,
+        fixed_amount_per_trade_half_early: fixed_amount_per_trade_half_early,
+        fixed_amount_per_trade_early: fixed_amount_per_trade_early,
         maker_id: maker_id_find._id,
         Service_Type: Service_Type,
         max_trade: max_trade || null,
@@ -166,10 +174,14 @@ class strategy {
         strategy_tester,
         strategy_amount,
         strategy_image,
-        strategy_amount_month,
-        strategy_amount_quarterly,
-        strategy_amount_half_early,
-        strategy_amount_early,
+        security_fund_month,
+        security_fund_quarterly,
+        security_fund_half_early,
+        security_fund_early,
+        fixed_amount_per_trade_early,
+        fixed_amount_per_trade_month,
+        fixed_amount_per_trade_quarterly,
+        fixed_amount_per_trade_half_early,
         maker_id,
         Service_Type,
         max_trade,
@@ -256,7 +268,7 @@ class strategy {
         });
       }
 
-     
+
 
       const filter = { _id: _id };
       const update_strategy = {
@@ -270,10 +282,14 @@ class strategy {
           strategy_tester: strategy_tester,
           strategy_amount: strategy_amount,
           strategy_image: strategy_image,
-          strategy_amount_month: strategy_amount_month,
-          strategy_amount_quarterly: strategy_amount_quarterly,
-          strategy_amount_half_early: strategy_amount_half_early,
-          strategy_amount_early: strategy_amount_early,
+          security_fund_month: security_fund_month,
+          security_fund_quarterly: security_fund_quarterly,
+          security_fund_half_early: security_fund_half_early,
+          security_fund_early: security_fund_early,
+          fixed_amount_per_trade_month: fixed_amount_per_trade_month,
+          fixed_amount_per_trade_quarterly: fixed_amount_per_trade_quarterly,
+          fixed_amount_per_trade_half_early: fixed_amount_per_trade_half_early,
+          fixed_amount_per_trade_early: fixed_amount_per_trade_early,
           maker_id: maker_id_find._id,
           Service_Type: Service_Type,
           max_trade: max_trade || null,
@@ -289,10 +305,10 @@ class strategy {
       }
 
       return res.send({
-          status: true,
-          msg: "Strategy Edit successfully!",
-          data: result,
-        });
+        status: true,
+        msg: "Strategy Edit successfully!",
+        data: result,
+      });
     } catch (error) {
       console.log("Error Strategy Edit error -", error);
     }
@@ -338,7 +354,8 @@ class strategy {
           path: 'researcher_id',
           select: 'UserName',
         })
-        .select('_id strategy_name strategy_description strategy_demo_days strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early strategy_category strategy_segment strategy_image Service_Type maker_id createdAt updatedAt __v researcher_id');
+        .select(
+          '_id strategy_name strategy_description strategy_demo_days max_trade security_fund_month security_fund_quarterly security_fund_half_early security_fund_early fixed_amount_per_trade_early fixed_amount_per_trade_month fixed_amount_per_trade_quarterly fixed_amount_per_trade_half_early strategy_category strategy_segment strategy_image Service_Type maker_id createdAt updatedAt __v researcher_id');
 
 
       // IF DATA NOT EXIST
@@ -361,7 +378,7 @@ class strategy {
   // GET ALL STRATEGYS
   async GetAllSubadminStrategy(req, res) {
     try {
-      const { page, limit, id, key,Role } = req.body;
+      const { page, limit, id, key, Role } = req.body;
 
       const skip = (page - 1) * limit;
 
@@ -389,45 +406,45 @@ class strategy {
 
       } else if (key == 2) {
 
-        const findUser = await User.find({  _id: id }).select('prifix_key Role')
+        const findUser = await User.find({ _id: id }).select('prifix_key Role')
         const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
 
-        if(findUser[0].Role == "SUBADMIN"){
+        if (findUser[0].Role == "SUBADMIN") {
           const getAllstrategy = await strategy_model.find(
             { strategy_name: { $regex: '^' + prefix } } // Using regex to match the starting 3 letters
           )
             .sort({ createdAt: -1 })
             .select('_id strategy_name Service_Type');
-  
-  
-  
+
+
+
           // IF DATA NOT EXIST
           if (getAllstrategy.length == 0) {
             res.send({ status: false, msg: "Empty data", data: getAllstrategy });
             return;
           }
-  
+
           // DATA GET SUCCESSFULLY
           return res.send({
             status: true,
             msg: "Get All Startegy",
             data: getAllstrategy,
           });
-        }else if(findUser[0].Role == "RESEARCH"){
+        } else if (findUser[0].Role == "RESEARCH") {
           const getAllstrategy = await researcher_strategy.find(
-            { maker_id: findUser[0]._id } 
+            { maker_id: findUser[0]._id }
           )
             .sort({ createdAt: -1 })
             .select('_id strategy_name');
-  
-  
-  
+
+
+
           // IF DATA NOT EXIST
           if (getAllstrategy.length == 0) {
             res.send({ status: false, msg: "Empty data", data: getAllstrategy });
             return;
           }
-  
+
           // DATA GET SUCCESSFULLY
           return res.send({
             status: true,
@@ -436,7 +453,7 @@ class strategy {
           });
         }
 
-    
+
 
 
       } else {
@@ -505,12 +522,12 @@ class strategy {
       const { id } = req.body;
       // Retrieve strategies based on maker_id
       const getAllStrategies = await strategy_model.find({ maker_id: id }, "_id strategy_name");
-    
+
       // Check if data exists
       if (getAllStrategies.length === 0) {
         return res.send({ status: false, msg: "Empty data", data: getAllStrategies });
       }
-  
+
       // Data retrieval successful
       res.send({
         status: true,
@@ -522,7 +539,7 @@ class strategy {
       res.status(500).send({ status: false, msg: "Internal Server Error" });
     }
   }
-  
+
 
   // DELETE STRATEGY IN A COLLECTION
   async DeleteStragegy(req, res) {
@@ -797,7 +814,7 @@ class strategy {
         $addFields: {
           stg_active: {
             $cond: {
-              if: { $in: [new ObjectId(id), "$strategies.collaboration_id"] }, 
+              if: { $in: [new ObjectId(id), "$strategies.collaboration_id"] },
               then: 1,
               else: 0
             }
@@ -824,7 +841,7 @@ class strategy {
         }
       }
     ]);
-    
+
 
 
 
