@@ -3,6 +3,10 @@ import { useDispatch } from "react-redux";
 import { GetAllclientDetails, UPDATE_CLIENT_SERVICE_DATA } from '../../../ReduxStore/Slice/Users/ClientServiceSlice'
 import { SquarePen } from 'lucide-react';
 import Swal from 'sweetalert2';
+import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/Userinfo";
+import { loginWithApi } from "../../../Utils/log_with_api";
+import { ipAddress } from '../../../Utils/Ipaddress';
+
 
 function Clientservice() {
   const dispatch = useDispatch()
@@ -17,12 +21,14 @@ function Clientservice() {
     data: []
   })
 
+  const [ip, setIp] = useState(null);
 
   const [getLoginStatus, setLoginStatus] = useState(false)
   const [modal, setModal] = useState(false)
   const [showstrategy, setShowStretgy] = useState(false)
   const [refresh, setRefresh] = useState(false)
   const [searchInput, setSearchInput] = useState('');
+  const [profileData, setProfileData] = useState([]);
 
   const [data, setData] = useState({
     maxQty: '',
@@ -36,6 +42,81 @@ function Clientservice() {
 
   });
 
+
+  const fetchData = async () => {
+    try {
+        let data = { "id": user_id }
+
+        await dispatch(Userinfo(data))
+            .unwrap()
+            .then(async (response) => {
+                if (response.status) {
+                    setProfileData({
+                        loading: true,
+                        data: response.data
+                    })
+                    if (response.data[0].TradingStatus == 'on') {
+                        setLoginStatus(true)
+                    } else {
+                        setLoginStatus(false)
+                    }
+                } else {
+                }
+
+            })
+            .catch((error) => {
+                console.log("Error", error);
+            });
+
+
+
+    } catch (error) {
+
+    }
+};
+
+useEffect(() => {
+    fetchData();
+}, []);
+
+
+
+const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
+
+  if (check) {
+      loginWithApi(brokerid, UserDetails);
+
+  } else {
+      handleTradingOff(user_id);
+
+
+  }
+
+
+}
+
+
+
+
+ // LOGOUT TRADING 
+ const handleTradingOff = async (id) => {
+
+  let data = { id: id, system_ip: ip };
+
+  await dispatch(Trading_Off_Btn(data)).unwrap()
+      .then((response) => {
+          if (response.status) {
+              // toast.success("Trading off successfully");
+              setRefresh(!refresh);
+          }
+          else {
+              // toast.error("Trading Off Error")
+          }
+      }).catch((error) => {
+          console.log("Trading Off Error", error);
+      })
+
+}
 
 
 
@@ -169,7 +250,7 @@ function Clientservice() {
 
 
   const RefreshHandle = () => {
-    setRefresh(!refresh)
+    setRefresh(!refresh);
     setSearchInput('')
   }
 
@@ -177,6 +258,26 @@ function Clientservice() {
 
   const colors = ["navy", "teal", "green", "crimson", "musturd", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson", "navy", "teal", "green", "crimson"];
 
+
+
+    // FIND IP ADDRESS
+    useEffect(() => {
+      const fetchIP = async () => {
+          try {
+              const ip = await ipAddress();
+              setIp(ip);
+          } catch (error) {
+              console.error('Failed to fetch IP address:', error);
+          }
+      };
+
+      fetchIP();
+
+      // Clean up function
+      return () => {
+
+      };
+  }, []);
 
   return (
     <>
@@ -202,7 +303,11 @@ function Clientservice() {
                           id="1"
                           className="check"
                           type="checkbox"
-                          onChange={() => setLoginStatus(prevState => !prevState)}
+                          onChange={(e) => LogIn_WIth_Api(e.target.checked,
+                            profileData.data[0].broker,
+                            profileData.data[0].TradingStatus,
+                            profileData.data[0])
+                          }
                           checked={getLoginStatus}
                           style={{ marginRight: '5px' }}
                         />

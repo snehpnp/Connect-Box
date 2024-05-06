@@ -8,7 +8,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 client.connect();
 
-const db = client.db(process.env.DB_NAME); // Replace with your actual database name
+const db = client.db(process.env.DB_NAME); 
 
 
 async function createViewAlice() {
