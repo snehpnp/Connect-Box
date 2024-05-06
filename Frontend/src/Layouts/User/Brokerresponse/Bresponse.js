@@ -240,13 +240,13 @@ export default function BrokerResponse() {
                             // onHide={handleClose}
                             handleClose={() => setshowModal(false)}
                         >
-                         
 
-                            <div className='table-responsive'>
+
+                            <div>
                                 <table className="tg">
                                     <thead>
                                         <tr>
-                                            <th className="tg-0lax" style={{width:"250px"}}>Created At</th>
+                                            <th className="tg-0lax" style={{ width: "250px" }}>Created At</th>
                                             <th className="tg-0lax">{fDateTimeSuffix(borkerData.createdAt)}</th>
                                         </tr>
                                     </thead>
