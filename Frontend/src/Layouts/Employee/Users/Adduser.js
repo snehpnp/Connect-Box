@@ -178,6 +178,8 @@ const AddClient = () => {
 
   ];
 
+
+
   const formik = useFormik({
     initialValues: {
       fullName: "",
@@ -279,6 +281,9 @@ const AddClient = () => {
         });
     },
   });
+
+
+  console.log("formik.value.groupservice :", formik.values.groupservice)
 
   const getpermission = async () => {
     const data = { id: user_id }
