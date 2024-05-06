@@ -33,6 +33,8 @@ module.exports = {
     makecallABR:require("./makecallABR.model"),
     researcher_strategy :require('./researcher_strategy.modal'),
     strategy_Order :require('./Strategy_order.model'),
-    FAQ: require("./FAQ.model")
+    FAQ: require("./FAQ.model"),
+    Broker_information: require('./Broker_information.model'),
+    BrokerResponse: require('./broker_response.model'),
 
 };
