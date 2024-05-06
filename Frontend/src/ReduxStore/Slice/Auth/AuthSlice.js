@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { SIGN_IN_USER , SIGN_UP_USER,PasswordChange, FORGET_PASSWORD} from "../../../Services/Auth/Auth.service";
+import { SIGN_IN_USER , SIGN_UP_USER,PasswordChange, FORGET_PASSWORD,resetPassword} from "../../../Services/Auth/Auth.service";
 
 
 
@@ -138,6 +138,19 @@ export const ChangedPassword = createAsyncThunk("Password change", async (data) 
 
 
 
+export const UpdatePassword = createAsyncThunk("update password", async (data) => {
+  try {
+    const res = await resetPassword(data);
+     
+    return await res;
+  } catch (err) {
+    return err;
+  }
+});
+
+
+
+
 const AuthSlice = createSlice({
   name: "AuthSlice",
   initialState: {
@@ -147,6 +160,7 @@ const AuthSlice = createSlice({
     signup_user : null,
     ChangedPassword:null,
     ForgetPassword:null,
+    UpdatePassword:null,
      
   },
 
@@ -185,6 +199,16 @@ const AuthSlice = createSlice({
         state.ForgetPassword = action.payload;
       })
       .addCase(ForgetPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      }).addCase(UpdatePassword.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(UpdatePassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.UpdatePassword = action.payload;
+      })
+      .addCase(UpdatePassword.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       })

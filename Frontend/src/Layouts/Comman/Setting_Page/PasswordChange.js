@@ -7,7 +7,6 @@ const PasswordChange = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user_details"));
 
- 
   const [password, setPassword] = useState({
     CurrentPassword: "",
     NewPassword: "",
@@ -25,14 +24,14 @@ const PasswordChange = () => {
           ConfirmNewPassword: password.ConfirmNewPassword,
         })
       ).unwrap();
-      
+
       if (response.success) {
         setPassword({
-          CurrentPassword:"",
+          CurrentPassword: "",
           NewPassword: "",
-          ConfirmNewPassword:"",
-        }); 
-        
+          ConfirmNewPassword: "",
+        });
+
         Swal.fire({
           title: "Password Changed",
           icon: "success",
@@ -53,12 +52,15 @@ const PasswordChange = () => {
       });
     }
   };
-  
-  
+
   return (
     <div>
       <div className="cardStyle">
-        <form onSubmit={handleSubmit} name="passwordChangeForm" id="passwordChangeForm">
+        <form
+          onSubmit={handleSubmit}
+          name="passwordChangeForm"
+          id="passwordChangeForm"
+        >
           <h5 className="formTitle">Change Password</h5>
           <div className="inputDiv">
             <label className="inputLabel" htmlFor="currentPassword">
@@ -76,7 +78,7 @@ const PasswordChange = () => {
             />
           </div>
           <div className="inputDiv">
-            <label className="inputLabel" htmlFor="newPassword" >
+            <label className="inputLabel" htmlFor="newPassword">
               New Password
             </label>
             <input

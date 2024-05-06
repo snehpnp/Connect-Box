@@ -214,9 +214,9 @@ function Payment() {
                               <h4 style={{ marginBottom: '0', fontSize: '1.25rem', color: '#333' }}>Wallet</h4>
                               <span style={{ color: '#777', fontSize: '0.875rem' }}>Manage your funds</span>
                             </div>
-                            <button className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '1rem', backgroundColor: '#007bff', border: 'none', borderRadius: '5px', color: '#fff', fontWeight: 'bold', cursor: 'pointer' }}>
+                            {/* <button className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '1rem', backgroundColor: '#007bff', border: 'none', borderRadius: '5px', color: '#fff', fontWeight: 'bold', cursor: 'pointer' }}>
                               <i className="fe fe-plus-circle" style={{ marginRight: '5px' }} /> Add Funds
-                            </button>
+                            </button> */}
                           </div>
                         </div>
                       </div>

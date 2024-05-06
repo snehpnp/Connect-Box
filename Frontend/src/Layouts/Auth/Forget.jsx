@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { ForgetPassword } from '../../ReduxStore/Slice/Auth/AuthSlice';
+import { Link } from 'react-router-dom';
 import Swal from "sweetalert2";
 
 const Forget = () => {
@@ -74,7 +75,12 @@ const Forget = () => {
                       <div className="add-customer-btns d-flex justify-content-between text-end mt-3">
                         <button className="btn customer-btn-save" onClick={handleForget}>
                           Send
+                          
                         </button>
+                      
+                        <Link to="/login"  className="btn customer-btn-save" >Back</Link>
+                          
+                       
                       </div>
                     </div>
                   </div>

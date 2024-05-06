@@ -13,7 +13,6 @@ export async function GET_PERMISSION(data) {
         return await res?.data
     }
     catch (err) {
-        console.log("err", err);
         return await err;
 
     }
