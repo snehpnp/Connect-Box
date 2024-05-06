@@ -45,78 +45,81 @@ function Clientservice() {
 
   const fetchData = async () => {
     try {
-        let data = { "id": user_id }
+      let data = { "id": user_id }
 
-        await dispatch(Userinfo(data))
-            .unwrap()
-            .then(async (response) => {
-                if (response.status) {
-                    setProfileData({
-                        loading: true,
-                        data: response.data
-                    })
-                    if (response.data[0].TradingStatus == 'on') {
-                        setLoginStatus(true)
-                    } else {
-                        setLoginStatus(false)
-                    }
-                } else {
-                }
-
+      await dispatch(Userinfo(data))
+        .unwrap()
+        .then(async (response) => {
+          if (response.status) {
+            setProfileData({
+              loading: true,
+              data: response.data
             })
-            .catch((error) => {
-                console.log("Error", error);
-            });
+            if (response.data[0].TradingStatus == 'on') {
+              setLoginStatus(true)
+            } else {
+              setLoginStatus(false)
+            }
+          } else {
+          }
+
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
 
 
 
     } catch (error) {
 
     }
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     fetchData();
-}, []);
+  }, []);
 
 
 
-const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
+  const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
 
-  if (check) {
+    if (check) {
       loginWithApi(brokerid, UserDetails);
 
-  } else {
+    } else {
       handleTradingOff(user_id);
+
+
+    }
 
 
   }
 
 
-}
 
 
+  // LOGOUT TRADING 
+  const handleTradingOff = async (id) => {
 
+    let data = { id: id, system_ip: ip };
 
- // LOGOUT TRADING 
- const handleTradingOff = async (id) => {
-
-  let data = { id: id, system_ip: ip };
-
-  await dispatch(Trading_Off_Btn(data)).unwrap()
+    await dispatch(Trading_Off_Btn(data)).unwrap()
       .then((response) => {
-          if (response.status) {
-              // toast.success("Trading off successfully");
-              setRefresh(!refresh);
-          }
-          else {
-              // toast.error("Trading Off Error")
-          }
+        if (response.status) {
+          Swal.fire({
+            title: 'Trading Off Successfully!',
+            icon: 'success',
+            html: 'Your trading has been successfully completed.',
+          });
+          setRefresh(!refresh);
+        }
+        else {
+        }
       }).catch((error) => {
-          console.log("Trading Off Error", error);
+        console.log("Trading Off Error", error);
       })
 
-}
+  }
 
 
 
@@ -260,23 +263,23 @@ const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
 
 
 
-    // FIND IP ADDRESS
-    useEffect(() => {
-      const fetchIP = async () => {
-          try {
-              const ip = await ipAddress();
-              setIp(ip);
-          } catch (error) {
-              console.error('Failed to fetch IP address:', error);
-          }
-      };
+  // FIND IP ADDRESS
+  useEffect(() => {
+    const fetchIP = async () => {
+      try {
+        const ip = await ipAddress();
+        setIp(ip);
+      } catch (error) {
+        console.error('Failed to fetch IP address:', error);
+      }
+    };
 
-      fetchIP();
+    fetchIP();
 
-      // Clean up function
-      return () => {
+    // Clean up function
+    return () => {
 
-      };
+    };
   }, []);
 
   return (
