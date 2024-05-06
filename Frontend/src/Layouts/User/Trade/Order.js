@@ -51,8 +51,8 @@ export default function AllEmployees() {
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
-    const [profileData, setProfileData] = useState([]);
-
+    const [fromDate, setFromDate] = useState('');
+    const [toDate, setToDate] = useState('');
     const [inputSearch, SetInputSearch] = useState('');
     const [getLoginStatus, setLoginStatus] = useState({
         loading: false,
@@ -60,42 +60,7 @@ export default function AllEmployees() {
     })
 
 
-    const fetchData = async () => {
-        try {
-            let data = { "id": user_id }
 
-            await dispatch(Userinfo(data))
-                .unwrap()
-                .then(async (response) => {
-                    if (response.status) {
-                        setProfileData({
-                            loading: true,
-                            data: response.data
-                        })
-                        if (response.data[0].TradingStatus == 'on') {
-                            setLoginStatus(true)
-                        } else {
-                            setLoginStatus(false)
-                        }
-                    } else {
-                        toast.error(response.msg);
-                    }
-
-                })
-                .catch((error) => {
-                    console.log("Error", error);
-                });
-
-
-
-        } catch (error) {
-
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
 
 
     const handleTradingOff = async (id) => {
@@ -238,39 +203,19 @@ export default function AllEmployees() {
 
     return (
         <>
-            {tableData.loading ? (
-                <>
-                    <div className="content container-fluid" data-aos="fade-left">
+        {tableData.loading ? (
+            <>
+                <div className="content container-fluid" data-aos="fade-left">
 
-                        {/* PAGE HEADER */}
-                        <div className="card">
-                            <div className="card-header">
-                                <div className="row align-center">
-                                    <div className="col">
-                                <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Trade History</h5>
+                    <div className="card">
+                        <div className="card-header">
+                            <div className="row align-center">
+                                <div className="col">
+                                    <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Orders</h5>
                                 </div>
                                 <div className="col-auto">
-                                <div className="list-btn">
+                                    <div className="list-btn">
                                         <ul className="filter-list mb-0">
-
-                                            <li className="toggle-li">
-                                                <div className="status-toggle pe-2" style={{ display: 'flex', alignItems: 'center' }}>
-                                                    <span  className= {getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} >Trading Status</span>
-                                                    <input
-                                                        id="1"
-                                                        className="check"
-                                                        type="checkbox"
-                                                        onChange={(e) => LogIn_WIth_Api(e.target.checked,
-                                                            profileData.data[0].broker,
-                                                            profileData.data[0].TradingStatus,
-                                                            profileData.data[0])}
-                                                        defaultChecked={getLoginStatus}
-                                                        style={{ marginRight: '5px' }}
-                                                    />
-                                                    <label htmlFor="1" className="checktoggle checkbox-bg"></label>
-                                                </div>
-                                            </li>
-
 
                                             <li className="">
                                                 <p
@@ -286,7 +231,7 @@ export default function AllEmployees() {
                                                     </span>
                                                 </p>
                                             </li>
-                                            <li  className='serach-li'>
+                                            <li className='serach-li'>
                                                 <div className="input-group input-block">
 
                                                     <input
@@ -295,111 +240,70 @@ export default function AllEmployees() {
                                                         placeholder="Search..."
                                                         aria-label="Search"
                                                         aria-describedby="search-addon"
-                                                        onChange={(e) => SetInputSearch(e.target.value || '')}
-                                                        value={inputSearch}
+                                                        onChange={(e) => setSearchInput(e.target.value)}
+                                                        value={searchInput}
 
                                                     />
 
                                                 </div>
                                             </li>
                                             <li>
-                                                   
-                                                            <ExportToExcel
-                                                                className="btn btn-primary "
-                                                                apiData={ForGetCSV}
-                                                                fileName={'All Strategy'} />
-                                                        
-                                                        </li>
-                                                        </ul>
-                                                        </div>
-                                </div>
-                                </div>
-                                </div>
-                                <div className="card-body">
-                                    <div className="list-btn">
-                                        <ul className="filter-list">
-
-
-                                            <li>
-                                                <div className="input-group input-block align-items-center">
-                                                    <label className="mb-0 pe-3">From Date</label>
-                                                    <input
-                                                        type="date"
-                                                        className="form-control"
-                                                        placeholder="Search..."
-                                                        aria-label="Search"
-                                                        aria-describedby="search-addon"
-                                                        onChange={(e) => SetInputSearch(e.target.value || '')}
-                                                        value={inputSearch}
-                                                    />
-                                                </div>
-                                            </li>
-
-
-                                            <li className="select-100">
-
-                                                <select id="strategySelect" className="form-select ">
-                                                    <option value="">Select Symbol</option>
-                                                    <option value="1">Option 1</option>
-                                                    <option value="2">Option 2</option>
-                                                    <option value="3">Option 3</option>
-                                                    <option value="4">Option 4</option>
-                                                    <option value="5">Option 5</option>
-                                                </select>
+                                                <ExportToExcel
+                                                    className="btn btn-primary "
+                                                    apiData={ForGetCSV}
+                                                    fileName={'Order '} />
 
                                             </li>
-
-                                            <li className="select-100">
-
-                                                <select id="strategySelect" className="form-select ">
-                                                    <option value="">Select Strategy</option>
-                                                    <option value="1">Option 1</option>
-                                                    <option value="2">Option 2</option>
-                                                    <option value="3">Option 3</option>
-                                                    <option value="4">Option 4</option>
-                                                    <option value="5">Option 5</option>
-                                                </select>
-
-                                            </li>
-
-
-
-
-
-
-
-                                            <li>
-                                                <div
-                                                    className="dropdown dropdown-action"
-                                                    data-bs-toggle="tooltip"
-                                                    data-bs-placement="bottom"
-                                                    title="Download"
-                                                >
-                                                    
-                                                </div>
-                                            </li>
-
-
                                         </ul>
                                     </div>
                                 </div>
-                           
+                            </div>
+                        </div>
 
-                        
+                     <div className="card-body">
+                            <div className="row ">
+                                <div className="input-block col-lg-2 mt-3 mb-3">
+                                    <label>From Date</label>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        placeholder="Search..."
+                                        aria-label="Search"
+                                        aria-describedby="search-addon"
+                                        onChange={(e) => setFromDate(e.target.value)}
+                                        value={fromDate}
+                                    />
+                                </div>
+                                <div className="input-block col-lg-2 mt-3 mb-3">
+                                    <label>To Date</label>
+                                    <input
+                                        type="date"
+                                        className="form-control"
+                                        placeholder="Search..."
+                                        aria-label="Search"
+                                        aria-describedby="search-addon"
+                                        onChange={(e) => setToDate(e.target.value)}
+                                        value={toDate}
+                                    />
+                                </div>
+                            </div>
 
 
-                        <FullDataTable
-                            styles={styles}
-                            label={label}
-                            columns={columns}
-                            rows={tableData.data}
-                        />
+                            <FullDataTable
+                                styles={styles}
+                                label={label}
+                                columns={columns}
+                                rows={tableData.data}
+                            />
+                        </div>
                     </div>
-                    </div>
-                </>
-            ) : (
-                <Loader />
-            )}
-        </>
+ 
+
+                </div>
+            </>
+        ) : (
+            <Loader />
+        )}
+    </>
     );
 }

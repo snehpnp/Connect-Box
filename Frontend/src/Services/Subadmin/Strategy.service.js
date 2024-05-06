@@ -303,3 +303,21 @@ export async function Tradehistory_data(data, token) {
 
 
 }
+
+
+
+//Trade HISTORY Orders From SubAdmin
+export async function UserTradehistory_data(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}user/tradehistory`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+
+}
