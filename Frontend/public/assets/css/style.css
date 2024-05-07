@@ -34937,7 +34937,7 @@ a.user-a:hover span {
 }
 
 input {
-    height: 40px;
+
     font-size: 16px;
     border-radius: 4px;
     border: none;
@@ -35020,4 +35020,7 @@ input:disabled {
 .tg .tg-0lax {
     text-align: left;
     vertical-align: top
+}
+.postiontab{
+    border-bottom: 1px solid #7539ff;
 }
