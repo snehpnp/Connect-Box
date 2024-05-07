@@ -243,7 +243,7 @@ class SignalController {
           },
         ]);
 
-        console.log("subadminStgFind", subadminStgFind[0].strategyInfo);
+        // console.log("subadminStgFind", subadminStgFind[0].strategyInfo);
 
         // const resultUser = await Strategies.find({
         //   maker_id: ObjSubAdminId,
@@ -572,7 +572,7 @@ class SignalController {
           },
         ]);
 
-        console.log("subadminStgFind", subadminStgFind[0].strategyInfo);
+        // console.log("subadminStgFind", subadminStgFind[0].strategyInfo);S
         resultUser = subadminStgFind[0].strategyInfo;
 
 
