@@ -196,6 +196,7 @@ export default function AllUsers() {
             onClick={() => handleEdit(params.row)}
           >
             <EditIcon />
+          
           </IconButton>
          {params.row.license_type == 1 ? <IconButton
             aria-label="delete"
