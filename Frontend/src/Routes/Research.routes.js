@@ -11,8 +11,8 @@ import AllStrategy from '../Layouts/Researcher/Service/Strategys/Strategy'
 import Edit_Strategies from '../Layouts/Researcher/Service/Strategys/Edit_Strategies'
 import AllServices from '../Layouts/Researcher/Service/allService/AllServices'
 
-import Orders from '../Layouts/SubAdmin/Trade/Order'
-import Position from '../Layouts/SubAdmin/Trade/Position'
+import Orders from '../Layouts/Researcher/Trade/Order.js'
+import Position from '../Layouts/Researcher/Trade/Position.js'
 import OptionChain from '../Layouts/SubAdmin/Option/Option_Chain'
 import MakeCall from '../Layouts/Comman/Make/Makecall'
 import MessageBroadcast from '../Layouts/Researcher/MessageBroadcast/MessageBroadcast.js';
