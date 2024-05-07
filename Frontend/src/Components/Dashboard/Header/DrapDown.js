@@ -154,6 +154,9 @@ const DropDown = () => {
     } else if (Role == "EMPLOYEE") {
       navigate('/employee/setting')
     }
+    else if (Role == "RESEARCH") {
+      navigate('/research/setting')
+    }
 
   }
 

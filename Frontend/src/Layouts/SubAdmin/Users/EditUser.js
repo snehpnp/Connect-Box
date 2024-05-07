@@ -100,7 +100,7 @@ const AddClient = () => {
     {
       name: "phone",
       label: "Phone No",
-      type: "number",
+      type: "text3",
       label_size: 12,
       col_size: 6,
       disable: true,
