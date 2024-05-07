@@ -1394,6 +1394,7 @@ class Users {
           Service_Type: req.Service_Type,
           per_trade_value: req.per_trade_value,
           Balance: req.Balance,
+          add_balance: req.add_balance,
           Start_Date: existingUsername.license_type != 0 && req.license_type == 0 ? StartDate1 : null,
           End_Date: existingUsername.license_type != 0 && req.license_type == 0 ? EndDate1 : null,
           employee_id: req.employee_id

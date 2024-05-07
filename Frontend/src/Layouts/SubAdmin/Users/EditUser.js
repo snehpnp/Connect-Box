@@ -147,7 +147,16 @@ const AddClient = () => {
       label: "Balance",
       type: "text3",
       label_size: 12,
-      col_size: 6,
+      col_size: 3,
+      disable: true,
+      showWhen: (values) => subadmin_service_type1 == 1 && values.licence === "2" && formik.values.Service_Type == 2,
+    },
+    {
+      name: "add_balance",
+      label: "Add Balance",
+      type: "text3",
+      label_size: 12,
+      col_size: 3,
       disable: false,
       showWhen: (values) => subadmin_service_type1 == 1 && values.licence === "2" && formik.values.Service_Type == 2,
     },
@@ -216,7 +225,7 @@ const AddClient = () => {
       balance: 0,
       per_trade_value: null,
       Employees: null,
-
+      add_balance: 0,
     },
     validate: (values) => {
       let errors = {};
@@ -263,7 +272,8 @@ const AddClient = () => {
         ProfileImg: ".",
         FullName: values.fullName,
         license_type: values.licence,
-        Balance: values.balance || 0,
+        add_balance: values.add_balance,
+        Balance: values.balance + values.add_balance|| 0,
         Per_trade: null,
         Strategies: selectedCheckboxesAndPlan,
         parent_id: user_id,
@@ -275,7 +285,8 @@ const AddClient = () => {
         Service_Type: values.Service_Type,
         per_trade_value: values.per_trade_value || 0,
         _id: getOneUsers.getClients[0]._id,
-        employee_id:values.Employees || null
+        employee_id:values.Employees || null,
+      
 
       };
 
@@ -394,13 +405,9 @@ const AddClient = () => {
     formik.setFieldValue('balance', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Balance);
     formik.setFieldValue('demat_userid', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].demat_userid);
     formik.setFieldValue('Employees', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].employee_id);
+    
 
-
-
-
-
-
-
+ 
   }, [getOneUsers.getClients])
 
 
