@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetClientsOrderBy_Prefix,GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG,getOrders_data,EmployeeData,AddEmployeeBySub,DeleteEmployee,UpdateEmployee,get_Employee_Id,get_Employee_Status,GetAllStrategyFor_Employee,GetAllServicesForEmployee,StrategyPurchaseBySubadmin,strategyOrderUpdate,getTrade_data,UpdateTrade,Tradehistory_data,UserTradehistory_data} from "../../../Services/Subadmin/Strategy.service";
+import { GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG,getOrders_data,EmployeeData,AddEmployeeBySub,DeleteEmployee,UpdateEmployee,get_Employee_Id,get_Employee_Status,GetAllStrategyFor_Employee,GetAllServicesForEmployee,StrategyPurchaseBySubadmin,strategyOrderUpdate} from "../../../Services/Subadmin/Strategy.service";
 
 
 export const GetEmployeeServices= createAsyncThunk(
@@ -99,55 +99,6 @@ export const Employee_Details = createAsyncThunk(
 );
 
 
-
-
-export const ClientsOrders_Details = createAsyncThunk(
-    "client/Order",
-    async (data) => {
-        try {
-            const res = await GetClientsOrderBy_Prefix(data);
-            return res;
-        } catch (err) {
-            throw err;
-        }
-    }
-);
-export const Orders_Details = createAsyncThunk(
-    "orders/data",
-    async (data) => {
-        try {
-            const res = await getOrders_data(data);
-            return res;
-        } catch (err) {
-            throw err;
-        }
-    }
-);
-
-
-export const Trade_Details = createAsyncThunk(
-    "trade/data",
-    async (data) => {
-        try {
-            const res = await getTrade_data(data);
-            return res;
-        } catch (err) {
-            throw err;
-        }
-    }
-);
-
-export const Update_Signals = createAsyncThunk(
-    "update/trade",
-    async (data) => {
-        try {
-            const res = await UpdateTrade(data);
-            return res;
-        } catch (err) {
-            throw err;
-        }
-    }
-);
 
 
 export const EditSubStrategys = createAsyncThunk(
@@ -259,30 +210,8 @@ export const update_Stg_order = createAsyncThunk("strategy/order/update",
 );
 
 
-export const Trade_history_data = createAsyncThunk(
-    "tradehistory/data",
-    async (data) => {
-        try {
-            const res = await Tradehistory_data(data);
-            return res;
-        } catch (err) {
-            throw err;
-        }
-    }
-);
 
 
-export const User_Tradehistory_data = createAsyncThunk(
-    "user/tradehistory",
-    async (data) => {
-        try {
-            const res = await UserTradehistory_data(data);
-            return res;
-        } catch (err) {
-            throw err;
-        }
-    }
-);
 
 const StrategySlice = createSlice({
     name: "SystemSlice",
@@ -335,16 +264,7 @@ const StrategySlice = createSlice({
                 state.isLoading = false;
                 state.get_stretgy_with_img = action.payload;
             })
-            
-            .addCase(Orders_Details.fulfilled, (state, action) => {
-                state.isLoading = false;
-            })
-            .addCase(Trade_Details.fulfilled, (state, action) => {
-                state.isLoading = false;
-            })
-            .addCase(ClientsOrders_Details.fulfilled, (state, action) => {
-                state.isLoading = false;
-            })
+         
             .addCase(Employee_Details.fulfilled, (state, action) => {
                 state.isLoading = false;
             })
@@ -379,15 +299,9 @@ const StrategySlice = createSlice({
             .addCase(update_Stg_order.fulfilled, (state, action) => {
                 state.isLoading = false;
             })
-            .addCase(Update_Signals.fulfilled, (state, action) => {
-                state.isLoading = false;
-            })
-            .addCase(Trade_history_data.fulfilled, (state, action) => {
-                state.isLoading = false;
-            })
-            .addCase(User_Tradehistory_data.fulfilled, (state, action) => {
-                state.isLoading = false;
-            })
+     
+        
+          
     },
 });
 

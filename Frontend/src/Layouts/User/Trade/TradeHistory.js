@@ -7,7 +7,7 @@ import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
 import { Userinfo } from "../../../ReduxStore/Slice/Comman/Userinfo";
-import { User_Tradehistory_data } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { User_Tradehistory_data } from "../../../ReduxStore/Slice/Comman/Trades";
 import { ipAddress } from '../../../Utils/Ipaddress';
 import $ from "jquery";
 import { fDateTimeSuffix } from "../../../Utils/Date_formet";

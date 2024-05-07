@@ -191,13 +191,13 @@ export const subamdin_header = [
                 Icon: "fa-brands fa-first-order",
                 Data: []
             },
-            {
-                id: 63,
-                name: 'Client Orders',
-                route: "/subadmin/client/orders",
-                Icon: "fe fe-list",
-                Data: []
-            },
+            // {
+            //     id: 63,
+            //     name: 'Client Orders',
+            //     route: "/subadmin/client/orders",
+            //     Icon: "fe fe-list",
+            //     Data: []
+            // },
             {
                 id: 62,
                 name: 'Trade History',
@@ -504,32 +504,19 @@ export const research_header = [
     },
     {
         id: 6,
-        name: 'Trade',
+        name: 'Orders',
         Icon: "fe fe-shopping-cart",
-        Data: [
-            {
-                id: 61,
-                name: 'Orders',
-                route: "/research/orders",
-                Icon: "fe fe-list",
-                Data: []
-            },
-            {
-                id: 62,
-                name: 'Position',
-                route: "/research/position",
-                Icon: "fe fe-map-pin",
-                Data: []
-            }
-        ]
+        route: "/research/orders",
+        Data: []
+
     },
-    // {
-    //     id: 7,
-    //     name: 'Strategy History',
-    //     route: "/research/strategys/history",
-    //     Icon: "fe fe-credit-card",
-    //     Data: []
-    // },
+    {
+        id: 7,
+        name: 'Positions',
+        route: "/research/position",
+        Icon: "fe fe-credit-card",
+        Data: []
+    },
     {
         id: 17,
         name: 'Strategy Transaction',
@@ -595,4 +582,4 @@ export const research_header = [
         Data: []
     },
 
- ];
+];

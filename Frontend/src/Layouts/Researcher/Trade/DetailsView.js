@@ -1,6 +1,6 @@
 import React from 'react'
 import Modal from '../../../Components/ExtraComponents/Modal';
-import { fa_time, fDateTimeSuffix } from '../../../Utils/Date_formet'
+import {  fDateTimeSuffix } from '../../../Utils/Date_formet'
 import BasicDataTable from "../../../Components/ExtraComponents/Tables/DataTable";
 
 const DetailsView = ({ showModal, setshowModal, tradeHistoryData }) => {
@@ -52,12 +52,6 @@ const DetailsView = ({ showModal, setshowModal, tradeHistoryData }) => {
                 }
             }
         }
-
-
-
-        console.log(mergedArray);
-
-
 
     }
 

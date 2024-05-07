@@ -60,10 +60,13 @@ class SignalController {
               exit_status: 1,
             },
           },
+          {
+            $sort: { createdAt: -1 },
+          },
         ];
 
         const results = await signals.aggregate(pipeline);
-        res.send({
+        return res.send({
           status: true,
           msg: "Data Retrieved Successfully",
           data: results,
@@ -109,6 +112,9 @@ class SignalController {
               token: 1,
               lot_size: 1,
             },
+          },
+          {
+            $sort: { createdAt: -1 },
           },
         ];
 
@@ -246,11 +252,7 @@ class SignalController {
           },
         ]);
 
-        // console.log("subadminStgFind", subadminStgFind[0].strategyInfo);
 
-        // const resultUser = await Strategies.find({
-        //   maker_id: ObjSubAdminId,
-        // }).select('strategy_name')
 
         if (!subadminStgFind[0].strategyInfo) {
           return res.status(404).send({
@@ -259,8 +261,6 @@ class SignalController {
           });
         }
 
-        // Extracting strategy names from resultUser array
-        // const strategyNames = resultUser.map(user => user.strategy_name);
 
         const pipeline = [
           {
@@ -288,15 +288,19 @@ class SignalController {
               exit_status: 1,
             },
           },
+          {
+            $sort: { createdAt: -1 },
+          },
         ];
 
         const results = await signals.aggregate(pipeline);
-        res.send({
+        return res.send({
           status: true,
           msg: "Data Retrieved Successfully",
           data: results,
         });
       }
+
     } catch (error) {
       console.log("Error retrieving data:", error);
       res.status(500).send({
@@ -305,6 +309,12 @@ class SignalController {
       });
     }
   }
+
+
+
+
+
+
 
 
 
@@ -484,11 +494,11 @@ class SignalController {
             msg: "User not found",
           });
         }
-  
-        // Extracting strategy names from resultUser array
-         strategyNames = resultUser.map((user) => user.strategy_name);
 
-      }  if (Role == "RESEARCH") {
+        // Extracting strategy names from resultUser array
+        strategyNames = resultUser.map((user) => user.strategy_name);
+
+      } if (Role == "RESEARCH") {
         Stg_col_name = "researcher_strategies"
         resultUser = await researcher_strategy.find({
           maker_id: ObjSubAdminId,
@@ -501,12 +511,12 @@ class SignalController {
             msg: "User not found",
           });
         }
-  
-        // Extracting strategy names from resultUser array
-         strategyNames = resultUser.map((user) => user.strategy_name);
-         console.log("researcher_strategy",strategyNames)
 
-      }  else if (Role === "EMPLOYEE") {
+        // Extracting strategy names from resultUser array
+        strategyNames = resultUser.map((user) => user.strategy_name);
+        console.log("researcher_strategy", strategyNames)
+
+      } else if (Role === "EMPLOYEE") {
         Stg_col_name = "strategies"
 
         let subadminStgFind = await Subadmin_Permission.aggregate([
@@ -551,9 +561,9 @@ class SignalController {
             msg: "User not found",
           });
         }
-  
+
         // Extracting strategy names from resultUser array
-         strategyNames =resultUser
+        strategyNames = resultUser
 
 
       } else {
@@ -572,9 +582,9 @@ class SignalController {
             msg: "User not found",
           });
         }
-  
+
         // Extracting strategy names from resultUser array
-         strategyNames = resultUser.map((user) => user.strategy_name);
+        strategyNames = resultUser.map((user) => user.strategy_name);
       }
 
 
@@ -646,9 +656,9 @@ class SignalController {
 
         {
           $lookup: {
-            from:Stg_col_name,
+            from: Stg_col_name,
             localField: "strategy",
-            foreignField: "strategy_name", 
+            foreignField: "strategy_name",
             as: "StrategyData",
           },
         },
