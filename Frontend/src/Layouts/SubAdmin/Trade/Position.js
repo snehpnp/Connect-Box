@@ -30,6 +30,8 @@ export default function AllEmployees() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+const Role = JSON.parse(localStorage.getItem("user_details")).Role
+
     const [rowData, setRowData] = useState({ loading: true, data: [], });
 
     const [profileData, setProfileData] = useState([]);
@@ -340,8 +342,13 @@ export default function AllEmployees() {
 
     const RefreshHandle = () => {
         setrefresh(!refresh);
+        userDataRes()
         setSearchInput("");
+        
+
     };
+  
+
 
     const getActualDateFormate = (date) => {
         const dateParts = date.split("-");
@@ -363,7 +370,7 @@ export default function AllEmployees() {
         let startDate = getActualDateFormate(fromDate);
         let endDate = getActualDateFormate(toDate);
         const subadminId = userDetails.user_id
-        await dispatch(Trade_history_data({ subadminId: userDetails.user_id, startDate: !fromDate ? full : startDate, endDate: !toDate ? fromDate ? "" : full : endDate, service: SelectService, strategy: StrategyClientStatus, }))
+        await dispatch(Trade_history_data({ Role:Role,subadminId: userDetails.user_id, startDate: !fromDate ? full : startDate, endDate: !toDate ? fromDate ? "" : full : endDate, service: SelectService, strategy: StrategyClientStatus, }))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
@@ -597,23 +604,7 @@ export default function AllEmployees() {
                                         <div className="list-btn">
                                             <ul className="filter-list mb-0">
 
-                                                <li className="toggle-li">
-                                                    <div className="status-toggle pe-2" style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <span className={getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} >Trading Status</span>
-                                                        <input
-                                                            id="1"
-                                                            className="check"
-                                                            type="checkbox"
-                                                            onChange={(e) => LogIn_WIth_Api(e.target.checked,
-                                                                profileData.data[0].broker,
-                                                                profileData.data[0].TradingStatus,
-                                                                profileData.data[0])}
-                                                            defaultChecked={getLoginStatus}
-                                                            style={{ marginRight: '5px' }}
-                                                        />
-                                                        <label htmlFor="1" className="checktoggle checkbox-bg"></label>
-                                                    </div>
-                                                </li>
+                                               
 
 
                                                 <li className="">
