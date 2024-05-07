@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetCompanyInfo,ProfileData,EditCompanyInfo,Subadminhelp, getSubadminhelp ,postuserhelpdata, gethelpdata,deleteuserhelpdata,deletesubadmindata,ComparePrefix_key,Researcherdetail,getEmployeetable} from "../../../Services/Admin/System.service";
+import { GetCompanyInfo,ProfileData,EditCompanyInfo,Subadminhelp, getSubadminhelp ,postuserhelpdata, gethelpdata,deleteuserhelpdata,deletesubadmindata,ComparePrefix_key,Researcherdetail,getEmployeetable,getEmployeeBYid} from "../../../Services/Admin/System.service";
 
 export const GetCompany_info = createAsyncThunk(
     "get/company",
@@ -166,6 +166,22 @@ export const getemployee = createAsyncThunk(
 )
 
 
+// get employee data by subdmin id
+
+
+export const Employeedatabyid = createAsyncThunk(
+    "getEmployeebyid",
+    async (data)=>{
+        try {
+            const res = await getEmployeeBYid(data);
+              return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+)
+
+
 const SystemSlice = createSlice({
     name: "SystemSlice",
     initialState: {
@@ -182,6 +198,7 @@ const SystemSlice = createSlice({
         userprifix_key:null,
         getResearch:null,
         getemployee:null,
+        Employeedatabyid:null,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -311,6 +328,15 @@ const SystemSlice = createSlice({
             }).addCase(getemployee.fulfilled,(state,action)=>{
                 state.isLoading = false;
                 state.getemployee = action.payload;
+            }).addCase(Employeedatabyid.pending,(state,action)=>{
+                state.isLoading = true;
+                state.isError = false;
+            }).addCase(Employeedatabyid.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+            }).addCase(Employeedatabyid.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.Employeedatabyid = action.payload;
             })
     },
 });

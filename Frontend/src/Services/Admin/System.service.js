@@ -206,3 +206,21 @@ export async function  getEmployeetable(data,token){
     }
 }
 
+
+
+//get data employee for profile ifo
+
+export async function  getEmployeeBYid(data,token){
+    try {
+
+        const res = await axios.post(`${Config.base_url}getEmployeebyid`,data,{
+            data:{},
+            
+        })
+   
+           return await res?.data;
+        
+    } catch (err) {
+        return await err;
+    }
+}
