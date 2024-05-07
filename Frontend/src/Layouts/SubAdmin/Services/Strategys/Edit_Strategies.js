@@ -6,9 +6,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Utils/Loader";
 import Swal from 'sweetalert2'
-
-
-
 import {
   EditSubStrategys,
   GetSubStrategys_ById,
@@ -72,7 +69,7 @@ function Edit_Strategies() {
   }, []);
 
 
-
+ 
 
   const fields = [
     {
@@ -161,7 +158,7 @@ function Edit_Strategies() {
       type: "test",
       label_size: 12,
       col_size: 12,
-      disable: true,
+      disable:  allStrategy && allStrategy.Service_Type==0 ? false : true,
     },
     {
       name: "security_fund",
@@ -415,17 +412,6 @@ function Edit_Strategies() {
       formik.setFieldValue("strategy_demo_days", allStrategy.strategy_demo_days);
     }
   }, [allStrategy]);
-
-
-
-
-
-
-
-
-
-
-
 
 
 
