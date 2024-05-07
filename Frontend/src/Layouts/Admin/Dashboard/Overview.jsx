@@ -268,7 +268,7 @@ const Overview = () => {
               <div className="card flex-fill">
                 <div className="card-header">
                   <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="card-title">Subadmin Sales Analytics</h5>
+                    <h5 className="card-title">Sub-Admin Sales Analytics</h5>
                     <div className="d-flex">
                       <div className="dropdown main me-3">
                         <button

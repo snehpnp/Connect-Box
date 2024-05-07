@@ -8,19 +8,19 @@ export const admin_header = [
     },
     {
         id: 3,
-        name: 'Sub Admin',
+        name: 'Sub-Admin',
         Icon: "fe fe-users",
         Data: [
             {
                 id: 31,
-                name: 'Add Subadmin',
+                name: 'Add Sub-Admin',
                 Icon: "fe fe-user-plus",
                 route: "/admin/subadmin/add",
             },
 
             {
                 id: 32,
-                name: 'All Subadmins',
+                name: 'All Sub-Admins',
                 Icon: "fe fe-users",
                 route: "/admin/allsubadmin",
             },
@@ -68,7 +68,7 @@ export const admin_header = [
     // },
     {
         id: 5,
-        name: 'Subadmin Details',
+        name: 'Sub-Admin Details',
         route: "/admin/subadmin/company",
         Icon: "fe fe-credit-card",
         Data: []
@@ -397,14 +397,14 @@ export const employee_header = [
     {
         id: 61,
         name: 'Signal',
-        route: "/employee/orders",
+        route: "/employee/signal",
         Icon: "fe fe-list",
         Data: []
     },
     {
         id: 62,
         name: 'Trade History',
-        route: "/employee/position",
+        route: "/employee/tradehistory",
         Icon: "fe fe-map-pin",
         Data: []
     },
@@ -415,13 +415,13 @@ export const employee_header = [
     //     Icon: "fe fe-message-circle",
     //     Data: []
     // },
-    // {
-    //     id: 11,
-    //     name: 'Help',
-    //     route: "/employee/help",
-    //     Icon: "fe fe-help-circle",
-    //     Data: []
-    // },
+    {
+        id: 11,
+        name: 'Help',
+        route: "/employee/help",
+        Icon: "fe fe-help-circle",
+        Data: []
+    },
     {
         id: 9,
         name: 'FAQs',
@@ -580,18 +580,19 @@ export const research_header = [
     //     Icon: "fe fe-message-circle",
     //     Data: []
     // },
-    // {
-    //     id: 11,
-    //     name: 'Help',
-    //     route: "/research/help",
-    //     Icon: "fa-solid fa-circle-info",
-    //     Data: []
-    // },
+    {
+        id: 11,
+        name: 'Help',
+        route: "/research/help",
+        Icon: "fa-solid fa-circle-info",
+        Data: []
+    },
     {
         id: 18,
         name: 'FAQs',
         route: "/research/faqs",
         Icon: "fe fe-help-circle",
         Data: []
-    }
-];
+    },
+
+ ];

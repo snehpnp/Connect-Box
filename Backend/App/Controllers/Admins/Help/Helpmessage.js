@@ -178,8 +178,50 @@ class Helpmessage {
     }
   }
 
-}
 
+   //get Researcher table 
+
+   async getResearcher(req, res) {
+    try {
+
+      let messagedata = await help.find({ Role: "RESEARCH" });
+      if (!messagedata) {
+        return res.send({ status: false, msg: "message not getting", data: [] });
+      }
+
+      return res.send({
+        status: true,
+        msg: "getting message  Successfully.",
+        data: messagedata,
+      });
+    } catch (error) {
+      console.error("internal error:", error);
+    }
+  }
+
+
+  //get employee table
+
+  async getEmployee(req, res) {
+    try {
+
+      let messagedata = await help.find({ Role: "EMPLOYEE" });
+      if (!messagedata) {
+        return res.send({ status: false, msg: "message not getting", data: [] });
+      }
+
+      return res.send({
+        status: true,
+        msg: "getting message  Successfully.",
+        data: messagedata,
+      });
+    } catch (error) {
+      console.error("internal error:", error);
+    }
+  }
+
+
+}
 
 
 

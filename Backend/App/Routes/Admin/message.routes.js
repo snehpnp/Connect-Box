@@ -1,6 +1,6 @@
 const {createMessage,getMsgData,deleteMsgData,editMsgData}=require("../../Controllers/Admins/MsgBroadcast/Message_Broadcast");
 const router = require("express").Router()
-const {subadminhelpmessage,getsubadminhelpmessage,userhelpmessage,getuserhelpdata,getuserdelete,getsubadmindelete,userdataByPrefix} =require("../../Controllers/Admins/Help/Helpmessage")
+const {subadminhelpmessage,getsubadminhelpmessage,userhelpmessage,getuserhelpdata,getuserdelete,getsubadmindelete,userdataByPrefix,getResearcher,getEmployee} =require("../../Controllers/Admins/Help/Helpmessage")
 
 const {ProfileImagedata} =require("../../Controllers/Admins/Profile/ProfileImage")
 
@@ -17,6 +17,9 @@ router.get("/getuserhelpdata",getuserhelpdata)
 router.post("/getuserdelete",getuserdelete)
 router.post("/getsubadmindelete",getsubadmindelete)
 router.post("/userdataByPrefix",userdataByPrefix)
+router.post("/getResearcher",getResearcher)
+router.post("/getEmployee",getEmployee)
+
 
 
 //profile image

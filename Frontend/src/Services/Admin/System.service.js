@@ -170,4 +170,39 @@ export async function  ComparePrefix_key(data,token){
     }
 }
 
+// get Researcher table
+
+
+export async function  Researcherdetail(data,token){
+    try {
+
+        const res = await axios.post(`${Config.base_url}getResearcher`,data,{
+            data:{},
+            
+        })
+   
+           return await res?.data;
+        
+    } catch (err) {
+        return await err;
+    }
+}
+
+
+// get employree table
+
+export async function  getEmployeetable(data,token){
+    try {
+
+        const res = await axios.post(`${Config.base_url}getEmployee`,data,{
+            data:{},
+            
+        })
+   
+           return await res?.data;
+        
+    } catch (err) {
+        return await err;
+    }
+}
 

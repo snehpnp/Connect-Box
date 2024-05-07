@@ -181,7 +181,7 @@ function MessageBroadcast() {
 
   const fetchStrategies = async () => {
     try {
-      const data = {id: ownerId }
+      const data = { id: ownerId }
       await dispatch(allStrategy_subAd(data))
         .unwrap()
         .then((response) => {
@@ -269,7 +269,7 @@ function MessageBroadcast() {
               }
             });
 
-          
+
 
           } else {
             toast.error(response.msg);
@@ -289,12 +289,12 @@ function MessageBroadcast() {
     try {
       // Show loader
       setLoading(true);
-      console.log("value",value)
-      var key 
-      if(value == 1){
+      console.log("value", value)
+      var key
+      if (value == 1) {
         key = 2
-      }else{
-        key=value
+      } else {
+        key = value
       }
 
       const response = await dispatch(admin_Msg_Get({ ownerId, key: key })).unwrap();
@@ -500,7 +500,83 @@ function MessageBroadcast() {
                 </TabContext>
               </Box>
             </div>
+
+            {modal !== 0 && (
+              <div
+                className="modal fade show"
+                tabIndex="-1"
+                style={{ display: "block" }}
+              >
+                <div className="modal custom-modal d-block">
+                  <div className="modal-dialog modal-dialog-centered modal-md">
+                    <div className="modal-content">
+                      <div className="modal-header border-0 pb-0">
+                        <div className="form-header modal-header-title text-start mb-0">
+                          <h4 className="mb-0">Update Message</h4>
+                        </div>
+                        <button
+                          type="button"
+                          className="btn-close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                          onClick={() => setModal(0)}
+                        ></button>
+                      </div>
+                      {modal === 1 && (
+                        <form onSubmit={handleUpdate}>
+                          <div className="modal-body">
+                            <div className="row">
+                              <div className="input-block mb-3">
+                                <label>Message Title*</label>
+                                <textarea
+                                  type="text"
+                                  className="form-control"
+                                  onChange={(e) => setMsgData(e.target.value)}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="modal-footer border-0 pt-0">
+                            <button type="submit" className="btn btn-primary">
+                              Update
+                            </button>
+                          </div>
+                        </form>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {deleteModal && (
+              <div className="modal custom-modal modal-delete d-block" >
+                <div className="modal-dialog modal-dialog-centered modal-md">
+                  <div className="modal-content">
+                    <div className="modal-body">
+                      <div className="form-header">
+                        <div className="delete-modal-icon">
+                          <span>
+                            <i className="fe fe-check-circle" />
+                          </span>
+                        </div>
+                        <h3>Are You Sure?</h3>
+                        <p>You want delete Message</p>
+                      </div>
+                      <div className="modal-btn delete-action">
+                        <div className="modal-footer justify-content-center p-0">
+                          <button type="submit" onClick={() => handleDlt()} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
+                          <button type="button" onClick={() => setdeleteModal(false)} className="btn btn-back cancel-btn">No, Cancel</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
+
 
 
         </div>
@@ -508,80 +584,6 @@ function MessageBroadcast() {
 
 
 
-
-        {modal !== 0 && (
-          <div
-            className="modal fade show"
-            tabIndex="-1"
-            style={{ display: "block" }}
-          >
-            <div className="modal custom-modal d-block">
-              <div className="modal-dialog modal-dialog-centered modal-md">
-                <div className="modal-content">
-                  <div className="modal-header border-0 pb-0">
-                    <div className="form-header modal-header-title text-start mb-0">
-                      <h4 className="mb-0">Update Message</h4>
-                    </div>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      data-bs-dismiss="modal"
-                      aria-label="Close"
-                      onClick={() => setModal(0)}
-                    ></button>
-                  </div>
-                  {modal === 1 && (
-                    <form onSubmit={handleUpdate}>
-                      <div className="modal-body">
-                        <div className="row">
-                          <div className="input-block mb-3">
-                            <label>Message Title*</label>
-                            <textarea
-                              type="text"
-                              className="form-control"
-                              onChange={(e) => setMsgData(e.target.value)}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="modal-footer border-0 pt-0">
-                        <button type="submit" className="btn btn-primary">
-                          Update
-                        </button>
-                      </div>
-                    </form>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {deleteModal && (
-          <div className="modal custom-modal modal-delete d-block" >
-            <div className="modal-dialog modal-dialog-centered modal-md">
-              <div className="modal-content">
-                <div className="modal-body">
-                  <div className="form-header">
-                    <div className="delete-modal-icon">
-                      <span>
-                        <i className="fe fe-check-circle" />
-                      </span>
-                    </div>
-                    <h3>Are You Sure?</h3>
-                    <p>You want delete Message</p>
-                  </div>
-                  <div className="modal-btn delete-action">
-                    <div className="modal-footer justify-content-center p-0">
-                      <button type="submit" onClick={() => handleDlt()} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
-                      <button type="button" onClick={() => setdeleteModal(false)} className="btn btn-back cancel-btn">No, Cancel</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
 
       </div>
