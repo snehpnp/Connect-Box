@@ -4,6 +4,7 @@ import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTa
 import {
   getsubadmintable,
   userdataforhelp,
+  getResearch
 } from "../../../ReduxStore/Slice/Admin/System";
 import Content from "../../../Components/Dashboard/Content/Content";
 import { useDispatch } from "react-redux";
@@ -25,6 +26,7 @@ function System() {
   const dispatch = useDispatch();
   const [getsubadmin, setGetsubadmin] = useState([]);
   const [getuserdata, setGetuserdata] = useState([]);
+  const [getResearchdata, setGetResearchdata] = useState([]);
 
 
 
@@ -165,10 +167,28 @@ function System() {
       });
   };
 
+
+  // get Research
+  const getResearcher = async () => {
+    await dispatch(getResearch({}))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          setGetResearchdata(response.data);
+          setLoading(false)
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+
   // fetch data by using local storage
   useEffect(() => {
     gettable()
     getusertable()
+    getResearcher()
   }, [value]);
 
 
@@ -188,6 +208,7 @@ function System() {
                   <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                     <Tab label="Sub Admin" {...a11yProps(0)} />
                     <Tab label="User" {...a11yProps(1)} />
+                    <Tab label="Research" {...a11yProps(2)} />
 
                   </Tabs>
                 </Box>
@@ -233,6 +254,28 @@ function System() {
                   )}
 
                 </CustomTabPanel>
+
+
+                <CustomTabPanel value={value} index={2}>
+                  {loading ? (
+                    <Loader />
+                  ) : (
+
+
+                    <div className="mt-5">
+                      <FullDataTable
+                        styles={styles}
+                        columns={columns1}
+                        rows={getResearchdata}
+                      />
+
+                    </div>
+
+
+                  )}
+
+                </CustomTabPanel>
+
 
               </Box>
 

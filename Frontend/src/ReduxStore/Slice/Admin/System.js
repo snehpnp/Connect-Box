@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetCompanyInfo,ProfileData,EditCompanyInfo,Subadminhelp, getSubadminhelp ,postuserhelpdata, gethelpdata,deleteuserhelpdata,deletesubadmindata,ComparePrefix_key} from "../../../Services/Admin/System.service";
+import { GetCompanyInfo,ProfileData,EditCompanyInfo,Subadminhelp, getSubadminhelp ,postuserhelpdata, gethelpdata,deleteuserhelpdata,deletesubadmindata,ComparePrefix_key,Researcherdetail,getEmployeetable} from "../../../Services/Admin/System.service";
 
 export const GetCompany_info = createAsyncThunk(
     "get/company",
@@ -136,6 +136,35 @@ export const userprifix_key = createAsyncThunk(
 )
 
 
+/// get researcher detail
+
+export const getResearch = createAsyncThunk(
+    "getResearcher",
+    async (data)=>{
+        try {
+            const res = await Researcherdetail(data);
+              return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+)
+
+
+/// get employee detail
+
+export const getemployee = createAsyncThunk(
+    "getEmployee",
+    async (data)=>{
+        try {
+            const res = await getEmployeetable(data);
+              return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+)
+
 
 const SystemSlice = createSlice({
     name: "SystemSlice",
@@ -151,6 +180,8 @@ const SystemSlice = createSlice({
         deleteuser_data:null,
         deletesubadminhelpdata:null,
         userprifix_key:null,
+        getResearch:null,
+        getemployee:null,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -262,6 +293,24 @@ const SystemSlice = createSlice({
             }).addCase(userprifix_key.fulfilled,(state,action)=>{
                 state.isLoading = false;
                 state.userprifix_key = action.payload;
+            }).addCase(getResearch.pending,(state,action)=>{
+                state.isLoading = true;
+                state.isError = false;
+            }).addCase(getResearch.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+            }).addCase(getResearch.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.getResearch = action.payload;
+            }).addCase(getemployee.pending,(state,action)=>{
+                state.isLoading = true;
+                state.isError = false;
+            }).addCase(getemployee.rejected,(state,action)=>{
+                state.isLoading = false;
+                state.isError = true;
+            }).addCase(getemployee.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.getemployee = action.payload;
             })
     },
 });
