@@ -53,7 +53,7 @@ function Strategy() {
         data: [],
     });
 
-    console.log("allStategy :", allStategy.data)
+ 
 
 
 
@@ -384,16 +384,19 @@ function Strategy() {
             if (subadmin_service_type == 1 && !values.security_fund_early) {
                 errors.security_fund_early = "amount is required";
             }
-            if (subadmin_service_type == 1 && !values.fixed_amount_per_trade_month) {
-                errors.fixed_amount_per_trade_month = "amount is required";
+
+
+     
+            if (subadmin_service_type == 1 &&  formik.values.Service_Type==2 && !values.fixed_amount_per_trade_month) {
+                errors.fixed_amount_per_trade_month = "amount is required 3";
             }
-            if (subadmin_service_type == 1 && !values.fixed_amount_per_trade_quarterly) {
+            if (subadmin_service_type == 1 && formik.values.Service_Type==2 && !values.fixed_amount_per_trade_quarterly) {
                 errors.fixed_amount_per_trade_quarterly = "amount is required";
             }
-            if (subadmin_service_type == 1 && !values.fixed_amount_per_trade_early) {
+            if (subadmin_service_type == 1 && formik.values.Service_Type==2 && !values.fixed_amount_per_trade_early) {
                 errors.fixed_amount_per_trade_early = "amount is required";
             }
-            if (subadmin_service_type == 1 && !values.fixed_amount_per_trade_half_early) {
+            if (subadmin_service_type == 1 &&  formik.values.Service_Type==2 && !values.fixed_amount_per_trade_half_early) {
                 errors.fixed_amount_per_trade_half_early = "amount is required";
             }
             if (subadmin_service_type == 1 && !values.Service_Type) {
@@ -483,8 +486,7 @@ function Strategy() {
     });
 
 
-
-    console.log("cpp :", formik.values.Service_Type)
+ 
 
 
     const RefreshHandle = () => {
@@ -687,7 +689,7 @@ function Strategy() {
                                                 {stg.researcher_id != null ? <span><i>Researcher :</i> {stg.researcher_id && stg.researcher_id.UserName}</span> : ""}
                                                 <p>{stg.Service_Type == 1 ? "Service_type: PER TRADE" : stg.Service_Type == 2 ? "Service_type: PER TRADE FIXED" : ""}</p>
 
-                                                {console.log("stg.max_trade :", stg)}
+                                               
                                                 <p class="text-dark"><b>{stg.strategy_description}</b></p>
                                                 <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
                                                 {subadmin_service_type == 1 && stg.Service_Type == 1 ?
