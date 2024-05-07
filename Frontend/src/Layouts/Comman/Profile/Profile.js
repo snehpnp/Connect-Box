@@ -10,8 +10,8 @@ import { fDateTime } from "../../../Utils/Date_formet";
 import { fDate } from "../../../Utils/Date_formet";
 import { isToday } from "../../../Utils/Date_formet";
 import Swal from "sweetalert2";
-
-
+import { Employeedatabyid } from "../../../ReduxStore/Slice/Admin/System";
+//Employeedatabyid
 import {
   ProfilImage,
   ProfileUpdatedata,
@@ -41,6 +41,7 @@ const Profile = () => {
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   const user = JSON.parse(localStorage.getItem("user_details"));
 
+  const [getemployeedata, setGetemployeedata] = useState("");
   const [profileData, setProfileData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -62,7 +63,6 @@ const Profile = () => {
 
   const currentDate = new Date();
   const currentDateISOString = currentDate.toISOString().split("T")[0];
-
 
   const avatarImages = [
     "hacker.png",
@@ -101,6 +101,27 @@ const Profile = () => {
     "tiger.png",
     "wolf (1).png",
   ];
+
+  // get employee by id
+
+  const Employeetable = async () => {
+
+    const data = {id: user_id}
+
+
+    await dispatch(Employeedatabyid(data))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+       
+          setGetemployeedata(response.subadmin)
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
 
   const handleAvatarClick = async (avatarUrl) => {
     try {
@@ -199,6 +220,7 @@ const Profile = () => {
 
   useEffect(() => {
     profiledata();
+    Employeetable();
   }, []);
 
   ///active status
@@ -221,9 +243,8 @@ const Profile = () => {
   useEffect(() => {
     profilestatus();
   }, []);
-  
 
-// api for getting ProfileInfo 
+  // api for getting ProfileInfo
   const fetchData = async () => {
     try {
       let data = { id: user_id };
@@ -626,6 +647,10 @@ const Profile = () => {
                               </span>
                             </li>
                           ))}
+                       {user.Role === "EMPLOYEE" ?  <li>
+                          <label>Subadmin Name</label>
+                          {getemployeedata && getemployeedata}
+                        </li> : ""}
                       </ul>
                     </div>
                   </div>
