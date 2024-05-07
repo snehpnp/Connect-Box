@@ -197,7 +197,7 @@ export default function AllUsers() {
           >
             <EditIcon />
           </IconButton>
-          <IconButton
+         {params.row.license_type == 1 ? <IconButton
             aria-label="delete"
             size="small"
             onClick={() => {
@@ -207,7 +207,7 @@ export default function AllUsers() {
             }}
           >
             <DeleteIcon />
-          </IconButton>
+          </IconButton> : ""}
         </div>
       ),
       headerClassName: styles.boldHeader,
