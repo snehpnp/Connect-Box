@@ -11,6 +11,9 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 class SignalController {
+
+
+  // ORDER DATA
   async Signal_data(req, res) {
     try {
       const { subadminId, Role } = req.body;
@@ -303,73 +306,11 @@ class SignalController {
     }
   }
 
-  async getAllSignalByPrefix(req, res) {
-    try {
-      const { subadminId } = req.body;
-      const ObjSubAdminId = new ObjectId(subadminId);
-      const resultUser = await User_model.findOne({
-        _id: ObjSubAdminId,
-      }).select("client_key prifix_key");
-      const clientKey = resultUser.client_key;
-      const prefixKey = resultUser.prifix_key;
 
-      if (!resultUser) {
-        return res.status(404).send({
-          status: false,
-          msg: "User not found",
-        });
-      }
-      const pipeline = [
-        {
-          $match: {
-            client_persnal_key: {
-              $regex: prefixKey,
-              $ne: clientKey,
-            },
-          },
-        },
-        {
-          $lookup: {
-            from: "users",
-            localField: "client_persnal_key",
-            foreignField: "client_key",
-            as: "lookupData",
-          },
-        },
-        {
-          $unwind: "$lookupData",
-        },
-        {
-          $project: {
-            _id: 1,
-            fullName: "$lookupData.FullName",
-            trade_symbol: 1,
-            qty_percent: 1,
-            strategy: 1,
-            symbol: 1,
-            TradeType: 1,
-            segment: 1,
-            tr_price: 1,
-            type: 1,
-            client_persnal_key: 1,
-          },
-        },
-      ];
-      const results = await signals.aggregate(pipeline);
-      res.send({
-        status: true,
-        msg: "Data Retrieved Successfully",
-        data: results,
-      });
-    } catch (error) {
-      console.log("Error retrieving data:", error);
-      res.status(500).send({
-        status: false,
-        msg: "Internal Server Error",
-      });
-    }
-  }
 
+
+
+  // GET ALL TRADE HOSTORY DATA
   async MainSignal_data(req, res) {
     try {
       const { subadminId } = req.body;
@@ -496,6 +437,8 @@ class SignalController {
     }
   }
 
+
+
   // UPDATE STOPLOASS
   async update_stop_loss(req, res) {
     try {
@@ -513,6 +456,8 @@ class SignalController {
     }
   }
 
+
+
   // SUBADMIN TRADE HISTORY DATA
   async Tradehistory_data(req, res) {
     try {
@@ -522,7 +467,11 @@ class SignalController {
       const ObjSubAdminId = new ObjectId(subadminId);
       let resultUser;
       let strategyNames
+      let Stg_col_name
+
+
       if (Role == "SUBADMIN") {
+        Stg_col_name = "strategies"
 
         resultUser = await Strategies.find({
           maker_id: ObjSubAdminId,
@@ -539,7 +488,27 @@ class SignalController {
         // Extracting strategy names from resultUser array
          strategyNames = resultUser.map((user) => user.strategy_name);
 
-      } else if (Role === "EMPLOYEE") {
+      }  if (Role == "RESEARCH") {
+        Stg_col_name = "researcher_strategies"
+        resultUser = await researcher_strategy.find({
+          maker_id: ObjSubAdminId,
+        }).select("strategy_name");
+
+
+        if (!resultUser) {
+          return res.status(404).send({
+            status: false,
+            msg: "User not found",
+          });
+        }
+  
+        // Extracting strategy names from resultUser array
+         strategyNames = resultUser.map((user) => user.strategy_name);
+         console.log("researcher_strategy",strategyNames)
+
+      }  else if (Role === "EMPLOYEE") {
+        Stg_col_name = "strategies"
+
         let subadminStgFind = await Subadmin_Permission.aggregate([
           {
             $match: { user_id: ObjSubAdminId }, // İlgili kullanıcıya göre eşleşmeyi bulun
@@ -588,6 +557,8 @@ class SignalController {
 
 
       } else {
+        Stg_col_name = "strategies"
+
         resultUser = await Strategies.find({
           maker_id: ObjSubAdminId,
         }).select("strategy_name");
@@ -675,9 +646,9 @@ class SignalController {
 
         {
           $lookup: {
-            from: "strategies",
+            from:Stg_col_name,
             localField: "strategy",
-            foreignField: "strategy_name", // Assuming this is the field in collection2 which corresponds to the _id of collection1
+            foreignField: "strategy_name", 
             as: "StrategyData",
           },
         },
@@ -801,6 +772,8 @@ class SignalController {
       });
     }
   }
+
+
 
   async UserTradehistory_data(req, res) {
     try {
@@ -949,6 +922,84 @@ class SignalController {
       });
     }
   }
+
+
+
+
+
+
+
+  // GETALL USER SIGNAL ON TRADING VIEW
+  async getAllSignalByPrefix(req, res) {
+    try {
+      const { subadminId } = req.body;
+      const ObjSubAdminId = new ObjectId(subadminId);
+      const resultUser = await User_model.findOne({
+        _id: ObjSubAdminId,
+      }).select("client_key prifix_key");
+      const clientKey = resultUser.client_key;
+      const prefixKey = resultUser.prifix_key;
+
+      if (!resultUser) {
+        return res.status(404).send({
+          status: false,
+          msg: "User not found",
+        });
+      }
+      const pipeline = [
+        {
+          $match: {
+            client_persnal_key: {
+              $regex: prefixKey,
+              $ne: clientKey,
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "client_persnal_key",
+            foreignField: "client_key",
+            as: "lookupData",
+          },
+        },
+        {
+          $unwind: "$lookupData",
+        },
+        {
+          $project: {
+            _id: 1,
+            fullName: "$lookupData.FullName",
+            trade_symbol: 1,
+            qty_percent: 1,
+            strategy: 1,
+            symbol: 1,
+            TradeType: 1,
+            segment: 1,
+            tr_price: 1,
+            type: 1,
+            client_persnal_key: 1,
+          },
+        },
+      ];
+      const results = await signals.aggregate(pipeline);
+      res.send({
+        status: true,
+        msg: "Data Retrieved Successfully",
+        data: results,
+      });
+    } catch (error) {
+      console.log("Error retrieving data:", error);
+      res.status(500).send({
+        status: false,
+        msg: "Internal Server Error",
+      });
+    }
+  }
+
+
+
+
 }
 
 module.exports = new SignalController();
