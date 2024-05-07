@@ -22,9 +22,25 @@ import { Eye, CandlestickChart, Pencil } from "lucide-react";
 import DetailsView  from "../../SubAdmin/Trade/DetailsView";
 
 
+import {
+    getAllServices,
+    getCatogries,
+    getexpirymanualtrade,
+    getAllStrikePriceApi,
+    getStrategyData,
+    gettokenbysocket,
+    GetBrokerLiveDatas,
+    AddDataAboveBelowRange,
+    GetDataAboveBelowRange,
+    DeleteDataMakeCall,
+    UpdateDataMakeCall
+
+} from "../../..//ReduxStore/Slice/Comman/Makecall/make";
 
 const TradeHistory = () => {
     const userDetails = JSON.parse(localStorage.getItem("user_details"));
+    const token = JSON.parse(localStorage.getItem('user_details')).token
+
 const [showModal, setshowModal] = useState(false);
 
 const [SelectService, setSelectService] = useState("null");
@@ -78,6 +94,39 @@ const handleToDateChange = (e) => {
     setToDate(e.target.value);
 };
 
+const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
+const [userIdSocketRun, setUserIdSocketRun] = useState("none");
+
+
+
+useEffect(() => {
+    GetBrokerLiveData(userIdSocketRun)
+}, [userIdSocketRun]);
+
+const GetBrokerLiveData = async (userIdSocketRun) => {
+
+    //alert(userIdSocketRun)
+    await dispatch(GetBrokerLiveDatas(
+
+        {
+            req:
+            {
+                id: user_id,
+                exist_user: userIdSocketRun,
+                exist_user_details: livePriceDataDetails
+            },
+
+            token: token
+        }
+    ))
+        .unwrap()
+        .then(async (response) => {
+            if (response.status) {
+                // console.log("Data --- ", response.data)
+                setLivePriceDataDetails(response.data)
+            }
+        });
+};
 
 
 const [inputSearch, SetInputSearch] = useState('');
@@ -128,42 +177,7 @@ useEffect(() => {
 
 
 
-// LOGOUT TRADING 
-const handleTradingOff = async (id) => {
 
-    let data = { id: id, system_ip: ip };
-
-    await dispatch(Trading_Off_Btn(data)).unwrap()
-        .then((response) => {
-            if (response.status) {
-                toast.success("Trading off successfully");
-                setrefresh(!refresh);
-            }
-            else {
-                toast.error("Trading Off Error")
-            }
-        }).catch((error) => {
-            console.log("Trading Off Error", error);
-        })
-
-}
-
-// LOGIN DEMAT WITH API
-const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
-
-    if (check) {
-        console.log("Trading On")
-        loginWithApi(brokerid, UserDetails);
-
-    } else {
-        console.log("Trading Off")
-        handleTradingOff(user_id);
-
-
-    }
-
-
-}
 const columns = [
     {
         dataField: "index",
@@ -415,10 +429,10 @@ const ShowLivePrice = async () => {
 
     if (profileData && profileData.data) {
 
-        if (profileData && profileData.data[0].demat_userid !== undefined && profileData.data[0].access_token !== undefined && profileData.data[0].TradingStatus == "on") {
+        if (profileData &&livePriceDataDetails.demate_user_id !== undefined &&livePriceDataDetails.access_token !== undefined &&livePriceDataDetails.trading_status == "on") {
 
 
-            const res = await CreateSocketSession(type, profileData.data[0].demat_userid, profileData.data[0].access_token);
+            const res = await CreateSocketSession(type,livePriceDataDetails.demate_user_id,livePriceDataDetails.access_token);
 
             if (res.status === 200) {
                 setSocketState("Ok");
@@ -508,7 +522,7 @@ const ShowLivePrice = async () => {
 
                         // }
                     };
-                    await ConnctSocket(handleResponse, channelList, profileData.data[0].demat_userid, profileData.data[0].access_token).then((res) => { });
+                    await ConnctSocket(handleResponse, channelList,livePriceDataDetails.demate_user_id,livePriceDataDetails.access_token).then((res) => { });
                 } else {
                     // $(".UPL_").html("-");
                     // $(".show_rpl_").html("-");
@@ -564,7 +578,7 @@ const calcultateRPL = (row, livePrice, pre_row) => {
 
 useEffect(() => {
     ShowLivePrice();
-}, [tradeHistoryData.data, SocketState, profileData.data]);
+}, [tradeHistoryData.data, SocketState, livePriceDataDetails]);
 
 
 

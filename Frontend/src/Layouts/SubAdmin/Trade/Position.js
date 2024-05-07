@@ -20,6 +20,20 @@ import { Eye, CandlestickChart, Pencil } from "lucide-react";
 
 import DetailsView from "./DetailsView";
 
+import {
+    getAllServices,
+    getCatogries,
+    getexpirymanualtrade,
+    getAllStrikePriceApi,
+    getStrategyData,
+    gettokenbysocket,
+    GetBrokerLiveDatas,
+    AddDataAboveBelowRange,
+    GetDataAboveBelowRange,
+    DeleteDataMakeCall,
+    UpdateDataMakeCall
+
+} from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
 
 export default function AllEmployees() {
@@ -31,6 +45,7 @@ export default function AllEmployees() {
     const dispatch = useDispatch();
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 const Role = JSON.parse(localStorage.getItem("user_details")).Role
+const token = JSON.parse(localStorage.getItem('user_details')).token
 
     const [rowData, setRowData] = useState({ loading: true, data: [], });
 
@@ -50,6 +65,46 @@ const Role = JSON.parse(localStorage.getItem("user_details")).Role
         loading: false,
         data: [],
     });
+
+
+    const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
+    const [userIdSocketRun, setUserIdSocketRun] = useState("none");
+
+
+
+    useEffect(() => {
+        GetBrokerLiveData(userIdSocketRun)
+    }, [userIdSocketRun]);
+
+    const GetBrokerLiveData = async (userIdSocketRun) => {
+
+        //alert(userIdSocketRun)
+        await dispatch(GetBrokerLiveDatas(
+
+            {
+                req:
+                {
+                    id: user_id,
+                    exist_user: userIdSocketRun,
+                    exist_user_details: livePriceDataDetails
+                },
+
+                token: token
+            }
+        ))
+            .unwrap()
+            .then(async (response) => {
+                if (response.status) {
+                    // console.log("Data --- ", response.data)
+                    setLivePriceDataDetails(response.data)
+                }
+            });
+    };
+
+
+console.log("livePriceDataDetails",livePriceDataDetails)
+
+
     const label = { inputProps: { "aria-label": "Switch demo" } };
 
     const styles = {
@@ -415,7 +470,7 @@ const Role = JSON.parse(localStorage.getItem("user_details")).Role
     tradeHistoryData.data &&
         tradeHistoryData.data?.map((item) => {
             CreatechannelList += `${item.exchange}|${item.token}#`;
-            console.log("item", item)
+            // console.log("item", item)
             if (parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price != '' && item.exit_price) {
                 total += (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty);
             }
@@ -427,12 +482,10 @@ const Role = JSON.parse(localStorage.getItem("user_details")).Role
         let type = { loginType: "API" };
         let channelList = CreatechannelList;
 
-        if (profileData && profileData.data) {
-
-            if (profileData && profileData.data[0].demat_userid !== undefined && profileData.data[0].access_token !== undefined && profileData.data[0].TradingStatus == "on") {
+            if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
 
-                const res = await CreateSocketSession(type, profileData.data[0].demat_userid, profileData.data[0].access_token);
+                const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
 
                 if (res.status === 200) {
                     setSocketState("Ok");
@@ -522,7 +575,7 @@ const Role = JSON.parse(localStorage.getItem("user_details")).Role
 
                             // }
                         };
-                        await ConnctSocket(handleResponse, channelList, profileData.data[0].demat_userid, profileData.data[0].access_token).then((res) => { });
+                        await ConnctSocket(handleResponse, channelList, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token).then((res) => { });
                     } else {
                         // $(".UPL_").html("-");
                         // $(".show_rpl_").html("-");
@@ -530,7 +583,7 @@ const Role = JSON.parse(localStorage.getItem("user_details")).Role
                     }
                 }
             }
-        }
+        
 
 
 
@@ -578,7 +631,7 @@ const Role = JSON.parse(localStorage.getItem("user_details")).Role
 
     useEffect(() => {
         ShowLivePrice();
-    }, [tradeHistoryData.data, SocketState, profileData.data]);
+    }, [tradeHistoryData.data, SocketState,livePriceDataDetails]);
 
 
 
