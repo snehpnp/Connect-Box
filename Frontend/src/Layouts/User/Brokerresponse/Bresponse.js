@@ -240,46 +240,50 @@ export default function BrokerResponse() {
                             // onHide={handleClose}
                             handleClose={() => setshowModal(false)}
                         >
-                            <div className='table-responsive'>
-                                <table className='table table-striped table-bordered border border-response-view' style={{ width: '100%', tableLayout: 'fixed' }}>
-                                    <tr>
-                                        <td className="bg-table"> Created At</td>
-                                        <td>{fDateTimeSuffix(borkerData.createdAt)}</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="bg-table"> Symbol</td>
-                                        <td>{borkerData.symbol}</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="bg-table"> Broker Name</td>
-                                        <td>{borkerData.broker_name}</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="bg-table"> Order Id</td>
-                                        <td>{borkerData.order_id ? borkerData.order_id : '-' }</td>
-                                    </tr>
-                                    <tr>
 
-                                        <td className="bg-table"> Receive Signal</td>
-                                        <td className="order-date-cell">{atob(borkerData.receive_signal)}</td>
-                                    </tr>
-                                    <tr>
 
-                                        <td className="bg-table"> Signal</td>
-                                        <td className="order-date-cell">{atob(borkerData.send_request ? borkerData.send_request : '-' )}</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="bg-table"> Order Status</td>
-                                        <td>{borkerData.order_status}</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="bg-table"> Reject Reson</td>
-                                        <td>{borkerData.reject_reason}</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="bg-table"> Order Data</td>
-                                        <td className="order-date-cell">{borkerData.order_view_date}</td>
-                                    </tr>
+                            <div>
+                                <table className="tg">
+                                    <thead>
+                                        <tr>
+                                            <th className="tg-0lax" style={{ width: "250px" }}>Created At</th>
+                                            <th className="tg-0lax">{fDateTimeSuffix(borkerData.createdAt)}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className="tg-0lax">Symbol</td>
+                                            <td className="tg-0lax">{borkerData.symbol}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Broker Name</td>
+                                            <td className="tg-0lax">{borkerData.broker_name}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Order Id</td>
+                                            <td className="tg-0lax">{borkerData.order_id ? borkerData.order_id : '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Receive Signal</td>
+                                            <td className="tg-0lax">{borkerData.order_id ? borkerData.order_id : '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Signal</td>
+                                            <td className="order-date-cell tg-0lax">{(borkerData.send_request ? borkerData.send_request : '-')}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Order Status</td>
+                                            <td tg-0lax>{borkerData.order_status}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Reject Reson</td>
+                                            <td className="tg-0lax">{borkerData.reject_reason}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Order Data</td>
+                                            <td className="order-date-cell tg-0lax">{borkerData.order_view_date}</td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                             </div>
                         </Modal >
