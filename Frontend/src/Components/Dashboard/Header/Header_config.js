@@ -573,13 +573,13 @@ export const research_header = [
             },
         ]
     },
-    {
-        id: 10,
-        name: 'Message Broadcast',
-        route: "/research/message_broadcast",
-        Icon: "fe fe-message-circle",
-        Data: []
-    },
+    // {
+    //     id: 10,
+    //     name: 'Message Broadcast',
+    //     route: "/research/message_broadcast",
+    //     Icon: "fe fe-message-circle",
+    //     Data: []
+    // },
     {
         id: 11,
         name: 'Help',
