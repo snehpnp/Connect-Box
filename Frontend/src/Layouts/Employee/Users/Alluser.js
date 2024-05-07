@@ -91,10 +91,6 @@ export default function AllUsers() {
 
 
 
-
-
-
-
   const showBrokerName = (row) => {
 
     if (row.license_type === "1") {
