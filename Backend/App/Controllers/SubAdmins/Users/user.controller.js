@@ -219,6 +219,11 @@ class Users {
 
 
 
+
+
+
+
+
       User_model.insertMany([
         {
           FullName: FullName,
@@ -813,10 +818,16 @@ class Users {
       }
 
 
-      if (
-        Number(ParentData.Balance) >=
-        Number(totalLicense) + Number(req.Balance)
-      ) {
+      // if (
+      //   Number(ParentData.Balance) >=
+      //   Number(totalLicense) + Number(req.Balance)
+      // ) {} else {
+      //   return res.send({
+      //     status: false,
+      //     msg: "You Dont Have Balance",
+      //     data: [],
+      //   });
+      // }
 
         // PREVIOS CLIENT IS LIVE
         if (existingUsername.license_type != "2") {
@@ -1455,13 +1466,7 @@ class Users {
 
 
 
-      } else {
-        return res.send({
-          status: false,
-          msg: "You Dont Have Balance",
-          data: [],
-        });
-      }
+      
     } catch (error) {
       console.log("Error In User Update-", error);
     }
