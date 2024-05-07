@@ -94,6 +94,10 @@ const userModel = Schema({
         type: String,
         default: null
     },
+    add_balance: {
+        type: String,
+        default: null
+    },
 
     AppLoginStatus: {
         type: String,

@@ -15,12 +15,13 @@ import Orders from '../Layouts/SubAdmin/Trade/Order'
 import Position from '../Layouts/SubAdmin/Trade/Position'
 import OptionChain from '../Layouts/SubAdmin/Option/Option_Chain'
 import MakeCall from '../Layouts/Comman/Make/Makecall'
-import MessageBroadCast from '../Layouts/SubAdmin/MessageBroadCast/MessageBroadCast'
-import Help from '../Layouts/Comman/Help/Helpsubadmin.js';
+import MessageBroadcast from '../Layouts/Researcher/MessageBroadcast/MessageBroadcast.js';
+import Help from '../Layouts/Comman/Help/HelpResearcher.js';
 import Sthtrans from '../Layouts/Researcher/Strategy_transaction/Strategy_transaction.js';
 
 import OprnPosition from '../Layouts/SubAdmin/Option/Open_Positions.js';
 
+import Settings from '../Layouts/Comman/Setting_Page/Settings.js';
 
 
 
@@ -55,10 +56,11 @@ const Research = () => {
 
 
                     
-                    <Route exact path='/message_broadcast' element = {<MessageBroadCast/>}/>
+                    <Route exact path='/message_broadcast' element = {<MessageBroadcast/>}/>
                     <Route exact path='/help' element = {<Help/>}/>
                     <Route exact path='/strategys/transaction' element = {<Sthtrans/>}/>
-
+                   
+                    <Route exact path="/setting" element={<Settings />} />
 
 
 

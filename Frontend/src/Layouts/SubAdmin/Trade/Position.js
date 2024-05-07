@@ -287,13 +287,13 @@ export default function AllEmployees() {
                 </div>
             ),
         },
-        
+
         {
             dataField: "",
             text: "Entry Status",
             formatter: (cell, row, rowIndex) => (
                 <div>
-                    <span>{row.result[0].exit_status ==="above"?"ABOVE":row.result[0].exit_status ==="below"?"BELOW":row.result[0].exit_status == "range"?"RANGE":" - "}</span>
+                    <span>{row.result[0].exit_status === "above" ? "ABOVE" : row.result[0].exit_status === "below" ? "BELOW" : row.result[0].exit_status == "range" ? "RANGE" : " - "}</span>
 
 
                 </div>
@@ -395,10 +395,23 @@ export default function AllEmployees() {
 
 
 
+    // var CreatechannelList = "";
+    // tradeHistoryData.data &&
+    //     tradeHistoryData.data?.map((item) => {
+    //         CreatechannelList += `${item.exchange}|${item.token}#`;
+    //     });
+
+
+
     var CreatechannelList = "";
+    let total = 0;
     tradeHistoryData.data &&
         tradeHistoryData.data?.map((item) => {
             CreatechannelList += `${item.exchange}|${item.token}#`;
+            console.log("item", item)
+            if (parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price != '' && item.exit_price) {
+                total += (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty);
+            }
         });
 
 
@@ -713,8 +726,18 @@ export default function AllEmployees() {
 
 
                                 </div>
+                                
+
 
                                 <div className="card-body table-responsive">
+
+                                    {tradeHistoryData.data.length > 0 ?
+
+                                        total >= 0 ?
+                                            <h4 >Total Realised P/L : <span style={{ color: "green" }}> {total.toFixed(2)}</span> </h4> :
+                                            <h4 >Total Realised P/L : <span style={{ color: "red" }}> {total.toFixed(2)}</span> </h4> : ""
+
+                                    }
                                     <FullDataTable
                                         TableColumns={columns}
                                         tableData={tradeHistoryData.data}

@@ -170,9 +170,8 @@ const Makecall = () => {
 
 
     const [updatedDataPriceTS, setUpdatedDataPriceTS] = useState({});
-    console.log("updatedDataPriceTS  ", updatedDataPriceTS)
+ 
 
-    
 
     const inputChangeTargetStoplos = (e, type, row) => {
 
@@ -323,7 +322,7 @@ const Makecall = () => {
         },
         {
             dataField: "TType",
-            text: "T Type",
+            text: "Type",
             formatter: (cell, row, rowIndex) => (
                 <div>
                     {row.TType == "LE" ?
@@ -394,43 +393,7 @@ const Makecall = () => {
                 </div>
             ),
         },
-        // {
-        //     dataField: "qty_persent",
-        //     text: "Exit Qty (%)",
-        //     formatter: (cell, row, rowIndex) => (
-        //         <div>
-        //             <input
-        //                 // key={index}
-        //                 type="number"
-        //                 name="quantity"
-        //                 className=""
-        //                 id="quantity"
-        //                 placeholder="Enter Qty (%)"
-
-        //                 onChange={
-        //                     (e) =>
-        //                         Set_Entry_Exit_Qty(
-        //                             row,
-        //                             e.target.value,
-        //                             row.old_qty_persent,
-        //                             row.trade_symbol
-        //                         )
-        //                 }
-
-
-        //                 defaultValue={inputValue ? inputValue : row.old_qty_persent}
-        //                 max={row.old_qty_persent}
-        //             // disabled={data.users.qty_type == "1" || data.users.qty_type == 1}
-
-        //             />
-        //         </div>
-        //     ),
-        // },
-
-        // {
-        //     dataField: "strategy",
-        //     text: "Strategy",
-        // },
+      
     ]
 
     if (iscolumntPrice == true) {
@@ -468,13 +431,11 @@ const Makecall = () => {
     }
 
 
- 
-    //console.log("setSelected1 ",selected1)
+
 
 
     const delete_data = async (ABR) => {
         if(selected1.length <= 0){
-        //   alert("please select any signal");
         Swal.fire({
             text: "please select any signal",
             icon: "error",
@@ -485,7 +446,7 @@ const Makecall = () => {
         }  
        let text = "Are you sure you want delete signal ?";
        if (window.confirm(text) == true) {
-         //  alert("DONE")
+   
            await dispatch(DeleteDataMakeCall(
             {
                 req:
@@ -694,16 +655,13 @@ const Makecall = () => {
         ))
             .unwrap()
             .then(async (response) => {
-                // console.log("demate_user_id ",response.data.demate_user_id)
-                // console.log("access_token ",response.data.access_token)
-                // console.log("trading_status ",response.data.trading_status
 
                 if (response.status) {
                     setLivePriceDataDetails(response.data)
                     if (response.data && response.data.demate_user_id !== undefined && response.data && response.data.access_token !== undefined && response.data.trading_status == "on") {
                         let type = { loginType: "API" };
                         const res = await CreateSocketSession(type, response.data.demate_user_id, response.data.access_token);
-                        //console.log("res ", res.data.stat)
+                     
                         if (res.data.stat) {
                             const url = "wss://ws1.aliceblueonline.com/NorenWS/"
                             socket = new WebSocket(url)
@@ -1818,7 +1776,7 @@ const Makecall = () => {
                 },
                 data: req
             };
-            axios.request(config)
+            getStrategyData.request(config)
                 .then(async (response) => {
                     //console.log("response ", response);
                     if (response.status) {
@@ -2591,7 +2549,7 @@ const Makecall = () => {
                                                 </div>
                                                 </div>     
 
-                                            <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                                            <div className="card-header d-flex justify-content-between align-items-center border-bottom mb-3">
                                                 <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-landmark pe-2"></i>Below</h5>
                                                 <div className="pay-btn text-end w-auto">
                                                     {/* <button className="btn btn-primary " data-bs-toggle="modal"
@@ -2634,7 +2592,7 @@ const Makecall = () => {
                                                 </div>
                                                 </div>     
 
-                                            <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                                            <div className="card-header d-flex justify-content-between align-items-center border-bottom mb-3">
 
                                                 <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-envelope pe-2"></i>Above</h5>
                                                 <div className="pay-btn text-end w-auto">
@@ -2675,7 +2633,7 @@ const Makecall = () => {
                                                     </button>
                                                 </div>
                                                 </div>       
-                                            <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                                            <div className="card-header d-flex justify-content-between align-items-center border-bottom mb-3">
                                                 <h5 className="card-title mb-0 w-auto">  <i className="fa-regular fa-image pe-2"></i>Range</h5>
                                                 <div className="pay-btn text-end w-auto">
                                                   

@@ -35,7 +35,7 @@ class Users {
   // USER ADD
   async AddUser(req, res) {
     try {
-      const { FullName, UserName, Email, PhoneNo, license_type, licence, fromdate, Strategies, broker, parent_id, api_secret, app_id, client_code, api_key, app_key, api_type, demat_userid, group_service, Service_Type, per_trade_value, Balance,employee_id } = req.body;
+      const { FullName, UserName, Email, PhoneNo, license_type, licence, fromdate, Strategies, broker, parent_id, api_secret, app_id, client_code, api_key, app_key, api_type, demat_userid, group_service, Service_Type, per_trade_value, Balance, employee_id } = req.body;
 
       var Role = "USER";
       var StartDate1 = "";
@@ -54,7 +54,7 @@ class Users {
       }
 
 
-      const SubadminCheck = await User_model.find({ _id: parent_id });
+      const SubadminCheck = await User_model.find({ _id: parent_id })
 
       if (SubadminCheck.length == 0) {
         return res.send({ status: false, msg: "Please Enter Correct Maker Id", data: [] });
@@ -193,6 +193,19 @@ class Users {
         });
       }
 
+      console.log("SubadminCheck[0].prifix_key", SubadminCheck[0])
+
+
+      var parent_prifix_key
+      if (SubadminCheck[0].Role == "SUBADMIN") {
+        parent_prifix_key = SubadminCheck[0].prifix_key
+      } else if (SubadminCheck[0].Role == "EMPLOYEE") {
+        parent_prifix_key = SubadminCheck[0].prifix_key.substring(0, 3);
+      } else {
+        parent_prifix_key = SubadminCheck[0].prifix_key
+      }
+      console.log("parent_prifix_key", parent_prifix_key)
+
       const mins = 1;
       const maxs = 1000000;
       const rands = mins + Math.random() * (maxs - mins);
@@ -201,6 +214,14 @@ class Users {
 
       var ccd = dt.format("ymd");
       var client_key = SubadminCheck[0].prifix_key + cli_key + ccd;
+
+
+
+
+
+
+
+
 
 
       User_model.insertMany([
@@ -214,10 +235,10 @@ class Users {
           Role: Role.toUpperCase(),
           license_type: license_type,
           licence: licence,
-          prifix_key: SubadminCheck[0].prifix_key,
+          prifix_key: client_key,
           client_key: client_key,
-          parent_id: parent_id,
-          parent_role: SubadminCheck[0].parent_role,
+          parent_id: SubadminCheck[0].Role == "SUBADMIN" ? SubadminCheck[0]._id : SubadminCheck[0].parent_id,
+          parent_role: SubadminCheck[0].Role == "SUBADMIN" ? SubadminCheck[0].Role : SubadminCheck[0].parent_role,
           api_secret: api_secret,
           app_id: app_id,
           client_code: client_code,
@@ -229,15 +250,13 @@ class Users {
           Service_Type: Service_Type,
           per_trade_value: per_trade_value,
           Balance: Balance || 0,
-          employee_id:employee_id
+          employee_id: SubadminCheck[0].Role == "SUBADMIN" ? null : SubadminCheck[0]._id
 
         },
 
       ])
         .then(async (data) => {
           var User_id = data[0]._id;
-
-
 
           // GROUP SERVICE ADD
           const User_group_service = new groupService_User({
@@ -502,7 +521,7 @@ class Users {
 
                 },
               };
-       
+
               const update_Date = await User_model.updateOne(filter, update);
             }
 
@@ -526,7 +545,7 @@ class Users {
             }
 
 
-           res.send({ status: true, msg: "successfully Add!", data: data[0]._id });
+            res.send({ status: true, msg: "successfully Add!", data: data[0]._id });
 
             var EmailData = await firstOptPass(email_data);
 
@@ -799,10 +818,16 @@ class Users {
       }
 
 
-      if (
-        Number(ParentData.Balance) >=
-        Number(totalLicense) + Number(req.Balance)
-      ) {
+      // if (
+      //   Number(ParentData.Balance) >=
+      //   Number(totalLicense) + Number(req.Balance)
+      // ) {} else {
+      //   return res.send({
+      //     status: false,
+      //     msg: "You Dont Have Balance",
+      //     data: [],
+      //   });
+      // }
 
         // PREVIOS CLIENT IS LIVE
         if (existingUsername.license_type != "2") {
@@ -1380,9 +1405,10 @@ class Users {
           Service_Type: req.Service_Type,
           per_trade_value: req.per_trade_value,
           Balance: req.Balance,
+          add_balance: req.add_balance,
           Start_Date: existingUsername.license_type != 0 && req.license_type == 0 ? StartDate1 : null,
           End_Date: existingUsername.license_type != 0 && req.license_type == 0 ? EndDate1 : null,
-          employee_id:req.employee_id
+          employee_id: req.employee_id
         };
 
 
@@ -1441,13 +1467,7 @@ class Users {
 
 
 
-      } else {
-        return res.send({
-          status: false,
-          msg: "You Dont Have Balance",
-          data: [],
-        });
-      }
+      
     } catch (error) {
       console.log("Error In User Update-", error);
     }
@@ -1472,8 +1492,21 @@ class Users {
         });
       }
 
+
+
+      const parent_role = await User_model.find({ _id: user_ID }).select('Role')
+      var AdminMatch
+
+      if (parent_role[0].Role == "SUBADMIN") {
+        AdminMatch = { Role: "USER", parent_id: user_ID };
+      } else if (parent_role[0].Role == "EMPLOYEE") {
+        AdminMatch = { Role: "USER", employee_id: user_ID };
+      } else {
+        AdminMatch = { Role: "USER", parent_id: user_ID };
+      }
+
       // GET ALL CLIENTS
-      const AdminMatch = { Role: "USER", parent_id: user_ID };
+
       const getAllClients = await User_model.find(AdminMatch).sort({ Create_Date: -1 });
       const totalCount = getAllClients.length;
 
@@ -1712,73 +1745,73 @@ class Users {
     }
   }
 
- // GET ALL GetAllClients USER
- async GetAllUserStrategyTransactionUser(req, res) {
-  try {
-    const { page, limit, user_ID } = req.body; //LIMIT & PAGE
-    // const skip = (page - 1) * limit;
+  // GET ALL GetAllClients USER
+  async GetAllUserStrategyTransactionUser(req, res) {
+    try {
+      const { page, limit, user_ID } = req.body; //LIMIT & PAGE
+      // const skip = (page - 1) * limit;
 
-    if (!user_ID || user_ID == '' || user_ID == null) {
-      return res.send({
-        status: false,
-        msg: "Please Enter Sub Admin Id",
-        data: [],
-      });
-    }
-
-
-
-    // GET ALL CLIENTS
-    var AdminMatch;
-    AdminMatch = { user_id: new ObjectId(user_ID) };
-
-
-
-    const getAllClients = await strategy_transaction.aggregate([
-      {
-        $match: AdminMatch
-      },
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'user_id',
-          foreignField: '_id',
-          as: 'userData'
-        }
-      },
-      {
-        $lookup: {
-          from: 'strategies',
-          localField: 'strategy_id',
-          foreignField: '_id',
-          as: 'strategyData'
-        }
-      },
-      {
-        $addFields: {
-          user_id: { $arrayElemAt: ['$userData.UserName', 0] },
-          strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] }
-        }
-      },
-      {
-        $project: {
-          _id: 1,
-          user_id: 1,
-          strategy_id: 1,
-          stg_charge: 1,
-          Admin_charge: 1,
-          plan_id: 1,
-          Start_Date: 1,
-          End_Date: 1,
-          createdAt: 1,
-        }
-      },
-      {
-        $sort: {
-          createdAt: -1 // Sort by createdAt field in descending order
-        }
+      if (!user_ID || user_ID == '' || user_ID == null) {
+        return res.send({
+          status: false,
+          msg: "Please Enter Sub Admin Id",
+          data: [],
+        });
       }
-    ]);
+
+
+
+      // GET ALL CLIENTS
+      var AdminMatch;
+      AdminMatch = { user_id: new ObjectId(user_ID) };
+
+
+
+      const getAllClients = await strategy_transaction.aggregate([
+        {
+          $match: AdminMatch
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'userData'
+          }
+        },
+        {
+          $lookup: {
+            from: 'strategies',
+            localField: 'strategy_id',
+            foreignField: '_id',
+            as: 'strategyData'
+          }
+        },
+        {
+          $addFields: {
+            user_id: { $arrayElemAt: ['$userData.UserName', 0] },
+            strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] }
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            user_id: 1,
+            strategy_id: 1,
+            stg_charge: 1,
+            Admin_charge: 1,
+            plan_id: 1,
+            Start_Date: 1,
+            End_Date: 1,
+            createdAt: 1,
+          }
+        },
+        {
+          $sort: {
+            createdAt: -1 // Sort by createdAt field in descending order
+          }
+        }
+      ]);
 
 
 
@@ -1786,8 +1819,25 @@ class Users {
 
 
 
-    // IF DATA NOT EXIST
-    if (getAllClients.length == 0) {
+      // IF DATA NOT EXIST
+      if (getAllClients.length == 0) {
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: [],
+          // totalCount: totalCount,
+        });
+      }
+
+      // DATA GET SUCCESSFULLY
+      return res.send({
+        status: true,
+        msg: "Get All Strategy Charges",
+        data: getAllClients,
+
+      });
+    } catch (error) {
+      console.log("Error loginClients Error-", error);
       return res.send({
         status: false,
         msg: "Empty data",
@@ -1795,24 +1845,7 @@ class Users {
         // totalCount: totalCount,
       });
     }
-
-    // DATA GET SUCCESSFULLY
-    return res.send({
-      status: true,
-      msg: "Get All Strategy Charges",
-      data: getAllClients,
-
-    });
-  } catch (error) {
-    console.log("Error loginClients Error-", error);
-    return res.send({
-      status: false,
-      msg: "Empty data",
-      data: [],
-      // totalCount: totalCount,
-    });
   }
-}
 
 
   async GetAllUserStrategyhistory(req, res) {
@@ -1867,7 +1900,7 @@ class Users {
           $project: {
             _id: 1,
             user_id: 1,
-            license_type:1,
+            license_type: 1,
             strategy_id: 1,
             ActiveStatus: 1,
             plan_id: 1,
@@ -1974,8 +2007,8 @@ class Users {
 
 
 
-   // GET ALL EMPLOYEE NAME
-   async GetAllEmaployeeName(req, res) {
+  // GET ALL EMPLOYEE NAME
+  async GetAllEmaployeeName(req, res) {
     try {
       const { user_ID } = req.body; //LIMIT & PAGE
 
@@ -1991,7 +2024,7 @@ class Users {
       const AdminMatch = { Role: "EMPLOYEE", parent_id: user_ID };
       const getAllClients = await User_model.find(AdminMatch).select('UserName').sort({ Create_Date: -1 });
 
- 
+
 
 
 
@@ -2009,7 +2042,7 @@ class Users {
         status: true,
         msg: "Get All Clients",
         data: getAllClients,
-     
+
       });
     } catch (error) {
       console.log("Error fetching clients:", error);
@@ -2017,7 +2050,7 @@ class Users {
         status: false,
         msg: "Error fetching clients",
         data: [],
-    
+
       });
     }
   }

@@ -91,10 +91,6 @@ export default function AllUsers() {
 
 
 
-
-
-
-
   const showBrokerName = (row) => {
 
     if (row.license_type === "1") {
@@ -118,7 +114,7 @@ export default function AllUsers() {
       headerName: "ID",
       width: 70,
       headerClassName: styles.boldHeader,
-      hideColumn:true,
+      hideColumn: true,
       renderCell: (params) => (
         <div> <b>{params.value + 1}</b></div>
       ),
@@ -127,28 +123,28 @@ export default function AllUsers() {
       field: "FullName",
       headerName: "Full Name",
       width: 160,
-      hideColumn:true,
+      hideColumn: true,
       headerClassName: styles.boldHeader,
-     
+
     },
     {
       field: "UserName",
       headerName: "User name",
       width: 160,
-      hideColumn:true,
+      hideColumn: true,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>{getPermission.data && getPermission.data.detailsinfo ? params.value : params.value.substring(0, 2)+ "******" +params.value.substring(params.value.length - 2) }</div>
+        <div>{getPermission.data && getPermission.data.detailsinfo ? params.value : params.value.substring(0, 2) + "******" + params.value.substring(params.value.length - 2)}</div>
       ),
     },
     {
       field: "Email",
       headerName: "Email ID",
       width: 220,
-      hideColumn:true,
+      hideColumn: true,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>{getPermission.data && getPermission.data.detailsinfo ? params.value : params.value.substring(0, 2)+ "******" +params.value.substring(params.value.length - 2) }</div>
+        <div>{getPermission.data && getPermission.data.detailsinfo ? params.value : params.value.substring(0, 2) + "******" + params.value.substring(params.value.length - 2)}</div>
       ),
     },
 
@@ -156,54 +152,31 @@ export default function AllUsers() {
       field: "PhoneNo",
       headerName: "Phone Number",
       width: 180,
-      hideColumn:true,
+      hideColumn: true,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div> {getPermission.data && getPermission.data.detailsinfo ? params.value : params.value.substring(0, 2)+ "******" +params.value.substring(params.value.length - 2) }</div>
+        <div> {getPermission.data && getPermission.data.detailsinfo ? params.value : params.value.substring(0, 2) + "******" + params.value.substring(params.value.length - 2)}</div>
       ),
     },
-    
+
     {
       field: "broker",
       headerName: "Broker",
       width: 120,
       headerClassName: styles.boldHeader,
       renderCell: (params) => showBrokerName(params.row),
-      hideColumn:true,
-       
+      hideColumn: true,
+
     },
     {
       field: 'license_type',
       headerName: "License Type",
       width: 120,
       headerClassName: styles.boldHeader,
-      hideColumn:true,
+      hideColumn: true,
       renderCell: (params) => showLicenceName(params.row),
-      
+
     },
-
-
-    // {
-    //   field: "ActiveStatus",
-    //   headerName: "Status",
-    //   width: 120,
-    //   headerClassName: styles.boldHeader,
-    //   hideColumn:true,
-    //   renderCell: (params) => (
-    //     <div className="status-toggle">
-    //       <input
-    //         id={`rating_${params.row.id}`}
-    //         className="check"
-    //         type="checkbox"
-    //         onChange={(event) => handleSwitchChange(event, params.row._id)}
-    //         defaultChecked={params.value == 1}
-    //       />
-    //       <label htmlFor={`rating_${params.row.id}`} className="checktoggle checkbox-bg"></label>
-    //     </div>
-    //   ),
-    // },
-    
-
     {
       field: "actions",
       headerName: "Actions",
@@ -217,41 +190,43 @@ export default function AllUsers() {
           >
             <EditIcon />
           </IconButton>
-          <IconButton
-            aria-label="delete"
-            size="small"
-            onClick={() => handleDeleteConfirmation(params.row._id)}
-          >
-            <DeleteIcon />
-          </IconButton>
+          {params.row.license_type == 1 ?
+            <IconButton
+              aria-label="delete"
+              size="small"
+              onClick={() => handleDeleteConfirmation(params.row._id)}
+            >
+              <DeleteIcon />
+            </IconButton> : ''
+          }
         </div>
       ),
       headerClassName: styles.boldHeader,
-      hideColumn:  getPermission.data && getPermission.data.employee_edit==1 ? true : false 
-      
+      hideColumn: getPermission.data && getPermission.data.employee_edit == 1 ? true : false
+
     },
-    
+
 
     {
       field: "Create_Date",
       headerName: "Created At",
       width: 250,
       headerClassName: styles.boldHeader,
-      hideColumn:true,
+      hideColumn: true,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
     },
   ];
 
 
-  
- 
+
+
 
   const handleEdit = async (row) => {
-    navigate(`/employee/user/edit/${row._id}`, {state : {rowData : row}} );
+    navigate(`/employee/user/edit/${row._id}`, { state: { rowData: row } });
   };
 
 
-  console.log("getPermission.data.employee_edit :", getPermission.data.employee_edit)
+ 
 
   const getpermission = async () => {
     const data = { id: user_id }
@@ -283,50 +258,7 @@ export default function AllUsers() {
   }, [])
 
 
-
-
-
-
-  const handleSwitchChange = async (event, id) => {
-    const user_active_status = event.target.checked ? 1 : 0;
-
-    const result = await Swal.fire({
-      title: "Do you want to save the changes?",
-      showCancelButton: true,
-      confirmButtonText: "Save",
-      cancelButtonText: "Cancel",
-      allowOutsideClick: false, // Prevents closing modal by clicking outside or pressing Esc key
-    });
-
-    if (result.isConfirmed) {
-      try {
-        const response = await dispatch(Show_Status({ id, user_active_status })).unwrap();
-        if (response.status) {
-          Swal.fire({
-            title: "Saved!",
-            icon: "success",
-            timer: 1000,
-            timerProgressBar: true
-          });
-          setTimeout(() => {
-            Swal.close(); // Close the modal
-            setrefresh(!refresh);
-          }, 1000);
-        } else {
-          setrefresh(!refresh);
-        }
-      } catch (error) {
-        console.error("Error", error);
-        Swal.fire("Error", "There was an error processing your request.", "error");
-      }
-    } else if (result.dismiss === Swal.DismissReason.cancel) {
-      window.location.reload();
-    }
-  };
-
-
-
-
+ 
 
   const AllBroker = async () => {
 
@@ -485,7 +417,7 @@ export default function AllUsers() {
   }, [refresh, searchInput]);
 
 
- 
+
 
   return (
     <>
@@ -574,7 +506,7 @@ export default function AllUsers() {
                   styles={styles}
                   label={label}
                   columns={columns.filter(column => column.hideColumn === true)}
-                  
+
                   rows={getAllUsers.data}
                 />
               </div>

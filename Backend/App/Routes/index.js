@@ -24,16 +24,17 @@ module.exports = function (app) {
     app.use(require("./Comman/Activity.routes"))
     app.use(require("./Comman/Createorder.routes"))
 
+
+
+
     //employee 
     app.use(require("./Employee/Employee.routes"))
-
-
-
-
-
     app.use(require("./SuperAdmin/SuperAdmin.routes"))
-
     app.use(require("./Researcher/Researcher.routes"))
+
+
+    //user
+    app.use(require('./Users/Broker_Response.routes'))
     //faq
     // app.use(require("./Comman/FAQ.routes"))
 

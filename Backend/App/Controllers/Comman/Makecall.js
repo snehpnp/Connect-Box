@@ -450,14 +450,55 @@ class Makecall {
     try {
       const { user_id } = req.body;
 
-      // var getAllTheme = await strategy_model.find()
-      const result = await strategy_model.find({ maker_id: user_id }).sort({ createdAt: -1 }).select('_id strategy_name');
+      const findUser = await User.find({ _id: user_id }).select('prifix_key Role')
+      const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
 
-      if (result.length > 0) {
-        return res.send({ status: true, msg: "Get strategy data Succefully", data: result })
-      } else {
-        return res.send({ status: false, msg: "Data not found", data: [] })
+
+      if (findUser[0].Role == "SUBADMIN") {
+        const getAllstrategy = await strategy_model.find(
+          { strategy_name: { $regex: '^' + prefix } } // Using regex to match the starting 3 letters
+        )
+          .sort({ createdAt: -1 })
+          .select('_id strategy_name Service_Type');
+
+
+
+        // IF DATA NOT EXIST
+        if (getAllstrategy.length == 0) {
+          res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+          return;
+        }
+
+        // DATA GET SUCCESSFULLY
+        return res.send({
+          status: true,
+          msg: "Get All Startegy",
+          data: getAllstrategy,
+        });
+      } else if (findUser[0].Role == "RESEARCH") {
+        const getAllstrategy = await researcher_strategy.find(
+          { maker_id: findUser[0]._id }
+        )
+          .sort({ createdAt: -1 })
+          .select('_id strategy_name');
+
+
+
+        // IF DATA NOT EXIST
+        if (getAllstrategy.length == 0) {
+          res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+          return;
+        }
+
+        // DATA GET SUCCESSFULLY
+        return res.send({
+          status: true,
+          msg: "Get All Startegy",
+          data: getAllstrategy,
+        });
       }
+
+
 
     } catch (error) {
       return res.send({ status: false, msg: "Server Error" });
@@ -466,9 +507,9 @@ class Makecall {
 
   }
 
-  
-   //get token by socket Data
-   async Getgettokenbysocket(req, res) {
+
+  //get token by socket Data
+  async Getgettokenbysocket(req, res) {
 
 
     try {
@@ -478,14 +519,14 @@ class Makecall {
       let symbol = req.body.symbol
 
       //Cash Token get
-      if(req.body.segment == "C"){
+      if (req.body.segment == "C") {
 
         const result = await services.findOne({ name: symbol }).select('instrument_token exch_seg');
-    
+
         if (result != null) {
-        return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
+          return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg })
         } else {
-        return res.send({ status: false, msg: "Data not found", token: "" })
+          return res.send({ status: false, msg: "Data not found", token: "" })
         }
 
       }
@@ -503,39 +544,40 @@ class Makecall {
       }
 
      
+
       //Futer Token get
-      else if(req.body.segment == "F" || req.body.segment == "MF" || req.body.segment == "CF"){
-        
+      else if (req.body.segment == "F" || req.body.segment == "MF" || req.body.segment == "CF") {
+
         let expiry = req.body.expiry;
 
-        const result = await Alice_token.findOne({ symbol : symbol , segment : segment , expiry : expiry }).select('instrument_token exch_seg');
+        const result = await Alice_token.findOne({ symbol: symbol, segment: segment, expiry: expiry }).select('instrument_token exch_seg');
 
         if (result != null) {
-        return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
+          return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg })
         } else {
-        return res.send({ status: false, msg: "Data not found", token: "" })
+          return res.send({ status: false, msg: "Data not found", token: "" })
         }
- 
-      }
-      
-      
-      //Option Token get
-      else if(req.body.segment == "O" || req.body.segment == "MO" || req.body.segment == "CO"){
 
-      let expiry = req.body.expiry;
-      let strike_price = req.body.strike_price;
-      let option_type = "CE";
-      
-      if(req.body.option_type.toUpperCase() == "PUT"){
-        option_type = "PE"
       }
-        
-        const result = await Alice_token.findOne({ symbol : symbol , segment : segment , expiry : expiry , strike : strike_price , option_type : option_type }).select('instrument_token exch_seg');
+
+
+      //Option Token get
+      else if (req.body.segment == "O" || req.body.segment == "MO" || req.body.segment == "CO") {
+
+        let expiry = req.body.expiry;
+        let strike_price = req.body.strike_price;
+        let option_type = "CE";
+
+        if (req.body.option_type.toUpperCase() == "PUT") {
+          option_type = "PE"
+        }
+
+        const result = await Alice_token.findOne({ symbol: symbol, segment: segment, expiry: expiry, strike: strike_price, option_type: option_type }).select('instrument_token exch_seg');
 
         if (result != null) {
-        return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
+          return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg })
         } else {
-        return res.send({ status: false, msg: "Data not found", token: "" })
+          return res.send({ status: false, msg: "Data not found", token: "" })
         }
 
       }
@@ -549,37 +591,38 @@ class Makecall {
 
   }
 
-   //get token by socket Data
-   async GetLiveDataSession(req, res) {
+  //get token by socket Data
+  async GetLiveDataSession(req, res) {
 
     try {
 
 
-            let result = null
+      let result = null
 
-            if(req.body.exist_user == "none"){
-              result = await live_price_token.findOne().limit(1).select('demate_user_id access_token trading_status');
-            }else{
-              // result = await live_price_token.findOne({demate_user_id:req.body.exist_user}).limit(1).select('demate_user_id access_token');
+      if (req.body.exist_user == "none") {
+        result = await live_price_token.findOne().limit(1).select('demate_user_id access_token trading_status');
+      } else {
+        // result = await live_price_token.findOne({demate_user_id:req.body.exist_user}).limit(1).select('demate_user_id access_token');
 
-             result = await live_price_token.findOne({ _id: { $gt: req.body.exist_user_details._id } // Assuming result is the previously found document
-             }).select('demate_user_id access_token trading_status').limit(1);
-             
-       
-             }
-             
+        result = await live_price_token.findOne({
+          _id: { $gt: req.body.exist_user_details._id } // Assuming result is the previously found document
+        }).select('demate_user_id access_token trading_status').limit(1);
 
-         
-            if (result != null) {
-              return res.send({ status: true, msg: "Data Get", data: result });
-            }else{
-              return res.send({ status: false, msg: "Id Wrong" });
-            }
+
+      }
+
+
+
+      if (result != null) {
+        return res.send({ status: true, msg: "Data Get", data: result });
+      } else {
+        return res.send({ status: false, msg: "Id Wrong" });
+      }
 
 
 
     } catch (error) {
-     return res.send({ status: false, msg: "Server Error" });
+      return res.send({ status: false, msg: "Server Error" });
     }
 
 
@@ -590,7 +633,7 @@ class Makecall {
   //Add data above beleow range
   async AddDataAboveBelowRange(req, res) {
 
-     try {
+    try {
 
 
       const {
@@ -623,108 +666,47 @@ class Makecall {
         marketTimeAmo,
         WiseTypeDropdown
       } = req.body;
-         
-           //crete data
-         const makecallABR_insert = new makecallABR({
-          user_id:user_id,
-          Symbol:Symbol,
-          TType:TType,
-          Tr_Price:Tr_Price,
-          Price:Price,
-          EntryPrice:EntryPrice,
-          Sq_Value:Sq_Value,
-          Sl_Value:Sl_Value,
-          TSL:TSL,
-          Segment:Segment,
-          Strike:Strike,
-          OType:OType,
-          Expiry:Expiry,
-          Strategy:Strategy,
-          Quntity:Quntity,
-          Key:Key,
-          TradeType:TradeType,
-          Target:Target,
-          StopLoss:StopLoss,
-          ExitTime:ExitTime.replace(":", ""),
-          NoTradeTime:NoTradeTime.replace(":", ""),
-          sl_status:sl_status,
-          token:token,
-          EntryPriceRange_one:EntryPriceRange_one,
-          EntryPriceRange_two:EntryPriceRange_two,
-          ABR_TYPE:ABR_TYPE,
-          marketTimeAmo:marketTimeAmo,
-          WiseTypeDropdown:WiseTypeDropdown
-        });
-  
-        // Save new user and count licenses
-        const result = await makecallABR_insert.save();
-   
-        if (result != null) {
-              return res.send({ status: true, msg: "Data Add Successfully....", data: result });
-            }else{
-              return res.send({ status: false, msg: "Id Wrong" });
-            }
- 
 
- 
-     } catch (error) {
-       return res.send({ status: false, msg: "Server Error" });
-     }
- 
- 
-   }
+      //crete data
+      const makecallABR_insert = new makecallABR({
+        user_id: user_id,
+        Symbol: Symbol,
+        TType: TType,
+        Tr_Price: Tr_Price,
+        Price: Price,
+        EntryPrice: EntryPrice,
+        Sq_Value: Sq_Value,
+        Sl_Value: Sl_Value,
+        TSL: TSL,
+        Segment: Segment,
+        Strike: Strike,
+        OType: OType,
+        Expiry: Expiry,
+        Strategy: Strategy,
+        Quntity: Quntity,
+        Key: Key,
+        TradeType: TradeType,
+        Target: Target,
+        StopLoss: StopLoss,
+        ExitTime: ExitTime.replace(":", ""),
+        NoTradeTime: NoTradeTime.replace(":", ""),
+        sl_status: sl_status,
+        token: token,
+        EntryPriceRange_one: EntryPriceRange_one,
+        EntryPriceRange_two: EntryPriceRange_two,
+        ABR_TYPE: ABR_TYPE,
+        marketTimeAmo: marketTimeAmo,
+        WiseTypeDropdown: WiseTypeDropdown
+      });
 
+      // Save new user and count licenses
+      const result = await makecallABR_insert.save();
 
-   //Get data above beleow range
-  async GetDataAboveBelowRange(req, res) {
-
-  
-    try {  
-      const { user_id, ABR } = req.body;  
-       const UserId  = new ObjectId(user_id)
-        const pipeline = [
-        {
-           $match: {
-            user_id: UserId,
-            ABR_TYPE: ABR,
-            $or: [
-              { status: 0 },
-              { status: 2 }
-            ]
-          },
-        },
-        ];
-  
-         const result = await makecallABR.aggregate(pipeline);
-           
-          if (result.length > 0) {
-             return res.send({ status: true, msg: "Data Add Successfully....", data: result });
-           }else{
-             return res.send({ status: false, msg: "Id Wrong" });
-           }
-
-
-
-    } catch (error) {
-
-     return res.send({ status: false, msg: "Server Error" });
-    }
-
-
-  }
-
-
-   //Delete data above beleow range
-   async DeleteDataMakeCall(req, res) {
-
-      
-    try {  
-       
-           const AllIds = req.body.row.map(item => new ObjectId(item._id))
-      
-           const result = await makecallABR.deleteMany({ _id: { $in: AllIds } })
-           return res.send({ status: true, msg: "Data Delete Successfully...." });
-           
+      if (result != null) {
+        return res.send({ status: true, msg: "Data Add Successfully....", data: result });
+      } else {
+        return res.send({ status: false, msg: "Id Wrong" });
+      }
 
 
 
@@ -735,27 +717,88 @@ class Makecall {
 
   }
 
-   //Update data above beleow range
-   async UpdateDataMakeCall(req, res) {
 
-    try {  
+  //Get data above beleow range
+  async GetDataAboveBelowRange(req, res) {
 
 
-        for (let id in req.body.row) {
+    try {
+      const { user_id, ABR } = req.body;
+      const UserId = new ObjectId(user_id)
+      const pipeline = [
+        {
+          $match: {
+            user_id: UserId,
+            ABR_TYPE: ABR,
+            $or: [
+              { status: 0 },
+              { status: 2 }
+            ]
+          },
+        },
+      ];
+
+      const result = await makecallABR.aggregate(pipeline);
+
+      if (result.length > 0) {
+        return res.send({ status: true, msg: "Data Add Successfully....", data: result });
+      } else {
+        return res.send({ status: false, msg: "Id Wrong" });
+      }
+
+
+
+    } catch (error) {
+
+      return res.send({ status: false, msg: "Server Error" });
+    }
+
+
+  }
+
+
+  //Delete data above beleow range
+  async DeleteDataMakeCall(req, res) {
+
+
+    try {
+
+      const AllIds = req.body.row.map(item => new ObjectId(item._id))
+
+      const result = await makecallABR.deleteMany({ _id: { $in: AllIds } })
+      return res.send({ status: true, msg: "Data Delete Successfully...." });
+
+
+
+
+    } catch (error) {
+      return res.send({ status: false, msg: "Server Error" });
+    }
+
+
+  }
+
+  //Update data above beleow range
+  async UpdateDataMakeCall(req, res) {
+
+    try {
+
+
+      for (let id in req.body.row) {
         const updates = req.body.row[id];
 
 
-         const filter = { _id: new ObjectId(id) };
-         const update = { $set: updates };
+        const filter = { _id: new ObjectId(id) };
+        const update = { $set: updates };
 
-        await makecallABR.updateOne(filter,update)
+        await makecallABR.updateOne(filter, update)
         // Perform any operation you need with the ID and updates
-        }
+      }
       return res.send({ status: true, msg: "Data Update Successfully...." });
-          
+
 
     } catch (error) {
-     return res.send({ status: false, msg: "server Error" });
+      return res.send({ status: false, msg: "server Error" });
     }
 
   }
@@ -793,19 +836,19 @@ const marketEndTimeCurrency = { hour: 4, minute: 59 };
 
 const marketEndTimeMCX = { hour: 11, minute: 29 };
 
-  const isMarketOpen =
+const isMarketOpen =
   hours > marketStartTime.hour ||
   (hours === marketStartTime.hour && minutes >= marketStartTime.minute);
 
-  const isMarketClosedEquity =
+const isMarketClosedEquity =
   hours > marketEndTimeEquity.hour ||
   (hours === marketEndTimeEquity.hour && minutes > marketEndTimeEquity.minute);
 
-  const isMarketClosedCurrency =
+const isMarketClosedCurrency =
   hours > marketEndTimeCurrency.hour ||
   (hours === marketEndTimeCurrency.hour && minutes > marketEndTimeCurrency.minute);
 
-  const isMarketClosedMCX =
+const isMarketClosedMCX =
   hours > marketEndTimeMCX.hour ||
   (hours === marketEndTimeMCX.hour && minutes > marketEndTimeMCX.minute);
 
@@ -820,276 +863,276 @@ async function run() {
 
   try {
 
-      const makecallabrView_excute_run = async () => {
-       try {
-        
+    const makecallabrView_excute_run = async () => {
+      try {
+
         // console.log("makecall")
-      let rr=true
-      if (rr) {
-     // if (holidays.isHoliday(currentDate) && weekday != 'Sunday' && weekday != 'Saturday') {
+        let rr = true
+        if (rr) {
+          // if (holidays.isHoliday(currentDate) && weekday != 'Sunday' && weekday != 'Saturday') {
 
-        // const viewName = 'open_position_excute';
-        var makecallabrView_excute_result = await makecallabrView_excute_view.find().toArray();
-           
-        //console.log("makecallabrView_excute_result ",makecallabrView_excute_result)
-          
-         if(makecallabrView_excute_result.length > 0){
+          // const viewName = 'open_position_excute';
+          var makecallabrView_excute_result = await makecallabrView_excute_view.find().toArray();
 
-         
+          //console.log("makecallabrView_excute_result ",makecallabrView_excute_result)
 
-          // [
-          //   {
-          //     _id: new ObjectId('66335258559fd8cbfd6aa184'),
-          //     user_id: new ObjectId('662b6ec4e8a32c05bc0ae639'),
-          //     Symbol: 'BANKNIFTY',
-          //     TType: 'LE',
-          //     Tr_Price: '0.00',
-          //     Price: '0',
-          //     EntryPrice: '',
-          //     Sq_Value: '0.00',
-          //     Sl_Value: '0.00',
-          //     TSL: '0.00',
-          //     Segment: 'O',
-          //     Strike: '49200',
-          //     OType: 'CALL',
-          //     Expiry: '08052024',
-          //     Strategy: 'SHK_DEMO',
-          //     Quntity: '100',
-          //     Key: 'SHK796872240426',
-          //     TradeType: 'MAKECALL',
-          //     Target: '10.00',
-          //     StopLoss: '0',
-          //     ExitTime: '15:25',
-          //     sl_status: '1',
-          //     token: '43763',
-          //     EntryPriceRange_one: '445',
-          //     EntryPriceRange_two: '480',
-          //     ABR_TYPE: 'range',
-          //     marketTimeAmo: '1',
-          //     WiseTypeDropdown: '1',
-          //     status: 0,
-          //     above_price: null,
-          //     below_price: null,
-          //     stockInfo_lp: 451.15,
-          //     stockInfo_curtime: '1416',
-          //     isAbove: false,
-          //     isBelow: false,
-          //     isRange: true
-          //   }
-          // ]
+          if (makecallabrView_excute_result.length > 0) {
 
-         
-       
-          makecallabrView_excute_result && makecallabrView_excute_result.map(async(item) => {
-            
-            let Target = 0
-            let StopLoss = 0
-            if(item.sl_status == "1"){
-             
-            if (item.WiseTypeDropdown == '1') {
-               if(item.Target != "0"){
-                let percent_value = parseFloat(item.stockInfo_lp) * (item.Target / 100)
-                Target = parseFloat(item.stockInfo_lp) + parseFloat(percent_value)
-               }
-               if (item.StopLoss != '0') {
-                let percent_value = parseFloat(item.stockInfo_lp) * (item.StopLoss / 100)
-                StopLoss = parseFloat(item.stockInfo_lp) - parseFloat(percent_value)
-               
+
+
+            // [
+            //   {
+            //     _id: new ObjectId('66335258559fd8cbfd6aa184'),
+            //     user_id: new ObjectId('662b6ec4e8a32c05bc0ae639'),
+            //     Symbol: 'BANKNIFTY',
+            //     TType: 'LE',
+            //     Tr_Price: '0.00',
+            //     Price: '0',
+            //     EntryPrice: '',
+            //     Sq_Value: '0.00',
+            //     Sl_Value: '0.00',
+            //     TSL: '0.00',
+            //     Segment: 'O',
+            //     Strike: '49200',
+            //     OType: 'CALL',
+            //     Expiry: '08052024',
+            //     Strategy: 'SHK_DEMO',
+            //     Quntity: '100',
+            //     Key: 'SHK796872240426',
+            //     TradeType: 'MAKECALL',
+            //     Target: '10.00',
+            //     StopLoss: '0',
+            //     ExitTime: '15:25',
+            //     sl_status: '1',
+            //     token: '43763',
+            //     EntryPriceRange_one: '445',
+            //     EntryPriceRange_two: '480',
+            //     ABR_TYPE: 'range',
+            //     marketTimeAmo: '1',
+            //     WiseTypeDropdown: '1',
+            //     status: 0,
+            //     above_price: null,
+            //     below_price: null,
+            //     stockInfo_lp: 451.15,
+            //     stockInfo_curtime: '1416',
+            //     isAbove: false,
+            //     isBelow: false,
+            //     isRange: true
+            //   }
+            // ]
+
+
+
+            makecallabrView_excute_result && makecallabrView_excute_result.map(async (item) => {
+
+              let Target = 0
+              let StopLoss = 0
+              if (item.sl_status == "1") {
+
+                if (item.WiseTypeDropdown == '1') {
+                  if (item.Target != "0") {
+                    let percent_value = parseFloat(item.stockInfo_lp) * (item.Target / 100)
+                    Target = parseFloat(item.stockInfo_lp) + parseFloat(percent_value)
+                  }
+                  if (item.StopLoss != '0') {
+                    let percent_value = parseFloat(item.stockInfo_lp) * (item.StopLoss / 100)
+                    StopLoss = parseFloat(item.stockInfo_lp) - parseFloat(percent_value)
+
+                  }
+
+                }
+
+                else if (item.WiseTypeDropdown == '2') {
+                  if (item.Target != "0") {
+                    Target = parseFloat(item.stockInfo_lp) + parseFloat(item.Target)
+                  }
+                  if (item.StopLoss != '0') {
+                    StopLoss = parseFloat(item.stockInfo_lp) - parseFloat(item.StopLoss)
+                  }
+
+                }
+
               }
-
-            }
-
-            else if (item.WiseTypeDropdown == '2') {
-              if (item.Target != "0") {
-                Target = parseFloat(item.stockInfo_lp) + parseFloat(item.Target)
-              }
-              if (item.StopLoss != '0') {
-                StopLoss = parseFloat(item.stockInfo_lp) - parseFloat(item.StopLoss)
-              }
-
-             }
-
-           }
-
-
-            const currentTimestamp = Math.floor(Date.now() / 1000);
-            let req = `DTime:${currentTimestamp}|Symbol:${item.Symbol}|TType:${item.TType}|Tr_Price:${item.Tr_Price}|Price:${item.stockInfo_lp}|Sq_Value:${item.Sq_Value}|Sl_Value:${item.Sl_Value}|TSL:${item.TSL}|Segment:${item.Segment}|Strike:${item.Strike}|OType:${item.OType}|Expiry:${item.Expiry}|Strategy:${item.Strategy}|Quntity:${item.Quntity}|Key:${item.Key}|TradeType:${item.TradeType}|Target:${Target}|StopLoss:${StopLoss}|ExitTime:${item.ExitTime}|sl_status:${item.sl_status}|ExitStatus:${item.ABR_TYPE}|Demo:demo`
-               
-            const resultUpdateId = await makecallABR.updateMany(
-              { _id: item._id }, // Condition: IDs from the view
-              { $set: { status: 1 } } // Update operation
-            );
-            
-    
-            // console.log("req makecall abr -",req)
-              let config = {
-              method: 'post',
-              maxBodyLength: Infinity,
-              url: 'http://localhost:8800/broker-signals',
-                // url: 'https://trade.pandpinfotech.com/signal/broker-signals',
-               // url: `${process.env.BROKER_URL}`,
-              headers: {
-                'Content-Type': 'text/plain'
-              },
-              data: req
-              };
-      
-               axios.request(config)
-              .then(async(response) => {
-                console.log(" response ",response)
-                //  let tradeSymbol;
-                //  if(item.Segment.toLowerCase() == 'o' || item.Segment.toLowerCase() == 'co' || item.Segment.toLowerCase() == 'fo' || item.Segment.toLowerCase() == 'mo')
-                //  {
-                //   tradeSymbol = item.Symbol+"  "+item.expiry+"  "+item.strike+"  "+item.option_type+"  "+" [ "+item.Segment+" ] ";
-                //  }
-                //  else if(item.Segment.toLowerCase() == 'f' || item.Segment.toLowerCase() == 'cf' || item.Segment.toLowerCase() == 'mf')
-                //  {
-                //   tradeSymbol = item.Symbol+"  "+item.expiry+"  "+" [ "+item.Segment+" ] ";
-                //  }
-                //  else{
-                //   tradeSymbol = item.Symbol+"  "+" [ "+item.Segment+" ] ";
-                //  }
-                // const io = await getIO();
-                // io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
-      
-      
-              })
-              .catch((error) => {
-
-                console.log(" error makecall abr ",error)
-              });
-      
-      
-          })
-
-
-
-           
-        }else{
-        }
-
-
-      } else {
-      }
-
-      } catch (error) {
-        console.log("Error in makecallabrView_excute_run loop",error);
-      }
-       
-      
-      
-      }
-
-      const exitOpentrade = async () => {
-        try {
-        
-          var openPosition = await open_position_excute.find().toArray();
-        
-          if (openPosition.length > 0) {
-
-            
-        
-            openPosition && openPosition.map((item) => {
-
-
-
-              let ExitStatus = 'TS'   
-              if(item.isLpInRangeTarget==true){
-              ExitStatus = "TARGET"
-              }else if(item.isLpInRangeStoploss == true){
-              ExitStatus = "STOPLOSS"
-              }else if(item.isLpInRange == 1){
-              ExitStatus = "EXIT TIME"
-              }
-              else if(item.isLpInRange == 0){
-                ExitStatus = "EXIT TIME"
-              }
-
-
 
 
               const currentTimestamp = Math.floor(Date.now() / 1000);
-              let req = `DTime:${currentTimestamp}|Symbol:${item.symbol}|TType:${item.entry_type == "SE" ? "SX" : "LX"}|Tr_Price:131|Price:${item.stockInfo_lp}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${item.segment}|Strike:${item.strike}|OType:${item.option_type}|Expiry:${item.expiry}|Strategy:${item.strategy}|Quntity:${item.entry_qty_percent}|Key:${item.client_persnal_key}|TradeType:${item.TradeType}|ExitStatus:${ExitStatus}|Demo:demo`
-                 
-      
-              
-      
-            
+              let req = `DTime:${currentTimestamp}|Symbol:${item.Symbol}|TType:${item.TType}|Tr_Price:${item.Tr_Price}|Price:${item.stockInfo_lp}|Sq_Value:${item.Sq_Value}|Sl_Value:${item.Sl_Value}|TSL:${item.TSL}|Segment:${item.Segment}|Strike:${item.Strike}|OType:${item.OType}|Expiry:${item.Expiry}|Strategy:${item.Strategy}|Quntity:${item.Quntity}|Key:${item.Key}|TradeType:${item.TradeType}|Target:${Target}|StopLoss:${StopLoss}|ExitTime:${item.ExitTime}|sl_status:${item.sl_status}|ExitStatus:${item.ABR_TYPE}|Demo:demo`
+
+              const resultUpdateId = await makecallABR.updateMany(
+                { _id: item._id }, // Condition: IDs from the view
+                { $set: { status: 1 } } // Update operation
+              );
+
+
+              // console.log("req makecall abr -",req)
               let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
                 url: 'http://localhost:8800/broker-signals',
                 // url: 'https://trade.pandpinfotech.com/signal/broker-signals',
-               // url: `${process.env.BROKER_URL}`,
+                // url: `${process.env.BROKER_URL}`,
                 headers: {
                   'Content-Type': 'text/plain'
                 },
                 data: req
               };
-        
+
               axios.request(config)
-                .then(async(response) => {
-      
+                .then(async (response) => {
+                  console.log(" response ", response)
                   //  let tradeSymbol;
-                  //  if(item.segment.toLowerCase() == 'o' || item.segment.toLowerCase() == 'co' || item.segment.toLowerCase() == 'fo' || item.segment.toLowerCase() == 'mo')
+                  //  if(item.Segment.toLowerCase() == 'o' || item.Segment.toLowerCase() == 'co' || item.Segment.toLowerCase() == 'fo' || item.Segment.toLowerCase() == 'mo')
                   //  {
-                  //   tradeSymbol = item.symbol+"  "+item.expiry+"  "+item.strike+"  "+item.option_type+"  "+" [ "+item.segment+" ] ";
+                  //   tradeSymbol = item.Symbol+"  "+item.expiry+"  "+item.strike+"  "+item.option_type+"  "+" [ "+item.Segment+" ] ";
                   //  }
-                  //  else if(item.segment.toLowerCase() == 'f' || item.segment.toLowerCase() == 'cf' || item.segment.toLowerCase() == 'mf')
+                  //  else if(item.Segment.toLowerCase() == 'f' || item.Segment.toLowerCase() == 'cf' || item.Segment.toLowerCase() == 'mf')
                   //  {
-                  //   tradeSymbol = item.symbol+"  "+item.expiry+"  "+" [ "+item.segment+" ] ";
+                  //   tradeSymbol = item.Symbol+"  "+item.expiry+"  "+" [ "+item.Segment+" ] ";
                   //  }
                   //  else{
-                  //   tradeSymbol = item.symbol+"  "+" [ "+item.segment+" ] ";
+                  //   tradeSymbol = item.Symbol+"  "+" [ "+item.Segment+" ] ";
                   //  }
-                  //  const io = await getIO();
-                  //  io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
-        
-        
+                  // const io = await getIO();
+                  // io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
+
+
                 })
                 .catch((error) => {
+
+                  console.log(" error makecall abr ", error)
                 });
-        
-        
+
+
             })
-        
-          } else{
-            return
+
+
+
+
+          } else {
           }
-        } catch (error) {
-          console.log("Error in Open Position",error);
+
+
+        } else {
         }
-         
-        
-        
+
+      } catch (error) {
+        console.log("Error in makecallabrView_excute_run loop", error);
       }
 
-      const noTradeTimeExcuteSetStatus = async () => {
-        try {
-        
-          var NotradeTimeExucuted = await makecall_NotradeTime_status_excute.find().toArray();
 
-          if (NotradeTimeExucuted.length > 0) {
-          const ids = NotradeTimeExucuted.map(item=>item._id)
-    
+
+    }
+
+    const exitOpentrade = async () => {
+      try {
+
+        var openPosition = await open_position_excute.find().toArray();
+
+        if (openPosition.length > 0) {
+
+
+
+          openPosition && openPosition.map((item) => {
+
+
+
+            let ExitStatus = 'TS'
+            if (item.isLpInRangeTarget == true) {
+              ExitStatus = "TARGET"
+            } else if (item.isLpInRangeStoploss == true) {
+              ExitStatus = "STOPLOSS"
+            } else if (item.isLpInRange == 1) {
+              ExitStatus = "EXIT TIME"
+            }
+            else if (item.isLpInRange == 0) {
+              ExitStatus = "EXIT TIME"
+            }
+
+
+
+
+            const currentTimestamp = Math.floor(Date.now() / 1000);
+            let req = `DTime:${currentTimestamp}|Symbol:${item.symbol}|TType:${item.entry_type == "SE" ? "SX" : "LX"}|Tr_Price:131|Price:${item.stockInfo_lp}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${item.segment}|Strike:${item.strike}|OType:${item.option_type}|Expiry:${item.expiry}|Strategy:${item.strategy}|Quntity:${item.entry_qty_percent}|Key:${item.client_persnal_key}|TradeType:${item.TradeType}|ExitStatus:${ExitStatus}|Demo:demo`
+
+
+
+
+
+            let config = {
+              method: 'post',
+              maxBodyLength: Infinity,
+              url: 'http://localhost:8800/broker-signals',
+              // url: 'https://trade.pandpinfotech.com/signal/broker-signals',
+              // url: `${process.env.BROKER_URL}`,
+              headers: {
+                'Content-Type': 'text/plain'
+              },
+              data: req
+            };
+
+            axios.request(config)
+              .then(async (response) => {
+
+                //  let tradeSymbol;
+                //  if(item.segment.toLowerCase() == 'o' || item.segment.toLowerCase() == 'co' || item.segment.toLowerCase() == 'fo' || item.segment.toLowerCase() == 'mo')
+                //  {
+                //   tradeSymbol = item.symbol+"  "+item.expiry+"  "+item.strike+"  "+item.option_type+"  "+" [ "+item.segment+" ] ";
+                //  }
+                //  else if(item.segment.toLowerCase() == 'f' || item.segment.toLowerCase() == 'cf' || item.segment.toLowerCase() == 'mf')
+                //  {
+                //   tradeSymbol = item.symbol+"  "+item.expiry+"  "+" [ "+item.segment+" ] ";
+                //  }
+                //  else{
+                //   tradeSymbol = item.symbol+"  "+" [ "+item.segment+" ] ";
+                //  }
+                //  const io = await getIO();
+                //  io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
+
+
+              })
+              .catch((error) => {
+              });
+
+
+          })
+
+        } else {
+          return
+        }
+      } catch (error) {
+        console.log("Error in Open Position", error);
+      }
+
+
+
+    }
+
+    const noTradeTimeExcuteSetStatus = async () => {
+      try {
+
+        var NotradeTimeExucuted = await makecall_NotradeTime_status_excute.find().toArray();
+
+        if (NotradeTimeExucuted.length > 0) {
+          const ids = NotradeTimeExucuted.map(item => item._id)
+
 
           const result = await makecallABR.updateMany(
             { _id: { $in: ids } },
-            { $set: { status : 2 } } 
+            { $set: { status: 2 } }
           );
-         
-          return
-    
-          } else{
-            return
-          }
-        } catch (error) {
-          console.log("Error in Open Position",error);
-        }
-           
-       }
 
-    
+          return
+
+        } else {
+          return
+        }
+      } catch (error) {
+        console.log("Error in Open Position", error);
+      }
+
+    }
+
+
     // Run the function initially
     await makecallabrView_excute_run();
 
@@ -1109,6 +1152,9 @@ async function run() {
 }
 
 // run().catch(console.error);
+
+
+//////////////////----- makecallabrView_excute_run --//////////////////////////////
 
 
 //////////////////----- makecallabrView_excute_run --/////////////////////////

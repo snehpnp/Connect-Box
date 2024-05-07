@@ -4,10 +4,6 @@ import { useState, useEffect } from "react";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import {
   SubadminHelpmessage,
-  getsubadmintable,
-  deletesubadminhelpdata,
-  userdataforhelp,
-  userprifix_key,
   getemployee,
 } from "../../../ReduxStore/Slice/Admin/System";
 
@@ -25,7 +21,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Swal from "sweetalert2";
 
-const Helpsubadmin = () => {
+const HelpEmployee = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user_details"));
   const userdataprifix_key = JSON.parse(
@@ -41,10 +37,10 @@ const Helpsubadmin = () => {
     Email: "",
     mobile: "",
     Message: "",
+    prifix_key: "",
   });
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState("0");
-  const [getemployeedata, setGetemployeedata] = useState([]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -110,7 +106,6 @@ const Helpsubadmin = () => {
     },
   ];
 
-  //post data by subadmin
   const postSubadminhelp = async (e) => {
     e.preventDefault();
     if (!help.UserName || !help.Email || !help.mobile || !help.Message) {
@@ -124,8 +119,8 @@ const Helpsubadmin = () => {
         Email: help.Email,
         mobile: help.mobile,
         Message: help.Message,
-        Role: "SUBADMIN",
-        admin_id: user.user_id,
+        Role: "EMPLOYEE",
+        prifix_key: help.prifix_key,
       })
     )
       .unwrap()
@@ -161,109 +156,14 @@ const Helpsubadmin = () => {
       });
   };
 
-  //get subadmin table
   const gettable = async () => {
-    await dispatch(getsubadmintable({}))
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          if (response.data.length > 0) {
-            var filterData = response.data.filter(
-              (data) => data.admin_id === user.user_id
-            );
-
-            setGetsubadmin(filterData);
-          } else {
-            setGetsubadmin([]);
-          }
-
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  };
-
-  const getusertable = async () => {
-    await dispatch(userdataforhelp({}))
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          // setGetuserdata(response.data);
-          // console.log("ress",response.data)
-
-          if (response.data.length > 0) {
-            var filterData = response.data.filter(
-              (data) => data.prifix_key === user.prifix_key
-            );
-
-            setGetuserdata(filterData);
-          } else {
-            setGetuserdata([]);
-          }
-
-          setLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  };
-
-  //  get employee data
-
-  const getEmployeetable = async () => {
     await dispatch(getemployee({}))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          // console.log("ress",response.data)
-
-          if (response.data.length > 0) {
-            var filterData = response.data.filter(
-              (data) => data.prifix_key === user.prifix_key
-            );
-
-            setGetemployeedata(filterData);
-          } else {
-            setGetemployeedata([]);
-          }
+          setGetsubadmin(response.data);
 
           setLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  };
-
-  const deletesubadmindata = async (userId) => {
-    var data = { id: userId };
-    await dispatch(deletesubadminhelpdata(data))
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          toast.success("Message is deleted");
-          setRefresh(!refresh);
-          gettable();
-        }
-      })
-      .catch((error) => {
-        console.log("error", error);
-      });
-  };
-
-  const userprefixBydata = async () => {
-    var data = { prifix_key: userdataprifix_key };
-
-    await dispatch(userprifix_key(data))
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          toast.success("Message is deleted");
-          setRefresh(!refresh);
-          gettable();
         }
       })
       .catch((error) => {
@@ -274,8 +174,6 @@ const Helpsubadmin = () => {
   useEffect(() => {
     setHelp(user);
     gettable();
-    getusertable();
-    getEmployeetable();
   }, [value]);
 
   return (
@@ -296,8 +194,6 @@ const Helpsubadmin = () => {
                     >
                       <Tab label="Send" value="0" />
                       <Tab label="Sent Messages" value="1" />
-                      <Tab label="User Messages" value="2" />
-                      <Tab label="Employee Messages" value="3" />
                     </TabList>
                   </Box>
 
@@ -435,33 +331,6 @@ const Helpsubadmin = () => {
                       </div>
                     )}
                   </TabPanel>
-                  <TabPanel value="2">
-                    {loading ? (
-                      <Loader />
-                    ) : (
-                      <div className="mt-5">
-                        <FullDataTable
-                          styles={styles}
-                          columns={columns}
-                          rows={getuserdata}
-                        />
-                      </div>
-                    )}
-                  </TabPanel>
-
-                  <TabPanel value="3">
-                    {loading ? (
-                      <Loader />
-                    ) : (
-                      <div className="mt-5">
-                        <FullDataTable
-                          styles={styles}
-                          columns={columns}
-                          rows={getemployeedata}
-                        />
-                      </div>
-                    )}
-                  </TabPanel>
                 </TabContext>
               </Box>
             </>
@@ -472,4 +341,4 @@ const Helpsubadmin = () => {
   );
 };
 
-export default Helpsubadmin;
+export default HelpEmployee;

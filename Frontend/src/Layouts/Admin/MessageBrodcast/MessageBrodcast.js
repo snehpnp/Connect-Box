@@ -274,7 +274,7 @@ function MessageBroadcast() {
 
       if (result.isConfirmed) {
         const response = await dispatch(admin_Msg_Delete(data)).unwrap()
- 
+
         if (response.status) {
           Swal.fire({
             title: "Deleted!",
@@ -341,167 +341,173 @@ function MessageBroadcast() {
   }, [refresh, value]);
 
   return (
-    <div data-aos="fade-left">
-      <Content
-
-        Card_title="Message Broadcast"
-        Card_title_icon="fas fa-message pe-3"
-        Content={
-          <>
-            <Box sx={{ width: '100%' }}>
-              <TabContext value={value}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
-                  <TabList value={value} onChange={handleChange} aria-label="basic tabs example">
-                    <Tab label="Send" value="0" />
-                    <Tab label="Sent" value="1" />
-
-                  </TabList>
-                </Box>
-
-                <TabPanel value="0" >
-                  <>
-
-                    <div className="row align-items-center">
-                      <div className="col-md-5">
-                        <img
-                          src="/assets/img/gif/Email-campaign.png"
-                          alt="Investment data"
-                          className="w-75"
-                        />
-                      </div>
-                      <div className="col-md-7">
-                        <div className="input-block mt-3">
-                          <label className="form-label" htmlFor="broker-select">
-                            To Sub-Admin
-                          </label>
-                          <div className="input-group">
-                            <select
-                              id="broker-select"
-                              className="form-control"
-                              value={selectedSubadmin}
-                              onChange={handleSubadmins}
-                            >
-                              <option value="all">All</option>
-                              {subadmin &&
-                                subadmin.map((val) => (
-                                  <option key={val._id} value={val._id}>
-                                    {val.UserName}
-                                  </option>
-                                ))}
-                            </select>
-                          </div>
-                        </div>
-
-                        <div className="input-block mt-3">
-                          <label className="form-label" htmlFor="message">
-                            Message
-                          </label>
-                          <textarea
-                            id="message"
-                            className="form-control"
-                            rows="4"
-                            value={messageText}
-                            onChange={(e) => setMessageText(e.target.value)}
-                          ></textarea>
-                        </div>
-                        <button
-                          type="button"
-                          className="btn btn-primary mt-3"
-                          onClick={sendMessage}
-                        >
-                          Send
-                        </ button>
-                      </div >
-                    </div>
 
 
-                  </>
+    <div className="content container-fluid" >
 
-                </TabPanel>
-
-                <TabPanel value="1" >
-                  {loading ? (
-                    <Loader />
-                  ) : (
+      <div className="card" data-aos="fade-left">
+        <div className="card-header">
+          <h5 className=" card-title mb-0 w-auto"><i className="fas fa-message pe-3"></i>Message Broadcast</h5>
+        </div>
 
 
-                    <div className="mt-5">
-                      <FullDataTable
-                        styles={styles}
-                        columns={columns}
-                        rows={pipelineData}
+        <div className="card-body rfdrrd">
+
+          <Box sx={{ width: '100%' }}>
+            <TabContext value={value}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
+                <TabList value={value} onChange={handleChange} aria-label="basic tabs example">
+                  <Tab label="Send" value="0" />
+                  <Tab label="Sent" value="1" />
+
+                </TabList>
+              </Box>
+
+              <TabPanel value="0" >
+                <>
+
+                  <div className="row align-items-center">
+                    <div className="col-md-5">
+                      <img
+                        src="/assets/img/gif/Email-campaign.png"
+                        alt="Investment data"
+                        className="w-75"
                       />
-
                     </div>
-
-
-                  )}
-
-                </TabPanel>
-
-              </TabContext>
-            </Box>
-
-
-
-
-
-
-            {modal && (
-              <div
-                className="modal fade show"
-                tabIndex="-1"
-                style={{ display: "block" }}
-              >
-                <div className="modal custom-modal d-block">
-                  <div className="modal-dialog modal-dialog-centered modal-md">
-                    <div className="modal-content">
-                      <div className="modal-header border-0 pb-0">
-                        <div className="form-header modal-header-title text-start mb-0">
-                          <h4 className="mb-0">Update Message</h4>
+                    <div className="col-md-7">
+                      <div className="input-block mt-3">
+                        <label className="form-label" htmlFor="broker-select">
+                          To Sub-Admin
+                        </label>
+                        <div className="input-group">
+                          <select
+                            id="broker-select"
+                            className="form-control"
+                            value={selectedSubadmin}
+                            onChange={handleSubadmins}
+                          >
+                            <option value="all">All</option>
+                            {subadmin &&
+                              subadmin.map((val) => (
+                                <option key={val._id} value={val._id}>
+                                  {val.UserName}
+                                </option>
+                              ))}
+                          </select>
                         </div>
-                        <button
-                          type="button"
-                          className="btn-close"
-                          data-bs-dismiss="modal"
-                          aria-label="Close"
-                          onClick={() => { setModal(false); setMsgData('') }}
-                        ></button>
                       </div>
-                      {modal && (
-                        <div>
-                          <div className="modal-body">
-                            <div className="row">
-                              <div className="input-block mb-3">
-                                <label>Message Title*</label>
-                                <textarea
-                                  type="text"
-                                  className="form-control"
-                                  onChange={(e) => setMsgData(e.target.value)}
-                                  value={msgData}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="modal-footer border-0 pt-0">
-                            <button type="submit" className="btn btn-primary" onClick={handleUpdate}>
-                              Update
-                            </button>
-                          </div>
+
+                      <div className="input-block mt-3">
+                        <label className="form-label" htmlFor="message">
+                          Message
+                        </label>
+                        <textarea
+                          id="message"
+                          className="form-control"
+                          rows="4"
+                          value={messageText}
+                          onChange={(e) => setMessageText(e.target.value)}
+                        ></textarea>
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-primary mt-3"
+                        onClick={sendMessage}
+                      >
+                        Send
+                      </ button>
+                    </div >
+                  </div>
+
+
+                </>
+
+              </TabPanel>
+
+              <TabPanel value="1" >
+                {loading ? (
+                  <Loader />
+                ) : (
+
+
+                  <div className="mt-5">
+                    <FullDataTable
+                      styles={styles}
+                      columns={columns}
+                      rows={pipelineData}
+                    />
+
+                  </div>
+
+
+                )}
+
+              </TabPanel>
+
+            </TabContext>
+          </Box>
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      {modal && (
+        <div
+          className="modal fade show"
+          tabIndex="-1"
+          style={{ display: "block" }}
+        >
+          <div className="modal custom-modal d-block">
+            <div className="modal-dialog modal-dialog-centered modal-md">
+              <div className="modal-content">
+                <div className="modal-header border-0 pb-0">
+                  <div className="form-header modal-header-title text-start mb-0">
+                    <h4 className="mb-0">Update Message</h4>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    onClick={() => { setModal(false); setMsgData('') }}
+                  ></button>
+                </div>
+                {modal && (
+                  <div>
+                    <div className="modal-body">
+                      <div className="row">
+                        <div className="input-block mb-3">
+                          <label>Message Title*</label>
+                          <textarea
+                            type="text"
+                            className="form-control"
+                            onChange={(e) => setMsgData(e.target.value)}
+                            value={msgData}
+                          />
                         </div>
-                      )}
+                      </div>
+                    </div>
+                    <div className="modal-footer border-0 pt-0">
+                      <button type="submit" className="btn btn-primary" onClick={handleUpdate}>
+                        Update
+                      </button>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
-            )
-            }
-
-
-
-          </>
-        }
-      />
+            </div>
+          </div>
+        </div>
+      )
+      }
     </div>
   );
 }

@@ -53,6 +53,8 @@ function Strategy() {
         data: [],
     });
 
+ 
+
 
 
     // Function to open the modal
@@ -130,6 +132,8 @@ function Strategy() {
 
 
     };
+
+
 
 
 
@@ -211,40 +215,6 @@ function Strategy() {
             col_size: 6,
             disable: false,
         },
-
-
-        {
-            name: "strategy_amount_month",
-            label: "Monthly",
-            type: "text3",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "strategy_amount_quarterly",
-            label: "Quaterly",
-            type: "text3",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "strategy_amount_half_early",
-            label: "Half Yearly",
-            type: "text3",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-        },
-        {
-            name: "strategy_amount_early",
-            label: "Yearly",
-            type: "text3",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-        },
         {
             name: "Service_Type",
             label: "Service Type",
@@ -252,6 +222,105 @@ function Strategy() {
             label_size: 12,
             col_size: 12,
             disable: false,
+        },
+        {
+            name: "security_fund",
+            label: "Strategy Plan",
+            type: 'security',
+            showWhen: (values) => formik.values.Service_Type == 1,
+        },
+        {
+            name: "security_fund",
+            label: "Security fund",
+            type: 'security',
+            showWhen: (values) => formik.values.Service_Type == 2,
+        },
+        {
+            name: "security_fund_month",
+            label: "Monthly",
+            type: "text3",
+            label_size: 3,
+            col_size: 3,
+            disable: false,
+            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+
+        },
+        {
+            name: "security_fund_quarterly",
+            label: "Quaterly",
+            type: "text3",
+            label_size: 3,
+            col_size: 3,
+            disable: false,
+            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+
+        },
+        {
+            name: "security_fund_half_early",
+            label: "Half Yearly",
+            type: "text3",
+            label_size: 3,
+            col_size: 3,
+            disable: false,
+            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+
+        },
+        {
+            name: "security_fund_early",
+            label: "Yearly",
+            type: "text3",
+            label_size: 3,
+            col_size: 3,
+            disable: false,
+            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+
+        },
+        {
+            name: "security_fund_fixed",
+            label: "Per trade fixed amount",
+            type: 'security',
+            showWhen: (values) => formik.values.Service_Type == 2,
+
+        },
+        {
+            name: "fixed_amount_per_trade_month",
+            label: "Monthly",
+            type: "text3",
+            label_size: 3,
+            col_size: 3,
+            disable: false,
+            showWhen: (values) => formik.values.Service_Type == 2,
+
+        },
+        {
+            name: "fixed_amount_per_trade_quarterly",
+            label: "Quaterly",
+            type: "text3",
+            label_size: 3,
+            col_size: 3,
+            disable: false,
+            showWhen: (values) => formik.values.Service_Type == 2,
+
+        },
+        {
+            name: "fixed_amount_per_trade_half_early",
+            label: "Half Yearly",
+            type: "text3",
+            label_size: 3,
+            col_size: 3,
+            disable: false,
+            showWhen: (values) => formik.values.Service_Type == 2,
+
+        },
+        {
+            name: "fixed_amount_per_trade_early",
+            label: "Yearly",
+            type: "text3",
+            label_size: 3,
+            col_size: 3,
+            disable: false,
+            showWhen: (values) => formik.values.Service_Type == 2,
+
         },
 
     ];
@@ -268,10 +337,14 @@ function Strategy() {
             strategy_indicator: '',
             strategy_image: '',
             strategy_description: '',
-            strategy_amount_month: '',
-            strategy_amount_quarterly: '',
-            strategy_amount_half_early: '',
-            strategy_amount_early: '',
+            security_fund_month: '',
+            security_fund_quarterly: '',
+            security_fund_half_early: '',
+            security_fund_early: '',
+            fixed_amount_per_trade_month: '',
+            fixed_amount_per_trade_quarterly: '',
+            fixed_amount_per_trade_half_early: '',
+            fixed_amount_per_trade_early: '',
             strategy_demo_days: '',
             Service_Type: "",
             max_trade: '',
@@ -294,18 +367,37 @@ function Strategy() {
                 errors.max_trade = "Please enter maximum trade";
             }
 
-            if (!values.strategy_amount_month) {
-                errors.strategy_amount_month = "amount is required";
+            if (subadmin_service_type == 1 && !values.security_fund_month) {
+                errors.security_fund_month = "amount is required";
             }
-            if (!values.strategy_amount_quarterly) {
-                errors.strategy_amount_quarterly = "amount is required";
+            if (subadmin_service_type == 1 && !values.security_fund_quarterly) {
+                errors.security_fund_quarterly = "amount is required";
             }
-            if (!values.strategy_amount_half_early) {
-                errors.strategy_amount_half_early = "amount is required";
+            if (subadmin_service_type == 1 && !values.security_fund_half_early) {
+                errors.security_fund_half_early = "amount is required";
             }
 
-            if (!values.strategy_amount_early) {
-                errors.strategy_amount_early = "amount is required";
+            if (subadmin_service_type == 1 && !values.security_fund_early) {
+                errors.security_fund_early = "amount is required";
+            }
+
+            if (subadmin_service_type == 1 && !values.security_fund_early) {
+                errors.security_fund_early = "amount is required";
+            }
+
+
+     
+            if (subadmin_service_type == 1 &&  formik.values.Service_Type==2 && !values.fixed_amount_per_trade_month) {
+                errors.fixed_amount_per_trade_month = "amount is required 3";
+            }
+            if (subadmin_service_type == 1 && formik.values.Service_Type==2 && !values.fixed_amount_per_trade_quarterly) {
+                errors.fixed_amount_per_trade_quarterly = "amount is required";
+            }
+            if (subadmin_service_type == 1 && formik.values.Service_Type==2 && !values.fixed_amount_per_trade_early) {
+                errors.fixed_amount_per_trade_early = "amount is required";
+            }
+            if (subadmin_service_type == 1 &&  formik.values.Service_Type==2 && !values.fixed_amount_per_trade_half_early) {
+                errors.fixed_amount_per_trade_half_early = "amount is required";
             }
             if (subadmin_service_type == 1 && !values.Service_Type) {
                 errors.Service_Type = "Please Select Service Type";
@@ -325,15 +417,22 @@ function Strategy() {
                 strategy_indicator: values.strategy_indicator,
                 strategy_image: values.strategy_image,
                 strategy_description: getStgDescription,
-                strategy_amount_month: values.strategy_amount_month,
-                strategy_amount_quarterly: values.strategy_amount_quarterly,
-                strategy_amount_half_early: values.strategy_amount_half_early,
-                strategy_amount_early: values.strategy_amount_early,
+                security_fund_month: values.security_fund_month,
+                security_fund_quarterly: values.security_fund_quarterly,
+                security_fund_half_early: values.security_fund_half_early,
+                security_fund_early: values.security_fund_early,
+                fixed_amount_per_trade_month: values.fixed_amount_per_trade_month,
+                fixed_amount_per_trade_quarterly: values.fixed_amount_per_trade_quarterly,
+                fixed_amount_per_trade_half_early: values.fixed_amount_per_trade_half_early,
+                fixed_amount_per_trade_early: values.fixed_amount_per_trade_early,
                 maker_id: user_id,
                 max_trade: values.max_trade,
                 Role: "SUBADMIN",
                 Service_Type: values.Service_Type != '' ? values.Service_Type : subadmin_service_type == 1 ? 1 : 0
             };
+
+
+
 
 
             if (!getStgDescription.length) {
@@ -346,49 +445,48 @@ function Strategy() {
                 });
                 return
             }
-            else{
+            else {
 
                 await dispatch(AddStrategy(data))
-                .unwrap()
-                .then(async (response) => {
-                    if (response.status) {
-                        Swal.fire({
-                            title: "Create Successful!",
-                            text: response.msg,
-                            icon: "success",
-                            timer: 1500,
-                            timerProgressBar: true
-                        });
-                        setShowModal(false)
-                        setrefresh(!refresh)
-                        resetForm();
-                        setStgDescription('')
+                    .unwrap()
+                    .then(async (response) => {
+                        if (response.status) {
+                            Swal.fire({
+                                title: "Create Successful!",
+                                text: response.msg,
+                                icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true
+                            });
+                            setShowModal(false)
+                            setrefresh(!refresh)
+                            resetForm();
+                            setStgDescription('')
 
-                    } else {
-                        Swal.fire({
-                            icon: "error",
-                            title: "Oops...",
-                            text: response.msg,
-                            timer: 1500,
-                            timerProgressBar: true
-                        });
-                        setStgDescription('')
-                    }
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Oops...",
+                                text: response.msg,
+                                timer: 1500,
+                                timerProgressBar: true
+                            });
+                            setStgDescription('')
+                        }
 
-                })
-                .catch((error) => {
-                    console.log("Error", error);
-                    setStgDescription('')
-                });
+                    })
+                    .catch((error) => {
+                        console.log("Error", error);
+                        setStgDescription('')
+                    });
 
             }
-        
 
-            
         },
     });
 
 
+ 
 
 
     const RefreshHandle = () => {
@@ -578,50 +676,127 @@ function Strategy() {
                                                 <div className="package-header d-flex justify-content-between">
                                                     <div className="d-flex justify-content-between w-100">
                                                         <div className="">
-                                                            <h6>Segment: {stg.strategy_segment}</h6>
-
                                                             <h2 className="my-2">{stg.strategy_name}</h2>
+                                                            <h6>Segment: {stg.strategy_segment}</h6>
 
                                                         </div>
                                                         <span className="icon-frame d-flex align-items-center justify-content-center">
                                                             {/* <img src="assets/img/icons/price-01.svg" alt="img" /> */}
                                                             <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
-
                                                         </span>
                                                     </div>
                                                 </div>
                                                 {stg.researcher_id != null ? <span><i>Researcher :</i> {stg.researcher_id && stg.researcher_id.UserName}</span> : ""}
+                                                <p>{stg.Service_Type == 1 ? "Service_type: PER TRADE" : stg.Service_Type == 2 ? "Service_type: PER TRADE FIXED" : ""}</p>
 
+                                               
                                                 <p class="text-dark"><b>{stg.strategy_description}</b></p>
-
                                                 <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
-                                                <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
-                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                        <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                        <span >Demo</span>
-                                                        <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
-                                                    </li>
-                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                        <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                        <span >Month</span>
-                                                        <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_month}/month</span>
-                                                    </li>
-                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                        <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                        <span >Quarterly</span>
-                                                        <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_quarterly}/Quarterly</span>
-                                                    </li>
-                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                        <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                        <span >Half Yearly</span>
-                                                        <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_half_early}/half year</span>
-                                                    </li>
-                                                    <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                        <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                        <span >Yearly</span>
-                                                        <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.strategy_amount_early}/year</span>
-                                                    </li>
-                                                </ul>
+                                                {subadmin_service_type == 1 && stg.Service_Type == 1 ?
+                                                    <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span >Max Trade</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.max_trade} days</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span > Strategy Category</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.strategy_category}</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span >Demo</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span >Month</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_month}/month</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span >Quarterly</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_quarterly}/Quarterly</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span >Half Yearly</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_half_early}/half year</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span >Yearly</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year</span>
+                                                        </li>
+                                                    </ul>
+
+                                                    :
+
+                                                    subadmin_service_type == 1 && stg.Service_Type == 2 ?
+
+                                                        <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                <span >Max Trade</span>
+                                                                <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.max_trade} days</span>
+                                                            </li>
+                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                <span > Strategy Category</span>
+                                                                <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.strategy_category}</span>
+                                                            </li>
+                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                <span >Demo</span>
+                                                                <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
+                                                            </li>
+                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                <span >Month</span>
+                                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_month}/month , {stg.fixed_amount_per_trade_month}/per trade</span>
+                                                            </li>
+                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                <span >Quarterly</span>
+                                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_quarterly}/Quarterly , {stg.fixed_amount_per_trade_quarterly}/per trade</span>
+                                                            </li>
+                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                <span >Half Yearly</span>
+                                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_half_early}/half year , {stg.fixed_amount_per_trade_half_early}/per trade</span>
+                                                            </li>
+                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                <span >Yearly</span>
+                                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year , {stg.fixed_amount_per_trade_early}/per trade</span>
+                                                            </li>
+                                                        </ul>
+
+                                                        :
+
+                                                        subadmin_service_type == 2 ?
+                                                            <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                    <span >Max Trade</span>
+                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.max_trade} days</span>
+                                                                </li>
+                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                    <span > Strategy Category</span>
+                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.strategy_category}</span>
+                                                                </li>
+                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                    <span >psss</span>
+                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
+                                                                </li>
+
+                                                            </ul>
+                                                            : ""
+                                                }
+
 
                                                 <div className="d-flex justify-content-center package-edit">
 
@@ -644,7 +819,7 @@ function Strategy() {
                             </div>
 
                         ) : (<Loader />)}
-                   
+
                         <nav aria-label="Page navigation example">
                             <ul className="pagination d-flex justify-content-center">
                                 <li className="page-item">
@@ -700,7 +875,9 @@ function Strategy() {
                                         <div className="modal-body m-0 p-0">
                                             <AddForm
                                                 ProfileShow={formik.values.strategy_image}
-                                                fields={fields}
+                                                fields={fields.filter(
+                                                    (field) => !field.showWhen || field.showWhen(formik.values)
+                                                )}
                                                 formik={formik}
                                                 btn_name="Add Strategy"
                                                 additional_field={

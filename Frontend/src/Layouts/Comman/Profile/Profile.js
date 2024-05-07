@@ -9,7 +9,9 @@ import Modal from "@mui/material/Modal";
 import { fDateTime } from "../../../Utils/Date_formet";
 import { fDate } from "../../../Utils/Date_formet";
 import { isToday } from "../../../Utils/Date_formet";
-
+import Swal from "sweetalert2";
+import { Employeedatabyid } from "../../../ReduxStore/Slice/Admin/System";
+//Employeedatabyid
 import {
   ProfilImage,
   ProfileUpdatedata,
@@ -39,6 +41,7 @@ const Profile = () => {
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   const user = JSON.parse(localStorage.getItem("user_details"));
 
+  const [getemployeedata, setGetemployeedata] = useState("");
   const [profileData, setProfileData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -99,17 +102,46 @@ const Profile = () => {
     "wolf (1).png",
   ];
 
+  // get employee by id
+
+  const Employeetable = async () => {
+
+    const data = {id: user_id}
+
+
+    await dispatch(Employeedatabyid(data))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+       
+          setGetemployeedata(response.subadmin)
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
   const handleAvatarClick = async (avatarUrl) => {
     try {
       var data = { user_id: user_id, profile_img: avatarUrl };
       const response = await dispatch(ProfilImage(data)).unwrap();
 
       if (response.status) {
+        Swal.fire({
+          title: " Profile Changed",
+          icon: "success",
+        });
         setRefresh(!refresh);
       }
     } catch (error) {
       console.error("Error", error);
-      toast.error("Failed to update profile");
+      Swal.fire({
+        title: "Error",
+        text: "error to update",
+        icon: "error",
+      });
     }
 
     setOpen(false);
@@ -151,13 +183,21 @@ const Profile = () => {
       .then(async (response) => {
         if (response.status) {
           setEditbtn(!editbtn);
-          toast.success("Infomation added");
+          Swal.fire({
+            title: "Updated",
+            icon: "success",
+          });
           setRefresh(!refresh);
+          profiledata();
         }
       })
       .catch((error) => {
         console.log("error", error);
-        toast.error("error to add info");
+        Swal.fire({
+          title: "Error",
+          text: "Error to Updated",
+          icon: "error",
+        });
       });
   };
 
@@ -180,6 +220,7 @@ const Profile = () => {
 
   useEffect(() => {
     profiledata();
+    Employeetable();
   }, []);
 
   ///active status
@@ -203,10 +244,10 @@ const Profile = () => {
     profilestatus();
   }, []);
 
+  // api for getting ProfileInfo
   const fetchData = async () => {
     try {
       let data = { id: user_id };
-
       await dispatch(ProfileInfo(data))
         .unwrap()
         .then(async (response) => {
@@ -335,10 +376,15 @@ const Profile = () => {
                   info.map((item, index) => {
                     return (
                       <ul className="list-inline">
-                        <li className="list-inline-item">
-                          <i className="far fa-building" />{" "}
-                          <span>{item.CompanyName}</span>
-                        </li>
+                        {user.Role === "USER" ? (
+                          ""
+                        ) : (
+                          <li className="list-inline-item">
+                            <i className="far fa-building" />{" "}
+                            <span>{item.CompanyName}</span>
+                          </li>
+                        )}
+
                         <li className="list-inline-item">
                           <i className="fas fa-map-marker-alt" />
                           {item.Country}
@@ -351,18 +397,15 @@ const Profile = () => {
                     );
                   })}
               </div>
+
               <div className="row">
                 <div className="col-lg-4">
-
                   <div className="card">
                     <div className="card-header">
                       <h5 className="card-title d-flex justify-content-between">
                         <span>Profile</span>
                         <a
                           className="btn btn-sm btn-white"
-                          // onClick={() => {
-                          //   setEditbtn(!editbtn);
-                          // }}
                           onClick={handleAddInfo}
                         >
                           Update Info
@@ -473,21 +516,25 @@ const Profile = () => {
                                           }}
                                         />
                                       </div>
-                                      <div className="input-block mb-3">
-                                        <label>Company Name</label>
-                                        <input
-                                          type="text"
-                                          className="form-control"
-                                          placeholder="Enter Company Name"
-                                          value={update.CompanyName}
-                                          onChange={(e) => {
-                                            setUpdate({
-                                              ...update,
-                                              CompanyName: e.target.value,
-                                            });
-                                          }}
-                                        />
-                                      </div>
+                                      {user.Role === "USER" ? (
+                                        ""
+                                      ) : (
+                                        <div className="input-block mb-3">
+                                          <label>Company Name</label>
+                                          <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Enter Company Name"
+                                            value={update.CompanyName}
+                                            onChange={(e) => {
+                                              setUpdate({
+                                                ...update,
+                                                CompanyName: e.target.value,
+                                              });
+                                            }}
+                                          />
+                                        </div>
+                                      )}
                                     </div>
                                   </div>
                                 </div>
@@ -521,28 +568,48 @@ const Profile = () => {
                         info.map((item, index) => (
                           <ul key={index} className="list-unstyled mb-0">
                             <li className="pb-0">
-                              <h6><span><b>Company Name</b>  : {item.CompanyName} </span></h6>
+                              <h6>
+                                <span>
+                                  <b>Company Name</b> : {item.CompanyName}{" "}
+                                </span>
+                              </h6>
                             </li>
                             <li className=" pb-0">
-                              <h6><span><b>Address</b> : {item.Address} </span></h6>
-                            </li>                        
+                              <h6>
+                                <span>
+                                  <b>Address</b> : {item.Address}{" "}
+                                </span>
+                              </h6>
+                            </li>
                             <li className="pb-0">
-                              <h6><span><b>DOB</b>: {fDate(item.DOB || "")}</span></h6>
+                              <h6>
+                                <span>
+                                  <b>DOB</b>: {fDate(item.DOB || "")}
+                                </span>
+                              </h6>
                             </li>
-                          
 
                             <li className=" pb-0">
-                              <h6><span><b>Location</b> :  {item.Location} </span></h6>                            
+                              <h6>
+                                <span>
+                                  <b>Location</b> : {item.Location}{" "}
+                                </span>
+                              </h6>
                             </li>
-                            
-
                             <li className=" pb-0">
-                              <h6><span><b>State</b> : {item.State} </span></h6>
+                              <h6>
+                                <span>
+                                  <b>State</b> : {item.State}{" "}
+                                </span>
+                              </h6>
                             </li>
-                          
 
                             <li className="pb-0">
-                              <h6><span><b>Country</b> : {item.Country} </span></h6>
+                              <h6>
+                                <span>
+                                  <b>Country</b> : {item.Country}{" "}
+                                </span>
+                              </h6>
                             </li>
                           </ul>
                         ))}
@@ -574,10 +641,16 @@ const Profile = () => {
                                 <a href="#" style={{ color: "blue" }}>
                                   {item.role}
                                 </a>{" "}
-                                {item.trading_status ? item.trading_status : item.login_status }
+                                {item.trading_status
+                                  ? item.trading_status
+                                  : item.login_status}
                               </span>
                             </li>
                           ))}
+                       {user.Role === "EMPLOYEE" ?  <li>
+                          <label>Subadmin Name</label>
+                          {getemployeedata && getemployeedata}
+                        </li> : ""}
                       </ul>
                     </div>
                   </div>

@@ -230,7 +230,7 @@ export default function AllEmployees() {
           >
             <EditIcon />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             aria-label="delete"
             size="small"
             onClick={() => {
@@ -240,7 +240,7 @@ export default function AllEmployees() {
             }}
           >
             <DeleteIcon />
-          </IconButton>
+          </IconButton> */}
         </div>
       ),
       headerClassName: styles.boldHeader,

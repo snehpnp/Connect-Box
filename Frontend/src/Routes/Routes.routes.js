@@ -19,6 +19,7 @@ import Update from '../Layouts/Auth/Update';
 
 const Routing = () => {
     const location = useLocation();
+    
     const navigate = useNavigate();
     const roles = JSON.parse(localStorage.getItem('user_role'));
     const user_details = JSON.parse(localStorage.getItem("user_details"));

@@ -1670,7 +1670,8 @@ div#global-loader,
 }
 
 .nav-pills.flex-column .nav-link.active {
-    background: #7539ff
+    background: #7539ff;
+    color: #fff !important;
 }
 
 .nav-tabs.nav-bordered .nav-link.active {
@@ -32684,10 +32685,14 @@ button.btn.btn-primary a {
 .MuiDataGrid-cell,
 .MuiDataGrid-columnHeader {
     outline: none ! important;
+
 }
+
+
 
 .MuiDataGrid-columnHeaderTitle {
     outline: none ! important;
+    font-weight: bold !important;
 }
 
 section.section1 {
@@ -32749,6 +32754,7 @@ li.submenu {
     font-size: 16px !important;
     font-weight: 700;
     margin-top: 10px;
+
     color: #fff;
     text-align: center;
     background: #0070F4;
@@ -34312,7 +34318,8 @@ button[aria-label="delete"] {
     border-radius: 4px;
 }
 
-.button_sell:hover, .button_sell.active{
+.button_sell:hover,
+.button_sell.active {
     background-color: #fff !important;
     color: red !important;
     margin: 0px 5px;
@@ -34690,36 +34697,6 @@ button[aria-label="edit"] {
 [data-layout-mode=dark] .MuiDataGrid-cell {
     color: #ddd !important;
 }
-[data-layout-mode=dark] .MuiTablePagination-toolbar ,[data-layout-mode=dark] .MuiTab-textColorPrimary ,[data-layout-mode=dark] .MuiSelect-icon
-{
-    color: #fff;
-}
-a.user-a:hover span {
-    color: #7539ff;
-}
-.borderless-table .table tbody tr td {
-    border-color: transparent;
-    border: none !important;
-    padding: 10px 15px;
-}
-.borderless-table .table {
-    /* border-color: transparent; */
-    border: 1px solid #ddd;
-}
-[data-layout-mode=light] body .btn-primary:hover{
-    color: #7539ff  !important;
-    background: #fff;
-    border-color: #7539ff;
-    box-shadow: inset 0 50px 0 0 #fff;
-}
-.left-side 
-{
-    width:250px; height:100%;
-     /* background:#ddd; */
-      display:inline-block;
-       float:left;
-        position:sticky;
-         top:150px;
 
 [data-layout-mode=dark] .MuiTablePagination-toolbar,
 [data-layout-mode=dark] .MuiTab-textColorPrimary,
@@ -34731,145 +34708,188 @@ a.user-a:hover span {
     color: #7539ff;
 }
 
+.borderless-table .table tbody tr td {
+    border-color: transparent;
+    border: none !important;
+    padding: 10px 15px;
+}
+
+.borderless-table .table {
+    /* border-color: transparent; */
+    border: 1px solid #ddd;
+}
+
 [data-layout-mode=light] body .btn-primary:hover {
     color: #7539ff !important;
+    background: #fff;
+    border-color: #7539ff;
+    box-shadow: inset 0 50px 0 0 #fff;
+}
 
-    .borderless-table .table tbody tr td {
-        border-color: transparent;
-        border: none !important;
-        padding: 10px 15px;
+.left-side {
+    width: 250px;
+    height: 100%;
+    /* background:#ddd; */
+    display: inline-block;
+    float: left;
+    position: sticky;
+    top: 150px;
+
+    [data-layout-mode=dark] .MuiTablePagination-toolbar,
+    [data-layout-mode=dark] .MuiTab-textColorPrimary,
+    [data-layout-mode=dark] .MuiSelect-icon {
+        color: #fff;
     }
 
-    .borderless-table .table {
-        /* border-color: transparent; */
-        border: 1px solid rgb(135, 138, 153);
-
+    a.user-a:hover span {
+        color: #7539ff;
     }
 
     [data-layout-mode=light] body .btn-primary:hover {
         color: #7539ff !important;
-        background: #fff;
-        border-color: #7539ff;
-        box-shadow: inset 0 50px 0 0 #fff;
-    }
 
-    .left-side {
-        width: 250px;
-        height: 100%;
-        /* background:#ddd; */
-        display: inline-block;
-        float: left;
-        position: sticky;
-        top: 150px;
-
-
-        [data-layout-mode=dark] .MuiDataGrid-cell,
-        [data-layout-mode=dark] .MuiTablePagination-toolbar,
-        [data-layout-mode=dark] .MuiTablePagination-selectIcon {
-            color: #ddd !important;
+        .borderless-table .table tbody tr td {
+            border-color: transparent;
+            border: none !important;
+            padding: 10px 15px;
         }
 
-        a.user-a:hover span {
-            color: #7539ff;
+        .borderless-table .table {
+            /* border-color: transparent; */
+            border: 1px solid rgb(135, 138, 153);
+
         }
 
-        .btn-primary:hover {
+        [data-layout-mode=light] body .btn-primary:hover {
             color: #7539ff !important;
             background: #fff;
             border-color: #7539ff;
-            box-shadow: inset 0 50px 0 0 #fff !important;
+            box-shadow: inset 0 50px 0 0 #fff;
         }
 
-        .mainDiv {
-            display: flex;
-            min-height: 100%;
-            align-items: center;
-            justify-content: center;
-            background-color: #fff;
-            font-family: 'Open Sans', sans-serif;
-        }
+        .left-side {
+            width: 250px;
+            height: 100%;
+            /* background:#ddd; */
+            display: inline-block;
+            float: left;
+            position: sticky;
+            top: 150px;
 
-        .cardStyle {
-            width: 500px;
-            border-color: white;
-            background: #fff;
-            padding: 36px 0;
-            border-radius: 4px;
-            margin: 30px 0;
-            box-shadow: 0px 0 2px 0 rgba(0, 0, 0, 0.25);
-        }
 
-        #signupLogo {
-            max-height: 100px;
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-        }
+            [data-layout-mode=dark] .MuiDataGrid-cell,
+            [data-layout-mode=dark] .MuiTablePagination-toolbar,
+            [data-layout-mode=dark] .MuiTablePagination-selectIcon {
+                color: #ddd !important;
+            }
 
-        .formTitle {
-            font-weight: 600;
-            margin-top: 20px;
-            color: #2F2D3B;
-            text-align: center;
-        }
+            a.user-a:hover span {
+                color: #7539ff;
+            }
 
-        .inputLabel {
-            font-size: 12px;
-            color: #555;
-            margin-bottom: 6px;
-            margin-top: 24px;
-        }
+            .btn-primary:hover {
+                color: #7539ff !important;
+                background: #fff;
+                border-color: #7539ff;
+                box-shadow: inset 0 50px 0 0 #fff !important;
+            }
 
-        .inputDiv {
-            width: 70%;
-            display: flex;
-            flex-direction: column;
-            margin: auto;
-        }
+            .mainDiv {
+                display: flex;
+                min-height: 100%;
+                align-items: center;
+                justify-content: center;
+                background-color: #fff;
+                font-family: 'Open Sans', sans-serif;
+            }
 
-        input {
-            height: 40px;
-            font-size: 16px;
-            border-radius: 4px;
-            border: none;
-            border: solid 1px #ccc;
-            padding: 0 11px;
-        }
+            .cardStyle {
+                width: 500px;
+                border-color: white;
+                background: #fff;
+                padding: 36px 0;
+                border-radius: 4px;
+                margin: 30px 0;
+                box-shadow: 0px 0 2px 0 rgba(0, 0, 0, 0.25);
+            }
 
-        input:disabled {
-            cursor: not-allowed;
-            border: solid 1px #eee;
-        }
+            #signupLogo {
+                max-height: 100px;
+                margin: auto;
+                display: flex;
+                flex-direction: column;
+            }
 
-        .buttonWrapper {
-            margin-top: 40px;
-        }
+            .formTitle {
+                font-weight: 600;
+                margin-top: 20px;
+                color: #2F2D3B;
+                text-align: center;
+            }
 
-        .submitButton {
-            width: 70%;
-            height: 40px;
-            margin: auto;
-            display: block;
-            color: #fff;
-            background-color: #7539ff;
-            border-color: #065492;
-            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
-            box-shadow: 0 2px 0 rgba(0, 0, 0, 0.035);
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
+            .inputLabel {
+                font-size: 12px;
+                color: #555;
+                margin-bottom: 6px;
+                margin-top: 24px;
+            }
+
+            .inputDiv {
+                width: 70%;
+                display: flex;
+                flex-direction: column;
+                margin: auto;
+            }
+
+            input {
+
+                font-size: 16px;
+                border-radius: 4px;
+                border: none;
+                border: solid 1px #ccc;
+                padding: 0 11px;
+            }
+
+            input:disabled {
+                cursor: not-allowed;
+                border: solid 1px #eee;
+            }
+
+            .buttonWrapper {
+                margin-top: 40px;
+            }
+
+            .submitButton {
+                width: 70%;
+                height: 40px;
+                margin: auto;
+                display: block;
+                color: #fff;
+                background-color: #7539ff;
+                border-color: #065492;
+                text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);
+                box-shadow: 0 2px 0 rgba(0, 0, 0, 0.035);
+                border-radius: 4px;
+                font-size: 14px;
+                cursor: pointer;
+            }
+
         }
 
     }
 
-    .MuiDataGrid-columnHeaderTitle.css-t89xny-MuiDataGrid-columnHeaderTitle {
-        font-weight: bold;
+    .button_BUY .active {
+        background-color: #fff !important;
+        color: green !important;
+        margin: 0px 5px;
+        padding: 5px 8px;
+        border-radius: 4px;
+        border: 1px solid green;
+
     }
-}
 
-
-
-/* .active {
+    /* .button_sell .active { */
+    /* .active {
 
     background-color: #fff !important;
     color: red !important;
@@ -34879,6 +34899,14 @@ a.user-a:hover span {
     border: 1px solid red;
 }
  */
+
+    /* .active { */
+    /* background-color: #fff !important;
+    color: #fff !important;
+    margin: 0px 5px;
+    padding: 5px 8px;
+    border-radius: 4px; */
+}
 
 #signupLogo {
     max-height: 100px;
@@ -34941,18 +34969,55 @@ input:disabled {
     cursor: pointer;
 }
 
-}
+
 .borderless-table .table-bordered>:not(caption)>* {
     /* border-width: var(--bs-border-width) 0; */
     border-color: #ddd !important;
 }
-[data-layout-mode=dark] body .borderless-table .table-bordered>:not(caption)>*{
+
+[data-layout-mode=dark] body .borderless-table .table-bordered>:not(caption)>* {
     border-color: rgb(235 215 215 / 27%) !important;
 }
 
-[data-layout-mode=dark] body .button_BUY   {
+[data-layout-mode=dark] body .button_BUY {
     background: rgba(40, 178, 77, 0.1) !important;
 }
+
 [data-layout-mode=dark] body .button_sell {
     background: rgba(230, 33, 33, 0.1) !important;
+}
+
+.tg {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.tg td {
+
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    overflow: hidden;
+    padding: 10px 5px;
+    word-break: normal;
+}
+
+.tg th {
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    overflow: hidden;
+    padding: 10px 5px;
+    word-break: normal;
+}
+
+.tg .tg-0lax {
+    text-align: left;
+    vertical-align: top
 }

@@ -1,4 +1,5 @@
 "use strict";
+const mongoose = require('mongoose');
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -326,43 +327,92 @@ class Auth {
 
 
     // Update Password
+    // async UpdatePassword(req, res) {
+    //     try {
+    //         const { userid, NewPassword, ConfirmPassword } = req.body;
+
+
+    //         // // IF Login Time Email CHECK
+    //         const EmailCheck = await User.findById(userid);
+
+    //         if (!EmailCheck) {
+    //             return res.send({ status: false, msg: 'User Not exists', data: [] });
+    //         }
+
+    //         if (NewPassword !== ConfirmPassword) {
+    //             return res.send({ status: false, msg: 'New Password and Confirm Password Not Match', data: [] });
+    //         }
+
+    //         const hashedPassword = await bcrypt.hash(NewPassword, 8);
+    //         let result = await User.findByIdAndUpdate(
+    //             EmailCheck._id,
+    //             {
+    //                 Password: hashedPassword,
+    //                 Otp: NewPassword
+    //             },
+    //             { new: true }
+    //         )
+
+    //         // If Not Update User
+    //         if (!result) {
+    //             return res.send({ status: false, msg: 'Server Side issue.', data: [] });
+    //         }
+
+
+    //         return res.send({ status: true, msg: "Password Update Successfully" });
+    //     } catch (error) {
+
+    //     }
+    // }
+
+
     async UpdatePassword(req, res) {
         try {
-            const { userid, newpassword, confirmpassword } = req.body;
-
-
-            // // IF Login Time Email CHECK
-            const EmailCheck = await User.findById(userid);
-
-            if (!EmailCheck) {
-                return res.send({ status: false, msg: 'User Not exists', data: [] });
+            const { userid, NewPassword } = req.body;
+    
+            // Validate input
+            if (!mongoose.Types.ObjectId.isValid(userid)  || !NewPassword ) {
+                return res.send({ status: false, msg: 'Missing required fields', data: [] });
             }
 
-            if (newpassword !== confirmpassword) {
-                return res.send({ status: false, msg: 'New Password and Confirm Password Not Match', data: [] });
+            const user = await User.findById(userid);
+    
+            if (!user) {
+                return res.send({ status: false, msg: 'User not found', data: [] });
             }
-
-            const hashedPassword = await bcrypt.hash(newpassword, 8);
-            let result = await User.findByIdAndUpdate(
-                EmailCheck._id,
+            
+            // Check if the new password is the same as the old password
+            const isSamePassword = await bcrypt.compare(NewPassword, user.Password);
+            if (isSamePassword) {
+                return res.send({ status: false, msg: 'New password must be different from the old password', data: [] });
+            }
+    
+            const hashedPassword = await bcrypt.hash(NewPassword, 8);
+            const updatedUser = await User.findByIdAndUpdate(
+                user._id,
                 {
                     Password: hashedPassword,
-                    Otp: newpassword
+                    Otp: NewPassword 
                 },
                 { new: true }
-            )
-
-            // If Not Update User
-            if (!result) {
-                return res.send({ status: false, msg: 'Server Side issue.', data: [] });
+            );
+    
+            if (!updatedUser) {
+                return res.send({ status: false, msg: 'Failed to update password', data: [] });
             }
+    
+            return res.json({ status: true, msg: 'Password updated successfully' });
 
-
-            return res.send({ status: true, msg: "Password Update Successfully" });
         } catch (error) {
-
+            console.error('Error updating password:', error);
+            return res.send({ status: false, msg: 'An error occurred', data: [] });
         }
     }
+    
+
+
+
+
 
     // Reset Password
     async ResetPassword(req, res) {

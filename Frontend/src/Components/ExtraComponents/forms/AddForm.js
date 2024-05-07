@@ -770,35 +770,7 @@ const DynamicForm = ({
                                         </div>
                                       ) : null}
                                     </div>
-                                  </div>
-                                  {formik.values[field.name] == 2 &&
-                                  formik.values["licence"] == "2" ? (
-                                    <div className="col-md-6">
-                                      <div
-                                        className="tab-content pt-0"
-                                        id="pills-tabContent"
-                                      >
-                                        <div id="pills-home" role="tabpanel">
-                                          <div className="input-block">
-                                            <input
-                                              type="text"
-                                              className="form-control"
-                                              placeholder="Per Trade"
-                                              // disabled={field.disable}
-                                              defaultValue={
-                                                formik.values["per_trade_value"]
-                                              }
-                                              onChange={(e) =>
-                                                PerTradeValueset(e)
-                                              }
-                                            />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    ""
-                                  )}
+                                  </div>           
                                 </div>
                               </div>
                             </div>
@@ -976,7 +948,20 @@ const DynamicForm = ({
                             </div>
                           </div>
                         </>
+                      ) : field.type === 'security' ? (
+                        <>
+                          <div className={`col-lg-${field.col_size}`}>
+                            <div className="input-block mb-3 flex-column">
+                              <label className={`col-lg-${field.label_size}`}>
+                                {field.label}
+                                
+                              </label>
+                            </div>
+                          </div>
+                        </>
+
                       ) : (
+                      
                         <>
                           <div className={`col-lg-${field.col_size}`}>
                             <div className="input-block mb-3"></div>

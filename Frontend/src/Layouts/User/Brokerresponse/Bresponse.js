@@ -1,444 +1,301 @@
-// /* eslint-disable react/jsx-pascal-case */
-// /* eslint-disable react/jsx-no-undef */
-// import React, { useState, useEffect } from 'react'
-// import Content from "../../../Components/Dashboard/Content/Content"
-// import Accordion from 'react-bootstrap/Accordion';
-// import { Get_Broker_Response, UpdateBrokerResponse, GET_ALL_BROKER_RESPONSES } from "../../../ReduxStore/Slice/Users/BrokerResponseSlice"
-// import BasicDataTable from "../../../Components/ExtraComponents/Datatable/BasicDataTable"
-// import { useDispatch, useSelector } from "react-redux";
-// import Modal from '../../../Components/ExtraComponents/Modal';
-// import FullDataTable from "../../../Components/ExtraComponents/Datatable/FullDataTable"
-// import { fa_time, fDateTimeSuffix } from '../../../Utils/Date_formet'
-// import { GanttChartSquare, Eye, Pencil, Trash2 } from 'lucide-react';
+/* eslint-disable react/jsx-pascal-case */
+/* eslint-disable react/jsx-no-undef */
+import React, { useState, useEffect } from 'react'
+import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
+import { Broker_Response } from "../../../ReduxStore/Slice/Users/BrokerResponseSlice"
+import { fa_time, fDateTimeSuffix } from '../../../Utils/Date_formet'
+import { useDispatch, useSelector } from "react-redux";
+import Modal from '../../../Components/Dashboard/Models/Model';
+import { Eye } from 'lucide-react';
+
+
+import { Link } from 'react-router-dom'
 // import OrderPending from "./OrderPending"
 
 
-// const BrokerResponse = () => {
-//   const dispatch = useDispatch()
 
-//   const [refresh, setrefresh] = useState(false)
-//   const [showModal, setshowModal] = useState(false)
-//   const [BrokerResponseId, setBrokerResponseId] = useState([])
-//   const [DashboardData, setDashboardData] = useState({ loading: true, data: [] });
+export default function BrokerResponse() {
+    const dispatch = useDispatch()
 
 
-//   const gotodashboard = JSON.parse(localStorage.getItem('user_details_goTo'))
-//   const isgotodashboard = JSON.parse(localStorage.getItem('gotodashboard'))
-//   const user_Id = JSON.parse(localStorage.getItem('user_details')).user_id;
-//   const AdminToken = JSON.parse(localStorage.getItem('user_details')).token;
-//   const user_details_goTo = JSON.parse(localStorage.getItem("user_details_goTo"))
+    const [refresh, setrefresh] = useState(false)
+    const [showModal, setshowModal] = useState(false)
+    const [BrokerResponseId, setBrokerResponseId] = useState([])
+    const [DashboardData, setDashboardData] = useState({ loading: true, data: [] });
+    const [borkerData, setBrokerData] = useState()
 
 
-//   //  for Add Licence
-//   const [showAddLicenceModal, setshowAddLicenceModal] = useState(false)
+    console.log("borkerData :", borkerData)
 
-
-
-//   const columns = [
-//     {
-//       dataField: 'index',
-//       text: 'S.No.',
-//       formatter: (cell, row, rowIndex) => rowIndex + 1,
-
-//     },
-//     {
-//       dataField: 'createdAt',
-//       text: 'Created At',
-//       formatter: (cell, row, rowIndex) => <div>{fDateTimeSuffix(cell)}</div>
-
-//     },
-//     {
-//       dataField: 'symbol',
-//       text: 'Symbol'
-//     },
-//     {
-//       dataField: 'type',
-//       text: 'type'
-//     },
-//     {
-//       dataField: 'broker_name',
-//       text: 'Broker Name'
-//     },
-
-//     {
-//       dataField: 'order_id',
-//       text: 'Oder Id',
-//       formatter: (cell, row, rowIndex) => <>{row.order_id == null ? "-" : row.order_id}</>
-
-//     },
-//     {
-//       dataField: 'order_status',
-//       text: 'order status',
-//       formatter: (cell, row, rowIndex) => <div>{cell}</div>
-
-//     },
-//     {
-//       dataField: 'order_view_response',
-//       text: 'order Info',
-//       formatter: (cell, row, rowIndex) => <div>{cell}</div>
-
-//     },
-//     {
-//       dataField: 'Details View',
-//       text: 'View',
-//       formatter: (cell, row, rowIndex) =>
-
-//         <>
-//           <Eye onClick={(e) => GetAllServicesName(row)
-//           } size={20} color="#198754" strokeWidth={2} className="mx-1" />
-//         </>
-//     },
-//     // {
-//     //   dataField: 'order_view_status',
-//     //   text: 'order ',
-//     //   formatter: (cell, row, rowIndex) =>
-//     //     cell == "0" || cell == 0 ?
-//     //       <>
-
-//     //         <GanttChartSquare onClick={(e) => GetBrokerInforMation(row)
-//     //         } size={20} color="#198754" strokeWidth={2} className="mx-1" />
-//     //       </>
-//     //       :
-//     //       "-"
-//     // },
-//     // {
-//     //   dataField: 'order_view_status',
-//     //   text: 'Action',
-//     //   formatter: (cell, row, rowIndex) =>
-//     //     <div style={{ width: "120px" }}>
-
-//     //       {row.order_view_date !== undefined && row.order_view_date !== "undefined" && row.order_view_date !== "" ? JSON.parse(row.order_view_date).Status == "open" ? <div>
-//     //         <span data-toggle="tooltip" data-placement="top" title="Edit">
-//     //           <Pencil
-//     //             size={20}
-//     //             color="#198754"
-//     //             strokeWidth={2}
-//     //             className="mx-1"
-//     //             onClick={() => setshowAddLicenceModal(true)}
-//     //           />
-//     //         </span>
-
-//     //         <span data-toggle="tooltip" data-placement="top" title="Delete">
-//     //           <Trash2
-//     //             size={20}
-//     //             color="#d83131"
-//     //             strokeWidth={2}
-//     //             className="mx-1"
-//     //           // onClick={(e) => Delete_order(row._id)}
-//     //           />
-//     //         </span>
-
-
-//     //       </div> : "" : ""}
+    const user_Id = JSON.parse(localStorage.getItem("user_details")).user_id
 
 
 
 
-//     //     </div>
-//     // },
-
-//   ];
+    //  for Add Licence
+    const [showAddLicenceModal, setshowAddLicenceModal] = useState(false)
 
 
-
-//   // GET BROKER RESPONSE ALL DATA
-//   const BrokerResponse = async (e) => {
-//     await dispatch(Get_Broker_Response({ _id: isgotodashboard ? gotodashboard.user_id : user_Id, token: AdminToken })).unwrap()
-//       .then((response) => {
-//         if (response.status) {
-//           setDashboardData({
-//             loading: false,
-//             data: response.data
-//           });
-//           ;
-//         }
-//       })
-//   }
- 
-//   const updateBrokerResponse = async (e) => {
-//     await dispatch(GET_ALL_BROKER_RESPONSES({ user_id: isgotodashboard ? gotodashboard.user_id : user_Id })).unwrap()
-//       .then((response) => {
-//         if (response.status) {
-
-//         }
-//       })
-//   }
-
-
-//   // GET ALL GROUP SERVICES NAME
-//   const GetAllServicesName = async (row) => {
-//     // GetBrokerInforMation(row)
-//     setBrokerResponseId(row)
-//     setshowModal(true)
-
-
-//   }
-
-
-//   // GET BROKER TRADE DATA
-//   const GetBrokerInforMation = async (row) => {
-
-//     await dispatch(UpdateBrokerResponse({ OrderId: row.order_id, user_id: row.user_id, token: AdminToken })).unwrap()
-//       .then((response) => {
-
-//         if (response.status) {
-
-//           setDashboardData({
-//             loading: false,
-//             data: response.data
-//           })
-//           setrefresh(!refresh)
-//         } else {
-
-//           setDashboardData({
-//             loading: false,
-//             data: response.data
-//           })
-//         }
-//       })
-
-//   }
+    const styles = {
+        container: {
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "80vh",
+        },
+        card: {
+            width: "auto",
+        },
+        boldHeader: {
+            fontWeight: "bold",
+        },
+        headerButton: {
+            marginRight: 8,
+        },
+    };
 
 
 
-//   // USE EFFECT
-//   useEffect(() => {
-//     updateBrokerResponse()
-//     BrokerResponse()
-//   }, [refresh])
 
+    const columns = [
+        {
+            field: "id",
+            headerName: "ID",
+            width: 70,
+            headerClassName: styles.boldHeader,
 
+            renderCell: (params) => (
+                <div> <b>{params.value + 1}</b></div>
+            ),
+        },
+        {
+            field: "createdAt",
+            headerName: "Created At",
+            width: 250,
+            headerClassName: styles.boldHeader,
+        },
+        {
+            field: "symbol",
+            headerName: "Symbol",
+            width: 200,
+            headerClassName: styles.boldHeader,
+        },
+        {
+            field: "type",
+            headerName: "Type",
+            width: 160,
+            headerClassName: styles.boldHeader,
+        },
+        {
+            field: "broker_name",
+            headerName: "Broker name",
+            width: 200,
+            headerClassName: styles.boldHeader,
+        },
+        {
+            field: "order_id",
+            headerName: "Order Id",
+            width: 200,
+            headerClassName: styles.boldHeader,
+            renderCell: (params) => (
+                <div>{params.value ? params.value : "-"}</div>
+            ),
+        },
+        {
+            field: "order_status",
+            headerName: "Order Status",
+            width: 160,
+            headerClassName: styles.boldHeader,
+            renderCell: (params) => (
+                <div>{params.value ? params.value : "-"}</div>
+            ),
+        },
 
-//   return (
-
-//     <Content Page_title="Broker Response" button_status={false}>
-
-//       <button className='btn btn-primary d-flex ms-auto mb-3' type="reset" onClick={(e) => setrefresh(!refresh)}>Refresh</button>
-//       <FullDataTable TableColumns={columns} tableData={DashboardData.data} />
-
-
-//       <OrderPending showModal={showAddLicenceModal} setshowModal={() => setshowAddLicenceModal(false)} />
-
-//       {
-//         showModal ?
-//           <>
-//             <Modal isOpen={showModal} size="xl" title="Details View" hideBtn={true}
-//               // onHide={handleClose}
-//               handleClose={() => setshowModal(false)}
-//             >
-//               <div className='table-responsive'>
-//                 <table className='table table-striped table-bordered border border-response-view' style={{ width: '100%', tableLayout: 'fixed' }}>
-//                   <tr>
-//                     <td className="bg-table"> Created At</td>
-//                     <td>{fDateTimeSuffix(BrokerResponseId.createdAt)}</td>
-//                   </tr>
-//                   <tr>
-//                     <td className="bg-table"> Symbol</td>
-//                     <td>{BrokerResponseId.symbol}</td>
-//                   </tr>
-//                   <tr>
-//                     <td className="bg-table"> Broker Name</td>
-//                     <td>{BrokerResponseId.broker_name}</td>
-//                   </tr>
-//                   <tr>
-//                     <td className="bg-table"> Order Id</td>
-//                     <td>{BrokerResponseId.order_id}</td>
-//                   </tr>
-//                   <tr>
-
-//                     <td className="bg-table"> Receive Signal</td>
-//                     <td className="order-date-cell">{atob(BrokerResponseId.receive_signal)}</td>
-//                   </tr>
-//                   <tr>
-
-//                     <td className="bg-table"> Signal</td>
-//                     <td className="order-date-cell">{atob(BrokerResponseId.send_request)}</td>
-//                   </tr>
-//                   <tr>
-//                     <td className="bg-table"> Order Status</td>
-//                     <td>{BrokerResponseId.order_status}</td>
-//                   </tr>
-//                   <tr>
-//                     <td className="bg-table"> Reject Reson</td>
-//                     <td>{BrokerResponseId.reject_reason}</td>
-//                   </tr>
-//                   <tr>
-//                     <td className="bg-table"> Order Data</td>
-//                     <td className="order-date-cell">{BrokerResponseId.order_view_date}</td>
-//                   </tr>
-//                 </table>
-//               </div>
-//             </Modal >
-//           </>
-//           : ""
-//       }
-
-//     </Content>
-
-
-
-//   )
-// }
-
-
-// export default BrokerResponse
-import React from 'react'
-
-const Bresponse = () => {
-    return (
-        <div className="content container-fluid">
-
-            <div className='card'>
-                <div className='card-header'>
-                    <h5 className='card-title mb-0'><i className="pe-2 fas fa-reply-all"></i>Broker Response </h5>
+        {
+            field: "info",
+            headerName: "view",
+            width: 160,
+            headerClassName: styles.boldHeader,
+            renderCell: (params) => (
+                <div>{<Eye onClick={(e) => { setshowModal(true); setBrokerData(params.row) }} />}
                 </div>
-                <div className='card-body'>
-                    <div id="price mb-5 " className='text-center'>
-                        {/*price tab*/}
-                        <div className="plan">
-                            <div className="plan-inner">
-                                <div className="entry-title">
+            ),
+        },
+    ];
 
-                                    <div className="price">
-                                        <a href="#"><i class="fa-solid fa-eye" style={{ color: "#fff" }}></i></a>
-                                    </div>
-                                </div>
-                                <div className="entry-content">
-                                    <ul>
-                                        <li>
-                                            <strong>Symbol: </strong>BankNifty
+
+
+    // GET BROKER RESPONSE ALL DATA
+    const BrokerResponse = async (e) => {
+        const data = { id: "66386168ece050b3b71879ab" }
+        await dispatch(Broker_Response(data)).unwrap()
+            .then((response) => {
+                if (response.status) {
+                    setDashboardData({
+                        loading: false,
+                        data: response.data
+                    });
+                    ;
+                }
+            })
+    }
+
+    useEffect(() => {
+        BrokerResponse()
+    }, [])
+
+
+
+
+
+
+
+
+
+
+
+    return (
+        <>
+
+            <div className="content container-fluid" data-aos="fade-left">
+                <div className="card">
+                    <div className="card-header">
+                        <div className="row align-items-center">
+                            <div className="col">
+                                <h5 className="card-title mb-0">
+                                    <i className="pe-2 fa-solid fa-users"></i>
+                                    Broker Response</h5>
+                            </div>
+                            <div className="col-auto">
+                                <div className="list-btn">
+                                    <ul className="filter-list mb-0">
+                                        <li className="">
+                                            <p
+                                                className="mb-0 btn-filters"
+
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom"
+                                                title="Refresh"
+                                            //   onClick={RefreshHandle}
+
+                                            >
+                                                <span>
+                                                    <i className="fe fe-refresh-ccw" />
+                                                </span>
+                                            </p>
+                                        </li>
+                                        <li className="serach-li">
+                                            <div className="input-group input-block">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="Search..."
+                                                    aria-label="Search"
+                                                    aria-describedby="search-addon"
+                                                // onChange={(e) => setSearchInput(e.target.value)}
+                                                // value={searchInput}
+
+                                                />
+                                            </div>
                                         </li>
                                         <li>
-                                            <strong>Type: </strong> Lx
+                                            <div
+                                                className="dropdown dropdown-action"
+                                                data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom"
+                                                title="Download"
+                                            >
+
+
+                                                {/* <ExportToExcel
+                              className="btn btn-primary "
+                              apiData={ForGetCSV}
+                              fileName={'All Strategy'} />
+                           */}
+
+                                            </div>
                                         </li>
-                                        <li>
-                                            <strong>Broker Name :</strong> Upstox
-                                        </li>
-                                        <li>
-                                            <strong>Order Id :</strong> 24016
-                                        </li>
-                                        <li>
-                                            <strong>Order Status : </strong>Entry not exist
-                                        </li>
+
+
                                     </ul>
-
-
                                 </div>
-
                             </div>
                         </div>
-                        {/* end of price tab*/}
-                        {/*price tab*/}
-                        <div className="plan basic">
-                            <div className="plan-inner">
+                    </div>
+                    <div className="card-body">
 
-                                <div className="entry-title">
-
-                                    <div className="price">
-                                        <a href="#"><i class="fa-solid fa-eye" style={{ color: "#fff" }}></i></a>
-                                    </div>
-                                </div>
-                                <div className="entry-content">
-                                    <ul>
-                                        <li>
-                                            <strong>Symbol: </strong>BankNifty
-                                        </li>
-                                        <li>
-                                            <strong>Type: </strong> Lx
-                                        </li>
-                                        <li>
-                                            <strong>Broker Name :</strong> Upstox
-                                        </li>
-                                        <li>
-                                            <strong>Order Id :</strong> 24016
-                                        </li>
-                                        <li>
-                                            <strong>Order Status : </strong>Entry not exist
-                                        </li>
-                                    </ul>
-
-
-                                </div>
-
-                            </div>
-                        </div>
-                        {/* end of price tab*/}
-                        {/*price tab*/}
-                        <div className="plan standard">
-                            <div className="plan-inner">
-                                <div className="entry-title">
-
-                                    <div className="price">
-                                        <i class="fa-solid fa-eye" style={{ color: "#fff" }}></i>
-                                    </div>
-                                </div>
-                                <div className="entry-content">
-                                    <ul>
-                                        <li>
-                                            <strong>Symbol: </strong>BankNifty
-                                        </li>
-                                        <li>
-                                            <strong>Type: </strong> Lx
-                                        </li>
-                                        <li>
-                                            <strong>Broker Name :</strong> Upstox
-                                        </li>
-                                        <li>
-                                            <strong>Order Id :</strong> 24016
-                                        </li>
-                                        <li>
-                                            <strong>Order Status : </strong>Entry not exist
-                                        </li>
-                                    </ul>
-
-                                </div>
-
-
-                            </div>
-                        </div>
-                        {/* end of price tab*/}
-                        {/*price tab*/}
-                        <div className="plan ultimite">
-                            <div className="plan-inner">
-                                <div className="entry-title">
-                                    <div className="price">
-                                        <i class="fa-solid fa-eye" style={{ color: "#fff" }}></i>
-                                    </div>
-                                </div>
-                                <div className="entry-content">
-                                    <ul>
-                                        <li>
-                                            <strong>Symbol: </strong>BankNifty
-                                        </li>
-                                        <li>
-                                            <strong>Type: </strong> Lx
-                                        </li>
-                                        <li>
-                                            <strong>Broker Name :</strong> Upstox
-                                        </li>
-                                        <li>
-                                            <strong>Order Id :</strong> 24016
-                                        </li>
-                                        <li>
-                                            <strong>Order Status : </strong>Entry not exist
-                                        </li>
-                                    </ul>
-
-
-                                </div>
-
-                            </div>
-                        </div>
-                        {/* end of price tab*/}
+                        <FullDataTable
+                            styles={styles}
+                            columns={columns}
+                            rows={DashboardData.data}
+                        />
                     </div>
                 </div>
             </div>
 
+            {
+                showModal ?
+                    <>
+                        <Modal isOpen={showModal} size="xl" title="Details View" hideBtn={true}
+                            // onHide={handleClose}
+                            handleClose={() => setshowModal(false)}
+                        >
 
 
+                            <div>
+                                <table className="tg">
+                                    <thead>
+                                        <tr>
+                                            <th className="tg-0lax" style={{ width: "250px" }}>Created At</th>
+                                            <th className="tg-0lax">{fDateTimeSuffix(borkerData.createdAt)}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className="tg-0lax">Symbol</td>
+                                            <td className="tg-0lax">{borkerData.symbol}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Broker Name</td>
+                                            <td className="tg-0lax">{borkerData.broker_name}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Order Id</td>
+                                            <td className="tg-0lax">{borkerData.order_id ? borkerData.order_id : '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Receive Signal</td>
+                                            <td className="tg-0lax">{borkerData.order_id ? borkerData.order_id : '-'}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Signal</td>
+                                            <td className="order-date-cell tg-0lax">{(borkerData.send_request ? borkerData.send_request : '-')}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Order Status</td>
+                                            <td tg-0lax>{borkerData.order_status}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Reject Reson</td>
+                                            <td className="tg-0lax">{borkerData.reject_reason}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="tg-0lax">Order Data</td>
+                                            <td className="order-date-cell tg-0lax">{borkerData.order_view_date}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </Modal >
+                    </>
+                    : ""
 
-        </div>
+            }
+
+        </>
+
     )
 }
 
-export default Bresponse
+
+
