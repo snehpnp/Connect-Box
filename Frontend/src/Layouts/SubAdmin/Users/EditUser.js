@@ -273,7 +273,7 @@ const AddClient = () => {
         FullName: values.fullName,
         license_type: values.licence,
         add_balance: values.add_balance,
-        Balance: values.balance + values.add_balance|| 0,
+        Balance: Number(values.balance) + Number(values.add_balance)|| 0,
         Per_trade: null,
         Strategies: selectedCheckboxesAndPlan,
         parent_id: user_id,
