@@ -146,6 +146,9 @@ const ServicesList = () => {
   const RefreshHandle = () => {
     setrefresh(!refresh)
     setSearchInput('')
+    data();
+    
+    
   }
 
 

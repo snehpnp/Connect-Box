@@ -11,8 +11,8 @@ import PasswordChange from "./PasswordChange";
 import Usersetbrokerinfo from "../../../Layouts/Comman/Setting_Page/Setbrokerinfo/Usersetbrokerinfo";
 
 const Settings = () => {
-  var Role = JSON.parse(localStorage.getItem("user_details")).Role;
-
+  let Role = JSON.parse(localStorage.getItem("user_details")).Role;
+   
   return (
     <div>
       <div className="">
@@ -121,7 +121,7 @@ const Settings = () => {
                     Api Create Information
                   </a>
 
-                  {(Role === "SUBADMIN" || Role === "USER") && (
+                  {(Role === "SUBADMIN" || Role === "USER" || Role === "RESEARCH") && (
                     <a
                       className="nav-link mb-1"
                       id="v-pills-Broker-info-tab"
@@ -276,13 +276,12 @@ const Settings = () => {
                     role="tabpanel"
                     aria-labelledby="v-pills-Broker-info-tab"
                   >
-                    {Role == "SUBADMIN" ? (
+                    {Role === "SUBADMIN" || Role === "RESEARCH" ? (
                       <Setbrokerinfo />
-                    ) : Role == "USER" ? (
+                    ) : Role === "USER" ? (
                       <Usersetbrokerinfo />
-                    ) : (
-                      ""
-                    )}
+                    ) : null}
+                    
                   </div>
                 </div>
               </div>
