@@ -28,7 +28,7 @@ const Settings = () => {
                 >
                   {(Role === "ADMIN" || Role === "SUBADMIN") && (
                     <a
-                      className="nav-link mb-1 active"
+                      className="nav-link active mb-1"
                       id="v-pills-company-tab"
                       data-bs-toggle="pill"
                       href="#v-pills-company"
@@ -138,10 +138,10 @@ const Settings = () => {
                 </div>
               </div>
               <div className="col-sm-9">
-                <div className="tab-content">
+                <div className="tab-content ">
                   {/* Company Settings */}
                   <div
-                    className="tab-pane fade"
+                    className="tab-pane active"
                     id="v-pills-company"
                     role="tabpanel"
                     aria-labelledby="v-pills-company-tab"
@@ -150,7 +150,7 @@ const Settings = () => {
                       <div className="card company-settings-new">
                         <div className="card-body w-100">
                           <div className="content-page-header">
-                            <h5>Company Settings</h5>
+                            <h5>Company Setting</h5>
                           </div>
 
                           <div className="subadminset">

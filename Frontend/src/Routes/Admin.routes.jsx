@@ -39,7 +39,8 @@ import AllResearcher from '../Layouts/Admin/Researcher/AllResearcher'
 
 import SubAdCompanyInfo from '../Layouts/Admin/SubAdminCompany/SubAdCompanyInfo';
 import Settings from '../Layouts/Comman/Setting_Page/Settings';
-import Companies from '../Layouts/Comman/Company/Companies';
+// import Companies from '../Layouts/Comman/Company/Companies';
+import Companies from '../Layouts/Admin/System/System';
 
 
 

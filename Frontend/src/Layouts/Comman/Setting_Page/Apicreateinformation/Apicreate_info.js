@@ -468,7 +468,7 @@ function Apicreate_info() {
         <>
 
           <div className="modal custom-modal d-block kk" role="dialog">
-            <div className="modal-dialog modal-dialog-centered modal-md">
+            <div className="modal-dialog modal-dialog-centered modal-lg">
               <div className="modal-content">
                 <div className="modal-header border-0 pb-0">
                   <div className="form-header modal-header-title text-start mb-0">

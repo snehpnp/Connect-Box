@@ -13,14 +13,10 @@ const Sidebar = () => {
                     </div>
                     <div className="widget settings-menu mb-0">
                         <ul>
-                            <li className="nav-item">
-                                <a href="settings.html" className="nav-link active">
-                                    <i className="fe fe-user" /> <span>Account Settings</span>
-                                </a>
-                            </li>
+                           
 
                             <li className="nav-item">
-                                <Link to="/companies" className="nav-link">
+                                <Link to="/companies" className="nav-link active">
                                     <i className="fe fe-settings" /> <span>Company Settings</span>
                                 </Link>
 

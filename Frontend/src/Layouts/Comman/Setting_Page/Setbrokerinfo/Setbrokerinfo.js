@@ -99,7 +99,7 @@ function BrokerInfoForm() {
         <div className="col-md-8">
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title mb-4">Set Broker</h5> {/* Added mb-4 class for bottom margin */}
+              <h5>Set Broker Information</h5> {/* Added mb-4 class for bottom margin */}
               <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="brokerName">Broker Name:</label>
@@ -141,7 +141,7 @@ function BrokerInfoForm() {
                     onChange={(e) => setDematUserId(e.target.value)}
                   />
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+                <button type="submit" className="btn btn-primary mt-3">Submit</button>
               </form>
             </div>
           </div>
