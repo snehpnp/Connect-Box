@@ -429,7 +429,7 @@ const AllResearcher = () => {
                         <ExportToExcel
                           className="btn btn-primary "
                           apiData={ForGetCSV}
-                          fileName={'All Strategy'} />
+                          fileName={'All Researcher'} />
                      
 
                     </div>

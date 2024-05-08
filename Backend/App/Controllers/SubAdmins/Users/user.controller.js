@@ -193,7 +193,7 @@ class Users {
         });
       }
 
-      // console.log("SubadminCheck[0].prifix_key", SubadminCheck[0])
+     
 
 
       var parent_prifix_key
@@ -1391,8 +1391,8 @@ class Users {
           FullName: req.FullName,
           license_type: req.license_type,
           broker: req.broker,
-          parent_id: req.parent_id,
-          parent_role: existingUsername.Role,
+          // parent_id: req.parent_id,
+          // parent_role: existingUsername.Role,
           api_secret: req.api_secret,
           app_id: req.app_id,
           client_code: req.client_code,

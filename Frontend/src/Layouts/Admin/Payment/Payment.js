@@ -188,12 +188,11 @@ function Payment() {
     if (companyData.data.length > 0) {
       companyData.data.map((item) => {
         return csvArr.push({
-          "FullName": item.FullName,
-          "UserName": item.UserName,
-          "PhoneNo": item.PhoneNo,
-          "Prifix Key": item.prifix_key,
-          "Service Type": item.subadmin_service_type == 1 ? "Per Trade" : "Per Strategy",
-          "Balance": item.Balance
+          "Balance": item.Balance,
+          "Role": item.Role,
+          "Mode": item.Mode,
+          "subadmin_service_type": item.subadmin_service_type,
+          "username": item.username,
         })
       })
 
@@ -287,12 +286,10 @@ function Payment() {
                           data-bs-placement="bottom"
                           title="Download"
                         >
-
-
                           <ExportToExcel
                             className="btn btn-primary "
                             apiData={ForGetCSV}
-                            fileName={'All Strategy'} />
+                            fileName={'Payment Details'} />
 
 
                         </div>

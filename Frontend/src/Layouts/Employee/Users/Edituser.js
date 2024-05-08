@@ -18,7 +18,9 @@ const EditClient = () => {
     const navigate = useNavigate();
     const location = useLocation()
 
-    const { rowData } = location.state;
+    const { rowData, additionalData } = location.state;
+
+
 
 
     const Role = JSON.parse(localStorage.getItem("user_details")).Role;
@@ -36,6 +38,7 @@ const EditClient = () => {
 
 
 
+
     const [getPermission, setPermission] = useState({
         loading: true,
         data: [],
@@ -46,6 +49,8 @@ const EditClient = () => {
     const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
 
     const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
+
+
 
 
     const [getAllBroker, setAllBroker] = useState([]);
@@ -73,7 +78,7 @@ const EditClient = () => {
             type: "text",
             label_size: 6,
             col_size: 6,
-            disable: false,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
         },
         {
             name: "username",
@@ -81,7 +86,7 @@ const EditClient = () => {
             type: "text",
             label_size: 12,
             col_size: 6,
-            disable: false,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
         },
         {
             name: "email",
@@ -89,7 +94,7 @@ const EditClient = () => {
             type: "text",
             label_size: 12,
             col_size: 6,
-            disable: false,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
         },
 
         {
@@ -98,7 +103,7 @@ const EditClient = () => {
             type: "text3",
             label_size: 12,
             col_size: 6,
-            disable: false,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
         },
         {
             name: "licence",
@@ -111,7 +116,7 @@ const EditClient = () => {
             ],
             label_size: 12,
             col_size: 6,
-            disable: false,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
         },
         {
 
@@ -121,7 +126,7 @@ const EditClient = () => {
             type: "test",
             label_size: 12,
             col_size: 6,
-            disable: false,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
             showWhen: (values) => subadmin_service_type1 == 1,
 
         },
@@ -131,7 +136,7 @@ const EditClient = () => {
             type: "text3",
             label_size: 12,
             col_size: 6,
-            disable: false,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
             showWhen: (values) => subadmin_service_type1 == 1 && values.licence === "2" && formik.values.Service_Type == 2,
         },
         {
@@ -147,7 +152,7 @@ const EditClient = () => {
             showWhen: (values) => values.licence === "2" || values.licence === "0",
             label_size: 12,
             col_size: 6,
-            disable: false,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
         },
         {
             name: "demat_userid",
@@ -179,7 +184,7 @@ const EditClient = () => {
                 })),
             label_size: 12,
             col_size: 6,
-            disable: false,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
         },
 
 
@@ -241,50 +246,136 @@ const EditClient = () => {
             return errors;
         },
         onSubmit: async (values) => {
-            const req = {
-                ProfileImg: ".",
-                FullName: values.fullName,
-                UserName: values.username,
-                Email: values.email,
-                license_type: values.licence,
-                PhoneNo: values.phone,
-                Balance: values.balance || null,
-                subadmin_service_type: null,
-                strategy_Percentage: null,
-                Per_trade: null,
-                Strategies: selectedCheckboxesAndPlan,
-                parent_id: user_id,
-                parent_role: Role,
-                demat_userid: values.demat_userid,
-                group_service: values.groupservice,
-                broker: values.broker,
-                Service_Type: values.Service_Type,
-                per_trade_value: values.per_trade_value || null,
-                employee_id: values.Employees || null,
-                _id: rowData && rowData._id,
 
-            };
-            await dispatch(UpdateUsers(req))
-                .unwrap()
-                .then(async (response) => {
-                    if (response.status) {
-                        Swal.fire({
-                            title: "Create Successful!",
-                            text: response.msg,
-                            icon: "success",
-                            timer: 1500,
-                            timerProgressBar: true
-                        });
-                        setTimeout(() => {
-                            navigate("/employee/allusers");
-                        }, 1500);
-                    } else {
-                        toast.error(response.msg);
-                    }
-                })
-                .catch((error) => {
-                    console.log("Error", error);
-                });
+
+            if (subadmin_service_type1 == 1 && additionalData.Update_Api_Key != 1) {
+                console.log("selectedCheckboxesAndPlan", selectedCheckboxesAndPlan)
+                console.log("selectedCheckboxesAndPlan", additionalData.Update_Api_Key)
+
+
+                let filteredArray3
+                if (getPermission.strategyName.length > 0) {
+                    const filteredArray2 = getPermission.strategyName.filter(item => values.Service_Type == item.Service_Type);
+                    filteredArray3 = selectedCheckboxesAndPlan.filter(item => filteredArray2.some(obj => obj.id == item.id));
+                }
+                console.log("filteredArray3", filteredArray3)
+                if (filteredArray3.length == 0) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Select at least one strategy",
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                    return;
+                }
+
+
+                const req = {
+                    ProfileImg: ".",
+                    FullName: values.fullName,
+                    UserName: values.username,
+                    Email: values.email,
+                    license_type: values.licence,
+                    PhoneNo: values.phone,
+                    Balance: values.balance || null,
+                    subadmin_service_type: null,
+                    strategy_Percentage: null,
+                    Per_trade: null,
+                    Strategies: filteredArray3,
+                    parent_id: user_id,
+                    parent_role: Role,
+                    demat_userid: values.demat_userid,
+                    group_service: values.groupservice,
+                    broker: values.broker,
+                    Service_Type: values.Service_Type,
+                    per_trade_value: values.per_trade_value || null,
+                    employee_id: values.Employees || null,
+                    _id: rowData && rowData._id,
+
+                };
+                await dispatch(UpdateUsers(req))
+                    .unwrap()
+                    .then(async (response) => {
+                        if (response.status) {
+                            Swal.fire({
+                                title: "Create Successful!",
+                                text: response.msg,
+                                icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true
+                            });
+                            setTimeout(() => {
+                                navigate("/employee/allusers");
+                            }, 1500);
+                        } else {
+                            toast.error(response.msg);
+                        }
+                    })
+                    .catch((error) => {
+                        console.log("Error", error);
+                    });
+
+
+            } else {
+
+
+                if (selectedCheckboxesAndPlan.length == 0) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Select at least one strategy",
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                    return;
+                }
+
+                const req = {
+                    ProfileImg: ".",
+                    FullName: values.fullName,
+                    UserName: values.username,
+                    Email: values.email,
+                    license_type: values.licence,
+                    PhoneNo: values.phone,
+                    Balance: values.balance || null,
+                    subadmin_service_type: null,
+                    strategy_Percentage: null,
+                    Per_trade: null,
+                    Strategies: selectedCheckboxesAndPlan,
+                    parent_id: user_id,
+                    parent_role: Role,
+                    demat_userid: values.demat_userid,
+                    group_service: values.groupservice,
+                    broker: values.broker,
+                    Service_Type: values.Service_Type,
+                    per_trade_value: values.per_trade_value || null,
+                    employee_id: values.Employees || null,
+                    _id: rowData && rowData._id,
+
+                };
+                await dispatch(UpdateUsers(req))
+                    .unwrap()
+                    .then(async (response) => {
+                        if (response.status) {
+                            Swal.fire({
+                                title: "Create Successful!",
+                                text: response.msg,
+                                icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true
+                            });
+                            setTimeout(() => {
+                                navigate("/employee/allusers");
+                            }, 1500);
+                        } else {
+                            toast.error(response.msg);
+                        }
+                    })
+                    .catch((error) => {
+                        console.log("Error", error);
+                    });
+            }
         },
     });
 
@@ -296,6 +387,7 @@ const EditClient = () => {
                 if (response.status) {
 
                     setUserData(response.data)
+
                     setSelectedCheckboxes(response.StrategyArr.map((stg) => stg.strategy_id))
                     setSelectedCheckboxesAndPlan(response.StrategyArr.map((stg) => ({ id: stg.strategy_id, plan_id: stg.plan_id })));
                     setGroupServiceId(response.GroupServiceArr[0].groupService_id)
@@ -322,6 +414,8 @@ const EditClient = () => {
 
     useEffect(() => {
         formik.setFieldValue("fullName", getUserData && getUserData.FullName)
+        formik.setFieldValue("Employees", getUserData && getUserData.employee_id)
+
         formik.setFieldValue("username", getUserData && getUserData.UserName)
         formik.setFieldValue("email", getUserData && getUserData.Email)
         formik.setFieldValue("phone", getUserData && getUserData.PhoneNo)
@@ -464,7 +558,8 @@ const EditClient = () => {
                 btn_name1_route={"/employee/allusers"}
                 additional_field={
                     <>
-                        {serviceName.data.length > 0 ? <div class="input-block "> <label>All Group Service</label> </div> : ""}
+                      
+                        { serviceName.data.length > 0 ? <div class="input-block "> <label>All Group Service</label> </div> : ""}
                         <div className="row">
 
                             {serviceName &&
@@ -483,10 +578,10 @@ const EditClient = () => {
 
 
 
-                        {subadmin_service_type1 == 2 ?
+                        { additionalData && additionalData.Update_Api_Key != 1 ? subadmin_service_type1 == 2 ?
                             (<div className="row mt-4">
                                 <div class="input-block ">
-                                    <label>All Strategies 1</label>
+                                    <label>All Strategies</label>
                                 </div>
                                 {getPermission.strategyName.map((strategy) => (
                                     <div className={`col-lg-3 mt-2`} key={strategy.id}>
@@ -499,7 +594,7 @@ const EditClient = () => {
                                                         name={strategy.strategy_name}
                                                         value={strategy.id}
                                                         checked={selectedCheckboxes && selectedCheckboxes.includes(strategy.id)}
-                                                        disabled={selectedCheckboxes && selectedCheckboxes.includes(strategy.id)}
+                                                        disabled={formik.values && formik.values.licence != 2 ? false : selectedCheckboxes && selectedCheckboxes.includes(strategy.id)}
 
                                                         onChange={() => handleStrategyChange(strategy.id)}
                                                     />
@@ -634,7 +729,7 @@ const EditClient = () => {
                                                             name={strategy.strategy_name}
                                                             value={strategy.id}
                                                             checked={selectedCheckboxes && selectedCheckboxes.includes(strategy.id)}
-                                                            disabled={selectedCheckboxes && selectedCheckboxes.includes(strategy.id)}
+                                                            disabled={formik.values && formik.values.licence != 2 ? false : selectedCheckboxes && selectedCheckboxes.includes(strategy.id)}
                                                             onChange={() => handleStrategyChange(strategy.id)}
                                                         />
                                                         <label
@@ -687,7 +782,6 @@ const EditClient = () => {
                                                                                     value="2"
                                                                                     id={`${strategy.id}_2`}
                                                                                     checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy.id && item.plan_id == 2)}
-
                                                                                     onChange={(e) => PlanSetinState(e.target.id)}
                                                                                 />
 
@@ -750,7 +844,9 @@ const EditClient = () => {
                                     )
                                 ))}
 
-                            </div>)}
+                            </div>) 
+                        :""    
+                        }
 
                     </>
                 }
