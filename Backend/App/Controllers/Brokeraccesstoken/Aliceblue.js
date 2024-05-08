@@ -37,7 +37,6 @@ class AliceBlue {
                     apiSecret = Get_User[0].api_secret
                 }
 
-                console.log("apiSecret", apiSecret)
                 var hosts = req.headers.host;
 
                 var redirect = hosts.split(':')[0];
@@ -79,7 +78,7 @@ class AliceBlue {
 
                     axios(config)
                         .then(async function (response) {
-                            console.log("res", response.data)
+
                             if (response.data.userSession) {
 
 
@@ -99,8 +98,6 @@ class AliceBlue {
                                     return res.redirect(redirect_uri);
 
                                 } else {
-
-                                    console.log("subadmin")
 
                                     await User.findByIdAndUpdate(Get_User[0]._id, {
                                         access_token: response.data.userSession,
@@ -145,10 +142,6 @@ class AliceBlue {
 
 
                             } else {
-
-                                console.log("else")
-
-
                                 return res.send(redirect_uri);
                             }
                         })
