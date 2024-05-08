@@ -60,7 +60,7 @@ const DashBoard = () => {
           const categories = response.data.categories;
           const data = response.data.userCounts;
 
-          console.log("categories", categories)
+          // console.log("categories", categories)
 
           setOptions((prevOptions) => ({
             ...prevOptions,

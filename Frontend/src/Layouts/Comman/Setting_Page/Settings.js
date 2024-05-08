@@ -26,7 +26,7 @@ const Settings = () => {
                   role="tablist"
                   aria-orientation="vertical"
                 >
-                  {(Role === "ADMIN" || Role === "SUBADMIN") && (
+                  {(Role === "ADMIN" || Role === "SUBADMIN" || Role ==="RESEARCH") && (
                     <a
                       className="nav-link active mb-1"
                       id="v-pills-company-tab"
