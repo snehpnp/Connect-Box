@@ -18,7 +18,7 @@ class Dashboard_Subadmin_Data {
 
       const counts = await User_model.aggregate([
         {
-          $match: { parent_id: subadminId },
+          $match: { parent_id: subadminId ,Role:"USER"},
         },
         {
           $facet: {

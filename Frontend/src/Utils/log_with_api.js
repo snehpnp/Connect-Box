@@ -48,7 +48,6 @@ export const loginWithApi = async (broker_id, UserDetails) => {
     else if (broker_id === "12" || broker_id === 12) {
     
         window.location.href = "https://smartapi.angelbroking.com/publisher-login?api_key=" + UserDetails.api_key;
-   
     }
 
     else if (broker_id === "13" || broker_id === 13) {

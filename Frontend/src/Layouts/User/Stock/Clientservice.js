@@ -282,6 +282,9 @@ function Clientservice() {
     };
   }, []);
 
+
+  console.log("Q1ytZrbZ", profileData)
+
   return (
     <>
       <div className="content container-fluid" data-aos="fade-left">
@@ -307,9 +310,9 @@ function Clientservice() {
                           className="check"
                           type="checkbox"
                           onChange={(e) => LogIn_WIth_Api(e.target.checked,
-                            profileData.data[0].broker,
-                            profileData.data[0].TradingStatus,
-                            profileData.data[0])
+                            profileData && profileData.data[0].broker,
+                            profileData && profileData.data[0].TradingStatus,
+                            profileData && profileData.data[0])
                           }
                           checked={getLoginStatus}
                           style={{ marginRight: '5px' }}

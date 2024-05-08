@@ -337,7 +337,7 @@ export default function AllEmployees() {
     };
 
 
-// CONVERT DATE FORMATE
+    // CONVERT DATE FORMATE
     const getActualDateFormate = (date) => {
         const dateParts = date.split("-");
         const formattedDate = `${dateParts[0]}/${parseInt(
@@ -358,7 +358,7 @@ export default function AllEmployees() {
 
         let startDate = getActualDateFormate(fromDate);
         let endDate = getActualDateFormate(toDate);
-  
+
         await dispatch(Trade_history_data({ Role: Role, subadminId: userDetails.user_id, startDate: !fromDate ? full : startDate, endDate: !toDate ? fromDate ? "" : full : endDate, service: SelectService, strategy: StrategyClientStatus, }))
             .unwrap()
             .then(async (response) => {
@@ -568,7 +568,7 @@ export default function AllEmployees() {
         fetchIP();
     }, []);
 
-    
+
     return (
         <>
             {tradeHistoryData.loading ? (
@@ -585,6 +585,23 @@ export default function AllEmployees() {
                                         <div className="list-btn">
                                             <ul className="filter-list mb-0">
 
+                                                <li className="toggle-li">
+                                                    <div className="status-toggle pe-2" style={{ display: 'flex', alignItems: 'center' }}>
+                                                        <span className={getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} >Trading Status</span>
+                                                        <input
+                                                            id="1"
+                                                            className="check"
+                                                            type="checkbox"
+                                                            onChange={(e) => LogIn_WIth_Api(e.target.checked,
+                                                                profileData && profileData.data[0].broker,
+                                                                profileData && profileData.data[0].TradingStatus,
+                                                                profileData && profileData.data[0])}
+                                                            defaultChecked={getLoginStatus}
+                                                            style={{ marginRight: '5px' }}
+                                                        />
+                                                        <label htmlFor="1" className="checktoggle checkbox-bg"></label>
+                                                    </div>
+                                                </li>
 
 
 
