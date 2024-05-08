@@ -101,7 +101,6 @@ const HelpResearcher = () => {
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value || "")}</div>,
     },
-    
   ];
 
   const postResearcher = async (e) => {

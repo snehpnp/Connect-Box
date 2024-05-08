@@ -300,7 +300,7 @@ const DashBoard = () => {
                                 </a>
                               </li>
                               <li>
-                                <a
+                                {/* <a
                                   className="dropdown-item"
                                   onClick={(e) => {
                                     handleUserSales(e);
@@ -308,7 +308,7 @@ const DashBoard = () => {
                                   }}
                                 >
                                   SALES
-                                </a>
+                                </a> */}
                               </li>
                             </ul>
                           </div>

@@ -212,7 +212,8 @@ const Signal = () => {
 
 
     const RefreshHandle = () => {
-        setrefresh(!refresh);   
+        setrefresh(!refresh); 
+        userDataRes()  
         setSearchInput("");
     };
 

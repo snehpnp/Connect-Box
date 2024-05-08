@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import DrapDown from './DrapDown';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import DrapDown from "./DrapDown";
+import { Link } from "react-router-dom";
 
 const Main_Header = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
 
   useEffect(() => {
     if (isNavOpen) {
-      document.body.classList.add('slide-nav');
+      document.body.classList.add("slide-nav");
     } else {
-      document.body.classList.remove('slide-nav');
+      document.body.classList.remove("slide-nav");
     }
   }, [isNavOpen]);
 
@@ -21,25 +21,22 @@ const Main_Header = () => {
     <div>
       {/* MAIN TOP HEADER */}
       <div className="header header-one">
-      <a className="mobile_btn" id="mobile_btn" onClick={toggleNav}>
-<i className="fas fa-bars"></i>
-</a>
+        <a className="mobile_btn" id="mobile_btn" onClick={toggleNav}>
+          <i className="fas fa-bars"></i>
+        </a>
         <div className="main-logo d-inline float-start d-lg-flex align-items-center ">
           <div className="logo-white">
-
             <img
               src="assets/img/pnp.png"
               className="img-fluid logo-blue"
               alt="Logo"
             />
 
-
             <img
               src="assets/img/pnp.png"
               className="img-fluid logo-small"
               alt="Logo"
             />
-
           </div>
           <div className="logo-color">
             <Link to="/admin/dashboard">
@@ -57,24 +54,13 @@ const Main_Header = () => {
               />
             </Link>
           </div>
-
         </div>
-
-
 
         {/* Toggle theme switch */}
 
-
-   
         <div className="nav-item  has-arrow dropdown-heads ">
           <DrapDown />
-
         </div>
-
-
-
-
-
       </div>
     </div>
   );
