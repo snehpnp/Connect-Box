@@ -293,7 +293,9 @@ export default function AllEmployees() {
             text: "Entry Status",
             formatter: (cell, row, rowIndex) => (
                 <div>
-                    <span>{row.result[0].exit_status === "above" ? "ABOVE" : row.result[0].exit_status === "below" ? "BELOW" : row.result[0].exit_status == "range" ? "RANGE" : " - "}</span>
+                    <span>{StatusEntry(row)}</span>
+
+                    {/* <span>{row.result[0].exit_status === "above" ? "ABOVE" : row.result[0].exit_status === "below" ? "BELOW" : row.result[0].exit_status == "range" ? "RANGE" : " - "}</span> */}
 
 
                 </div>
@@ -327,6 +329,19 @@ export default function AllEmployees() {
             ),
         },
     ];
+
+
+    const StatusEntry = (row) => {
+
+        const filteredData = row.result.find(obj => obj.type === "LE" || obj.type === 'SE');
+    
+        if(filteredData != undefined){
+            return filteredData.exit_status=="above"?"ABOVE":filteredData.exit_status=="below"?"BELOW":filteredData.exit_status=="range"?"RANGE":filteredData.exit_status 
+        }else{
+          return'-' 
+        }
+         
+      }
 
 
     const ResetDate = (e) => {

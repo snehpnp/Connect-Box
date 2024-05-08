@@ -1763,7 +1763,7 @@ const Makecall = () => {
             //     let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice==''?'100':strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${target1}|StopLoss:${stoploss}|ExitTime:${selectedTimeExit}|sl_status:1|Demo:demo`
             SetForDisabledSubmit(true)
             const currentTimestamp = Math.floor(Date.now() / 1000);
-            let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice == '' ? '100' : strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:${UserDetails && UserDetails[0].client_key}|TradeType:MAKECALL|Target:${Target == 0 ? 0 : Target.toFixed(2)}|StopLoss:${StopLoss == 0 ? 0 : StopLoss.toFixed(2)}|ExitTime:0|sl_status:${sl_status}|Demo:demo`
+            let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice == '' ? '100' : strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:${UserDetails && UserDetails[0].client_key}|TradeType:MAKECALL|Target:${Target == 0 ? 0 : Target.toFixed(2)}|StopLoss:${StopLoss == 0 ? 0 : StopLoss.toFixed(2)}|ExitTime:0|sl_status:${sl_status}|ExitStatus:MAKECALL AT|Demo:demo`
             console.log("req ", req)
             // console.log("process.env.BROKER_URL ",process.env.BROKER_URL)
 
@@ -1776,7 +1776,7 @@ const Makecall = () => {
                 },
                 data: req
             };
-            getStrategyData.request(config)
+            axios.request(config)
                 .then(async (response) => {
                     //console.log("response ", response);
                     if (response.status) {
