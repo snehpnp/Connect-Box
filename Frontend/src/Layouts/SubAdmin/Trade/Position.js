@@ -7,7 +7,7 @@ import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
 import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/Userinfo";
-import { Trade_history_data } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Trade_history_data } from "../../../ReduxStore/Slice/Comman/Trades";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { fDateTime } from "../../../Utils/Date_formet";
 import { ipAddress } from '../../../Utils/Ipaddress';
@@ -670,7 +670,23 @@ console.log("livePriceDataDetails",livePriceDataDetails)
                                         <div className="list-btn">
                                             <ul className="filter-list mb-0">
 
-                                               
+                                            <li className="toggle-li">
+                                                    <div className="status-toggle pe-2" style={{ display: 'flex', alignItems: 'center' }}>
+                                                        <span className={getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} >Trading Status</span>
+                                                        <input
+                                                            id="1"
+                                                            className="check"
+                                                            type="checkbox"
+                                                            onChange={(e) => LogIn_WIth_Api(e.target.checked,
+                                                                profileData.data[0].broker,
+                                                                profileData.data[0].TradingStatus,
+                                                                profileData.data[0])}
+                                                            defaultChecked={getLoginStatus}
+                                                            style={{ marginRight: '5px' }}
+                                                        />
+                                                        <label htmlFor="1" className="checktoggle checkbox-bg"></label>
+                                                    </div>
+                                                </li>
 
 
                                                 <li className="">

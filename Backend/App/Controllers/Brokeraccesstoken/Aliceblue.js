@@ -12,7 +12,7 @@ const live_price_token = db.live_price_token;
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
-const { Alice_Socket } = require("../../Helpers/Alice_Socket");
+// const { Alice_Socket } = require("../../Helpers/Alice_Socket");
 
 class AliceBlue {
 
@@ -37,13 +37,11 @@ class AliceBlue {
                     apiSecret = Get_User[0].api_secret
                 }
 
-
+                console.log("apiSecret", apiSecret)
                 var hosts = req.headers.host;
 
                 var redirect = hosts.split(':')[0];
                 var redirect_uri = '';
-
-   
 
                 if (Get_User.length > 0) {
 
@@ -81,7 +79,10 @@ class AliceBlue {
 
                     axios(config)
                         .then(async function (response) {
+                            console.log("res", response.data)
                             if (response.data.userSession) {
+
+
                                 if (Get_User[0].Role === "USER") {
                                     await User.findByIdAndUpdate(Get_User[0]._id, {
                                         access_token: response.data.userSession,
@@ -94,7 +95,13 @@ class AliceBlue {
                                         device: "WEB"
                                     });
                                     await user_login.save();
+
+                                    return res.redirect(redirect_uri);
+
                                 } else {
+
+                                    console.log("subadmin")
+
                                     await User.findByIdAndUpdate(Get_User[0]._id, {
                                         access_token: response.data.userSession,
                                         TradingStatus: "on"
@@ -108,7 +115,7 @@ class AliceBlue {
                                     });
                                     await user_logs1.save();
 
-                                    
+
                                     const exist_user = await live_price_token.findOne({ demate_user_id: userId }).select('access_token');
                                     if (!exist_user) {
                                         const live_price_token_data = new live_price_token({
@@ -128,10 +135,20 @@ class AliceBlue {
                                             { new: true }
                                         );
                                     }
-                                  
+
+                                    return res.redirect(redirect_uri);
+
                                 }
-                                return res.redirect(redirect_uri);
+
+
+
+
+
                             } else {
+
+                                console.log("else")
+
+
                                 return res.send(redirect_uri);
                             }
                         })

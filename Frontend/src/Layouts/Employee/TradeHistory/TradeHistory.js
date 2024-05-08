@@ -7,7 +7,7 @@ import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
 import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/Userinfo";
-import { Trade_history_data } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Trade_history_data } from "../../../ReduxStore/Slice/Comman/Trades";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { fDateTime } from "../../../Utils/Date_formet";
 import { ipAddress } from '../../../Utils/Ipaddress';
@@ -22,20 +22,7 @@ import { Eye, CandlestickChart, Pencil } from "lucide-react";
 import DetailsView  from "../../SubAdmin/Trade/DetailsView";
 
 
-import {
-    getAllServices,
-    getCatogries,
-    getexpirymanualtrade,
-    getAllStrikePriceApi,
-    getStrategyData,
-    gettokenbysocket,
-    GetBrokerLiveDatas,
-    AddDataAboveBelowRange,
-    GetDataAboveBelowRange,
-    DeleteDataMakeCall,
-    UpdateDataMakeCall
-
-} from "../../..//ReduxStore/Slice/Comman/Makecall/make";
+import {  GetBrokerLiveDatas} from "../../..//ReduxStore/Slice/Comman/Makecall/make";
 
 const TradeHistory = () => {
     const userDetails = JSON.parse(localStorage.getItem("user_details"));

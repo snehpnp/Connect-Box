@@ -113,7 +113,8 @@ const AllResearcherStrategy = () => {
                                 id: response.data._id,
                                 user_id: response.data.user_id,
                                 strategy_id: response.data.strategy_id,
-                                order_status: "Success"
+                                order_status: "Success",
+                                User_data:JSON.stringify(response1)
                             }
 
 

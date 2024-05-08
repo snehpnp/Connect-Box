@@ -4,7 +4,7 @@ import { GetUserDashboardData } from '../../../ReduxStore/Slice/Users/Userdashbo
 import { fDateTime } from "../../../Utils/Date_formet";
 import { Link } from "react-router-dom"
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
-import { Orders_Details } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
 
 const Dashboards = () => {
 
