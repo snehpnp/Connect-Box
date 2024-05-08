@@ -204,6 +204,18 @@ export async function subadmin_dashboard(data, token) {
   }
 }
 
+//EMPLOYEE  DashBoard DATA
+export async function employee_dashboard(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}employee/dashboard`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
+
 //subadmin dash data chart
 export async function chartData_Subadmin(data, token) {
   try {

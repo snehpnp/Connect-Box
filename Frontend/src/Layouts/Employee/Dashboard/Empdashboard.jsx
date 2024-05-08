@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Subadmin_Dashdata,
-  Subadmin_DashChartdata,
-  Subadmin_SalesData,
-} from "../../../ReduxStore/Slice/Admin/Subadmins";
+import {employee_dashboard_data} from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -22,94 +18,6 @@ const DashBoard = () => {
   const storedTheme = localStorage.getItem("theme_mode");
 
 
-  const [options, setOptions] = useState({
-    chart: {
-      id: "basic-bar",
-    },
-    xaxis: {
-      categories: [],
-    },
-    colors: ["#FF5733", "#33FF57", "#3357FF"],
-  });
-
-  const [series, setSeries] = useState([
-    {
-      name: "series-1",
-      data: [],
-    },
-  ]);
-
-  const handleSelect1 = (data) => {
-    setSelectedOption(data);
-  };
-
-  const handleUserSales = (e) => {
-    setSelectedUser(e.target.textContent);
-
-  };
-
-  const totalUserdata = async (options, user) => {
-    var data = {
-      user_ID: userDetails.user_id,
-      selectedOption: selectedOption,
-    };
-    await dispatch(Subadmin_DashChartdata(data))
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          const categories = response.data.categories;
-          const data = response.data.userCounts;
-
-          console.log("categories", categories)
-
-          setOptions((prevOptions) => ({
-            ...prevOptions,
-            xaxis: {
-              ...prevOptions.xaxis,
-              categories: categories,
-            },
-          }));
-
-          setSeries([{ name: "series-1", data: data }]);
-
-          setchart(true);
-        } else {
-          toast.error(response.msg);
-        }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
-
-  const totalSalesdata = async (options, user) => {
-    var data = {
-      user_ID: userDetails.user_id,
-      selectedOption: selectedOption,
-    };
-    await dispatch(Subadmin_SalesData(data))
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          const categories = response.data[0].data;
-          const data = response.data[0].strategy_transactions;
-          setOptions((prevOptions) => ({
-            ...prevOptions,
-            xaxis: {
-              ...prevOptions.xaxis,
-              categories: response.data[0].date,
-            },
-          }));
-          setSeries([{ name: "series-1", data: data }]);
-          setchart(true);
-        } else {
-          toast.error(response.msg);
-        }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-  };
 
   const calculatePercentage = (count, total) =>
     count !== undefined && count !== null && total > 0
@@ -123,9 +31,9 @@ const DashBoard = () => {
     { key: "TotalLiveUsercount", title: "Total Live Users" },
     { key: "TotalActiveLiveUsercount", title: "Active Live Users" },
     { key: "TotalExpiredLiveUsercount", title: "Expired Live Users" },
-    { key: "TotalTodayUsercount", title: "Today Total User" },
-    { key: "TotalActiveTodayUsercount", title: "Today Active Users" },
-    { key: "TotalExpiredTodayUsercount", title: "Converted Users" },
+    { key: "TotalTodayUsercount", title: "Total 2 Days User" },
+    { key: "TotalActiveTodayUsercount", title: "Active 2 Days Users" },
+    { key: "TotalExpiredTodayUsercount", title: "Expired 2 Days Users" },
     { key: "TotalDemoUsercount", title: "Demo Users" },
     { key: "TotalActiveDemoUsercount", title: "Active Demo Users" },
     { key: "TotalExpiredDemoUsercount", title: "Expired Demo Users" },
@@ -173,7 +81,7 @@ const DashBoard = () => {
 
 
   const dashData = async () => {
-    await dispatch(Subadmin_Dashdata({ subadminId: userDetails.user_id }))
+    await dispatch(employee_dashboard_data({ subadminId: userDetails.user_id }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
@@ -189,7 +97,6 @@ const DashBoard = () => {
   };
 
   useEffect(() => {
-    totalUserdata(selectedOption, selectedUser);
     dashData();
   }, [dispatch]);
 

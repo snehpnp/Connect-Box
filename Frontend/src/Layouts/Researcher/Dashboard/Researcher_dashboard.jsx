@@ -201,10 +201,11 @@ const DashBoard = () => {
             <div className="col-md-12">
               <div className="card">
 
+                <h1>WELCOME RESEARCHER...</h1>
               </div>
             </div>
 
-            <div className="col-md-12">
+            {/* <div className="col-md-12">
               <div className="row" data-aos="fade-down">
                 {cardsData
                   .reduce((acc, card, index) => {
@@ -263,7 +264,7 @@ const DashBoard = () => {
                     </div>
                   ))}
               </div >
-            </div >
+            </div > */}
 
 
           </div >
