@@ -112,13 +112,13 @@ function System() {
       <div className="row mb-2">
         <div className="col-lg-4 col-md-4" data-aos="fade-left">
           <div className="page-header">
-            <div className="content-page-header">
+            {/* <div className="content-page-header">
               <h5>System Information</h5>
-            </div>
+            </div> */}
           </div>
         </div>
 
-        <div className="col-lg-8 col-md-8" data-aos="fade-right">
+        <div className="col-lg-12 col-md-12" data-aos="fade-right">
           <ul className="nav nav-tabs nav-tabs-solid horizontal-tab d-flex justify-content-center ">
             <li className="nav-item">
               <a
@@ -147,7 +147,7 @@ function System() {
       </div>
 
       <div className="row">
-        <div className="subsystem col-lg-4 col-md-4" data-aos="fade-right">
+        {/* <div className="subsystem col-lg-4 col-md-4" data-aos="fade-right">
           <div className="card">
             <div className="card-body fghtfh">
               <div data-aos="fade-down" className="gif-div h-100">
@@ -158,9 +158,9 @@ function System() {
               </div>
             </div>
           </div>
-        </div>
-        <div className="col-lg-8 col-md-8" data-aos="fade-left">
-          <div className="card h-100">
+        </div> */}
+        <div className="col-lg-12 col-md-12" data-aos="fade-left">
+          <div className="">
             <div className="card-body">
               <div className="tab-content">
                 {/* Tab panes */}

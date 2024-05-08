@@ -67,6 +67,7 @@ const PasswordChange = () => {
               Current Password
             </label>
             <input
+            className="form-control"
               type="password"
               id="currentPassword"
               name="currentPassword"
@@ -82,6 +83,7 @@ const PasswordChange = () => {
               New Password
             </label>
             <input
+              className="form-control"
               type="password"
               id="newPassword"
               name="newPassword"
@@ -97,6 +99,7 @@ const PasswordChange = () => {
               Confirm New Password
             </label>
             <input
+              className="form-control"
               type="password"
               id="confirmNewPassword"
               name="confirmNewPassword"

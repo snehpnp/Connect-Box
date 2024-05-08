@@ -468,11 +468,14 @@ function Apicreate_info() {
         <>
 
           <div className="modal custom-modal d-block kk" role="dialog">
-            <div className="modal-dialog modal-dialog-centered modal-md">
+            <div className="modal-dialog modal-dialog-centered modal-lg">
               <div className="modal-content">
-                <div className="modal-header border-0 pb-0">
+                <div className="modal-header border-0 pb-0 d-flex justify-content-between ">
                   <div className="form-header modal-header-title text-start mb-0">
                     <h4 className="mb-0">Information</h4>
+                  </div>
+                  <div className="form-header modal-header-title text-start mb-0 ">
+                    <a className="btn btn-primary mb-2 ms-2" onClick={() => setModel(false)}><i className="fa-solid fa-xmark"></i></a>
                   </div>
                 </div>
                 <div className="your-model-class">

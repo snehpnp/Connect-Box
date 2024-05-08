@@ -24,7 +24,7 @@ const Main_Header = () => {
         <a className="mobile_btn" id="mobile_btn" onClick={toggleNav}>
           <i className="fas fa-bars"></i>
         </a>
-        <div className="main-logo d-inline float-start d-lg-flex align-items-center ">
+        <div className="main-logo d-inline float-start d-lg-flex align-items-center">
           <div className="logo-white">
             <img
               src="assets/img/pnp.png"
@@ -55,7 +55,6 @@ const Main_Header = () => {
             </Link>
           </div>
         </div>
-
         {/* Toggle theme switch */}
 
         <div className="nav-item  has-arrow dropdown-heads ">
