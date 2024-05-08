@@ -15,9 +15,9 @@ const Settings = () => {
 
   return (
     <div>
-      <div className="">
-        <div className="card">
-          <div className="card-body">
+      <div className="content">
+        <div className="card company-settings-new pt-0">
+          <div className="card-body pt-0">
             <div className="row">
               <div className="col-sm-3 left-side">
                 <div
@@ -205,7 +205,7 @@ const Settings = () => {
                     aria-labelledby="v-pills-logs-tab"
                   >
                     <div className="col-xl-12 col-md-12">
-                      <div className="page-header">
+                      <div className="card-body w-100">
                         <div className="content-page-header">
                           <h5>Activity</h5>
                           <div className="page-content">
@@ -253,7 +253,7 @@ const Settings = () => {
                     aria-labelledby="v-pills-api-tab"
                   >
                     <div className="col-xl-12 col-md-12">
-                      <div className="page-header">
+                      <div className="card-body w-100">
                         <div className="content-page-header">
                           <h5>All Api-Create Info</h5>
                           <div className="page-content">

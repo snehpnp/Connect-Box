@@ -441,8 +441,8 @@ function Apicreate_info() {
                 id="advertisers"
                 className="advertisers-service-sec pt-5 pb-5 col-lg-4"
               >
-                <div className="container">
-                  <div className="">
+           
+                  <div className="content container-fluid">
                     <div className="ol">
                       <div className="service-card">
                         <div className="icon-wrapper">
@@ -459,7 +459,7 @@ function Apicreate_info() {
                       </div>
                     </div>
                   </div>
-                </div>
+                
               </section>
             );
           })}

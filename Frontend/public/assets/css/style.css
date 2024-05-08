@@ -9470,7 +9470,7 @@ table .badge {
 
 [data-layout=horizontal] body .page-wrapper {
     margin: 0;
-    padding-top: 140px
+    padding-top: 140px;
 }
 
 [data-layout=horizontal] body .sidebar .sidebar-menu ul ul ul {
@@ -34600,16 +34600,11 @@ button[aria-label="edit"] {
     width: 50px;
 }
 
-.advertisers-service-sec {
-    background-color: #f5f5f5;
-}
 
-.advertisers-service-sec span {
-    color: rgb(255, 23, 131);
-}
+
 
 .advertisers-service-sec .col {
-    padding: 0 1em 1em 1em;
+
     text-align: center;
 }
 
@@ -34618,7 +34613,6 @@ button[aria-label="edit"] {
     height: 100%;
     padding: 2em 1.5em;
     border-radius: 5px;
-    box-shadow: 0 0 35px rgba(0, 0, 0, 0.12);
     cursor: pointer;
     transition: 0.5s;
     position: relative;

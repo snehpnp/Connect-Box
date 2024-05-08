@@ -9,8 +9,8 @@ const Companies = () => {
                       <Sidebar />
                   </div>
           <div className="col-xl-9 col-md-8">
-              <div className="card company-settings-new">
-                  <div className="card-body w-100">
+             
+                      <div className="page-header">
                       <div className="content-page-header">
                           <h5>Company Settings</h5>
                       </div>
@@ -190,7 +190,7 @@ const Companies = () => {
           </div>
 
       
-    </div>
+    
   )
 }
 

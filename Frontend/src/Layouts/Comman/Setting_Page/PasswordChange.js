@@ -55,13 +55,16 @@ const PasswordChange = () => {
 
   return (
     <div>
-      <div className="cardStyle">
+      <div className="card-body w-100">
+        <div className="content-page-header">
+          <h5>Change Password</h5>
+        </div>
         <form
           onSubmit={handleSubmit}
           name="passwordChangeForm"
           id="passwordChangeForm"
         >
-          <h5 className="formTitle">Change Password</h5>
+          
           <div className="inputDiv">
             <label className="inputLabel" htmlFor="currentPassword">
               Current Password

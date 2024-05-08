@@ -136,7 +136,7 @@ const Trackpanel = () => {
 
   return (
     <>
-      <div>
+      <div className="content container-fluid">
         <Row className="mb-3">
           <Col>
             <Form.Group>
