@@ -165,7 +165,7 @@ const AddResearcher = () => {
     {
       name: "strategy_percentage",
       label: "Strategy Percentage",
-      type: "text3",
+      type: "text4",
       label_size: 12,
       col_size: 6,
       disable: false,

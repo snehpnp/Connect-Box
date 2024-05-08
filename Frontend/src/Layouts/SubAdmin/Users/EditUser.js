@@ -36,6 +36,9 @@ const AddClient = () => {
   const [stgDiseble, setStgDiseble] = useState([]);
   const [getAllBroker, setAllBroker] = useState([]);
 
+
+  console.log("stgDiseble :", stgDiseble)
+
   const [employeeNames, setEmployeeNames] = useState({
     loading: true,
     data: [],
@@ -369,12 +372,9 @@ const AddClient = () => {
       .then((response) => {
         if (response.status) {
           setOneUsers(response.data);
-
           setSelectedCheckboxes(response.data.ClientStrategy.map((stg) => stg.strategy_id))
           setSelectedCheckboxesAndPlan(response.data.ClientStrategy.map((stg) => ({ id: stg.strategy_id, plan_id: stg.plan_id })));
-
           if (response.data.getClients[0].license_type == 2) {
-
             setStgDiseble(response.data.ClientStrategy.map((stg) => stg.strategy_id))
           }
 
@@ -603,7 +603,7 @@ const AddClient = () => {
   //   setSelectedCheckboxes([])
   // }, [formik.values.Service_Type])
 
-console.log("formik.values.Service_Type",formik.values.Service_Type)
+ 
   return (
     <>
       {
@@ -618,6 +618,7 @@ console.log("formik.values.Service_Type",formik.values.Service_Type)
               btn_name1="Cancel"
               formik={formik}
               btn_name1_route={'/subadmin/users'}
+              
               additional_field={
                 <>
                   {serviceName.data.length > 0 ? <div class="input-block "> <label>All Group Service</label> </div> : ""}

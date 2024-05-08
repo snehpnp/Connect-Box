@@ -131,8 +131,10 @@ const DashBoard = () => {
     { key: "TotalExpiredDemoUsercount", title: "Expired Demo Users" },
   ];
 
+
   const cardsData = cardDataList.map(({ key, title }) => {
     const count = userData[key];
+    console.log("count" , userData)
     const percentage = calculatePercentage(count, userData.TotalUsercount);
     let progressBarClass = "";
     switch (true) {
