@@ -58,7 +58,7 @@ const AddClient = () => {
 
 
   // 0 = 2 days 1= Demo 2 =Live
- 
+
 
 
 
@@ -155,7 +155,13 @@ const AddClient = () => {
               navigate("/employee/allusers");
             }, 1500);
           } else {
-            toast.error(response.msg);
+            Swal.fire({
+              title: "Error !",
+              text: response.msg,
+              icon: "error",
+              timer: 1500,
+              timerProgressBar: true
+            });
           }
         })
         .catch((error) => {
@@ -313,9 +319,6 @@ const AddClient = () => {
 
 
   ];
-
-
-  console.log("formik.value.groupservice :", formik.values.groupservice)
 
   const getpermission = async () => {
     const data = { id: user_id }
