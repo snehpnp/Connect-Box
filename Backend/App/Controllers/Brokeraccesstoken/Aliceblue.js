@@ -24,8 +24,6 @@ class AliceBlue {
 
             var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role broker');
 
-
-
             if (Get_User[0].TradingStatus != "on") {
 
                 var apiSecret = ''
@@ -42,13 +40,13 @@ class AliceBlue {
                 var redirect = hosts.split(':')[0];
                 var redirect_uri = '';
                 redirect_uri = `https://${redirect}/#/subadmin/position`
-                console.log("redirect 1", redirect)
+
                 if (Get_User.length > 0) {
 
                     if (redirect == "localhost") {
                         redirect_uri = "http://localhost:3000"
 
-                        if (Get_User[0].Role == "ADMIN") {
+                        if (Get_User[0].Role == "SUBADMIN") {
                             redirect_uri = "http://localhost:3000/#/subadmin/position"
 
                         } else {
@@ -60,7 +58,7 @@ class AliceBlue {
                             redirect_uri = `https://${redirect}/#/subadmin/position`
 
                         } else {
-                            redirect_uri = `https://${redirect}/#/user/stock`
+                            redirect_uri = `https://${redirect}/#/`
 
                         }
                     }
@@ -138,11 +136,14 @@ class AliceBlue {
 
                                 }
 
-
-
-
-
                             } else {
+                                const user_logs1 = new user_logs({
+                                    user_Id: Get_User[0]._id,
+                                    trading_status: JSON.stringify(response.data),
+                                    role: Get_User[0].Role,
+                                    device: "WEB"
+                                });
+                                await user_logs1.save();
                                 return res.redirect(redirect_uri);
                             }
                         })
@@ -164,6 +165,20 @@ class AliceBlue {
             console.log("Error Alice Login error-", error)
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // // GET ORDER ID TO ORDER FULL DATA
     // async GetOrderFullInformation(req, res) {
