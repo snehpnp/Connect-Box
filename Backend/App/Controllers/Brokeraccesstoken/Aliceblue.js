@@ -24,30 +24,32 @@ class AliceBlue {
 
             var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role broker');
 
-
-
+            console.log("Get_User[0]", Get_User[0])
             if (Get_User[0].TradingStatus != "on") {
 
                 var apiSecret = ''
 
                 if (Get_User[0].Role == "USER") {
-                    var subadmin = await User.find({ parent_id: Get_User[0].parent_id }).select('TradingStatus parent_id api_secret Role');
+                    var subadmin = await User.find({ _id: Get_User[0].parent_id }).select('TradingStatus parent_id api_secret Role');
+                    console.log("subadmin[0]", subadmin[0])
                     apiSecret = subadmin[0].api_secret
                 } else {
                     apiSecret = Get_User[0].api_secret
                 }
+                console.log(userId, "-----", apiSecret)
 
                 var hosts = req.headers.host;
 
                 var redirect = hosts.split(':')[0];
                 var redirect_uri = '';
+                redirect_uri = `https://${redirect}/#/subadmin/position`
 
                 if (Get_User.length > 0) {
 
                     if (redirect == "localhost") {
                         redirect_uri = "http://localhost:3000"
 
-                        if (Get_User[0].Role == "ADMIN") {
+                        if (Get_User[0].Role == "SUBADMIN") {
                             redirect_uri = "http://localhost:3000/#/subadmin/position"
 
                         } else {
@@ -55,11 +57,14 @@ class AliceBlue {
 
                         }
                     } else {
-                        if (Get_User[0].Role == "ADMIN") {
+                        if (Get_User[0].Role == "SUBADMIN") {
                             redirect_uri = `https://${redirect}/#/subadmin/position`
 
-                        } else {
+                        } else if (Get_User[0].Role == "USER") {
                             redirect_uri = `https://${redirect}/#/user/stock`
+
+                        } else {
+                            redirect_uri = `https://${redirect}/#/`
 
                         }
                     }
@@ -78,7 +83,7 @@ class AliceBlue {
 
                     axios(config)
                         .then(async function (response) {
-
+                            console.log("response.data", response.data)
                             if (response.data.userSession) {
 
 
@@ -137,12 +142,15 @@ class AliceBlue {
 
                                 }
 
-
-
-
-
                             } else {
-                                return res.send(redirect_uri);
+                                const user_logs1 = new user_logs({
+                                    user_Id: Get_User[0]._id,
+                                    trading_status: JSON.stringify(response.data),
+                                    role: Get_User[0].Role,
+                                    device: "WEB"
+                                });
+                                await user_logs1.save();
+                                return res.redirect(redirect_uri);
                             }
                         })
                         .catch(function (error) {
@@ -155,7 +163,7 @@ class AliceBlue {
 
 
             } else {
-                return res.send(redirect_uri);
+                return res.redirect(redirect_uri);
 
             }
 
@@ -163,6 +171,20 @@ class AliceBlue {
             console.log("Error Alice Login error-", error)
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // // GET ORDER ID TO ORDER FULL DATA
     // async GetOrderFullInformation(req, res) {

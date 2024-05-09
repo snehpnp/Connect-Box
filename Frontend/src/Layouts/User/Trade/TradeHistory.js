@@ -102,8 +102,11 @@ export default function AllEmployees() {
                         })
                         if (response.data[0].TradingStatus == 'on') {
                             setLoginStatus(true)
+                            setrefresh(!refresh)
+
                         } else {
                             setLoginStatus(false)
+                            setrefresh(!refresh)
                         }
                     } else {
                         toast.error(response.msg);
@@ -192,6 +195,15 @@ export default function AllEmployees() {
             dataField: "strategy",
             text: "Strategy",
         },
+        {
+            dataField: "2",
+            text: "Entry Type",
+            formatter: (cell, row, rowIndex) => (
+              <div>
+                <span>{row.entry_type === "LE"?"BUY ENTRY":"SELL ENTRY"}</span>
+              </div>
+            ),
+          },
         {
             dataField: "entry_qty",
             text: "Entry Qty",
@@ -448,6 +460,13 @@ console.log("livePriceDataDetails",livePriceDataDetails)
 
                                     if (parseInt(get_entry_qty) >= parseInt(get_exit_qty)) {
                                         let rpl = (parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_exit_qty);
+
+
+                                        if(get_entry_type === "SE"){
+                                            rpl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_exit_qty);
+                                          }
+
+
                                         let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
                                         let finalyupl = (parseFloat(get_entry_price) - parseFloat(live_price)) * upl;
 
@@ -467,7 +486,14 @@ console.log("livePriceDataDetails",livePriceDataDetails)
                             }
                             //  if Only entry qty Exist
                             else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
+
                                 let abc = ((parseFloat(live_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
+
+                                if(get_entry_type === "SE"){
+                                    abc = ((parseFloat(get_entry_price) - parseFloat(live_price)) * parseInt(get_entry_qty)).toFixed();
+                                  }
+
+
                                 if (isNaN(abc)) {
                                     return "-";
                                 } else {
@@ -501,9 +527,99 @@ console.log("livePriceDataDetails",livePriceDataDetails)
             }
         }
 
-
-
-
+        else{
+            // alert("ELSE")
+            tradeHistoryData.data && tradeHistoryData.data.forEach((row, i) => {
+              
+              // console.log(" row._id ",row._id)
+              // console.log(" row token ",row.token)
+              // console.log(" row ",row)
+              let get_ids = '_id_' + row.token + '_' + row._id
+              let get_id_token = $('.' + get_ids).html();
+      
+              const get_entry_qty = $(".entry_qty_" + row.token + '_' + row._id).html();
+              const get_exit_qty = $(".exit_qty_" + row.token + '_' + row._id).html();
+              const get_exit_price = $(".exit_price_" + row.token + '_' + row._id).html();
+              const get_entry_price = $(".entry_price_" + row.token + '_' + row._id).html();
+              const get_entry_type = $(".entry_type_" + row.token + '_' + row._id).html();
+              const get_exit_type = $(".exit_type_" + row.token + '_' + row._id).html();
+              const get_Strategy = $(".strategy_" + row.token + '_' + row._id).html();
+      
+      
+            if ((get_entry_type === "LE" && get_exit_type === "LX") || (get_entry_type === "SE" && get_exit_type === "SX")) {
+             //   console.log("row._id ",row._id)
+                if (get_entry_qty !== "" && get_exit_qty !== "") {
+      
+                  if (parseInt(get_entry_qty) == parseInt(get_exit_qty)) {
+      
+                    
+                    let rpl = (parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_exit_qty);
+                    if(get_entry_type === "SE"){
+                      rpl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_exit_qty);
+                    }
+                     
+                  // console.log("rpl ",rpl)
+                    let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
+                    let finalyupl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * upl;
+                   
+                    // console.log("upl._id ",upl)
+                    // console.log("finalyupl._id ",finalyupl)
+                    if ((isNaN(finalyupl) || isNaN(rpl))) {
+                      return "-";
+                    } else {
+                     // console.log("rpl inside",rpl)
+                      $(".show_rpl_" + row.token + "_" + get_id_token).html(rpl.toFixed(2));
+                      $(".UPL_" + row.token + "_" + get_id_token).html(finalyupl.toFixed(2));
+                      $(".TPL_" + row.token + "_" + get_id_token).html((finalyupl + rpl).toFixed(2));
+      
+                      ShowColor1(".show_rpl_" + row.token + "_" + get_id_token, rpl.toFixed(2), row.token, get_id_token);
+                      ShowColor1(".UPL_" + row.token + "_" + get_id_token, finalyupl.toFixed(2), row.token, get_id_token);
+                      ShowColor1(".TPL_" + row.token + "_" + get_id_token, (finalyupl + rpl).toFixed(2), row.token, get_id_token);
+                    }
+                  }
+                }
+              }
+              //  if Only entry qty Exist
+              else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
+      
+                //console.log("row._id else",row._id)
+      
+                let abc = ((parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
+                 
+                if(get_entry_type === "SE"){
+                  abc = ((parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_entry_qty)).toFixed();
+                }
+      
+      
+      
+                if (isNaN(abc)) {
+                  return "-";
+                } else {
+                  $(".show_rpl_" + row.token + "_" + get_id_token).html("-");
+                  $(".UPL_" + row.token + "_" + get_id_token).html(abc);
+                  $(".TPL_" + row.token + "_" + get_id_token).html(abc);
+                  ShowColor1(".show_rpl_" + row.token + "_" + get_id_token, "-", row.token, get_id_token);
+                  ShowColor1(".UPL_" + row.token + "_" + get_id_token, abc, row.token, get_id_token);
+                  ShowColor1(".TPL_" + row.token + "_" + get_id_token, abc, row.token, get_id_token);
+                }
+              }
+      
+              //  if Only Exist qty Exist
+              else if (
+                (get_entry_type === "" && get_exit_type === "LX") ||
+                (get_entry_type === "" && get_exit_type === "SX")
+              ) {
+              } else {
+              }
+      
+      
+      
+      
+      
+            });
+      
+      
+          }
 
 
     };
@@ -570,6 +686,41 @@ console.log("livePriceDataDetails",livePriceDataDetails)
 
         };
     }, []);
+
+
+    let total=0;
+    tradeHistoryData.data &&
+      tradeHistoryData.data?.map((item) => {
+        CreatechannelList += `${item.exchange}|${item.token}#`;
+        console.log("item" ,item)
+  
+         
+  
+  
+        // if(parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price!= '' && item.exit_price){
+        // total += (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
+        // }
+  
+        if(parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price!= '' && item.exit_price){
+        
+       
+          if(item.entry_type ==="LE"){
+           // console.log("item iFF" ,item._id , " total ",total)
+            let total1 = (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
+            if(!isNaN(total1)){
+              total += total1
+            }
+           
+          }else{
+           let total1 = (parseFloat(item.entry_price) - parseFloat(item.exit_price)) * parseInt(item.exit_qty_percent);
+           // console.log("item ELSE" ,item._id , " total ",total)
+            if(!isNaN(total1)){
+              total += total1
+            }
+    
+          }
+          }
+      });
 
     return (
         <>

@@ -19,6 +19,10 @@ class SignalController {
       const { subadminId, Role } = req.body;
       const ObjSubAdminId = new ObjectId(subadminId);
 
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+
       if (Role == "SUBADMIN") {
         const resultUser = await Strategies.find({
           maker_id: ObjSubAdminId,
@@ -36,7 +40,13 @@ class SignalController {
 
         const pipeline = [
           {
-            $match: { strategy: { $in: strategyNames } },
+            $match: {
+              strategy: { $in: strategyNames },
+              createdAt: {
+                $gte: today,
+                $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+              }
+            },
           },
           {
             $project: {
@@ -90,7 +100,13 @@ class SignalController {
 
         const pipeline = [
           {
-            $match: { strategy: { $in: strategyNames } },
+            $match: {
+              strategy: { $in: strategyNames },
+              createdAt: {
+                $gte: today,
+                $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+              }
+            },
           },
           {
             $project: {
@@ -165,8 +181,7 @@ class SignalController {
               let: {
                 service_name: "$service.name",
                 strategy_name: "$strategys.strategy_name",
-                // currentDate: currentDate,
-                // endOfDay: endOfDay,
+               
               },
               pipeline: [
                 {
@@ -175,8 +190,8 @@ class SignalController {
                       $and: [
                         { $eq: ["$symbol", "$$service_name"] },
                         { $eq: ["$strategy", "$$strategy_name"] },
-                        // { $gte: ['$createdAt', '$$currentDate'] },
-                        // { $lte: ['$createdAt', '$$endOfDay'] },
+                        { $gte: ['$createdAt', today] },
+                        { $lte: ['$createdAt', new Date(today.getTime() + 24 * 60 * 60 * 1000)] },
                       ],
                     },
                   },
@@ -222,32 +237,32 @@ class SignalController {
       } else if (Role == "EMPLOYEE") {
         let subadminStgFind = await Subadmin_Permission.aggregate([
           {
-            $match: { user_id: ObjSubAdminId }, // İlgili kullanıcıya göre eşleşmeyi bulun
+            $match: { user_id: ObjSubAdminId },
           },
           {
-            $unwind: "$strategy", // Diziyi açarak her bir strateji için ayrı bir belge oluşturun
+            $unwind: "$strategy",
           },
           {
             $lookup: {
-              from: "strategies", // Diğer koleksiyonun adı
-              localField: "strategy", // Subadmin_Permission koleksiyonundaki alan
-              foreignField: "_id", // Strategies koleksiyonundaki alan
-              as: "strategyInfo", // Eşleşen belgeleri buraya yerleştirin
+              from: "strategies",
+              localField: "strategy",
+              foreignField: "_id",
+              as: "strategyInfo",
             },
           },
           {
-            $unwind: "$strategyInfo", // İç içe dizileri açarak her bir strateji bilgisini ayrı bir belge haline getirin
+            $unwind: "$strategyInfo",
           },
           {
             $group: {
-              _id: "$_id", // Gruplama için bir alan seçin, burada _id kullanıyorum
-              strategyInfo: { $push: "$strategyInfo.strategy_name" }, // Her bir strateji bilgisini bir dizi içinde toplayın
+              _id: "$_id",
+              strategyInfo: { $push: "$strategyInfo.strategy_name" },
             },
           },
           {
             $project: {
-              _id: 0, // İstediğiniz alanları seçin, burada _id'yi hariç tutuyorum
-              strategyInfo: 1, // İstediğiniz ek bilgi
+              _id: 0,
+              strategyInfo: 1,
             },
           },
         ]);
@@ -264,7 +279,13 @@ class SignalController {
 
         const pipeline = [
           {
-            $match: { strategy: { $in: subadminStgFind[0].strategyInfo } },
+            $match: {
+              strategy: { $in: subadminStgFind[0].strategyInfo },
+              createdAt: {
+                $gte: today,
+                $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+              }
+            },
           },
           {
             $project: {
