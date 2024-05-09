@@ -75,6 +75,7 @@ const styles = {
 };
 const handleFromDateChange = (e) => {
     setFromDate(e.target.value);
+    
 };
 
 const handleToDateChange = (e) => {
@@ -360,6 +361,8 @@ const getActualDateFormate = (date) => {
 };
 
 
+
+
 const userDataRes = async () => {
     let abc = new Date();
     let month = abc.getMonth() + 1;
@@ -367,10 +370,10 @@ const userDataRes = async () => {
     let year = abc.getFullYear();
     let full = `${year}/${month}/${date}`;
 
-    let startDate = getActualDateFormate(fromDate);
-    let endDate = getActualDateFormate(toDate);
+    const startDate = fromDate ? getActualDateFormate(fromDate) : full;
+    const endDate = toDate ? getActualDateFormate(toDate) : full;
     const subadminId = userDetails.user_id
-    await dispatch(Trade_history_data({ Role:Role,subadminId: userDetails.user_id, startDate: !fromDate ? full : startDate, endDate: !toDate ? fromDate ? "" : full : endDate, service: SelectService, strategy: StrategyClientStatus, }))
+    await dispatch(Trade_history_data({ Role:Role,subadminId: userDetails.user_id, startDate: startDate, endDate: endDate, service: SelectService, strategy: StrategyClientStatus, }))
         .unwrap()
         .then(async (response) => {
             if (response.status) {
@@ -659,8 +662,8 @@ useEffect(() => {
                                             placeholder="Search..."
                                             aria-label="Search"
                                             aria-describedby="search-addon"
-                                            onChange={(e) => SetInputSearch(e.target.value || '')}
-                                            value={inputSearch}
+                                            onChange={handleFromDateChange}
+                                            value={fromDate}
                                         />
                                     </div>
                                     <div className="input-block col-lg-2 mt-3 mb-3">
@@ -671,8 +674,8 @@ useEffect(() => {
                                             placeholder="Search..."
                                             aria-label="Search"
                                             aria-describedby="search-addon"
-                                            onChange={(e) => SetInputSearch(e.target.value || '')}
-                                            value={inputSearch}
+                                            onChange={handleToDateChange}
+                                            value={toDate}
                                         />
                                     </div>
 
