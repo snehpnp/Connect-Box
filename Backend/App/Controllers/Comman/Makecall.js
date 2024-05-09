@@ -15,6 +15,7 @@ const db_GET_VIEW = client.db(process.env.DB_NAME);
 const makecallabrView_excute_view = db_GET_VIEW.collection('makecallabrView_excute');
 const open_position_excute = db_GET_VIEW.collection('open_position_excute');
 const makecall_NotradeTime_status_excute = db_GET_VIEW.collection('makecall_NotradeTime_status_excute');
+const token_chain = db_GET_VIEW.collection('token_chain');
 
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -632,7 +633,11 @@ class Makecall {
 
   //Add data above beleow range
   async AddDataAboveBelowRange(req, res) {
+   
 
+
+    console.log("req - ",req.body)
+ 
     try {
 
 
@@ -667,6 +672,40 @@ class Makecall {
         WiseTypeDropdown
       } = req.body;
 
+
+      let exch = "NFO"
+
+       if(Segment == "C"){
+        exch = "NSE"
+       }
+       else if(Segment == "MO" || Segment == "MF"){
+        exch = "MCX"
+       }
+       else if(Segment == "CO" || Segment == "CF"){
+        exch = "CDS"
+       }
+       console.log("token ",token)
+       console.log("exch ",exch)
+
+
+       
+       
+      //  const tokenExisst = await token_chain.findOne({_id:token})
+      //  console.log("tokenExisst ",tokenExisst)
+      //  if(tokenExisst){
+      //  console.log("tokenExisst if",tokenExisst)
+         
+      //  }else{
+      //  console.log("tokenExisst else",tokenExisst)
+        
+      //  }
+      //   return
+
+      //  const filter = { _id:token  };
+      // const update = { $set: { _id:token,exch:exch} };
+      //  await token_chain.updateOne(filter, update, { upsert: true });
+      //  return
+
       //crete data
       const makecallABR_insert = new makecallABR({
         user_id: user_id,
@@ -700,9 +739,26 @@ class Makecall {
       });
 
       // Save new user and count licenses
+
+      
+
       const result = await makecallABR_insert.save();
 
       if (result != null) {
+
+      //  let exch = "NFO"
+
+      //  if(Segment == "C"){
+      //   exch = "NSE"
+      //  }
+      //  else if(Segment == "MO" || Segment == "MF"){
+      //   exch = "MCX"
+      //  }
+      //  else if(Segment == "CO" || Segment == "CF"){
+      //   exch = "CDS"
+      //  }
+
+
         return res.send({ status: true, msg: "Data Add Successfully....", data: result });
       } else {
         return res.send({ status: false, msg: "Id Wrong" });

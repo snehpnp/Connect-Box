@@ -25,6 +25,7 @@ function Option_Chain() {
     const strategyRef = useRef("");
     const token = JSON.parse(localStorage.getItem('user_details')).token
     const user_id = JSON.parse(localStorage.getItem('user_details')).user_id;
+    const Role = JSON.parse(localStorage.getItem('user_details')).Role;
 
     const [showModal, setshowModal] = useState(false);
     const [CreateSignalRequest, setCreateSignalRequest] = useState([]);
@@ -200,7 +201,7 @@ function Option_Chain() {
             dataField: 'CALL',
             text: 'BUY/SELL',
             style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
-            parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
                 <div key={rowIndex}>
                     <button
@@ -276,8 +277,8 @@ function Option_Chain() {
             dataField: 'PUT/LP',
             text: 'PUT/LP',
             style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
-            parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
-                { backgroundColor: '' },
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
+                    { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
                 <div
 
@@ -294,8 +295,8 @@ function Option_Chain() {
             dataField: 'PE_Volume',
             text: 'Volume',
             style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
-            parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
-                { backgroundColor: '' },
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
+                    { backgroundColor: '' },
 
             formatter: (cell, row, rowIndex) => (
                 <div
@@ -518,11 +519,11 @@ function Option_Chain() {
     const ShowLivePrice = async () => {
         let type = { loginType: "API" };
         let channelList = TokenSymbolChain && TokenSymbolChain;
-    
+
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
-    
+
             const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
-    
+
             if (res.data.stat) {
                 const handleResponse = async (response, socket) => {
                     socket.onclose = async function (event) {
@@ -532,39 +533,39 @@ function Option_Chain() {
                             setUserIdSocketRun('DONE');
                         }
                     };
-    
+
                     socket.onerror = function (error) {
                         setUserIdSocketRun('DONE');
                     };
-    
+
                     const old_val_call = $('.Call_Price_' + response.tk).html();
                     const old_val_put = $('.Put_Price_' + response.tk).html();
-    
+
                     $('.SP1_Call_Price_' + response.tk).html(response.sp1 ? response.sp1 : response.lp);
                     $('.BP1_Put_Price_' + response.tk).html(response.bp1 ? response.bp1 : response.lp);
-    
-                    let old_Call_volume_ = response.v != "0" && response.v 
-                    let old_Put_volume_ = response.v != "0" && response.v 
-                    
-    
+
+                    let old_Call_volume_ = response.v != "0" && response.v
+                    let old_Put_volume_ = response.v != "0" && response.v
+
+
                     if (response.tk && response.lp !== undefined) {
-                      
+
                         function formatVolume(volume) {
                             return volume >= 1e7 ? (volume / 1e7).toFixed(2) + ' Cr' : (volume >= 1e5 ? (volume / 1e5).toFixed(2) + ' Lakh' : volume);
                         }
-    
-                        $('.Call_volume_' + response.tk).html(formatVolume(old_Call_volume_ ));
-                        $('.Put_volume_' + response.tk).html(formatVolume(old_Put_volume_ ));
-    
+
+                        $('.Call_volume_' + response.tk).html(formatVolume(old_Call_volume_));
+                        $('.Put_volume_' + response.tk).html(formatVolume(old_Put_volume_));
+
                         $('.Call_per_' + response.tk).html(response.pc + "%" || 0);
                         $('.Put_per_' + response.tk).html(response.pc + "%" || 0);
-    
+
                         $(".Call_Price_" + response.tk).html(response.lp);
                         $(".Put_Price_" + response.tk).html(response.lp);
-    
+
                         const new_val_call = $('.Call_Price_' + response.tk).html();
                         const new_val_put = $('.Put_Price_' + response.tk).html();
-    
+
                         if (new_val_call > old_val_call || new_val_put > old_val_put) {
                             $('.Call_Price_' + response.tk).css({ "color": "green" });
                             $('.Put_Price_' + response.tk).css({ "color": "green" });
@@ -585,14 +586,14 @@ function Option_Chain() {
                         }
                     }
                 };
-    
+
                 await ConnctSocket(handleResponse, channelList, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token).then((res) => { });
             } else {
                 setUserIdSocketRun('DONE');
             }
         }
     };
-    
+
 
 
 
@@ -674,14 +675,15 @@ function Option_Chain() {
                         });
 
                         setTimeout(() => {
-                            navigate("/subadmin/open-position")
-                            // window.location.reload()
+                            if (Role == 'RESEARCH') {
+                                navigate("/research/open/position")
+                            }
+                            else if (Role == 'SUBADMIN') {
+                                navigate("/subadmin/open-position")
+                            }
                         }, 1500);
 
-                        setTimeout(() => {
-                            navigate("/subadmin/open-position")
-                            // window.location.reload()
-                        }, 2000);
+
 
                     } else {
 
@@ -733,9 +735,6 @@ function Option_Chain() {
 
 
     const ExcuteTradeButton = () => {
-
-
-
         const currentDate = new Date();
         const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         const weekday = weekdays[currentDate.getDay()];

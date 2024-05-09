@@ -233,42 +233,42 @@ export default function AllEmployees() {
     //   ),
     // },
 
-    {
-      dataField: "trade_symbol",
-      text: "Symbol",
-    },
-    {
-      dataField: "strategy",
-      text: "Strategy",
-    },
-    {
-      dataField: "entry_qty",
-      text: "Entry Qty",
-      formatter: (cell, row, rowIndex) => (
-        <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>
-      ),
-    },
-    {
-      dataField: "exit_qty",
-      text: "Exit Qty",
-      formatter: (cell, row, rowIndex) => (
-        <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>
-      ),
-    },
-    {
-      dataField: "entry_price",
-      text: "Entry Price",
-      formatter: (cell, row, rowIndex) => (
-        <div>{cell !== "" ? parseFloat(cell).toFixed(2) : "-"}</div>
-      ),
-    },
-    {
-      dataField: "exit_price",
-      text: "Exit Price",
-      formatter: (cell, row, rowIndex) => (
-        <div>{cell !== "" ? parseFloat(cell).toFixed(2) : "-"}</div>
-      ),
-    },
+        {
+            dataField: "trade_symbol",
+            text: "Symbol",
+        },
+        {
+            dataField: "strategy",
+            text: "Strategy",
+        },
+        {
+            dataField: "entry_qty",
+            text: "Entry Qty",
+            formatter: (cell, row, rowIndex) => (
+                <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>
+            ),
+        },
+        {
+            dataField: "exit_qty",
+            text: "Exit Qty",
+            formatter: (cell, row, rowIndex) => (
+                <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>
+            ),
+        },
+        {
+            dataField: "entry_price",
+            text: "Entry Price",
+            formatter: (cell, row, rowIndex) => (
+                <div>{cell !== "" ? parseFloat(cell).toFixed(2) : "-"}</div>
+            ),
+        },
+        {
+            dataField: "exit_price",
+            text: "Exit Price",
+            formatter: (cell, row, rowIndex) => (
+                <div>{cell !== "" ? parseFloat(cell).toFixed(2) : "-"}</div>
+            ),
+        },
 
     {
       dataField: "Action",
@@ -326,49 +326,46 @@ export default function AllEmployees() {
       ),
     },
 
-    {
-      dataField: "",
-      text: "Entry Status",
-      formatter: (cell, row, rowIndex) => (
-        <div>
-          <span>
-            {row.result[0].exit_status === "above"
-              ? "ABOVE"
-              : row.result[0].exit_status === "below"
-              ? "BELOW"
-              : row.result[0].exit_status == "range"
-              ? "RANGE"
-              : " - "}
-          </span>
-        </div>
-      ),
-    },
-    {
-      dataField: "exit_status",
-      text: "Exit Status",
-      formatter: (cell, row, rowIndex) => (
-        <div>
-          <span>{row.exit_status}</span>
-        </div>
-      ),
-    },
+        {
+            dataField: "",
+            text: "Entry Status",
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <span>{row.result[0].exit_status === "above" ? "ABOVE" : row.result[0].exit_status === "below" ? "BELOW" : row.result[0].exit_status == "range" ? "RANGE" : " - "}</span>
 
-    {
-      dataField: "",
-      text: "Details View",
-      formatter: (cell, row, rowIndex) => (
-        <div>
-          <Eye
-            className="mx-2"
-            onClick={() => {
-              setRowData(row);
-              setshowModal(true);
-            }}
-          />
-        </div>
-      ),
-    },
-  ];
+
+                </div>
+            ),
+        },
+        {
+            dataField: "exit_status",
+            text: "Exit Status",
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <span>{row.exit_status}</span>
+
+
+                </div>
+            ),
+        },
+
+        {
+            dataField: "",
+            text: "Details View",
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <Eye
+                        className="mx-2"
+                        onClick={() => {
+                            setRowData(row);
+                            setshowModal(true);
+                        }}
+                    />
+                </div>
+            ),
+        },
+    ];
+
 
   const ResetDate = (e) => {
     e.preventDefault();
@@ -437,22 +434,17 @@ export default function AllEmployees() {
   //         CreatechannelList += `${item.exchange}|${item.token}#`;
   //     });
 
-  var CreatechannelList = "";
-  let total = 0;
-  tradeHistoryData.data &&
-    tradeHistoryData.data?.map((item) => {
-      CreatechannelList += `${item.exchange}|${item.token}#`;
-      // console.log("item", item)
-      if (
-        parseInt(item.exit_qty) == parseInt(item.entry_qty) &&
-        item.entry_price != "" &&
-        item.exit_price
-      ) {
-        total +=
-          (parseFloat(item.exit_price) - parseFloat(item.entry_price)) *
-          parseInt(item.exit_qty);
-      }
-    });
+    var CreatechannelList = "";
+    let total = 0;
+    tradeHistoryData.data &&
+        tradeHistoryData.data?.map((item) => {
+            CreatechannelList += `${item.exchange}|${item.token}#`;
+            // console.log("item", item)
+            if (parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price != '' && item.exit_price) {
+                total += (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty);
+            }
+        });
+
 
   //  SHOW lIVE PRICE
   const ShowLivePrice = async () => {
@@ -522,94 +514,42 @@ export default function AllEmployees() {
                   ".strategy_" + response.tk + "_" + row._id
                 ).html();
 
-                if (
-                  (get_entry_type === "LE" && get_exit_type === "LX") ||
-                  (get_entry_type === "SE" && get_exit_type === "SX")
-                ) {
-                  if (get_entry_qty !== "" && get_exit_qty !== "") {
-                    if (parseInt(get_entry_qty) >= parseInt(get_exit_qty)) {
-                      let rpl =
-                        (parseFloat(get_exit_price) -
-                          parseFloat(get_entry_price)) *
-                        parseInt(get_exit_qty);
-                      let upl =
-                        parseInt(get_exit_qty) - parseInt(get_entry_qty);
-                      let finalyupl =
-                        (parseFloat(get_entry_price) - parseFloat(live_price)) *
-                        upl;
+                                if ((get_entry_type === "LE" && get_exit_type === "LX") || (get_entry_type === "SE" && get_exit_type === "SX")) {
+                                    if (get_entry_qty !== "" && get_exit_qty !== "") {
 
-                      if (isNaN(finalyupl) || isNaN(rpl)) {
-                        return "-";
-                      } else {
-                        $(".show_rpl_" + response.tk + "_" + get_id_token).html(
-                          rpl.toFixed(2)
-                        );
-                        $(".UPL_" + response.tk + "_" + get_id_token).html(
-                          finalyupl.toFixed(2)
-                        );
-                        $(".TPL_" + response.tk + "_" + get_id_token).html(
-                          (finalyupl + rpl).toFixed(2)
-                        );
+                                        if (parseInt(get_entry_qty) >= parseInt(get_exit_qty)) {
+                                            let rpl = (parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_exit_qty);
+                                            let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
+                                            let finalyupl = (parseFloat(get_entry_price) - parseFloat(live_price)) * upl;
 
-                        ShowColor1(
-                          ".show_rpl_" + response.tk + "_" + get_id_token,
-                          rpl.toFixed(2),
-                          response.tk,
-                          get_id_token
-                        );
-                        ShowColor1(
-                          ".UPL_" + response.tk + "_" + get_id_token,
-                          finalyupl.toFixed(2),
-                          response.tk,
-                          get_id_token
-                        );
-                        ShowColor1(
-                          ".TPL_" + response.tk + "_" + get_id_token,
-                          (finalyupl + rpl).toFixed(2),
-                          response.tk,
-                          get_id_token
-                        );
-                      }
-                    }
-                  }
-                }
-                //  if Only entry qty Exist
-                else if (
-                  (get_entry_type === "LE" && get_exit_type === "") ||
-                  (get_entry_type === "SE" && get_exit_type === "")
-                ) {
-                  let abc = (
-                    (parseFloat(live_price) - parseFloat(get_entry_price)) *
-                    parseInt(get_entry_qty)
-                  ).toFixed();
-                  if (isNaN(abc)) {
-                    return "-";
-                  } else {
-                    $(".show_rpl_" + response.tk + "_" + get_id_token).html(
-                      "-"
-                    );
-                    $(".UPL_" + response.tk + "_" + get_id_token).html(abc);
-                    $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
-                    ShowColor1(
-                      ".show_rpl_" + response.tk + "_" + get_id_token,
-                      "-",
-                      response.tk,
-                      get_id_token
-                    );
-                    ShowColor1(
-                      ".UPL_" + response.tk + "_" + get_id_token,
-                      abc,
-                      response.tk,
-                      get_id_token
-                    );
-                    ShowColor1(
-                      ".TPL_" + response.tk + "_" + get_id_token,
-                      abc,
-                      response.tk,
-                      get_id_token
-                    );
-                  }
-                }
+                                            if ((isNaN(finalyupl) || isNaN(rpl))) {
+                                                return "-";
+                                            } else {
+                                                $(".show_rpl_" + response.tk + "_" + get_id_token).html(rpl.toFixed(2));
+                                                $(".UPL_" + response.tk + "_" + get_id_token).html(finalyupl.toFixed(2));
+                                                $(".TPL_" + response.tk + "_" + get_id_token).html((finalyupl + rpl).toFixed(2));
+
+                                                ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, rpl.toFixed(2), response.tk, get_id_token);
+                                                ShowColor1(".UPL_" + response.tk + "_" + get_id_token, finalyupl.toFixed(2), response.tk, get_id_token);
+                                                ShowColor1(".TPL_" + response.tk + "_" + get_id_token, (finalyupl + rpl).toFixed(2), response.tk, get_id_token);
+                                            }
+                                        }
+                                    }
+                                }
+                                //  if Only entry qty Exist
+                                else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
+                                    let abc = ((parseFloat(live_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
+                                    if (isNaN(abc)) {
+                                        return "-";
+                                    } else {
+                                        $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");
+                                        $(".UPL_" + response.tk + "_" + get_id_token).html(abc);
+                                        $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
+                                        ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, "-", response.tk, get_id_token);
+                                        ShowColor1(".UPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                        ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                    }
+                                }
 
                 //  if Only Exist qty Exist
                 else if (
@@ -620,22 +560,25 @@ export default function AllEmployees() {
                 }
               });
 
-            // }
-          };
-          await ConnctSocket(
-            handleResponse,
-            channelList,
-            livePriceDataDetails.demate_user_id,
-            livePriceDataDetails.access_token
-          ).then((res) => {});
-        } else {
-          // $(".UPL_").html("-");
-          // $(".show_rpl_").html("-");
-          // $(".TPL_").html("-");
-        }
-      }
-    }
-  };
+
+                            // }
+                        };
+                        await ConnctSocket(handleResponse, channelList, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token).then((res) => { });
+                    } else {
+                        // $(".UPL_").html("-");
+                        // $(".show_rpl_").html("-");
+                        // $(".TPL_").html("-");
+                    }
+                }
+            }
+        
+
+
+
+
+
+    };
+
 
   const calcultateRPL = (row, livePrice, pre_row) => {
     let get_ids = "_id_" + row.token + "_" + row._id;

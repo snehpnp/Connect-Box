@@ -122,16 +122,14 @@ const EditClient = () => {
 
 
             if (subadmin_service_type1 == 1 && additionalData.Update_Api_Key != 1) {
-                console.log("selectedCheckboxesAndPlan", selectedCheckboxesAndPlan)
-                console.log("selectedCheckboxesAndPlan", additionalData.Update_Api_Key)
-
+                
 
                 let filteredArray3
                 if (getPermission.strategyName.length > 0) {
                     const filteredArray2 = getPermission.strategyName.filter(item => values.Service_Type == item.Service_Type);
                     filteredArray3 = selectedCheckboxesAndPlan.filter(item => filteredArray2.some(obj => obj.id == item.id));
                 }
-                console.log("filteredArray3", filteredArray3)
+                
                 if (filteredArray3.length == 0) {
                     Swal.fire({
                         title: "Error",
