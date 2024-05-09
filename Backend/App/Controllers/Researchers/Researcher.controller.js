@@ -310,7 +310,7 @@ class Researcher {
     //Add strategy 
     async createStrategy(req, res) {
         try {
-             
+
             const {
                 strategy_name,
                 strategy_description,
@@ -336,13 +336,13 @@ class Researcher {
                     data: [],
                 });
             }
-        
+
             const maker_id_find = await User_model.findOne({
                 _id: maker_id,
                 Role: Role
             });
 
-           
+
             if (!maker_id_find) {
                 return res.send({ status: false, msg: "Maker Id Is Wrong", data: [] });
             }
@@ -412,7 +412,7 @@ class Researcher {
                 security_fund: security_fund,
                 monthly_charges: monthly_charges,
             });
-           
+
 
             strategy_Data.save()
                 .then(async (data) => {
@@ -594,62 +594,62 @@ class Researcher {
         }
     }
 
-   
+
 
     // DELETE STRATEGY IN A COLLECTION
-  async DeleteResearcherStrategy(req, res) {
-    try {
-      const { _id } = req.body;
+    async DeleteResearcherStrategy(req, res) {
+        try {
+            const { _id } = req.body;
 
-      // CHECK IF STRATEGY EXISTS
-      const strategy_check = await researcher_strategy.findOne({ _id: _id });
-       
-      
- 
-      if (!strategy_check) {
-        return res.send({
-          status: false,
-          msg: "Strategy does not exist",
-          data: [],
-        });
-      }
+            // CHECK IF STRATEGY EXISTS
+            const strategy_check = await researcher_strategy.findOne({ _id: _id });
 
 
-      // CHECK IF STRATEGY EXISTS IN STRATEGY CLIENT
-      const strategy_client_check = await strategy.findOne({
-        strategy_id: _id,
-      });
-      if (strategy_client_check) {
-        return res.send({
-          status: false,
-          msg: "It cannot be deleted because it is assigned to a client.",
-          data: [],
-        });
-      }
 
-      // Delete the strategy
-      const deleteResult = await researcher_strategy.deleteOne({ _id: _id });
-      if (deleteResult.deletedCount === 1) {
-        return res
-          .status(200)
-          .send({
-            status: true,
-            msg: "Strategy deleted successfully!",
-            data: [],
-          });
-      } else {
-        return res
-          .status(500)
-          .send({ status: false, msg: "Error deleting strategy", data: [] });
-      }
+            if (!strategy_check) {
+                return res.send({
+                    status: false,
+                    msg: "Strategy does not exist",
+                    data: [],
+                });
+            }
+
+
+            // CHECK IF STRATEGY EXISTS IN STRATEGY CLIENT
+            const strategy_client_check = await strategy.findOne({
+                strategy_id: _id,
+            });
+            if (strategy_client_check) {
+                return res.send({
+                    status: false,
+                    msg: "It cannot be deleted because it is assigned to a client.",
+                    data: [],
+                });
+            }
+
+            // Delete the strategy
+            const deleteResult = await researcher_strategy.deleteOne({ _id: _id });
+            if (deleteResult.deletedCount === 1) {
+                return res
+                    .status(200)
+                    .send({
+                        status: true,
+                        msg: "Strategy deleted successfully!",
+                        data: [],
+                    });
+            } else {
+                return res
+                    .status(500)
+                    .send({ status: false, msg: "Error deleting strategy", data: [] });
+            }
+        }
+        catch (error) {
+            console.log("Error Delete Strategy Error:", error);
+            return res
+                .status(500)
+                .send({ status: false, msg: "An error occurred", data: [] });
+        }
     }
-    catch (error) {
-      console.log("Error Delete Strategy Error:", error);
-      return res
-        .status(500)
-        .send({ status: false, msg: "An error occurred", data: [] });
-    }
-  }
 
     // GET ONE STRATEGY IN A COLLECTION
     async GetStragegyById(req, res) {
@@ -701,6 +701,76 @@ class Researcher {
             console.log("Error Get All Strategy Error-", error);
         }
     }
+
+    // GET ALL STRATEGY USERS
+    async GetAllStrategyUsers(req, res) {
+        try {
+            const { id } = req.body;
+
+
+            // var getAllTheme = await strategy_model.find()
+            // const getAllstrategy = await researcher_strategy.find({ maker_id: id }).sort({ createdAt: -1 })
+            //     .select('_id strategy_name collaboration_id');
+
+            const pipeline = [
+                {
+                    $match: { "maker_id": new ObjectId(id) }
+                },
+                {
+                    $unwind: "$collaboration_id"
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "collaboration_id",
+                        foreignField: "_id",
+                        as: "collaboration"
+                    }
+                },
+                {
+                    $unwind: "$collaboration"
+                },
+                {
+                    $group: {
+                        _id: "$_id",
+                        strategy_name: { $first: "$strategy_name" },
+                        // collaboration_id: { $push: "$collaboration_id" },
+                        collaboration_names: { $push: "$collaboration.UserName" }
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        strategy_name: 1,
+                        collaboration_id: 1, // Corrected field name
+                        collaboration_names: 1
+                    }
+                }
+            ];
+
+            // Executing the aggregation pipeline
+            const getAllstrategy = await researcher_strategy.aggregate(pipeline);
+
+
+
+
+            // IF DATA NOT EXIST
+            if (getAllstrategy.length == 0) {
+                res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+                return;
+            }
+            // DATA GET SUCCESSFULLY
+            res.send({
+                status: true,
+                msg: "Get All Startegy",
+                data: getAllstrategy,
+            });
+        } catch (error) {
+            console.log("Error Get All Strategy Error-", error);
+        }
+    }
+
+
 
 }
 

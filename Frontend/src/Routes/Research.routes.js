@@ -22,6 +22,7 @@ import Sthtrans from '../Layouts/Researcher/Strategy_transaction/Strategy_transa
 import OprnPosition from '../Layouts/SubAdmin/Option/Open_Positions.js';
 
 import Settings from '../Layouts/Comman/Setting_Page/Settings.js';
+import Strategy_Users from '../Layouts/Researcher/StrategyUsers/Strategy_Users.js'
 
 
 
@@ -46,30 +47,16 @@ const Research = () => {
                     <Route exact path="/strategys" element={<AllStrategy />} />
                     <Route exact path="/edit/strategies/:id" element={<Edit_Strategies />} />
                     <Route exact path="/allservice" element={<AllServices />} />
-                    
-                    
                     <Route exact path="/orders" element={<Orders />} />
                     <Route exact path="/position" element={<Position />} />
                     <Route exact path='/option-chain' element = {<OptionChain/>}/>
                     <Route exact path='/make-call' element = {<MakeCall/>}/>
                     <Route exact path='/open/position' element = {<OprnPosition/>}/>
-
-
-                    
                     <Route exact path='/message_broadcast' element = {<MessageBroadcast/>}/>
                     <Route exact path='/help' element = {<Help/>}/>
                     <Route exact path='/strategys/transaction' element = {<Sthtrans/>}/>
-                   
+                    <Route exact path='/strategy/user' element = {<Strategy_Users/>}/>
                     <Route exact path="/setting" element={<Settings />} />
-
-
-
-
-
-
-
-
-
                 </Routes>
             </div>
 
