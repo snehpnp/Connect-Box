@@ -14,8 +14,9 @@ import { Link } from 'react-router-dom'
 
 
 export default function BrokerResponse() {
+    const user_Id = JSON.parse(localStorage.getItem("user_details")).user_id
+    
     const dispatch = useDispatch()
-
 
     const [refresh, setrefresh] = useState(false)
     const [showModal, setshowModal] = useState(false)
@@ -25,7 +26,6 @@ export default function BrokerResponse() {
 
 
 
-    const user_Id = JSON.parse(localStorage.getItem("user_details")).user_id
 
 
 

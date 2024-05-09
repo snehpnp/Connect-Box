@@ -10,69 +10,63 @@ const ObjectId = mongoose.Types.ObjectId;
 
 
 // ALICE BLUE CONTROLLER FILE
-const { GetAccessToken,GetOrderFullInformationAll } = require('../../Controllers/Brokeraccesstoken/Aliceblue')
+const { GetAccessToken, GetOrderFullInformationAll } = require('../../Controllers/Brokeraccesstoken/Aliceblue')
 const { GetAccessTokenAngel } = require('../../Controllers/Brokeraccesstoken/Angel')
 
 
 // BROKER REDIRECT
-const GetOrderFullInformationAll_broker = async (req,res)=>{
-    
-    let user_id =  req.body.user_id;
+const GetOrderFullInformationAll_broker = async (req, res) => {
+
+    let user_id = req.body.user_id;
     const objectId = new ObjectId(user_id);
 
-    const pipeline =[
-       {
-         $match : {
-            _id : objectId,
-            TradingStatus:"on"
-         }
-       }, 
-       {
-        $limit: 1 
-       }
+    const pipeline = [
+        {
+            $match: {
+                _id: objectId,
+                TradingStatus: "on"
+            }
+        },
+        {
+            $limit: 1
+        }
     ]
-   const result = await User.aggregate(pipeline)
-   
-   
-   console.log("result broker accessToken",result)
-   
+    const result = await User.aggregate(pipeline)
 
 
-    if(result.length == 0){
-        return res.send({status:false,data:[],msg:"Your Trading Status Off"})
+    if (result.length == 0) {
+        return res.send({ status: false, data: [], msg: "Your Trading Status Off" })
     }
 
-   const broker = result[0].broker;
-   
-
-   // ALICE BLUE   -  2
-   if(broker == 2){
-     GetOrderFullInformationAll(req,res);
-   }
-   
-   // ANGEL   -  12
-//    else if(broker == 12){
-//     GetOrderFullInformationAngel(req,res,result);
-//    }
-
-//    // 5 PAISA   -  14
-//    else if(broker == 14){
-//     GetOrderFullInformationFivepaisa(req,res,result);
-//    }
-
-//    // ZERODHA   -  15
-//    else if(broker == 15){
-//     GetOrderFullInformationZerodha(req,res,result);
-//    }
-
-   else{
-    res.send({status:false,msg:"broker not found"});
-   }
-   
-      
-  }
+    const broker = result[0].broker;
 
 
+    // ALICE BLUE   -  2
+    if (broker == 2) {
+        GetOrderFullInformationAll(req, res);
+    }
+
+    // ANGEL   -  12
+    //    else if(broker == 12){
+    //     GetOrderFullInformationAngel(req,res,result);
+    //    }
+
+    //    // 5 PAISA   -  14
+    //    else if(broker == 14){
+    //     GetOrderFullInformationFivepaisa(req,res,result);
+    //    }
+
+    //    // ZERODHA   -  15
+    //    else if(broker == 15){
+    //     GetOrderFullInformationZerodha(req,res,result);
+    //    }
+
+    else {
+        res.send({ status: false, msg: "broker not found" });
+    }
+
+
+}
 
 
 
@@ -84,7 +78,9 @@ const GetOrderFullInformationAll_broker = async (req,res)=>{
 
 
 
-  router.post('/getall/order/info', GetOrderFullInformationAll_broker);
+
+
+router.post('/getall/order/info', GetOrderFullInformationAll_broker);
 
 
 
