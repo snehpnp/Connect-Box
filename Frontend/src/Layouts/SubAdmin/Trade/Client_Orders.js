@@ -6,7 +6,7 @@ import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
 import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/Userinfo";
-import { Orders_Details } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { fDateTime } from "../../../Utils/Date_formet";
 
@@ -15,6 +15,7 @@ import { fDateTime } from "../../../Utils/Date_formet";
 
 export default function AllEmployees() {
     const userDetails = JSON.parse(localStorage.getItem("user_details"));
+    const Role = JSON.parse(localStorage.getItem("user_details")).Role;
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -213,7 +214,7 @@ export default function AllEmployees() {
 
     const userDataRes = async () => {
         const subadminId = userDetails.user_id
-        await dispatch(Orders_Details({ subadminId }))
+        await dispatch(Orders_Details({ subadminId,Role:Role}))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {

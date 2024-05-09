@@ -87,9 +87,9 @@ const AddClient = () => {
         errors.strategy_Percentage = "Please Enter strategy percentage value";
       }
 
-      // if (!values.prefix_key) {
-      //   errors.prefix_key = "Please Enter Prefix Key";
-      // }
+      if (values.subadmin_servic_type==0) {
+        errors.subadmin_servic_type = "Select At service type";
+      }
       return errors;
     },
     onSubmit: async (values, { setSubmitting }) => {
@@ -195,15 +195,6 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    // {
-
-    //   name: "prefix_key",
-    //   label: "Prefix Key",
-    //   type: "text2",
-    //   label_size: 12,
-    //   col_size: 6,
-    //   disable: false,
-    // },
     {
       name: "subadmin_servic_type",
       label: "Subadmin Service Type",
@@ -215,42 +206,86 @@ const AddClient = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
-      onChange: handleSelectChange,
-      value: formik.values["subadmin_servic_type"],
     },
     {
-      name:
-        formik.values.subadmin_servic_type === "1" ||
-          formik.values.subadmin_servic_type === "2"
-          ? formik.values.subadmin_servic_type === "1"
-            ? "Per_trade"
-            : "strategy_Percentage"
-          : "",
-      label:
-        formik.values.subadmin_servic_type === "1" ||
-          formik.values.subadmin_servic_type === "2"
-          ? formik.values.subadmin_servic_type === "1"
-            ? "Per Trade Value"
-            : "% Per Strategy"
-          : "",
-      type: "text4",
-      placeholder:
-        formik.values.subadmin_servic_type === "1" ||
-          formik.values.subadmin_servic_type === "2"
-          ? formik.values.subadmin_servic_type === "1"
-            ? "Please Enter Trade Value"
-            : "Please enter % between 1 to 100"
-          : "",
-      showWhen: (values) =>
-        values.subadmin_servic_type === "1" ||
-        values.subadmin_servic_type === "2",
+      name: "Per_trade",
+      label: "Per Trade Value",
+      type: "text3",
       label_size: 12,
       col_size: 6,
       disable: false,
-     
+      showWhen: (value)=> formik.values.subadmin_servic_type==1
     },
+    {
+      name: "strategy_Percentage",
+      label: "% Per Strategy",
+      type: "text5",
+      label_size: 12,
+      col_size: 6,
+      disable: false,
+      showWhen: (value)=> formik.values.subadmin_servic_type==2
+    },
+
+    // {
+
+    //   name: "prefix_key",
+    //   label: "Prefix Key",
+    //   type: "text2",
+    //   label_size: 12,
+    //   col_size: 6,
+    //   disable: false,
+    // },
+
+    // {
+    //   name: "subadmin_servic_type",
+    //   label: "Subadmin Service Type",
+    //   type: "select",
+    //   options: [
+    //     { label: "Per Trade", value: "1" },
+    //     { label: "Per Strategy", value: "2" },
+    //   ],
+    //   label_size: 12,
+    //   col_size: 6,
+    //   disable: false,
+    //   onChange: handleSelectChange,
+    //   value: formik.values["subadmin_servic_type"],
+    // },
+    // {
+    //   name:
+    //     formik.values.subadmin_servic_type === "1" ||
+    //       formik.values.subadmin_servic_type === "2"
+    //       ? formik.values.subadmin_servic_type === "1"
+    //         ? "Per_trade"
+    //         : "strategy_Percentage"
+    //       : "",
+    //   label:
+    //     formik.values.subadmin_servic_type === "1" ||
+    //       formik.values.subadmin_servic_type === "2"
+    //       ? formik.values.subadmin_servic_type === "1"
+    //         ? "Per Trade Value"
+    //         : "% Per Strategy"
+    //       : "",
+    //   type: "text4",
+    //   placeholder:
+    //     formik.values.subadmin_servic_type === "1" ||
+    //       formik.values.subadmin_servic_type === "2"
+    //       ? formik.values.subadmin_servic_type === "1"
+    //         ? "Please Enter Trade Value"
+    //         : "Please enter % between 1 to 100"
+    //       : "",
+    //   showWhen: (values) =>
+    //     values.subadmin_servic_type === "1" ||
+    //     values.subadmin_servic_type === "2",
+    //   label_size: 12,
+    //   col_size: 6,
+    //   disable: false,
+     
+    // },
   ];
 
+
+
+  console.log("subadmin_servic_type :", formik.values.subadmin_servic_type)
 
 
   return (

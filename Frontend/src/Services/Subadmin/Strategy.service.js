@@ -87,71 +87,6 @@ export async function Get_Strategy_By_Id(data, token) {
 }
 
 
-//Orders From SubAdmin
-export async function getOrders_data(data, token) {
-    try {
-        const res = await axios.post(`${Config.base_url}orders/data`, data, {  
-            data: {},
-        })
-        return await res?.data;
-    }
-    catch (err) {
-        return await err;
-
-    }
-
-
-}
-
-
-
-//Trade Orders From SubAdmin
-export async function getTrade_data(data, token) {
-    try {
-        const res = await axios.post(`${Config.base_url}trade/data`, data, {  
-            data: {},
-        })
-        return await res?.data;
-    }
-    catch (err) {
-        return await err;
-
-    }
-
-
-}
-
-
-//Trade Orders From SubAdmin
-export async function UpdateTrade(data, token) {
-    try {
-        const res = await axios.post(`${Config.base_url}update/trade`, data, {  
-            data: {},
-        })
-        return await res?.data;
-    }
-    catch (err) {
-        return await err;
-
-    }
-
-
-}
-
-
-
-export async function GetClientsOrderBy_Prefix(data, token) {
-    try {
-        const res = await axios.post(`${Config.base_url}client/Order`, data, {  
-            data: {},
-        })
-        return await res?.data;
-    }
-    catch (err) {
-        return await err;
-
-    }
-}
 
 //SUBADMIN EMPLOYEE SECTION
 export async function EmployeeData(data, token) {
@@ -288,36 +223,7 @@ export async function strategyOrderUpdate(data, token) {
 }
 
 
-//Trade HISTORY Orders From SubAdmin
-export async function Tradehistory_data(data, token) {
-    try {
-        const res = await axios.post(`${Config.base_url}tradehistory/data`, data, {  
-            data: {},
-        })
-        return await res?.data;
-    }
-    catch (err) {
-        return await err;
-
-    }
-
-
-}
 
 
 
-//Trade HISTORY Orders From SubAdmin
-export async function UserTradehistory_data(data, token) {
-    try {
-        const res = await axios.post(`${Config.base_url}user/tradehistory`, data, {  
-            data: {},
-        })
-        return await res?.data;
-    }
-    catch (err) {
-        return await err;
 
-    }
-
-
-}

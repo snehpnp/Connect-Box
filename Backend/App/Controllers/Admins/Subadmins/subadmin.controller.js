@@ -546,7 +546,7 @@ class Subadmin {
 
 
         var Count = {
-          TotalBalance: TotalBalance[0].Balance,
+          TotalBalance: TotalBalance[0].Balance || 0,
           UsedBalance: UsedBalance[0].totalBalance,
           RemainingBalance: Number(TotalBalance[0].Balance || 0) - Number(UsedBalance[0].totalBalance || 0)
         }

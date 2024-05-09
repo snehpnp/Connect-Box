@@ -1010,9 +1010,7 @@ async function run() {
               let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'http://localhost:8800/broker-signals',
-                // url: 'https://trade.pandpinfotech.com/signal/broker-signals',
-                // url: `${process.env.BROKER_URL}`,
+                url: `${process.env.BROKER_URL}`,
                 headers: {
                   'Content-Type': 'text/plain'
                 },
@@ -1102,10 +1100,8 @@ async function run() {
 
             let config = {
               method: 'post',
-              maxBodyLength: Infinity,
-              url: 'http://localhost:8800/broker-signals',
-              // url: 'https://trade.pandpinfotech.com/signal/broker-signals',
-              // url: `${process.env.BROKER_URL}`,
+              maxBodyLength: Infinity,            
+              url: `${process.env.BROKER_URL}`,
               headers: {
                 'Content-Type': 'text/plain'
               },

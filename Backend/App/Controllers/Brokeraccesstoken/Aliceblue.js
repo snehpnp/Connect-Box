@@ -12,7 +12,7 @@ const live_price_token = db.live_price_token;
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
-const { Alice_Socket } = require("../../Helpers/Alice_Socket");
+// const { Alice_Socket } = require("../../Helpers/Alice_Socket");
 
 class AliceBlue {
 
@@ -23,8 +23,6 @@ class AliceBlue {
             var userId = req.query.userId;
 
             var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role broker');
-
-
 
             if (Get_User[0].TradingStatus != "on") {
 
@@ -37,20 +35,18 @@ class AliceBlue {
                     apiSecret = Get_User[0].api_secret
                 }
 
-
                 var hosts = req.headers.host;
 
                 var redirect = hosts.split(':')[0];
                 var redirect_uri = '';
-
-   
+                redirect_uri = `https://${redirect}/#/subadmin/position`
 
                 if (Get_User.length > 0) {
 
                     if (redirect == "localhost") {
                         redirect_uri = "http://localhost:3000"
 
-                        if (Get_User[0].Role == "ADMIN") {
+                        if (Get_User[0].Role == "SUBADMIN") {
                             redirect_uri = "http://localhost:3000/#/subadmin/position"
 
                         } else {
@@ -58,11 +54,11 @@ class AliceBlue {
 
                         }
                     } else {
-                        if (Get_User[0].Role == "ADMIN") {
+                        if (Get_User[0].Role == "SUBADMIN") {
                             redirect_uri = `https://${redirect}/#/subadmin/position`
 
                         } else {
-                            redirect_uri = `https://${redirect}/#/user/stock`
+                            redirect_uri = `https://${redirect}/#/`
 
                         }
                     }
@@ -81,7 +77,10 @@ class AliceBlue {
 
                     axios(config)
                         .then(async function (response) {
+
                             if (response.data.userSession) {
+
+
                                 if (Get_User[0].Role === "USER") {
                                     await User.findByIdAndUpdate(Get_User[0]._id, {
                                         access_token: response.data.userSession,
@@ -94,7 +93,11 @@ class AliceBlue {
                                         device: "WEB"
                                     });
                                     await user_login.save();
+
+                                    return res.redirect(redirect_uri);
+
                                 } else {
+
                                     await User.findByIdAndUpdate(Get_User[0]._id, {
                                         access_token: response.data.userSession,
                                         TradingStatus: "on"
@@ -108,7 +111,7 @@ class AliceBlue {
                                     });
                                     await user_logs1.save();
 
-                                    
+
                                     const exist_user = await live_price_token.findOne({ demate_user_id: userId }).select('access_token');
                                     if (!exist_user) {
                                         const live_price_token_data = new live_price_token({
@@ -128,11 +131,20 @@ class AliceBlue {
                                             { new: true }
                                         );
                                     }
-                                  
+
+                                    return res.redirect(redirect_uri);
+
                                 }
-                                return res.redirect(redirect_uri);
+
                             } else {
-                                return res.send(redirect_uri);
+                                const user_logs1 = new user_logs({
+                                    user_Id: Get_User[0]._id,
+                                    trading_status: JSON.stringify(response.data),
+                                    role: Get_User[0].Role,
+                                    device: "WEB"
+                                });
+                                await user_logs1.save();
+                                return res.redirect(redirect_uri);
                             }
                         })
                         .catch(function (error) {
@@ -145,7 +157,7 @@ class AliceBlue {
 
 
             } else {
-                return res.send(redirect_uri);
+                return res.redirect(redirect_uri);
 
             }
 
@@ -153,6 +165,20 @@ class AliceBlue {
             console.log("Error Alice Login error-", error)
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // // GET ORDER ID TO ORDER FULL DATA
     // async GetOrderFullInformation(req, res) {

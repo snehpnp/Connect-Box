@@ -72,6 +72,21 @@ cron.schedule('5 23 * * *', () => {
 
 
 
+cron.schedule('*/30 * * * *', () => {
+    GetStrickPriceFromSheet();
+});
+
+
+cron.schedule('*/10 * * * *', async () => {
+    await TruncateTableTokenChainAdd_fiveMinute()
+});
+
+
+cron.schedule('30 6 * * *', () => {
+    console.log('Run cron token chain');
+    TruncateTableTokenChain();
+});
+
 
 
 ////////////////------------Token ADDD -------------/////////////////////
@@ -79,7 +94,7 @@ cron.schedule('5 23 * * *', () => {
 const MainSignalsRemainToken = async () => {
 
 
-    const pipeline =[
+    const pipeline = [
         {
             $match: {
                 segment: "O",
@@ -90,119 +105,107 @@ const MainSignalsRemainToken = async () => {
         },
         {
             $addFields: {
-              expiry_date: {
-                $dateFromString: {
-                  dateString: "$expiry",
-                  format: "%d%m%Y"
+                expiry_date: {
+                    $dateFromString: {
+                        dateString: "$expiry",
+                        format: "%d%m%Y"
+                    }
+                },
+                exch_seg: {
+                    $cond: {
+                        if: {
+                            $and: [
+                                { $eq: ["$segment", "O"] }
+                            ]
+                        },
+                        then: "NFO",
+                        else: "NSE"
+
+                    }
                 }
-              },
-              exch_seg: {
-                $cond: {
-                  if: {
-                    $and : [
-                       { $eq : ["$segment","O"] }
-                    ]
-                  },
-                  then : "NFO",
-                  else:"NSE"
-            
-                }
-              }
             }
-          },
-          {
+        },
+        {
             $match: {
-              expiry_date: {
-                $gte: new Date(new Date().setHours(0,0,0,0)) // Get the current date with time set to midnight
-              }
+                expiry_date: {
+                    $gte: new Date(new Date().setHours(0, 0, 0, 0)) // Get the current date with time set to midnight
+                }
             }
-          },
-      
-         {
+        },
+
+        {
             $sort: {
                 _id: -1 // Sort in ascending order. Use -1 for descending.
             }
-         },
-         {
-            $project : {
-                _id:0,
-                exch_seg : 1,
-                token : 1
+        },
+        {
+            $project: {
+                _id: 0,
+                exch_seg: 1,
+                token: 1
             }
-         }
-       
-         
+        }
+
+
     ]
-     
-    
+
+
     const result = await MainSignals_modal.aggregate(pipeline)
-    
-     result.forEach(async(element) => {
-     
-    
-    const filter = { _id: element.token };
-    const update = {
-        $set: { _id: element.token, exch: element.exch_seg },
-    };
-    const update_token = await token_chain_collection.updateOne(filter, update, { upsert: true });
+
+    result.forEach(async (element) => {
+
+
+        const filter = { _id: element.token };
+        const update = {
+            $set: { _id: element.token, exch: element.exch_seg },
+        };
+        const update_token = await token_chain_collection.updateOne(filter, update, { upsert: true });
 
     });
-    
-    
-    
-    
-    }
 
 
-    cron.schedule('*/10 * * * *',async () => {
-        await  TruncateTableTokenChainAdd_fiveMinute()
-      });
-      
-      const TruncateTableTokenChainAdd_fiveMinute = async () => {
-      
-         
-           const drop = await db_main.collection('token_chain').deleteMany({}); 
-           
-           await Get_Option_All_Token_Chain()
-       
-           await Get_Option_All_Token_Chain_stock()
-          
-           await MainSignalsRemainToken()
-      
-           await Alice_Socket ();
-       
-       
-       } 
+
+
+}
+
+
+const TruncateTableTokenChainAdd_fiveMinute = async () => {
+
+
+    const drop = await db_main.collection('token_chain').deleteMany({});
+
+    await Get_Option_All_Token_Chain()
+
+    await Get_Option_All_Token_Chain_stock()
+
+    await MainSignalsRemainToken()
+
+    await Alice_Socket();
+
+
+}
 
 const TruncateTableTokenChainAdd = async () => {
 
 
-    const drop = await db_main.collection('token_chain').deleteMany({}); 
-    
+    const drop = await db_main.collection('token_chain').deleteMany({});
+
     //const drop1 = await db_main.collection('stock_live_price').deleteMany({}); 
 
     await Get_Option_All_Token_Chain()
 
     await Get_Option_All_Token_Chain_stock()
 
-    await Alice_Socket ();
+    await Alice_Socket();
 
 
-} 
-
-
-
-
-cron.schedule('30 6 * * *', () => {
-    console.log('Run cron token chain');
-    TruncateTableTokenChain();
-});
+}
 
 const TruncateTableTokenChain = async () => {
-  
-    const drop = await db_main.collection('token_chain').deleteMany({}); 
-    
-    const drop1 = await db_main.collection('stock_live_price').deleteMany({}); 
+
+    const drop = await db_main.collection('token_chain').deleteMany({});
+
+    const drop1 = await db_main.collection('stock_live_price').deleteMany({});
 
     await Get_Option_All_Token_Chain()
 
@@ -211,7 +214,7 @@ const TruncateTableTokenChain = async () => {
 
 }
 
-const Get_Option_All_Token_Chain = async() =>{
+const Get_Option_All_Token_Chain = async () => {
 
     try {
         const symbols = ["NIFTY", "BANKNIFTY", "FINNIFTY"];
@@ -405,7 +408,7 @@ const Get_Option_All_Token_Chain = async() =>{
         const updateOperation = { $set: { Stock_chain: concatenatedArray1 } };
         const Update_Stock_chain = await live_price.updateOne(filter, updateOperation);
         return
-        
+
 
     } catch (error) {
         console.log("Error Get_Option_All_Token_Chain", error);
@@ -413,19 +416,19 @@ const Get_Option_All_Token_Chain = async() =>{
 }
 
 
-const Get_Option_All_Token_Chain_stock = async() =>{
+const Get_Option_All_Token_Chain_stock = async () => {
 
     try {
-       // const symbols = ["NIFTY", "BANKNIFTY", "FINNIFTY"];
-       const pipeline_stock_symbol = [
-        {
-          $match: { token : "1" }
-       },
-      ]
+        // const symbols = ["NIFTY", "BANKNIFTY", "FINNIFTY"];
+        const pipeline_stock_symbol = [
+            {
+                $match: { token: "1" }
+            },
+        ]
 
-       const symbols_array =  await Get_Option_Chain_modal.aggregate(pipeline_stock_symbol);
+        const symbols_array = await Get_Option_Chain_modal.aggregate(pipeline_stock_symbol);
 
-       const symbols = symbols_array.map(item => item.symbol)
+        const symbols = symbols_array.map(item => item.symbol)
 
         const expiry = "30112023";
         let limit_set = 11
@@ -616,18 +619,13 @@ const Get_Option_All_Token_Chain_stock = async() =>{
         // const updateOperation = { $set: { Stock_chain: concatenatedArray1 } };
         // const Update_Stock_chain = await live_price.updateOne(filter, updateOperation);
         return
-        
+
 
     } catch (error) {
         console.log("Error Get_Option_All_Token_Chain", error);
     }
 }
 
-
-
-
-
-// =========================================================================================================================
 
 // 1. LOGOUT AND TRADING OFF ALL USER 
 const LogoutAllUsers = async () => {
@@ -702,6 +700,7 @@ const LogoutAllUsers = async () => {
 
 }
 
+
 // SERVICES TOKEN CREATE
 const service_token_update = () => {
 
@@ -730,9 +729,11 @@ const service_token_update = () => {
 
 }
 
+
 const TruncateTable = async () => {
     const drop = await Alice_token.deleteMany({});
 }
+
 
 // TOKEN SYMBOL CREATE
 const TokenSymbolUpdate = () => {
@@ -754,7 +755,7 @@ const TokenSymbolUpdate = () => {
     axios(config)
         .then(function (response) {
             response.data.forEach(async (element) => {
-       
+
 
                 var option_type = element.symbol.slice(-2);
                 var expiry_s = element.expiry
@@ -796,14 +797,14 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    
+
 
 
 
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
                     var Update_Stock_chain = await Alice_token.updateOne(filter, updateOperation, { upsert: true });
-                 
+
 
                 } else if (element.instrumenttype == 'FUTIDX' && element.exch_seg == "NFO") {
 
@@ -825,7 +826,7 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    
+
 
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
@@ -851,7 +852,7 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    
+
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
                     var Update_Stock_chain = await Alice_token.updateOne(filter, updateOperation, { upsert: true });
@@ -881,7 +882,7 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    
+
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
                     var Update_Stock_chain = await Alice_token.updateOne(filter, updateOperation, { upsert: true });
@@ -910,7 +911,7 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    
+
 
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
@@ -972,7 +973,7 @@ const TokenSymbolUpdate = () => {
 
                     };
 
-                    
+
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
                     var Update_Stock_chain = await Alice_token.updateOne(filter, updateOperation, { upsert: true });
@@ -1002,7 +1003,7 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    
+
 
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
@@ -1028,7 +1029,7 @@ const TokenSymbolUpdate = () => {
                         exch_seg: element.exch_seg
                     };
 
-                    
+
 
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
@@ -1058,7 +1059,7 @@ const TokenSymbolUpdate = () => {
 
                     };
 
-                    
+
 
                     const filter = { instrument_token: element.token };
                     var updateOperation = { $set: user_data };
@@ -1102,6 +1103,7 @@ const tokenFind = async () => {
         console.log("Error ", error);
     }
 }
+
 
 const twodaysclient = async () => {
 
@@ -1241,6 +1243,7 @@ const numberOfTrade_count_trade = async () => {
     let Res = await UserMakeStrategy.updateMany(filter_trade_off, update_trade_off);
 }
 
+
 // Accelpix Token Update
 const AccelpixTokenUpdate = async () => {
 
@@ -1253,7 +1256,7 @@ const AccelpixTokenUpdate = async () => {
 
     axios.request(config)
         .then(async (response) => {
-           
+
             const result = await Alice_token.aggregate([
                 {
                     $project: {
@@ -1282,7 +1285,7 @@ const AccelpixTokenUpdate = async () => {
 
                 let Res = await Alice_token.updateMany(filter, update, options);
 
-                
+
 
 
             });
@@ -1292,7 +1295,8 @@ const AccelpixTokenUpdate = async () => {
         });
 }
 
-const GetStrickPriceFromSheet = async ()=>{
+
+const GetStrickPriceFromSheet = async () => {
 
     try {
         const csvFilePath = 'https://docs.google.com/spreadsheets/d/1wwSMDmZuxrDXJsmxSIELk1O01F0x1-0LEpY03iY1tWU/export?format=csv';
@@ -1336,7 +1340,7 @@ const GetStrickPriceFromSheet = async ()=>{
                             { $set: { price: data.CPrice } }
                         );
                     }));
-                
+
                     return
                 },
                 header: true,
@@ -1348,8 +1352,8 @@ const GetStrickPriceFromSheet = async ()=>{
     } catch (error) {
         console.log("Error Theme error-", error);
     }
- }
+}
 
 
 
-module.exports = { service_token_update, TokenSymbolUpdate, TruncateTable, tokenFind, numberOfTrade_count_trade, AccelpixTokenUpdate  , GetStrickPriceFromSheet }
+module.exports = { service_token_update, TokenSymbolUpdate, TruncateTable, tokenFind, numberOfTrade_count_trade, AccelpixTokenUpdate, GetStrickPriceFromSheet }

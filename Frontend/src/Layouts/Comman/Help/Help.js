@@ -4,23 +4,19 @@ import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTa
 import {
   getsubadmintable,
   userdataforhelp,
-  getResearch
+  getResearch,
 } from "../../../ReduxStore/Slice/Admin/System";
 import Content from "../../../Components/Dashboard/Content/Content";
 import { useDispatch } from "react-redux";
 
-
-import Swal from 'sweetalert2';
-import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import Swal from "sweetalert2";
+import PropTypes from "prop-types";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import Loader from "../../../Utils/Loader";
 import { fDateTime } from "../../../Utils/Date_formet";
-
-
-
 
 function System() {
   const dispatch = useDispatch();
@@ -28,13 +24,8 @@ function System() {
   const [getuserdata, setGetuserdata] = useState([]);
   const [getResearchdata, setGetResearchdata] = useState([]);
 
-
-
   const [loading, setLoading] = useState(true);
   const [value, setValue] = React.useState(0);
-
-
-
 
   function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -65,16 +56,13 @@ function System() {
   function a11yProps(index) {
     return {
       id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
+      "aria-controls": `simple-tabpanel-${index}`,
     };
   }
-
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-
 
   const styles = {
     container: {
@@ -133,7 +121,7 @@ function System() {
       headerName: "Created At",
       width: 250,
       headerClassName: styles.boldHeader,
-      renderCell: (params) => <div>{fDateTime(params.value || '')}</div>,
+      renderCell: (params) => <div>{fDateTime(params.value || "")}</div>,
     },
   ];
 
@@ -144,7 +132,7 @@ function System() {
       .then(async (response) => {
         if (response.status) {
           setGetsubadmin(response.data);
-          setLoading(false)
+          setLoading(false);
         }
       })
       .catch((error) => {
@@ -159,14 +147,13 @@ function System() {
       .then(async (response) => {
         if (response.status) {
           setGetuserdata(response.data);
-          setLoading(false)
+          setLoading(false);
         }
       })
       .catch((error) => {
         console.log("error", error);
       });
   };
-
 
   // get Research
   const getResearcher = async () => {
@@ -175,7 +162,7 @@ function System() {
       .then(async (response) => {
         if (response.status) {
           setGetResearchdata(response.data);
-          setLoading(false)
+          setLoading(false);
         }
       })
       .catch((error) => {
@@ -183,106 +170,76 @@ function System() {
       });
   };
 
-
   // fetch data by using local storage
   useEffect(() => {
-    gettable()
-    getusertable()
-    getResearcher()
+    gettable();
+    getusertable();
+    getResearcher();
   }, [value]);
-
-
-
 
   return (
     <>
       <div data-aos="fade-left">
         <Content
-
           Card_title="Help"
           Card_title_icon="fas fa-message pe-3"
           Content={
             <>
-              <Box sx={{ width: '100%' }}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }} >
-                  <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+              <Box sx={{ width: "100%" }}>
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                  <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="basic tabs example"
+                  >
                     <Tab label="Sub Admin" {...a11yProps(0)} />
                     <Tab label="User" {...a11yProps(1)} />
                     <Tab label="Research" {...a11yProps(2)} />
-
                   </Tabs>
                 </Box>
                 <CustomTabPanel value={value} index={0}>
                   <>
-
-
                     {loading ? (
                       <Loader />
                     ) : (
-
-
                       <div className="mt-5">
                         <FullDataTable
                           styles={styles}
                           columns={columns1}
                           rows={getsubadmin}
                         />
-
                       </div>
-
-
                     )}
                   </>
-
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
                   {loading ? (
                     <Loader />
                   ) : (
-
-
                     <div className="mt-5">
                       <FullDataTable
                         styles={styles}
                         columns={columns1}
                         rows={getuserdata}
                       />
-
                     </div>
-
-
                   )}
-
                 </CustomTabPanel>
-
 
                 <CustomTabPanel value={value} index={2}>
                   {loading ? (
                     <Loader />
                   ) : (
-
-
                     <div className="mt-5">
                       <FullDataTable
                         styles={styles}
                         columns={columns1}
                         rows={getResearchdata}
                       />
-
                     </div>
-
-
                   )}
-
                 </CustomTabPanel>
-
-
               </Box>
-
-
-
-
-
             </>
           }
         />

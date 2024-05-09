@@ -6,7 +6,7 @@ import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
 import { Userinfo , Trading_Off_Btn} from "../../../ReduxStore/Slice/Comman/Userinfo";
-import { Orders_Details } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { fDateTime } from "../../../Utils/Date_formet";
 
@@ -212,7 +212,8 @@ const Signal = () => {
 
 
     const RefreshHandle = () => {
-        setrefresh(!refresh);   
+        setrefresh(!refresh); 
+        userDataRes()  
         setSearchInput("");
     };
 

@@ -4,15 +4,15 @@ import Header from '../Components/Dashboard/Header/Header';
 import MainHeader from '../Components/Dashboard/Header/Main_header';
 import Profile from '../Layouts/Comman/Profile/Profile';
 import Faqs from '../Layouts/Comman/Faqs';
-import Empdashboard from '../Layouts/Employee/Dashboard/Empdashboard';
+import Researcher_dashboard from '../Layouts/Researcher/Dashboard/Researcher_dashboard.jsx';
 import Wallets from '../Layouts/Comman/Wallet/Wallets';
 import Companies from '../Layouts/Comman/Company/Companies';
 import AllStrategy from '../Layouts/Researcher/Service/Strategys/Strategy'
 import Edit_Strategies from '../Layouts/Researcher/Service/Strategys/Edit_Strategies'
 import AllServices from '../Layouts/Researcher/Service/allService/AllServices'
 
-import Orders from '../Layouts/SubAdmin/Trade/Order'
-import Position from '../Layouts/SubAdmin/Trade/Position'
+import Orders from '../Layouts/Researcher/Trade/Order.js'
+import Position from '../Layouts/Researcher/Trade/Position.js'
 import OptionChain from '../Layouts/SubAdmin/Option/Option_Chain'
 import MakeCall from '../Layouts/Comman/Make/Makecall'
 import MessageBroadcast from '../Layouts/Researcher/MessageBroadcast/MessageBroadcast.js';
@@ -38,7 +38,7 @@ const Research = () => {
             <Header />
             <div className='page-wrapper' >
                 <Routes>
-                    <Route exact path="/dashboard" element={<Empdashboard />} />
+                    <Route exact path="/dashboard" element={<Researcher_dashboard />} />
                     <Route exact path="/wallet" element={<Wallets />} />
                     <Route exact path="/profile" element={<Profile />} />
                     <Route exact path="/faqs" element={<Faqs />} />

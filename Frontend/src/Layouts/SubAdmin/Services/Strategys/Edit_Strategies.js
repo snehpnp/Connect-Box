@@ -6,9 +6,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Utils/Loader";
 import Swal from 'sweetalert2'
-
-
-
 import {
   EditSubStrategys,
   GetSubStrategys_ById,
@@ -72,7 +69,7 @@ function Edit_Strategies() {
   }, []);
 
 
-
+ 
 
   const fields = [
     {
@@ -161,13 +158,13 @@ function Edit_Strategies() {
       type: "test",
       label_size: 12,
       col_size: 12,
-      disable: true,
+      disable:  allStrategy && allStrategy.Service_Type==0 ? false : true,
     },
     {
       name: "security_fund",
       label: "Strategy Plan",
       type: 'security',
-      showWhen: (values) => formik.values.Service_Type == 1,
+      showWhen: (values) => formik.values.Service_Type == 1 || subadmin_service_type==2,
     },
     {
       name: "security_fund",
@@ -182,7 +179,7 @@ function Edit_Strategies() {
       label_size: 3,
       col_size: 3,
       disable: false,
-      showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+      showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type==2,
 
     },
     {
@@ -192,7 +189,7 @@ function Edit_Strategies() {
       label_size: 3,
       col_size: 3,
       disable: false,
-      showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+      showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type==2,
 
     },
     {
@@ -202,7 +199,7 @@ function Edit_Strategies() {
       label_size: 3,
       col_size: 3,
       disable: false,
-      showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+      showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type==2,
 
     },
     {
@@ -212,7 +209,7 @@ function Edit_Strategies() {
       label_size: 3,
       col_size: 3,
       disable: false,
-      showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+      showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type==2,
 
     },
     {
@@ -303,23 +300,21 @@ function Edit_Strategies() {
         errors.max_trade = "Please enter maximum trade";
       }
 
-      if (subadmin_service_type == 1 && !values.security_fund_month) {
+      if (  !values.security_fund_month) {
         errors.security_fund_month = "amount is required";
       }
-      if (subadmin_service_type == 1 && !values.security_fund_quarterly) {
+      if (  !values.security_fund_quarterly) {
         errors.security_fund_quarterly = "amount is required";
       }
-      if (subadmin_service_type == 1 && !values.security_fund_half_early) {
+      if (  !values.security_fund_half_early) {
         errors.security_fund_half_early = "amount is required";
       }
 
-      if (subadmin_service_type == 1 && !values.security_fund_early) {
+      if (  !values.security_fund_early) {
         errors.security_fund_early = "amount is required";
       }
 
-      if (subadmin_service_type == 1 && !values.security_fund_early) {
-        errors.security_fund_early = "amount is required";
-      }
+       
       if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_month) {
         errors.fixed_amount_per_trade_month = "amount is required 3";
       }
@@ -415,17 +410,6 @@ function Edit_Strategies() {
       formik.setFieldValue("strategy_demo_days", allStrategy.strategy_demo_days);
     }
   }, [allStrategy]);
-
-
-
-
-
-
-
-
-
-
-
 
 
 

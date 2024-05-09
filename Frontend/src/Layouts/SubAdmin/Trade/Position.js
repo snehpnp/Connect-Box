@@ -7,7 +7,7 @@ import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
 import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/Userinfo";
-import { Trade_history_data } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Trade_history_data } from "../../../ReduxStore/Slice/Comman/Trades";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { fDateTime } from "../../../Utils/Date_formet";
 import { ipAddress } from '../../../Utils/Ipaddress';
@@ -20,6 +20,20 @@ import { Eye, CandlestickChart, Pencil } from "lucide-react";
 
 import DetailsView from "./DetailsView";
 
+import {
+    getAllServices,
+    getCatogries,
+    getexpirymanualtrade,
+    getAllStrikePriceApi,
+    getStrategyData,
+    gettokenbysocket,
+    GetBrokerLiveDatas,
+    AddDataAboveBelowRange,
+    GetDataAboveBelowRange,
+    DeleteDataMakeCall,
+    UpdateDataMakeCall
+
+} from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
 
 export default function AllEmployees() {
@@ -30,6 +44,9 @@ export default function AllEmployees() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+const Role = JSON.parse(localStorage.getItem("user_details")).Role
+const token = JSON.parse(localStorage.getItem('user_details')).token
+
     const [rowData, setRowData] = useState({ loading: true, data: [], });
 
     const [profileData, setProfileData] = useState([]);
@@ -48,6 +65,46 @@ export default function AllEmployees() {
         loading: false,
         data: [],
     });
+
+
+    const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
+    const [userIdSocketRun, setUserIdSocketRun] = useState("none");
+
+
+
+    useEffect(() => {
+        GetBrokerLiveData(userIdSocketRun)
+    }, [userIdSocketRun]);
+
+    const GetBrokerLiveData = async (userIdSocketRun) => {
+
+        //alert(userIdSocketRun)
+        await dispatch(GetBrokerLiveDatas(
+
+            {
+                req:
+                {
+                    id: user_id,
+                    exist_user: userIdSocketRun,
+                    exist_user_details: livePriceDataDetails
+                },
+
+                token: token
+            }
+        ))
+            .unwrap()
+            .then(async (response) => {
+                if (response.status) {
+                    // console.log("Data --- ", response.data)
+                    setLivePriceDataDetails(response.data)
+                }
+            });
+    };
+
+
+console.log("livePriceDataDetails",livePriceDataDetails)
+
+
     const label = { inputProps: { "aria-label": "Switch demo" } };
 
     const styles = {
@@ -355,8 +412,13 @@ export default function AllEmployees() {
 
     const RefreshHandle = () => {
         setrefresh(!refresh);
+        userDataRes()
         setSearchInput("");
+        
+
     };
+  
+
 
     const getActualDateFormate = (date) => {
         const dateParts = date.split("-");
@@ -378,7 +440,7 @@ export default function AllEmployees() {
         let startDate = getActualDateFormate(fromDate);
         let endDate = getActualDateFormate(toDate);
         const subadminId = userDetails.user_id
-        await dispatch(Trade_history_data({ subadminId: userDetails.user_id, startDate: !fromDate ? full : startDate, endDate: !toDate ? fromDate ? "" : full : endDate, service: SelectService, strategy: StrategyClientStatus, }))
+        await dispatch(Trade_history_data({ Role:Role,subadminId: userDetails.user_id, startDate: !fromDate ? full : startDate, endDate: !toDate ? fromDate ? "" : full : endDate, service: SelectService, strategy: StrategyClientStatus, }))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
@@ -423,7 +485,7 @@ export default function AllEmployees() {
     tradeHistoryData.data &&
         tradeHistoryData.data?.map((item) => {
             CreatechannelList += `${item.exchange}|${item.token}#`;
-            console.log("item", item)
+            // console.log("item", item)
             if (parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price != '' && item.exit_price) {
                 total += (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty);
             }
@@ -435,12 +497,10 @@ export default function AllEmployees() {
         let type = { loginType: "API" };
         let channelList = CreatechannelList;
 
-        if (profileData && profileData.data) {
-
-            if (profileData && profileData.data[0].demat_userid !== undefined && profileData.data[0].access_token !== undefined && profileData.data[0].TradingStatus == "on") {
+            if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
 
-                const res = await CreateSocketSession(type, profileData.data[0].demat_userid, profileData.data[0].access_token);
+                const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
 
                 if (res.status === 200) {
                     setSocketState("Ok");
@@ -530,7 +590,7 @@ export default function AllEmployees() {
 
                             // }
                         };
-                        await ConnctSocket(handleResponse, channelList, profileData.data[0].demat_userid, profileData.data[0].access_token).then((res) => { });
+                        await ConnctSocket(handleResponse, channelList, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token).then((res) => { });
                     } else {
                         // $(".UPL_").html("-");
                         // $(".show_rpl_").html("-");
@@ -538,7 +598,7 @@ export default function AllEmployees() {
                     }
                 }
             }
-        }
+        
 
 
 
@@ -586,7 +646,7 @@ export default function AllEmployees() {
 
     useEffect(() => {
         ShowLivePrice();
-    }, [tradeHistoryData.data, SocketState, profileData.data]);
+    }, [tradeHistoryData.data, SocketState,livePriceDataDetails]);
 
 
 
@@ -625,7 +685,7 @@ export default function AllEmployees() {
                                         <div className="list-btn">
                                             <ul className="filter-list mb-0">
 
-                                                <li className="toggle-li">
+                                            <li className="toggle-li">
                                                     <div className="status-toggle pe-2" style={{ display: 'flex', alignItems: 'center' }}>
                                                         <span className={getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} >Trading Status</span>
                                                         <input

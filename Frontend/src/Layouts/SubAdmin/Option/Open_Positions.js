@@ -7,7 +7,7 @@ import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
 import { Userinfo } from "../../../ReduxStore/Slice/Comman/Userinfo";
-import { Trade_Details, Update_Signals } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Trade_Details, Update_Signals } from "../../../ReduxStore/Slice/Comman/Trades";
 import { fDateTimeSuffix, GetMarketOpenDays, convert_string_to_month } from "../../../Utils/Date_formet";
 import { CreateSocketSession, ConnctSocket } from "../../../Utils/Alice_Socket";
 import { ShowColor1 } from "../../../Utils/ShowTradeColor";
@@ -98,7 +98,7 @@ export default function AllEmployees() {
             });
     };
 
-// MAKECALL  START///////
+    // MAKECALL  START///////
     const [aboveBelowRangData, setAboveBelowRangData] = useState({ loading: true, data: [] });
     const [typeABROnclickFunc, setTypeABROnclickFunc] = useState("below");
     const [iscolumntPrice, setiscolumntPrice] = useState(false);
@@ -125,27 +125,27 @@ export default function AllEmployees() {
     const inputChangeTargetStoplos = (e, type, row) => {
 
 
-           
-      
+
+
         let name = e.target.name;
         let value = e.target.value;
         let id = row._id;
 
-        if(type == "ExitTime" || type == "NoTradeTime"){
-         value = (e.target.value).replace(":", "")
+        if (type == "ExitTime" || type == "NoTradeTime") {
+            value = (e.target.value).replace(":", "")
         }
-   
-       setUpdatedDataPriceTS((prevData) => ({
-         ...prevData,
-         [id]: {
-           ...prevData[id],
-           [name]:value,
-          
-         },
-       }));
-     };
 
-     let columnsM = [
+        setUpdatedDataPriceTS((prevData) => ({
+            ...prevData,
+            [id]: {
+                ...prevData[id],
+                [name]: value,
+
+            },
+        }));
+    };
+
+    let columnsM = [
         {
             dataField: "1",
             text: "S No",
@@ -157,17 +157,17 @@ export default function AllEmployees() {
             formatter: (cell, row, rowIndex) => (
 
                 <select style={{
-                              width:"105px",
-                              height:"33px",
-                              color:row.status==0?'green':'red'
-                              }}  
-                              className="form-select"
-                              name="status" 
-                              onChange={(e) => { inputChangeTargetStoplos(e, "status", row)}}>
-                              <option value="0" style={{color:"green"}}  selected={row.status==0} >OPEN</option>
-                              <option value="2" style={{color:"red"}}  selected={row.status==2}>CLOSE</option>
-                              
-               </select>   
+                    width: "105px",
+                    height: "33px",
+                    color: row.status == 0 ? 'green' : 'red'
+                }}
+                    className="form-select"
+                    name="status"
+                    onChange={(e) => { inputChangeTargetStoplos(e, "status", row) }}>
+                    <option value="0" style={{ color: "green" }} selected={row.status == 0} >OPEN</option>
+                    <option value="2" style={{ color: "red" }} selected={row.status == 2}>CLOSE</option>
+
+                </select>
             ),
         },
         {
@@ -206,8 +206,8 @@ export default function AllEmployees() {
                     onChange={(e) => {
                         inputChangeTargetStoplos(e, "ExitTime", row);
                     }}
-                    />
-                    </div>
+                />
+                </div>
             ),
 
         },
@@ -222,7 +222,7 @@ export default function AllEmployees() {
                     onChange={(e) => {
                         inputChangeTargetStoplos(e, "NoTradeTime", row);
                     }}
-                    /></div>
+                /></div>
             ),
 
         },
@@ -302,13 +302,13 @@ export default function AllEmployees() {
             text: "Wise Type",
             formatter: (cell, row, rowIndex) => (
 
-                <select  style={containerStyle1} className="form-select" name="WiseTypeDropdown" onChange={(e) => { inputChangeTargetStoplos(e, "WiseTypeDropdown", row)}}>
-                          
-                              <option value="" selected={row.WiseTypeDropdown==""} >Not Set</option>
-                              <option value="1" selected={row.WiseTypeDropdown=="1"} >%</option>
-                              <option value="2"  selected={row.WiseTypeDropdown=="2"}>Points</option>
-                              
-               </select>   
+                <select style={containerStyle1} className="form-select" name="WiseTypeDropdown" onChange={(e) => { inputChangeTargetStoplos(e, "WiseTypeDropdown", row) }}>
+
+                    <option value="" selected={row.WiseTypeDropdown == ""} >Not Set</option>
+                    <option value="1" selected={row.WiseTypeDropdown == "1"} >%</option>
+                    <option value="2" selected={row.WiseTypeDropdown == "2"}>Points</option>
+
+                </select>
             ),
         },
 
@@ -349,9 +349,9 @@ export default function AllEmployees() {
                 </div>
             ),
         },
-        
+
     ]
-    
+
     if (iscolumntPrice == true) {
         console.log("iscolumntPrice", iscolumntPrice)
         columnsM = columnsM.filter(column => column.dataField !== "Price");
@@ -393,69 +393,69 @@ export default function AllEmployees() {
     };
 
     const delete_data = async (ABR) => {
-        if(selected1.length <= 0){
-        //   alert("please select any signal");
-        Swal.fire({
-            text: "please select any signal",
-            icon: "error",
-            timer: 1500,
-            timerProgressBar: true
-          });
-          return
-        }  
-       let text = "Are you sure you want delete signal ?";
-       if (window.confirm(text) == true) {
-         //  alert("DONE")
-           await dispatch(DeleteDataMakeCall(
-            {
-                req:
-                {
-                    user_id: UserLocalDetails.user_id,
-                    row: selected1,
-                },
-
-                token: UserLocalDetails.token
-            }
-             ))
-            .unwrap()
-            .then((response) => {
-                setSelected([]);
-                setSelected1([]);
-                setUpdatedDataPriceTS({})
-                if (response.status) {
-                    Swal.fire({
-                        title: "Delete Successful!",
-                        text: response.msg,
-                        icon: "success",
-                        timer: 1500,
-                        timerProgressBar: true
-                      });
-                       
-                      setRefreshscreen(!refreshscreen);
-                      
-                      handleClick_abr(ABR)
-                } else {
-                    Swal.fire({
-                        title: "Error",
-                        text: response.msg,
-                        icon: "error",
-                        timer: 1500,
-                        timerProgressBar: true
-                      });
-                      setRefreshscreen(!refreshscreen);
-                      handleClick_abr(ABR)
-
-                }
+        if (selected1.length <= 0) {
+            //   alert("please select any signal");
+            Swal.fire({
+                text: "please select any signal",
+                icon: "error",
+                timer: 1500,
+                timerProgressBar: true
             });
+            return
+        }
+        let text = "Are you sure you want delete signal ?";
+        if (window.confirm(text) == true) {
+            //  alert("DONE")
+            await dispatch(DeleteDataMakeCall(
+                {
+                    req:
+                    {
+                        user_id: UserLocalDetails.user_id,
+                        row: selected1,
+                    },
 
-           
-       } 
-    
-     }
+                    token: UserLocalDetails.token
+                }
+            ))
+                .unwrap()
+                .then((response) => {
+                    setSelected([]);
+                    setSelected1([]);
+                    setUpdatedDataPriceTS({})
+                    if (response.status) {
+                        Swal.fire({
+                            title: "Delete Successful!",
+                            text: response.msg,
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true
+                        });
+
+                        setRefreshscreen(!refreshscreen);
+
+                        handleClick_abr(ABR)
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: response.msg,
+                            icon: "error",
+                            timer: 1500,
+                            timerProgressBar: true
+                        });
+                        setRefreshscreen(!refreshscreen);
+                        handleClick_abr(ABR)
+
+                    }
+                });
 
 
-     const update_data = async (ABR) => {
-  
+        }
+
+    }
+
+
+    const update_data = async (ABR) => {
+
         if (Object.keys(updatedDataPriceTS).length === 0) {
             // alert("please input any field");
             Swal.fire({
@@ -463,7 +463,7 @@ export default function AllEmployees() {
                 icon: "error",
                 timer: 1500,
                 timerProgressBar: true
-              });
+            });
             return;
         }
 
@@ -477,13 +477,13 @@ export default function AllEmployees() {
 
                 token: UserLocalDetails.token
             }
-             ))
+        ))
             .unwrap()
             .then((response) => {
                 setSelected([]);
                 setSelected1([]);
                 setUpdatedDataPriceTS({})
-              
+
                 if (response.status) {
                     Swal.fire({
                         title: "Update Successful!",
@@ -491,10 +491,10 @@ export default function AllEmployees() {
                         icon: "success",
                         timer: 1500,
                         timerProgressBar: true
-                      });
-                      setRefreshscreen(!refreshscreen);
-                      handleClick_abr(ABR)
-                     // window.location.reload();
+                    });
+                    setRefreshscreen(!refreshscreen);
+                    handleClick_abr(ABR)
+                    // window.location.reload();
                 } else {
                     Swal.fire({
                         title: "Error",
@@ -502,17 +502,17 @@ export default function AllEmployees() {
                         icon: "error",
                         timer: 1500,
                         timerProgressBar: true
-                      });
+                    });
                     setRefreshscreen(!refreshscreen);
                     handleClick_abr(ABR)
 
                 }
             });
-    
-    
-       }
 
-       const handleClick_abr = (ABR) => {
+
+    }
+
+    const handleClick_abr = (ABR) => {
         //  alert(ABR)
         setSelected([]);
         setSelected1([]);
@@ -532,7 +532,7 @@ export default function AllEmployees() {
 
     const GetDataAboveBelowRangeFun = async (ABR) => {
 
-             await dispatch(GetDataAboveBelowRange(
+        await dispatch(GetDataAboveBelowRange(
             {
                 req:
                 {
@@ -542,7 +542,7 @@ export default function AllEmployees() {
 
                 token: UserLocalDetails.token
             }
-             ))
+        ))
             .unwrap()
             .then((response) => {
 
@@ -569,7 +569,7 @@ export default function AllEmployees() {
 
 
 
-/////MAKE CALL END //////////
+    /////MAKE CALL END //////////
 
 
 
@@ -1293,364 +1293,425 @@ export default function AllEmployees() {
         <>
             {!tradeHistoryData.loading ? (
                 <>
+
                     <div className="content container-fluid" data-aos="fade-left">
 
                         {/* Open position start */}
 
-                        <div className="card">
-                            <div className="card-header">
-                                <div className="row align-center">
-                                    <div className="col">
-                                        <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Open Position</h5>
-                                    </div>
-                                    <div className="col-auto">
-                                        <div className="list-btn">
-                                            <ul className="filter-list mb-0">
 
-                                                <li className="">
-                                                    <p
-                                                        className=" mb-0 btn-filters"
+                        <div className='card-body table-responsive'>
 
-                                                        data-bs-toggle="tooltip"
-                                                        data-bs-placement="bottom"
-                                                        title="Refresh"
-                                                        onClick={RefreshHandle}
-                                                    >
-                                                        <span>
-                                                            <i className="fe fe-refresh-ccw" />
-                                                        </span>
-                                                    </p>
-                                                </li>
-                                                <li className='serach-li'>
-                                                    <div className="input-group input-block">
-
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            placeholder="Search..."
-                                                            aria-label="Search"
-                                                            aria-describedby="search-addon"
-                                                            onChange={(e) => setSearchInput(e.target.value)}
-                                                            value={searchInput}
-
-                                                        />
-
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <ExportToExcel
-                                                        className="btn btn-primary "
-                                                        apiData={ForGetCSV}
-                                                        fileName={'Order '} />
-
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="card-body table-responsive">
-
-                                <button className="btn btn-primary mb-4 mx-2 ms-auto"
-                                    onClick={(e) => UpdateStopLoss()}
-                                >Update Price</button>
-                                <button className="btn btn-primary mb-4 ms-auto"
-                                    onClick={(e) => SquareOfAll()}
-                                >Square Off</button>
-                                <FullDataTable
-                                    keyField="_id"
-                                    TableColumns={columns}
-                                    tableData={tradeHistoryData.data}
-                                    pagination1={true}
-                                    selectRow={selectRow}
-                                />
-
-
-
-                                {showModal ? (
-                                    <>
-                                        <Modal
-                                            isOpen={showModal}
-                                            size="xl"
-                                            title="Request Confirmation"
-                                            cancel_btn={true}
-                                            // hideBtn={false}
-                                            btn_name="Confirm"
-                                            // disabled_submit={disabled}
-                                            // disabled_submit={ButtonDisabled} 
-                                            Submit_Function={Done_For_Trade}
-                                            Submit_Cancel_Function={Cancel_Request}
-                                            handleClose={() => setshowModal(false)}
+                            <div className="col-lg-12 col-md-12 mb-2 postiontab" data-aos="fade-right">
+                                <ul className="nav nav-tabs nav-tabs-solid d-flex justify-content-center">
+                                    <li className="nav-item">
+                                        <a
+                                            className="nav-link active"
+                                            href="#solid-tab4"
+                                            data-bs-toggle="tab"
+                                            
                                         >
-                                            <FullDataTable
-                                                TableColumns={[
-                                                    {
-                                                        dataField: "index",
-                                                        text: "SR. No.",
-                                                        formatter: (cell, row, rowIndex) => rowIndex + 1,
-                                                    },
-                                                    {
-                                                        dataField: "trade_symbol",
-                                                        text: "Symbol",
-                                                    },
-                                                    {
-                                                        dataField: "price",
-                                                        text: "Price",
-                                                        formatter: (cell, row, rowIndex) => (
-                                                            <div>
-                                                                {row.type === "BUY" ?
-                                                                    <span className={`BP1_Put_Price_${row.token}`}></span>
-                                                                    : <span className={`SP1_Call_Price_${row.token}`}></span>
-                                                                }
-                                                            </div>
-                                                        ),
+                                            <i className="fa-solid fa-landmark pe-2"></i>
+                                            Open Position
+                                        </a>
+                                    </li>
+                                    <li className="nav-item">
+                                        <a
+                                            className="nav-link ms-2"
+                                            href="#solid-tab5"
+                                            data-bs-toggle="tab"
+                                           
+                                        >
+                                            <i className="fa-solid fa-envelope pe-2"></i>
+                                            Pending Position
+                                        </a>
+                                    </li>
 
-                                                    },
-                                                    {
-                                                        dataField: "type",
-                                                        text: "Trade Type",
-                                                    },
-                                                    {
-                                                        dataField: "old_qty_persent",
-                                                        text: "Remaining Qty Persent",
-                                                    },
-
-                                                    {
-                                                        dataField: "option_type",
-                                                        text: "Call Type",
-                                                    },
-                                                    {
-                                                        dataField: "strategy",
-                                                        text: "Strategy",
-                                                    },
-                                                ]}
-                                                tableData={CreateSignalRequest && CreateSignalRequest}
-                                            />
-                                        </Modal>
-                                    </>
-                                ) : (
-                                    ""
-                                )}
+                                </ul>
 
                             </div>
-                        </div>
-                        {/* Open position end */}
 
-
-                        {/* Pending position start */}
-
-                        <div className='card'>
-                        <div className="card-header">
-                                <div className="row align-center">
-                                    <div className="col">
-                                        <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Pending Position</h5>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className='card-body table-responsive'>
-
-                                <div className="col-lg-12 col-md-12" data-aos="fade-right">
-                                    <ul className="nav nav-tabs nav-tabs-solid d-flex justify-content-center">
-                                        <li className="nav-item">
-                                            <a
-                                                className="nav-link active"
-                                                href="#solid-tab1"
-                                                data-bs-toggle="tab"
-                                                onClick={() => handleClick_abr("below")}
-                                            >
-                                                <i className="fa-solid fa-landmark pe-2"></i>
-                                                Below
-                                            </a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a
-                                                className="nav-link"
-                                                href="#solid-tab2"
-                                                data-bs-toggle="tab"
-                                                onClick={() => handleClick_abr("above")}
-                                            >
-                                                <i className="fa-solid fa-envelope pe-2"></i>
-                                                Above
-                                            </a>
-                                        </li>
-                                        <li className="nav-item">
-                                            <a
-                                                className="nav-link"
-                                                href="#solid-tab3"
-                                                data-bs-toggle="tab"
-                                                onClick={() => handleClick_abr("range")}
-                                            >
-                                                <i className="fa-regular fa-image pe-2"></i>
-                                                Range
-                                            </a>
-                                        </li>
-                                    </ul>
-
-                                </div>
-
-                                {/* <button className='btn btn-success float-end' onClick={() => delete_data()}>DELETE</button>
+                            {/* <button className='btn btn-success float-end' onClick={() => delete_data()}>DELETE</button>
                     
                         <button className='btn btn-success float-end' onClick={() => update_data()}>UPDATE</button> */}
 
 
 
-                                <div className="col-lg-12 col-md-12" data-aos="fade-left">
-                                    <div className="card h-100">
-                                        <div className="card-body">
-                                            <div className="tab-content">
+                            <div className="col-lg-12 col-md-12" data-aos="fade-left">
+
+                                <div className="card-body">
+                                    <div className="tab-content">
 
 
 
-                                                <div className="tab-pane show active" id="solid-tab1">
-
-                                                    <div className="d-flex">
-                                                        <div className="preview-boxs mb-3">
-                                                            <button type="submit" className="btn btn-primary" onClick={() => update_data('below')}>
-                                                                Update
-                                                            </button>
+                                        <div className="tab-pane show active" id="solid-tab4">
+                                            <div className="card">
+                                                <div className="card-header">
+                                                    <div className="row align-center">
+                                                        <div className="col">
+                                                            <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Open Position</h5>
                                                         </div>
-                                                        <div className="preview-boxs mb-3 ms-2 ">
-                                                            <button type="submit" className="btn btn-primary" onClick={() => delete_data('below')}>
-                                                                Delete
-                                                            </button>
+                                                        <div className="col-auto">
+                                                            <div className="list-btn">
+                                                                <ul className="filter-list mb-0">
+
+                                                                    <li className="">
+                                                                        <p
+                                                                            className=" mb-0 btn-filters"
+
+                                                                            data-bs-toggle="tooltip"
+                                                                            data-bs-placement="bottom"
+                                                                            title="Refresh"
+                                                                            
+                                                                        >
+                                                                            <span>
+                                                                                <i className="fe fe-refresh-ccw" />
+                                                                            </span>
+                                                                        </p>
+                                                                    </li>
+                                                                    <li className='serach-li'>
+                                                                        <div className="input-group input-block">
+
+                                                                            <input
+                                                                                type="text"
+                                                                                className="form-control"
+                                                                                placeholder="Search..."
+                                                                                aria-label="Search"
+                                                                                aria-describedby="search-addon"
+                                                                               
+
+                                                                            />
+
+                                                                        </div>
+                                                                    </li>
+                                                                    <li>
+                                                                        <ExportToExcel
+                                                                            className="btn btn-primary "
+                                                                            apiData={ForGetCSV}
+                                                                            fileName={'Order '} />
+
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                </div>
 
-                                                    <div className="card-header d-flex justify-content-between align-items-center border-bottom">
-                                                        <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-landmark pe-2"></i>Below</h5>
-                                                        <div className="pay-btn text-end w-auto">
-                                                            {/* <button className="btn btn-primary " data-bs-toggle="modal"
+                                                <div className="card-body table-responsive">
+
+                                                    <button className="btn btn-primary mb-4 mx-2 ms-auto"
+                                                        onClick={(e) => UpdateStopLoss()}
+                                                    >Update Price</button>
+                                                    <button className="btn btn-primary mb-4 ms-auto"
+                                                        onClick={(e) => SquareOfAll()}
+                                                    >Square Off</button>
+                                                    <FullDataTable
+                                                        keyField="_id"
+                                                        TableColumns={columns}
+                                                        tableData={tradeHistoryData.data}
+                                                        pagination1={true}
+                                                        selectRow={selectRow}
+                                                    />
+
+
+
+                                                    {showModal ? (
+                                                        <>
+                                                            <Modal
+                                                                isOpen={showModal}
+                                                                size="xl"
+                                                                title="Request Confirmation"
+                                                                cancel_btn={true}
+                                                                // hideBtn={false}
+                                                                btn_name="Confirm"
+                                                                // disabled_submit={disabled}
+                                                                // disabled_submit={ButtonDisabled} 
+                                                                Submit_Function={Done_For_Trade}
+                                                                Submit_Cancel_Function={Cancel_Request}
+                                                                handleClose={() => setshowModal(false)}
+                                                            >
+                                                                <FullDataTable
+                                                                    TableColumns={[
+                                                                        {
+                                                                            dataField: "index",
+                                                                            text: "SR. No.",
+                                                                            formatter: (cell, row, rowIndex) => rowIndex + 1,
+                                                                        },
+                                                                        {
+                                                                            dataField: "trade_symbol",
+                                                                            text: "Symbol",
+                                                                        },
+                                                                        {
+                                                                            dataField: "price",
+                                                                            text: "Price",
+                                                                            formatter: (cell, row, rowIndex) => (
+                                                                                <div>
+                                                                                    {row.type === "BUY" ?
+                                                                                        <span className={`BP1_Put_Price_${row.token}`}></span>
+                                                                                        : <span className={`SP1_Call_Price_${row.token}`}></span>
+                                                                                    }
+                                                                                </div>
+                                                                            ),
+
+                                                                        },
+                                                                        {
+                                                                            dataField: "type",
+                                                                            text: "Trade Type",
+                                                                        },
+                                                                        {
+                                                                            dataField: "old_qty_persent",
+                                                                            text: "Remaining Qty Persent",
+                                                                        },
+
+                                                                        {
+                                                                            dataField: "option_type",
+                                                                            text: "Call Type",
+                                                                        },
+                                                                        {
+                                                                            dataField: "strategy",
+                                                                            text: "Strategy",
+                                                                        },
+                                                                    ]}
+                                                                    tableData={CreateSignalRequest && CreateSignalRequest}
+                                                                />
+                                                            </Modal>
+                                                        </>
+                                                    ) : (
+                                                        ""
+                                                    )}
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div className="tab-pane" id="solid-tab5">
+
+
+                                            <div className='card'>
+                                                <div className="card-header">
+                                                    <div className="row align-center">
+                                                        <div className="col">
+                                                            <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Pending Position</h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className='card-body table-responsive'>
+
+                                                    <div className="col-lg-12 col-md-12" data-aos="fade-right">
+                                                        <ul className="nav nav-tabs nav-tabs-solid d-flex justify-content-center">
+                                                            <li className="nav-item">
+                                                                <a
+                                                                    className="nav-link active"
+                                                                    href="#solid-tab1"
+                                                                    data-bs-toggle="tab"
+                                                                    onClick={() => handleClick_abr("below")}
+                                                                >
+                                                                    <i className="fa-solid fa-landmark pe-2"></i>
+                                                                    Below
+                                                                </a>
+                                                            </li>
+                                                            <li className="nav-item">
+                                                                <a
+                                                                    className="nav-link"
+                                                                    href="#solid-tab2"
+                                                                    data-bs-toggle="tab"
+                                                                    onClick={() => handleClick_abr("above")}
+                                                                >
+                                                                    <i className="fa-solid fa-envelope pe-2"></i>
+                                                                    Above
+                                                                </a>
+                                                            </li>
+                                                            <li className="nav-item">
+                                                                <a
+                                                                    className="nav-link"
+                                                                    href="#solid-tab3"
+                                                                    data-bs-toggle="tab"
+                                                                    onClick={() => handleClick_abr("range")}
+                                                                >
+                                                                    <i className="fa-regular fa-image pe-2"></i>
+                                                                    Range
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+
+                                                    </div>
+
+                                                    {/* <button className='btn btn-success float-end' onClick={() => delete_data()}>DELETE</button>
+                    
+                        <button className='btn btn-success float-end' onClick={() => update_data()}>UPDATE</button> */}
+
+
+
+                                                    <div className="col-lg-12 col-md-12" data-aos="fade-left">
+                                                        <div className="card h-100">
+                                                            <div className="card-body">
+                                                                <div className="tab-content">
+
+
+
+                                                                    <div className="tab-pane show active" id="solid-tab1">
+
+                                                                        <div className="d-flex">
+                                                                            <div className="preview-boxs mb-3">
+                                                                                <button type="submit" className="btn btn-primary" onClick={() => update_data('below')}>
+                                                                                    Update
+                                                                                </button>
+                                                                            </div>
+                                                                            <div className="preview-boxs mb-3 ms-2 ">
+                                                                                <button type="submit" className="btn btn-primary" onClick={() => delete_data('below')}>
+                                                                                    Delete
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                                                                            <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-landmark pe-2"></i>Below</h5>
+                                                                            <div className="pay-btn text-end w-auto">
+                                                                                {/* <button className="btn btn-primary " data-bs-toggle="modal"
                                                         data-bs-target="#company">
                                                         Edit Customer Information
                                                     </button> */}
-                                                        </div>
-                                                    </div>
+                                                                            </div>
+                                                                        </div>
 
-                                                    <div className="card-body table-responsive">
-                                                    <div className="invoice-total-box border">
-                                                        <div className="invoice-total-inner">
-                                                            <div className="inventory-table">
-
-
-                                                                <FullDataTable
-                                                                    keyField="_id"
-                                                                    TableColumns={columnsM}
-                                                                    tableData={aboveBelowRangData.data}
-                                                                    pagination1={true}
-                                                                    selectRow={selectRowM}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </div>
-
-                                                </div>
+                                                                        <div className="card-body table-responsive">
+                                                                            <div className="invoice-total-box border">
+                                                                                <div className="invoice-total-inner">
+                                                                                    <div className="inventory-table">
 
 
-                                                <div className="tab-pane" id="solid-tab2">
+                                                                                        <FullDataTable
+                                                                                            keyField="_id"
+                                                                                            TableColumns={columnsM}
+                                                                                            tableData={aboveBelowRangData.data}
+                                                                                            pagination1={true}
+                                                                                            selectRow={selectRowM}
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
 
-                                                    <div className="d-flex">
-                                                        <div className="preview-boxs mb-3">
-                                                            <button type="submit" className="btn btn-primary" onClick={() => update_data('above')}>
-                                                                Update
-                                                            </button>
-                                                        </div>
-                                                        <div className="preview-boxs mb-3 ms-2 ">
-                                                            <button type="submit" className="btn btn-primary" onClick={() => delete_data('above')}>
-                                                                Delete
-                                                            </button>
-                                                        </div>
-                                                    </div>
-
+                                                                    </div>
 
 
-                                                    <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                                                                    <div className="tab-pane" id="solid-tab2">
 
-                                                        <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-envelope pe-2"></i>Above</h5>
-                                                        <div className="pay-btn text-end w-auto">
-                                                            {/* <button className="btn btn-primary " data-bs-toggle="modal"
+                                                                        <div className="d-flex">
+                                                                            <div className="preview-boxs mb-3">
+                                                                                <button type="submit" className="btn btn-primary" onClick={() => update_data('above')}>
+                                                                                    Update
+                                                                                </button>
+                                                                            </div>
+                                                                            <div className="preview-boxs mb-3 ms-2 ">
+                                                                                <button type="submit" className="btn btn-primary" onClick={() => delete_data('above')}>
+                                                                                    Delete
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+
+
+
+                                                                        <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+
+                                                                            <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-envelope pe-2"></i>Above</h5>
+                                                                            <div className="pay-btn text-end w-auto">
+                                                                                {/* <button className="btn btn-primary " data-bs-toggle="modal"
                                                         data-bs-target="#email">
                                                         Edit Email Information
                                                     </button> */}
-                                                        </div>
-                                                    </div>
+                                                                            </div>
+                                                                        </div>
 
-                                                    <div className="card-body table-responsive">
-                                                    <div className="invoice-total-box border">
-                                                        <div className="invoice-total-inner">
-                                                            <div className="inventory-table">
-                                                                <FullDataTable
+                                                                        <div className="card-body table-responsive">
+                                                                            <div className="invoice-total-box border">
+                                                                                <div className="invoice-total-inner">
+                                                                                    <div className="inventory-table">
+                                                                                        <FullDataTable
 
-                                                                    keyField="_id"
-                                                                    TableColumns={columnsM}
-                                                                    tableData={aboveBelowRangData.data}
-                                                                    pagination1={true}
-                                                                    selectRow={selectRowM}
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    </div>
+                                                                                            keyField="_id"
+                                                                                            TableColumns={columnsM}
+                                                                                            tableData={aboveBelowRangData.data}
+                                                                                            pagination1={true}
+                                                                                            selectRow={selectRowM}
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
 
 
 
-                                                </div>
-                                                <div className="tab-pane" id="solid-tab3">
-                                                    <div className="d-flex">
-                                                        <div className="preview-boxs mb-3">
-                                                            <button type="submit" className="btn btn-primary" onClick={() => update_data('range')}>
-                                                                Update
-                                                            </button>
-                                                        </div>
-                                                        <div className="preview-boxs mb-3 ms-2 ">
-                                                            <button type="submit" className="btn btn-primary" onClick={() => delete_data('range')}>
-                                                                Delete
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div className="card-header d-flex justify-content-between align-items-center border-bottom">
-                                                        <h5 className="card-title mb-0 w-auto">  <i className="fa-regular fa-image pe-2"></i>Range</h5>
-                                                        <div className="pay-btn text-end w-auto">
+                                                                    </div>
+                                                                    <div className="tab-pane" id="solid-tab3">
+                                                                        <div className="d-flex">
+                                                                            <div className="preview-boxs mb-3">
+                                                                                <button type="submit" className="btn btn-primary" onClick={() => update_data('range')}>
+                                                                                    Update
+                                                                                </button>
+                                                                            </div>
+                                                                            <div className="preview-boxs mb-3 ms-2 ">
+                                                                                <button type="submit" className="btn btn-primary" onClick={() => delete_data('range')}>
+                                                                                    Delete
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="card-header d-flex justify-content-between align-items-center border-bottom">
+                                                                            <h5 className="card-title mb-0 w-auto">  <i className="fa-regular fa-image pe-2"></i>Range</h5>
+                                                                            <div className="pay-btn text-end w-auto">
 
-                                                        </div>
-                                                    </div>
-                                                    <div className="card-body table-responsive">
-                                                        <div className="invoice-total-box border">
-                                                            <div className="invoice-total-inner">
-                                                                <div className="inventory-table">
-                                                                    <FullDataTable
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="card-body table-responsive">
+                                                                            <div className="invoice-total-box border">
+                                                                                <div className="invoice-total-inner">
+                                                                                    <div className="inventory-table">
+                                                                                        <FullDataTable
 
-                                                                        keyField="_id"
-                                                                        TableColumns={columnsM}
-                               
-                                                                        tableData={aboveBelowRangData.data}
-                                                                        pagination1={true}
-                                                                        selectRow={selectRowM}
+                                                                                            keyField="_id"
+                                                                                            TableColumns={columnsM}
 
-                                                                    />
+                                                                                            tableData={aboveBelowRangData.data}
+                                                                                            pagination1={true}
+                                                                                            selectRow={selectRowM}
+
+                                                                                        />
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+
+                                                                    </div>
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
-
-
                                                 </div>
-
                                             </div>
+
+
+
+
+
                                         </div>
+
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-
-
-                        {/* Pending position end */}
-
-
                     </div>
+
+
+
+
+
+
+
                 </>
             ) : (
                 <Loader />

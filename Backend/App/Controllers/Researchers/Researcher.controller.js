@@ -121,7 +121,8 @@ class Researcher {
                 parent_id: req.body.user_id,
                 Is_First_login: "1",
                 Strategy_percentage_to_researcher: req.body.Strategy_percentage_to_researcher,
-                Balance: req.body.Balance
+                Balance: req.body.Balance,
+                broker: 2,
             });
 
             // Save new user and count licenses

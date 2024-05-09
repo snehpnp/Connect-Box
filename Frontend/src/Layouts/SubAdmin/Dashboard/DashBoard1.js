@@ -131,8 +131,10 @@ const DashBoard = () => {
     { key: "TotalExpiredDemoUsercount", title: "Expired Demo Users" },
   ];
 
+
   const cardsData = cardDataList.map(({ key, title }) => {
     const count = userData[key];
+    console.log("count" , userData)
     const percentage = calculatePercentage(count, userData.TotalUsercount);
     let progressBarClass = "";
     switch (true) {
@@ -300,7 +302,7 @@ const DashBoard = () => {
                                 </a>
                               </li>
                               <li>
-                                <a
+                                {/* <a
                                   className="dropdown-item"
                                   onClick={(e) => {
                                     handleUserSales(e);
@@ -308,7 +310,7 @@ const DashBoard = () => {
                                   }}
                                 >
                                   SALES
-                                </a>
+                                </a> */}
                               </li>
                             </ul>
                           </div>

@@ -997,7 +997,6 @@ const Makecall = () => {
         // })
 
         if (datra.length > 0) {
-            console.log("SSSS", datra && datra[0].segment)
             SetScriptSegment(datra && datra[0].segment)
 
             switch (datra && datra[0].segment) {

@@ -32,7 +32,9 @@ class Employee {
                 return res.send({ status: false, msg: "Invalid User Id", data: [] });
             }
 
+
             const strategies = findData.strategy;
+           
             const matchedStrategies = await strategyDB.aggregate([
                 { $match: { _id: { $in: strategies } } },
                 { $project: { id: '$_id', strategy_name: 1, _id: 0, Service_Type: 1 } }
@@ -71,6 +73,8 @@ class Employee {
             if (!findData) {
                 return res.status(404).send({ status: false, msg: 'Incorrect User Id', data: [] });
             }
+
+            console.log("findData 1:", findData)
 
             const findGroup = await group_services.find({ user_id: id });
             
