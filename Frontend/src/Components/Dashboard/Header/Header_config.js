@@ -560,6 +560,14 @@ export const research_header = [
             },
         ]
     },
+    {
+        id: 12,
+        name: 'Strategy User',
+        route: "/research/strategy/user",
+        Icon: "fe fe-users",
+        Data: []
+    },
+    
     // {
     //     id: 10,
     //     name: 'Message Broadcast',
@@ -567,6 +575,7 @@ export const research_header = [
     //     Icon: "fe fe-message-circle",
     //     Data: []
     // },
+
     {
         id: 11,
         name: 'Help',

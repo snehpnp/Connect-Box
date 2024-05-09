@@ -2,7 +2,7 @@
 "use strict"
 const router = require("express").Router()
 const { verifyToken } = require('../../Middlewares/autt.middleware')
-const { AddResearcher, GetAllResearcher , DeleteResearcher , createStrategy, EditResearcherStragegy, GetStragegyById, GetAllResearcherStrategy , UpdateResearcher , UpdateResearcherBalance , DeleteResearcherStrategy} = require('../../Controllers/Researchers/Researcher.controller')
+const { AddResearcher, GetAllResearcher , DeleteResearcher , createStrategy, EditResearcherStragegy, GetStragegyById, GetAllResearcherStrategy , UpdateResearcher , UpdateResearcherBalance , DeleteResearcherStrategy,GetAllStrategyUsers} = require('../../Controllers/Researchers/Researcher.controller')
 
 router.post('/researcher/add', AddResearcher)
 router.post('/researcher/getall', GetAllResearcher)
@@ -14,6 +14,8 @@ router.post('/researcher/getonestrategy',GetStragegyById)
 router.post('/researcher/getll',GetAllResearcherStrategy)
 router.post('/researcher/edit',UpdateResearcher)
 router.post('/researcher/strategy/delete', DeleteResearcherStrategy)
+router.post('/researcher/strategy/users', GetAllStrategyUsers)
+
 
 
 
