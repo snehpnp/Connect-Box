@@ -24,16 +24,19 @@ class AliceBlue {
 
             var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role broker');
 
+            console.log("Get_User[0]", Get_User[0])
             if (Get_User[0].TradingStatus != "on") {
 
                 var apiSecret = ''
 
                 if (Get_User[0].Role == "USER") {
-                    var subadmin = await User.find({ parent_id: Get_User[0].parent_id }).select('TradingStatus parent_id api_secret Role');
+                    var subadmin = await User.find({ _id: Get_User[0].parent_id }).select('TradingStatus parent_id api_secret Role');
+                    console.log("subadmin[0]", subadmin[0])
                     apiSecret = subadmin[0].api_secret
                 } else {
                     apiSecret = Get_User[0].api_secret
                 }
+                console.log(userId, "-----", apiSecret)
 
                 var hosts = req.headers.host;
 
@@ -57,6 +60,9 @@ class AliceBlue {
                         if (Get_User[0].Role == "SUBADMIN") {
                             redirect_uri = `https://${redirect}/#/subadmin/position`
 
+                        } else if (Get_User[0].Role == "USER") {
+                            redirect_uri = `https://${redirect}/#/user/stock`
+
                         } else {
                             redirect_uri = `https://${redirect}/#/`
 
@@ -77,7 +83,7 @@ class AliceBlue {
 
                     axios(config)
                         .then(async function (response) {
-
+                            console.log("response.data", response.data)
                             if (response.data.userSession) {
 
 

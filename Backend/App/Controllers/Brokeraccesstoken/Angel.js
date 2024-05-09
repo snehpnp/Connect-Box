@@ -12,13 +12,9 @@ const Broker_information = db.Broker_information;
 const live_price = db.live_price;
 
 
-
-
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 
-// const {  getIPAddress } = require('../../Helper/logger.helper')
-// const { formattedDateTime } = require('../../Helper/time.helper')
 
 class Angel {
 
@@ -40,6 +36,9 @@ class Angel {
 
                 var hosts = req.headers.host;
     
+
+
+                console.log("hosts",hosts)
                 var redirect = hosts.split(':')[0];
                 var redirect_uri = '';
                 if (redirect == "localhost") {
@@ -66,7 +65,6 @@ class Angel {
                             login_status: "Trading On",
                             role: Get_User[0].Role,
                             device: "WEB",
-                            // system_ip: getIPAddress()
                         })
                         await user_login.save();
                         if (user_login) {
