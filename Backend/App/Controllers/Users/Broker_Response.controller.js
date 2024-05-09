@@ -22,7 +22,7 @@ class BrokerResponses {
             if (!id) {
                 return res.send({ status: false, msg: "User Id not found", data: [] })
             }
-            const findResponse = await BrokerResponse.find({ user_id: id })
+            const findResponse = await BrokerResponse.find({ user_id: id }).sort({createdAt:-1})
 
             if (!findResponse) {
                 return res.send({ status: false, msg: "Empty Broker Response ", data: [] })
