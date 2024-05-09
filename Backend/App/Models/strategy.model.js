@@ -4,7 +4,6 @@ const { Schema, model } = require('mongoose');
 const strategySchema = Schema({
     strategy_name: {
         type: String,
-       
     },
     stgname_adminid: {
         type: String,

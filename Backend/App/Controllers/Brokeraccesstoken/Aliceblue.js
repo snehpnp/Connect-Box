@@ -41,7 +41,8 @@ class AliceBlue {
 
                 var redirect = hosts.split(':')[0];
                 var redirect_uri = '';
-
+                redirect_uri = `https://${redirect}/#/subadmin/position`
+                console.log("redirect 1", redirect)
                 if (Get_User.length > 0) {
 
                     if (redirect == "localhost") {
@@ -55,7 +56,7 @@ class AliceBlue {
 
                         }
                     } else {
-                        if (Get_User[0].Role == "ADMIN") {
+                        if (Get_User[0].Role == "SUBADMIN") {
                             redirect_uri = `https://${redirect}/#/subadmin/position`
 
                         } else {
@@ -142,7 +143,7 @@ class AliceBlue {
 
 
                             } else {
-                                return res.send(redirect_uri);
+                                return res.redirect(redirect_uri);
                             }
                         })
                         .catch(function (error) {
@@ -155,7 +156,7 @@ class AliceBlue {
 
 
             } else {
-                return res.send(redirect_uri);
+                return res.redirect(redirect_uri);
 
             }
 

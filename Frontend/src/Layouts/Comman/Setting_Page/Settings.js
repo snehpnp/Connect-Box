@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Trackpanel from "./Logs/Trackpanel";
 import System from "../../../Layouts/SubAdmin/Systems/System";
 import AdminSystem from "../../../Layouts/Admin/System/System";
@@ -11,22 +13,38 @@ import PasswordChange from "./PasswordChange";
 import Usersetbrokerinfo from "../../../Layouts/Comman/Setting_Page/Setbrokerinfo/Usersetbrokerinfo";
 
 const Settings = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(true); // State variable to manage sidebar toggle
+
   let Role = JSON.parse(localStorage.getItem("user_details")).Role;
-   
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
     <div>
       <div className="">
         <div className="card">
           <div className="card-body">
             <div className="row">
-              <div className="col-sm-3 left-side">
+              {/* TOGGLE BUTTON */}
+              <div className="toggle-button" onClick={toggleSidebar}>
+                {sidebarOpen ? (
+                  <FontAwesomeIcon icon={faTimes} />
+                ) : (
+                  <FontAwesomeIcon icon={faBars} />
+                )}
+              </div>
+
+              {/* LEFT SIDE SIDEBAR */}
+              <div className={`col-sm-3 left-side ${sidebarOpen ? 'open' : ''}`}>
                 <div
                   className="nav flex-column nav-pills nav-pills-tab"
                   id="v-pills-tab"
                   role="tablist"
                   aria-orientation="vertical"
                 >
-                  {(Role === "ADMIN" || Role === "SUBADMIN" || Role ==="RESEARCH") && (
+                  {(Role === "ADMIN" || Role === "SUBADMIN" || Role === "RESEARCH") && (
                     <a
                       className="nav-link active mb-1"
                       id="v-pills-company-tab"
@@ -137,6 +155,7 @@ const Settings = () => {
                   )}
                 </div>
               </div>
+
               <div className="col-sm-9">
                 <div className="tab-content ">
                   {/* Company Settings */}
@@ -281,7 +300,6 @@ const Settings = () => {
                     ) : Role === "USER" ? (
                       <Usersetbrokerinfo />
                     ) : null}
-                    
                   </div>
                 </div>
               </div>
