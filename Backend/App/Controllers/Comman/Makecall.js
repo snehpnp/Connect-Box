@@ -687,6 +687,20 @@ class Makecall {
        console.log("token ",token)
        console.log("exch ",exch)
 
+
+       
+       
+      //  const tokenExisst = await token_chain.findOne({_id:token})
+      //  console.log("tokenExisst ",tokenExisst)
+      //  if(tokenExisst){
+      //  console.log("tokenExisst if",tokenExisst)
+         
+      //  }else{
+      //  console.log("tokenExisst else",tokenExisst)
+        
+      //  }
+      //   return
+
       //  const filter = { _id:token  };
       // const update = { $set: { _id:token,exch:exch} };
       //  await token_chain.updateOne(filter, update, { upsert: true });
