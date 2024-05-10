@@ -778,14 +778,6 @@ class Users {
       );
 
 
-
-
-
-
-
-
-
-
       if (req.license_type != "2") {
         if (delete_startegy.length > 0) {
           delete_startegy.forEach(async (data) => {
@@ -996,6 +988,8 @@ class Users {
             add_startegy.forEach(async (data) => {
               const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
 
+              console.log("data",data)
+
               var price_stg = 0
               var daysforstg = 0
               if (data.plan_id == 1) {
@@ -1081,6 +1075,7 @@ class Users {
           Exist_strategy1.map(async (data) => {
 
             const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
+            console.log("Esist -",data)
 
             var price_stg = 0
             var daysforstg = 0
@@ -1182,7 +1177,7 @@ class Users {
           if (add_startegy.length > 0) {
             add_startegy.forEach(async (data) => {
               const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
-
+console.log("data",data)
               var price_stg = 0
               var daysforstg = 0
               if (data.plan_id == 1) {
@@ -1263,7 +1258,7 @@ class Users {
                 strategy_id: matchedStrategy._id,
                 user_id: existingUsername._id,
                 admin_id: ParentData._id,
-                plan_id: matchedStrategy.plan_id,
+                plan_id: data.plan_id,
                 Start_Date: StartDate1,
                 End_Date: EndDate1,
                 stg_charge: price_stg,
