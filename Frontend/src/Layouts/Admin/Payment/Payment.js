@@ -213,7 +213,6 @@ function Payment() {
     total += parseInt(item.Balance);
   });
   
-  console.log(total); 
   
 
 
