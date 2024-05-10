@@ -485,11 +485,11 @@ class SignalController {
         }
   
         if (ExistfindSignal.target !== signal.target) {
-          activityMessage = `Update Target price to ${signal.target}`;
+          activityMessage = `${signal.trade_symbol} Update Target price to ${signal.target}`;
         } else if (ExistfindSignal.stop_loss !== signal.stop_loss) {
-          activityMessage = `Update Stop Loss price to ${signal.stop_loss}`;
+          activityMessage = `${signal.trade_symbol} Update Stop Loss price to ${signal.stop_loss}`;
         } else if (ExistfindSignal.exit_time !== signal.exit_time) {
-          activityMessage = `Update Exit Time to ${signal.exit_time}`;
+          activityMessage = `${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`;
         }
   
         if (activityMessage) {
