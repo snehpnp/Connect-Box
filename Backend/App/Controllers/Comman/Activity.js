@@ -61,7 +61,9 @@ class ActivityLogs {
 
             if (Activity_logs1[0].activity != "LOGIN" || Activity_logs1[0].activity != "TRADING_STATUS" || Activity_logs1[0].activity != "USER_LOGIN" || Activity_logs1[0].activity != "ADMIN_LOGIN" || Activity_logs1[0].activity != "RESEARCH_LOGIN" || Activity_logs1[0].activity != "EMPLOYEE_LOGIN" || Activity_logs1[0].activity != "RESEARCH_TRADING_STATUS" || Activity_logs1[0].activity != "USER_TRADING_STATUS" || Activity_logs1[0].activity != "TARGET-STOPLOSS-TIME") {
 
-                if (Activity_logs1[0].activity != "TARGET-STOPLOSS-TIME") {
+                if (category == "TARGET-STOPLOSS-TIME") {
+                    console.log("JHANDU")
+                    
                     const Activity_logs_data = await Activity_logs.aggregate([
                         {
                             $match: { admin_Id: new ObjectId(id), category: category }
