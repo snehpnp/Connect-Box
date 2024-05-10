@@ -6,6 +6,7 @@ const Strategies = db.Strategies;
 const researcher_strategy = db.researcher_strategy;
 const client_service = db.client_service;
 const Subadmin_Permission = db.Subadmin_Permission;
+const Activity_logs = db.Activity_logs;
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -181,7 +182,7 @@ class SignalController {
               let: {
                 service_name: "$service.name",
                 strategy_name: "$strategys.strategy_name",
-               
+
               },
               pipeline: [
                 {
@@ -474,19 +475,47 @@ class SignalController {
   async update_stop_loss(req, res) {
     try {
       const { data } = req.body;
-
-      data.forEach(async (signal) => {
+  
+      for (const signal of data) {
+        const ExistfindSignal = await Mainsignals.findOne({ _id: signal._id }).select('target stop_loss exit_time');
+  
+        let activityMessage = "";
+        if (!ExistfindSignal) {
+          return res.status(404).send({ status: false, msg: "Signal not found", data: null });
+        }
+  
+        if (ExistfindSignal.target !== signal.target) {
+          activityMessage = `Update Target price to ${signal.target}`;
+        } else if (ExistfindSignal.stop_loss !== signal.stop_loss) {
+          activityMessage = `Update Stop Loss price to ${signal.stop_loss}`;
+        } else if (ExistfindSignal.exit_time !== signal.exit_time) {
+          activityMessage = `Update Exit Time to ${signal.exit_time}`;
+        }
+  
+        if (activityMessage) {
+          const Activity_logsData = new Activity_logs({
+            admin_Id: signal.StrategyData.maker_id,
+            category: "TARGET-STOPLOSS-TIME",
+            message: activityMessage,
+            maker_role: "SUBADMIN",
+            device: "web",
+            system_ip: ""
+          });
+          await Activity_logsData.save();
+        }
+  
         const filter = { _id: signal._id };
         const updateOperation = { $set: signal };
-        const result = await Mainsignals.updateOne(filter, updateOperation);
-      });
-
-      return res.send({ status: true, msg: "Update SuccessFully", data: [] });
+        await Mainsignals.updateOne(filter, updateOperation);
+      }
+  
+      return res.status(200).send({ status: true, msg: "Update Successful", data: null });
     } catch (error) {
-      return res.send({ status: false, msg: "error ", data: error });
+      console.error("Error in update_stop_loss:", error);
+      return res.status(500).send({ status: false, msg: "Internal server error", data: error.message });
     }
   }
-
+  
 
 
   // SUBADMIN TRADE HISTORY DATA
