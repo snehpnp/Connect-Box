@@ -15,6 +15,9 @@ import { CreateSocketSession, ConnctSocket, GetAccessToken } from "../../../Util
 import { ShowColor1 } from "../../../Utils/ShowTradeColor";
 import { Eye } from "lucide-react";
 
+import { allStrategy_subAd } from "../../../ReduxStore/Slice/Admin/Subadmins";
+
+
 import DetailsView from "../../SubAdmin/Trade/DetailsView";
 
 import { GetBrokerLiveDatas } from "../../../ReduxStore/Slice/Comman/Makecall/make";
@@ -33,6 +36,10 @@ export default function AllEmployees() {
     const [rowData, setRowData] = useState({ loading: true, data: [], });
 
     const [profileData, setProfileData] = useState([]);
+  const [strategies, setStrategies] = useState([]);
+
+  console.log("strategies :", )
+
 
     const [refresh, setrefresh] = useState(false);
     const [searchInput, setSearchInput] = useState("");
@@ -394,7 +401,7 @@ export default function AllEmployees() {
 
 
 
-console.log("livePriceDataDetails",livePriceDataDetails)
+ 
 
 
 
@@ -722,6 +729,35 @@ console.log("livePriceDataDetails",livePriceDataDetails)
           }
       });
 
+
+      const fetchStrategies = async () => {
+        const data = { id: user_id }
+        try {
+         
+          await dispatch(allStrategy_subAd(data))
+            .unwrap()
+            .then((response) => {
+              if (response.status) {
+                 
+                setStrategies(response.data);
+              } else {
+                toast.error(response.msg);
+              }
+            })
+            .catch((error) => {
+              console.error("Error in API response:", error);
+              toast.error("Failed to fetch strategies");
+            });
+        } catch (error) {
+          console.error("Error in dispatching action:", error);
+          toast.error("Failed to dispatch action for fetching strategies");
+        }
+      };
+
+      useEffect(() => {
+        fetchStrategies();
+      }, []);
+
     return (
         <>
             {tradeHistoryData.loading ? (
@@ -732,7 +768,7 @@ console.log("livePriceDataDetails",livePriceDataDetails)
                             <div className="card-header">
                                 <div className="row align-center">
                                     <div className="col">
-                                        <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Trade History</h5>
+                                        <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Trade </h5>
                                     </div>
                                     <div className="col-auto">
                                         <div className="list-btn">
@@ -818,18 +854,21 @@ console.log("livePriceDataDetails",livePriceDataDetails)
                                             class="default-select wide form-control"
                                             aria-label="Default select example"
                                             id="select"
-                                        // onChange={(e) => setStrategyClientStatus(e.target.value)}
-                                        // value={StrategyClientStatus}
+                                        onChange={(e) => setStrategies(e.target.value)}
+                                        value={strategies}
                                         >
+
+
+                                            {console.log("strategies :" , strategies.data)}
                                             <option value="null" selected >All</option>
-                                            {/* {getAllStrategyName.data &&
-                                                getAllStrategyName.data.map((item) => {
+                                            {strategies.data &&
+                                                strategies.data.map((item) => {
                                                     return (
                                                         <option value={item.strategy_name}>
                                                             {item.strategy_name}
                                                         </option>
                                                     );
-                                                })} */}
+                                                })}
                                         </select>
                                     </div>
 

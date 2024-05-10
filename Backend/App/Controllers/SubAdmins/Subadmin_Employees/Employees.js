@@ -163,6 +163,8 @@ class Employee {
         trade_history_old: Subadmin_permision_data.trade_history_old,
         strategy: Subadmin_permision_data.strategy,
         group_services: Subadmin_permision_data.group_services,
+        show_all_users : Subadmin_permision_data.show_all_users,
+        show_employee_users : Subadmin_permision_data.show_employee_users,
         user_id: savedUser._id,
       });
 
@@ -269,6 +271,8 @@ class Employee {
         trade_history_old: Subadmin_permision_data.trade_history_old,
         strategy: Subadmin_permision_data.strategy,
         group_services: Subadmin_permision_data.group_services,
+        show_all_users : Subadmin_permision_data.show_all_users,
+        show_employee_users : Subadmin_permision_data.show_employee_users,
       };
 
       const filter = { user_id: existingUsername._id };
