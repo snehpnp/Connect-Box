@@ -49,16 +49,15 @@ require('./App/Utils/Cron.utils');
 
 // Importing routes
 require("./App/Routes")(app);
+require("./test")(app);
 
-app.get('/tokenget', (req, res) => {
-  TokenSymbolUpdate();
-});
+
+
+
 
 // Starting the server
 server.listen(process.env.PORT, () => {
 const { Alice_Socket } = require("./App/Helpers/Alice_Socket");
-  
-Alice_Socket()
-
+  Alice_Socket()
   console.log(`Server is running on http://0.0.0.0:${process.env.PORT}`);
 });

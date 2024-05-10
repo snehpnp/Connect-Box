@@ -22,10 +22,7 @@ const MainSignals_modal = db.MainSignals
 
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-
-
 const MongoClient = require('mongodb').MongoClient;
-
 const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect();
@@ -97,7 +94,7 @@ const MainSignalsRemainToken = async () => {
     const pipeline = [
         {
             $match: {
-                segment: "O",
+                // segment: "O",
                 $expr: {
                     $gt: ["$entry_qty", "$exit_qty"]
                 }
@@ -111,18 +108,62 @@ const MainSignalsRemainToken = async () => {
                         format: "%d%m%Y"
                     }
                 },
+                
+
                 exch_seg: {
                     $cond: {
-                        if: {
-                            $and: [
-                                { $eq: ["$segment", "O"] }
+                      if: { $eq: ['$segment', 'C'] }, // Your condition here
+                      then: 'NSE',
+                      else: {
+                        $cond: {
+                          if: {
+                            $or: [
+                              { $eq: ['$segment', 'F'] },
+                              { $eq: ['$segment', 'O'] },
+                              { $eq: ['$segment', 'FO'] }
                             ]
-                        },
-                        then: "NFO",
-                        else: "NSE"
-
+                          },
+                          then: 'NFO',
+                          else: {
+        
+                            $cond: {
+                              if: {
+                                $or: [
+                                  { $eq: ['$segment', 'MF'] },
+                                  { $eq: ['$segment', 'MO'] }
+                                ]
+                              },
+                              then: 'MCX',
+                              else: {
+        
+                                $cond: {
+                                  if: {
+                                    $or: [
+                                      { $eq: ['$segment', 'CF'] },
+                                      { $eq: ['$segment', 'CO'] }
+                                    ]
+                                  },
+                                  then: 'CDS',
+        
+                                  // all not exist condition 
+                                  else: "NFO"
+        
+                                }
+        
+                              }
+        
+                            }
+        
+        
+                          }
+        
+                        }
+        
+                      }
+        
                     }
-                }
+                  },
+        
             }
         },
         {
@@ -151,7 +192,7 @@ const MainSignalsRemainToken = async () => {
 
 
     const result = await MainSignals_modal.aggregate(pipeline)
-
+    //console.log("result ",result)
     result.forEach(async (element) => {
 
 
@@ -160,6 +201,129 @@ const MainSignalsRemainToken = async () => {
             $set: { _id: element.token, exch: element.exch_seg },
         };
         const update_token = await token_chain_collection.updateOne(filter, update, { upsert: true });
+
+    });
+
+
+
+
+}
+
+const MakecallABR = async () => {
+
+
+    const pipeline = [
+        {
+            $match: {
+              $and: [
+                { status: 0 },
+                { ABR_TYPE: { $ne: "at" } }  
+              ]
+            }
+        },
+        {
+            $addFields: {
+                expiry_date: {
+                    $dateFromString: {
+                        dateString: "$Expiry",
+                        format: "%d%m%Y"
+                    }
+                },
+                
+
+                exch_seg: {
+                    $cond: {
+                      if: { $eq: ['$Segment', 'C'] }, // Your condition here
+                      then: 'NSE',
+                      else: {
+                        $cond: {
+                          if: {
+                            $or: [
+                              { $eq: ['$Segment', 'F'] },
+                              { $eq: ['$Segment', 'O'] },
+                              { $eq: ['$Segment', 'FO'] }
+                            ]
+                          },
+                          then: 'NFO',
+                          else: {
+        
+                            $cond: {
+                              if: {
+                                $or: [
+                                  { $eq: ['$Segment', 'MF'] },
+                                  { $eq: ['$Segment', 'MO'] }
+                                ]
+                              },
+                              then: 'MCX',
+                              else: {
+        
+                                $cond: {
+                                  if: {
+                                    $or: [
+                                      { $eq: ['$Segment', 'CF'] },
+                                      { $eq: ['$Segment', 'CO'] }
+                                    ]
+                                  },
+                                  then: 'CDS',
+        
+                                  // all not exist condition 
+                                  else: "NFO"
+        
+                                }
+        
+                              }
+        
+                            }
+        
+        
+                          }
+        
+                        }
+        
+                      }
+        
+                    }
+                  },
+        
+            }
+        },
+        {
+            $match: {
+                expiry_date: {
+                    $gte: new Date(new Date().setHours(0, 0, 0, 0)) // Get the current date with time set to midnight
+                }
+            }
+        },
+
+        {
+            $sort: {
+                _id: -1 // Sort in ascending order. Use -1 for descending.
+            }
+        },
+        {
+            $project: {
+                _id: 0,
+                exch_seg: 1,
+                token: 1
+            }
+        }
+
+
+    ]
+
+
+    const result = await makecallABR.aggregate(pipeline)
+   // console.log("result ",result)
+    result.forEach(async (element) => {
+
+
+        const filter = { _id: element.token };
+        const update = {
+            $set: { _id: element.token, exch: element.exch_seg },
+        };
+        const update_token = await token_chain_collection.updateOne(filter, update, { upsert: true });
+
+       // console.log("update_token ",update_token)
 
     });
 
@@ -179,6 +343,8 @@ const TruncateTableTokenChainAdd_fiveMinute = async () => {
     await Get_Option_All_Token_Chain_stock()
 
     await MainSignalsRemainToken()
+    
+    await MakecallABR()
 
     await Alice_Socket();
 

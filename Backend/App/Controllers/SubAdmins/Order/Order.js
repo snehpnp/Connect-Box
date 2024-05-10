@@ -58,6 +58,7 @@ class SignalController {
               token: 1,
               lot_size: 1,
               exit_status: 1,
+              ft_time: 1,
             },
           },
           {
@@ -286,6 +287,7 @@ class SignalController {
               token: 1,
               lot_size: 1,
               exit_status: 1,
+              ft_time: 1,
             },
           },
           {
@@ -732,6 +734,7 @@ class SignalController {
             "result.lot_size": 1,
             "result.MakeStartegyName": 1,
             "result.exit_status": 1,
+            "result.ft_time": 1,
             "result.createdAt": 1,
             "result.updatedAt": 1,
 
