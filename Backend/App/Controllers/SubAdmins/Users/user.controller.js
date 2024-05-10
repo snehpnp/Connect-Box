@@ -368,7 +368,7 @@ class Users {
               matchedStrategies.forEach((data) => {
                 const matchedStrategy = Strategies.find(strat => strat.id === data._id.toString());
                 console.log("matchedStrategy.plan_id ", matchedStrategy.plan_id)
-                console.log("data ",data)
+                console.log("data ", data)
 
 
                 var price_stg = 0
@@ -1558,6 +1558,91 @@ class Users {
         activeClientsCount: 0,
         totalCount: 0,
         inActiveCount: 0,
+      });
+    }
+  }
+
+  // GET ALL SUBADMIN USERS
+  async GetAllSubadminUser(req, res) {
+
+    try {
+
+      console.log("cppppppp")
+      const { page, limit, Find_Role, user_ID } = req.body; //LIMIT & PAGE
+
+      if (!user_ID || user_ID == '' || user_ID == null) {
+        return res.send({
+          status: false,
+          msg: "Please Enter Sub Admin Id",
+          data: [],
+        });
+      }
+      const parent_role = await User_model.aggregate([
+        {
+          $match: { _id: new ObjectId(user_ID) }
+        },
+        {
+          $lookup: {
+            from: "subadmin_permissions",
+            localField: "_id",
+            foreignField: "user_id",
+            as: "subadmin_permissions"
+          }
+        },
+        {
+          $project: {
+            Role: 1,
+            parent_id: 1,
+            subadmin_permissions: {
+              $arrayElemAt: ["$subadmin_permissions", 0]
+            }
+          }
+        }
+      ]);
+ 
+      var AdminMatch
+ 
+      if (parent_role[0].Role == "EMPLOYEE") {
+
+        if (parent_role[0].subadmin_permissions.show_all_users == 1) {
+          AdminMatch = { Role: "USER", parent_id: parent_role[0].parent_id };
+
+        } else if (parent_role[0].subadmin_permissions.show_employee_users == 1) {
+          AdminMatch = { Role: "USER", employee_id: user_ID };
+
+        } else {
+          AdminMatch = { Role: "USER", parent_id: parent_role[0].parent_id };
+
+        }
+
+      }
+
+      const getAllClients = await User_model.find(AdminMatch).sort({ Create_Date: -1 });
+
+
+
+
+      // IF NO DATA EXIST
+      if (getAllClients.length === 0) {
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: [],
+        });
+      }
+
+      // DATA RETRIEVED SUCCESSFULLY
+      return res.send({
+        status: true,
+        msg: "Get All Clients",
+        data: getAllClients,
+      });
+    } catch (error) {
+      console.log("Error fetching clients:", error);
+      return res.send({
+        status: false,
+        msg: "Error fetching clients",
+        data: [],
       });
     }
   }

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_USERS, ADD_USERS, UPDATE_USERS, GET_ALL_BROKER, active_Status, GET_ONE_USER, DELETE_USER } from "../../../Services/Subadmin/all.service";
+import { GET_ALL_USERS, ADD_USERS, UPDATE_USERS,GET_ALL_SUBADMIN_USERS,  GET_ALL_BROKER, active_Status, GET_ONE_USER, DELETE_USER } from "../../../Services/Subadmin/all.service";
 
 
 export const GetAllUsers = createAsyncThunk("user/getAll",
@@ -7,6 +7,19 @@ export const GetAllUsers = createAsyncThunk("user/getAll",
 
         try {
             const res = await GET_ALL_USERS(data);
+
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const GetAllSubadminUsers = createAsyncThunk("subadmin/user/getAll",
+    async (data) => {
+
+        try {
+            const res = await GET_ALL_SUBADMIN_USERS(data);
 
             return res;
         } catch (err) {
@@ -97,6 +110,7 @@ const StrategySlice = createSlice({
         show_status: null,
         findone_user: null,
         delete_user: null,
+        getallsubadminusers:null,
 
 
     },
@@ -130,34 +144,32 @@ const StrategySlice = createSlice({
                 state.get_all_broker = action.payload;
             })
             .addCase(Show_Status.fulfilled, (state, action) => {
-
                 state.isLoading = false;
                 state.show_status = action.payload;
             })
             .addCase(GetOneUser.fulfilled, (state, action) => {
-
                 state.isLoading = false;
                 state.findone_user = action.payload;
             })
             .addCase(DeleteUser.fulfilled, (state, action) => {
-
                 state.isLoading = false;
                 state.delete_user = action.payload;
             })
 
             .addCase(UpdateUsers.pending, (state, action) => {
-
                 state.isLoading = true;
                 state.isError = false;
             })
             .addCase(UpdateUsers.fulfilled, (state, action) => {
-
                 state.isLoading = false;
             })
             .addCase(UpdateUsers.rejected, (state, action) => {
-
                 state.isLoading = false;
                 state.isError = true;
+            })
+            .addCase(GetAllSubadminUsers.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.getallsubadminusers = action.payload;
             })
     },
 });

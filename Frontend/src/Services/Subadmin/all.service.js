@@ -143,7 +143,20 @@ export async function GET_ALL_RESEARCHER_STRATEGY(data) {
         const res = await axios.post(`${Config.base_url}subadmin/allsearcher/strategy`, data, {
             data: {}
         })
-        return await res;
+        return await res?.data;
+    }
+    catch (err) {
+        return await err
+    }
+}
+
+//GET ALL SUBADMIN USERS
+export async function GET_ALL_SUBADMIN_USERS(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}subadmin/user/getAll`, data, {
+            data: {}
+        })
+        return await res?.data;
     }
     catch (err) {
         return await err
