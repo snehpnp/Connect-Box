@@ -164,7 +164,7 @@ const AddResearcher = () => {
     },
     {
       name: "strategy_percentage",
-      label: "Strategy Percentage",
+      label: "Revenue Percentage",
       type: "text4",
       label_size: 12,
       col_size: 6,

@@ -24,24 +24,27 @@ class MessageController {
 
       let msg;
       if (Role === "ADMIN") {
-        if (Array.isArray(subAdminId) && subAdminId.length > 0) {
-          const messageData = subAdminId.map((item) => ({
-            ownerId,
-            subAdminId: item,
-            messageTitle,
-            Role,
-          }));
-          await msgdata.insertMany(messageData);
-        } else {
-          msg = new msgdata({
-            ownerId,
-            subAdminId,
-            messageTitle,
-            Role,
+        var subId = [];
+
+        if (Array.isArray(subAdminId)) {
+          subAdminId.forEach((data) => {
+            subId.push(new ObjectId(data));
           });
-          await msg.save();
-          // io.emit("message_updated", msg);
+        }else{
+          subId.push(new ObjectId(subAdminId));
         }
+
+
+        msg = new msgdata({
+          ownerId: new ObjectId(ownerId),
+          subAdminId: subId,
+          messageTitle,
+          Role,
+        });
+
+        await msg.save();
+
+
       } else if (Role === "SUBADMIN") {
         msg = new msgdata({
           ownerId,
@@ -82,32 +85,15 @@ class MessageController {
 
 
       if (key == 1) {
-        matchCondition = {
-          $or: [
-            { Role: "ADMIN" },
-
-          ]
-        };
-
-
 
         const pipeline = [
-          { $match: matchCondition },
           {
-            $lookup: {
-              from: "users",
-              localField: "ownerId",
-              foreignField: "_id",
-              as: "makerInfo",
-            },
+            $match: {
+              $or: [
+                { Role: "ADMIN" }
+              ]
+            }
           },
-          { $unwind: "$makerInfo" },
-          {
-            $addFields: {
-              UserName: "$makerInfo.UserName",
-            },
-          },
-
           {
             $lookup: {
               from: "users",
@@ -118,19 +104,20 @@ class MessageController {
           },
           { $unwind: "$makerInfo" },
           {
-            $addFields: {
-              FullName: "$makerInfo.UserName",
-            },
-          },
-          {
-            $project: {
-              makerInfo: 0,
-            },
+            $group: {
+              _id: "$_id",
+              Role: { $first: "$Role" },
+              createdAt: { $first: "$createdAt" },
+              Usernames: { $push: "$makerInfo.UserName" },
+              messageTitle: { $first: "$messageTitle" } // Preserve the messageTitle field
+            }
           },
           { $sort: { createdAt: -1 } }
         ];
 
         const getMessages = await msgdata.aggregate(pipeline);
+
+
 
         return res.send({
           status: true,
@@ -181,7 +168,7 @@ class MessageController {
               Balance: 1,
               Role: 1,
               Mode: 1,
-              messageTitle:1,
+              messageTitle: 1,
               createdAt: 1,
               StrategyName: 1,
               BrokerName: 1
@@ -189,9 +176,9 @@ class MessageController {
           },
           { $sort: { createdAt: -1 } }
         ];
-        
+
         const getMessages = await msgdata.aggregate(pipeline);
-        
+
 
 
 
@@ -277,64 +264,10 @@ class MessageController {
 
 
       } else if (key == 4) {
-        // matchCondition = {
-        //   $or: [
-        //     { Role: "ADMIN", subAdminId: new ObjectId(ownerId) }
-
-        //   ]
-        // };
 
 
 
-        // const pipeline = [
-        //   { $match: matchCondition },
-        //   {
-        //     $lookup: {
-        //       from: "users",
-        //       localField: "ownerId",
-        //       foreignField: "_id",
-        //       as: "makerInfo",
-        //     },
-        //   },
-        //   { $unwind: "$makerInfo" },
-        //   {
-        //     $addFields: {
-        //       UserName: "$makerInfo.UserName",
-        //     },
-        //   },
-
-        //   {
-        //     $lookup: {
-        //       from: "users",
-        //       localField: "subAdminId",
-        //       foreignField: "_id",
-        //       as: "makerInfo",
-        //     },
-        //   },
-        //   { $unwind: "$makerInfo" },
-        //   {
-        //     $addFields: {
-        //       FullName: "$makerInfo.UserName",
-        //     },
-        //   },
-        //   {
-        //     $project: {
-        //       makerInfo: 0,
-        //     },
-        //   },
-        //   { $sort: { createdAt: -1 } }
-        // ];
-
-        // const getMessages = await msgdata.aggregate(pipeline);
-
-        // return res.send({
-        //   status: true,
-        //   msg: "Messages retrieved successfully",
-        //   data: getMessages,
-        // });
-
-
-      } 
+      }
 
 
 
@@ -388,6 +321,34 @@ class MessageController {
       });
     }
   }
+
+
+
+  async getadminandresearchername(req, res) {
+    try {
+      const { id } = req.body;
+
+      const AllName = await User.find({ $or: [{ Role: "SUBADMIN" }, { Role: "RESEARCH" }] }).select('UserName Role');
+
+      if (!AllName) {
+        return res.json({ status: false, msg: "Not found", data: null });
+      }
+
+      res.send({ status: true, data: AllName, msg: "Date Get" })
+
+
+    } catch (error) {
+      console.error("Error updating message:", error);
+      return res.json({
+        status: false,
+        msg: "Error updating message",
+        error: error.message,
+      });
+    }
+  }
+
+
+
 }
 
 module.exports = new MessageController();

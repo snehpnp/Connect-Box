@@ -30,6 +30,7 @@ function Payment() {
     setIsModalOpen(true);
   };
 
+  let total = 0;
 
   const styles = {
     container: {
@@ -89,7 +90,7 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {params.row.Role == "SUBADMIN" ? params.value == "1" ? "Trade wise" :"Strategy Wise" : "-"}
+          {params.row.Role == "SUBADMIN" ? params.value == "1" ? "Trade wise" : "Strategy Wise" : "-"}
         </div>
       )
     },
@@ -132,16 +133,16 @@ function Payment() {
     try {
       var data = { Role: "SUBADMIN" }
       const response = await dispatch(RechargeDetailsGets(data)).unwrap();
-  
+
       if (response.status) {
         let formattedData = response.data;
-  
+
         console.log("inputSearch", inputSearch);
-  
+
         if (first !== "all") {
           formattedData = formattedData.filter(row => row.Role === first);
         }
-  
+
         if (inputSearch) {
           formattedData = formattedData.filter(row => {
             return (
@@ -151,13 +152,13 @@ function Payment() {
             );
           });
         }
-  
+
         formattedData = formattedData.map((row, index) => ({
           ...row,
           id: index + 1,
           matched: true
         }));
-  
+
         setCompanyData({
           loading: true,
           data: formattedData,
@@ -171,12 +172,12 @@ function Payment() {
       });
     }
   };
-  
+
 
 
   useEffect(() => {
     getCompanyData();
-  }, [first,inputSearch]);
+  }, [first, inputSearch]);
 
   const handleRefresh = () => {
     setInputSearch('')
@@ -204,6 +205,17 @@ function Payment() {
   useEffect(() => {
     forCSVdata()
   }, [companyData.data])
+
+
+
+
+  companyData.data && companyData.data.map((item) => {
+    total += parseInt(item.Balance);
+  });
+  
+  console.log(total); 
+  
+
 
   var Rols = ['RESEARCH', "SUBADMIN"]
   return (
@@ -305,7 +317,13 @@ function Payment() {
             </div>
             <div className="card-body">
 
+              {companyData.data.length > 0 ?
 
+                total >= 0 ?
+                  <h4 >Total Profit : <span style={{ color: "green" }}> {total.toFixed(2)}</span> </h4> :
+                  <h4 >Total Profit : <span style={{ color: "red" }}> {total.toFixed(2)}</span> </h4> : ""
+
+              }
 
 
 
