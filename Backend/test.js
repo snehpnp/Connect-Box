@@ -29,8 +29,8 @@ module.exports = function (app) {
     
     app.get('/str', async (req, res) => {
 
-        await MainSignalsRemainToken();
-        await MakecallABR()
+      //  await MainSignalsRemainToken();
+      //  await MakecallABR()
         res.send("Okkkkkkkkkkkk Test File...")
 
        
@@ -142,7 +142,7 @@ const MainSignalsRemainToken = async () => {
 
 
     const result = await MainSignals_modal.aggregate(pipeline)
-    //console.log("result ",result)
+    console.log("result ",result)
     result.forEach(async (element) => {
 
 
