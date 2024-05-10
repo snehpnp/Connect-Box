@@ -43,7 +43,7 @@ class MessageController {
         });
 
         await msg.save();
-
+        io.emit("message_updated", msg);
 
       } else if (Role === "SUBADMIN") {
         msg = new msgdata({
@@ -231,21 +231,6 @@ class MessageController {
               UserName: "$makerInfo.UserName",
             },
           },
-
-          {
-            $lookup: {
-              from: "users",
-              localField: "subAdminId",
-              foreignField: "_id",
-              as: "makerInfo",
-            },
-          },
-          { $unwind: "$makerInfo" },
-          {
-            $addFields: {
-              FullName: "$makerInfo.UserName",
-            },
-          },
           {
             $project: {
               makerInfo: 0,
@@ -255,6 +240,7 @@ class MessageController {
         ];
 
         const getMessages = await msgdata.aggregate(pipeline);
+     
 
         return res.send({
           status: true,

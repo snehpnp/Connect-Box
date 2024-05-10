@@ -16,6 +16,8 @@ import { fDateTime } from "../../../Utils/Date_formet";
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import * as Config from "../../../Utils/Config";
+import io from 'socket.io-client';
 
 
 function MessageBroadcast() {
@@ -30,7 +32,7 @@ function MessageBroadcast() {
   const [openModalId, setopenModalId] = useState("");
   const [refresh, setrefresh] = useState(false);
   const datas = JSON.parse(localStorage.getItem("user_details"));
-  // const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState(null);
 
 
   const [loading, setLoading] = useState(true);
@@ -41,14 +43,14 @@ function MessageBroadcast() {
 
 
 
-  // useEffect(() => {
-  //   const newSocket = io.connect(`${Config.base_url}`);
-  //   setSocket(newSocket);
+  useEffect(() => {
+    const newSocket = io.connect(`${Config.base_url}`);
+    setSocket(newSocket);
 
-  //   return () => {
-  //     newSocket.close();
-  //   };
-  // }, []);
+    return () => {
+      newSocket.close();
+    };
+  }, []);
 
 
 
@@ -198,7 +200,7 @@ function MessageBroadcast() {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
-            // await socket.emit("send_message", newMessage);
+            await socket.emit("send_message", newMessage);
 
             let timerInterval;
             Swal.fire({
@@ -248,11 +250,11 @@ function MessageBroadcast() {
     const value = e.target.value;
     if (value === "all") {
       const allSubadminUsernames = subadmin.map((sub) => sub._id);
-      console.log("1")
+      // console.log("1")
 
       setSelectedSubadmin(allSubadminUsernames);
     } else {
-      console.log("2")
+      // console.log("2")
       setSelectedSubadmin(value);
     }
   };
@@ -363,7 +365,6 @@ function MessageBroadcast() {
   }, [refresh, value]);
 
 
-console.log("selectedSubadmin",selectedSubadmin)
 
   return (
 
