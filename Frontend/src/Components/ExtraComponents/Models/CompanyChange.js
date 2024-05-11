@@ -174,20 +174,6 @@ const StockOutModal = ({ rowData, onClose }) => {
 
     formik.setFieldValue("FullName", rowData !== undefined && rowData.makerInfo.FullName);
     formik.setFieldValue("panel_name", rowData !== undefined && rowData.panel_name);
-
-
-    // formik.setFieldValue("email", rowData !== undefined && rowData.email);
-    // formik.setFieldValue("smtp_password", rowData !== undefined && rowData.smtp_password);
-    // formik.setFieldValue("cc_mail", rowData !== undefined && rowData.cc_mail);
-    // formik.setFieldValue("bcc_mail", rowData !== undefined && rowData.bcc_mail);
-    // formik.setFieldValue("smtphost", rowData !== undefined && rowData.smtphost);
-    // formik.setFieldValue("smtpport", rowData !== undefined && rowData.smtpport);
-
-
-
-
-
-
   }, [rowData]);
 
   return (

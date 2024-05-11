@@ -96,6 +96,10 @@ const strategySchema = Schema({
         enum: ['0','1', '2'], // 0 = No Use , 1= Fixed , 2= per trade
         default: '0'
     },
+    purchase_type: {
+        type: String,
+        default: null
+    },
     createdAt: {
         type: Date,
         default: Date.now

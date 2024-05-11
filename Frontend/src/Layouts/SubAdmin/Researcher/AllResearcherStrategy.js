@@ -12,7 +12,7 @@ import { loadScript } from "../../../Utils/payment";
 
 const AllResearcherStrategy = () => {
     const userDetails = JSON.parse(localStorage.getItem("user_details"));
-console.log("userDetails",userDetails.subadmin_service_type)
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [refresh, setrefresh] = useState(false)
@@ -114,7 +114,8 @@ console.log("userDetails",userDetails.subadmin_service_type)
                                 user_id: response.data.user_id,
                                 strategy_id: response.data.strategy_id,
                                 order_status: "Success",
-                                User_data:JSON.stringify(response1)
+                                User_data:JSON.stringify(response1),
+                                type:selectedOption
                             }
 
 
