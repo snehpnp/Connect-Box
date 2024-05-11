@@ -391,15 +391,8 @@ const userDataRes = async () => {
 };
 
 useEffect(() => {
-    userDataRes(refresh, fromDate, toDate, SelectService, StrategyClientStatus)
-}, [])
-
-
-
-
-
-
-
+    userDataRes()
+}, [refresh, fromDate, toDate, SelectService, StrategyClientStatus])
 
 
 
@@ -659,8 +652,8 @@ useEffect(() => {
                                         <input
                                             type="date"
                                             className="form-control"
-                                            placeholder="Search..."
-                                            aria-label="Search"
+                                            placeholder="fromDate..."
+                                            aria-label="fromDate"
                                             aria-describedby="search-addon"
                                             onChange={handleFromDateChange}
                                             value={fromDate}
@@ -671,8 +664,8 @@ useEffect(() => {
                                         <input
                                             type="date"
                                             className="form-control"
-                                            placeholder="Search..."
-                                            aria-label="Search"
+                                            placeholder="toDate..."
+                                            aria-label="toDate"
                                             aria-describedby="search-addon"
                                             onChange={handleToDateChange}
                                             value={toDate}

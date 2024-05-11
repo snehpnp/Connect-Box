@@ -62,6 +62,7 @@ const Profile = () => {
   });
 
   const currentDate = new Date();
+  currentDate.setFullYear(currentDate.getFullYear() - 1);
   const currentDateISOString = currentDate.toISOString().split("T")[0];
 
   const avatarImages = [

@@ -38,6 +38,8 @@ const HelpEmployee = () => {
     mobile: "",
     Message: "",
     prifix_key: "",
+    
+  
   });
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState("0");
@@ -121,6 +123,7 @@ const HelpEmployee = () => {
         Message: help.Message,
         Role: "EMPLOYEE",
         prifix_key: help.prifix_key,
+        admin_id: user.user_id
       })
     )
       .unwrap()
@@ -161,8 +164,17 @@ const HelpEmployee = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          setGetsubadmin(response.data);
+          
+          if (response.data.length > 0) {
+            var filterData = response.data.filter(
+              (data) => data.admin_id === user.user_id
+            );
 
+            setGetsubadmin(filterData);
+          } else {
+            setGetsubadmin([]);
+          }
+        
           setLoading(false);
         }
       })
