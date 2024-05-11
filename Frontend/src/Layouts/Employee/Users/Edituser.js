@@ -621,7 +621,7 @@ const EditClient = () => {
                                     <div className={`col-lg-3 mt-2`} key={strategy.id}>
                                         <div className="row">
                                             <div className="col-lg-12">
-                                                <div className="form-check custom-checkbox mb-3">
+                                                <div className="form-check custom-checkbox ">
                                                     <input
                                                         type="checkbox"
                                                         className="form-check-input"
@@ -756,7 +756,7 @@ const EditClient = () => {
                                         <div className={`col-lg-3 mt-2`} key={strategy.id}>
                                             <div className="row">
                                                 <div className="col-lg-12">
-                                                    <div className="form-check custom-checkbox mb-3">
+                                                    <div className="form-check custom-checkbox">
                                                         <input
                                                             type="checkbox"
                                                             className="form-check-input"

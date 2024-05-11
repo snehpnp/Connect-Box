@@ -101,11 +101,11 @@ const Strategies = () => {
                                             {item.stg_status == 0 ? <a
                                                 className="btn btn-primary"
                                             >
-                                                BUY
+                                                Buy
                                             </a> : <a
                                                 className="btn btn-primary"
                                             >
-                                                BUYED
+                                               Subscribed
                                             </a>}
 
                                         </div>
