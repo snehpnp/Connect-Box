@@ -698,10 +698,17 @@ class Researcher {
                     $unwind: "$collaboration_id"
                 },
                 {
+                    $addFields: {
+                        dynamicKey: {
+                            $concat: ["$strategy_name", "_", { $toString: "$collaboration_id" }]
+                        }
+                    }
+                },
+                {
                     $lookup: {
                         from: "strategies",
-                        localField: "strategy_name",
-                        foreignField: "strategy_name",
+                        localField: "dynamicKey",
+                        foreignField: "stgname_adminid",
                         as: "strategy"
                     }
                 },
@@ -720,9 +727,6 @@ class Researcher {
                     $unwind: "$user"
                 },
                 {
-                    $unwind: "$strategy"
-                },
-                {
                     $lookup: {
                         from: "strategy_clients",
                         localField: "strategy._id",
@@ -730,7 +734,6 @@ class Researcher {
                         as: "stg_count"
                     }
                 },
-               
                 {
                     $group: {
                         _id: "$_id",
@@ -745,7 +748,6 @@ class Researcher {
                                 createdAt: "$strategy.createdAt",
                                 Username: "$user.UserName",
                                 stg_count: { $size: "$stg_count" }
-
                             }
                         }
                     }
@@ -759,12 +761,14 @@ class Researcher {
                         strategy_segment: 1,
                         strategy: 1
                     }
+                },
+                {
+                    "$sort": { "createdAt": -1 }
                 }
             ];
-            
+
             // Executing the aggregation pipeline
             const getAllstrategy = await researcher_strategy.aggregate(pipeline);
-            
 
 
             console.log("getAllstrategy", getAllstrategy)

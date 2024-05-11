@@ -42,7 +42,7 @@ const StrategyUsers = () => {
                     </div>
                 </div>
 
-                <div className="d-flex align-items-center mx-3" style={{ height: "40px", backgroundColor: "#f5f2f2", marginTop: '2rem', maxWidth: '100%' }}>
+                <div className="d-flex align-items-center mx-3" style={{ height: "40px", backgroundColor: "#f5f2f2", marginTop: '1rem', maxWidth: '100%' }}>
                     <h6 style={{ marginLeft: '1.5rem', marginRight: '2rem' }}><b>#</b></h6>
                     <h6 style={{ marginRight: '15rem' }}><b>Strategy Name</b></h6>
                     <h6 style={{ marginRight: '15rem' }}><b>Segment</b></h6>
@@ -53,8 +53,7 @@ const StrategyUsers = () => {
                 <div className="mx-3 mb-5">
                     <div className="accordion" id="accordionExample">
                         {getUsers.map((item, index) => (
-                            < div className="accordion-item" key={`accordion-item-${index}`}>
-                                {console.log("-", item.strategy)}
+                            < div className="accordion-item" key={`accordion-item-${index}`}>                             
                                 <h2 className="accordion-header" id={`heading${index}`}>
                                     <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse-${index}`} aria-expanded="false" aria-controls={`collapse-${index}`}>
                                         <div className="d-flex align-items-center" style={{ width: '100%' }}>
@@ -96,7 +95,7 @@ const StrategyUsers = () => {
                                                     ),
                                                 },
                                                 {
-                                                    dataField: "Username",
+                                                    dataField: "ServiceType",
                                                     text: "Service Type",
                                                     formatter: (cell, row, rowIndex) => (
                                                         <div>
