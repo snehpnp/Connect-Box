@@ -44,7 +44,9 @@ export default function AllUsers() {
   });
 
 
-  console.log("getPermission :", getPermission.data.employee_edit)
+
+
+ 
   const [ShowDeleteModal, setShowDeleteModal] = useState(false);
 
 
@@ -88,10 +90,6 @@ export default function AllUsers() {
       return "Live";
     }
   };
-
-
-
-
 
 
 
@@ -206,7 +204,7 @@ export default function AllUsers() {
         </div>
       ),
       headerClassName: styles.boldHeader,
-      hideColumn: getPermission.data && getPermission.data.employee_edit == 1 ? true : false
+      hideColumn: getPermission.data && getPermission.data.Update_Api_Key==1 ? true : getPermission.data && getPermission.data.employee_edit == 1 ? true : false
 
     },
 
@@ -221,13 +219,17 @@ export default function AllUsers() {
     },
   ];
 
-
-
-
+ 
 
   const handleEdit = async (row) => {
-    navigate(`/employee/user/edit/${row._id}`, { state: { rowData: row } });
+
+    const additionalData = {
+      Update_Api_Key: getPermission.data && getPermission.data.Update_Api_Key  ,
+    };
+  
+    navigate(`/employee/user/edit/${row._id}`, { state: { rowData: row, additionalData } });
   };
+  
 
 
  

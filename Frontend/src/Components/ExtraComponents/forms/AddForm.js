@@ -770,35 +770,7 @@ const DynamicForm = ({
                                         </div>
                                       ) : null}
                                     </div>
-                                  </div>
-                                  {formik.values[field.name] == 2 &&
-                                  formik.values["licence"] == "2" ? (
-                                    <div className="col-md-6">
-                                      <div
-                                        className="tab-content pt-0"
-                                        id="pills-tabContent"
-                                      >
-                                        <div id="pills-home" role="tabpanel">
-                                          <div className="input-block">
-                                            <input
-                                              type="text"
-                                              className="form-control"
-                                              placeholder="Per Trade"
-                                              // disabled={field.disable}
-                                              defaultValue={
-                                                formik.values["per_trade_value"]
-                                              }
-                                              onChange={(e) =>
-                                                PerTradeValueset(e)
-                                              }
-                                            />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ) : (
-                                    ""
-                                  )}
+                                  </div>           
                                 </div>
                               </div>
                             </div>

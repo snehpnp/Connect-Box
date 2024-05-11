@@ -1,35 +1,27 @@
 import React, { useState, useEffect } from "react";
-import toast from "react-hot-toast";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import { useDispatch } from "react-redux";
 import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
-import { useNavigate } from "react-router-dom";
-import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
-import { loginWithApi } from "../../../Utils/log_with_api";
 import { fDateTime } from "../../../Utils/Date_formet";
 
-
-
-
 export default function AllEmployees() {
-    const userDetails = JSON.parse(localStorage.getItem("user_details"));
-    const Role = JSON.parse(localStorage.getItem("user_details")).Role;
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    const Role = JSON.parse(localStorage.getItem("user_details")).Role;
+    const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+
+    const [tableData, setTableData] = useState({ loading: false, data: [] });
     const [refresh, setrefresh] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [ForGetCSV, setForGetCSV] = useState([]);
+    const [fromDate, setFromDate] = useState('');
+    const [toDate, setToDate] = useState('');
 
 
-    const [tableData, setTableData] = useState({
-        loading: false,
-        data: [],
-    });
     const label = { inputProps: { "aria-label": "Switch demo" } };
-
     const styles = {
         container: {
             display: "flex",
@@ -49,87 +41,6 @@ export default function AllEmployees() {
     };
 
 
-
-    const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
-
-    const [profileData, setProfileData] = useState([]);
-
-    const [fromDate, setFromDate] = useState('');
-    const [toDate, setToDate] = useState('');
-
-    const [getLoginStatus, setLoginStatus] = useState({
-        loading: false,
-        data: [],
-    })
-
-
-    const fetchData = async () => {
-        try {
-            let data = { "id": user_id }
-
-            await dispatch(Userinfo(data))
-                .unwrap()
-                .then(async (response) => {
-                    if (response.status) {
-                        setProfileData({
-                            loading: true,
-                            data: response.data
-                        })
-                        if (response.data[0].TradingStatus == 'on') {
-                            setLoginStatus(true)
-                        } else {
-                            setLoginStatus(false)
-                        }
-                    } else {
-                        toast.error(response.msg);
-                    }
-
-                })
-                .catch((error) => {
-                    console.log("Error", error);
-                });
-
-
-
-        } catch (error) {
-
-        }
-    };
-
-    useEffect(() => {
-        fetchData();
-    }, []);
-
-
-    const handleTradingOff = async (id) => {
-        let data = { id: id };
-
-        await dispatch(Trading_Off_Btn(data)).unwrap()
-            .then((response) => {
-                if (response.status) {
-                    toast.success("Trading off successfully");
-                    setrefresh(!refresh);
-                }
-                else {
-                    toast.error("Trading Off Error")
-                }
-            }).catch((error) => {
-                console.log("Trading Off Error", error);
-            })
-
-    }
-    const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
-
-        if (check) {
-            loginWithApi(brokerid, UserDetails);
-
-        } else {
-            handleTradingOff(user_id);
-
-
-        }
-
-    }
     const columns = [
         {
             field: "id",
@@ -199,13 +110,19 @@ export default function AllEmployees() {
             headerClassName: styles.boldHeader,
 
         },
+        {
+            field: "exit_status",
+            headerName: "Entry/Exit Status ",
+            width: 150,
+            headerClassName: styles.boldHeader,
+
+        },
 
     ];
 
-
-
+    // REFRESH HANDEL
     const RefreshHandle = () => {
-        setrefresh(!refresh);   
+        setrefresh(!refresh);
         setSearchInput("");
     };
 
@@ -213,29 +130,27 @@ export default function AllEmployees() {
 
 
     const userDataRes = async () => {
-        const subadminId = userDetails.user_id
-        await dispatch(Orders_Details({ subadminId,Role:Role}))
-            .unwrap()
+        await dispatch(Orders_Details({ subadminId: user_id, Role: Role })).unwrap()
             .then(async (response) => {
                 if (response.status) {
-                        const filterData = response.data.filter((item) => {
-                            const searchInputMatch =
-                              searchInput == '' ||
-                              item.type.toLowerCase().includes(searchInput.toLowerCase()) ||
-                              item.symbol.toLowerCase().includes(searchInput.toLowerCase()) ||
-                              item.price.toLowerCase().includes(searchInput.toLowerCase()) ||
-                              item.qty_percent.toLowerCase().includes(searchInput.toLowerCase())
-                
-                            return searchInputMatch
-                          })
+                    const filterData = response.data.filter((item) => {
+                        const searchInputMatch =
+                            searchInput == '' ||
+                            item.type.toLowerCase().includes(searchInput.toLowerCase()) ||
+                            item.symbol.toLowerCase().includes(searchInput.toLowerCase()) ||
+                            item.price.toLowerCase().includes(searchInput.toLowerCase()) ||
+                            item.qty_percent.toLowerCase().includes(searchInput.toLowerCase())
 
-                    setTableData({ 
-                        loading: true, 
-                        data: searchInput ? filterData : response.data 
+                        return searchInputMatch
+                    })
+
+                    setTableData({
+                        loading: true,
+                        data: searchInput ? filterData : response.data
                     });
                 } else {
-                    setTableData({ 
-                        loading: true, 
+                    setTableData({
+                        loading: true,
                         data: []
                     });
                 }
@@ -247,36 +162,34 @@ export default function AllEmployees() {
 
     useEffect(() => {
         userDataRes()
-    }, [searchInput])
+    }, [searchInput, refresh])
 
 
+    // DAWNLOAD CSV FILE DATA 
     const forCSVdata = () => {
         let csvArr = []
         if (tableData.data.length > 0) {
-          tableData.data.map((item) => {
-            return csvArr.push({
-              "Signal Time": item.createdAt,
-              "Type": item.type,
-              "trade symbol": item.trade_symbol,
-              "Price": item.price,
-              "strategy": item.strategy,
-              "qty_percent": item.strategy,
-              "Trade Type" : item.TradeType
+            tableData.data.map((item) => {
+                return csvArr.push({
+                    "Signal Time": item.createdAt,
+                    "Type": item.type,
+                    "trade symbol": item.trade_symbol,
+                    "Price": item.price,
+                    "strategy": item.strategy,
+                    "qty_percent": item.strategy,
+                    "Trade Type": item.TradeType
+                })
             })
-          })
-    
-          setForGetCSV(csvArr)
+
+            setForGetCSV(csvArr)
         }
-    
-      }
-    
-      useEffect(() => {
+
+    }
+
+    useEffect(() => {
         forCSVdata()
-      }, [tableData.data])
+    }, [tableData.data])
 
-
-
-      
 
 
     return (
@@ -289,12 +202,12 @@ export default function AllEmployees() {
                             <div className="card-header">
                                 <div className="row align-center">
                                     <div className="col">
-                                        <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Client Orders</h5>
+                                        <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Orders</h5>
                                     </div>
                                     <div className="col-auto">
                                         <div className="list-btn">
                                             <ul className="filter-list mb-0">
- 
+
                                                 <li className="">
                                                     <p
                                                         className=" mb-0 btn-filters"
@@ -338,7 +251,7 @@ export default function AllEmployees() {
                                 </div>
                             </div>
 
-                         <div className="card-body">
+                            <div className="card-body">
                                 <div className="row ">
                                     <div className="input-block col-lg-2 mt-3 mb-3">
                                         <label>From Date</label>
@@ -375,7 +288,7 @@ export default function AllEmployees() {
                                 />
                             </div>
                         </div>
-     
+
 
                     </div>
                 </>

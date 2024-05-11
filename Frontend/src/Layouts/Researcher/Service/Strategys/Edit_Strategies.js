@@ -75,7 +75,7 @@ function Edit_Strategies() {
         type: "text1",
         label_size: 6,
         col_size: 6,
-        disable: false,
+        disable: true,
     },
     {
       name: "strategy_category",

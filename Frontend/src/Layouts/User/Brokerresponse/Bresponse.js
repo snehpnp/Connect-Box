@@ -127,7 +127,7 @@ export default function BrokerResponse() {
 
     // GET BROKER RESPONSE ALL DATA
     const BrokerResponse = async (e) => {
-        const data = { id: "66386168ece050b3b71879ab" }
+        const data = { id: user_Id }
         await dispatch(Broker_Response(data)).unwrap()
             .then((response) => {
                 if (response.status) {

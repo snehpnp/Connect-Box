@@ -7,7 +7,7 @@ import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
 import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/Userinfo";
-import { Trade_history_data } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Trade_history_data } from "../../../ReduxStore/Slice/Comman/Trades";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { fDateTime } from "../../../Utils/Date_formet";
 import { ipAddress } from '../../../Utils/Ipaddress';
@@ -22,15 +22,20 @@ import { Eye, CandlestickChart, Pencil } from "lucide-react";
 import DetailsView  from "../../SubAdmin/Trade/DetailsView";
 
 
+import {  GetBrokerLiveDatas} from "../../..//ReduxStore/Slice/Comman/Makecall/make";
 
 const TradeHistory = () => {
     const userDetails = JSON.parse(localStorage.getItem("user_details"));
+    const token = JSON.parse(localStorage.getItem('user_details')).token
+
 const [showModal, setshowModal] = useState(false);
 
 const [SelectService, setSelectService] = useState("null");
 const navigate = useNavigate();
 const dispatch = useDispatch();
 const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+const Role = JSON.parse(localStorage.getItem("user_details")).Role
+
 const [rowData, setRowData] = useState({ loading: true, data: [], });
 
 const [profileData, setProfileData] = useState([]);
@@ -76,6 +81,39 @@ const handleToDateChange = (e) => {
     setToDate(e.target.value);
 };
 
+const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
+const [userIdSocketRun, setUserIdSocketRun] = useState("none");
+
+
+
+useEffect(() => {
+    GetBrokerLiveData(userIdSocketRun)
+}, [userIdSocketRun]);
+
+const GetBrokerLiveData = async (userIdSocketRun) => {
+
+    //alert(userIdSocketRun)
+    await dispatch(GetBrokerLiveDatas(
+
+        {
+            req:
+            {
+                id: user_id,
+                exist_user: userIdSocketRun,
+                exist_user_details: livePriceDataDetails
+            },
+
+            token: token
+        }
+    ))
+        .unwrap()
+        .then(async (response) => {
+            if (response.status) {
+                // console.log("Data --- ", response.data)
+                setLivePriceDataDetails(response.data)
+            }
+        });
+};
 
 
 const [inputSearch, SetInputSearch] = useState('');
@@ -126,42 +164,7 @@ useEffect(() => {
 
 
 
-// LOGOUT TRADING 
-const handleTradingOff = async (id) => {
 
-    let data = { id: id, system_ip: ip };
-
-    await dispatch(Trading_Off_Btn(data)).unwrap()
-        .then((response) => {
-            if (response.status) {
-                toast.success("Trading off successfully");
-                setrefresh(!refresh);
-            }
-            else {
-                toast.error("Trading Off Error")
-            }
-        }).catch((error) => {
-            console.log("Trading Off Error", error);
-        })
-
-}
-
-// LOGIN DEMAT WITH API
-const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
-
-    if (check) {
-        console.log("Trading On")
-        loginWithApi(brokerid, UserDetails);
-
-    } else {
-        console.log("Trading Off")
-        handleTradingOff(user_id);
-
-
-    }
-
-
-}
 const columns = [
     {
         dataField: "index",
@@ -342,7 +345,10 @@ const ResetDate = (e) => {
 const RefreshHandle = () => {
     setrefresh(!refresh);
     setSearchInput("");
+    userDataRes()
+
 };
+
 
 const getActualDateFormate = (date) => {
     const dateParts = date.split("-");
@@ -364,7 +370,7 @@ const userDataRes = async () => {
     let startDate = getActualDateFormate(fromDate);
     let endDate = getActualDateFormate(toDate);
     const subadminId = userDetails.user_id
-    await dispatch(Trade_history_data({ subadminId: userDetails.user_id, startDate: !fromDate ? full : startDate, endDate: !toDate ? fromDate ? "" : full : endDate, service: SelectService, strategy: StrategyClientStatus, }))
+    await dispatch(Trade_history_data({ Role:Role,subadminId: userDetails.user_id, startDate: !fromDate ? full : startDate, endDate: !toDate ? fromDate ? "" : full : endDate, service: SelectService, strategy: StrategyClientStatus, }))
         .unwrap()
         .then(async (response) => {
             if (response.status) {
@@ -410,10 +416,10 @@ const ShowLivePrice = async () => {
 
     if (profileData && profileData.data) {
 
-        if (profileData && profileData.data[0].demat_userid !== undefined && profileData.data[0].access_token !== undefined && profileData.data[0].TradingStatus == "on") {
+        if (profileData &&livePriceDataDetails.demate_user_id !== undefined &&livePriceDataDetails.access_token !== undefined &&livePriceDataDetails.trading_status == "on") {
 
 
-            const res = await CreateSocketSession(type, profileData.data[0].demat_userid, profileData.data[0].access_token);
+            const res = await CreateSocketSession(type,livePriceDataDetails.demate_user_id,livePriceDataDetails.access_token);
 
             if (res.status === 200) {
                 setSocketState("Ok");
@@ -503,7 +509,7 @@ const ShowLivePrice = async () => {
 
                         // }
                     };
-                    await ConnctSocket(handleResponse, channelList, profileData.data[0].demat_userid, profileData.data[0].access_token).then((res) => { });
+                    await ConnctSocket(handleResponse, channelList,livePriceDataDetails.demate_user_id,livePriceDataDetails.access_token).then((res) => { });
                 } else {
                     // $(".UPL_").html("-");
                     // $(".show_rpl_").html("-");
@@ -559,7 +565,7 @@ const calcultateRPL = (row, livePrice, pre_row) => {
 
 useEffect(() => {
     ShowLivePrice();
-}, [tradeHistoryData.data, SocketState, profileData.data]);
+}, [tradeHistoryData.data, SocketState, livePriceDataDetails]);
 
 
 
@@ -598,25 +604,7 @@ useEffect(() => {
                                         <div className="list-btn">
                                             <ul className="filter-list mb-0">
 
-                                                <li className="toggle-li">
-                                                    <div className="status-toggle pe-2" style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <span className={getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} >Trading Status</span>
-                                                        <input
-                                                            id="1"
-                                                            className="check"
-                                                            type="checkbox"
-                                                            onChange={(e) => LogIn_WIth_Api(e.target.checked,
-                                                                profileData.data[0].broker,
-                                                                profileData.data[0].TradingStatus,
-                                                                profileData.data[0])}
-                                                            defaultChecked={getLoginStatus}
-                                                            style={{ marginRight: '5px' }}
-                                                        />
-                                                        <label htmlFor="1" className="checktoggle checkbox-bg"></label>
-                                                    </div>
-                                                </li>
-
-
+                                    
                                                 <li className="">
                                                     <p
                                                         className=" mb-0 btn-filters"

@@ -7,7 +7,7 @@ import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
 import { Userinfo } from "../../../ReduxStore/Slice/Comman/Userinfo";
-import { Trade_Details, Update_Signals } from "../../../ReduxStore/Slice/Subadmin/Strategy";
+import { Trade_Details, Update_Signals } from "../../../ReduxStore/Slice/Comman/Trades";
 import { fDateTimeSuffix, GetMarketOpenDays, convert_string_to_month } from "../../../Utils/Date_formet";
 import { CreateSocketSession, ConnctSocket } from "../../../Utils/Alice_Socket";
 import { ShowColor1 } from "../../../Utils/ShowTradeColor";

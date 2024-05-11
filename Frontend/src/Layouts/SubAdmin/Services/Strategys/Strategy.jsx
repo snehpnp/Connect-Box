@@ -53,7 +53,7 @@ function Strategy() {
         data: [],
     });
 
-    console.log("allStategy :", allStategy.data)
+
 
 
 
@@ -227,10 +227,10 @@ function Strategy() {
             name: "security_fund",
             label: "Strategy Plan",
             type: 'security',
-            showWhen: (values) => formik.values.Service_Type == 1,
+            showWhen: (values) => formik.values.Service_Type == 1 || subadmin_service_type == 2,
         },
         {
-            name: "security_fund",
+            name: "security_plan",
             label: "Security fund",
             type: 'security',
             showWhen: (values) => formik.values.Service_Type == 2,
@@ -242,7 +242,7 @@ function Strategy() {
             label_size: 3,
             col_size: 3,
             disable: false,
-            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type == 2,
 
         },
         {
@@ -252,7 +252,7 @@ function Strategy() {
             label_size: 3,
             col_size: 3,
             disable: false,
-            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type == 2,
 
         },
         {
@@ -262,7 +262,7 @@ function Strategy() {
             label_size: 3,
             col_size: 3,
             disable: false,
-            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type == 2,
 
         },
         {
@@ -272,7 +272,7 @@ function Strategy() {
             label_size: 3,
             col_size: 3,
             disable: false,
-            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2,
+            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type == 2,
 
         },
         {
@@ -367,33 +367,36 @@ function Strategy() {
                 errors.max_trade = "Please enter maximum trade";
             }
 
-            if (subadmin_service_type == 1 && !values.security_fund_month) {
+            if (!values.security_fund_month) {
                 errors.security_fund_month = "amount is required";
             }
-            if (subadmin_service_type == 1 && !values.security_fund_quarterly) {
+            if (!values.security_fund_quarterly) {
                 errors.security_fund_quarterly = "amount is required";
             }
-            if (subadmin_service_type == 1 && !values.security_fund_half_early) {
+            if (!values.security_fund_half_early) {
                 errors.security_fund_half_early = "amount is required";
             }
 
-            if (subadmin_service_type == 1 && !values.security_fund_early) {
+            if (!values.security_fund_early) {
                 errors.security_fund_early = "amount is required";
             }
 
-            if (subadmin_service_type == 1 && !values.security_fund_early) {
+            if (!values.security_fund_early) {
                 errors.security_fund_early = "amount is required";
             }
-            if (subadmin_service_type == 1 && !values.fixed_amount_per_trade_month) {
-                errors.fixed_amount_per_trade_month = "amount is required";
+
+
+
+            if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_month) {
+                errors.fixed_amount_per_trade_month = "amount is required ";
             }
-            if (subadmin_service_type == 1 && !values.fixed_amount_per_trade_quarterly) {
+            if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_quarterly) {
                 errors.fixed_amount_per_trade_quarterly = "amount is required";
             }
-            if (subadmin_service_type == 1 && !values.fixed_amount_per_trade_early) {
+            if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_early) {
                 errors.fixed_amount_per_trade_early = "amount is required";
             }
-            if (subadmin_service_type == 1 && !values.fixed_amount_per_trade_half_early) {
+            if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_half_early) {
                 errors.fixed_amount_per_trade_half_early = "amount is required";
             }
             if (subadmin_service_type == 1 && !values.Service_Type) {
@@ -484,7 +487,6 @@ function Strategy() {
 
 
 
-    console.log("cpp :", formik.values.Service_Type)
 
 
     const RefreshHandle = () => {
@@ -687,7 +689,7 @@ function Strategy() {
                                                 {stg.researcher_id != null ? <span><i>Researcher :</i> {stg.researcher_id && stg.researcher_id.UserName}</span> : ""}
                                                 <p>{stg.Service_Type == 1 ? "Service_type: PER TRADE" : stg.Service_Type == 2 ? "Service_type: PER TRADE FIXED" : ""}</p>
 
-                                                {console.log("stg.max_trade :", stg)}
+
                                                 <p class="text-dark"><b>{stg.strategy_description}</b></p>
                                                 <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
                                                 {subadmin_service_type == 1 && stg.Service_Type == 1 ?
@@ -787,10 +789,29 @@ function Strategy() {
                                                                 </li>
                                                                 <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                                     <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                    <span >psss</span>
+                                                                    <span >Demo</span>
                                                                     <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
                                                                 </li>
-
+                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                    <span >Month</span>
+                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_month}/month</span>
+                                                                </li>
+                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                    <span >Quarterly</span>
+                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_quarterly}/Quarterly</span>
+                                                                </li>
+                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                    <span >Half Yearly</span>
+                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_half_early}/half year</span>
+                                                                </li>
+                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                                    <span >Yearly</span>
+                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year</span>
+                                                                </li>
                                                             </ul>
                                                             : ""
                                                 }

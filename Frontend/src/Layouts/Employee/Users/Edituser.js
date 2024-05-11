@@ -18,7 +18,8 @@ const EditClient = () => {
     const navigate = useNavigate();
     const location = useLocation()
 
-    const { rowData } = location.state;
+    const { rowData, additionalData } = location.state;
+
 
 
     const Role = JSON.parse(localStorage.getItem("user_details")).Role;
@@ -31,11 +32,6 @@ const EditClient = () => {
 
     const [getUserData, setUserData] = useState([])
     const [groupServiceId, setGroupServiceId] = useState('')
-
-
-
-
-
     const [getPermission, setPermission] = useState({
         loading: true,
         data: [],
@@ -48,8 +44,9 @@ const EditClient = () => {
     const [selectedCheckboxesAndPlan, setSelectedCheckboxesAndPlan] = useState([]);
 
 
-    const [getAllBroker, setAllBroker] = useState([]);
 
+
+    const [getAllBroker, setAllBroker] = useState([]);
 
 
     const isValidEmail = (email) => {
@@ -65,125 +62,6 @@ const EditClient = () => {
 
 
     // 0 = 2 days 1= Demo 2 =Live
-    const fields = [
-
-        {
-            name: "fullName",
-            label: "Full Name",
-            type: "text",
-            label_size: 6,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "username",
-            label: "Username",
-            type: "text",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "email",
-            label: "Email",
-            type: "text",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-
-        {
-            name: "phone",
-            label: "Phone Number",
-            type: "text3",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "licence",
-            label: "License Type",
-            type: "select",
-            options: [
-                { label: "Demo", value: "1" },
-                { label: "2 Day Live", value: "0" },
-                { label: "Live", value: "2" },
-            ],
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-
-
-            name: "Service_Type",
-            label: "Service Type",
-            type: "test",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-            showWhen: (values) => subadmin_service_type1 == 1,
-
-        },
-        {
-            name: "balance",
-            label: "Balance",
-            type: "text3",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-            showWhen: (values) => subadmin_service_type1 == 1 && values.licence === "2" && formik.values.Service_Type == 2,
-        },
-        {
-            name: "broker",
-            label: "Broker",
-            type: "select",
-            options:
-                getAllBroker &&
-                getAllBroker.map((item) => ({
-                    label: item.title,
-                    value: item.broker_id,
-                })),
-            showWhen: (values) => values.licence === "2" || values.licence === "0",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "demat_userid",
-            label: "Demat UserId",
-            type: "text",
-            showWhen: (values) => values.broker === "2" && values.licence != "1",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "api_key",
-            label: "Api Key",
-            type: "text",
-            showWhen: (values) => values.broker === "12",
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-        {
-            name: "groupservice",
-            label: "Group Service",
-            type: "select",
-            options:
-                getPermission.groupService &&
-                getPermission.groupService.map((item) => ({
-                    label: item.name,
-                    value: item.id,
-                })),
-            label_size: 12,
-            col_size: 6,
-            disable: false,
-        },
-
-
-    ];
 
     const formik = useFormik({
         initialValues: {
@@ -241,52 +119,312 @@ const EditClient = () => {
             return errors;
         },
         onSubmit: async (values) => {
-            const req = {
-                ProfileImg: ".",
-                FullName: values.fullName,
-                UserName: values.username,
-                Email: values.email,
-                license_type: values.licence,
-                PhoneNo: values.phone,
-                Balance: values.balance || null,
-                subadmin_service_type: null,
-                strategy_Percentage: null,
-                Per_trade: null,
-                Strategies: selectedCheckboxesAndPlan,
-                parent_id: user_id,
-                parent_role: Role,
-                demat_userid: values.demat_userid,
-                group_service: values.groupservice,
-                broker: values.broker,
-                Service_Type: values.Service_Type,
-                per_trade_value: values.per_trade_value || null,
-                employee_id: values.Employees || null,
-                _id: rowData && rowData._id,
 
-            };
-            await dispatch(UpdateUsers(req))
-                .unwrap()
-                .then(async (response) => {
-                    if (response.status) {
-                        Swal.fire({
-                            title: "Create Successful!",
-                            text: response.msg,
-                            icon: "success",
-                            timer: 1500,
-                            timerProgressBar: true
-                        });
-                        setTimeout(() => {
-                            navigate("/employee/allusers");
-                        }, 1500);
-                    } else {
-                        toast.error(response.msg);
-                    }
-                })
-                .catch((error) => {
-                    console.log("Error", error);
-                });
+
+            if (subadmin_service_type1 == 1 && additionalData.Update_Api_Key != 1) {
+                
+
+                let filteredArray3
+                if (getPermission.strategyName.length > 0) {
+                    const filteredArray2 = getPermission.strategyName.filter(item => values.Service_Type == item.Service_Type);
+                    filteredArray3 = selectedCheckboxesAndPlan.filter(item => filteredArray2.some(obj => obj.id == item.id));
+                }
+                
+                if (filteredArray3.length == 0) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Select at least one strategy",
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                    return;
+                }
+
+
+                const req = {
+                    ProfileImg: ".",
+                    FullName: values.fullName,
+                    UserName: values.username,
+                    Email: values.email,
+                    license_type: values.licence,
+                    PhoneNo: values.phone,
+                    Balance: values.balance || null,
+                    subadmin_service_type: null,
+                    strategy_Percentage: null,
+                    Per_trade: null,
+                    Strategies: filteredArray3,
+                    parent_id: user_id,
+                    parent_role: Role,
+                    demat_userid: values.demat_userid,
+                    group_service: values.groupservice,
+                    broker: values.broker,
+                    Service_Type: values.Service_Type,
+                    per_trade_value: values.per_trade_value || null,
+                    employee_id: values.Employees || null,
+                    _id: rowData && rowData._id,
+
+                };
+                await dispatch(UpdateUsers(req))
+                    .unwrap()
+                    .then(async (response) => {
+                        if (response.status) {
+                            Swal.fire({
+                                title: "Create Successful!",
+                                text: response.msg,
+                                icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true
+                            });
+                            setTimeout(() => {
+                                navigate("/employee/allusers");
+                            }, 1500);
+                        } else {
+                            toast.error(response.msg);
+                        }
+                    })
+                    .catch((error) => {
+                        console.log("Error", error);
+                    });
+
+
+            } else {
+
+
+                if (selectedCheckboxesAndPlan.length == 0) {
+                    Swal.fire({
+                        title: "Error",
+                        text: "Select at least one strategy",
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                    return;
+                }
+
+                const req = {
+                    ProfileImg: ".",
+                    FullName: values.fullName,
+                    UserName: values.username,
+                    Email: values.email,
+                    license_type: values.licence,
+                    PhoneNo: values.phone,
+                    Balance: values.balance || null,
+                    subadmin_service_type: null,
+                    strategy_Percentage: null,
+                    Per_trade: null,
+                    Strategies: selectedCheckboxesAndPlan,
+                    parent_id: user_id,
+                    parent_role: Role,
+                    demat_userid: values.demat_userid,
+                    group_service: values.groupservice,
+                    broker: values.broker,
+                    Service_Type: values.Service_Type,
+                    per_trade_value: values.per_trade_value || null,
+                    employee_id: values.Employees || null,
+                    _id: rowData && rowData._id,
+
+                };
+                await dispatch(UpdateUsers(req))
+                    .unwrap()
+                    .then(async (response) => {
+                        if (response.status) {
+                            Swal.fire({
+                                title: "Create Successful!",
+                                text: response.msg,
+                                icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true
+                            });
+                            setTimeout(() => {
+                                navigate("/employee/allusers");
+                            }, 1500);
+                        } else {
+                            toast.error(response.msg);
+                        }
+                    })
+                    .catch((error) => {
+                        console.log("Error", error);
+                    });
+            }
         },
     });
+
+
+    const fields = [
+
+        {
+            name: "fullName",
+            label: "Full Name",
+            type: "text",
+            label_size: 6,
+            col_size: 6,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
+        },
+        {
+            name: "username",
+            label: "Username",
+            type: "text",
+            label_size: 12,
+            col_size: 6,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
+        },
+        {
+            name: "email",
+            label: "Email",
+            type: "text",
+            label_size: 12,
+            col_size: 6,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
+        },
+
+        {
+            name: "phone",
+            label: "Phone Number",
+            type: "text3",
+            label_size: 12,
+            col_size: 6,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
+        },
+        // {
+        //     name: "licence",
+        //     label: "License Type",
+        //     type: "select",
+        //     options: [
+        //         { label: "Demo", value: "1" },
+        //         { label: "2 Day Live", value: "0" },
+        //         { label: "Live", value: "2" },
+        //     ],
+        //     label_size: 12,
+        //     col_size: 6,
+        //     disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
+        // },
+        {
+            name: "licence",
+            label: "Lincense Type",
+            type: "select",
+            options: rowData && rowData.license_type == 1 ?
+                [
+                    { label: "Demo", value: "1" },
+                    { label: "2 Day Live", value: "0" },
+                    { label: "Live", value: "2" },
+                ]
+                : rowData && rowData.license_type == 0 ?
+                    [
+                        { label: "2 Day Live", value: "0" },
+                        { label: "Live", value: "2" },
+                    ] :
+                    [
+
+                        { label: "Live", value: "2" },
+                    ],
+            label_size: 12,
+            col_size: 6,
+            disable: false,
+        },
+        {
+
+
+            name: "Service_Type",
+            label: "Service Type",
+            type: "test",
+            label_size: 12,
+            col_size: 6,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
+            showWhen: (values) => subadmin_service_type1 == 1,
+
+        },
+        {
+            name: "balance",
+            label: "Balance",
+            type: "text3",
+            label_size: 12,
+            col_size: 6,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
+            showWhen: (values) => subadmin_service_type1 == 1 && values.licence === "2" && formik.values.Service_Type == 2,
+        },
+        {
+            name: "broker",
+            label: "Broker",
+            type: "select",
+            options:
+                getAllBroker &&
+                getAllBroker.map((item) => ({
+                    label: item.title,
+                    value: item.broker_id,
+                })),
+            showWhen: (values) => values.licence === "2" || values.licence === "0",
+            label_size: 12,
+            col_size: 6,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
+        },
+
+        {
+            name: 'api_key',
+            label: formik.values.broker == 19 ? "Api Key" : formik.values.broker == 4 ? 'App Key' : formik.values.broker == 7 ? "Consumer Key" : formik.values.broker == 9 ? "Vendor Key" : formik.values.broker == 8 ? 'App Key' : formik.values.broker == 10 ? 'App Key' : "Api Key", type: 'text',
+            showWhen: values => values.broker === '4' || values.broker === '7' || values.broker === '8' || values.broker === '9' || values.broker === '10' || values.broker === '11' || values.broker === '12' || values.broker === '14' || values.broker === '15' || values.broker === '6' || values.broker === '19',
+            label_size: 12, col_size: 6, disable: false
+        },
+        {
+            name: 'client_code',
+            label: formik.values.broker == 21 ? "CLIENT CODE" : formik.values.broker == 1 ? 'User' : formik.values.broker == 4 ? "Client Code" : formik.values.broker == 7 ? "User Name" : formik.values.broker == 9 ? "Vander Id" : formik.values.broker == 11 ? "Client Code" : formik.values.broker == 11 ? "client_code" : 'User Id', type: 'text',
+            showWhen: values => values.broker === '1' || values.broker === '5' || values.broker === '4' || values.broker === '7' || values.broker === '9' || values.broker === '11' || values.broker === '6' || values.broker === '21',
+            label_size: 12, col_size: 6, disable: false
+        },
+        {
+            name: 'demat_userid',
+            label: formik.values.broker == 9 ? 'User Id' : '', type: 'text',
+            showWhen: values => values.broker === '9',
+            label_size: 12, col_size: 6, disable: false
+        },
+        {
+            name: 'app_id',
+            label: formik.values.broker == 21 ? 'MPIN' : formik.values.broker == 1 ? 'Verification Code' : formik.values.broker == 5 ? 'Password' : formik.values.broker == 7 ? 'Demat Password' : formik.values.broker == 11 ? 'Password' : formik.values.broker == 2 ? 'Demat UserId' : formik.values.broker == 13 ? 'App Id' : formik.values.broker == 9 ? 'Password' : formik.values.broker == 14 ? 'User Id ' : 'App Id', type: 'text',
+            showWhen: values =>
+                //  values.broker === '2' ||
+                values.broker === '1' || values.broker === '2' || values.broker === "3" || values.broker === '5' || values.broker === '7' || values.broker === '9' || values.broker === '11' || values.broker === '13' || values.broker === '14' || values.broker == '21',
+            label_size: 12, col_size: 6, disable: false
+        },
+        {
+            name: 'app_key',
+            label: formik.values.broker == 5 || 6 ? 'App Key' : "", type: 'text',
+            showWhen: values => values.broker === '5',
+            label_size: 12, col_size: 6, disable: false
+        },
+        {
+            name: 'api_secret',
+            label: formik.values.broker == 1 ? 'Password Code' : formik.values.broker == 5 ? 'DOB' : formik.values.broker == 7 ? 'Consumer Secret' : formik.values.broker == 9 ? 'Encryption Secret Key' : formik.values.broker == 10 ? 'Api Secret Key' : formik.values.broker == 11 ? '2FA' : formik.values.broker == 14 ? 'Encryption Key' : 'Api Secret', type: 'text',
+            showWhen: values => values.broker === '1'
+                ||
+                // values.broker === '2' ||
+                values.broker === '3' || values.broker === '5' || values.broker === '6' || values.broker === '7' || values.broker === '8' || values.broker === '9' || values.broker === '10' || values.broker === '11' || values.broker === '13' || values.broker === '14' || values.broker === '15' || values.broker === '19',
+            label_size: 12, col_size: 6, disable: false
+        },
+        {
+            name: 'api_type',
+            label: formik.values.broker == 5 ? 'DOB' : formik.values.broker == 7 ? 'Trade Api Password' : formik.values.broker == 9 ? 'Encryption IV' : 'Api Secret', type: 'text',
+            showWhen: values =>
+                values.broker === '7' || values.broker === '9',
+            label_size: 12, col_size: 6, disable: false
+        },
+        {
+            name: "groupservice",
+            label: "Group Service",
+            type: "select",
+            options:
+                getPermission.groupService &&
+                getPermission.groupService.map((item) => ({
+                    label: item.name,
+                    value: item.id,
+                })),
+            label_size: 12,
+            col_size: 6,
+            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
+        },
+
+
+    ];
+
 
 
     const GetUserData = async () => {
@@ -296,6 +434,7 @@ const EditClient = () => {
                 if (response.status) {
 
                     setUserData(response.data)
+
                     setSelectedCheckboxes(response.StrategyArr.map((stg) => stg.strategy_id))
                     setSelectedCheckboxesAndPlan(response.StrategyArr.map((stg) => ({ id: stg.strategy_id, plan_id: stg.plan_id })));
                     setGroupServiceId(response.GroupServiceArr[0].groupService_id)
@@ -322,6 +461,8 @@ const EditClient = () => {
 
     useEffect(() => {
         formik.setFieldValue("fullName", getUserData && getUserData.FullName)
+        formik.setFieldValue("Employees", getUserData && getUserData.employee_id)
+
         formik.setFieldValue("username", getUserData && getUserData.UserName)
         formik.setFieldValue("email", getUserData && getUserData.Email)
         formik.setFieldValue("phone", getUserData && getUserData.PhoneNo)
@@ -464,6 +605,7 @@ const EditClient = () => {
                 btn_name1_route={"/employee/allusers"}
                 additional_field={
                     <>
+
                         {serviceName.data.length > 0 ? <div class="input-block "> <label>All Group Service</label> </div> : ""}
                         <div className="row">
 
@@ -483,10 +625,10 @@ const EditClient = () => {
 
 
 
-                        {subadmin_service_type1 == 2 ?
+                        {additionalData && additionalData.Update_Api_Key != 1 ? subadmin_service_type1 == 2 ?
                             (<div className="row mt-4">
                                 <div class="input-block ">
-                                    <label>All Strategies 1</label>
+                                    <label>All Strategies</label>
                                 </div>
                                 {getPermission.strategyName.map((strategy) => (
                                     <div className={`col-lg-3 mt-2`} key={strategy.id}>
@@ -499,7 +641,7 @@ const EditClient = () => {
                                                         name={strategy.strategy_name}
                                                         value={strategy.id}
                                                         checked={selectedCheckboxes && selectedCheckboxes.includes(strategy.id)}
-                                                        disabled={selectedCheckboxes && selectedCheckboxes.includes(strategy.id)}
+                                                        disabled={formik.values && formik.values.licence != 2 ? false : selectedCheckboxes && selectedCheckboxes.includes(strategy.id)}
 
                                                         onChange={() => handleStrategyChange(strategy.id)}
                                                     />
@@ -634,7 +776,7 @@ const EditClient = () => {
                                                             name={strategy.strategy_name}
                                                             value={strategy.id}
                                                             checked={selectedCheckboxes && selectedCheckboxes.includes(strategy.id)}
-                                                            disabled={selectedCheckboxes && selectedCheckboxes.includes(strategy.id)}
+                                                            disabled={formik.values && formik.values.licence != 2 ? false : selectedCheckboxes && selectedCheckboxes.includes(strategy.id)}
                                                             onChange={() => handleStrategyChange(strategy.id)}
                                                         />
                                                         <label
@@ -687,7 +829,6 @@ const EditClient = () => {
                                                                                     value="2"
                                                                                     id={`${strategy.id}_2`}
                                                                                     checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy.id && item.plan_id == 2)}
-
                                                                                     onChange={(e) => PlanSetinState(e.target.id)}
                                                                                 />
 
@@ -750,7 +891,9 @@ const EditClient = () => {
                                     )
                                 ))}
 
-                            </div>)}
+                            </div>)
+                            : ""
+                        }
 
                     </>
                 }

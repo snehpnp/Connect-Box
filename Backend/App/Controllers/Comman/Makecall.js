@@ -15,6 +15,7 @@ const db_GET_VIEW = client.db(process.env.DB_NAME);
 const makecallabrView_excute_view = db_GET_VIEW.collection('makecallabrView_excute');
 const open_position_excute = db_GET_VIEW.collection('open_position_excute');
 const makecall_NotradeTime_status_excute = db_GET_VIEW.collection('makecall_NotradeTime_status_excute');
+const token_chain = db_GET_VIEW.collection('token_chain');
 
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -66,7 +67,8 @@ class Makecall {
   // get service by category
   async GetServiceByCatagory(req, res) {
 
-
+ 
+   console.log("req.body ",req.body)
 
     if (req.body.category_id == '' || req.body.category_id == null) {
       return res.send({ status: false, msg: "Category not fount service", data: [] })
@@ -74,6 +76,56 @@ class Makecall {
 
     const CategoryObjectId = new ObjectId(req.body.category_id);
 
+    const categorySegment = await categorie.findById(CategoryObjectId).select('segment')
+     
+   // console.log("categorySegment",categorySegment.segment)
+    if(categorySegment.segment == "FO"){
+     
+      const categorySegmentId = await categorie.findOne({segment:"F"}).select('_id');
+  //  console.log("categorySegmentId",categorySegmentId._id)
+
+
+    const pipeline = [
+      {
+        $lookup: {
+          from: 'categories',
+          localField: 'categorie_id',
+          foreignField: '_id',
+          as: 'category',
+        },
+      },
+      {
+        $unwind: '$category', // Unwind the 'categoryResult' array
+      },
+      {
+        $match: {
+          categorie_id: categorySegmentId._id
+        },
+      },
+      {
+        $sort: {
+          name: 1, // 1 for ascending order, -1 for descending order
+        },
+      },
+      {
+        $project: {
+          'category.segment': 1,
+          'category.name': 1,
+          name: 1,
+          lotsize: 1
+
+        },
+      },
+    ];
+    const result = await services.aggregate(pipeline);
+    if (result.length > 0) {
+      return res.send({ status: true, msg: "Get Succefully", data: result })
+    } else {
+      return res.send({ status: false, msg: "Some Error in get", data: [] })
+    }
+
+  }else{
+     
     const pipeline = [
       {
         $lookup: {
@@ -106,17 +158,17 @@ class Makecall {
         },
       },
     ];
-
-
-
     const result = await services.aggregate(pipeline);
-
-
     if (result.length > 0) {
       return res.send({ status: true, msg: "Get Succefully", data: result })
     } else {
       return res.send({ status: false, msg: "Some Error in get", data: [] })
     }
+
+
+   }
+
+ 
 
 
 
@@ -141,20 +193,26 @@ class Makecall {
         return res.status(400).json({ status: false, msg: 'Symbol is required.', data: [] });
       }
 
-      const date = new Date(); // Month is 0-based, so 10 represents November
 
+      const date = new Date(); // Month is 0-based, so 10 represents November
       const currentDate = new Date();
       const previousDate = new Date(currentDate);
       previousDate.setDate(currentDate.getDate() - 1);
       //  const date = new Date(); // Month is 0-based, so 10 represents November
       const formattedDate = previousDate.toISOString();
+      
+      const categorySegment = await categorie.findById(CategoryObjectId).select('segment')
+   
+      if(categorySegment.segment == "FO"){
 
+      
+        const categorySegmentId = await categorie.findOne({segment:"O"}).select('_id'); 
 
 
       const pipeline_category = [
         {
           $match: {
-            _id: CategoryObjectId
+            _id: categorySegmentId._id
           },
         },
         {
@@ -166,8 +224,6 @@ class Makecall {
       ];
 
       const category_details = await categorie.aggregate(pipeline_category);
-
-
 
       const pipeline = [
         {
@@ -217,13 +273,88 @@ class Makecall {
       ]
 
       const result = await Alice_token.aggregate(pipeline);
-
-
       if (result.length > 0) {
         return res.send({ status: true, msg: "Get Succefully", data: result })
       } else {
         return res.send({ status: false, msg: "Some Error in get", data: [] })
       }
+
+    }else{
+     
+      const pipeline_category = [
+        {
+          $match: {
+            _id: CategoryObjectId
+          },
+        },
+        {
+          $project: {
+            segment: 1,
+            _id: 0,
+          },
+        },
+      ];
+
+      const category_details = await categorie.aggregate(pipeline_category);
+
+      const pipeline = [
+        {
+          $match: {
+            symbol: symbol,
+            segment: category_details[0].segment
+          }
+        },
+        {
+          $group: {
+            _id: "$symbol",
+            uniqueExpiryValues: { $addToSet: "$expiry" }
+          }
+        },
+        {
+          $unwind: "$uniqueExpiryValues"
+        },
+        {
+          $addFields: {
+            expiryDate: {
+              $dateFromString: {
+                dateString: "$uniqueExpiryValues",
+                format: "%d%m%Y"
+              }
+            }
+          }
+        },
+
+        {
+          $addFields: {
+            formattedExpiryDate: {
+              $dateToString: {
+                date: "$expiryDate",
+                format: "%d%m%Y"
+              }
+            }
+          }
+        },
+        {
+          $sort: { expiryDate: 1 }
+        },
+        {
+          $limit: 4
+        }
+
+
+      ]
+
+      const result = await Alice_token.aggregate(pipeline);
+      if (result.length > 0) {
+        return res.send({ status: true, msg: "Get Succefully", data: result })
+      } else {
+        return res.send({ status: false, msg: "Some Error in get", data: [] })
+      }
+
+    }
+
+
+
 
     } catch (error) {
       return res.status(500).json({ status: false, msg: 'Server error', data: [] });
@@ -401,6 +532,19 @@ class Makecall {
 
       }
 
+      if(req.body.segment == "FO"){
+
+        const result = await services.findOne({ name: symbol }).select('instrument_token exch_seg');
+    
+        if (result != null) {
+        return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
+        } else {
+        return res.send({ status: false, msg: "Data not found", token: "" })
+        }
+
+      }
+
+     
 
       //Futer Token get
       else if (req.body.segment == "F" || req.body.segment == "MF" || req.body.segment == "CF") {
@@ -489,7 +633,11 @@ class Makecall {
 
   //Add data above beleow range
   async AddDataAboveBelowRange(req, res) {
+   
 
+
+    console.log("req - ",req.body)
+ 
     try {
 
 
@@ -524,6 +672,40 @@ class Makecall {
         WiseTypeDropdown
       } = req.body;
 
+
+      let exch = "NFO"
+
+       if(Segment == "C"){
+        exch = "NSE"
+       }
+       else if(Segment == "MO" || Segment == "MF"){
+        exch = "MCX"
+       }
+       else if(Segment == "CO" || Segment == "CF"){
+        exch = "CDS"
+       }
+       console.log("token ",token)
+       console.log("exch ",exch)
+
+
+       
+       
+      //  const tokenExisst = await token_chain.findOne({_id:token})
+      //  console.log("tokenExisst ",tokenExisst)
+      //  if(tokenExisst){
+      //  console.log("tokenExisst if",tokenExisst)
+         
+      //  }else{
+      //  console.log("tokenExisst else",tokenExisst)
+        
+      //  }
+      //   return
+
+      //  const filter = { _id:token  };
+      // const update = { $set: { _id:token,exch:exch} };
+      //  await token_chain.updateOne(filter, update, { upsert: true });
+      //  return
+
       //crete data
       const makecallABR_insert = new makecallABR({
         user_id: user_id,
@@ -557,9 +739,26 @@ class Makecall {
       });
 
       // Save new user and count licenses
+
+      
+
       const result = await makecallABR_insert.save();
 
       if (result != null) {
+
+      //  let exch = "NFO"
+
+      //  if(Segment == "C"){
+      //   exch = "NSE"
+      //  }
+      //  else if(Segment == "MO" || Segment == "MF"){
+      //   exch = "MCX"
+      //  }
+      //  else if(Segment == "CO" || Segment == "CF"){
+      //   exch = "CDS"
+      //  }
+
+
         return res.send({ status: true, msg: "Data Add Successfully....", data: result });
       } else {
         return res.send({ status: false, msg: "Id Wrong" });
@@ -825,9 +1024,7 @@ async function run() {
               let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: 'http://localhost:8800/broker-signals',
-                // url: 'https://trade.pandpinfotech.com/signal/broker-signals',
-                // url: `${process.env.BROKER_URL}`,
+                url: `${process.env.BROKER_URL}`,
                 headers: {
                   'Content-Type': 'text/plain'
                 },
@@ -917,10 +1114,8 @@ async function run() {
 
             let config = {
               method: 'post',
-              maxBodyLength: Infinity,
-              url: 'http://localhost:8800/broker-signals',
-              // url: 'https://trade.pandpinfotech.com/signal/broker-signals',
-              // url: `${process.env.BROKER_URL}`,
+              maxBodyLength: Infinity,            
+              url: `${process.env.BROKER_URL}`,
               headers: {
                 'Content-Type': 'text/plain'
               },
@@ -1008,12 +1203,14 @@ async function run() {
 
 }
 
-// run().catch(console.error);
+
+run().catch(console.error);
 
 
 //////////////////----- makecallabrView_excute_run --//////////////////////////////
 
 
+//////////////////----- makecallabrView_excute_run --/////////////////////////
 
 
 module.exports = new Makecall();

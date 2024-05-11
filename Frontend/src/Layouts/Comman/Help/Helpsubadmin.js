@@ -195,7 +195,7 @@ const Helpsubadmin = () => {
 
           if (response.data.length > 0) {
             var filterData = response.data.filter(
-              (data) => data.prifix_key === user.prifix_key
+              (data) => data.prifix_key.substring(0, 3) === user.prifix_key
             );
 
             setGetuserdata(filterData);
@@ -222,7 +222,7 @@ const Helpsubadmin = () => {
 
           if (response.data.length > 0) {
             var filterData = response.data.filter(
-              (data) => data.prifix_key === user.prifix_key
+              (data) => data.prifix_key.substring(0, 3) === user.prifix_key
             );
 
             setGetemployeedata(filterData);

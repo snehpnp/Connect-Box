@@ -2,6 +2,7 @@ const messageHelpData = require("../../../Models/HelpService.model");
 const usermessage = require("../../../Models/HelpServiceUser.model")
 const db = require('../../../Models');
 const help = db.help
+const user = db.user
 
 
 class Helpmessage {
@@ -205,7 +206,7 @@ class Helpmessage {
   async getEmployee(req, res) {
     try {
 
-      let messagedata = await help.find({ Role: "EMPLOYEE" });
+      let messagedata = await help.find({ Role:"EMPLOYEE" });
       if (!messagedata) {
         return res.send({ status: false, msg: "message not getting", data: [] });
       }
@@ -214,6 +215,31 @@ class Helpmessage {
         status: true,
         msg: "getting message  Successfully.",
         data: messagedata,
+      });
+    } catch (error) {
+      console.error("internal error:", error);
+    }
+  }
+
+
+
+  async getEmployeebyid(req, res) {
+    try {
+       const {id} = req.body
+    
+      let messagedata = await user.find({_id: id});
+
+      let messagedata1 = await user.find({_id: messagedata[0].parent_id});
+
+      if (!messagedata) {
+        return res.send({ status: false, msg: "message not getting", data: [] });
+      }
+
+      return res.send({
+        status: true,
+        msg: "getting message  Successfully.",
+        data: messagedata,
+        subadmin:messagedata1[0].UserName
       });
     } catch (error) {
       console.error("internal error:", error);

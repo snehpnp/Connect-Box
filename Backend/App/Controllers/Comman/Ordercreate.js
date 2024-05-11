@@ -62,7 +62,7 @@ class Ordercreate {
                 strategy_id: strategy_id,
                 order_id: response.id,
                 User_data: "",
-                amount: amount, // in paise
+                amount: parseInt(amount) /100, // in paise
                 receipt: receipt,
                 razorpay_order_id: "",
                 razorpay_payment_id: ""

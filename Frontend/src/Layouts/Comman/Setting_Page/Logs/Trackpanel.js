@@ -140,6 +140,24 @@ const Trackpanel = () => {
         <Row className="mb-3">
           <Col>
             <Form.Group>
+              <Form.Label>Select Category</Form.Label>
+              <Form.Control
+                as="select"
+                value={selectedCategory}
+                onChange={(e) => handleDropdownSelect(e.target.value)}
+              >
+                <option value="">Select...</option>
+                {activityData &&
+                  activityData.map((data, index) => (
+                    <option key={index} value={data.activity}>
+                      {data.activity}
+                    </option>
+                  ))}
+              </Form.Control>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group>
               <Form.Label>FROM DATE</Form.Label>
               <Form.Control
                 type="date"
@@ -162,38 +180,15 @@ const Trackpanel = () => {
           </Col>
         </Row>
 
-        <Row>
-          <Col>
-            <Form.Group>
-              <Form.Label>Select Category</Form.Label>
-              <Form.Control
-                as="select"
-                value={selectedCategory}
-                onChange={(e) => handleDropdownSelect(e.target.value)}
-              >
-                <option value="">Select...</option>
-                {activityData &&
-                  activityData.map((data, index) => (
-                    <option key={index} value={data.activity}>
-                      {data.activity}
-                    </option>
-                  ))}
-              </Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
 
 
         {selectedCategory && (
           <Row>
             <Col>
-              <Card className="mt-4">
-                <Card.Body>
-                  <Card.Title>{selectedCategory}</Card.Title>
-                  <Card.Text>{selectedCategory}</Card.Text>
-                  <FullDataTable columns={columns} rows={finddata} />
-                </Card.Body>
-              </Card>
+
+              <Card.Title>{selectedCategory}</Card.Title>
+              <FullDataTable columns={columns} rows={finddata} />
+
             </Col>
           </Row>
         )}

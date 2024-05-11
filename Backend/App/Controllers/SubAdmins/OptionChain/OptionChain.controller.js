@@ -180,7 +180,7 @@ class OptionChain {
 
         let limit_set = 21
 
-        let price = 19000
+        let price = 22000
 
         const get_symbol_price = await Get_Option_Chain_modal.findOne({ symbol: symbol })
 

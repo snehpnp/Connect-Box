@@ -35,7 +35,7 @@ class Users {
   // USER ADD
   async AddUser(req, res) {
     try {
-      const { FullName, UserName, Email, PhoneNo, license_type, licence, fromdate, Strategies, broker, parent_id, api_secret, app_id, client_code, api_key, app_key, api_type, demat_userid, group_service, Service_Type, per_trade_value, Balance,employee_id } = req.body;
+      const { FullName, UserName, Email, PhoneNo, license_type, licence, fromdate, Strategies, broker, parent_id, api_secret, app_id, client_code, api_key, app_key, api_type, demat_userid, group_service, Service_Type, per_trade_value, Balance, employee_id } = req.body;
 
       var Role = "USER";
       var StartDate1 = "";
@@ -54,7 +54,7 @@ class Users {
       }
 
 
-      const SubadminCheck = await User_model.find({ _id: parent_id });
+      const SubadminCheck = await User_model.find({ _id: parent_id })
 
       if (SubadminCheck.length == 0) {
         return res.send({ status: false, msg: "Please Enter Correct Maker Id", data: [] });
@@ -144,7 +144,7 @@ class Users {
 
 
 
-        var matchedStrategies = await Strategie_modal.find({ _id: { $in: stgIds } }).select('strategy strategy_demo_days strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early');
+        var matchedStrategies = await Strategie_modal.find({ _id: { $in: stgIds } }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
 
         // Create an array of matched strategy IDs
         var matchedStrategyIds = matchedStrategies.map(strategy => strategy._id.toString());
@@ -193,6 +193,19 @@ class Users {
         });
       }
 
+
+
+
+      var parent_prifix_key
+      if (SubadminCheck[0].Role == "SUBADMIN") {
+        parent_prifix_key = SubadminCheck[0].prifix_key
+      } else if (SubadminCheck[0].Role == "EMPLOYEE") {
+        parent_prifix_key = SubadminCheck[0].prifix_key.substring(0, 3);
+      } else {
+        parent_prifix_key = SubadminCheck[0].prifix_key
+      }
+      console.log("parent_prifix_key", parent_prifix_key)
+
       const mins = 1;
       const maxs = 1000000;
       const rands = mins + Math.random() * (maxs - mins);
@@ -201,6 +214,14 @@ class Users {
 
       var ccd = dt.format("ymd");
       var client_key = SubadminCheck[0].prifix_key + cli_key + ccd;
+
+
+
+
+
+
+
+
 
 
       User_model.insertMany([
@@ -214,10 +235,10 @@ class Users {
           Role: Role.toUpperCase(),
           license_type: license_type,
           licence: licence,
-          prifix_key: SubadminCheck[0].prifix_key,
+          prifix_key: client_key,
           client_key: client_key,
-          parent_id: parent_id,
-          parent_role: SubadminCheck[0].parent_role,
+          parent_id: SubadminCheck[0].Role == "SUBADMIN" ? SubadminCheck[0]._id : SubadminCheck[0].parent_id,
+          parent_role: SubadminCheck[0].Role == "SUBADMIN" ? SubadminCheck[0].Role : SubadminCheck[0].parent_role,
           api_secret: api_secret,
           app_id: app_id,
           client_code: client_code,
@@ -229,15 +250,13 @@ class Users {
           Service_Type: Service_Type,
           per_trade_value: per_trade_value,
           Balance: Balance || 0,
-          employee_id:employee_id
+          employee_id: SubadminCheck[0].Role == "SUBADMIN" ? null : SubadminCheck[0]._id
 
         },
 
       ])
         .then(async (data) => {
           var User_id = data[0]._id;
-
-
 
           // GROUP SERVICE ADD
           const User_group_service = new groupService_User({
@@ -348,21 +367,24 @@ class Users {
             if (matchedStrategies.length > 0) {
               matchedStrategies.forEach((data) => {
                 const matchedStrategy = Strategies.find(strat => strat.id === data._id.toString());
+                console.log("matchedStrategy.plan_id ", matchedStrategy.plan_id)
+                console.log("data ",data)
+
 
                 var price_stg = 0
                 var daysforstg = 0
                 if (matchedStrategy.plan_id == 1) {
-                  price_stg = data.strategy_amount_month
+                  price_stg = data.security_fund_month
                   daysforstg = 1
                 } else if (matchedStrategy.plan_id == 2) {
-                  price_stg = data.strategy_amount_quarterly
+                  price_stg = data.security_fund_quarterly
                   daysforstg = 3
                 } else if (matchedStrategy.plan_id == 3) {
-                  price_stg = data.strategy_amount_half_early
+                  price_stg = data.security_fund_half_early
                   daysforstg = 6
                 }
                 else if (matchedStrategy.plan_id == 4) {
-                  price_stg = data.strategy_amount_early
+                  price_stg = data.security_fund_early
                   daysforstg = 12
                 } else {
                   daysforstg = 0
@@ -409,8 +431,13 @@ class Users {
                 User_strategy_client.save();
 
 
-                const Admin_charge_percentage = Number(SubadminCheck[0].strategy_Percentage) / 100;
-                const Admin_charge1 = Admin_charge_percentage * Number(price_stg);
+                console.log("parseInt(SubadminCheck[0].strategy_Percentage)", parseInt(SubadminCheck[0].strategy_Percentage))
+
+                console.log("parseInt(price_stg)", parseInt(price_stg))
+
+
+                const Admin_charge_percentage = parseInt(SubadminCheck[0].strategy_Percentage) / 100;
+                const Admin_charge1 = Admin_charge_percentage * parseInt(price_stg);
 
                 const strategy_transactionData = new strategy_transaction({
                   strategy_id: data.id,
@@ -502,7 +529,7 @@ class Users {
 
                 },
               };
-       
+
               const update_Date = await User_model.updateOne(filter, update);
             }
 
@@ -526,7 +553,7 @@ class Users {
             }
 
 
-           res.send({ status: true, msg: "successfully Add!", data: data[0]._id });
+            res.send({ status: true, msg: "successfully Add!", data: data[0]._id });
 
             var EmailData = await firstOptPass(email_data);
 
@@ -799,270 +826,190 @@ class Users {
       }
 
 
-      if (
-        Number(ParentData.Balance) >=
-        Number(totalLicense) + Number(req.Balance)
-      ) {
+      // if (
+      //   Number(ParentData.Balance) >=
+      //   Number(totalLicense) + Number(req.Balance)
+      // ) {} else {
+      //   return res.send({
+      //     status: false,
+      //     msg: "You Dont Have Balance",
+      //     data: [],
+      //   });
+      // }
 
-        // PREVIOS CLIENT IS LIVE
-        if (existingUsername.license_type != "2") {
+      // PREVIOS CLIENT IS LIVE
+      if (existingUsername.license_type != "2") {
 
 
-          // USER 2 DAYS LICENSE USEcd cd   
-          if (req.license_type == "0") {
+        // USER 2 DAYS LICENSE USEcd cd   
+        if (req.license_type == "0") {
 
-            var currentDate = new Date();
-            var start_date_2days = dateTime.create(currentDate);
-            start_date_2days = start_date_2days.format("Y-m-d H:M:S");
-            var start_date = start_date_2days;
+          var currentDate = new Date();
+          var start_date_2days = dateTime.create(currentDate);
+          start_date_2days = start_date_2days.format("Y-m-d H:M:S");
+          var start_date = start_date_2days;
 
-            StartDate1 = start_date;
+          StartDate1 = start_date;
 
-            var UpdateDate = "";
-            var StartDate = new Date(start_date);
-            var GetDay = StartDate.getDay();
-            if (GetDay == 4) {
-              UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
-            } else if (GetDay == 5) {
-              UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
-            } else if (GetDay == 6) {
-              UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
-            } else if (GetDay == 0) {
-              UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
-            } else if (GetDay > 0 && GetDay < 4) {
-              UpdateDate = StartDate.setDate(StartDate.getDate() + 7);
-            }
+          var UpdateDate = "";
+          var StartDate = new Date(start_date);
+          var GetDay = StartDate.getDay();
+          if (GetDay == 4) {
+            UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
+          } else if (GetDay == 5) {
+            UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
+          } else if (GetDay == 6) {
+            UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
+          } else if (GetDay == 0) {
+            UpdateDate = StartDate.setDate(StartDate.getDate() + 8);
+          } else if (GetDay > 0 && GetDay < 4) {
+            UpdateDate = StartDate.setDate(StartDate.getDate() + 7);
+          }
 
-            var end_date_2days = dateTime.create(UpdateDate);
-            var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
-            EndDate1 = end_date_2days;
+          var end_date_2days = dateTime.create(UpdateDate);
+          var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
+          EndDate1 = end_date_2days;
 
-            if (add_startegy.length > 0) {
-              add_startegy.forEach((data) => {
-                const User_strategy_client = new strategy_client({
-                  strategy_id: data._id,
+          if (add_startegy.length > 0) {
+            add_startegy.forEach((data) => {
+              const User_strategy_client = new strategy_client({
+                strategy_id: data._id,
+                plan_id: 10,
+                user_id: existingUsername._id,
+                uniqueUserStrategy: existingUsername._id + "_" + data.id,
+                admin_id: PID,
+                Start_Date: StartDate1,
+                End_Date: EndDate1
+              });
+              User_strategy_client.save();
+
+
+              const Activity_logsData = new Activity_logs({
+                user_Id: existingUsername._id,
+                admin_Id: ParentData._id,
+                category: "EDIT-USER",
+                message: data.strategy_name + " Strategy Add",
+                maker_role: "SUBADMIN",
+                device: "web",
+                system_ip: ""
+              });
+              Activity_logsData.save();
+
+            });
+          }
+
+
+          if (Exist_strategy.length > 0 && existingUsername.license_type != "0") {
+            Exist_strategy.forEach(async (data) => {
+
+
+              const filter = { strategy_id: data.strategy_id, user_id: existingUsername._id };
+              const update = {
+                $set: {
                   plan_id: 10,
-                  user_id: existingUsername._id,
-                  uniqueUserStrategy: existingUsername._id + "_" + data.id,
-                  admin_id: PID,
-                  Start_Date: StartDate1,
-                  End_Date: EndDate1
-                });
-                User_strategy_client.save();
-
-
-                const Activity_logsData = new Activity_logs({
-                  user_Id: existingUsername._id,
-                  admin_Id: ParentData._id,
-                  category: "EDIT-USER",
-                  message: data.strategy_name + " Strategy Add",
-                  maker_role: "SUBADMIN",
-                  device: "web",
-                  system_ip: ""
-                });
-                Activity_logsData.save();
-
-              });
-            }
-
-
-            if (Exist_strategy.length > 0 && existingUsername.license_type != "0") {
-              Exist_strategy.forEach(async (data) => {
-
-
-                const filter = { strategy_id: data.strategy_id, user_id: existingUsername._id };
-                const update = {
-                  $set: {
-                    plan_id: 10,
-                    Start_Date: StartDate1,
-                    End_Date: EndDate1,
-                    ActiveStatus: "1"
-
-                  },
-                };
-
-
-                const update_token = await strategy_client.updateOne(filter, update, { upsert: true });
-
-
-
-                const Activity_logsData = new Activity_logs({
-                  user_Id: existingUsername._id,
-                  admin_Id: ParentData._id,
-                  category: "EDIT-USER",
-                  message: data.strategy_name + " Strategy Date Update",
-                  maker_role: "SUBADMIN",
-                  device: "web",
-                  system_ip: ""
-                });
-                Activity_logsData.save();
-
-              });
-            }
-
-
-
-
-          } else if (req.license_type == "1") {
-
-
-            if (add_startegy.length > 0) {
-              add_startegy.forEach((data) => {
-
-                var currentDate = new Date();
-                var start_date_2days = dateTime.create(currentDate);
-                start_date_2days = start_date_2days.format("Y-m-d H:M:S");
-                var start_date = start_date_2days;
-
-
-                StartDate1 = start_date;
-
-                var UpdateDate = "";
-                var StartDate = new Date(start_date);
-                var GetDay = StartDate.getDay();
-
-                UpdateDate = StartDate.setDate(StartDate.getDate() + Number(data.strategy_demo_days));
-
-
-                var end_date_2days = dateTime.create(UpdateDate);
-                var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
-
-                EndDate1 = end_date_2days;
-
-
-                // STRATEGY ADD
-                const User_strategy_client = new strategy_client({
-                  strategy_id: data._id,
-                  plan_id: 0,
-                  user_id: existingUsername._id,
-                  uniqueUserStrategy: existingUsername._id + "_" + data.id,
-                  admin_id: PID,
-                  Start_Date: StartDate1,
-                  End_Date: EndDate1
-                });
-                User_strategy_client.save();
-
-                const Activity_logsData = new Activity_logs({
-                  user_Id: existingUsername._id,
-                  admin_Id: ParentData._id,
-                  category: "EDIT-USER",
-                  message: data.strategy_name + " Strategy Add",
-                  maker_role: "SUBADMIN",
-                  device: "web",
-                  system_ip: ""
-                });
-                Activity_logsData.save();
-              });
-            }
-
-
-          } else if (req.license_type == "2") {
-
-            // IF ADD NEW STRATEGY
-            if (add_startegy.length > 0) {
-              add_startegy.forEach(async (data) => {
-                const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early');
-
-                var price_stg = 0
-                var daysforstg = 0
-                if (data.plan_id == 1) {
-                  price_stg = matchedStrategy.strategy_amount_month
-                  daysforstg = 1
-                } else if (data.plan_id == 2) {
-                  price_stg = matchedStrategy.strategy_amount_quarterly
-                  daysforstg = 3
-                } else if (data.plan_id == 3) {
-                  price_stg = matchedStrategy.strategy_amount_half_early
-                  daysforstg = 6
-                }
-                else if (data.plan_id == 4) {
-                  price_stg = matchedStrategy.strategy_amount_early
-                  daysforstg = 12
-                } else {
-                  daysforstg = 0
-                  price_stg = 0
-                }
-
-                var currentDate = new Date();
-                var start_date_2days = dateTime.create(currentDate);
-                start_date_2days = start_date_2days.format("Y-m-d H:M:S");
-                var start_date = start_date_2days;
-
-
-                StartDate1 = start_date;
-
-                var UpdateDate = "";
-                var StartDate = new Date(start_date);
-
-                UpdateDate = StartDate.setMonth(
-                  StartDate.getMonth() + parseInt(daysforstg)
-                );
-
-                var end_date_2days = dateTime.create(UpdateDate);
-                var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
-
-
-                EndDate1 = end_date_2days;
-
-                // STRATEGY ADD
-                const User_strategy_client = new strategy_client({
-                  strategy_id: matchedStrategy._id,
-                  plan_id: data.plan_id,
-                  user_id: existingUsername._id,
-                  admin_id: PID,
                   Start_Date: StartDate1,
                   End_Date: EndDate1,
-                  uniqueUserStrategy: existingUsername._id + "_" + matchedStrategy._id,
-                });
-                User_strategy_client.save();
+                  ActiveStatus: "1"
 
-                const Activity_logsData = new Activity_logs({
-                  user_Id: existingUsername._id,
-                  admin_Id: ParentData._id,
-                  category: "EDIT-USER",
-                  message: data.strategy_name + " Strategy Add",
-                  maker_role: "SUBADMIN",
-                  device: "web",
-                  system_ip: ""
-                });
-                Activity_logsData.save();
+                },
+              };
 
-                const Admin_charge_percentage = Number(ParentData.strategy_Percentage) / 100;
-                const Admin_charge1 = Admin_charge_percentage * Number(price_stg);
 
-                const strategy_transactionData = new strategy_transaction({
-                  strategy_id: matchedStrategy._id,
-                  user_id: existingUsername._id,
-                  admin_id: ParentData._id,
-                  plan_id: matchedStrategy.plan_id,
-                  Start_Date: StartDate1,
-                  End_Date: EndDate1,
-                  stg_charge: price_stg,
-                  Admin_charge: Admin_charge1
-                });
-                strategy_transactionData.save();
+              const update_token = await strategy_client.updateOne(filter, update, { upsert: true });
+
+
+
+              const Activity_logsData = new Activity_logs({
+                user_Id: existingUsername._id,
+                admin_Id: ParentData._id,
+                category: "EDIT-USER",
+                message: data.strategy_name + " Strategy Date Update",
+                maker_role: "SUBADMIN",
+                device: "web",
+                system_ip: ""
               });
-            }
+              Activity_logsData.save();
 
-            // UPDATE PLAN DEMO TO LIVE
-            Exist_strategy1.map(async (data) => {
+            });
+          }
 
-              const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early');
+
+
+
+        } else if (req.license_type == "1") {
+
+
+          if (add_startegy.length > 0) {
+            add_startegy.forEach((data) => {
+
+              var currentDate = new Date();
+              var start_date_2days = dateTime.create(currentDate);
+              start_date_2days = start_date_2days.format("Y-m-d H:M:S");
+              var start_date = start_date_2days;
+
+
+              StartDate1 = start_date;
+
+              var UpdateDate = "";
+              var StartDate = new Date(start_date);
+              var GetDay = StartDate.getDay();
+
+              UpdateDate = StartDate.setDate(StartDate.getDate() + Number(data.strategy_demo_days));
+
+
+              var end_date_2days = dateTime.create(UpdateDate);
+              var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
+
+              EndDate1 = end_date_2days;
+
+
+              // STRATEGY ADD
+              const User_strategy_client = new strategy_client({
+                strategy_id: data._id,
+                plan_id: 0,
+                user_id: existingUsername._id,
+                uniqueUserStrategy: existingUsername._id + "_" + data.id,
+                admin_id: PID,
+                Start_Date: StartDate1,
+                End_Date: EndDate1
+              });
+              User_strategy_client.save();
+
+              const Activity_logsData = new Activity_logs({
+                user_Id: existingUsername._id,
+                admin_Id: ParentData._id,
+                category: "EDIT-USER",
+                message: data.strategy_name + " Strategy Add",
+                maker_role: "SUBADMIN",
+                device: "web",
+                system_ip: ""
+              });
+              Activity_logsData.save();
+            });
+          }
+
+
+        } else if (req.license_type == "2") {
+
+          // IF ADD NEW STRATEGY
+          if (add_startegy.length > 0) {
+            add_startegy.forEach(async (data) => {
+              const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
 
               var price_stg = 0
               var daysforstg = 0
               if (data.plan_id == 1) {
-                price_stg = matchedStrategy.strategy_amount_month
+                price_stg = matchedStrategy.security_fund_month
                 daysforstg = 1
               } else if (data.plan_id == 2) {
-                price_stg = matchedStrategy.strategy_amount_quarterly
+                price_stg = matchedStrategy.security_fund_quarterly
                 daysforstg = 3
               } else if (data.plan_id == 3) {
-                price_stg = matchedStrategy.strategy_amount_half_early
+                price_stg = matchedStrategy.security_fund_half_early
                 daysforstg = 6
               }
               else if (data.plan_id == 4) {
-                price_stg = matchedStrategy.strategy_amount_early
+                price_stg = matchedStrategy.security_fund_early
                 daysforstg = 12
               } else {
                 daysforstg = 0
@@ -1090,24 +1037,210 @@ class Users {
 
               EndDate1 = end_date_2days;
 
+              // STRATEGY ADD
+              const User_strategy_client = new strategy_client({
+                strategy_id: matchedStrategy._id,
+                plan_id: data.plan_id,
+                user_id: existingUsername._id,
+                admin_id: PID,
+                Start_Date: StartDate1,
+                End_Date: EndDate1,
+                uniqueUserStrategy: existingUsername._id + "_" + matchedStrategy._id,
+              });
+              User_strategy_client.save();
+
+              const Activity_logsData = new Activity_logs({
+                user_Id: existingUsername._id,
+                admin_Id: ParentData._id,
+                category: "EDIT-USER",
+                message: data.strategy_name + " Strategy Add",
+                maker_role: "SUBADMIN",
+                device: "web",
+                system_ip: ""
+              });
+              Activity_logsData.save();
+
+              const Admin_charge_percentage = parseInt(ParentData.strategy_Percentage) / 100;
+              const Admin_charge1 = Admin_charge_percentage * parseInt(price_stg);
+
+              const strategy_transactionData = new strategy_transaction({
+                strategy_id: matchedStrategy._id,
+                user_id: existingUsername._id,
+                admin_id: ParentData._id,
+                plan_id: matchedStrategy.plan_id,
+                Start_Date: StartDate1,
+                End_Date: EndDate1,
+                stg_charge: price_stg,
+                Admin_charge: Admin_charge1
+              });
+              strategy_transactionData.save();
+            });
+          }
+
+          // UPDATE PLAN DEMO TO LIVE
+          Exist_strategy1.map(async (data) => {
+
+            const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
+
+            var price_stg = 0
+            var daysforstg = 0
+            if (data.plan_id == 1) {
+              price_stg = matchedStrategy.security_fund_month
+              daysforstg = 1
+            } else if (data.plan_id == 2) {
+              price_stg = matchedStrategy.security_fund_quarterly
+              daysforstg = 3
+            } else if (data.plan_id == 3) {
+              price_stg = matchedStrategy.security_fund_half_early
+              daysforstg = 6
+            }
+            else if (data.plan_id == 4) {
+              price_stg = matchedStrategy.security_fund_early
+              daysforstg = 12
+            } else {
+              daysforstg = 0
+              price_stg = 0
+            }
+
+            var currentDate = new Date();
+            var start_date_2days = dateTime.create(currentDate);
+            start_date_2days = start_date_2days.format("Y-m-d H:M:S");
+            var start_date = start_date_2days;
+
+
+            StartDate1 = start_date;
+
+            var UpdateDate = "";
+            var StartDate = new Date(start_date);
+
+            UpdateDate = StartDate.setMonth(
+              StartDate.getMonth() + parseInt(daysforstg)
+            );
+
+            var end_date_2days = dateTime.create(UpdateDate);
+            var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
+
+
+            EndDate1 = end_date_2days;
 
 
 
-              const filter = { strategy_id: matchedStrategy._id, user_id: existingUsername._id };
-              const update = {
-                $set: {
-                  plan_id: data.plan_id,
-                  Start_Date: StartDate1,
-                  End_Date: EndDate1,
-                  ActiveStatus: "1"
 
-                },
-              };
+            const filter = { strategy_id: matchedStrategy._id, user_id: existingUsername._id };
+            const update = {
+              $set: {
+                plan_id: data.plan_id,
+                Start_Date: StartDate1,
+                End_Date: EndDate1,
+                ActiveStatus: "1"
 
-
-              const update_token = await strategy_client.updateOne(filter, update, { upsert: true });
+              },
+            };
 
 
+            const update_token = await strategy_client.updateOne(filter, update, { upsert: true });
+
+
+
+
+            const Activity_logsData = new Activity_logs({
+              user_Id: existingUsername._id,
+              admin_Id: ParentData._id,
+              category: "EDIT-USER",
+              message: data.strategy_name + " Strategy Add",
+              maker_role: "SUBADMIN",
+              device: "web",
+              system_ip: ""
+            });
+            Activity_logsData.save();
+
+
+
+            const Admin_charge_percentage = parseInt(ParentData.strategy_Percentage) / 100;
+            const Admin_charge1 = Admin_charge_percentage * parseInt(price_stg);
+
+            const strategy_transactionData = new strategy_transaction({
+              strategy_id: matchedStrategy._id,
+              user_id: existingUsername._id,
+              admin_id: ParentData._id,
+              plan_id: data.plan_id,
+              Start_Date: StartDate1,
+              End_Date: EndDate1,
+              stg_charge: price_stg,
+              Admin_charge: Admin_charge1
+            });
+            strategy_transactionData.save();
+          });
+
+        }
+
+
+
+      } else {
+        if (req.license_type == "2") {
+
+          if (add_startegy.length > 0) {
+            add_startegy.forEach(async (data) => {
+              const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
+
+              var price_stg = 0
+              var daysforstg = 0
+              if (data.plan_id == 1) {
+                price_stg = matchedStrategy.security_fund_month
+                daysforstg = 1
+              } else if (data.plan_id == 2) {
+                price_stg = matchedStrategy.security_fund_quarterly
+                daysforstg = 3
+              } else if (data.plan_id == 3) {
+                price_stg = matchedStrategy.security_fund_half_early
+                daysforstg = 6
+              }
+              else if (data.plan_id == 4) {
+                price_stg = matchedStrategy.security_fund_early
+                daysforstg = 12
+              } else {
+                daysforstg = 0
+                price_stg = 0
+              }
+
+
+
+
+
+              var currentDate = new Date();
+              var start_date_2days = dateTime.create(currentDate);
+              start_date_2days = start_date_2days.format("Y-m-d H:M:S");
+              var start_date = start_date_2days;
+
+
+              StartDate1 = start_date;
+
+              var UpdateDate = "";
+              var StartDate = new Date(start_date);
+
+              UpdateDate = StartDate.setMonth(
+                StartDate.getMonth() + parseInt(daysforstg)
+              );
+
+              var end_date_2days = dateTime.create(UpdateDate);
+              var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
+
+
+              EndDate1 = end_date_2days;
+
+
+              // STRATEGY ADD
+              const User_strategy_client = new strategy_client({
+                strategy_id: matchedStrategy._id,
+                plan_id: data.plan_id,
+                user_id: existingUsername._id,
+                admin_id: PID,
+                Start_Date: StartDate1,
+                End_Date: EndDate1,
+                uniqueUserStrategy: existingUsername._id + "_" + matchedStrategy._id,
+
+              });
+              User_strategy_client.save();
 
 
               const Activity_logsData = new Activity_logs({
@@ -1130,7 +1263,7 @@ class Users {
                 strategy_id: matchedStrategy._id,
                 user_id: existingUsername._id,
                 admin_id: ParentData._id,
-                plan_id: data.plan_id,
+                plan_id: matchedStrategy.plan_id,
                 Start_Date: StartDate1,
                 End_Date: EndDate1,
                 stg_charge: price_stg,
@@ -1138,316 +1271,211 @@ class Users {
               });
               strategy_transactionData.save();
             });
-
           }
 
 
 
         } else {
-          if (req.license_type == "2") {
-
-            if (add_startegy.length > 0) {
-              add_startegy.forEach(async (data) => {
-                const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy_amount_month strategy_amount_quarterly strategy_amount_half_early strategy_amount_early');
-
-                var price_stg = 0
-                var daysforstg = 0
-                if (data.plan_id == 1) {
-                  price_stg = matchedStrategy.strategy_amount_month
-                  daysforstg = 1
-                } else if (data.plan_id == 2) {
-                  price_stg = matchedStrategy.strategy_amount_quarterly
-                  daysforstg = 3
-                } else if (data.plan_id == 3) {
-                  price_stg = matchedStrategy.strategy_amount_half_early
-                  daysforstg = 6
-                }
-                else if (data.plan_id == 4) {
-                  price_stg = matchedStrategy.strategy_amount_early
-                  daysforstg = 12
-                } else {
-                  daysforstg = 0
-                  price_stg = 0
-                }
+          return res.send({
+            status: false,
+            msg: "This is Live User",
+            data: [],
+          });
+        }
+      }
 
 
 
 
 
-                var currentDate = new Date();
-                var start_date_2days = dateTime.create(currentDate);
-                start_date_2days = start_date_2days.format("Y-m-d H:M:S");
-                var start_date = start_date_2days;
-
-
-                StartDate1 = start_date;
-
-                var UpdateDate = "";
-                var StartDate = new Date(start_date);
-
-                UpdateDate = StartDate.setMonth(
-                  StartDate.getMonth() + parseInt(daysforstg)
-                );
-
-                var end_date_2days = dateTime.create(UpdateDate);
-                var end_date_2days = end_date_2days.format("Y-m-d H:M:S");
-
-
-                EndDate1 = end_date_2days;
-
-
-                // STRATEGY ADD
-                const User_strategy_client = new strategy_client({
-                  strategy_id: matchedStrategy._id,
-                  plan_id: data.plan_id,
-                  user_id: existingUsername._id,
-                  admin_id: PID,
-                  Start_Date: StartDate1,
-                  End_Date: EndDate1,
-                  uniqueUserStrategy: existingUsername._id + "_" + matchedStrategy._id,
-
-                });
-                User_strategy_client.save();
-
-
-                const Activity_logsData = new Activity_logs({
-                  user_Id: existingUsername._id,
-                  admin_Id: ParentData._id,
-                  category: "EDIT-USER",
-                  message: data.strategy_name + " Strategy Add",
-                  maker_role: "SUBADMIN",
-                  device: "web",
-                  system_ip: ""
-                });
-                Activity_logsData.save();
 
 
 
-                const Admin_charge_percentage = Number(ParentData.strategy_Percentage) / 100;
-                const Admin_charge1 = Admin_charge_percentage * Number(price_stg);
 
-                const strategy_transactionData = new strategy_transaction({
-                  strategy_id: matchedStrategy._id,
-                  user_id: existingUsername._id,
-                  admin_id: ParentData._id,
-                  plan_id: matchedStrategy.plan_id,
-                  Start_Date: StartDate1,
-                  End_Date: EndDate1,
-                  stg_charge: price_stg,
-                  Admin_charge: Admin_charge1
-                });
-                strategy_transactionData.save();
-              });
+
+      try {
+        // GROUP SERVICES ADD EDIT
+        const GroupServiceId = new ObjectId(req.group_service);
+
+        // CHECK IF GROUP SERVICES ALEAREDY EXIST NO UPDATE
+        var user_group_service = await groupService_User.find({
+          user_id: existingUsername._id,
+          groupService_id: GroupServiceId,
+        });
+
+        if (user_group_service.length == 0) {
+
+          const result = await groupService_User.updateOne(
+            { user_id: existingUsername._id },
+            { $set: { groupService_id: new ObjectId(req.group_service) } }
+          );
+
+          var GrpId = new ObjectId(req.group_service);
+
+          const GroupclientNAme = await serviceGroupName.find({ _id: GrpId });
+
+
+          const Activity_logsData = new Activity_logs({
+            user_Id: existingUsername._id,
+            admin_Id: ParentData._id,
+            category: "EDIT-USER",
+            message: GroupclientNAme[0].name + " Group Update",
+            maker_role: "SUBADMIN",
+            device: "web",
+            system_ip: ""
+          });
+          Activity_logsData.save();
+
+
+          const GroupServices = await serviceGroup_services_id.aggregate([
+            {
+              $match: {
+                Servicegroup_id: GroupServiceId
+              }
+            },
+            {
+              $lookup: {
+                from: "services",
+                localField: "Service_id",
+                foreignField: "_id",
+                as: "serviceInfo"
+              }
+            },
+            {
+              $unwind: "$serviceInfo"
+            },
+            {
+              $project: {
+                _id: 0, // Exclude the _id field if you don't need it
+                Service_id: "$Service_id",
+                lotsize: "$serviceInfo.lotsize"
+              }
             }
+          ]);
 
 
-
-          } else {
+          if (GroupServices.length == "0") {
             return res.send({
               status: false,
-              msg: "This is Live User",
-              data: [],
+              msg: "Your selected Group is not exist ",
+              data: GroupServices,
             });
           }
-        }
 
-
-
-
-
-
-
-
-
-
-        try {
-          // GROUP SERVICES ADD EDIT
-          const GroupServiceId = new ObjectId(req.group_service);
-
-          // CHECK IF GROUP SERVICES ALEAREDY EXIST NO UPDATE
-          var user_group_service = await groupService_User.find({
+          var strategFind = await strategy_client.find({
             user_id: existingUsername._id,
-            groupService_id: GroupServiceId,
+          });
+          var client_servicesDelete = await client_services.deleteMany({
+            user_id: existingUsername._id,
           });
 
-          if (user_group_service.length == 0) {
+          GroupServices.forEach((data) => {
 
-            const result = await groupService_User.updateOne(
-              { user_id: existingUsername._id },
-              { $set: { groupService_id: new ObjectId(req.group_service) } }
-            );
-
-            var GrpId = new ObjectId(req.group_service);
-
-            const GroupclientNAme = await serviceGroupName.find({ _id: GrpId });
-
-
-            const Activity_logsData = new Activity_logs({
-              user_Id: existingUsername._id,
-              admin_Id: ParentData._id,
-              category: "EDIT-USER",
-              message: GroupclientNAme[0].name + " Group Update",
-              maker_role: "SUBADMIN",
-              device: "web",
-              system_ip: ""
+            const User_client_services = new client_services({
+              user_id: existingUsername._id,
+              group_id: GroupServiceId,
+              service_id: data.Service_id,
+              strategy_id: strategFind[0].strategy_id,
+              uniqueUserService: existingUsername._id + "_" + data.Service_id,
+              quantity: data.lotsize,
+              lot_size: 1
             });
-            Activity_logsData.save();
+            User_client_services.save();
+          });
 
 
-            const GroupServices = await serviceGroup_services_id.aggregate([
-              {
-                $match: {
-                  Servicegroup_id: GroupServiceId
-                }
-              },
-              {
-                $lookup: {
-                  from: "services",
-                  localField: "Service_id",
-                  foreignField: "_id",
-                  as: "serviceInfo"
-                }
-              },
-              {
-                $unwind: "$serviceInfo"
-              },
-              {
-                $project: {
-                  _id: 0, // Exclude the _id field if you don't need it
-                  Service_id: "$Service_id",
-                  lotsize: "$serviceInfo.lotsize"
-                }
-              }
-            ]);
+
+        } else {
+
+        }
+      } catch (error) {
+        console.log("Error Group Services Error-", error);
+      }
 
 
-            if (GroupServices.length == "0") {
-              return res.send({
-                status: false,
-                msg: "Your selected Group is not exist ",
-                data: GroupServices,
-              });
+
+
+      var User_update = {
+        FullName: req.FullName,
+        license_type: req.license_type,
+        broker: req.broker,
+        // parent_id: req.parent_id,
+        // parent_role: existingUsername.Role,
+        api_secret: req.api_secret,
+        app_id: req.app_id,
+        client_code: req.client_code,
+        api_key: req.api_key,
+        app_key: req.app_key,
+        api_type: req.api_type,
+        demat_userid: req.demat_userid,
+        service_given_month: req.service_given_month,
+        multiple_strategy_select: req.multiple_strategy_select,
+        Service_Type: req.Service_Type,
+        per_trade_value: req.per_trade_value,
+        Balance: req.Balance,
+        add_balance: req.add_balance,
+        Start_Date: existingUsername.license_type != 0 && req.license_type == 0 ? StartDate1 : null,
+        End_Date: existingUsername.license_type != 0 && req.license_type == 0 ? EndDate1 : null,
+        employee_id: req.employee_id
+      };
+
+
+
+      const User_Update = await User_model.updateOne(
+        { _id: existingUsername._id },
+        { $set: User_update }
+      );
+
+
+
+      if (req.license_type == "2" || req.license_type == 2) {
+
+        if (Number(new_licence) > 0) {
+          const count_licenses_add = new count_licenses({
+            user_id: existingUsername._id,
+            license: new_licence,
+          });
+          count_licenses_add.save();
+        }
+      }
+
+      if (req.multiple_strategy_select == 0) {
+        var multy_stgfind = await client_services.find({
+          user_id: existingUsername._id,
+        }).select('strategy_id')
+
+
+        if (multy_stgfind.length > 0) {
+          multy_stgfind.forEach(async (data) => {
+
+            if (data.strategy_id.length > 1) {
+
+              const filter = { _id: data._id };
+              const updateOperation = { $set: { strategy_id: [data.strategy_id[0]] } }
+
+
+              const result = await client_services.updateOne(filter, updateOperation);
             }
 
-            var strategFind = await strategy_client.find({
-              user_id: existingUsername._id,
-            });
-            var client_servicesDelete = await client_services.deleteMany({
-              user_id: existingUsername._id,
-            });
-
-            GroupServices.forEach((data) => {
-
-              const User_client_services = new client_services({
-                user_id: existingUsername._id,
-                group_id: GroupServiceId,
-                service_id: data.Service_id,
-                strategy_id: strategFind[0].strategy_id,
-                uniqueUserService: existingUsername._id + "_" + data.Service_id,
-                quantity: data.lotsize,
-                lot_size: 1
-              });
-              User_client_services.save();
-            });
-
-
-
-          } else {
-
-          }
-        } catch (error) {
-          console.log("Error Group Services Error-", error);
+          })
         }
 
 
 
-
-        var User_update = {
-          FullName: req.FullName,
-          license_type: req.license_type,
-          broker: req.broker,
-          parent_id: req.parent_id,
-          parent_role: existingUsername.Role,
-          api_secret: req.api_secret,
-          app_id: req.app_id,
-          client_code: req.client_code,
-          api_key: req.api_key,
-          app_key: req.app_key,
-          api_type: req.api_type,
-          demat_userid: req.demat_userid,
-          service_given_month: req.service_given_month,
-          multiple_strategy_select: req.multiple_strategy_select,
-          Service_Type: req.Service_Type,
-          per_trade_value: req.per_trade_value,
-          Balance: req.Balance,
-          Start_Date: existingUsername.license_type != 0 && req.license_type == 0 ? StartDate1 : null,
-          End_Date: existingUsername.license_type != 0 && req.license_type == 0 ? EndDate1 : null,
-          employee_id:req.employee_id
-        };
-
-
-
-        const User_Update = await User_model.updateOne(
-          { _id: existingUsername._id },
-          { $set: User_update }
-        );
-
-
-
-        if (req.license_type == "2" || req.license_type == 2) {
-
-          if (Number(new_licence) > 0) {
-            const count_licenses_add = new count_licenses({
-              user_id: existingUsername._id,
-              license: new_licence,
-            });
-            count_licenses_add.save();
-          }
-        }
-
-        if (req.multiple_strategy_select == 0) {
-          var multy_stgfind = await client_services.find({
-            user_id: existingUsername._id,
-          }).select('strategy_id')
-
-
-          if (multy_stgfind.length > 0) {
-            multy_stgfind.forEach(async (data) => {
-
-              if (data.strategy_id.length > 1) {
-
-                const filter = { _id: data._id };
-                const updateOperation = { $set: { strategy_id: [data.strategy_id[0]] } }
-
-
-                const result = await client_services.updateOne(filter, updateOperation);
-              }
-
-            })
-          }
-
-
-
-        }
-
-
-
-        // USER GET ALL TYPE OF DATA
-        return res.send({
-          status: true,
-          msg: "User Update successfully",
-          data: [],
-        });
-
-
-
-      } else {
-        return res.send({
-          status: false,
-          msg: "You Dont Have Balance",
-          data: [],
-        });
       }
+
+
+
+      // USER GET ALL TYPE OF DATA
+      return res.send({
+        status: true,
+        msg: "User Update successfully",
+        data: [],
+      });
+
+
+
+
     } catch (error) {
       console.log("Error In User Update-", error);
     }
@@ -1464,8 +1492,6 @@ class Users {
     try {
       const { page, limit, Find_Role, user_ID } = req.body; //LIMIT & PAGE
 
-      console.log("user_ID :", user_ID)
-
       if (!user_ID || user_ID == '' || user_ID == null) {
         return res.send({
           status: false,
@@ -1474,8 +1500,21 @@ class Users {
         });
       }
 
+
+
+      const parent_role = await User_model.find({ _id: user_ID }).select('Role')
+      var AdminMatch
+
+      if (parent_role[0].Role == "SUBADMIN") {
+        AdminMatch = { Role: "USER", parent_id: user_ID };
+      } else if (parent_role[0].Role == "EMPLOYEE") {
+        AdminMatch = { Role: "USER", employee_id: user_ID };
+      } else {
+        AdminMatch = { Role: "USER", parent_id: user_ID };
+      }
+
       // GET ALL CLIENTS
-      const AdminMatch = { Role: "USER", parent_id: user_ID };
+
       const getAllClients = await User_model.find(AdminMatch).sort({ Create_Date: -1 });
       const totalCount = getAllClients.length;
 
@@ -1714,73 +1753,73 @@ class Users {
     }
   }
 
- // GET ALL GetAllClients USER
- async GetAllUserStrategyTransactionUser(req, res) {
-  try {
-    const { page, limit, user_ID } = req.body; //LIMIT & PAGE
-    // const skip = (page - 1) * limit;
+  // GET ALL GetAllClients USER
+  async GetAllUserStrategyTransactionUser(req, res) {
+    try {
+      const { page, limit, user_ID } = req.body; //LIMIT & PAGE
+      // const skip = (page - 1) * limit;
 
-    if (!user_ID || user_ID == '' || user_ID == null) {
-      return res.send({
-        status: false,
-        msg: "Please Enter Sub Admin Id",
-        data: [],
-      });
-    }
-
-
-
-    // GET ALL CLIENTS
-    var AdminMatch;
-    AdminMatch = { user_id: new ObjectId(user_ID) };
-
-
-
-    const getAllClients = await strategy_transaction.aggregate([
-      {
-        $match: AdminMatch
-      },
-      {
-        $lookup: {
-          from: 'users',
-          localField: 'user_id',
-          foreignField: '_id',
-          as: 'userData'
-        }
-      },
-      {
-        $lookup: {
-          from: 'strategies',
-          localField: 'strategy_id',
-          foreignField: '_id',
-          as: 'strategyData'
-        }
-      },
-      {
-        $addFields: {
-          user_id: { $arrayElemAt: ['$userData.UserName', 0] },
-          strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] }
-        }
-      },
-      {
-        $project: {
-          _id: 1,
-          user_id: 1,
-          strategy_id: 1,
-          stg_charge: 1,
-          Admin_charge: 1,
-          plan_id: 1,
-          Start_Date: 1,
-          End_Date: 1,
-          createdAt: 1,
-        }
-      },
-      {
-        $sort: {
-          createdAt: -1 // Sort by createdAt field in descending order
-        }
+      if (!user_ID || user_ID == '' || user_ID == null) {
+        return res.send({
+          status: false,
+          msg: "Please Enter Sub Admin Id",
+          data: [],
+        });
       }
-    ]);
+
+
+
+      // GET ALL CLIENTS
+      var AdminMatch;
+      AdminMatch = { user_id: new ObjectId(user_ID) };
+
+
+
+      const getAllClients = await strategy_transaction.aggregate([
+        {
+          $match: AdminMatch
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'user_id',
+            foreignField: '_id',
+            as: 'userData'
+          }
+        },
+        {
+          $lookup: {
+            from: 'strategies',
+            localField: 'strategy_id',
+            foreignField: '_id',
+            as: 'strategyData'
+          }
+        },
+        {
+          $addFields: {
+            user_id: { $arrayElemAt: ['$userData.UserName', 0] },
+            strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] }
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            user_id: 1,
+            strategy_id: 1,
+            stg_charge: 1,
+            Admin_charge: 1,
+            plan_id: 1,
+            Start_Date: 1,
+            End_Date: 1,
+            createdAt: 1,
+          }
+        },
+        {
+          $sort: {
+            createdAt: -1 // Sort by createdAt field in descending order
+          }
+        }
+      ]);
 
 
 
@@ -1788,8 +1827,25 @@ class Users {
 
 
 
-    // IF DATA NOT EXIST
-    if (getAllClients.length == 0) {
+      // IF DATA NOT EXIST
+      if (getAllClients.length == 0) {
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: [],
+          // totalCount: totalCount,
+        });
+      }
+
+      // DATA GET SUCCESSFULLY
+      return res.send({
+        status: true,
+        msg: "Get All Strategy Charges",
+        data: getAllClients,
+
+      });
+    } catch (error) {
+      console.log("Error loginClients Error-", error);
       return res.send({
         status: false,
         msg: "Empty data",
@@ -1797,24 +1853,7 @@ class Users {
         // totalCount: totalCount,
       });
     }
-
-    // DATA GET SUCCESSFULLY
-    return res.send({
-      status: true,
-      msg: "Get All Strategy Charges",
-      data: getAllClients,
-
-    });
-  } catch (error) {
-    console.log("Error loginClients Error-", error);
-    return res.send({
-      status: false,
-      msg: "Empty data",
-      data: [],
-      // totalCount: totalCount,
-    });
   }
-}
 
 
   async GetAllUserStrategyhistory(req, res) {
@@ -1869,7 +1908,7 @@ class Users {
           $project: {
             _id: 1,
             user_id: 1,
-            license_type:1,
+            license_type: 1,
             strategy_id: 1,
             ActiveStatus: 1,
             plan_id: 1,
@@ -1976,8 +2015,8 @@ class Users {
 
 
 
-   // GET ALL EMPLOYEE NAME
-   async GetAllEmaployeeName(req, res) {
+  // GET ALL EMPLOYEE NAME
+  async GetAllEmaployeeName(req, res) {
     try {
       const { user_ID } = req.body; //LIMIT & PAGE
 
@@ -1993,7 +2032,7 @@ class Users {
       const AdminMatch = { Role: "EMPLOYEE", parent_id: user_ID };
       const getAllClients = await User_model.find(AdminMatch).select('UserName').sort({ Create_Date: -1 });
 
- 
+
 
 
 
@@ -2011,7 +2050,7 @@ class Users {
         status: true,
         msg: "Get All Clients",
         data: getAllClients,
-     
+
       });
     } catch (error) {
       console.log("Error fetching clients:", error);
@@ -2019,7 +2058,7 @@ class Users {
         status: false,
         msg: "Error fetching clients",
         data: [],
-    
+
       });
     }
   }

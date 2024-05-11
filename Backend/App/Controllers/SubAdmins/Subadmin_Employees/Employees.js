@@ -140,7 +140,7 @@ class Employee {
         Password: hashedPassword,
         Otp: password,
         Role: Role.toUpperCase(),
-        prifix_key: existingPrefix.prifix_key.toUpperCase(),
+        prifix_key: client_key,
         client_key,
         parent_role,
         parent_id,
