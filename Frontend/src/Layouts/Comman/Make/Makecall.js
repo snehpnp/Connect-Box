@@ -2364,7 +2364,7 @@ const Makecall = () => {
 
                                                                     <div className="row mt-2">
                                                                         <div class="col-sm-6 col-lg-6">
-                                                                            <input type="number" name="FirstPrice" className="form-control" onChange={(e) => {
+                                                                            <input type="number" name="FirstPrice" className="form-control"  onChange={(e) => {
                                                                                 selectPriceRange(e)
                                                                                // SetEntryPriceRange_one(e.target.value);
                                                                                 SetEntryPriceRange_oneErr('')
