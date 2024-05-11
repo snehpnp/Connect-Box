@@ -1,5 +1,7 @@
 import * as React from "react";
-import { DataGrid } from "@mui/x-data-grid";
+// import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid } from '@mui/x-data-grid';
+
 
 const FullDataTable = ({
   styles,
@@ -27,6 +29,7 @@ const FullDataTable = ({
       <DataGrid
         rows={rowsWithIds}
         columns={columns}
+        
         pageSize={10}
         rowsPerPageOptions={[5, 10, 20,50]}
         pagination={true}
