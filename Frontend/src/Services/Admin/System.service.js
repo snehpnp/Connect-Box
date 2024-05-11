@@ -224,3 +224,18 @@ export async function  getEmployeeBYid(data,token){
         return await err;
     }
 }
+
+export async function  GET_PARENT_NAME(data,token){
+    try {
+
+        const res = await axios.post(`${Config.base_url}parentname/get`,data,{
+            data:{},
+            
+        })
+   
+           return await res?.data;
+        
+    } catch (err) {
+        return await err;
+    }
+}

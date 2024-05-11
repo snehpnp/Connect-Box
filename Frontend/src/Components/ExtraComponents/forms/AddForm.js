@@ -156,19 +156,19 @@ const DynamicForm = ({
                                   )
                                     ? formik.values[field.name]
                                     : formik.values[field.name].startsWith(
-                                        prifix_key
-                                      )
-                                    ? prifix_key +
+                                      prifix_key
+                                    )
+                                      ? prifix_key +
                                       "_" +
                                       formik.values[field.name].substr(3)
-                                    : prifix_key +
+                                      : prifix_key +
                                       "_" +
                                       formik.values[field.name]
                                 }
                               />
 
                               {formik.touched[field.name] &&
-                              formik.errors[field.name] ? (
+                                formik.errors[field.name] ? (
                                 <div style={{ color: "red" }}>
                                   {formik.errors[field.name]}
                                 </div>
@@ -196,7 +196,7 @@ const DynamicForm = ({
                                 {...formik.getFieldProps(field.name)}
                               />
                               {formik.touched[field.name] &&
-                              formik.errors[field.name] ? (
+                                formik.errors[field.name] ? (
                                 <div style={{ color: "red" }}>
                                   {formik.errors[field.name]}
                                 </div>
@@ -329,28 +329,25 @@ const DynamicForm = ({
                       ) : field.type === "select" ? (
                         <>
                           <div
-                            className={`col-lg-${
-                              title === "update_theme" ? 12 : 6
-                            }`}
+                            className={`col-lg-${title === "update_theme" ? 12 : 6
+                              }`}
                           >
                             <div className="input-block row mb-3">
                               <label
-                                className={`col-lg-${
-                                  title === "forlogin"
+                                className={`col-lg-${title === "forlogin"
                                     ? 3
                                     : title === "update_theme"
-                                    ? 12
-                                    : 7
-                                }  col-form-label p-0 mx-3 `}
+                                      ? 12
+                                      : 7
+                                  }  col-form-label p-0 mx-3 `}
                                 htmlFor={field.name}
                               >
                                 {field.label}
                                 <span className="text-danger">*</span>
                               </label>
                               <div
-                                className={`col-lg-${
-                                  title === "addgroup" ? 12 : 12
-                                }`}
+                                className={`col-lg-${title === "addgroup" ? 12 : 12
+                                  }`}
                               >
                                 <select
                                   className="default-select wide form-control"
@@ -373,7 +370,7 @@ const DynamicForm = ({
                                 </select>
 
                                 {formik.touched[field.name] &&
-                                formik.errors[field.name] ? (
+                                  formik.errors[field.name] ? (
                                   <div style={{ color: "red" }}>
                                     {formik.errors[field.name]}
                                   </div>
@@ -385,27 +382,24 @@ const DynamicForm = ({
                       ) : field.type === "select1" ? (
                         <>
                           <div
-                            className={`col-lg-${
-                              title === "update_theme" ? 12 : 6
-                            }`}
+                            className={`col-lg-${title === "update_theme" ? 12 : 6
+                              }`}
                           >
                             <div className="input-block row mb-3">
                               <label
-                                className={`col-lg-${
-                                  title === "forlogin"
+                                className={`col-lg-${title === "forlogin"
                                     ? 3
                                     : title === "update_theme"
-                                    ? 12
-                                    : 7
-                                }  col-form-label p-0 mx-3 `}
+                                      ? 12
+                                      : 7
+                                  }  col-form-label p-0 mx-3 `}
                                 htmlFor={field.name}
                               >
                                 {field.label}
                               </label>
                               <div
-                                className={`col-lg-${
-                                  title === "addgroup" ? 12 : 12
-                                }`}
+                                className={`col-lg-${title === "addgroup" ? 12 : 12
+                                  }`}
                               >
                                 <select
                                   className="default-select wide form-control"
@@ -428,7 +422,7 @@ const DynamicForm = ({
                                 </select>
 
                                 {formik.touched[field.name] &&
-                                formik.errors[field.name] ? (
+                                  formik.errors[field.name] ? (
                                   <div style={{ color: "red" }}>
                                     {formik.errors[field.name]}
                                   </div>
@@ -468,7 +462,7 @@ const DynamicForm = ({
                                               {option.label}
                                             </label>
                                             {formik.errors[field.name] && (
-                                              <div style={{ color: "red"}}>
+                                              <div style={{ color: "red" }}>
                                                 {formik.errors[field.name]}
                                               </div>
                                             )}
@@ -483,11 +477,8 @@ const DynamicForm = ({
                             <>
                               <div className={`col-lg-${field.col_size}`}>
                                 <div className="row d-flex justify-content-start">
-                                  <div
-                                  //  className={`col-lg-${field.col_size}`} 
-                                
-                                  >
-                                    <div className="form-check custom-checkbox mb-3 ">
+                                  <div className='mb-4' >
+                                    <div className="form-check custom-checkbox ">
                                       <input
                                         type={field.type}
                                         className="form-check-input"
@@ -588,11 +579,10 @@ const DynamicForm = ({
                                   className={` form-control`}
                                 />
                                 <i
-                                  className={`fa-solid ${
-                                    passwordVisible[field.name]
+                                  className={`fa-solid ${passwordVisible[field.name]
                                       ? "fa-eye-slash"
                                       : "fa-eye"
-                                  }`}
+                                    }`}
                                   style={{
                                     position: "absolute",
                                     top: "1.5px",
@@ -608,7 +598,7 @@ const DynamicForm = ({
                                   }
                                 ></i>
                                 {formik.touched[field.name] &&
-                                formik.errors[field.name] ? (
+                                  formik.errors[field.name] ? (
                                   <div style={{ color: "red" }}>
                                     {formik.errors[field.name]}
                                   </div>
@@ -645,7 +635,7 @@ const DynamicForm = ({
                                 />
 
                                 {formik.touched[field.name] &&
-                                formik.errors[field.name] ? (
+                                  formik.errors[field.name] ? (
                                   <div style={{ color: "red" }}>
                                     {formik.errors[field.name]}
                                   </div>
@@ -733,11 +723,10 @@ const DynamicForm = ({
                                           role="presentation"
                                         >
                                           <button
-                                            className={`nav-link yes ${
-                                              formik.values[field.name] == 2
+                                            className={`nav-link yes ${formik.values[field.name] == 2
                                                 ? "active show"
                                                 : ""
-                                            }`}
+                                              }`}
                                             onClick={() => HandelChange(2)}
                                             type="button"
                                             disabled={field.disable}
@@ -750,11 +739,10 @@ const DynamicForm = ({
                                           role="presentation"
                                         >
                                           <button
-                                            className={`nav-link no ${
-                                              formik.values[field.name] == 1
+                                            className={`nav-link no ${formik.values[field.name] == 1
                                                 ? "active show"
                                                 : ""
-                                            }`}
+                                              }`}
                                             onClick={() => HandelChange(1)}
                                             type="button"
                                             disabled={field.disable}
@@ -764,13 +752,13 @@ const DynamicForm = ({
                                         </li>
                                       </ul>
                                       {formik.touched[field.name] &&
-                                      formik.errors[field.name] ? (
+                                        formik.errors[field.name] ? (
                                         <div style={{ color: "red" }}>
                                           {formik.errors[field.name]}
                                         </div>
                                       ) : null}
                                     </div>
-                                  </div>           
+                                  </div>
                                 </div>
                               </div>
                             </div>
@@ -801,7 +789,7 @@ const DynamicForm = ({
                                   />
 
                                   {formik.touched[field.name] &&
-                                  formik.errors[field.name] ? (
+                                    formik.errors[field.name] ? (
                                     <div style={{ color: "red" }}>
                                       {formik.errors[field.name]}
                                     </div>
@@ -842,7 +830,7 @@ const DynamicForm = ({
                                   />
 
                                   {formik.touched[field.name] &&
-                                  formik.errors[field.name] ? (
+                                    formik.errors[field.name] ? (
                                     <div style={{ color: "red" }}>
                                       {formik.errors[field.name]}
                                     </div>
@@ -872,7 +860,7 @@ const DynamicForm = ({
                                     placeholder={`Enter ${field.label}`}
                                     {...formik.getFieldProps(field.name)}
                                     min={1}
-                                    
+
                                     onChange={(e) => {
                                       let value = e.target.value;
                                       // Remove any leading zeros
@@ -890,7 +878,7 @@ const DynamicForm = ({
                                   />
 
                                   {formik.touched[field.name] &&
-                                  formik.errors[field.name] ? (
+                                    formik.errors[field.name] ? (
                                     <div style={{ color: "red" }}>
                                       {formik.errors[field.name]}
                                     </div>
@@ -920,7 +908,7 @@ const DynamicForm = ({
                                     placeholder={`Enter ${field.label}`}
                                     {...formik.getFieldProps(field.name)}
                                     min={1}
-                        
+
                                     onChange={(e) => {
                                       let value = e.target.value;
                                       // Remove any leading zeros
@@ -938,7 +926,7 @@ const DynamicForm = ({
                                   />
 
                                   {formik.touched[field.name] &&
-                                  formik.errors[field.name] ? (
+                                    formik.errors[field.name] ? (
                                     <div style={{ color: "red" }}>
                                       {formik.errors[field.name]}
                                     </div>
@@ -954,14 +942,14 @@ const DynamicForm = ({
                             <div className="input-block mb-3 flex-column">
                               <label className={`col-lg-${field.label_size}`}>
                                 {field.label}
-                                
+
                               </label>
                             </div>
                           </div>
                         </>
 
                       ) : (
-                      
+
                         <>
                           <div className={`col-lg-${field.col_size}`}>
                             <div className="input-block mb-3"></div>
@@ -971,7 +959,7 @@ const DynamicForm = ({
                     </React.Fragment>
                   ))}
                   {additional_field}
-           
+
                   <div className="add-customer-btns text-end mt-3">
                     {btn_name1 ? (
                       <Link
