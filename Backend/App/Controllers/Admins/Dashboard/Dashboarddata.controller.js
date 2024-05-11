@@ -103,6 +103,8 @@ class Dashboard {
     }
   }
 
+
+
   async GetDashboardData1(req, res) {
     try {
       const selectedOption = req.body.selectedOption;
@@ -113,7 +115,7 @@ class Dashboard {
       if (SUBADMINS !== "") {
         // Add a single pipeline for the specified user
         const pipeline = [
-          { $match: { user_id: new ObjectId(SUBADMINS),Role:"SUBADMIN" } },
+          { $match: { user_id: new ObjectId(SUBADMINS), Role: "SUBADMIN" } },
           { $sort: { createdAt: 1 } },
           {
             $addFields: {
@@ -129,7 +131,7 @@ class Dashboard {
         aggregationPipelines.push(pipeline);
       } else {
         const pipeline = [
-          { $match: { Role:"SUBADMIN" } },
+          { $match: { Role: "SUBADMIN" } },
           { $sort: { createdAt: 1 } },
           {
             $addFields: {
@@ -274,8 +276,7 @@ class Dashboard {
     }
   }
 
-
-
+  // TOP 5 SUBADMIN
   async dashboardtopsubadmins(req, res) {
     try {
       const selectedOption = req.body.selectedOption;
@@ -317,7 +318,7 @@ class Dashboard {
 
 
       var dateData = getDateRange(selectedOption)
-     
+
       let topSubadmins = await User_model.aggregate([
         { $match: { Role: "SUBADMIN" } },
         {
@@ -361,35 +362,28 @@ class Dashboard {
         {
           $sort: { totalBalance: -1 } // Sort by totalBalance in descending order
         },
-        { $limit: 5 } // Limit to top 5 results
       ]);
 
 
       const overallTotal = topSubadmins.reduce((acc, obj) => acc + obj.totalBalance, 0);
 
-      // topSubadmins.forEach(user => {
-      //     const percentage = (user.totalBalance / overallTotal) * 100;
-      //     user.percentage = (Math.round(percentage * 100) / 100)
-      // });
-      
+
       const updatedResult = topSubadmins.map(user => ({
         name: user.name,
         percentage: (Math.round((user.totalBalance / overallTotal) * 10000) / 100)
 
-    }));
-    
-    
+      })).slice(0, 5)
 
 
 
-     return res.send({
+
+      return res.send({
         status: true,
         msg: "Get Subadmins",
         data: updatedResult,
       });
     } catch (error) {
-      console.log("Error getting Subadmins:", error);
-      res.status(500).send({
+      return res.status(500).send({
         status: false,
         msg: "Internal Server Error",
       });

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetCompanyInfo,ProfileData,EditCompanyInfo,Subadminhelp, getSubadminhelp ,postuserhelpdata, gethelpdata,deleteuserhelpdata,deletesubadmindata,ComparePrefix_key,Researcherdetail,getEmployeetable,getEmployeeBYid} from "../../../Services/Admin/System.service";
+import { GetCompanyInfo,ProfileData,EditCompanyInfo,Subadminhelp, getSubadminhelp ,postuserhelpdata, gethelpdata,deleteuserhelpdata,deletesubadmindata,ComparePrefix_key,Researcherdetail,getEmployeetable,getEmployeeBYid , GET_PARENT_NAME} from "../../../Services/Admin/System.service";
 
 export const GetCompany_info = createAsyncThunk(
     "get/company",
@@ -20,6 +20,19 @@ export const updateSystemInfo = createAsyncThunk(
         
         try {
             const res = await EditCompanyInfo(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const Get_Parent_Type = createAsyncThunk(
+    "parentname/get",
+    async (data) => {
+        
+        try {
+            const res = await GET_PARENT_NAME(data);
             return res;
         } catch (err) {
             throw err;
@@ -182,6 +195,8 @@ export const Employeedatabyid = createAsyncThunk(
 )
 
 
+
+
 const SystemSlice = createSlice({
     name: "SystemSlice",
     initialState: {
@@ -199,6 +214,7 @@ const SystemSlice = createSlice({
         getResearch:null,
         getemployee:null,
         Employeedatabyid:null,
+        get_parent_type :null,
     },
     reducers: {},
     extraReducers: (builder) => {
@@ -337,6 +353,10 @@ const SystemSlice = createSlice({
             }).addCase(Employeedatabyid.fulfilled,(state,action)=>{
                 state.isLoading = false;
                 state.Employeedatabyid = action.payload;
+            })
+            .addCase(Get_Parent_Type.fulfilled,(state,action)=>{
+                state.isLoading = false;
+                state.get_parent_type = action.payload;
             })
     },
 });

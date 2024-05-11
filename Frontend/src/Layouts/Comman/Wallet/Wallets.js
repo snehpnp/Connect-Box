@@ -13,20 +13,12 @@ function Payment() {
   var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
   const admin_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
-
   const [cardData, setcardData] = useState({});
+  const [companyData, setCompanyData] = useState({ loading: false, data: [] });
 
-  const [companyData, setCompanyData] = useState({
-    loading: false,
-    data: [],
-  });
-
-  const handleOpenModal = (rowData) => {
-    setSelectedRow(rowData)
-    setIsModalOpen(true);
-  };
+  let UsedBalance = 0
 
 
   const styles = {
@@ -49,7 +41,15 @@ function Payment() {
 
 
   const columns = [
-    { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
+    {
+      field: 'id',
+      headerName: '#',
+      width: 70,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div> <b>{params.value + 1}</b></div>
+      ),
+    },
 
     {
       field: 'username',
@@ -112,13 +112,14 @@ function Payment() {
 
   const getCompanyData = async () => {
     try {
-      var data = { id: admin_id, subadmin_service_type:subadmin_service_type || 0}
+      var data = { id: admin_id, subadmin_service_type: subadmin_service_type || 0 }
       const response = await dispatch(BalanceGetbyId(data)).unwrap();
 
       if (response.status) {
         const formattedData = response.data.map((row, index) => ({
           ...row,
           id: index + 1,
+
         }));
 
         setCompanyData({
@@ -126,13 +127,21 @@ function Payment() {
           data: formattedData,
         });
         setcardData(response.Count)
+
+
+
       } else {
         setCompanyData({
           loading: true,
           data: [],
         });
-        // setcardData(response.Count)
       }
+
+
+
+
+
+
     } catch (error) {
       console.log("Error", error);
       setCompanyData({
@@ -141,6 +150,20 @@ function Payment() {
       });
     }
   };
+
+
+
+
+
+  companyData.data && companyData.data.map((data) => {
+    if (!isNaN(data.Balance) && data.Balance !== null && data.Balance !== "" && data.Role=="USER") {
+      UsedBalance += parseInt(data.Balance);
+    }
+  })
+
+
+
+
 
 
   useEffect(() => {
@@ -180,7 +203,7 @@ function Payment() {
                           <div className="grid-info-item active-plane">
                             <div className="grid-info">
                               <span>Used Balance</span>
-                              <h4>{cardData && cardData.UsedBalance}</h4>
+                              <h4>{cardData && cardData.UsedBalance || UsedBalance}</h4>
                             </div>
                             <div className="grid-head-icon">
                               <i className="fe fe-list" />

@@ -27,7 +27,9 @@ app.use(bodyparser.json({ limit: '10mb', extended: true }));
 //socket.io
 const io = new Server(server, {
   cors: {
-    origin: "https://connectbox.tradestreet.in/",
+    // origin: "https://connectbox.tradestreet.in/",
+    origin: "http://localhost:3000",
+
     methods: ["GET", "POST"],
   },
 });
@@ -44,21 +46,22 @@ io.on("connection", (socket) => {
   });
 });
 
+
+
 // Requiring utility files
 require('./App/Utils/Cron.utils');
 
 // Importing routes
 require("./App/Routes")(app);
+require("./test")(app);
 
-app.get('/tokenget', (req, res) => {
-  TokenSymbolUpdate();
-});
+
+
+
 
 // Starting the server
 server.listen(process.env.PORT, () => {
 const { Alice_Socket } = require("./App/Helpers/Alice_Socket");
-  
-Alice_Socket()
-
+  Alice_Socket()
   console.log(`Server is running on http://0.0.0.0:${process.env.PORT}`);
 });

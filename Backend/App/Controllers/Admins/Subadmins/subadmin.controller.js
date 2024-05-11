@@ -485,6 +485,7 @@ class Subadmin {
               Start_Date: 1,
               End_Date: 1,
               createdAt: 1,
+              Role:"USER"
             }
           }
         ]);
@@ -539,16 +540,30 @@ class Subadmin {
         ]);
 
 
-        const mergedArray = [...getAllClients, ...rechargeDetails];
+        
+        
+        
+        let mergedArray = [...getAllClients, ...rechargeDetails];
+        console.log("rechargeDetails", getAllClients)
+        
         mergedArray.sort((a, b) => {
-          return new Date(a.createdAt) - new Date(b.createdAt);
+          return new Date(b.createdAt) - new Date(a.createdAt);
         });
+
+        let UsedBalanceData=0
+
+        getAllClients && getAllClients.map((data) => {
+          if (!isNaN(data.Balance) && data.Balance !== null && data.Balance !== "" && data.Role=="USER") {
+            UsedBalanceData += parseInt(data.Balance);
+          }
+        })
+
 
 
         var Count = {
           TotalBalance: TotalBalance[0].Balance || 0,
-          UsedBalance: UsedBalance[0].totalBalance,
-          RemainingBalance: Number(TotalBalance[0].Balance || 0) - Number(UsedBalance[0].totalBalance || 0)
+          UsedBalance: UsedBalanceData,
+          RemainingBalance: Number(TotalBalance[0].Balance || 0) - Number(UsedBalanceData || 0)
         }
 
 
@@ -558,6 +573,11 @@ class Subadmin {
           data: mergedArray,
           Count: Count
         });
+
+
+
+
+
       } else if (subadmin_service_type == 1) {
 
         var Count = {

@@ -30,6 +30,7 @@ const Alice_token = db.Alice_token;
 const strategy_model = db.Strategies;
 const live_price_token = db.live_price_token;
 const makecallABR = db.makecallABR;
+const { Alice_Socket } = require("../../Helpers/Alice_Socket");
 
 
 const User = db.user;
@@ -67,8 +68,8 @@ class Makecall {
   // get service by category
   async GetServiceByCatagory(req, res) {
 
- 
-   console.log("req.body ",req.body)
+
+    console.log("req.body ", req.body)
 
     if (req.body.category_id == '' || req.body.category_id == null) {
       return res.send({ status: false, msg: "Category not fount service", data: [] })
@@ -77,98 +78,98 @@ class Makecall {
     const CategoryObjectId = new ObjectId(req.body.category_id);
 
     const categorySegment = await categorie.findById(CategoryObjectId).select('segment')
-     
-   // console.log("categorySegment",categorySegment.segment)
-    if(categorySegment.segment == "FO"){
-     
-      const categorySegmentId = await categorie.findOne({segment:"F"}).select('_id');
-  //  console.log("categorySegmentId",categorySegmentId._id)
+
+    // console.log("categorySegment",categorySegment.segment)
+    if (categorySegment.segment == "FO") {
+
+      const categorySegmentId = await categorie.findOne({ segment: "F" }).select('_id');
+      //  console.log("categorySegmentId",categorySegmentId._id)
 
 
-    const pipeline = [
-      {
-        $lookup: {
-          from: 'categories',
-          localField: 'categorie_id',
-          foreignField: '_id',
-          as: 'category',
+      const pipeline = [
+        {
+          $lookup: {
+            from: 'categories',
+            localField: 'categorie_id',
+            foreignField: '_id',
+            as: 'category',
+          },
         },
-      },
-      {
-        $unwind: '$category', // Unwind the 'categoryResult' array
-      },
-      {
-        $match: {
-          categorie_id: categorySegmentId._id
+        {
+          $unwind: '$category', // Unwind the 'categoryResult' array
         },
-      },
-      {
-        $sort: {
-          name: 1, // 1 for ascending order, -1 for descending order
+        {
+          $match: {
+            categorie_id: categorySegmentId._id
+          },
         },
-      },
-      {
-        $project: {
-          'category.segment': 1,
-          'category.name': 1,
-          name: 1,
-          lotsize: 1
+        {
+          $sort: {
+            name: 1, // 1 for ascending order, -1 for descending order
+          },
+        },
+        {
+          $project: {
+            'category.segment': 1,
+            'category.name': 1,
+            name: 1,
+            lotsize: 1
 
+          },
         },
-      },
-    ];
-    const result = await services.aggregate(pipeline);
-    if (result.length > 0) {
-      return res.send({ status: true, msg: "Get Succefully", data: result })
+      ];
+      const result = await services.aggregate(pipeline);
+      if (result.length > 0) {
+        return res.send({ status: true, msg: "Get Succefully", data: result })
+      } else {
+        return res.send({ status: false, msg: "Some Error in get", data: [] })
+      }
+
     } else {
-      return res.send({ status: false, msg: "Some Error in get", data: [] })
+
+      const pipeline = [
+        {
+          $lookup: {
+            from: 'categories',
+            localField: 'categorie_id',
+            foreignField: '_id',
+            as: 'category',
+          },
+        },
+        {
+          $unwind: '$category', // Unwind the 'categoryResult' array
+        },
+        {
+          $match: {
+            categorie_id: CategoryObjectId
+          },
+        },
+        {
+          $sort: {
+            name: 1, // 1 for ascending order, -1 for descending order
+          },
+        },
+        {
+          $project: {
+            'category.segment': 1,
+            'category.name': 1,
+            name: 1,
+            lotsize: 1
+
+          },
+        },
+      ];
+      const result = await services.aggregate(pipeline);
+      if (result.length > 0) {
+        return res.send({ status: true, msg: "Get Succefully", data: result })
+      } else {
+        return res.send({ status: false, msg: "Some Error in get", data: [] })
+      }
+
+
     }
 
-  }else{
-     
-    const pipeline = [
-      {
-        $lookup: {
-          from: 'categories',
-          localField: 'categorie_id',
-          foreignField: '_id',
-          as: 'category',
-        },
-      },
-      {
-        $unwind: '$category', // Unwind the 'categoryResult' array
-      },
-      {
-        $match: {
-          categorie_id: CategoryObjectId
-        },
-      },
-      {
-        $sort: {
-          name: 1, // 1 for ascending order, -1 for descending order
-        },
-      },
-      {
-        $project: {
-          'category.segment': 1,
-          'category.name': 1,
-          name: 1,
-          lotsize: 1
 
-        },
-      },
-    ];
-    const result = await services.aggregate(pipeline);
-    if (result.length > 0) {
-      return res.send({ status: true, msg: "Get Succefully", data: result })
-    } else {
-      return res.send({ status: false, msg: "Some Error in get", data: [] })
-    }
-
-
-   }
-
- 
 
 
 
@@ -200,158 +201,158 @@ class Makecall {
       previousDate.setDate(currentDate.getDate() - 1);
       //  const date = new Date(); // Month is 0-based, so 10 represents November
       const formattedDate = previousDate.toISOString();
-      
+
       const categorySegment = await categorie.findById(CategoryObjectId).select('segment')
-   
-      if(categorySegment.segment == "FO"){
 
-      
-        const categorySegmentId = await categorie.findOne({segment:"O"}).select('_id'); 
+      if (categorySegment.segment == "FO") {
 
 
-      const pipeline_category = [
-        {
-          $match: {
-            _id: categorySegmentId._id
+        const categorySegmentId = await categorie.findOne({ segment: "O" }).select('_id');
+
+
+        const pipeline_category = [
+          {
+            $match: {
+              _id: categorySegmentId._id
+            },
           },
-        },
-        {
-          $project: {
-            segment: 1,
-            _id: 0,
+          {
+            $project: {
+              segment: 1,
+              _id: 0,
+            },
           },
-        },
-      ];
+        ];
 
-      const category_details = await categorie.aggregate(pipeline_category);
+        const category_details = await categorie.aggregate(pipeline_category);
 
-      const pipeline = [
-        {
-          $match: {
-            symbol: symbol,
-            segment: category_details[0].segment
-          }
-        },
-        {
-          $group: {
-            _id: "$symbol",
-            uniqueExpiryValues: { $addToSet: "$expiry" }
-          }
-        },
-        {
-          $unwind: "$uniqueExpiryValues"
-        },
-        {
-          $addFields: {
-            expiryDate: {
-              $dateFromString: {
-                dateString: "$uniqueExpiryValues",
-                format: "%d%m%Y"
+        const pipeline = [
+          {
+            $match: {
+              symbol: symbol,
+              segment: category_details[0].segment
+            }
+          },
+          {
+            $group: {
+              _id: "$symbol",
+              uniqueExpiryValues: { $addToSet: "$expiry" }
+            }
+          },
+          {
+            $unwind: "$uniqueExpiryValues"
+          },
+          {
+            $addFields: {
+              expiryDate: {
+                $dateFromString: {
+                  dateString: "$uniqueExpiryValues",
+                  format: "%d%m%Y"
+                }
               }
             }
-          }
-        },
+          },
 
-        {
-          $addFields: {
-            formattedExpiryDate: {
-              $dateToString: {
-                date: "$expiryDate",
-                format: "%d%m%Y"
+          {
+            $addFields: {
+              formattedExpiryDate: {
+                $dateToString: {
+                  date: "$expiryDate",
+                  format: "%d%m%Y"
+                }
               }
             }
+          },
+          {
+            $sort: { expiryDate: 1 }
+          },
+          {
+            $limit: 4
           }
-        },
-        {
-          $sort: { expiryDate: 1 }
-        },
-        {
-          $limit: 4
+
+
+        ]
+
+        const result = await Alice_token.aggregate(pipeline);
+        if (result.length > 0) {
+          return res.send({ status: true, msg: "Get Succefully", data: result })
+        } else {
+          return res.send({ status: false, msg: "Some Error in get", data: [] })
         }
 
-
-      ]
-
-      const result = await Alice_token.aggregate(pipeline);
-      if (result.length > 0) {
-        return res.send({ status: true, msg: "Get Succefully", data: result })
       } else {
-        return res.send({ status: false, msg: "Some Error in get", data: [] })
-      }
 
-    }else{
-     
-      const pipeline_category = [
-        {
-          $match: {
-            _id: CategoryObjectId
+        const pipeline_category = [
+          {
+            $match: {
+              _id: CategoryObjectId
+            },
           },
-        },
-        {
-          $project: {
-            segment: 1,
-            _id: 0,
+          {
+            $project: {
+              segment: 1,
+              _id: 0,
+            },
           },
-        },
-      ];
+        ];
 
-      const category_details = await categorie.aggregate(pipeline_category);
+        const category_details = await categorie.aggregate(pipeline_category);
 
-      const pipeline = [
-        {
-          $match: {
-            symbol: symbol,
-            segment: category_details[0].segment
-          }
-        },
-        {
-          $group: {
-            _id: "$symbol",
-            uniqueExpiryValues: { $addToSet: "$expiry" }
-          }
-        },
-        {
-          $unwind: "$uniqueExpiryValues"
-        },
-        {
-          $addFields: {
-            expiryDate: {
-              $dateFromString: {
-                dateString: "$uniqueExpiryValues",
-                format: "%d%m%Y"
+        const pipeline = [
+          {
+            $match: {
+              symbol: symbol,
+              segment: category_details[0].segment
+            }
+          },
+          {
+            $group: {
+              _id: "$symbol",
+              uniqueExpiryValues: { $addToSet: "$expiry" }
+            }
+          },
+          {
+            $unwind: "$uniqueExpiryValues"
+          },
+          {
+            $addFields: {
+              expiryDate: {
+                $dateFromString: {
+                  dateString: "$uniqueExpiryValues",
+                  format: "%d%m%Y"
+                }
               }
             }
-          }
-        },
+          },
 
-        {
-          $addFields: {
-            formattedExpiryDate: {
-              $dateToString: {
-                date: "$expiryDate",
-                format: "%d%m%Y"
+          {
+            $addFields: {
+              formattedExpiryDate: {
+                $dateToString: {
+                  date: "$expiryDate",
+                  format: "%d%m%Y"
+                }
               }
             }
+          },
+          {
+            $sort: { expiryDate: 1 }
+          },
+          {
+            $limit: 4
           }
-        },
-        {
-          $sort: { expiryDate: 1 }
-        },
-        {
-          $limit: 4
+
+
+        ]
+
+        const result = await Alice_token.aggregate(pipeline);
+        if (result.length > 0) {
+          return res.send({ status: true, msg: "Get Succefully", data: result })
+        } else {
+          return res.send({ status: false, msg: "Some Error in get", data: [] })
         }
 
-
-      ]
-
-      const result = await Alice_token.aggregate(pipeline);
-      if (result.length > 0) {
-        return res.send({ status: true, msg: "Get Succefully", data: result })
-      } else {
-        return res.send({ status: false, msg: "Some Error in get", data: [] })
       }
-
-    }
 
 
 
@@ -532,19 +533,19 @@ class Makecall {
 
       }
 
-      if(req.body.segment == "FO"){
+      if (req.body.segment == "FO") {
 
         const result = await services.findOne({ name: symbol }).select('instrument_token exch_seg');
-    
+
         if (result != null) {
-        return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg})
+          return res.send({ status: true, token: result.instrument_token, exchange: result.exch_seg })
         } else {
-        return res.send({ status: false, msg: "Data not found", token: "" })
+          return res.send({ status: false, msg: "Data not found", token: "" })
         }
 
       }
 
-     
+
 
       //Futer Token get
       else if (req.body.segment == "F" || req.body.segment == "MF" || req.body.segment == "CF") {
@@ -633,11 +634,8 @@ class Makecall {
 
   //Add data above beleow range
   async AddDataAboveBelowRange(req, res) {
-   
+    console.log("req - ", req.body)
 
-
-    console.log("req - ",req.body)
- 
     try {
 
 
@@ -672,37 +670,43 @@ class Makecall {
         WiseTypeDropdown
       } = req.body;
 
+      console.log("ABR_TYPE", ABR_TYPE)
+      // if (ABR_TYPE == 'at') {
+      //   let exch = "NFO"
 
-      let exch = "NFO"
+      //   if (Segment == "C") {
+      //     exch = "NSE"
+      //   }
+      //   else if (Segment == "MO" || Segment == "MF") {
+      //     exch = "MCX"
+      //   }
+      //   else if (Segment == "CO" || Segment == "CF") {
+      //     exch = "CDS"
+      //   }
+      //   console.log("token ", token)
+      //   console.log("exch ", exch)
 
-       if(Segment == "C"){
-        exch = "NSE"
-       }
-       else if(Segment == "MO" || Segment == "MF"){
-        exch = "MCX"
-       }
-       else if(Segment == "CO" || Segment == "CF"){
-        exch = "CDS"
-       }
-       console.log("token ",token)
-       console.log("exch ",exch)
+      //   const tokenExisst = await token_chain.findOne({ _id: token })
+      //   //console.log("tokenExisst ",tokenExisst)
+      //   if (tokenExisst != null) {
+      //     console.log("tokenExisst if", tokenExisst)
+      //     return res.send({ status: true, msg: "Data Add Successfully....", data: result });
 
+      //   } else {
+      //     //  console.log("tokenExisst else",tokenExisst)
+      //     const filter = { _id: token };
+      //     const update = { $set: { _id: token, exch: exch } };
+      //     await token_chain.updateOne(filter, update, { upsert: true });
+      //     Alice_Socket()
+      //     return res.send({ status: true, msg: "Data Add Successfully....", data: result });
 
-       
-       
-      //  const tokenExisst = await token_chain.findOne({_id:token})
-      //  console.log("tokenExisst ",tokenExisst)
-      //  if(tokenExisst){
-      //  console.log("tokenExisst if",tokenExisst)
-         
-      //  }else{
-      //  console.log("tokenExisst else",tokenExisst)
-        
-      //  }
-      //   return
+      //   }
+
+      // }
+      
 
       //  const filter = { _id:token  };
-      // const update = { $set: { _id:token,exch:exch} };
+      //  const update = { $set: { _id:token,exch:exch} };
       //  await token_chain.updateOne(filter, update, { upsert: true });
       //  return
 
@@ -740,26 +744,44 @@ class Makecall {
 
       // Save new user and count licenses
 
-      
+
 
       const result = await makecallABR_insert.save();
 
       if (result != null) {
 
-      //  let exch = "NFO"
+        let exch = "NFO"
 
-      //  if(Segment == "C"){
-      //   exch = "NSE"
-      //  }
-      //  else if(Segment == "MO" || Segment == "MF"){
-      //   exch = "MCX"
-      //  }
-      //  else if(Segment == "CO" || Segment == "CF"){
-      //   exch = "CDS"
-      //  }
+        if (Segment == "C") {
+          exch = "NSE"
+        }
+        else if (Segment == "MO" || Segment == "MF") {
+          exch = "MCX"
+        }
+        else if (Segment == "CO" || Segment == "CF") {
+          exch = "CDS"
+        }
+        console.log("token ", token)
+        console.log("exch ", exch)
+
+        const tokenExisst = await token_chain.findOne({ _id: token })
+        //console.log("tokenExisst ",tokenExisst)
+        if (tokenExisst != null) {
+          console.log("tokenExisst if", tokenExisst)
+          return res.send({ status: true, msg: "Data Add Successfully....", data: result });
+
+        } else {
+          //  console.log("tokenExisst else",tokenExisst)
+          const filter = { _id: token };
+          const update = { $set: { _id: token, exch: exch } };
+          await token_chain.updateOne(filter, update, { upsert: true });
+          Alice_Socket()
+          return res.send({ status: true, msg: "Data Add Successfully....", data: result });
+
+        }
 
 
-        return res.send({ status: true, msg: "Data Add Successfully....", data: result });
+
       } else {
         return res.send({ status: false, msg: "Id Wrong" });
       }
@@ -1114,7 +1136,7 @@ async function run() {
 
             let config = {
               method: 'post',
-              maxBodyLength: Infinity,            
+              maxBodyLength: Infinity,
               url: `${process.env.BROKER_URL}`,
               headers: {
                 'Content-Type': 'text/plain'
@@ -1204,7 +1226,7 @@ async function run() {
 }
 
 
-run().catch(console.error);
+// run().catch(console.error);
 
 
 //////////////////----- makecallabrView_excute_run --//////////////////////////////

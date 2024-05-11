@@ -1,5 +1,5 @@
-const {createMessage,getMsgData,deleteMsgData,editMsgData}=require("../../Controllers/Admins/MsgBroadcast/Message_Broadcast");
 const router = require("express").Router()
+const {createMessage,getMsgData,deleteMsgData,editMsgData,getadminandresearchername}=require("../../Controllers/Admins/MsgBroadcast/Message_Broadcast");
 const {subadminhelpmessage,getsubadminhelpmessage,userhelpmessage,getuserhelpdata,getuserdelete,getsubadmindelete,userdataByPrefix,getResearcher,getEmployee,getEmployeebyid} =require("../../Controllers/Admins/Help/Helpmessage")
 
 const {ProfileImagedata} =require("../../Controllers/Admins/Profile/ProfileImage")
@@ -8,6 +8,8 @@ router.post("/messageData",createMessage)
 router.post("/getMessageData",getMsgData);
 router.post("/messageData/delete",deleteMsgData)
 router.post("/messagedata/edit",editMsgData)
+router.post("/messagedata/name/get",getadminandresearchername)
+
 
 // helpmessage
 router.post("/subadminhelpmessage",subadminhelpmessage)

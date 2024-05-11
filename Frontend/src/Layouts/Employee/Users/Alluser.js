@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import toast from "react-hot-toast";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
@@ -9,13 +8,10 @@ import { useDispatch } from "react-redux";
 import ExportToExcel from '../../../Utils/ExportCSV'
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
-import { update_Balance } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
 import { Get_Permission } from '../../../ReduxStore/Slice/Employee/EmployeeSlice'
-
-import { GetAllUsers, Get_All_Broker, Show_Status, DeleteUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
-
+import { Get_All_Broker, Show_Status, DeleteUser , GetAllSubadminUsers } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 
 
 export default function AllUsers() {
@@ -30,30 +26,21 @@ export default function AllUsers() {
   const navigate = useNavigate();
 
 
-  const [initialRowData, setInitialRowData] = useState({});
-  const [balanceValue, setBalanceValue] = useState("");
+
   const [refresh, setrefresh] = useState(false);
-  const [modal, setmodal] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [ForGetCSV, setForGetCSV] = useState([])
   const [getAllBroker, setAllBroker] = useState([]);
+  const [ShowDeleteModal, setShowDeleteModal] = useState(false);
+  const [modalId, setmodalId] = useState('');
+  const [getllSubadminUsers, setAllSubadminUsers] = useState('');
+
+
   const [getPermission, setPermission] = useState({
     loading: true,
     data: [],
 
   });
-
-
-
-
- 
-  const [ShowDeleteModal, setShowDeleteModal] = useState(false);
-
-
-
-
-  const [modalId, setmodalId] = useState('');
-
   const [getAllUsers, setAllUsers] = useState({
     loading: true,
     data: [],
@@ -91,8 +78,6 @@ export default function AllUsers() {
     }
   };
 
-
-
   const showBrokerName = (row) => {
 
     if (row.license_type === "1") {
@@ -107,8 +92,6 @@ export default function AllUsers() {
       }
     }
   };
-
-
 
   let columns = [
     {
@@ -367,9 +350,9 @@ export default function AllUsers() {
   };
 
 
-  const getUsersData = async () => {
+  const getAllEmployeeUsersData = async () => {
     var data = { user_ID: user_id }
-    await dispatch(GetAllUsers(data))
+    await dispatch(GetAllSubadminUsers(data))
       .unwrap()
       .then((response) => {
 
@@ -417,9 +400,54 @@ export default function AllUsers() {
       });
   };
 
+  // const getAllUsersData = async () => {
+  //   var data = { user_ID: user_id }
+  //   await dispatch(GetAllSubadminUsers(data))
+  //     .unwrap()
+  //     .then((response) => {
+
+  //       if (response.status) {
+  //         const formattedData = response.data && response.data.map((row, index) => ({
+  //           ...row,
+  //           id: index + 1,
+  //         }));
+
+  //         const filterData = formattedData.filter((item) => {
+  //           const searchInputMatch =
+  //             searchInput == '' ||
+  //             item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
+  //             item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
+  //             item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
+  //             item.prifix_key.toLowerCase().includes(searchInput.toLowerCase())
+
+  //           return searchInputMatch
+
+  //         })
+
+  //         setAllSubadminUsers({
+  //           loading: false,
+  //           data: searchInput ? filterData : formattedData,
+
+  //         });
+
+  //       } else {
+
+  //         setAllSubadminUsers({
+  //           loading: false,
+  //           data: [],
+  //           data1: [],
+  //         });
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log("Error", error);
+  //     });
+  // };
+
 
   useEffect(() => {
-    getUsersData();
+    getAllEmployeeUsersData();
+    // getAllUsersData();
   }, [refresh, searchInput]);
 
 

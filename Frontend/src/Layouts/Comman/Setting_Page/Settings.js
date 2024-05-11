@@ -100,14 +100,7 @@ const Settings = () => {
                                 <div className="card-body w-100">
                                   <div className="content-page-header">
                                     <h5>Activity</h5>
-                                    <div className="page-content">
-                                      <div className="list-btn">
-                                        <ul className="filter-list">
-                                          <li></li>
-                                        </ul>
-                                        <Trackpanel />
-                                      </div>
-                                    </div>
+                                
                                   </div>
                                 </div>
                               </div>

@@ -6,6 +6,7 @@ const Strategies = db.Strategies;
 const researcher_strategy = db.researcher_strategy;
 const client_service = db.client_service;
 const Subadmin_Permission = db.Subadmin_Permission;
+const Activity_logs = db.Activity_logs;
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -68,6 +69,7 @@ class SignalController {
               token: 1,
               lot_size: 1,
               exit_status: 1,
+              ft_time: 1,
             },
           },
           {
@@ -181,7 +183,7 @@ class SignalController {
               let: {
                 service_name: "$service.name",
                 strategy_name: "$strategys.strategy_name",
-               
+
               },
               pipeline: [
                 {
@@ -307,6 +309,7 @@ class SignalController {
               token: 1,
               lot_size: 1,
               exit_status: 1,
+              ft_time: 1,
             },
           },
           {
@@ -474,24 +477,54 @@ class SignalController {
   async update_stop_loss(req, res) {
     try {
       const { data } = req.body;
-
-      data.forEach(async (signal) => {
+  
+      for (const signal of data) {
+        const ExistfindSignal = await Mainsignals.findOne({ _id: signal._id }).select('target stop_loss exit_time');
+  
+        let activityMessage = "";
+        if (!ExistfindSignal) {
+          return res.status(404).send({ status: false, msg: "Signal not found", data: null });
+        }
+  
+        if (ExistfindSignal.target !== signal.target) {
+          activityMessage = `${signal.trade_symbol} Update Target price to ${signal.target}`;
+        } else if (ExistfindSignal.stop_loss !== signal.stop_loss) {
+          activityMessage = `${signal.trade_symbol} Update Stop Loss price to ${signal.stop_loss}`;
+        } else if (ExistfindSignal.exit_time !== signal.exit_time) {
+          activityMessage = `${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`;
+        }
+  
+        if (activityMessage) {
+          const Activity_logsData = new Activity_logs({
+            admin_Id: signal.StrategyData.maker_id,
+            category: "TARGET-STOPLOSS-TIME",
+            message: activityMessage,
+            maker_role: "SUBADMIN",
+            device: "web",
+            system_ip: ""
+          });
+          await Activity_logsData.save();
+        }
+  
         const filter = { _id: signal._id };
         const updateOperation = { $set: signal };
-        const result = await Mainsignals.updateOne(filter, updateOperation);
-      });
-
-      return res.send({ status: true, msg: "Update SuccessFully", data: [] });
+        await Mainsignals.updateOne(filter, updateOperation);
+      }
+  
+      return res.status(200).send({ status: true, msg: "Update Successful", data: null });
     } catch (error) {
-      return res.send({ status: false, msg: "error ", data: error });
+      console.error("Error in update_stop_loss:", error);
+      return res.status(500).send({ status: false, msg: "Internal server error", data: error.message });
     }
   }
-
+  
 
 
   // SUBADMIN TRADE HISTORY DATA
   async Tradehistory_data(req, res) {
     try {
+
+      console.log(req.body)
       const { Role, subadminId, startDate, endDate, strategy, service, type } =
         req.body;
 
@@ -614,11 +647,13 @@ class SignalController {
       let stg1;
       let ser1;
       //  For Strategy
-      if (strategy === "null") {
-        stg1 = { $exists: true };
+      if (strategy === "null" || strategy === "") {
+        stg1 = { $in: strategyNames }
       } else {
         stg1 = strategy;
       }
+
+     
 
       //  For Service
       if (service === "null") {
@@ -630,13 +665,12 @@ class SignalController {
       const filteredSignals = await Mainsignals.aggregate([
         {
           $match: {
-            dt_date: {
-              $gte: startDate,
-              $lte: endDate,
+            createdAt: {
+              $gte: startDateObj,
+              $lte: endDateObj,
             },
-            strategy: stg1,
             trade_symbol: ser1,
-            strategy: { $in: strategyNames },
+            strategy:stg1
           },
         },
         {
@@ -753,6 +787,7 @@ class SignalController {
             "result.lot_size": 1,
             "result.MakeStartegyName": 1,
             "result.exit_status": 1,
+            "result.ft_time": 1,
             "result.createdAt": 1,
             "result.updatedAt": 1,
 
@@ -866,14 +901,12 @@ class SignalController {
 
       const GetAllClientServices = await client_service.aggregate(pipeline);
 
-      console.log("GetAllClientServices", GetAllClientServices);
 
       var abc = [];
 
       if (GetAllClientServices.length > 0) {
         for (const item of GetAllClientServices) {
           try {
-            // console.log("client_persnal_key1", item.quantity);
 
             var data = await Mainsignals.aggregate([
               {

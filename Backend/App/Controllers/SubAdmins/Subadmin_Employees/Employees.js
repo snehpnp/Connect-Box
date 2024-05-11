@@ -12,6 +12,8 @@ var dateTime = require("node-datetime");
 var dt = dateTime.create();
 
 class Employee {
+
+  // ALL EMPLOYEE GET 
   async allEmployeeData(req, res) {
     try {
       const { userId } = req.body;
@@ -92,6 +94,8 @@ class Employee {
     }
   }
 
+
+  // ADD EMPLOYEE
   async addEmployee(req, res) {
     try {
       const {
@@ -115,6 +119,12 @@ class Employee {
       if (existingPhone) {
         return res.send({ status: false, msg: "Phone number already exists" });
       }
+
+      // const existingPhone = await User_model.findOne({ PhoneNo });
+      // if (existingPhone) {
+      //   return res.send({ status: false, msg: "Phone number already exists" });
+      // }
+
 
       const existingPrefix = await User_model.findOne({
         Role: "SUBADMIN",
@@ -163,6 +173,8 @@ class Employee {
         trade_history_old: Subadmin_permision_data.trade_history_old,
         strategy: Subadmin_permision_data.strategy,
         group_services: Subadmin_permision_data.group_services,
+        show_all_users : Subadmin_permision_data.show_all_users,
+        show_employee_users : Subadmin_permision_data.show_employee_users,
         user_id: savedUser._id,
       });
 
@@ -269,6 +281,8 @@ class Employee {
         trade_history_old: Subadmin_permision_data.trade_history_old,
         strategy: Subadmin_permision_data.strategy,
         group_services: Subadmin_permision_data.group_services,
+        show_all_users : Subadmin_permision_data.show_all_users,
+        show_employee_users : Subadmin_permision_data.show_employee_users,
       };
 
       const filter = { user_id: existingUsername._id };
