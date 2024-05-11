@@ -28,16 +28,25 @@ const Edit_Employee = () => {
 
   const [checkedStrategies, setCheckedStrategies] = useState([]);
   const [checkedGroupServices, setCheckedGroupServices] = useState([]);
+
+
   const [selectedStrategyIds, setSelectedStrategyIds] = useState([]);
   const [selectedGroupIds, setSelectedGroupIds] = useState([]);
   const [state, setstate] = useState([]);
   const [state1, setstate1] = useState([]);
-  const [repeatCode, setRepeatCode] = useState('');
+
+  const [groupServiceCheck, setGroupServiceCheck] = useState(false);
+  const [strategyCheck, setStrategyCheck] = useState(false);
+
+
+  console.log("groupServiceCheck :", groupServiceCheck)
 
   const [AllGroupServices, setAllGroupServices] = useState({
     loading: true,
     data: [],
   });
+
+
 
   const [AllStrategy, setAllStrategy] = useState({
     loading: true,
@@ -131,7 +140,7 @@ const Edit_Employee = () => {
         errors.show_employee_users = "Select show employee or show users";
         errors.show_all_users = "Select show employee or show users";
       }
-      
+
       if (!values.phone) {
         errors.phone = valid_err.CONTACT_ERROR;
       } else if (!isValidContact(values.phone)) {
@@ -140,14 +149,14 @@ const Edit_Employee = () => {
 
       if (values.Strategy) {
         if (!values.addemployee && !values.editemployee) {
-          errors.addemployee = "select Add Client Also 1";
+          errors.addemployee = "select Add Client Also";
           errors.editemployee = "select Edit Client Also";
         }
       }
 
       if (values.groupservice) {
         if (!values.addemployee && !values.editemployee) {
-          errors.addemployee = "select Add Client Also 2";
+          errors.addemployee = "select Add Client Also";
           errors.editemployee = "select Edit Client Also";
         }
       }
@@ -178,26 +187,44 @@ const Edit_Employee = () => {
         },
       };
 
-      if (values.password.trim() !== "") {
-        req.Password = values.password;
+
+
+      if (!groupServiceCheck && formik.values.groupservice == 1 || !strategyCheck && formik.values.Strategy) {
+        Swal.fire({
+          title: "Error",
+          text: "Select at least one group and strategy",
+          icon: "error",
+          timer: 1500,
+          timerProgressBar: true,
+        })
+        return
+      }
+      else {
+
+        if (values.password.trim() !== "") {
+          req.Password = values.password;
+        }
+
+        try {
+          const response = await dispatch(Update_Employee(req)).unwrap();
+          if (response.status) {
+            Swal.fire({
+              title: "Update Successful!",
+              text: response.msg,
+              icon: "success",
+              timer: 1500,
+              timerProgressBar: true,
+            }).then(() => {
+              navigate("/subadmin/employees");
+            });
+          }
+        } catch (error) {
+          console.log("Error:", error);
+        }
+
       }
 
-      try {
-        const response = await dispatch(Update_Employee(req)).unwrap();
-        if (response.status) {
-          Swal.fire({
-            title: "Update Successful!",
-            text: response.msg,
-            icon: "success",
-            timer: 1500,
-            timerProgressBar: true,
-          }).then(() => {
-            navigate("/subadmin/employees");
-          });
-        }
-      } catch (error) {
-        console.log("Error:", error);
-      }
+
     },
   });
 
@@ -300,6 +327,13 @@ const Edit_Employee = () => {
       return
     }
 
+    if (!formik.values.Strategy) {
+      setStrategyCheck(false)
+    }
+    if (!formik.values.groupservice) {
+      setGroupServiceCheck(false)
+    }
+
 
     if (formik.values.editemployee) {
       formik.setFieldValue("groupservice", true);
@@ -319,7 +353,7 @@ const Edit_Employee = () => {
 
       return;
     }
-  }, [formik.values.editemployee, formik.values.addemployee, formik.values.detailsinfo, formik.values.tradehistory, formik.values.Strategy, formik.values.groupservice ,formik.values.show_employee_users, formik.values.show_all_users]);
+  }, [formik.values.editemployee, formik.values.addemployee, formik.values.detailsinfo, formik.values.tradehistory, formik.values.Strategy, formik.values.groupservice, formik.values.show_employee_users, formik.values.show_all_users]);
 
 
   const fields = [
@@ -522,6 +556,10 @@ const Edit_Employee = () => {
 
   const handleStrategyChange = (event) => {
     var strategyId = event.target.value;
+
+
+
+
     setCheckedStrategies((prevStrategies) => {
       return prevStrategies.map((strategy) => {
         if (strategy.id === strategyId) {
@@ -541,6 +579,10 @@ const Edit_Employee = () => {
     });
   };
 
+
+
+
+
   //  For Select Group Change Change
   useEffect(() => {
     if (UserData.data !== undefined && UserData.data && UserData.data.length > 0) {
@@ -557,11 +599,23 @@ const Edit_Employee = () => {
           };
         });
       setCheckedGroupServices(initialCheckedStrategies);
+
+      if (UserData.data && UserData.data[0].subadmin_permissions[0].strategy.length > 0) {
+
+        setStrategyCheck(true)
+      }
+
+
+      // if (UserData.data && UserData.data[0].subadmin_permissions[0].group_services.length > 0) {
+      //   setGroupServiceCheck(true)
+      // }
+
     }
   }, [UserData.data, AllGroupServices.data]);
 
-  const handleStrategyChange1 = (event) => {
+  const handleGroupChange = (event) => {
     const strategyId = event.target.value;
+
     setCheckedGroupServices((prevStrategies) => {
       return prevStrategies.map((strategy) => {
         if (strategy.id === strategyId) {
@@ -579,6 +633,28 @@ const Edit_Employee = () => {
       }
     });
   };
+
+
+
+  console.log("selectedStrategyIds :", selectedStrategyIds)
+  console.log("selectedGroupIds :", selectedGroupIds)
+
+
+  useEffect(() => {
+    if (selectedStrategyIds.length > 0) {
+      setStrategyCheck(true)
+    }
+    else if (selectedStrategyIds.length == 0) {
+      setStrategyCheck(false)
+    }
+    if (selectedGroupIds.length > 0) {
+      setGroupServiceCheck(true)
+    }
+    else if (selectedGroupIds.length == 0) {
+      setGroupServiceCheck(false)
+
+    }
+  }, [selectedStrategyIds, selectedGroupIds])
 
   return (
 
@@ -612,7 +688,7 @@ const Edit_Employee = () => {
                                 className="form-check-input"
                                 name={strategy.id}
                                 value={strategy.id}
-                                onChange={(e) => handleStrategyChange1(e)}
+                                onChange={(e) => handleGroupChange(e)}
                                 checked={strategy.checked}
                               />
                               <label
@@ -626,11 +702,10 @@ const Edit_Employee = () => {
                         </div>
                       </div>
                     ))}
-                    {formik.errors.grouper_servcice && (
-                      <div style={{ color: "red" }}>
-                        {formik.errors.grouper_servcice}
-                      </div>
-                    )}
+                    {!groupServiceCheck ?
+                      <div style={{ color: 'red' }}>
+                        <p>You must select a Group Service from the list</p>
+                      </div> : ''}
                   </>
                 ) : (
                   ""
@@ -666,11 +741,10 @@ const Edit_Employee = () => {
                       </div>
                     ))}
 
-                    {formik.errors.strateg_servcice && (
-                      <div style={{ color: "red" }}>
-                        {formik.errors.strateg_servcice}
-                      </div>
-                    )}
+                    {!strategyCheck ?
+                      <div style={{ color: 'red' }}>
+                        <p>You must select a Group Service from the list</p>
+                      </div> : ''}
                   </>
                 ) : (
                   ""
