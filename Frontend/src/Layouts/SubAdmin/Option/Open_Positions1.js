@@ -21,11 +21,6 @@ import { No_Negetive_Input_regex } from "../../../Utils/Common_regex";
 import ToastButton from "../../../Components/ExtraComponents/Alert_Toast";
 
 
-// import { Get_Panel_key } from '../../../ReduxStore/Slice/Common/Option_Chain_Slice';
-// import { Get_Open_Position, Update_Signals } from '../../../ReduxStore/Slice/Common/Option_Chain_Slice'
-// import { GET_COMPANY_INFOS } from '../../../ReduxStore/Slice/Admin/AdminSlice'
-
-
 
 const TradeHistory = () => {
     const dispatch = useDispatch();
@@ -437,24 +432,7 @@ const TradeHistory = () => {
                 }
                 else {
                     console.log("UpdateStopLoss", filteredArray2);
-                    // return
-                    // await dispatch(
-                    //     Update_Signals({
-                    //         data: filteredArray2,
-                    //         token: token,
-                    //     })
-
-                    // ).unwrap()
-                    //     .then((response) => {
-                    //         if (response.status) {
-                    //             setPanelKey(response.data)
-                    //         }
-                    //         toast.success(response.msg);
-                    //         setrefresh(!refresh)
-                    //         setSelected1([])
-                    //         setSelected([])
-                    //         window.location.reload()
-                    //     });
+                 
                 }
 
             }

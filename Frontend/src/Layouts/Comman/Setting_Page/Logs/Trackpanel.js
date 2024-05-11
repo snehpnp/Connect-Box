@@ -137,7 +137,7 @@ const Trackpanel = () => {
   return (
     <>
       <div>
-        <Row className="mb-3">
+        <Row className="mb-1">
           <Col>
             <Form.Group>
               <Form.Label>Select Category</Form.Label>

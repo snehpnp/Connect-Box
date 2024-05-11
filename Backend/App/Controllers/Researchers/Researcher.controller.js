@@ -191,31 +191,14 @@ class Researcher {
         const { id } = req.body
 
         try {
-            const AllData = await User_model.find({ parent_id: id, Role: "RESEARCH" })
+            const AllData = await User_model.find({ parent_id: id, Role: "RESEARCH" }).sort({createdAt:-1})
 
-            const aggregateResult = await User_model.aggregate([
-                { $match: { parent_id: id, Role: "RESEARCH" } },
-                {
-                    $group: {
-                        _id: null,
-                        totalBalance: { $sum: { $toDouble: "$Balance" } },
-                        totalCount: { $sum: 1 },
-                        activeCount: {
-                            $sum: {
-                                $cond: { if: { $eq: ["$ActiveStatus", "1"] }, then: 1, else: 0 }
-                            }
-                        }
-                    }
-                },
-                { $sort: { createdAt: -1 } }
-            ]);
 
 
             return res.send({
                 status: true,
                 msg: "Get All Data Successfully",
                 data: AllData,
-                count: aggregateResult[0]
             })
 
         }

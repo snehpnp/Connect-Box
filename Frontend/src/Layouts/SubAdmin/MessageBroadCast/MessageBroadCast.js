@@ -15,6 +15,9 @@ import Loader from "../../../Utils/Loader";
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import * as Config from "../../../Utils/Config";
+import io from 'socket.io-client';
+
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
@@ -30,7 +33,7 @@ function MessageBroadcast() {
   const [msgData, setMsgData] = useState([]);
   const [openModalId, setopenModalId] = useState("");
   const [refresh, setrefresh] = useState(false);
-  // const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState("1");
 
@@ -42,18 +45,18 @@ function MessageBroadcast() {
 
 
   // CONNECT SOCKET
-  // useEffect(() => {
-  //   const newSocket = io.connect(Config.base_url);
-  //   setSocket(newSocket);
-  //   newSocket.on("receive_message", (data) => {
-  //     setrefresh(!refresh)
-  //   });
+  useEffect(() => {
+    const newSocket = io.connect(Config.base_url);
+    setSocket(newSocket);
+    newSocket.on("receive_message", (data) => {
+      setrefresh(!refresh)
+    });
 
-  //   return () => {
-  //     newSocket.off("receive_message");
-  //     newSocket.close();
-  //   };
-  // }, []);
+    return () => {
+      newSocket.off("receive_message");
+      newSocket.close();
+    };
+  }, []);
 
 
   const styles = {
@@ -347,18 +350,6 @@ function MessageBroadcast() {
 
   };
 
-
-  useEffect(() => {
-    fetchStrategies();
-    fetchBrokers();
-  }, [refresh, value == 1]);
-
-
-
-  useEffect(() => {
-    getSubadminTableData();
-  }, [refresh, value]);
-
   const handleMessageChange = (e) => {
     setMessageText(e.target.value);
   };
@@ -366,6 +357,19 @@ function MessageBroadcast() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    fetchStrategies();
+    fetchBrokers();
+  }, [refresh])
+
+
+
+  useEffect(() => {
+    getSubadminTableData();
+  }, [refresh, value]);
+
+
 
 
   return (

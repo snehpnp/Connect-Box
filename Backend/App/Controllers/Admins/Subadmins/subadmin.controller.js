@@ -539,7 +539,12 @@ class Subadmin {
         ]);
 
 
+        
+        
+        
         const mergedArray = [...getAllClients, ...rechargeDetails];
+        console.log("rechargeDetails", getAllClients)
+        
         mergedArray.sort((a, b) => {
           return new Date(a.createdAt) - new Date(b.createdAt);
         });
@@ -555,9 +560,14 @@ class Subadmin {
         return res.send({
           status: true,
           msg: "Recharge details fetched successfully",
-          data: mergedArray,
+          data: getAllClients,
           Count: Count
         });
+
+
+
+
+
       } else if (subadmin_service_type == 1) {
 
         var Count = {
