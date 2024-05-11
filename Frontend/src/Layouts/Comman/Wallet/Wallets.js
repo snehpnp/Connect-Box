@@ -41,7 +41,15 @@ function Payment() {
 
 
   const columns = [
-    { field: 'id', headerName: '#', width: 70, headerClassName: styles.boldHeader },
+    {
+      field: 'id',
+      headerName: '#',
+      width: 70,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div> <b>{params.value + 1}</b></div>
+      ),
+    },
 
     {
       field: 'username',
@@ -148,7 +156,7 @@ function Payment() {
 
 
   companyData.data && companyData.data.map((data) => {
-    if (!isNaN(data.Balance) && data.Balance !== null && data.Balance !== "") {
+    if (!isNaN(data.Balance) && data.Balance !== null && data.Balance !== "" && data.Role=="USER") {
       UsedBalance += parseInt(data.Balance);
     }
   })
@@ -195,7 +203,7 @@ function Payment() {
                           <div className="grid-info-item active-plane">
                             <div className="grid-info">
                               <span>Used Balance</span>
-                              <h4>{UsedBalance}</h4>
+                              <h4>{cardData && cardData.UsedBalance || UsedBalance}</h4>
                             </div>
                             <div className="grid-head-icon">
                               <i className="fe fe-list" />

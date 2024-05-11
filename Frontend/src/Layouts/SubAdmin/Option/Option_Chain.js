@@ -644,6 +644,8 @@ function Option_Chain() {
         })
     }
 
+
+
     const Done_For_Trade = (id) => {
         handleClickDisabled();
 
@@ -658,7 +660,7 @@ function Option_Chain() {
             }
 
 
-            let req = `DTime:${currentTimestamp}|Symbol:${symbol && symbol}|TType:${item.trading_type}|Tr_Price:131|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${item.segment}|Strike:${item.strike}|OType:${item.call_type}|Expiry:${expiry && expiry}|Strategy:${strategy && strategy}|Quntity:${item.entry_qty}|Key:${UserDetails && UserDetails[0].client_key}|TradeType:OPTION_CHAIN|Demo:demo`
+            let req = `DTime:${currentTimestamp}|Symbol:${symbol && symbol}|TType:${item.trading_type}|Tr_Price:131|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${item.segment}|Strike:${item.strike}|OType:${item.call_type}|Expiry:${expiry && expiry}|Strategy:${strategy && strategy}|Quntity:${item.entry_qty}|Key:${UserDetails && UserDetails[0].client_key}|TradeType:OPTION_CHAIN|ExitStatus:OPTION CHAIN|Demo:demo`
 
             let config = {
                 method: 'post',
@@ -703,24 +705,13 @@ function Option_Chain() {
                             timer: 1500,
                             timerProgressBar: true
                         });
-
-
-
-
                     }
                 })
                 .catch((error) => {
                     // console.log(error.response.data);
                 });
-
         })
-
-
-
-
     }
-
-
 
 
     const RemoveClases = (option_type, row_data, call_type, index,) => {
@@ -736,8 +727,6 @@ function Option_Chain() {
             element3.removeClass('active');
 
         })
-
-
     }
 
 
@@ -751,14 +740,8 @@ function Option_Chain() {
         cutoffTimeIST.setHours(15, 30, 0, 0);
         // Check if the current time is after 3:30 PM in IST timezone
         const isAfterCutoffTime = new Date(currentDateIST).getTime() > cutoffTimeIST.getTime();
-
-
-
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
-
-
             let Arr = []
-
 
             const expiry_i = convert_string_to_month(expiry && expiry)
 

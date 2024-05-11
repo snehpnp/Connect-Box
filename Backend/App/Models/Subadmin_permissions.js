@@ -37,6 +37,16 @@ const SubadminPermission_Schema = new mongoose.Schema({
         enum: [0, 1],   // 0 == OLD VIEW ON  , 1 = ONLY TODAY VIEW
         default: 0
     },
+    show_all_users: {
+        type: Number,
+        enum: [0, 1],   // 0 == OLD VIEW ON  , 1 = ONLY TODAY VIEW
+        default: 0
+    },
+    show_employee_users: {
+        type: Number,
+        enum: [0, 1],   // 0 == OLD VIEW ON  , 1 = ONLY TODAY VIEW
+        default: 0
+    },
     strategy: [
         {
             type: mongoose.Schema.Types.ObjectId,

@@ -13,6 +13,10 @@ const AliceViewModel = db.AliceViewModel;
 const BrokerResponse = db.BrokerResponse;
 var dateTime = require('node-datetime');
 
+
+const { trade_charge } = require("../Helper/trade_charge");
+
+
 const place_order = async (AllClientData, signals, token, filePath, signal_req) => {
      
      //console.log("inside alice blue")
@@ -671,6 +675,13 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
 
             if (response.data[0].stat == "Ok") {
 
+                let tradeChargeData = {
+                    order_id : response.data[0].NOrdNo,
+                    user_id:item._id
+                }
+                trade_charge(tradeChargeData)
+
+                
                 BrokerResponse.create({
                     user_id: item._id,
                     receive_signal: signal_req,
@@ -867,6 +878,16 @@ const ExitPlaceOrder = async (item, filePath, possition_qty, signals, signal_req
 
 
             if (response.data[0].stat == "Ok") {
+
+
+                let tradeChargeData = {
+                    order_id : response.data[0].NOrdNo,
+                    user_id:item._id
+                }
+                trade_charge(tradeChargeData)
+     
+
+
                 BrokerResponse.create({
                     user_id: item._id,
                     receive_signal: signal_req,

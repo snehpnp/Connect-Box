@@ -148,6 +148,9 @@ const AllResearcherStrategy = () => {
 
     }
 
+
+    console.log("allStrategy.data",allStrategy.data)
+
     return (
         <>
             <div className="content container-fluid">
@@ -163,7 +166,7 @@ const AllResearcherStrategy = () => {
                             <div className="content container-fluid pb-0">
                                 <div className="row d-flex align-items-center justify-content-center">
 
-                                    {allStrategy.data && allStrategy.data.data.map((stg) => {
+                                    {allStrategy.data && allStrategy.data.map((stg) => {
                                         return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
                                             <div className="packages card" data-aos="fade-down">
                                                 <div className="package-header d-flex justify-content-between">

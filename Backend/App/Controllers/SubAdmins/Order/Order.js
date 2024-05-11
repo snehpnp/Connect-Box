@@ -69,6 +69,7 @@ class SignalController {
               token: 1,
               lot_size: 1,
               exit_status: 1,
+              ft_time: 1,
             },
           },
           {
@@ -308,6 +309,7 @@ class SignalController {
               token: 1,
               lot_size: 1,
               exit_status: 1,
+              ft_time: 1,
             },
           },
           {
@@ -521,6 +523,8 @@ class SignalController {
   // SUBADMIN TRADE HISTORY DATA
   async Tradehistory_data(req, res) {
     try {
+
+      console.log(req.body)
       const { Role, subadminId, startDate, endDate, strategy, service, type } =
         req.body;
 
@@ -643,11 +647,13 @@ class SignalController {
       let stg1;
       let ser1;
       //  For Strategy
-      if (strategy === "null") {
-        stg1 = { $exists: true };
+      if (strategy === "null" || strategy === "") {
+        stg1 = { $in: strategyNames }
       } else {
         stg1 = strategy;
       }
+
+     
 
       //  For Service
       if (service === "null") {
@@ -659,13 +665,12 @@ class SignalController {
       const filteredSignals = await Mainsignals.aggregate([
         {
           $match: {
-            dt_date: {
-              $gte: startDate,
-              $lte: endDate,
+            createdAt: {
+              $gte: startDateObj,
+              $lte: endDateObj,
             },
-            strategy: stg1,
             trade_symbol: ser1,
-            strategy: { $in: strategyNames },
+            strategy:stg1
           },
         },
         {
@@ -782,6 +787,7 @@ class SignalController {
             "result.lot_size": 1,
             "result.MakeStartegyName": 1,
             "result.exit_status": 1,
+            "result.ft_time": 1,
             "result.createdAt": 1,
             "result.updatedAt": 1,
 
@@ -895,14 +901,12 @@ class SignalController {
 
       const GetAllClientServices = await client_service.aggregate(pipeline);
 
-      console.log("GetAllClientServices", GetAllClientServices);
 
       var abc = [];
 
       if (GetAllClientServices.length > 0) {
         for (const item of GetAllClientServices) {
           try {
-            // console.log("client_persnal_key1", item.quantity);
 
             var data = await Mainsignals.aggregate([
               {
