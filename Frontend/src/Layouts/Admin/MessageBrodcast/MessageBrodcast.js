@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { admin_Msg_Get, admin_Msg_Delete, admin_Msg_Edit, add_message } from "../../../ReduxStore/Slice/Admin/MessageData";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import Content from "../../../Components/Dashboard/Content/Content";
-import { GetAllSubAdmin } from "../../../ReduxStore/Slice/Admin/Subadmins";
+import { GetAllNames } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
@@ -16,6 +16,8 @@ import { fDateTime } from "../../../Utils/Date_formet";
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import * as Config from "../../../Utils/Config";
+import io from 'socket.io-client';
 
 
 function MessageBroadcast() {
@@ -30,7 +32,7 @@ function MessageBroadcast() {
   const [openModalId, setopenModalId] = useState("");
   const [refresh, setrefresh] = useState(false);
   const datas = JSON.parse(localStorage.getItem("user_details"));
-  // const [socket, setSocket] = useState(null);
+  const [socket, setSocket] = useState(null);
 
 
   const [loading, setLoading] = useState(true);
@@ -41,14 +43,14 @@ function MessageBroadcast() {
 
 
 
-  // useEffect(() => {
-  //   const newSocket = io.connect(`${Config.base_url}`);
-  //   setSocket(newSocket);
+  useEffect(() => {
+    const newSocket = io.connect(`${Config.base_url}`);
+    setSocket(newSocket);
 
-  //   return () => {
-  //     newSocket.close();
-  //   };
-  // }, []);
+    return () => {
+      newSocket.close();
+    };
+  }, []);
 
 
 
@@ -86,17 +88,27 @@ function MessageBroadcast() {
         <div> <b>{params.value + 1}</b></div>
       ),
     },
+    
     {
-      field: "FullName",
-      headerName: "Full Name",
-      width: 160,
-      headerClassName: styles.boldHeader,
-    },
-    {
-      field: "UserName",
+      field: "Usernames",
       headerName: "User name",
       width: 210,
       headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+        {params.value.length > 1 ? (
+          <select >
+            {params.value.map((username, index) => (
+              <option key={index} value={username}>
+                {username}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <span>{params.value}</span>
+        )}
+      </div>
+      ),
     },
     {
       field: "messageTitle",
@@ -149,11 +161,10 @@ function MessageBroadcast() {
 
   // GET ALL SUBADMIN NAMES
   const fetchSubadminName = async () => {
-    await dispatch(GetAllSubAdmin())
+    await dispatch(GetAllNames())
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          toast.success(response.msg);
           setsubadmin(response.data);
 
           const allSubadminUsernames = response.data.map((sub) => sub._id);
@@ -171,10 +182,17 @@ function MessageBroadcast() {
   // SEND MESSEAGE
   const sendMessage = async () => {
     try {
+
+
+      if(!selectedSubadmin){
+        const allSubadminUsernames = subadmin.map((sub) => sub._id);
+        setSelectedSubadmin(allSubadminUsernames);
+      }
+
       const newMessage = {
         Role: datas.Role,
         ownerId: datas.user_id,
-        subAdminId: [selectedSubadmin],
+        subAdminId: selectedSubadmin,
         messageTitle: messageText,
       };
 
@@ -182,7 +200,8 @@ function MessageBroadcast() {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
-            // await socket.emit("send_message", newMessage);
+            await socket.emit("send_message", newMessage);
+
             let timerInterval;
             Swal.fire({
               title: "Messgage Send!",
@@ -200,17 +219,16 @@ function MessageBroadcast() {
                 clearInterval(timerInterval);
               }
             }).then((result) => {
-              /* Read more about handling dismissals below */
+              setrefresh(!refresh);
+              setSelectedSubadmin("");
+              setMessageText("");
+
+
               if (result.dismiss === Swal.DismissReason.timer) {
                 console.log("I was closed by the timer");
               }
+              
             });
-
-
-
-            setSelectedSubadmin("");
-            setMessageText("");
-
 
           } else {
             toast.error(response.msg);
@@ -224,13 +242,19 @@ function MessageBroadcast() {
     }
   };
 
+
+
+  
+
   const handleSubadmins = (e) => {
     const value = e.target.value;
     if (value === "all") {
       const allSubadminUsernames = subadmin.map((sub) => sub._id);
+      // console.log("1")
 
       setSelectedSubadmin(allSubadminUsernames);
     } else {
+      // console.log("2")
       setSelectedSubadmin(value);
     }
   };
@@ -336,9 +360,11 @@ function MessageBroadcast() {
     fetchSubadminName();
     getAdminTableData();
 
-    // const allSubadminUsernames = subadmin.map((sub) => sub._id);
-    // setSelectedSubadmin(allSubadminUsernames);
+    const allSubadminUsernames = subadmin.map((sub) => sub._id);
+    setSelectedSubadmin(allSubadminUsernames);
   }, [refresh, value]);
+
+
 
   return (
 
@@ -377,7 +403,7 @@ function MessageBroadcast() {
                     <div className="col-md-7">
                       <div className="input-block mt-3">
                         <label className="form-label" htmlFor="broker-select">
-                          To Sub-Admin
+                          To Sub-Admin And Researcher
                         </label>
                         <div className="input-group">
                           <select

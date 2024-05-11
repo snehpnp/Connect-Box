@@ -12,6 +12,8 @@ var dateTime = require("node-datetime");
 var dt = dateTime.create();
 
 class Employee {
+
+  // ALL EMPLOYEE GET 
   async allEmployeeData(req, res) {
     try {
       const { userId } = req.body;
@@ -92,6 +94,8 @@ class Employee {
     }
   }
 
+
+  // ADD EMPLOYEE
   async addEmployee(req, res) {
     try {
       const {
@@ -115,6 +119,12 @@ class Employee {
       if (existingPhone) {
         return res.send({ status: false, msg: "Phone number already exists" });
       }
+
+      // const existingPhone = await User_model.findOne({ PhoneNo });
+      // if (existingPhone) {
+      //   return res.send({ status: false, msg: "Phone number already exists" });
+      // }
+
 
       const existingPrefix = await User_model.findOne({
         Role: "SUBADMIN",

@@ -15,7 +15,8 @@ import {
   subadmin_dashboard,
   employee_dashboard,
   SalesData_Subadmin,
-  chartData_Subadmin
+  chartData_Subadmin,
+  GetNAme
 } from "../../../Services/Admin/Subadmins.service";
 
 
@@ -181,6 +182,18 @@ export const GetAllSubAdmin = createAsyncThunk(
   async (data) => {
     try {
       const res = await GetAllSubAdmins(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
+export const GetAllNames = createAsyncThunk(
+  "messagedata/name/get",
+  async (data) => {
+    try {
+      const res = await GetNAme(data);
       return res;
     } catch (err) {
       throw err;
@@ -393,6 +406,10 @@ const SubAdminSlice = createSlice({
         state.isError = true;
       })
       .addCase(employee_dashboard_data.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+      })
+      .addCase(GetAllNames.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
       })

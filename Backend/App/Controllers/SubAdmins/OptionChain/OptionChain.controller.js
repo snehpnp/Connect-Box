@@ -178,7 +178,7 @@ class OptionChain {
         const symbol = req.body.symbol;
         const expiry = req.body.expiry;
 
-        let limit_set = 21
+        let limit_set = 31
 
         let price = 22000
 

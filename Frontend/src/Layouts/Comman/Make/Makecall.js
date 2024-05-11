@@ -1730,8 +1730,11 @@ const Makecall = () => {
         //alert("Done")
         //Trade At price -------- AT
         if (EntryPriceBA == 'at') {
+           let ExitTime  = selectedTimeExit.replace(":", "")
+          //console.log("ExitTime ",ExitTime)
 
-
+          
+          
             
             if (WiseTypeDropdown == '1') {
                 if (parseFloat(target1) != 0 && target1 != '') {
@@ -1762,7 +1765,7 @@ const Makecall = () => {
             //     let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice==''?'100':strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:SNE132023|TradeType:MAKECALL|Target:${target1}|StopLoss:${stoploss}|ExitTime:${selectedTimeExit}|sl_status:1|Demo:demo`
             SetForDisabledSubmit(true)
             const currentTimestamp = Math.floor(Date.now() / 1000);
-            let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice == '' ? '100' : strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:${UserDetails && UserDetails[0].client_key}|TradeType:MAKECALL|Target:${Target == 0 ? 0 : Target.toFixed(2)}|StopLoss:${StopLoss == 0 ? 0 : StopLoss.toFixed(2)}|ExitTime:0|sl_status:${sl_status}|ExitStatus:MAKECALL AT|Demo:demo`
+            let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice == '' ? '100' : strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:${UserDetails && UserDetails[0].client_key}|TradeType:MAKECALL|Target:${Target == 0 ? 0 : Target.toFixed(2)}|StopLoss:${StopLoss == 0 ? 0 : StopLoss.toFixed(2)}|ExitTime:${ExitTime}|sl_status:${sl_status}|ExitStatus:MAKECALL AT|Demo:demo`
             console.log("req ", req)
             // console.log("process.env.BROKER_URL ",process.env.BROKER_URL)
 
@@ -1779,6 +1782,52 @@ const Makecall = () => {
                 .then(async (response) => {
                     //console.log("response ", response);
                     if (response.status) {
+
+
+                        await dispatch(AddDataAboveBelowRange(
+                            {
+                                req: {
+            
+                                    user_id: UserLocalDetails.user_id,
+                                    Symbol: scriptname,
+                                    TType: tradeType,
+                                    Tr_Price: Tr_Price,
+                                    Price: price,
+                                    EntryPrice: EntryPrice,
+                                    Sq_Value: Sq_Value,
+                                    Sl_Value: Sl_Value,
+                                    TSL: TSL,
+                                    Segment: scriptSegment,
+                                    Strike: strikePrice == '' ? '100' : strikePrice,
+                                    OType: optionType,
+                                    Expiry: expiryOnChange,
+                                    Strategy: selectStrategy,
+                                    Quntity: '100',
+                                    Key: UserDetails && UserDetails[0].client_key,
+                                    TradeType: 'MAKECALL',
+                                    Target: Target == 0 ? 0 : Target.toFixed(2),
+                                    StopLoss: StopLoss == 0 ? 0 : StopLoss.toFixed(2),
+                                    ExitTime: selectedTimeExit,
+                                    NoTradeTime: selectedTimeNoTrade,
+                                    sl_status: sl_status,
+                                    token: liveToken.current,
+                                    EntryPriceRange_one: EntryPriceRange_one,
+                                    EntryPriceRange_two: EntryPriceRange_two,
+                                    ABR_TYPE: EntryPriceBA,
+                                    marketTimeAmo: markettime,
+                                    WiseTypeDropdown:WiseTypeDropdown,
+            
+                                },
+            
+                                token: UserLocalDetails.token
+                               }
+                             ))
+                            .unwrap()
+                            .then((response) => {
+                         
+                            });
+
+
                         Swal.fire({
                             title: "Data Add Successful!",
                             text: response.msg,
@@ -1786,6 +1835,7 @@ const Makecall = () => {
                             timer: 1500,
                             timerProgressBar: true
                           });
+
                           setRefreshscreen(!refreshscreen);
                           setTimeout(() => {
                             navigate("/subadmin/open-position")
@@ -1840,6 +1890,18 @@ const Makecall = () => {
                     timerProgressBar: true
                   });
                 return
+            }
+
+
+            if(parseFloat(EntryPriceRange_one) >= parseFloat(EntryPriceRange_two)){
+                Swal.fire({
+                    title: "Error",
+                    text: "Second price should be higher than the first price.",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true
+                    });
+              return
             }
 
             
@@ -2041,6 +2103,57 @@ const Makecall = () => {
 
 
         }
+
+    }
+
+
+    const selectPriceRange = (e) =>{
+        //alert(e.target.name)
+        if(e.target.name == "FirstPrice"){
+            if(e.target.value == ''){
+             SetEntryPriceRange_one('')
+             SetEntryPriceRange_two('')
+            }else{
+             SetEntryPriceRange_one(e.target.value)
+            }
+        }else if(e.target.name == "SecondPrice"){
+
+            console.log("EntryPriceRange_one ",EntryPriceRange_one)
+            // alert(e.target.value)  
+             if(EntryPriceRange_one == '' || EntryPriceRange_one == undefined){
+                 Swal.fire({
+                     title: "Error",
+                     text: "Please Input First price in Range",
+                     icon: "error",
+                     timer: 1500,
+                     timerProgressBar: true
+                   });
+                 return
+             }else{
+                    
+                SetEntryPriceRange_two(e.target.value);
+
+                // if(parseFloat(EntryPriceRange_one) < parseFloat(e.target.value)){
+                //     SetEntryPriceRange_two(e.target.value);
+                // }else{
+                    
+                //      Swal.fire({
+                //         title: "Error",
+                //         text: "This Input price should be higher than the first price.",
+                //         icon: "error",
+                //         timer: 1500,
+                //         timerProgressBar: true
+                //       });
+                //       return
+
+                // }
+               
+         
+             }
+
+        }
+     
+    
 
     }
 
@@ -2251,15 +2364,16 @@ const Makecall = () => {
 
                                                                     <div className="row mt-2">
                                                                         <div class="col-sm-6 col-lg-6">
-                                                                            <input type="number" name="exampleFormControlInput1" className="form-control" onChange={(e) => {
-                                                                                SetEntryPriceRange_one(e.target.value);
+                                                                            <input type="number" name="FirstPrice" className="form-control" onChange={(e) => {
+                                                                                selectPriceRange(e)
+                                                                               // SetEntryPriceRange_one(e.target.value);
                                                                                 SetEntryPriceRange_oneErr('')
                                                                             }} value={EntryPriceRange_one} />
                                                                         </div>
 
                                                                         <div class="col-sm-6 col-lg-6">
-                                                                            <input type="number" name="exampleFormControlInput1" className="form-control" onChange={(e) => {
-                                                                                SetEntryPriceRange_two(e.target.value);
+                                                                            <input type="number" name="SecondPrice" className="form-control" onChange={(e) => {selectPriceRange(e)
+                                                                               // SetEntryPriceRange_two(e.target.value);
                                                                                 SetEntryPriceRange_twoErr('')
                                                                             }} value={EntryPriceRange_two} />
                                                                         </div>

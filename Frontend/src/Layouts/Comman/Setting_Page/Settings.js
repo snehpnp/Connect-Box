@@ -245,13 +245,7 @@ const Settings = () => {
                                 <div className="page-header">
                                   <div className="content-page-header">
                                     <h5>Activity</h5>
-                                    <div className="page-content">
-                                      <div className="list-btn">
-                                        <ul className="filter-list">
-                                          <li></li>
-                                        </ul>
-                                      </div>
-                                    </div>
+                                
                                   </div>
                                 </div>
                               </div>
