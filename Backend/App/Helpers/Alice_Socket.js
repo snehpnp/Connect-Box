@@ -24,6 +24,7 @@ const dbTradeTools = client.db(process.env.DB_TRADETOOLS);
 let socketObject = null;
 
 const Alice_Socket = async () => {
+   // console.log("Inside ")
   var rr = 0;
     const url = "wss://ws1.aliceblueonline.com/NorenWS/"
     var socket = null
@@ -54,11 +55,15 @@ const Alice_Socket = async () => {
     // var channelList = "NSE|14366#NFO|43227"
     var type = { "loginType": "API" }
 
+
+   // console.log("alltokenchannellist ",alltokenchannellist)
+
+
     //  Step -1
 
   if(broker_infor[0].user_id !== undefined && broker_infor[0].access_token !== undefined && broker_infor[0].trading_status == "on"){
     try {
-
+        console.log("inside  2 ")
         await axios.post(`${aliceBaseUrl}ws/createSocketSess`, type, {
             headers: {
                 'Authorization': `Bearer ${userid} ${userSession1}`,
@@ -67,7 +72,7 @@ const Alice_Socket = async () => {
 
         }).then(res => {
 
-
+           // console.log("res.data ",res.data)
             if (res.data.stat == "Ok") {
 
                 try {
@@ -92,7 +97,7 @@ const Alice_Socket = async () => {
 
 
                         if (response.tk) {
-
+                          //  console.log("response ",response)
                             // const Make_startegy_token = await UserMakeStrategy.findOne({ tokensymbol: response.tk }, { _id: 1 });
                           
                             // if (Make_startegy_token) {
@@ -124,7 +129,8 @@ const Alice_Socket = async () => {
                                         exc: response.e,
                                         sp1: sp1,
                                         bp1: bp1,
-                                        curtime: `${hours}${minutes}`
+                                        curtime: `${hours}${minutes}`,
+                                        ft: response.ft
                                     },
                                 };
                                 const result = await stock_live_price.updateOne(filter, update, { upsert: true });

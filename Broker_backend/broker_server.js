@@ -232,8 +232,12 @@ const ConnectSocket = async (EXCHANGE, instrument_token) => {
 
 
 app.get('/r', (req, res) => {
+
+  const { trade_charge } = require("./Helper/trade_charge");
+  let data = {order_id : "14552645565",user_id:"65feb434ce02a722ac3b997d"}
+  trade_charge(data)
   // Request on Socket Server 1
-  ConnectSocket()
+//  ConnectSocket()
   res.send('Request sent to Socket Server 2');
 });
 
@@ -346,14 +350,21 @@ app.post('/broker-signals', async (req, res) => {
       var segment1 = signals.Segment.toUpperCase();
       var strike = signals.Strike;
       var option_type = signals.OType;
-      var expiry = signals.Expiry;
+
+      var expiry = signals.Expiry
+      if (signals.Expiry == undefined || signals.Expiry == '') {
+          expiry = '01012050'
+      }
+
       var strategy = signals.Strategy;
       var qty_percent = signals.Quntity;
       var client_key = signals.Key;
       var TradeType = signals.TradeType;
 
-    // console.log("signals - ",signals)
+    console.log("signals - ",signals)
       let ExitStatus = '-'
+
+      let ft_time = ''
 
       if(signals.ExitStatus != undefined){
         ExitStatus = signals.ExitStatus
@@ -560,8 +571,13 @@ app.post('/broker-signals', async (req, res) => {
 
               if (price_live_second.length > 0) {
                 price = price_live_second[0].lp
+                ft_time = price_live_second[0].ft
               } else {
                 price = signals.Price
+              }
+            }else{
+              if(price_live_second.length > 0){
+                ft_time = price_live_second[0].ft
               }
             }
           } catch (error) {
@@ -570,9 +586,11 @@ app.post('/broker-signals', async (req, res) => {
 
           if (price == null) {
             price = signals.Price
-
           }
 
+
+       
+          console.log("ft_time -- ", ft_time);
 
 
           // HIT TRADE IN BROKER SERVER
@@ -1018,7 +1036,8 @@ app.post('/broker-signals', async (req, res) => {
               token: instrument_token,
               lot_size: find_lot_size,
               MakeStartegyName: MakeStartegyName,
-              exit_status:ExitStatus
+              exit_status:ExitStatus,
+              ft_time:ft_time
             }
 
             let Signal_req1 = new Signals(Signal_req)
