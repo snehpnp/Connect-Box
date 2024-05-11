@@ -25,6 +25,7 @@ function Option_Chain() {
     const strategyRef = useRef("");
     const token = JSON.parse(localStorage.getItem('user_details')).token
     const user_id = JSON.parse(localStorage.getItem('user_details')).user_id;
+    const Role = JSON.parse(localStorage.getItem('user_details')).Role;
 
     const [showModal, setshowModal] = useState(false);
     const [CreateSignalRequest, setCreateSignalRequest] = useState([]);
@@ -129,11 +130,20 @@ function Option_Chain() {
     };
 
 
-    const CreateRequest = (option_type, row_data, call_type, index) => {
+    const CreateRequest = (option_type, row_data, call_type, index, e) => {
 
-        // console.log("SNEH JAISWAL 1")
+        console.log("SNEH JAISWAL 1", call_type)
         if (strategyRef.current === "") {
-            alert("Please Select Strategy First")
+        
+            Swal.fire({
+                title: "Error",
+                text: "Please Select Strategy First",
+                icon: "error",
+                timer: 1000,
+                timerProgressBar: true
+            });
+
+
         } else {
 
 
@@ -199,8 +209,8 @@ function Option_Chain() {
         {
             dataField: 'CALL',
             text: 'BUY/SELL',
-            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
-            parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#eef5ff' } :
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
                 <div key={rowIndex}>
                     <button
@@ -237,8 +247,8 @@ function Option_Chain() {
         {
             dataField: 'CE_Volume',
             text: 'Volume',
-            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
-                parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#eef5ff' } :
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
                 <div >
                     <span className={`Call_volume_${row.call_token} `}></span>
@@ -249,8 +259,8 @@ function Option_Chain() {
         {
             dataField: 'CALL/LP',
             text: 'CALL/LP',
-            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
-                parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+            style: (cell, row) => parseInt(row.strike_price) < parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#eef5ff' } :
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
                 <div >
                     <span className={`Call_Price_${row.call_token} `}></span>
@@ -264,7 +274,7 @@ function Option_Chain() {
         {
             dataField: 'strike_price',
             text: 'STRIKE PRICE',
-            style: (cell, row) => parseInt(row.strike_price) == parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
+            style: (cell, row) => parseInt(row.strike_price) == parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#4c584c6b' } : { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
 
                 <div >
@@ -275,9 +285,9 @@ function Option_Chain() {
         {
             dataField: 'PUT/LP',
             text: 'PUT/LP',
-            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
-            parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
-                { backgroundColor: '' },
+            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#eef5ff' } :
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#4c584c6b' } :
+                    { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
                 <div
 
@@ -293,9 +303,9 @@ function Option_Chain() {
         {
             dataField: 'PE_Volume',
             text: 'Volume',
-            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
-            parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
-                { backgroundColor: '' },
+            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#eef5ff' } :
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#4c584c6b' } :
+                    { backgroundColor: '' },
 
             formatter: (cell, row, rowIndex) => (
                 <div
@@ -310,8 +320,8 @@ function Option_Chain() {
         {
             dataField: 'PUT',
             text: 'BUY/SELL',
-            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#eef5ff' } :
-                parseInt(row.strike_price) === parseInt(OptionChainData.data[11].strike_price) ? { backgroundColor: '#4c584c6b' } :
+            style: (cell, row) => parseInt(row.strike_price) > parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#eef5ff' } :
+                parseInt(row.strike_price) === parseInt(OptionChainData.data[16].strike_price) ? { backgroundColor: '#4c584c6b' } :
                     { backgroundColor: '' },
             formatter: (cell, row, rowIndex) => (
                 <div key={rowIndex}
@@ -518,11 +528,11 @@ function Option_Chain() {
     const ShowLivePrice = async () => {
         let type = { loginType: "API" };
         let channelList = TokenSymbolChain && TokenSymbolChain;
-    
+
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
-    
+
             const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
-    
+
             if (res.data.stat) {
                 const handleResponse = async (response, socket) => {
                     socket.onclose = async function (event) {
@@ -532,39 +542,39 @@ function Option_Chain() {
                             setUserIdSocketRun('DONE');
                         }
                     };
-    
+
                     socket.onerror = function (error) {
                         setUserIdSocketRun('DONE');
                     };
-    
+
                     const old_val_call = $('.Call_Price_' + response.tk).html();
                     const old_val_put = $('.Put_Price_' + response.tk).html();
-    
+
                     $('.SP1_Call_Price_' + response.tk).html(response.sp1 ? response.sp1 : response.lp);
                     $('.BP1_Put_Price_' + response.tk).html(response.bp1 ? response.bp1 : response.lp);
-    
-                    let old_Call_volume_ = response.v != "0" && response.v 
-                    let old_Put_volume_ = response.v != "0" && response.v 
-                    
-    
+
+                    let old_Call_volume_ = response.v != "0" && response.v
+                    let old_Put_volume_ = response.v != "0" && response.v
+
+
                     if (response.tk && response.lp !== undefined) {
-                      
+
                         function formatVolume(volume) {
                             return volume >= 1e7 ? (volume / 1e7).toFixed(2) + ' Cr' : (volume >= 1e5 ? (volume / 1e5).toFixed(2) + ' Lakh' : volume);
                         }
-    
-                        $('.Call_volume_' + response.tk).html(formatVolume(old_Call_volume_ ));
-                        $('.Put_volume_' + response.tk).html(formatVolume(old_Put_volume_ ));
-    
+
+                        $('.Call_volume_' + response.tk).html(formatVolume(old_Call_volume_));
+                        $('.Put_volume_' + response.tk).html(formatVolume(old_Put_volume_));
+
                         $('.Call_per_' + response.tk).html(response.pc + "%" || 0);
                         $('.Put_per_' + response.tk).html(response.pc + "%" || 0);
-    
+
                         $(".Call_Price_" + response.tk).html(response.lp);
                         $(".Put_Price_" + response.tk).html(response.lp);
-    
+
                         const new_val_call = $('.Call_Price_' + response.tk).html();
                         const new_val_put = $('.Put_Price_' + response.tk).html();
-    
+
                         if (new_val_call > old_val_call || new_val_put > old_val_put) {
                             $('.Call_Price_' + response.tk).css({ "color": "green" });
                             $('.Put_Price_' + response.tk).css({ "color": "green" });
@@ -585,14 +595,14 @@ function Option_Chain() {
                         }
                     }
                 };
-    
+
                 await ConnctSocket(handleResponse, channelList, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token).then((res) => { });
             } else {
                 setUserIdSocketRun('DONE');
             }
         }
     };
-    
+
 
 
 
@@ -676,14 +686,15 @@ function Option_Chain() {
                         });
 
                         setTimeout(() => {
-                            navigate("/subadmin/open-position")
-                            // window.location.reload()
+                            if (Role == 'RESEARCH') {
+                                navigate("/research/open/position")
+                            }
+                            else if (Role == 'SUBADMIN') {
+                                navigate("/subadmin/open-position")
+                            }
                         }, 1500);
 
-                        setTimeout(() => {
-                            navigate("/subadmin/open-position")
-                            // window.location.reload()
-                        }, 2000);
+
 
                     } else {
 
@@ -716,8 +727,7 @@ function Option_Chain() {
 
     const RemoveClases = (option_type, row_data, call_type, index,) => {
 
-
-        CreateSignalRequest && CreateSignalRequest.filter((item) => {
+        OptionChainData.data && OptionChainData.data.filter((item) => {
             const element1 = $('.button_call_sell_' + item.call_token._id);
             element1.removeClass('active');
             const element2 = $('.button_call_buy_' + item.call_token);
@@ -730,14 +740,10 @@ function Option_Chain() {
         })
 
 
-
     }
 
 
     const ExcuteTradeButton = () => {
-
-
-
         const currentDate = new Date();
         const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         const weekday = weekdays[currentDate.getDay()];
@@ -820,6 +826,21 @@ function Option_Chain() {
 
 
     }
+
+
+
+
+
+
+    useEffect(() => {
+        setExecuteTradeData({
+            loading: true,
+            data: []
+        })
+        setCreateSignalRequest([])
+    }, [strategy, expiry]);
+
+
 
 
 
@@ -907,26 +928,19 @@ function Option_Chain() {
                                 </div>
 
 
-                                <div className="col-md-4 d-flex justify-content-end align-items-center">
-                                    {/* <div className=" ">
+                                <div className="col-md-6 d-flex justify-content-end align-items-center">
+                                    <div>
                                         <button
-                                            className="btn btn-primary me-2"
-                                        // onClick={(e) => SelectOptionStock()}
-                                        >
-                                            Select Option Stock
-                                        </button>
-                                    </div> */}
-                                    <div className="   ">
-                                        <button
-                                            className="btn btn-primary me-2"
+                                            className="btn btn-primary"
                                             onClick={(e) => ExcuteTradeButton()}
                                             disabled={CreateSignalRequest.length === 0}
-
+                                            style={{ marginLeft: 'auto' }} // Add this inline style
                                         >
                                             Execute Trade
                                         </button>
                                     </div>
                                 </div>
+
                             </div>
                             <div className="borderless-table">
                                 <FullDataTable
@@ -952,8 +966,6 @@ function Option_Chain() {
                         size="xl"
                         title="Request Confirmation"
                         cancel_btn={true}
-                        // hideBtn={false}
-                        // disabled_submit={disabled}
                         hideCloseButton={true}
                         btn_name="Confirm"
                         Submit_Function={Done_For_Trade}
@@ -971,40 +983,7 @@ function Option_Chain() {
                                     dataField: "Symbol",
                                     text: "Symbol",
                                 },
-                                // {
-                                //     dataField: "",
-                                //     text: "Enter Qty (%)",
-                                //     formatter: (cell, row, rowIndex) => (
-                                //         <div>
-                                //             <input
-                                //                 // key={index}
-                                //                 type="text"
-                                //                 name="quantity"
-                                //                 className=""
-                                //                 id="quantity"
-                                //                 placeholder="Enter Qty (%)"
 
-                                //                 onChange={
-                                //                     (e) =>
-                                //                         Set_Entry_Exit_Qty(
-                                //                             row,
-                                //                             e.target.value,
-                                //                             row.Symbol
-                                //                         )
-
-                                //                     //  setEnterQty(e.target.value)
-                                //                 }
-                                //             // value={inputValue ? inputValue : row.old_qty_persent}
-                                //             // max={row.old_qty_persent}
-                                //             // disabled={data.users.qty_type == "1" || data.users.qty_type == 1}
-
-                                //             />
-                                //         </div>
-                                //     ),
-
-
-
-                                // },
                                 {
                                     dataField: "price",
                                     text: "Price",

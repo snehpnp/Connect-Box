@@ -135,3 +135,16 @@ export async function Delete_Strategy(data){
         return await err
     }
 }
+
+
+export async function STRATEGY_USERS(data){
+    try{
+        const res = await axios.post(`${Config.base_url}researcher/strategy/users` , data , {
+            data: {}
+        })
+        return res?.data
+    }
+    catch(err){
+        return await err
+    }
+}

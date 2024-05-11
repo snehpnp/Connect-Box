@@ -27,7 +27,9 @@ app.use(bodyparser.json({ limit: '10mb', extended: true }));
 //socket.io
 const io = new Server(server, {
   cors: {
-    origin: "https://connectbox.tradestreet.in/",
+    // origin: "https://connectbox.tradestreet.in/",
+    origin: "http://localhost:3000",
+
     methods: ["GET", "POST"],
   },
 });
@@ -43,6 +45,8 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
   });
 });
+
+
 
 // Requiring utility files
 require('./App/Utils/Cron.utils');

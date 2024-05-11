@@ -6,6 +6,7 @@ const Strategies = db.Strategies;
 const researcher_strategy = db.researcher_strategy;
 const client_service = db.client_service;
 const Subadmin_Permission = db.Subadmin_Permission;
+const Activity_logs = db.Activity_logs;
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -18,6 +19,10 @@ class SignalController {
     try {
       const { subadminId, Role } = req.body;
       const ObjSubAdminId = new ObjectId(subadminId);
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
 
       if (Role == "SUBADMIN") {
         const resultUser = await Strategies.find({
@@ -36,7 +41,13 @@ class SignalController {
 
         const pipeline = [
           {
-            $match: { strategy: { $in: strategyNames } },
+            $match: {
+              strategy: { $in: strategyNames },
+              createdAt: {
+                $gte: today,
+                $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+              }
+            },
           },
           {
             $project: {
@@ -91,7 +102,13 @@ class SignalController {
 
         const pipeline = [
           {
-            $match: { strategy: { $in: strategyNames } },
+            $match: {
+              strategy: { $in: strategyNames },
+              createdAt: {
+                $gte: today,
+                $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+              }
+            },
           },
           {
             $project: {
@@ -166,8 +183,7 @@ class SignalController {
               let: {
                 service_name: "$service.name",
                 strategy_name: "$strategys.strategy_name",
-                // currentDate: currentDate,
-                // endOfDay: endOfDay,
+
               },
               pipeline: [
                 {
@@ -176,8 +192,8 @@ class SignalController {
                       $and: [
                         { $eq: ["$symbol", "$$service_name"] },
                         { $eq: ["$strategy", "$$strategy_name"] },
-                        // { $gte: ['$createdAt', '$$currentDate'] },
-                        // { $lte: ['$createdAt', '$$endOfDay'] },
+                        { $gte: ['$createdAt', today] },
+                        { $lte: ['$createdAt', new Date(today.getTime() + 24 * 60 * 60 * 1000)] },
                       ],
                     },
                   },
@@ -223,32 +239,32 @@ class SignalController {
       } else if (Role == "EMPLOYEE") {
         let subadminStgFind = await Subadmin_Permission.aggregate([
           {
-            $match: { user_id: ObjSubAdminId }, // İlgili kullanıcıya göre eşleşmeyi bulun
+            $match: { user_id: ObjSubAdminId },
           },
           {
-            $unwind: "$strategy", // Diziyi açarak her bir strateji için ayrı bir belge oluşturun
+            $unwind: "$strategy",
           },
           {
             $lookup: {
-              from: "strategies", // Diğer koleksiyonun adı
-              localField: "strategy", // Subadmin_Permission koleksiyonundaki alan
-              foreignField: "_id", // Strategies koleksiyonundaki alan
-              as: "strategyInfo", // Eşleşen belgeleri buraya yerleştirin
+              from: "strategies",
+              localField: "strategy",
+              foreignField: "_id",
+              as: "strategyInfo",
             },
           },
           {
-            $unwind: "$strategyInfo", // İç içe dizileri açarak her bir strateji bilgisini ayrı bir belge haline getirin
+            $unwind: "$strategyInfo",
           },
           {
             $group: {
-              _id: "$_id", // Gruplama için bir alan seçin, burada _id kullanıyorum
-              strategyInfo: { $push: "$strategyInfo.strategy_name" }, // Her bir strateji bilgisini bir dizi içinde toplayın
+              _id: "$_id",
+              strategyInfo: { $push: "$strategyInfo.strategy_name" },
             },
           },
           {
             $project: {
-              _id: 0, // İstediğiniz alanları seçin, burada _id'yi hariç tutuyorum
-              strategyInfo: 1, // İstediğiniz ek bilgi
+              _id: 0,
+              strategyInfo: 1,
             },
           },
         ]);
@@ -265,7 +281,13 @@ class SignalController {
 
         const pipeline = [
           {
-            $match: { strategy: { $in: subadminStgFind[0].strategyInfo } },
+            $match: {
+              strategy: { $in: subadminStgFind[0].strategyInfo },
+              createdAt: {
+                $gte: today,
+                $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+              }
+            },
           },
           {
             $project: {
@@ -455,19 +477,47 @@ class SignalController {
   async update_stop_loss(req, res) {
     try {
       const { data } = req.body;
-
-      data.forEach(async (signal) => {
+  
+      for (const signal of data) {
+        const ExistfindSignal = await Mainsignals.findOne({ _id: signal._id }).select('target stop_loss exit_time');
+  
+        let activityMessage = "";
+        if (!ExistfindSignal) {
+          return res.status(404).send({ status: false, msg: "Signal not found", data: null });
+        }
+  
+        if (ExistfindSignal.target !== signal.target) {
+          activityMessage = `${signal.trade_symbol} Update Target price to ${signal.target}`;
+        } else if (ExistfindSignal.stop_loss !== signal.stop_loss) {
+          activityMessage = `${signal.trade_symbol} Update Stop Loss price to ${signal.stop_loss}`;
+        } else if (ExistfindSignal.exit_time !== signal.exit_time) {
+          activityMessage = `${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`;
+        }
+  
+        if (activityMessage) {
+          const Activity_logsData = new Activity_logs({
+            admin_Id: signal.StrategyData.maker_id,
+            category: "TARGET-STOPLOSS-TIME",
+            message: activityMessage,
+            maker_role: "SUBADMIN",
+            device: "web",
+            system_ip: ""
+          });
+          await Activity_logsData.save();
+        }
+  
         const filter = { _id: signal._id };
         const updateOperation = { $set: signal };
-        const result = await Mainsignals.updateOne(filter, updateOperation);
-      });
-
-      return res.send({ status: true, msg: "Update SuccessFully", data: [] });
+        await Mainsignals.updateOne(filter, updateOperation);
+      }
+  
+      return res.status(200).send({ status: true, msg: "Update Successful", data: null });
     } catch (error) {
-      return res.send({ status: false, msg: "error ", data: error });
+      console.error("Error in update_stop_loss:", error);
+      return res.status(500).send({ status: false, msg: "Internal server error", data: error.message });
     }
   }
-
+  
 
 
   // SUBADMIN TRADE HISTORY DATA

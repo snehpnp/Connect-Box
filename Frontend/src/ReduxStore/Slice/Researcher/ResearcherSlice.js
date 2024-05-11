@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER ,STRATEGY_TRANSACTION_DETAILS ,  ADD_RESEARCHER_STRATEGY, EDIT_RESEARCHER_STRATEGY, GET_ONE_RESEARCHER_STRATEGY, GET_ALL_RESEARCHER_STRATEGY , UPDATE_RESEARCHER , Delete_Strategy} from '../../../Services/Researcher/researcher.service'
+import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER ,STRATEGY_TRANSACTION_DETAILS ,  ADD_RESEARCHER_STRATEGY, EDIT_RESEARCHER_STRATEGY, GET_ONE_RESEARCHER_STRATEGY, GET_ALL_RESEARCHER_STRATEGY , UPDATE_RESEARCHER , Delete_Strategy , STRATEGY_USERS} from '../../../Services/Researcher/researcher.service'
 
 
 export const Add_Researcher = createAsyncThunk("researcher/add",
@@ -130,6 +130,21 @@ export const DELETE_STRATEGY = createAsyncThunk("researcher/strategy/delete",
     }
 );
 
+export const Strategy_Users = createAsyncThunk("researcher/strategy/users",
+    async (data) => {
+        
+        try {
+            const res = await STRATEGY_USERS(data);
+            
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+
+
 
 
 const ResearcherSlice = createSlice({
@@ -148,6 +163,7 @@ const ResearcherSlice = createSlice({
     updateResearcher :null,
     strategy_transation_details:null,
     delete_strategy :null,
+    strategy_users :null,
     
 
 
@@ -207,6 +223,10 @@ const ResearcherSlice = createSlice({
       .addCase(DELETE_STRATEGY.fulfilled, (state, action) => {
         state.isLoading = false;
         state.delete_strategy = action.payload;
+      })
+      .addCase(Strategy_Users.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.strategy_users = action.payload;
       })
   },
 });

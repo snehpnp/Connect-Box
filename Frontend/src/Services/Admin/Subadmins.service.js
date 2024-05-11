@@ -36,6 +36,18 @@ export async function GetAllSubAdmins(data, token) {
   }
 }
 
+// GET RESEARCHER AND SUBADMIN NAME
+export async function GetNAme(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}messagedata/name/get`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}
+
 //get One SubAdmin
 export async function GetOneSubAdmins(data, token) {
   try {

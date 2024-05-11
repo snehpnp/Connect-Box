@@ -102,7 +102,7 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
     };
 
 
-console.log("livePriceDataDetails",livePriceDataDetails)
+// console.log("livePriceDataDetails",livePriceDataDetails)
 
 
     const label = { inputProps: { "aria-label": "Switch demo" } };
@@ -423,6 +423,7 @@ console.log("livePriceDataDetails",livePriceDataDetails)
         setrefresh(!refresh);
         userDataRes()
         setSearchInput("");
+    
         
 
     };
@@ -437,7 +438,7 @@ console.log("livePriceDataDetails",livePriceDataDetails)
         )}/${parseInt(dateParts[2], 10)}`;
         return formattedDate;
     };
-
+    
 
     const userDataRes = async () => {
         let abc = new Date();
@@ -446,10 +447,12 @@ console.log("livePriceDataDetails",livePriceDataDetails)
         let year = abc.getFullYear();
         let full = `${year}/${month}/${date}`;
 
-        let startDate = getActualDateFormate(fromDate);
-        let endDate = getActualDateFormate(toDate);
+
+        
+        const startDate = fromDate ? getActualDateFormate(fromDate) : full;
+             const endDate = toDate ? getActualDateFormate(toDate) : full;
         const subadminId = userDetails.user_id
-        await dispatch(Trade_history_data({ Role:Role,subadminId: userDetails.user_id, startDate: !fromDate ? full : startDate, endDate: !toDate ? fromDate ? "" : full : endDate, service: SelectService, strategy: StrategyClientStatus, }))
+        await dispatch(Trade_history_data({ Role:Role,subadminId: userDetails.user_id, startDate:startDate, endDate:endDate, service: SelectService, strategy: StrategyClientStatus, }))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
@@ -469,15 +472,6 @@ console.log("livePriceDataDetails",livePriceDataDetails)
     useEffect(() => {
         userDataRes(refresh, fromDate, toDate, SelectService, StrategyClientStatus)
     }, [])
-
-
-
-
-
-
-
-
-
 
 
 

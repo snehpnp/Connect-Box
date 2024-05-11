@@ -45,34 +45,14 @@ export const admin_header = [
             },
         ]
     },
+
     // {
-    //     id: 4,
-    //     name: 'Trade',
-    //     Icon: "fe fe-shopping-cart",
-    //     Data: [
-    //         {
-    //             id: 41,
-    //             name: 'Orders',
-    //             route: "/admin/orders",
-    //             Icon: "fe fe-shopping-bag",
-    //             Data: []
-    //         },
-    //         {
-    //             id: 42,
-    //             name: 'Positions',
-    //             route: "/admin/positions",
-    //             Icon: "fe fe-map-pin",
-    //             Data: []
-    //         }
-    //     ]
+    //     id: 5,
+    //     name: 'Sub-Admin Details',
+    //     route: "/admin/subadmin/company",
+    //     Icon: "fe fe-credit-card",
+    //     Data: []
     // },
-    {
-        id: 5,
-        name: 'Sub-Admin Details',
-        route: "/admin/subadmin/company",
-        Icon: "fe fe-credit-card",
-        Data: []
-    },
     {
         id: 6,
         name: 'Payment History',
@@ -560,6 +540,14 @@ export const research_header = [
             },
         ]
     },
+    {
+        id: 12,
+        name: 'Strategy User',
+        route: "/research/strategy/user",
+        Icon: "fe fe-users",
+        Data: []
+    },
+    
     // {
     //     id: 10,
     //     name: 'Message Broadcast',
@@ -567,6 +555,7 @@ export const research_header = [
     //     Icon: "fe fe-message-circle",
     //     Data: []
     // },
+
     {
         id: 11,
         name: 'Help',

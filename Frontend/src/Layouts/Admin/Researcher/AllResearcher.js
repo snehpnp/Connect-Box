@@ -20,8 +20,7 @@ const AllResearcher = () => {
 
   const [allResearcher, setAllResearcher] = useState({
     loading: true,
-    data: [],
-    data1: []
+    data: []
   })
   const [ForGetCSV, setForGetCSV] = useState([])
   const [inputSearch, setInputSearch] = useState('')
@@ -286,12 +285,6 @@ const AllResearcher = () => {
         setAllResearcher({
           loading: false,
           data: inputSearch ? filterData : response.data,
-          data1: [
-            { name: "Total Researcher", count: response.count.totalCount || 0, Icon: "fe fe-life-buoy", color: "#ec8000" },
-            { name: "Total Active", count: response.count.activeCount || 0, Icon: "fe fe-check-square", color: "#087526" },
-            { name: "Total Inactive", count: response.count.totalCount - response.count.activeCount || 0, Icon: "fe fe-x-circle", color: "#b51705" },
-            { name: "Total Balance", count: response.count.totalBalance || 0, Icon: "fas fa-dollar-sign", color: "#087526" }
-          ]
         });
       } else {
         setAllResearcher({
@@ -457,30 +450,7 @@ const AllResearcher = () => {
            
          
           
-        
-
-        {/* <div className="super-admin-list-head">
-          <div className="row">
-            {allResearcher &&
-              allResearcher.data1.map((data, index) => (
-                <div className="col-xl-3 col-md-6 d-flex" key={index}>
-                  <div className="card w-100">
-                    <div className="card-body">
-                      <div className="grid-info-item total-items">
-                        <div className="grid-info">
-                          <span>{data.name}</span>
-                          <h4 style={{ color: data.color }} >{data.count}</h4>
-                        </div>
-                        <div className="grid-head-icon">
-                          <i className={data.Icon} style={{ color: data.color }} />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div> */}
+    
 
         
         {

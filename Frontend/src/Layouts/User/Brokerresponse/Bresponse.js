@@ -10,13 +10,13 @@ import { Eye } from 'lucide-react';
 
 
 import { Link } from 'react-router-dom'
-// import OrderPending from "./OrderPending"
 
 
 
 export default function BrokerResponse() {
+    const user_Id = JSON.parse(localStorage.getItem("user_details")).user_id
+    
     const dispatch = useDispatch()
-
 
     const [refresh, setrefresh] = useState(false)
     const [showModal, setshowModal] = useState(false)
@@ -25,9 +25,7 @@ export default function BrokerResponse() {
     const [borkerData, setBrokerData] = useState()
 
 
-    console.log("borkerData :", borkerData)
 
-    const user_Id = JSON.parse(localStorage.getItem("user_details")).user_id
 
 
 
@@ -73,6 +71,9 @@ export default function BrokerResponse() {
             headerName: "Created At",
             width: 250,
             headerClassName: styles.boldHeader,
+            renderCell: (params) => (
+                <div>{fDateTimeSuffix(params.value)}</div>
+            ),
         },
         {
             field: "symbol",
@@ -127,7 +128,7 @@ export default function BrokerResponse() {
 
     // GET BROKER RESPONSE ALL DATA
     const BrokerResponse = async (e) => {
-        const data = { id: "66386168ece050b3b71879ab" }
+        const data = { id: user_Id }
         await dispatch(Broker_Response(data)).unwrap()
             .then((response) => {
                 if (response.status) {
@@ -142,7 +143,7 @@ export default function BrokerResponse() {
 
     useEffect(() => {
         BrokerResponse()
-    }, [])
+    }, [refresh])
 
 
 
@@ -150,6 +151,10 @@ export default function BrokerResponse() {
 
 
 
+    // REFRESH HANDEL
+    const RefreshHandle = () => {
+        setrefresh(!refresh);
+    };
 
 
 
@@ -176,7 +181,7 @@ export default function BrokerResponse() {
                                                 data-bs-toggle="tooltip"
                                                 data-bs-placement="bottom"
                                                 title="Refresh"
-                                            //   onClick={RefreshHandle}
+                                                onClick={RefreshHandle}
 
                                             >
                                                 <span>
@@ -269,7 +274,10 @@ export default function BrokerResponse() {
                                         </tr>
                                         <tr>
                                             <td className="tg-0lax">Signal</td>
-                                            <td className="order-date-cell tg-0lax">{(borkerData.send_request ? borkerData.send_request : '-')}</td>
+                                            <td className="order-date-cell tg-0lax">
+                                                {atob(borkerData.send_request ? borkerData.send_request : '-')}
+                                            </td>
+
                                         </tr>
                                         <tr>
                                             <td className="tg-0lax">Order Status</td>

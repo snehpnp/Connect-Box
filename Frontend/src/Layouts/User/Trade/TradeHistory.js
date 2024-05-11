@@ -102,8 +102,11 @@ export default function AllEmployees() {
                         })
                         if (response.data[0].TradingStatus == 'on') {
                             setLoginStatus(true)
+                            setrefresh(!refresh)
+
                         } else {
                             setLoginStatus(false)
+                            setrefresh(!refresh)
                         }
                     } else {
                         toast.error(response.msg);

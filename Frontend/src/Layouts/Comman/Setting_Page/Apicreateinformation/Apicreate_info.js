@@ -42,7 +42,7 @@ function Apicreate_info() {
         "Kindly follow these steps to link your demat account with this Algo Software.",
       // Kindly click on below mention brokerage firm link it will redirect to your concern brokerage API link and generate API with this. Kindly follow instruction as your broker or sub broker link guide to you and update our link and connect your demat with our Algo software.
       LinkOne: "https://ant.aliceblueonline.com/?appcode=G9EOSWCEIF9ARCB",
-      LinkTwo: `${Config.broker_redirect_url}aliceblue/access_token?email=YOUR_PANEL_EMAIL`,
+      LinkTwo: `${Config.broker_redirect_url}AliceBlue`,
       link3: `${Config.broker_redirect_url}aliceblue/access_token?email=ss@gmail.com`,
       Apicreate:
         "You will get APP code and Secret Key, please Update them on your Profile in this software.",
