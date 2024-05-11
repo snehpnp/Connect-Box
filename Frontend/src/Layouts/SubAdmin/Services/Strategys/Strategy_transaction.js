@@ -60,7 +60,7 @@ function Payment() {
     {
       field: "id",
       headerName: "ID",
-      width: 70,
+      width:60,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div> <b>{params.value + 1}</b></div>
@@ -69,20 +69,19 @@ function Payment() {
 
     {
       field: 'user_id',
-      headerName: 'User Name',
-      width: 210,
+      headerName: 'UserName',
+      width: 180,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>
-          {params.value || '-'}
-        </div>
+        <div title={params.value}>{params.value || '-'}</div>
+
       )
     },
 
     {
       field: 'strategy_id',
       headerName: 'Strategy Name',
-      width: 250,
+      width: 200,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -94,7 +93,7 @@ function Payment() {
     {
       field: 'plan_id',
       headerName: 'Plan',
-      width: 210,
+      width: 200,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -107,7 +106,7 @@ function Payment() {
     {
       field: 'stg_charge',
       headerName: 'Strategy Price',
-      width: 250,
+      width: 180,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -118,7 +117,7 @@ function Payment() {
     {
       field: 'Admin_charge',
       headerName: 'Admin Charges',
-      width: 210,
+      width: 180,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -127,7 +126,32 @@ function Payment() {
       )
     },
     {
-      field: 'createdAt', headerName: 'Created At', width: 250, headerClassName: styles.boldHeader,
+      field: 'createdAt',
+      headerName: 'Created At',
+      width: 220,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          {fDateTime(params.value)}
+        </div>
+      )
+    },
+    {
+      field: 'Start_Date',
+      headerName: 'Start Date',
+      width: 220,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          {fDateTime(params.value)}
+        </div>
+      )
+    },
+    {
+      field: 'End_Date',
+      headerName: 'End Date',
+      width: 220,
+      headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           {fDateTime(params.value)}
@@ -172,15 +196,15 @@ function Payment() {
   }
 
   companyData.data && companyData.data.forEach((item) => {
-   
+
     if (!isNaN(item.stg_charge) && item.stg_charge !== null && item.stg_charge !== "") {
-        stg_total += parseInt(item.stg_charge);
+      stg_total += parseInt(item.stg_charge);
     }
 
     if (!isNaN(item.Admin_charge) && item.Admin_charge !== null && item.Admin_charge !== "") {
-        Admin_charge_total += parseInt(item.Admin_charge);
+      Admin_charge_total += parseInt(item.Admin_charge);
     }
-});
+  });
 
 
   useEffect(() => {
