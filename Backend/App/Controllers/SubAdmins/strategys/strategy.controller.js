@@ -387,7 +387,17 @@ class strategy {
       }
 
       if (key == 1) {
-        const getAllstrategy = await strategy_model.find({ maker_id: id }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
+        const getAllstrategy = await strategy_model.find({
+          maker_id: id,
+          $or: [
+            { security_fund_month: { $ne: null, $ne: NaN, $ne: "" } },
+            { security_fund_quarterly: { $ne: null, $ne: NaN, $ne: "" } },
+            { security_fund_half_early: { $ne: null, $ne: NaN, $ne: "" } },
+            { security_fund_early: { $ne: null, $ne: NaN, $ne: "" } }
+
+          ]
+        }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
+
 
 
 
@@ -520,7 +530,7 @@ class strategy {
   async GetAllStrategyForClient(req, res) {
     try {
       const { id } = req.body;
-     
+
       // Retrieve strategies based on maker_id
       const getAllStrategies = await strategy_model.find({ maker_id: id }, "_id strategy_name");
 

@@ -12,7 +12,7 @@ import { loadScript } from "../../../Utils/payment";
 
 const AllResearcherStrategy = () => {
     const userDetails = JSON.parse(localStorage.getItem("user_details"));
-
+console.log("userDetails",userDetails.subadmin_service_type)
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [refresh, setrefresh] = useState(false)
@@ -149,7 +149,6 @@ const AllResearcherStrategy = () => {
     }
 
 
-    console.log("allStrategy.data",allStrategy.data)
 
     return (
         <>
@@ -314,26 +313,28 @@ const AllResearcherStrategy = () => {
                                             />
                                             <span style={{ fontSize: '20px', color: '#ccc' }}></span> {/* Divider */}
                                         </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                            <Form.Check
-                                                type="radio"
-                                                name="plan"
-                                                id="percentageWise"
-                                                style={{ marginRight: '10px' }}
-                                                label={
-                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <strong style={{ marginRight: '5px', fontSize: '16px' }}>% Wise:</strong>
-                                                        <span style={{ fontWeight: 'bold', color: 'green', marginRight: '5px', fontSize: '16px' }}>
-                                                            <i className="fas fa-rupee-sign"></i>
-                                                        </span>
-                                                        <span style={{ fontWeight: 'bold', color: 'green', fontSize: '16px' }}>{selectStrategy.security_fund}</span>
-                                                        <span style={{ fontSize: '14px', color: '#999', marginLeft: '5px' }}>(security fund)</span>
-                                                    </div>
-                                                }
-                                                value="% Wise"
-                                                onChange={handleOptionChange}
-                                            />
-                                        </div>
+                                        {userDetails.subadmin_service_type == 2 ?
+                                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                         <Form.Check
+                                             type="radio"
+                                             name="plan"
+                                             id="percentageWise"
+                                             style={{ marginRight: '10px' }}
+                                             label={
+                                                 <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                     <strong style={{ marginRight: '5px', fontSize: '16px' }}>% Wise:</strong>
+                                                     <span style={{ fontWeight: 'bold', color: 'green', marginRight: '5px', fontSize: '16px' }}>
+                                                         <i className="fas fa-rupee-sign"></i>
+                                                     </span>
+                                                     <span style={{ fontWeight: 'bold', color: 'green', fontSize: '16px' }}>{selectStrategy.security_fund}</span>
+                                                     <span style={{ fontSize: '14px', color: '#999', marginLeft: '5px' }}>(security fund)</span>
+                                                 </div>
+                                             }
+                                             value="% Wise"
+                                             onChange={handleOptionChange}
+                                         />
+                                     </div> :"" }
+                                       
                                     </Form.Group>
                                 </Form>
                             </Modal.Body>

@@ -191,7 +191,7 @@ class Researcher {
         const { id } = req.body
 
         try {
-            const AllData = await User_model.find({ parent_id: id, Role: "RESEARCH" }).sort({createdAt:-1})
+            const AllData = await User_model.find({ parent_id: id, Role: "RESEARCH" }).sort({ createdAt: -1 })
 
 
 
@@ -690,11 +690,6 @@ class Researcher {
         try {
             const { id } = req.body;
 
-
-            // var getAllTheme = await strategy_model.find()
-            // const getAllstrategy = await researcher_strategy.find({ maker_id: id }).sort({ createdAt: -1 })
-            //     .select('_id strategy_name collaboration_id');
-
             const pipeline = [
                 {
                     $match: { "maker_id": new ObjectId(id) }
@@ -714,19 +709,44 @@ class Researcher {
                     $unwind: "$collaboration"
                 },
                 {
+                    $addFields: {
+                        dynamicKey: {
+                            $concat: ["$strategy_name", "_", { $toString: "$collaboration._id" }]
+                        }
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "strategies",
+                        localField: "dynamicKey",
+                        foreignField: "stgname_adminid",
+                        as: "strategy"
+                    }
+                },
+                {
+                    $unwind: "$strategy"
+                },
+                {
                     $group: {
                         _id: "$_id",
                         strategy_name: { $first: "$strategy_name" },
-                        // collaboration_id: { $push: "$collaboration_id" },
-                        collaboration_names: { $push: "$collaboration.UserName" }
+                        createdAt: { $first: "$createdAt" },
+                        strategy_category: { $first: "$strategy_category" },
+                        strategy_segment: { $first: "$strategy_segment" },
+                        collaboration_names: { $push: "$collaboration.UserName" },
+                        strategy: { $push: "$strategy" }
                     }
                 },
                 {
                     $project: {
                         _id: 1,
                         strategy_name: 1,
-                        collaboration_id: 1, // Corrected field name
-                        collaboration_names: 1
+                        createdAt: 1,
+                        strategy_category: 1,
+                        strategy_segment: 1,
+                        collaboration_names: 1,
+                        dynamicKeys: 1,
+                        strategy: 1
                     }
                 }
             ];
@@ -736,6 +756,7 @@ class Researcher {
 
 
 
+            console.log("getAllstrategy", getAllstrategy)
 
             // IF DATA NOT EXIST
             if (getAllstrategy.length == 0) {

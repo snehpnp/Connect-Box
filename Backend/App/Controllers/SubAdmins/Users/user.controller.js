@@ -40,7 +40,6 @@ class Users {
       var Role = "USER";
       var StartDate1 = "";
       var EndDate1 = "";
-      let Strategies_id_array = [];
 
 
 
@@ -214,13 +213,6 @@ class Users {
 
       var ccd = dt.format("ymd");
       var client_key = SubadminCheck[0].prifix_key + cli_key + ccd;
-
-
-
-
-
-
-
 
 
 
@@ -988,7 +980,7 @@ class Users {
             add_startegy.forEach(async (data) => {
               const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
 
-              console.log("data",data)
+              console.log("data", data)
 
               var price_stg = 0
               var daysforstg = 0
@@ -1075,7 +1067,7 @@ class Users {
           Exist_strategy1.map(async (data) => {
 
             const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
-            console.log("Esist -",data)
+            console.log("Esist -", data)
 
             var price_stg = 0
             var daysforstg = 0
@@ -1177,7 +1169,7 @@ class Users {
           if (add_startegy.length > 0) {
             add_startegy.forEach(async (data) => {
               const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
-console.log("data",data)
+         
               var price_stg = 0
               var daysforstg = 0
               if (data.plan_id == 1) {
@@ -1594,9 +1586,9 @@ console.log("data",data)
           }
         }
       ]);
- 
+
       var AdminMatch
- 
+
       if (parent_role[0].Role == "EMPLOYEE") {
 
         if (parent_role[0].subadmin_permissions.show_all_users == 1) {
