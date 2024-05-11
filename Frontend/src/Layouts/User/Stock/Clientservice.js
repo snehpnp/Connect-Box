@@ -464,22 +464,24 @@ function Clientservice() {
                                     {getAllClientStrategy.data.strategy &&
                                       getAllClientStrategy.data.strategy.map(
                                         (data1, index) => {
-                                          return (
-                                            <option
-                                              key={data1.result._id}
-                                              value={data1.result.strategy_name}
-                                              style={{
-                                                color:
-                                                  item.strategy_id.includes(
-                                                    data1.result._id
-                                                  )
-                                                    ? "green"
-                                                    : "red",
-                                              }}
-                                            >
-                                              {data1.result.strategy_name}
-                                            </option>
-                                          );
+                                          if (
+                                            item.strategy_id.includes(
+                                              data1.result._id
+                                            )
+                                          ) {
+                                            return (
+                                              <option
+                                                key={data1.result._id}
+                                                value={
+                                                  data1.result.strategy_name
+                                                }
+                                                style={{ color: "green" }}
+                                              >
+                                                {data1.result.strategy_name}
+                                              </option>
+                                            );
+                                          }
+                                          return null; // Skip rendering if not green
                                         }
                                       )}
                                   </select>
