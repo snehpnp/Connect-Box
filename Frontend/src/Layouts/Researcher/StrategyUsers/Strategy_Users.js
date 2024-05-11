@@ -28,7 +28,6 @@ const StrategyUsers = () => {
     }, []);
 
 
-    console.log("getUsers",getUsers)
     return (
         <div className="content container-fluid" data-aos="fade-left">
             <div className="card">
@@ -54,7 +53,8 @@ const StrategyUsers = () => {
                 <div className="mx-3 mb-5">
                     <div className="accordion" id="accordionExample">
                         {getUsers.map((item, index) => (
-                            <div className="accordion-item" key={`accordion-item-${index}`}>
+                            < div className="accordion-item" key={`accordion-item-${index}`}>
+                                {console.log("-", item.strategy)}
                                 <h2 className="accordion-header" id={`heading${index}`}>
                                     <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse-${index}`} aria-expanded="false" aria-controls={`collapse-${index}`}>
                                         <div className="d-flex align-items-center" style={{ width: '100%' }}>
@@ -68,63 +68,75 @@ const StrategyUsers = () => {
                                 </h2>
                                 <div id={`collapse-${index}`} className="accordion-collapse collapse" aria-labelledby={`heading${index}`} data-bs-parent="#accordionExample">
                                     <div className="accordion-body">
-                            
-                                            {/* <div className="d-flex align-items-center" style={{ width: '100%' }} key={`accordion-body-${subIndex}`}> */}
-                                                {/* <h6 style={{ marginRight: '2rem' }}>{subIndex + 1}</h6>
-                                                <h6 style={{ marginRight: '15rem' }}>{item.strategy_name}</h6>
-                                                <h6 style={{ marginRight: '10rem' }}>{data}</h6>
-                                                <h6 style={{ marginRight: '10rem' }}>Monthly</h6>
-                                                <h6 style={{ marginRight: '10rem' }}>5000</h6>
-                                                <h6 style={{ marginRight: '10rem' }}>{fDateTime(item.strategy[0]?.createdAt) || "-"}</h6> */}
-                                                <FullDataTable
-                                                    TableColumns={[
-                                                        {
-                                                            dataField: "index",
-                                                            text: "#",
-                                                            formatter: (cell, row, rowIndex) => rowIndex + 1,
-                                                        },
-                                                        {
-                                                            dataField: "Strategy Name",
-                                                            text: "Strategy Name",
-                                                            formatter: (cell, row, rowIndex) => (
-                                                                <div>
-                                                                   {item.strategy_name}
-                                                                </div>
-                                                            ),
-                                                        },
 
-                                                        {
-                                                            dataField: "User Name",
-                                                            text: "Trade Type",
-                                                            formatter: (cell, row, rowIndex) => (
-                                                                <div>
-                                                                   {row}
-                                                                </div>
-                                                            ),
-                                                        },
-                                                        {
-                                                            dataField: "call_type",
-                                                            text: "Call Type",
-                                                        },
-                                                        {
-                                                            dataField: "strategy",
-                                                            text: "Strategy",
-                                                        },
-                                                       
-                                                    ]}
-                                                    tableData={item.collaboration_names && item.collaboration_names}
 
-                                                />
-                                            {/* </div> */}
-                                
+                                        <FullDataTable
+                                            TableColumns={[
+                                                {
+                                                    dataField: "index",
+                                                    text: "#",
+                                                    formatter: (cell, row, rowIndex) => rowIndex + 1,
+                                                },
+                                                {
+                                                    dataField: "strategy_name",
+                                                    text: "Strategy Name",
+                                                    formatter: (cell, row, rowIndex) => (
+                                                        <div>
+                                                            {row.strategy_name}
+                                                        </div>
+                                                    ),
+                                                },
+                                                {
+                                                    dataField: "Username",
+                                                    text: "Username",
+                                                    formatter: (cell, row, rowIndex) => (
+                                                        <div>
+                                                            {row.Username}
+                                                        </div>
+                                                    ),
+                                                },
+                                                {
+                                                    dataField: "Username",
+                                                    text: "Service Type",
+                                                    formatter: (cell, row, rowIndex) => (
+                                                        <div>
+                                                            Monthly
+                                                        </div>
+                                                    ),
+                                                },
+                                                {
+                                                    dataField: "stg_count",
+                                                    text: "Used Count",
+                                                    formatter: (cell, row, rowIndex) => (
+                                                        <div>
+                                                            {row.stg_count}
+                                                        </div>
+                                                    ),
+                                                },
+                                                {
+                                                    dataField: "createdAt",
+                                                    text: "createdAt",
+                                                    formatter: (cell, row, rowIndex) => (
+                                                        <div>
+                                                            {fDateTime(row.createdAt)}
+                                                        </div>
+                                                    ),
+                                                },
+                                            ]}
+                                            tableData={item.strategy}
+                                            pagination1={true}
+                                        />
+
+
                                     </div>
                                 </div>
                             </div>
+
                         ))}
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

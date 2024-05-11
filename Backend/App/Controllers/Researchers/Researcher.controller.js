@@ -699,27 +699,9 @@ class Researcher {
                 },
                 {
                     $lookup: {
-                        from: "users",
-                        localField: "collaboration_id",
-                        foreignField: "_id",
-                        as: "collaboration"
-                    }
-                },
-                {
-                    $unwind: "$collaboration"
-                },
-                {
-                    $addFields: {
-                        dynamicKey: {
-                            $concat: ["$strategy_name", "_", { $toString: "$collaboration._id" }]
-                        }
-                    }
-                },
-                {
-                    $lookup: {
                         from: "strategies",
-                        localField: "dynamicKey",
-                        foreignField: "stgname_adminid",
+                        localField: "strategy_name",
+                        foreignField: "strategy_name",
                         as: "strategy"
                     }
                 },
@@ -727,14 +709,45 @@ class Researcher {
                     $unwind: "$strategy"
                 },
                 {
+                    $lookup: {
+                        from: "users",
+                        localField: "strategy.maker_id",
+                        foreignField: "_id",
+                        as: "user"
+                    }
+                },
+                {
+                    $unwind: "$user"
+                },
+                {
+                    $unwind: "$strategy"
+                },
+                {
+                    $lookup: {
+                        from: "strategy_clients",
+                        localField: "strategy._id",
+                        foreignField: "strategy_id",
+                        as: "stg_count"
+                    }
+                },
+               
+                {
                     $group: {
                         _id: "$_id",
                         strategy_name: { $first: "$strategy_name" },
                         createdAt: { $first: "$createdAt" },
                         strategy_category: { $first: "$strategy_category" },
                         strategy_segment: { $first: "$strategy_segment" },
-                        collaboration_names: { $push: "$collaboration.UserName" },
-                        strategy: { $push: "$strategy" }
+                        strategy: {
+                            $push: {
+                                strategy_name: "$strategy.strategy_name",
+                                maker_id: "$strategy.maker_id",
+                                createdAt: "$strategy.createdAt",
+                                Username: "$user.UserName",
+                                stg_count: { $size: "$stg_count" }
+
+                            }
+                        }
                     }
                 },
                 {
@@ -744,16 +757,14 @@ class Researcher {
                         createdAt: 1,
                         strategy_category: 1,
                         strategy_segment: 1,
-                        collaboration_names: 1,
-                        dynamicKeys: 1,
                         strategy: 1
                     }
                 }
             ];
-
+            
             // Executing the aggregation pipeline
             const getAllstrategy = await researcher_strategy.aggregate(pipeline);
-
+            
 
 
             console.log("getAllstrategy", getAllstrategy)

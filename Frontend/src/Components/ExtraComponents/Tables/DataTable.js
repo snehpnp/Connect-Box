@@ -25,7 +25,7 @@ const FullDataTable = ({ tableData, TableColumns, tableoptions, selectRow, keyFi
                 keyField={keyField ? keyField : "id"}
                 data={tableData}
                 columns={TableColumns}
-                pagination={!pagination1 ? paginationFactory(options) : ""}
+                pagination={!pagination1 ? paginationFactory(options) : false}
                 selectRow={selectRow}
                  
                 headerClasses="text-primary text-center header-class"
