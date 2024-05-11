@@ -283,7 +283,7 @@ const Helpsubadmin = () => {
       <div data-aos="fade-left">
         <Content
           Card_title="Help  "
-          Card_title_icon="fas fa-message pe-3"
+          Card_title_icon="fa-solid fa-circle-info pe-2"
           Content={
             <>
               <Box sx={{ width: "100%" }}>

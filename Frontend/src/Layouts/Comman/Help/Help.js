@@ -182,7 +182,7 @@ function System() {
       <div data-aos="fade-left">
         <Content
           Card_title="Help"
-          Card_title_icon="fas fa-message pe-3"
+          Card_title_icon="fa-solid fa-circle-info pe-2"
           Content={
             <>
               <Box sx={{ width: "100%" }}>
@@ -192,7 +192,7 @@ function System() {
                     onChange={handleChange}
                     aria-label="basic tabs example"
                   >
-                    <Tab label="Sub Admin" {...a11yProps(0)} />
+                    <Tab label="Sub-Admin" {...a11yProps(0)} />
                     <Tab label="User" {...a11yProps(1)} />
                     <Tab label="Research" {...a11yProps(2)} />
                   </Tabs>

@@ -374,7 +374,7 @@ function MessageBroadcast() {
 
         <div className="card" data-aos="fade-left">
           <div className="card-header">
-            <h5 className=" card-title mb-0 w-auto">Message Broadcast</h5>
+            <h5 className=" card-title mb-0 w-auto"><i className="fas fa-message pe-3"></i>Message Broadcast</h5>
           </div>
 
 

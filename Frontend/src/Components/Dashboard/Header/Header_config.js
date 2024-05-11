@@ -91,7 +91,7 @@ export const admin_header = [
         id: 8,
         name: 'Help',
         route: "/admin/help",
-        Icon: "fe fe-help-circle",
+        Icon: "fa-solid fa-circle-info",
         Data: []
     },
     {

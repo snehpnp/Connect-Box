@@ -47,7 +47,7 @@ export default function AllEmployees() {
     headerButton: {
       marginRight: 8,
     },
-    
+
   };
   const handleEdit = async (row) => {
     const result = await Swal.fire({
@@ -368,7 +368,7 @@ export default function AllEmployees() {
               <div className="card-header">
                 <div className="row align-center">
                   <div className="col">
-                    <h5 className="card-title mb-0">All Employees</h5>
+                    <h5 className="card-title mb-0"><i class="fe fe-users pe-2" id="animated-icon" style={{ color:"#28084b"}}></i>All Employees</h5>
                   </div>
                   <div className="col-auto">
                     <div className="list-btn">
@@ -424,7 +424,7 @@ export default function AllEmployees() {
                               className="fa fa-plus-circle me-2"
                               aria-hidden="true"
                             />
-                           Add Employee
+                            Add Employee
                           </Link>
                         </li>
                       </ul>

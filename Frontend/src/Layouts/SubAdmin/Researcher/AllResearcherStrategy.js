@@ -114,7 +114,7 @@ const AllResearcherStrategy = () => {
                                 user_id: response.data.user_id,
                                 strategy_id: response.data.strategy_id,
                                 order_status: "Success",
-                                User_data:JSON.stringify(response1)
+                                User_data: JSON.stringify(response1)
                             }
 
 
@@ -154,7 +154,7 @@ const AllResearcherStrategy = () => {
                 {/* PAGE HEADER */}
                 <div className="card">
                     <div className="card-header mb-0">
-                        <h5 className='card-title mb-0'>Researcher Strategy</h5>
+                        <h5 className='card-title mb-0'><i className="fe fe-target pe-2" id="animated-icon" style={{ color: "#28084b" }}></i>Researcher Strategy</h5>
                     </div>
 
                     <div className='card-body'>
@@ -284,62 +284,62 @@ const AllResearcherStrategy = () => {
                         showModal && (
 
                             <Modal show={showModal} onHide={handleClose} centered>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Select Plan</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <Form>
-                                    <Form.Group controlId="formPlan">
-                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                            <Form.Check
-                                                type="radio"
-                                                name="plan"
-                                                id="monthlyPlan"
-                                                style={{ marginRight: '10px' }}
-                                                label={
-                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <strong style={{ marginRight: '5px', fontSize: '16px' }}>Monthly Plan:</strong>
-                                                        <span style={{ fontWeight: 'bold', color: 'green', marginRight: '5px', fontSize: '16px' }}>
-                                                            <i className="fas fa-rupee-sign"></i>
-                                                        </span>
-                                                        <span style={{ fontWeight: 'bold', color: 'green', fontSize: '16px' }}>{selectStrategy.monthly_charges}</span>
-                                                    </div>
-                                                }
-                                                value="monthlyPlan"
-                                                onChange={handleOptionChange}
-                                                defaultChecked
-                                            />
-                                            <span style={{ fontSize: '20px', color: '#ccc' }}></span> {/* Divider */}
-                                        </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                            <Form.Check
-                                                type="radio"
-                                                name="plan"
-                                                id="percentageWise"
-                                                style={{ marginRight: '10px' }}
-                                                label={
-                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <strong style={{ marginRight: '5px', fontSize: '16px' }}>% Wise:</strong>
-                                                        <span style={{ fontWeight: 'bold', color: 'green', marginRight: '5px', fontSize: '16px' }}>
-                                                            <i className="fas fa-rupee-sign"></i>
-                                                        </span>
-                                                        <span style={{ fontWeight: 'bold', color: 'green', fontSize: '16px' }}>{selectStrategy.security_fund}</span>
-                                                        <span style={{ fontSize: '14px', color: '#999', marginLeft: '5px' }}>(security fund)</span>
-                                                    </div>
-                                                }
-                                                value="% Wise"
-                                                onChange={handleOptionChange}
-                                            />
-                                        </div>
-                                    </Form.Group>
-                                </Form>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={handleClose}>Close</Button>
-                                <Button variant="primary" onClick={handleSubmit}>Submit</Button>
-                            </Modal.Footer>
-                        </Modal>
-                        
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Select Plan</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <Form>
+                                        <Form.Group controlId="formPlan">
+                                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                                <Form.Check
+                                                    type="radio"
+                                                    name="plan"
+                                                    id="monthlyPlan"
+                                                    style={{ marginRight: '10px' }}
+                                                    label={
+                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                            <strong style={{ marginRight: '5px', fontSize: '16px' }}>Monthly Plan:</strong>
+                                                            <span style={{ fontWeight: 'bold', color: 'green', marginRight: '5px', fontSize: '16px' }}>
+                                                                <i className="fas fa-rupee-sign"></i>
+                                                            </span>
+                                                            <span style={{ fontWeight: 'bold', color: 'green', fontSize: '16px' }}>{selectStrategy.monthly_charges}</span>
+                                                        </div>
+                                                    }
+                                                    value="monthlyPlan"
+                                                    onChange={handleOptionChange}
+                                                    defaultChecked
+                                                />
+                                                <span style={{ fontSize: '20px', color: '#ccc' }}></span> {/* Divider */}
+                                            </div>
+                                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                                <Form.Check
+                                                    type="radio"
+                                                    name="plan"
+                                                    id="percentageWise"
+                                                    style={{ marginRight: '10px' }}
+                                                    label={
+                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                            <strong style={{ marginRight: '5px', fontSize: '16px' }}>% Wise:</strong>
+                                                            <span style={{ fontWeight: 'bold', color: 'green', marginRight: '5px', fontSize: '16px' }}>
+                                                                <i className="fas fa-rupee-sign"></i>
+                                                            </span>
+                                                            <span style={{ fontWeight: 'bold', color: 'green', fontSize: '16px' }}>{selectStrategy.security_fund}</span>
+                                                            <span style={{ fontSize: '14px', color: '#999', marginLeft: '5px' }}>(security fund)</span>
+                                                        </div>
+                                                    }
+                                                    value="% Wise"
+                                                    onChange={handleOptionChange}
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    </Form>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={handleClose}>Close</Button>
+                                    <Button variant="primary" onClick={handleSubmit}>Submit</Button>
+                                </Modal.Footer>
+                            </Modal>
+
 
 
                         )
