@@ -322,12 +322,21 @@ db.createView("makecallabrView_excute", "makecall_a_b_r",
 db.createView("makecall_a_b_r", "makecallabrs",
 [
      
-    {
-      $match : {
-         status :0
-      }
+    // {
+    //   $match : {
+    //      status :0
+    //   }
  
-    },
+    // },
+
+    {
+        $match: {
+          $and: [
+            { status: 0 },
+            { ABR_TYPE: { $ne: "at" } }  
+          ]
+        }
+     },
  
      {
          $addFields: {

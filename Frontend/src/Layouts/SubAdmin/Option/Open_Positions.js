@@ -584,18 +584,7 @@ export default function AllEmployees() {
             dataField: "TradeType",
             text: "Trade Type",
         },
-        {
-            dataField: "live",
-            text: "Live Price bp",
-            formatter: (cell, row, rowIndex) => (
-                <div>
-                    <span className={`LivePrice_${row.token}`}></span>
-                    <span className={`SP1_Call_Price_${row.token} d-none`}></span>
-
-                </div>
-            ),
-        },
-
+        
         {
             dataField: "type",
             text: "Type",
@@ -606,6 +595,10 @@ export default function AllEmployees() {
         {
             dataField: "trade_symbol",
             text: "Symbol",
+        },
+        {
+            dataField: "strategy",
+            text: "Strategy",
         },
         {
             dataField: "entry_qty_percent",
@@ -619,6 +612,17 @@ export default function AllEmployees() {
             text: "Exit Qty %",
             formatter: (cell, row, rowIndex) => (
                 <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>
+            ),
+        },
+        {
+            dataField: "live",
+            text: "Live Price bp",
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <span className={`LivePrice_${row.token}`}></span>
+                    <span className={`SP1_Call_Price_${row.token} d-none`}></span>
+
+                </div>
             ),
         },
         {
@@ -737,10 +741,7 @@ export default function AllEmployees() {
             text: "Signals time",
             formatter: (cell) => <>{fDateTimeSuffix(cell)}</>,
         },
-        {
-            dataField: "strategy",
-            text: "Strategy",
-        },
+       
 
 
     ];
