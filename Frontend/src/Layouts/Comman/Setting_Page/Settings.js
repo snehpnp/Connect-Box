@@ -12,7 +12,7 @@ import Usersetbrokerinfo from "../../../Layouts/Comman/Setting_Page/Setbrokerinf
 import { X, AlignJustify } from 'lucide-react';
 
 const Settings = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isSidebarOpen, setSidebarOpen] = useState(true);
   let Role = JSON.parse(localStorage.getItem("user_details")).Role;
 
   const toggleSidebar = () => {

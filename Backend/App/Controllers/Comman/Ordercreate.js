@@ -39,6 +39,7 @@ class Ordercreate {
                 $limit: 1
             }
         ]);
+
         let razorpay = new Razorpay({
             key_id: companyInformation[0].razor_payment_key,
             key_secret: companyInformation[0].razor_payment_secretKey,
@@ -67,7 +68,8 @@ class Ordercreate {
                 amount: parseInt(amount) / 100, // in paise
                 receipt: receipt,
                 razorpay_order_id: "",
-                razorpay_payment_id: ""
+                razorpay_payment_id: "",
+
             })
 
             var order_data = await strategy_Order.save()
@@ -110,7 +112,7 @@ class Ordercreate {
                 max_trade: findStg.max_trade || null,
                 strategy_percentage: findStg.strategy_percentage || null,
                 researcher_id: findStg.maker_id,
-                purchase_type:req.body.typeq1
+                purchase_type:req.body.type 
             });
 
 

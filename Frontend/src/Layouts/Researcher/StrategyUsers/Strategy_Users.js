@@ -76,15 +76,7 @@ const StrategyUsers = () => {
                                                     text: "#",
                                                     formatter: (cell, row, rowIndex) => rowIndex + 1,
                                                 },
-                                                {
-                                                    dataField: "strategy_name",
-                                                    text: "Strategy Name",
-                                                    formatter: (cell, row, rowIndex) => (
-                                                        <div>
-                                                            {row.strategy_name}
-                                                        </div>
-                                                    ),
-                                                },
+                                            
                                                 {
                                                     dataField: "Username",
                                                     text: "Username",
@@ -95,11 +87,11 @@ const StrategyUsers = () => {
                                                     ),
                                                 },
                                                 {
-                                                    dataField: "ServiceType",
+                                                    dataField: "purchase_type",
                                                     text: "Service Type",
                                                     formatter: (cell, row, rowIndex) => (
                                                         <div>
-                                                            Monthly
+                                                            {row.purchase_type}
                                                         </div>
                                                     ),
                                                 },

@@ -747,7 +747,8 @@ class Researcher {
                                 maker_id: "$strategy.maker_id",
                                 createdAt: "$strategy.createdAt",
                                 Username: "$user.UserName",
-                                stg_count: { $size: "$stg_count" }
+                                stg_count: { $size: "$stg_count" },
+                                purchase_type: "$strategy.purchase_type"
                             }
                         }
                     }
