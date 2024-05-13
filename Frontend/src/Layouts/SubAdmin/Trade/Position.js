@@ -77,7 +77,6 @@ export default function AllEmployees() {
             });
     };
 
-
     const fetchData = async () => {
         try {
             let data = { "id": user_id }
@@ -111,15 +110,9 @@ export default function AllEmployees() {
         }
     };
 
-
-
-
     useEffect(() => {
         fetchData();
     }, []);
-
-
-
 
 
     // LOGOUT TRADING 
@@ -148,8 +141,21 @@ export default function AllEmployees() {
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
 
         if (check) {
-            console.log("Trading On")
-            loginWithApi(brokerid, UserDetails);
+            if (UserDetails.api_key) {
+                loginWithApi(brokerid, UserDetails);
+
+            } else {
+                Swal.fire({
+                    title: "Error !",
+                    text: "Api Key Is Null",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true,
+                })
+                return false
+            }
+
+
 
         } else {
             console.log("Trading Off")
@@ -170,8 +176,13 @@ export default function AllEmployees() {
         },
         {
             dataField: "createdAt",
-            text: "Signals time",
+            text: "Signals Entry Time",
             formatter: (cell) => <>{fDateTimeSuffix(cell)}</>,
+        },
+        {
+            dataField: "exit_dt_date",
+            text: "Signals Exit Time",
+            formatter: (cell) => <>{cell ? fDateTimeSuffix(cell) :"-"}</>,
         },
         {
             dataField: "trade_symbol",
@@ -192,7 +203,7 @@ export default function AllEmployees() {
         },
         {
             dataField: "entry_qty",
-            text: "Entry Qty",
+            text: "Quantity",
             formatter: (cell, row, rowIndex) => (
                 <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>
             ),
@@ -364,7 +375,7 @@ export default function AllEmployees() {
 
         const startDate = fromDate ? getActualDateFormate(fromDate) : full;
         const endDate = toDate ? getActualDateFormate(toDate) : full;
-        const subadminId = userDetails.user_id
+
         await dispatch(Trade_history_data({ Role: Role, subadminId: userDetails.user_id, startDate: startDate, endDate: endDate, service: SelectService, strategy: selectStrategy, }))
             .unwrap()
             .then(async (response) => {
@@ -538,12 +549,8 @@ export default function AllEmployees() {
                 }
             }
         } else {
-            // alert("ELSE")
             tradeHistoryData.data && tradeHistoryData.data.forEach((row, i) => {
 
-                // console.log(" row._id ",row._id)
-                // console.log(" row token ",row.token)
-                // console.log(" row ",row)
                 let get_ids = '_id_' + row.token + '_' + row._id
                 let get_id_token = $('.' + get_ids).html();
 
@@ -557,7 +564,7 @@ export default function AllEmployees() {
 
 
                 if ((get_entry_type === "LE" && get_exit_type === "LX") || (get_entry_type === "SE" && get_exit_type === "SX")) {
-                    //   console.log("row._id ",row._id)
+
                     if (get_entry_qty !== "" && get_exit_qty !== "") {
 
                         if (parseInt(get_entry_qty) == parseInt(get_exit_qty)) {
@@ -568,16 +575,12 @@ export default function AllEmployees() {
                                 rpl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_exit_qty);
                             }
 
-                            // console.log("rpl ",rpl)
                             let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
                             let finalyupl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * upl;
 
-                            // console.log("upl._id ",upl)
-                            // console.log("finalyupl._id ",finalyupl)
                             if ((isNaN(finalyupl) || isNaN(rpl))) {
                                 return "-";
                             } else {
-                                // console.log("rpl inside",rpl)
                                 $(".show_rpl_" + row.token + "_" + get_id_token).html(rpl.toFixed(2));
                                 $(".UPL_" + row.token + "_" + get_id_token).html(finalyupl.toFixed(2));
                                 $(".TPL_" + row.token + "_" + get_id_token).html((finalyupl + rpl).toFixed(2));
@@ -592,7 +595,6 @@ export default function AllEmployees() {
                 //  if Only entry qty Exist
                 else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
 
-                    //console.log("row._id else",row._id)
 
                     let abc = ((parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
 
@@ -767,7 +769,7 @@ export default function AllEmployees() {
                                                                 profileData.data[0].broker,
                                                                 profileData.data[0].TradingStatus,
                                                                 profileData.data[0])}
-                                                            defaultChecked={getLoginStatus}
+                                                            checked={getLoginStatus}
                                                             style={{ marginRight: '5px' }}
                                                         />
                                                         <label htmlFor="1" className="checktoggle checkbox-bg"></label>
