@@ -67,6 +67,9 @@ class ActivityLogs {
                     const Activity_logs_data = await Activity_logs.aggregate([
                         {
                             $match: { admin_Id: new ObjectId(id), category: category }
+                        },
+                        {
+                            $sort: { createdAt: -1 } 
                         }
 
                     ]);

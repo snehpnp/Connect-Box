@@ -421,7 +421,6 @@ class SignalController {
           data: results,
         });
       } else if (resultUser.Role == "RESEARCH") {
-        console.log("researcher_strategy");
 
         var results = await Mainsignals.aggregate([
           {
@@ -524,7 +523,6 @@ class SignalController {
   async Tradehistory_data(req, res) {
     try {
 
-      console.log(req.body)
       const { Role, subadminId, startDate, endDate, strategy, service, type } =
         req.body;
 
@@ -568,7 +566,7 @@ class SignalController {
 
         // Extracting strategy names from resultUser array
         strategyNames = resultUser.map((user) => user.strategy_name);
-        console.log("researcher_strategy", strategyNames)
+
 
       } else if (Role === "EMPLOYEE") {
         Stg_col_name = "strategies"
@@ -605,7 +603,6 @@ class SignalController {
           },
         ]);
 
-        // console.log("subadminStgFind", subadminStgFind[0].strategyInfo);S
         resultUser = subadminStgFind[0].strategyInfo;
 
 
@@ -643,7 +640,11 @@ class SignalController {
 
 
       let startDateObj = new Date(startDate);
+
       let endDateObj = new Date(endDate);
+      endDateObj.setDate(endDateObj.getDate() + 1);
+
+
       let stg1;
       let ser1;
       //  For Strategy
@@ -653,6 +654,8 @@ class SignalController {
         stg1 = strategy;
       }
 
+      console.log("startDateObj", startDateObj)
+      console.log("endDateObj", endDateObj)
 
 
       //  For Service
@@ -929,7 +932,7 @@ class SignalController {
 
           //  For Strategy
           if (strategy === "null" || strategy === "") {
-            stg1 =item.strategys.strategy_name
+            stg1 = item.strategys.strategy_name
           } else {
             stg1 = strategy;
           }

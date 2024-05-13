@@ -31,7 +31,7 @@ class AliceBlue {
 
                 if (Get_User[0].Role == "USER") {
                     var subadmin = await User.find({ _id: Get_User[0].parent_id }).select('TradingStatus parent_id api_secret Role');
-                    console.log("subadmin[0]", subadmin[0])
+             
                     apiSecret = subadmin[0].api_secret
                 } else {
                     apiSecret = Get_User[0].api_secret
@@ -83,7 +83,6 @@ class AliceBlue {
 
                     axios(config)
                         .then(async function (response) {
-                            console.log("response.data", response.data)
                             if (response.data.userSession) {
 
 
