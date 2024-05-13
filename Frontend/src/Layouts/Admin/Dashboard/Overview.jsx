@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
+import { Eye } from 'lucide-react';
 
 import Loader from "../../../Utils/Loader";
 
@@ -62,9 +63,10 @@ const Overview = () => {
     return (count !== undefined && count !== null && base) ? (count / base) * 100 : null;
   };
 
-  const formatCardData = (title, count, percentage, base) => ({
+  const formatCardData = (title, count, percentage, route, base) => ({
     iconClass: "fas fa-users",
     title,
+    route,
     count: count !== undefined ? count : "Loading...",
     progress: percentage !== null ? percentage : 0,
     arrowIcon:
@@ -79,13 +81,21 @@ const Overview = () => {
   });
 
   const cardsData = [
-    formatCardData("Total Subadmins", Totalcount, calculatePercentage(Totalcount, Totalcount)),
-    formatCardData("Active Subadmins", TotalActivecount, calculatePercentage(TotalActivecount, Totalcount)),
-    formatCardData("Inactive Subadmins", TotalInActivecount, calculatePercentage(TotalInActivecount, Totalcount)),
-    formatCardData("Total Researcher", TotalUsercount, calculatePercentage(TotalUsercount, TotalUsercount)),
-    formatCardData("Active Researcher", TotalActiveUsercount, calculatePercentage(TotalActiveUsercount, TotalUsercount)),
-    formatCardData("Inactive Researcher", TotalInActiveUsercount, calculatePercentage(TotalInActiveUsercount, TotalUsercount)),
+    formatCardData("Total Subadmins", Totalcount, calculatePercentage(Totalcount, Totalcount),'/admin/allsubadmin?filter=1'),
+    formatCardData("Active Subadmins", TotalActivecount, calculatePercentage(TotalActivecount, Totalcount,), '/admin/allsubadmin?filter=2'),
+    formatCardData("Inactive Subadmins", TotalInActivecount, calculatePercentage(TotalInActivecount, Totalcount), '/admin/allsubadmin?filter=3'),
+    formatCardData("Total Researcher", TotalUsercount, calculatePercentage(TotalUsercount, TotalUsercount) ,'/admin/allresearch?filter=4' ),
+    formatCardData("Active Researcher", TotalActiveUsercount, calculatePercentage(TotalActiveUsercount, TotalUsercount) , '/admin/allresearch?filter=5'),
+    formatCardData("Inactive Researcher", TotalInActiveUsercount, calculatePercentage(TotalInActiveUsercount, TotalUsercount) , '/admin/allresearch?filter=6'),
   ];
+
+  const handleChange = (route) => {
+      navigate(route)
+  }
+
+
+
+  console.log("admin/allresearch :" , cardsData)
 
 
   const dashData = async () => {
@@ -194,6 +204,7 @@ const Overview = () => {
   };
 
 
+
   return (
     <div className="main-wrapper">
       <div>
@@ -220,22 +231,31 @@ const Overview = () => {
                   <div className="col-xl-4 col-sm-6 col-12" key={index}>
                     <div className="card">
                       <div className="card-body">
-                        <div className="dash-widget-header ">
-
+                        <div className="dash-widget-header mb-0 col-lg-12">
                           <span
-                            className={`dash-widget-icon ${data.title === 'Active Subadmins' || data.title === 'Active Researcher' ? "bg-success" : ''} ${data.progressBarClass} `}
+                            className={` col-lg-4 dash-widget-icon ${data.title === 'Active Subadmins' || data.title === 'Active Researcher' ? "bg-success" : ''} ${data.progressBarClass} `}
                           >
-
                             <i className={`${data.iconClass}`} id="animated" />
                           </span>
-                          <div className="dash-count">
+                          <div className=" col-lg-6  dash-count">
                             <div className="dash-title" style={{ fontWeight: '600' }}>{data.title}</div>
 
-                            <div className="dash-counts">
+                            <div>
+
                               <p>{data.count}</p>
+
                             </div>
+
+
+                          </div>
+                          <div className=" col-lg-3  d-flex justify-content-end mb-0">
+                            <Eye
+                              onClick={(e) => handleChange(data.route)}
+                            />
                           </div>
                         </div>
+
+
                         <div className="progress progress-sm mt-3">
                           <div
                             className={`progress-bar ${data.progressBarClass}`}
@@ -246,6 +266,7 @@ const Overview = () => {
                             aria-valuemax={100}
                           />
                         </div>
+
                         <p className="text-muted mt-3 mb-0">
                           <span className="text-success me-1">
                             <i className={data.arrowIcon} />
