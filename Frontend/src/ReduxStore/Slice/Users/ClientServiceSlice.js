@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_CLIENT_ALL_SERVICE,UPDATE_CLIENT_SERVICE, GET_ALL_SUBADMIN_STRATEGY} from "../../../Services/Users/allUsers.service";
+import { GET_CLIENT_ALL_SERVICE,UPDATE_CLIENT_SERVICE, GET_ALL_SUBADMIN_STRATEGY,updatestatus} from "../../../Services/Users/allUsers.service";
 
 export const GetAllclientDetails = createAsyncThunk("getall/user/clientServices",
   async (data) => {
@@ -33,6 +33,20 @@ async (data)=>{
     return await err
   }
 })
+
+
+// update active status clientservice
+export const statusUpdate= createAsyncThunk('statusUpadate',
+async (data)=>{
+  try{
+    const res = await updatestatus(data)
+    return  await res;
+  }
+  catch(err){
+    return await err
+  }
+})
+ 
  
 
 const ClientServiceSlice = createSlice({
@@ -42,6 +56,7 @@ const ClientServiceSlice = createSlice({
     isError: false,
     getAllservice: null,
     get_all_subadmin_strategy:null,
+    statusUpdate:null,
 
   },
   reducers: {},
@@ -73,6 +88,18 @@ const ClientServiceSlice = createSlice({
       .addCase(Get_All_Subadmin_Strategy.fulfilled, (state, action) => {
         state.isLoading = false;
         state.get_all_subadmin_strategy = action.payload;
+      })
+      .addCase(statusUpdate.pending, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+      })
+      .addCase(statusUpdate.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(statusUpdate.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.statusUpdate = action.payload;
       })
       
   },

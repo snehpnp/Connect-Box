@@ -309,14 +309,39 @@ class Clientservice {
             return res.send({ status: false, msg: "Error fetching strategies", data: [] });
         }
     }
+    
+
+    /// update active status 
 
 
-
-
-
-
-
-
+    async statusUpadate(req, res) {
+        try {
+            const { user_id, active_status,service_id } = req.body;
+      
+            if (active_status !== '0' && active_status !== '1') {
+                return res.status(400).send({ status: false, msg: "Invalid active_status value" });
+            }
+      
+            const filter = { user_id: user_id,service_id:service_id }; 
+            const updateOperation = { $set: {active_status: active_status, service_id:service_id } }; 
+      
+            const result = await client_services.updateMany(filter, updateOperation);
+      
+            if (result.nModified === 0) {
+                return res.send({ status: false, msg: "No data was updated", data: [] });
+            }
+      
+            return res.send({
+                status: true,
+                msg: "Data Updated",
+                data: result
+            });
+        } catch (error) {
+            console.error("Internal error:", error);
+            return res.status(500).send("Internal server error");
+        }
+    }
+        
 }
 
 

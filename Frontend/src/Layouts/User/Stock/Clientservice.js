@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import {
   GetAllclientDetails,
   UPDATE_CLIENT_SERVICE_DATA,
+  statusUpdate,
 } from "../../../ReduxStore/Slice/Users/ClientServiceSlice";
 import { SquarePen } from "lucide-react";
 import Swal from "sweetalert2";
@@ -46,6 +47,8 @@ function Clientservice() {
     serviceName: "",
   });
 
+
+
   const fetchData = async () => {
     try {
       let data = { id: user_id };
@@ -75,6 +78,46 @@ function Clientservice() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  // status update active
+  const ActiveStatus = async (item, e) => {
+    try {
+      let data = {
+        user_id: user_id,
+        service_id: item.service._id,
+        active_status: e.checked ? "1" : "0",
+      };
+  
+      const response = await dispatch(statusUpdate(data)).unwrap();
+  
+      if (response.status) {
+        if (e.checked) {
+          Swal.fire({
+            title: "Trading On",
+            icon: "success",
+            html: "Your trading has been successfully activated.",
+          });
+        } else {
+          Swal.fire({
+            title: "Trading Off",
+            icon: "success",
+            html: "Your trading has been successfully deactivated.",
+          });
+        }
+  
+        setRefresh(!refresh);
+      } else {
+        Swal.fire({
+          title: "Error",
+          icon: "error",
+          html: "Failed to update trading status.",
+        });
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+  
 
   const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
     if (check) {
@@ -152,7 +195,6 @@ function Clientservice() {
       .unwrap()
       .then((response) => {
         if (response.status) {
-          console.log("response", response);
           const filterData = response.services.filter((item) => {
             const searchInputMatch =
               searchInput == "" ||
@@ -210,6 +252,7 @@ function Clientservice() {
             timerProgressBar: true,
           });
           setModal(!modal);
+
           emptyState();
         } else {
           setModal(!modal);
@@ -311,8 +354,6 @@ function Clientservice() {
     return () => {};
   }, []);
 
-  console.log("Q1ytZrbZ", profileData);
-
   return (
     <>
       <div className="content container-fluid" data-aos="fade-left">
@@ -392,11 +433,11 @@ function Clientservice() {
                       </div>
                     </li>
 
-                    <li className="btn btn-primary">
+                    {/* <li className="btn btn-primary">
                       <i className="fa fa-filter me-2" aria-hidden="true" />{" "}
-                      {/* Filter icon */}
+                     
                       Filter
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>
@@ -526,6 +567,7 @@ function Clientservice() {
                                 <input
                                   className="form-check-input"
                                   type="checkbox"
+                                  onChange={(e) => ActiveStatus(item, e.target)}
                                   defaultChecked={
                                     item.active_status == 1 ? true : false
                                   }

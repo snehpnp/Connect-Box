@@ -76,4 +76,19 @@ export async function BROKER_RESPONSE(data,token){
         return await err
     }
  }
+
+ /// update a status
+
+ export async function  updatestatus(data){
+    try{
+        const res= await axios.post(`${Config.base_url}statusUpadate`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch(err){
+        
+        return await err
+    }
+ }
  

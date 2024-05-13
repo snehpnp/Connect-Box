@@ -44,6 +44,10 @@ class BrokerResponses {
         }
 
     }
+
+
+     
+
 }
 
 
@@ -100,6 +104,7 @@ const GetAllBrokerResponse = async (user_id, res) => {
         console.log("Error in fetching broker response:", error);
     }
 };
+
 
 
 
