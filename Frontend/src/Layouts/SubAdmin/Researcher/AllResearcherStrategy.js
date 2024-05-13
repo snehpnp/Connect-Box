@@ -89,7 +89,6 @@ const AllResearcherStrategy = () => {
             .unwrap()
             .then(async (response) => {
 
-                console.log("response ", response)
 
                 if (response.status) {
                     await loadScript('https://checkout.razorpay.com/v1/checkout.js');

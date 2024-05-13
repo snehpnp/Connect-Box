@@ -62,7 +62,6 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
         } else {
 
 
-            console.log('Invalid segment value');
             return;
         }
 

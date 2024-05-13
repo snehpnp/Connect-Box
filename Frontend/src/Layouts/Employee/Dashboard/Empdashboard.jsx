@@ -103,7 +103,6 @@ const DashBoard = () => {
 
   
   const handleClick=(route)=>{
-    console.log(route)
     navigate( route)
 
   }

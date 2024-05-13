@@ -654,9 +654,6 @@ class SignalController {
         stg1 = strategy;
       }
 
-      console.log("startDateObj", startDateObj)
-      console.log("endDateObj", endDateObj)
-
 
       //  For Service
       if (service === "null") {

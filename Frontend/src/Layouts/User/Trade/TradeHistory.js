@@ -533,9 +533,6 @@ export default function AllEmployees() {
             // alert("ELSE")
             tradeHistoryData.data && tradeHistoryData.data.forEach((row, i) => {
 
-                // console.log(" row._id ",row._id)
-                // console.log(" row token ",row.token)
-                // console.log(" row ",row)
                 let get_ids = '_id_' + row.token + '_' + row._id
                 let get_id_token = $('.' + get_ids).html();
 
@@ -549,7 +546,7 @@ export default function AllEmployees() {
 
 
                 if ((get_entry_type === "LE" && get_exit_type === "LX") || (get_entry_type === "SE" && get_exit_type === "SX")) {
-                    //   console.log("row._id ",row._id)
+            
                     if (get_entry_qty !== "" && get_exit_qty !== "") {
 
                         if (parseInt(get_entry_qty) == parseInt(get_exit_qty)) {
@@ -560,16 +557,12 @@ export default function AllEmployees() {
                                 rpl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_exit_qty);
                             }
 
-                            // console.log("rpl ",rpl)
                             let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
                             let finalyupl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * upl;
 
-                            // console.log("upl._id ",upl)
-                            // console.log("finalyupl._id ",finalyupl)
                             if ((isNaN(finalyupl) || isNaN(rpl))) {
                                 return "-";
                             } else {
-                                // console.log("rpl inside",rpl)
                                 $(".show_rpl_" + row.token + "_" + get_id_token).html(rpl.toFixed(2));
                                 $(".UPL_" + row.token + "_" + get_id_token).html(finalyupl.toFixed(2));
                                 $(".TPL_" + row.token + "_" + get_id_token).html((finalyupl + rpl).toFixed(2));
@@ -584,7 +577,6 @@ export default function AllEmployees() {
                 //  if Only entry qty Exist
                 else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
 
-                    //console.log("row._id else",row._id)
 
                     let abc = ((parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
 
@@ -707,16 +699,14 @@ export default function AllEmployees() {
 
 
                 if (item.entry_type === "LE") {
-                    // console.log("item iFF" ,item._id , " total ",total)
-                    let total1 = (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
+                   let total1 = (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
                     if (!isNaN(total1)) {
                         total += total1
                     }
 
                 } else {
                     let total1 = (parseFloat(item.entry_price) - parseFloat(item.exit_price)) * parseInt(item.exit_qty_percent);
-                    // console.log("item ELSE" ,item._id , " total ",total)
-                    if (!isNaN(total1)) {
+               if (!isNaN(total1)) {
                         total += total1
                     }
 

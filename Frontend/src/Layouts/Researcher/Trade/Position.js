@@ -86,7 +86,6 @@ export default function AllEmployees() {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          // console.log("Data --- ", response.data)
           setLivePriceDataDetails(response.data);
         }
       });

@@ -203,7 +203,6 @@ class Users {
       } else {
         parent_prifix_key = SubadminCheck[0].prifix_key
       }
-      console.log("parent_prifix_key", parent_prifix_key)
 
       const mins = 1;
       const maxs = 1000000;
@@ -359,10 +358,7 @@ class Users {
             if (matchedStrategies.length > 0) {
               matchedStrategies.forEach((data) => {
                 const matchedStrategy = Strategies.find(strat => strat.id === data._id.toString());
-                console.log("matchedStrategy.plan_id ", matchedStrategy.plan_id)
-                console.log("data ", data)
-
-
+          
                 var price_stg = 0
                 var daysforstg = 0
                 if (matchedStrategy.plan_id == 1) {
@@ -422,10 +418,6 @@ class Users {
                 });
                 User_strategy_client.save();
 
-
-                console.log("parseInt(SubadminCheck[0].strategy_Percentage)", parseInt(SubadminCheck[0].strategy_Percentage))
-
-                console.log("parseInt(price_stg)", parseInt(price_stg))
 
 
                 const Admin_charge_percentage = parseInt(SubadminCheck[0].strategy_Percentage) / 100;
@@ -511,7 +503,6 @@ class Users {
 
             // I USER IF 2 DAYS CLICNT
             if (license_type == "0") {
-              // console.log("SNEH JAISWAL")
 
               const filter = { _id: User_id };
               const update = {
@@ -706,7 +697,6 @@ class Users {
             }
           }
         ]);
-        // console.log("stg_count", stg_count)
 
 
         if (stg_count && stg_count.length > 0 && stg_count[0].totalAdminCharge !== undefined) {
@@ -980,7 +970,6 @@ class Users {
             add_startegy.forEach(async (data) => {
               const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
 
-              console.log("data", data)
 
               var price_stg = 0
               var daysforstg = 0
@@ -1067,7 +1056,7 @@ class Users {
           Exist_strategy1.map(async (data) => {
 
             const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
-            console.log("Esist -", data)
+      
 
             var price_stg = 0
             var daysforstg = 0
@@ -1554,7 +1543,6 @@ class Users {
 
     try {
 
-      console.log("cppppppp")
       const { page, limit, Find_Role, user_ID } = req.body; //LIMIT & PAGE
 
       if (!user_ID || user_ID == '' || user_ID == null) {

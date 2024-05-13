@@ -183,7 +183,6 @@ console.log("values",values)
 
   
   useEffect(() => {
-    console.log("UserDetails", UserDetails.data)
     
     formik.setFieldValue('app_id', UserDetails.data !== undefined && UserDetails.data.app_id);
     formik.setFieldValue('api_type', UserDetails.data !== undefined && UserDetails.data.api_key);

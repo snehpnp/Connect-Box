@@ -37,8 +37,6 @@ const AddClient = () => {
   const [getAllBroker, setAllBroker] = useState([]);
 
 
-  console.log("stgDiseble :", stgDiseble)
-
   const [employeeNames, setEmployeeNames] = useState({
     loading: true,
     data: [],
@@ -514,7 +512,6 @@ const AddClient = () => {
     var data = { id: user_id ,key:"1"}
     await dispatch(GetSubStrategys(data)).unwrap()
       .then((response) => {
-        // console.log(" response.data", response.data)
         if (response.status) {
           setgetallStrategy({
             loading: true,
@@ -633,7 +630,6 @@ const AddClient = () => {
   }, [formik.values.groupservice])
 
 
-  // console.log("formik.values.Service_Type", formik.values.Service_Type)
 
   // useEffect(() => {
   //   setSelectedCheckboxesAndPlan([])

@@ -304,19 +304,9 @@ function MessageBroadcast() {
 
       if (response.status) {
 
-        // console.log("response.data", response.data)
-        // console.log("value", value)
 
         let filteredData = [];
-        // if (value == 2) {
-        //   filteredData = response.data.filter(item => item.ownerId == ownerId);
-        // } else if (value == 3) {
-        //   filteredData = response.data.filter(item =>
-        //     (Array.isArray(item.subAdminId) && item.subAdminId.includes(ownerId)) ||
-        //     (Array.isArray(item.strategyId) && item.strategyId.includes(ownerId))
-        //   );
-        // }
-        // console.log("filteredData", filteredData)
+
         setPipelineData(response.data);
       } else {
         toast.error(response.msg);

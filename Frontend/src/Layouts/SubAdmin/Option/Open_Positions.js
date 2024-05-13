@@ -92,7 +92,6 @@ export default function AllEmployees() {
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
-                    console.log("Data --- ", response.data)
                     setLivePriceDataDetails(response.data)
                 }
             });
@@ -120,7 +119,7 @@ export default function AllEmployees() {
     }
 
     const [updatedDataPriceTS, setUpdatedDataPriceTS] = useState({});
-    console.log("updatedDataPriceTS  ", updatedDataPriceTS)
+
 
     const inputChangeTargetStoplos = (e, type, row) => {
 
@@ -353,7 +352,6 @@ export default function AllEmployees() {
     ]
 
     if (iscolumntPrice == true) {
-        console.log("iscolumntPrice", iscolumntPrice)
         columnsM = columnsM.filter(column => column.dataField !== "Price");
     }
 
@@ -370,8 +368,7 @@ export default function AllEmployees() {
 
     const handleOnSelectAllM = (isSelect, rows) => {
         const ids = rows.map(r => r._id);
-        // console.log("isSelect ",isSelect)
-        // console.log("rows ",rows)
+ 
         if (isSelect) {
             setSelectedM(ids);
             setSelected1M(rows);
@@ -1050,11 +1047,10 @@ export default function AllEmployees() {
     const ShowLivePrice = async () => {
         let type = { loginType: "API" };
         let channelList = CreatechannelList;
-        console.log("rubnnn")
+
 
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
-            console.log("------------rubnnn")
 
             const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
 

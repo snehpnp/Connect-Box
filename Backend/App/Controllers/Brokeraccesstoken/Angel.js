@@ -37,8 +37,6 @@ class Angel {
                 var hosts = req.headers.host;
     
 
-
-                console.log("hosts",hosts)
                 var redirect = hosts.split(':')[0];
                 var redirect_uri = '';
                 if (redirect == "localhost") {
@@ -188,7 +186,6 @@ class Angel {
                           
                           
 //                         }else{
-//                             // console.log("NO DATA FOUND");
 //                         }
 
                        

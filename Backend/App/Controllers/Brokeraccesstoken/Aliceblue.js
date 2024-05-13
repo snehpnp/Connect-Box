@@ -24,7 +24,6 @@ class AliceBlue {
 
             var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role broker');
 
-            console.log("Get_User[0]", Get_User[0])
             if (Get_User[0].TradingStatus != "on") {
 
                 var apiSecret = ''
@@ -36,7 +35,6 @@ class AliceBlue {
                 } else {
                     apiSecret = Get_User[0].api_secret
                 }
-                console.log(userId, "-----", apiSecret)
 
                 var hosts = req.headers.host;
 
@@ -407,7 +405,7 @@ class AliceBlue {
 }
 
 const GetAllBrokerResponse = async (user_id, res) => {
-    console.log("hi")
+ 
     try {
         const objectId = new ObjectId(user_id);
         var FindUserAccessToken = await User.find({ _id: objectId })

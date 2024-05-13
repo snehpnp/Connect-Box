@@ -24,7 +24,7 @@ const dbTradeTools = client.db(process.env.DB_TRADETOOLS);
 let socketObject = null;
 
 const Alice_Socket = async () => {
-    // console.log("Inside ")
+
     var rr = 0;
     const url = "wss://ws1.aliceblueonline.com/NorenWS/"
     var socket = null
@@ -58,14 +58,10 @@ const Alice_Socket = async () => {
     var type = { "loginType": "API" }
 
 
-    // console.log("alltokenchannellist ",alltokenchannellist)
-
 
     //  Step -1
-
     if (broker_infor[0].user_id !== undefined && broker_infor[0].access_token !== undefined && broker_infor[0].trading_status == "on") {
         try {
-            console.log("inside  2 ")
             await axios.post(`${aliceBaseUrl}ws/createSocketSess`, type, {
                 headers: {
                     'Authorization': `Bearer ${userid} ${userSession1}`,
@@ -74,7 +70,6 @@ const Alice_Socket = async () => {
 
             }).then(res => {
 
-                // console.log("res.data ",res.data)
                 if (res.data.stat == "Ok") {
 
                     try {

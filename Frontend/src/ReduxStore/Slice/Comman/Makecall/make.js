@@ -19,8 +19,6 @@ export const getCatogries = createAsyncThunk(
     async (data) => {
       try {
         const {req,token} = data
-
-        // console.log("req ",req)
         
         const res = await GET_ALL_Catagory(req,token);
         return res;
@@ -35,8 +33,6 @@ export const getexpirymanualtrade = createAsyncThunk(
     async (data) => {
       try {
         const {req,token} = data
-
-      //  console.log("req ",req)
        
         const res = await GET_EXPIRY_BY_SCRIPT(req,token);
         return res;
@@ -53,8 +49,6 @@ export const getexpirymanualtrade = createAsyncThunk(
       try {
         const {req,token} = data
 
-      //  console.log("req ",req)
-       
         const res = await GET_ALL_STRIKE_PRICE(req,token);
         return res;
       } catch (err) {
@@ -68,8 +62,6 @@ export const getexpirymanualtrade = createAsyncThunk(
     async (data) => {
       try {
         const {req,token} = data
-
-      //  console.log("req ",req)
        
         const res = await GET_STRATEGY_DATA(req,token);
         return res;
@@ -85,8 +77,6 @@ export const getexpirymanualtrade = createAsyncThunk(
       try {
         const {req,token} = data
 
-      //  console.log("req ",req)
-       
         const res = await GET_TOKEN_BY_SOCKET(req,token);
         return res;
       } catch (err) {
