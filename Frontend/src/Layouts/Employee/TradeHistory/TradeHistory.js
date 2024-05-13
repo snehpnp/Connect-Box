@@ -635,8 +635,8 @@ const TradeHistory = () => {
                                         <input
                                             type="date"
                                             className="form-control"
-                                            placeholder="Search..."
-                                            aria-label="Search"
+                                            placeholder="fromDate..."
+                                            aria-label="fromDate"
                                             aria-describedby="search-addon"
                                             onChange={(e) => setFromDate(e.target.value || '')}
                                             value={fromDate}
@@ -647,8 +647,8 @@ const TradeHistory = () => {
                                         <input
                                             type="date"
                                             className="form-control"
-                                            placeholder="Search..."
-                                            aria-label="Search"
+                                            placeholder="toDate..."
+                                            aria-label="toDate"
                                             aria-describedby="search-addon"
                                             onChange={(e) => setToDate(e.target.value || '')}
                                             value={toDate}

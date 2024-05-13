@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useFormik } from 'formik';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import toast from 'react-hot-toast';
 import ToastButton from "../../../../Components/ExtraComponents/Alert_Toast";
@@ -343,10 +343,160 @@ const AddStrategy = () => {
 
 
     return (
-        <>
-            <Content Page_title="Add Group " button_title="Back" route="/subadmin/group-service"
-                additional_field={
-                    <div style={{ overflowY: 'scroll', height: '65vh' }}>
+   
+          <div className="content container-fluid" data-aos="fade-left">
+        <div className="card">
+          <div className="card-header">
+            <div className="row align-items-center">
+              <div className="col">
+              <h5 className="card-title mb-0"><i class="pe-2 fas fa-list"></i>Add Group</h5>
+
+              </div>
+              <div className="col">
+              <Link class="btn btn-primary float-lg-end mx-4" to="/subadmin/group-service"><i class="fa-solid  fa-arrow-left "></i> Back</Link>
+              </div>
+              </div>
+              </div>
+              <div className='card-body'>
+             <div className="row">
+             <div className='col-md-5'>
+                <AddForm className="px-2" fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))} formik={formik} btn_name="Add Group" title='addstrategy'
+                    additional_field={
+                        <>
+                            <div className='row '>
+                                <div className='col-lg-12 col-sm-6 mb-4'>
+                                    <div className="form-group mx-2">
+                                        <label className='col-sm-12 col-form-label'>Group Name</label>
+                                        <div className='col-sm-12'>
+                                            <input
+                                                type="text"
+                                                name="groupname"
+                                                style={{ width: '100%', borderRadius: '5px', padding: '5px' }}
+                                                placeholder='Enter Group Name'
+                                                onChange={(e) => setGroupName(e.target.value)}
+                                                value={groupName.startsWith(prifix_key + '_') ? groupName :
+                                                    groupName.startsWith(prifix_key) ?
+                                                        prifix_key + '_' + groupName.substr(3) :
+                                                        prifix_key + '_' + groupName
+                                                }
+                                            />
+                                            {groupName ? '' :
+                                                <div style={{ color: 'red' }}>{formik.errors.groupName}</div>
+                                            }
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                                <div className='col-lg-12 col-sm-6 mb-4'>
+                                    <div className="form-group mx-2">
+                                        <label className='col-sm-12 col-form-label'>Group Description</label>
+                                        <div className='col-sm-12'>
+                                            <input
+                                                type="text"
+                                                style={{ width: '100%', borderRadius: '5px', padding: '5px' }}
+                                                placeholder='Enter Group description'
+                                                onChange={(e) => setGroupDescription(e.target.value)}
+                                                value={groupDescription}
+                                            />
+
+                                            {groupDescription ? '' :
+                                                <div style={{ color: 'red' }}>{formik.errors.groupDescription}</div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div className='row'>
+                                <div className='col-lg-12 col-sm-6  mb-4'>
+                                    <div className="form-group">
+                                        <label className='col-sm-12 col-form-label'>Segment</label>
+                                        <div className='col-sm-12 '>
+                                            <select className='form-control p-2' value={selectedValue} onChange={(e) => handleChange(e)} style={{ width: '100%' }}>
+                                                <option value=''>Please Select Segment</option>
+                                                {GetAllSgments.data && GetAllSgments.data.map((option, index) => (
+                                                    <option key={option.value} value={option.segment} >
+                                                        {option.name}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            {selectedValue ? '' :
+                                                <div style={{ color: 'red' }}>{formik.errors.selectedValue}</div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                {selectedValue ?
+                                    <div className='col-lg-12 col-md-11 mt-2 ms-2 input-block'>
+                                        <input
+                                            type="test"
+                                            className="form-control mt-4 p-2"
+                                            placeholder="Search..."
+                                            onChange={(e) => { setSerachService(e.target.value) }}
+                                            value={SerachService}
+
+                                        />
+                                    </div>
+
+                                    : ""}
+                            </div>
+
+
+
+
+
+
+                            <div className="col-lg-12" >
+                                {state.length > 0 && (
+                                    <div className="mb-3 row">
+                                        <div className="col-lg-12">
+                                            <div className="row mt-4">
+                                                <>
+                                                    <div className="col-md-4 mb-2">
+                                                        <div className="form-check">
+                                                            <input
+                                                                type="checkbox"
+                                                                className="form-check-input"
+                                                                id='selectall'
+                                                                checked={selectAllFiltered}
+                                                                onChange={() => handleSelectAllFilteredChange()}
+                                                            />
+                                                            <label className="form-check-label" htmlFor='selectall'>
+                                                                Select All
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    {state.map((service) => (
+                                                        <div key={service._id} className="col-md-4 mb-2">
+                                                            <div className="form-check">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    className="form-check-input"
+                                                                    id={`service-${service._id}`}
+                                                                    value={service._id}
+                                                                    defaultChecked={selectedServices.includes(service._id)}
+                                                                    onChange={(e) => handleServiceChange(e, service._id, service.name, service.category.name, service.lotsize)}
+                                                                />
+                                                                <label className="form-check-label" htmlFor={`service-${service._id}`}>
+                                                                    {service.name}
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    }
+                />
+                </div>
+                <div className='col-md-7'>
+                <div style={{ overflowY: 'scroll', height: '65vh' }}>
                         <h4 className='text-center text-decoration-underline mb-3'>Select Services And Quantity</h4>
                         <table className="table table-responsive-sm col-md-3 " >
                             <thead className="">
@@ -393,148 +543,20 @@ const AddStrategy = () => {
                             </tbody >
                         </table>
                     </div>
-                }
-            >
+                </div>
+               
+             </div>
+          
+                   
+          
 
 
-
-                <AddForm fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))} formik={formik} btn_name="Add Group" title='addstrategy'
-                    additional_field={
-                        <>
-                            <div className='row '>
-                                <div className='col-lg-6 col-sm-6 mb-4'>
-                                    <div className="form-group mx-2">
-                                        <label className='col-sm-12 col-form-label'>Group Name</label>
-                                        <div className='col-sm-12'>
-                                            <input
-                                                type="text"
-                                                name="groupname"
-                                                style={{ width: '100%', borderRadius: '5px', padding: '5px' }}
-                                                placeholder='Enter Group Name'
-                                                onChange={(e) => setGroupName(e.target.value)}
-                                                value={groupName.startsWith(prifix_key + '_') ? groupName :
-                                                    groupName.startsWith(prifix_key) ?
-                                                        prifix_key + '_' + groupName.substr(3) :
-                                                        prifix_key + '_' + groupName
-                                                }
-                                            />
-                                            {groupName ? '' :
-                                                <div style={{ color: 'red' }}>{formik.errors.groupName}</div>
-                                            }
-                                        </div>
-                                    </div>
-
-
-                                </div>
-                                <div className='col-lg-6 col-sm-6 mb-4'>
-                                    <div className="form-group mx-2">
-                                        <label className='col-sm-12 col-form-label'>Group Description</label>
-                                        <div className='col-sm-12'>
-                                            <input
-                                                type="text"
-                                                style={{ width: '100%', borderRadius: '5px', padding: '5px' }}
-                                                placeholder='Enter Group description'
-                                                onChange={(e) => setGroupDescription(e.target.value)}
-                                                value={groupDescription}
-                                            />
-
-                                            {groupDescription ? '' :
-                                                <div style={{ color: 'red' }}>{formik.errors.groupDescription}</div>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                            <div className='row'>
-                                <div className='col-lg-6 col-sm-6  mb-4'>
-                                    <div className="form-group">
-                                        <label className='col-sm-12 col-form-label'>Segment</label>
-                                        <div className='col-sm-12 '>
-                                            <select className='form-control p-2' value={selectedValue} onChange={(e) => handleChange(e)} style={{ width: '100%' }}>
-                                                <option value=''>Please Select Segment</option>
-                                                {GetAllSgments.data && GetAllSgments.data.map((option, index) => (
-                                                    <option key={option.value} value={option.segment} >
-                                                        {option.name}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            {selectedValue ? '' :
-                                                <div style={{ color: 'red' }}>{formik.errors.selectedValue}</div>
-                                            }
-                                        </div>
-                                    </div>
-                                </div>
-                                {selectedValue ?
-                                    <div className='col-lg-5 col-md-11 mt-2 ms-2 input-block'>
-                                        <input
-                                            type="test"
-                                            className="form-control mt-4 p-2"
-                                            placeholder="Search..."
-                                            onChange={(e) => { setSerachService(e.target.value) }}
-                                            value={SerachService}
-
-                                        />
-                                    </div>
-
-                                    : ""}
-                            </div>
-
-
-
-
-
-
-                            <div className="col-lg-12" style={{ overflowY: 'scroll', height: '50vh' }}>
-                                {state.length > 0 && (
-                                    <div className="mb-3 row">
-                                        <div className="col-lg-12">
-                                            <div className="row mt-4">
-                                                <>
-                                                    <div className="col-md-4 mb-2">
-                                                        <div className="form-check">
-                                                            <input
-                                                                type="checkbox"
-                                                                className="form-check-input"
-                                                                id='selectall'
-                                                                checked={selectAllFiltered}
-                                                                onChange={() => handleSelectAllFilteredChange()}
-                                                            />
-                                                            <label className="form-check-label" htmlFor='selectall'>
-                                                                Select All
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    {state.map((service) => (
-                                                        <div key={service._id} className="col-md-4 mb-2">
-                                                            <div className="form-check">
-                                                                <input
-                                                                    type="checkbox"
-                                                                    className="form-check-input"
-                                                                    id={`service-${service._id}`}
-                                                                    value={service._id}
-                                                                    defaultChecked={selectedServices.includes(service._id)}
-                                                                    onChange={(e) => handleServiceChange(e, service._id, service.name, service.category.name, service.lotsize)}
-                                                                />
-                                                                <label className="form-check-label" htmlFor={`service-${service._id}`}>
-                                                                    {service.name}
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    ))}
-                                                </>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </>
-                    }
-                />
+             
                 < ToastButton />
-            </Content >
-        </>
+               
+                </div>
+              </div>
+              </div>
     )
 
 
