@@ -2,13 +2,27 @@
 //  6=IIFl , 7=Kotak , 8=Mandot , 9=Choice, 10=Anand Rathi, 11=B2C, 13=Angel,
 // 13 =Fyers , 14 = 5-Paisa , 15 Zerodha ,
 import * as Config from "./Config";
+import Swal from 'sweetalert2';
 
 
 export const loginWithApi = async (broker_id, UserDetails) => {
 
     if (broker_id === "2" || broker_id === 2) {
-        window.location.href = `https://ant.aliceblueonline.com/?appcode=${UserDetails.api_key}`;
+        // if (UserDetails.api_key) {
+            window.location.href = `https://ant.aliceblueonline.com/?appcode=${UserDetails.api_key}`;
+          
+        // } else {
+        //     Swal.fire({
+        //         title: "Error !",
+        //         text: "Api Key Is Null",
+        //         icon: "error",
+        //         timer: 1500,
+        //         timerProgressBar: true,
+        //     })
+        //     return false
+        // }
     }
+    
     else if (broker_id === "1" || broker_id === 1) {
 
     }
