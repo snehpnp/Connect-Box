@@ -17,6 +17,8 @@ import { Eye } from "lucide-react";
 
 import { allStrategy_subAd } from "../../../ReduxStore/Slice/Admin/Subadmins";
 
+import { Get_All_Strategy } from '../../../ReduxStore/Slice/Users/ClientServiceSlice'
+
 
 import DetailsView from "../../SubAdmin/Trade/DetailsView";
 
@@ -33,14 +35,11 @@ export default function AllEmployees() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+    const Role = JSON.parse(localStorage.getItem("user_details")).Role
     const [rowData, setRowData] = useState({ loading: true, data: [], });
 
     const [profileData, setProfileData] = useState([]);
-  const [strategies, setStrategies] = useState([]);
-
-  console.log("strategies :", )
-
-
+    const [strategies, setStrategies] = useState([]);
     const [refresh, setrefresh] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [ForGetCSV, setForGetCSV] = useState([]);
@@ -93,6 +92,7 @@ export default function AllEmployees() {
     const [UserDetails, seUserDetails] = useState('')
     const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
     const [userIdSocketRun, setUserIdSocketRun] = useState("none");
+    const [GetAllStrategy, setAllStrategy] = useState()
 
 
     const fetchData = async () => {
@@ -206,11 +206,11 @@ export default function AllEmployees() {
             dataField: "2",
             text: "Entry Type",
             formatter: (cell, row, rowIndex) => (
-              <div>
-                <span>{row.entry_type === "LE"?"BUY ENTRY":"SELL ENTRY"}</span>
-              </div>
+                <div>
+                    <span>{row.entry_type === "LE" ? "BUY ENTRY" : "SELL ENTRY"}</span>
+                </div>
             ),
-          },
+        },
         {
             dataField: "entry_qty",
             text: "Entry Qty",
@@ -303,7 +303,7 @@ export default function AllEmployees() {
             text: "Entry Status",
             formatter: (cell, row, rowIndex) => (
                 <div>
-                    <span>{row.result[0].exit_status ==="above"?"ABOVE":row.result[0].exit_status ==="below"?"BELOW":row.result[0].exit_status == "range"?"RANGE":" - "}</span>
+                    <span>{row.result[0].exit_status === "above" ? "ABOVE" : row.result[0].exit_status === "below" ? "BELOW" : row.result[0].exit_status == "range" ? "RANGE" : " - "}</span>
 
 
                 </div>
@@ -339,14 +339,7 @@ export default function AllEmployees() {
     ];
 
 
-    const ResetDate = (e) => {
-        e.preventDefault();
-        setFromDate("");
-        setStrategyClientStatus("");
-        setSelectService("");
-        setToDate("");
 
-    };
 
     const RefreshHandle = () => {
         setrefresh(!refresh);
@@ -370,10 +363,12 @@ export default function AllEmployees() {
         let year = abc.getFullYear();
         let full = `${year}/${month}/${date}`;
 
-        let startDate = getActualDateFormate(fromDate);
-        let endDate = getActualDateFormate(toDate);
+        const startDate = fromDate ? getActualDateFormate(fromDate) : full;
+        const endDate = toDate ? getActualDateFormate(toDate) : full;
+
+
         const subadminId = userDetails.user_id
-        await dispatch(User_Tradehistory_data({ subadminId: userDetails.user_id, startDate: !fromDate ? full : startDate, endDate: !toDate ? fromDate ? "" : full : endDate, service: SelectService, strategy: StrategyClientStatus, }))
+        await dispatch(User_Tradehistory_data({ Role: Role, subadminId: userDetails.user_id, startDate: startDate, endDate: endDate, service: SelectService, strategy: strategies}))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
@@ -391,8 +386,8 @@ export default function AllEmployees() {
     };
 
     useEffect(() => {
-        userDataRes(refresh, fromDate, toDate, SelectService, StrategyClientStatus)
-    }, [])
+        userDataRes()
+    }, [refresh, fromDate, toDate, strategies, SelectService])
 
 
 
@@ -401,7 +396,7 @@ export default function AllEmployees() {
 
 
 
- 
+
 
 
 
@@ -469,9 +464,9 @@ export default function AllEmployees() {
                                         let rpl = (parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_exit_qty);
 
 
-                                        if(get_entry_type === "SE"){
+                                        if (get_entry_type === "SE") {
                                             rpl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_exit_qty);
-                                          }
+                                        }
 
 
                                         let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
@@ -496,9 +491,9 @@ export default function AllEmployees() {
 
                                 let abc = ((parseFloat(live_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
 
-                                if(get_entry_type === "SE"){
+                                if (get_entry_type === "SE") {
                                     abc = ((parseFloat(get_entry_price) - parseFloat(live_price)) * parseInt(get_entry_qty)).toFixed();
-                                  }
+                                }
 
 
                                 if (isNaN(abc)) {
@@ -534,99 +529,99 @@ export default function AllEmployees() {
             }
         }
 
-        else{
+        else {
             // alert("ELSE")
             tradeHistoryData.data && tradeHistoryData.data.forEach((row, i) => {
-              
-              // console.log(" row._id ",row._id)
-              // console.log(" row token ",row.token)
-              // console.log(" row ",row)
-              let get_ids = '_id_' + row.token + '_' + row._id
-              let get_id_token = $('.' + get_ids).html();
-      
-              const get_entry_qty = $(".entry_qty_" + row.token + '_' + row._id).html();
-              const get_exit_qty = $(".exit_qty_" + row.token + '_' + row._id).html();
-              const get_exit_price = $(".exit_price_" + row.token + '_' + row._id).html();
-              const get_entry_price = $(".entry_price_" + row.token + '_' + row._id).html();
-              const get_entry_type = $(".entry_type_" + row.token + '_' + row._id).html();
-              const get_exit_type = $(".exit_type_" + row.token + '_' + row._id).html();
-              const get_Strategy = $(".strategy_" + row.token + '_' + row._id).html();
-      
-      
-            if ((get_entry_type === "LE" && get_exit_type === "LX") || (get_entry_type === "SE" && get_exit_type === "SX")) {
-             //   console.log("row._id ",row._id)
-                if (get_entry_qty !== "" && get_exit_qty !== "") {
-      
-                  if (parseInt(get_entry_qty) == parseInt(get_exit_qty)) {
-      
-                    
-                    let rpl = (parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_exit_qty);
-                    if(get_entry_type === "SE"){
-                      rpl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_exit_qty);
+
+                // console.log(" row._id ",row._id)
+                // console.log(" row token ",row.token)
+                // console.log(" row ",row)
+                let get_ids = '_id_' + row.token + '_' + row._id
+                let get_id_token = $('.' + get_ids).html();
+
+                const get_entry_qty = $(".entry_qty_" + row.token + '_' + row._id).html();
+                const get_exit_qty = $(".exit_qty_" + row.token + '_' + row._id).html();
+                const get_exit_price = $(".exit_price_" + row.token + '_' + row._id).html();
+                const get_entry_price = $(".entry_price_" + row.token + '_' + row._id).html();
+                const get_entry_type = $(".entry_type_" + row.token + '_' + row._id).html();
+                const get_exit_type = $(".exit_type_" + row.token + '_' + row._id).html();
+                const get_Strategy = $(".strategy_" + row.token + '_' + row._id).html();
+
+
+                if ((get_entry_type === "LE" && get_exit_type === "LX") || (get_entry_type === "SE" && get_exit_type === "SX")) {
+                    //   console.log("row._id ",row._id)
+                    if (get_entry_qty !== "" && get_exit_qty !== "") {
+
+                        if (parseInt(get_entry_qty) == parseInt(get_exit_qty)) {
+
+
+                            let rpl = (parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_exit_qty);
+                            if (get_entry_type === "SE") {
+                                rpl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_exit_qty);
+                            }
+
+                            // console.log("rpl ",rpl)
+                            let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
+                            let finalyupl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * upl;
+
+                            // console.log("upl._id ",upl)
+                            // console.log("finalyupl._id ",finalyupl)
+                            if ((isNaN(finalyupl) || isNaN(rpl))) {
+                                return "-";
+                            } else {
+                                // console.log("rpl inside",rpl)
+                                $(".show_rpl_" + row.token + "_" + get_id_token).html(rpl.toFixed(2));
+                                $(".UPL_" + row.token + "_" + get_id_token).html(finalyupl.toFixed(2));
+                                $(".TPL_" + row.token + "_" + get_id_token).html((finalyupl + rpl).toFixed(2));
+
+                                ShowColor1(".show_rpl_" + row.token + "_" + get_id_token, rpl.toFixed(2), row.token, get_id_token);
+                                ShowColor1(".UPL_" + row.token + "_" + get_id_token, finalyupl.toFixed(2), row.token, get_id_token);
+                                ShowColor1(".TPL_" + row.token + "_" + get_id_token, (finalyupl + rpl).toFixed(2), row.token, get_id_token);
+                            }
+                        }
                     }
-                     
-                  // console.log("rpl ",rpl)
-                    let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
-                    let finalyupl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * upl;
-                   
-                    // console.log("upl._id ",upl)
-                    // console.log("finalyupl._id ",finalyupl)
-                    if ((isNaN(finalyupl) || isNaN(rpl))) {
-                      return "-";
+                }
+                //  if Only entry qty Exist
+                else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
+
+                    //console.log("row._id else",row._id)
+
+                    let abc = ((parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
+
+                    if (get_entry_type === "SE") {
+                        abc = ((parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_entry_qty)).toFixed();
+                    }
+
+
+
+                    if (isNaN(abc)) {
+                        return "-";
                     } else {
-                     // console.log("rpl inside",rpl)
-                      $(".show_rpl_" + row.token + "_" + get_id_token).html(rpl.toFixed(2));
-                      $(".UPL_" + row.token + "_" + get_id_token).html(finalyupl.toFixed(2));
-                      $(".TPL_" + row.token + "_" + get_id_token).html((finalyupl + rpl).toFixed(2));
-      
-                      ShowColor1(".show_rpl_" + row.token + "_" + get_id_token, rpl.toFixed(2), row.token, get_id_token);
-                      ShowColor1(".UPL_" + row.token + "_" + get_id_token, finalyupl.toFixed(2), row.token, get_id_token);
-                      ShowColor1(".TPL_" + row.token + "_" + get_id_token, (finalyupl + rpl).toFixed(2), row.token, get_id_token);
+                        $(".show_rpl_" + row.token + "_" + get_id_token).html("-");
+                        $(".UPL_" + row.token + "_" + get_id_token).html(abc);
+                        $(".TPL_" + row.token + "_" + get_id_token).html(abc);
+                        ShowColor1(".show_rpl_" + row.token + "_" + get_id_token, "-", row.token, get_id_token);
+                        ShowColor1(".UPL_" + row.token + "_" + get_id_token, abc, row.token, get_id_token);
+                        ShowColor1(".TPL_" + row.token + "_" + get_id_token, abc, row.token, get_id_token);
                     }
-                  }
                 }
-              }
-              //  if Only entry qty Exist
-              else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
-      
-                //console.log("row._id else",row._id)
-      
-                let abc = ((parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
-                 
-                if(get_entry_type === "SE"){
-                  abc = ((parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_entry_qty)).toFixed();
-                }
-      
-      
-      
-                if (isNaN(abc)) {
-                  return "-";
+
+                //  if Only Exist qty Exist
+                else if (
+                    (get_entry_type === "" && get_exit_type === "LX") ||
+                    (get_entry_type === "" && get_exit_type === "SX")
+                ) {
                 } else {
-                  $(".show_rpl_" + row.token + "_" + get_id_token).html("-");
-                  $(".UPL_" + row.token + "_" + get_id_token).html(abc);
-                  $(".TPL_" + row.token + "_" + get_id_token).html(abc);
-                  ShowColor1(".show_rpl_" + row.token + "_" + get_id_token, "-", row.token, get_id_token);
-                  ShowColor1(".UPL_" + row.token + "_" + get_id_token, abc, row.token, get_id_token);
-                  ShowColor1(".TPL_" + row.token + "_" + get_id_token, abc, row.token, get_id_token);
                 }
-              }
-      
-              //  if Only Exist qty Exist
-              else if (
-                (get_entry_type === "" && get_exit_type === "LX") ||
-                (get_entry_type === "" && get_exit_type === "SX")
-              ) {
-              } else {
-              }
-      
-      
-      
-      
-      
+
+
+
+
+
             });
-      
-      
-          }
+
+
+        }
 
 
     };
@@ -695,68 +690,99 @@ export default function AllEmployees() {
     }, []);
 
 
-    let total=0;
+    let total = 0;
     tradeHistoryData.data &&
-      tradeHistoryData.data?.map((item) => {
-        CreatechannelList += `${item.exchange}|${item.token}#`;
-        console.log("item" ,item)
-  
-         
-  
-  
-        // if(parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price!= '' && item.exit_price){
-        // total += (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
-        // }
-  
-        if(parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price!= '' && item.exit_price){
-        
-       
-          if(item.entry_type ==="LE"){
-           // console.log("item iFF" ,item._id , " total ",total)
-            let total1 = (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
-            if(!isNaN(total1)){
-              total += total1
-            }
-           
-          }else{
-           let total1 = (parseFloat(item.entry_price) - parseFloat(item.exit_price)) * parseInt(item.exit_qty_percent);
-           // console.log("item ELSE" ,item._id , " total ",total)
-            if(!isNaN(total1)){
-              total += total1
-            }
-    
-          }
-          }
-      });
+        tradeHistoryData.data?.map((item) => {
+            CreatechannelList += `${item.exchange}|${item.token}#`;
 
 
-      const fetchStrategies = async () => {
+
+
+
+            // if(parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price!= '' && item.exit_price){
+            // total += (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
+            // }
+
+            if (parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price != '' && item.exit_price) {
+
+
+                if (item.entry_type === "LE") {
+                    // console.log("item iFF" ,item._id , " total ",total)
+                    let total1 = (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
+                    if (!isNaN(total1)) {
+                        total += total1
+                    }
+
+                } else {
+                    let total1 = (parseFloat(item.entry_price) - parseFloat(item.exit_price)) * parseInt(item.exit_qty_percent);
+                    // console.log("item ELSE" ,item._id , " total ",total)
+                    if (!isNaN(total1)) {
+                        total += total1
+                    }
+
+                }
+            }
+        });
+
+
+    const fetchStrategies = async () => {
         const data = { id: user_id }
         try {
-         
-          await dispatch(allStrategy_subAd(data))
-            .unwrap()
-            .then((response) => {
-              if (response.status) {
-                 
-                setStrategies(response.data);
-              } else {
-                toast.error(response.msg);
-              }
-            })
-            .catch((error) => {
-              console.error("Error in API response:", error);
-              toast.error("Failed to fetch strategies");
-            });
-        } catch (error) {
-          console.error("Error in dispatching action:", error);
-          toast.error("Failed to dispatch action for fetching strategies");
-        }
-      };
 
-      useEffect(() => {
+            await dispatch(allStrategy_subAd(data))
+                .unwrap()
+                .then((response) => {
+                    if (response.status) {
+
+                        setStrategies(response.data);
+                    } else {
+                        toast.error(response.msg);
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error in API response:", error);
+                    toast.error("Failed to fetch strategies");
+                });
+        } catch (error) {
+            console.error("Error in dispatching action:", error);
+            toast.error("Failed to dispatch action for fetching strategies");
+        }
+    };
+
+    useEffect(() => {
         fetchStrategies();
-      }, []);
+    }, []);
+
+
+
+
+
+
+
+    const Get_AllStrategy = async () => {
+        const data = { id: user_id }
+        await dispatch(Get_All_Strategy(data)).unwrap()
+            .then((response) => {
+                if (response.status) {
+                    setAllStrategy({
+                        loading: false,
+                        data: response.data
+                    })
+                }
+                else {
+                    setAllStrategy({
+                        loading: false,
+                        data: response.data
+                    })
+                }
+            })
+    }
+
+
+    useEffect(() => {
+        Get_AllStrategy()
+    }, [])
+
 
     return (
         <>
@@ -768,7 +794,7 @@ export default function AllEmployees() {
                             <div className="card-header">
                                 <div className="row align-center">
                                     <div className="col">
-                                        <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Trade </h5>
+                                        <h5 className="card-title mb-0"><i className="pe-2 far fa-clock"></i>Trade Hisatory</h5>
                                     </div>
                                     <div className="col-auto">
                                         <div className="list-btn">
@@ -829,8 +855,8 @@ export default function AllEmployees() {
                                             placeholder="Search..."
                                             aria-label="Search"
                                             aria-describedby="search-addon"
-                                            onChange={(e) => SetInputSearch(e.target.value || '')}
-                                            value={inputSearch}
+                                            onChange={(e) => setFromDate(e.target.value || '')}
+                                            value={fromDate}
                                         />
                                     </div>
                                     <div className="input-block col-lg-2 mt-3 mb-3">
@@ -841,8 +867,8 @@ export default function AllEmployees() {
                                             placeholder="Search..."
                                             aria-label="Search"
                                             aria-describedby="search-addon"
-                                            onChange={(e) => SetInputSearch(e.target.value || '')}
-                                            value={inputSearch}
+                                            onChange={(e) => setToDate(e.target.value || '')}
+                                            value={toDate}
                                         />
                                     </div>
 
@@ -854,15 +880,12 @@ export default function AllEmployees() {
                                             class="default-select wide form-control"
                                             aria-label="Default select example"
                                             id="select"
-                                        onChange={(e) => setStrategies(e.target.value)}
-                                        value={strategies}
+                                            onChange={(e) => setStrategies(e.target.value)}
+                                            value={strategies}
                                         >
-
-
-                                            {console.log("strategies :" , strategies.data)}
                                             <option value="null" selected >All</option>
-                                            {strategies.data &&
-                                                strategies.data.map((item) => {
+                                            {GetAllStrategy.data &&
+                                                GetAllStrategy.data.map((item) => {
                                                     return (
                                                         <option value={item.strategy_name}>
                                                             {item.strategy_name}

@@ -24,29 +24,16 @@ import { GetBrokerLiveDatas, } from "../../../ReduxStore/Slice/Comman/Makecall/m
 
 
 export default function AllEmployees() {
-    const userDetails = JSON.parse(localStorage.getItem("user_details"));
-    const [showModal, setshowModal] = useState(false);
-
-    const [SelectService, setSelectService] = useState("null");
-
     const dispatch = useDispatch();
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
     const Role = JSON.parse(localStorage.getItem("user_details")).Role
     const token = JSON.parse(localStorage.getItem('user_details')).token
-
-    const [strategies, setStrategies] = useState({
-        loading: true,
-        data: []
-    });
+    const userDetails = JSON.parse(localStorage.getItem("user_details"));
 
 
-
-
-
-    const [rowData, setRowData] = useState({ loading: true, data: [], });
-
+    const [showModal, setshowModal] = useState(false);
+    const [SelectService, setSelectService] = useState("null");
     const [profileData, setProfileData] = useState([]);
-
     const [refresh, setrefresh] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [ForGetCSV, setForGetCSV] = useState([]);
@@ -54,22 +41,15 @@ export default function AllEmployees() {
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
     const [inputSearch, SetInputSearch] = useState('');
-
-    const [tradeHistoryData, setTradeHistoryData] = useState({ loading: false, data: [] });
     const [SocketState, setSocketState] = useState("null");
     const [selectStrategy, setSelectStrategy] = useState('');
-
-    const [tableData, setTableData] = useState({
-        loading: false,
-        data: [],
-    });
-
-
     const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
-
-
-
     const [userIdSocketRun, setUserIdSocketRun] = useState("none");
+    const [tradeHistoryData, setTradeHistoryData] = useState({ loading: false, data: [] });
+    const [getLoginStatus, setLoginStatus] = useState({ loading: false, data: [] })
+    const [tableData, setTableData] = useState({ loading: false, data: [] });
+    const [strategies, setStrategies] = useState({ loading: true, data: [] });
+    const [rowData, setRowData] = useState({ loading: true, data: [] });
 
 
 
@@ -77,20 +57,16 @@ export default function AllEmployees() {
         GetBrokerLiveData(userIdSocketRun)
     }, [userIdSocketRun]);
 
+
+    // GET LIVE CREDENSITAL BROKER
     const GetBrokerLiveData = async (userIdSocketRun) => {
-
-        //alert(userIdSocketRun)
         await dispatch(GetBrokerLiveDatas(
-
             {
-                req:
-                {
+                req: {
                     id: user_id,
                     exist_user: userIdSocketRun,
                     exist_user_details: livePriceDataDetails
-                },
-
-                token: token
+                }, token: token
             }
         ))
             .unwrap()
@@ -100,23 +76,6 @@ export default function AllEmployees() {
                 }
             });
     };
-
-
-
-
-    const label = { inputProps: { "aria-label": "Switch demo" } };
-
-
-
-
-
-
-
-
-    const [getLoginStatus, setLoginStatus] = useState({
-        loading: false,
-        data: [],
-    })
 
 
     const fetchData = async () => {
@@ -152,6 +111,9 @@ export default function AllEmployees() {
         }
     };
 
+
+
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -180,6 +142,8 @@ export default function AllEmployees() {
 
     }
 
+
+
     // LOGIN DEMAT WITH API
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
 
@@ -196,6 +160,7 @@ export default function AllEmployees() {
 
 
     }
+
     const columns = [
         {
             dataField: "index",
@@ -208,25 +173,6 @@ export default function AllEmployees() {
             text: "Signals time",
             formatter: (cell) => <>{fDateTimeSuffix(cell)}</>,
         },
-        // {
-        //   dataField: "live",
-        //   text: "Live Price",
-        //   formatter: (cell, row, rowIndex) => (
-        //     <div>
-        //       <span className={`LivePrice_${row.token}`}></span>
-        //     </div>
-        //   ),
-        // },
-        // {
-        //   dataField: "closeprice",
-        //   text: "Previous Price",
-        //   formatter: (cell, row, rowIndex) => (
-        //     <div>
-        //       <span className={`ClosePrice_${row.token}`}></span>
-        //     </div>
-        //   ),
-        // },
-
         {
             dataField: "trade_symbol",
             text: "Symbol",
@@ -338,10 +284,6 @@ export default function AllEmployees() {
             formatter: (cell, row, rowIndex) => (
                 <div>
                     <span>{StatusEntry(row)}</span>
-
-                    {/* <span>{row.result[0].exit_status === "above" ? "ABOVE" : row.result[0].exit_status === "below" ? "BELOW" : row.result[0].exit_status == "range" ? "RANGE" : " - "}</span> */}
-
-
                 </div>
             ),
         },
@@ -457,11 +399,9 @@ export default function AllEmployees() {
     tradeHistoryData.data &&
         tradeHistoryData.data?.map((item) => {
             CreatechannelList += `${item.exchange}|${item.token}#`;
-            // console.log("item", item)
             if (parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price != '' && item.exit_price) {
 
                 if (item.entry_type === "LE") {
-                    // console.log("item iFF" ,item._id , " total ",total)
                     let total1 = (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty);
                     if (!isNaN(total1)) {
                         total += total1
@@ -469,7 +409,6 @@ export default function AllEmployees() {
 
                 } else {
                     let total1 = (parseFloat(item.entry_price) - parseFloat(item.exit_price)) * parseInt(item.exit_qty);
-                    // console.log("item ELSE" ,item._id , " total ",total)
                     if (!isNaN(total1)) {
                         total += total1
                     }
@@ -598,9 +537,7 @@ export default function AllEmployees() {
                     // $(".TPL_").html("-");
                 }
             }
-        }
-
-        else {
+        } else {
             // alert("ELSE")
             tradeHistoryData.data && tradeHistoryData.data.forEach((row, i) => {
 
@@ -693,15 +630,11 @@ export default function AllEmployees() {
 
 
         }
-
-
-
-
-
-
     };
 
 
+
+    // CALCULATE PNL
     const calcultateRPL = (row, livePrice, pre_row) => {
 
         let get_ids = '_id_' + row.token + '_' + row._id
@@ -755,16 +688,11 @@ export default function AllEmployees() {
                 console.error('Failed to fetch IP address:', error);
             }
         };
-
         fetchIP();
-
-        // Clean up function
-        return () => {
-
-        };
     }, []);
 
 
+    // FATCH STRATEGYS
     const fetchStrategies = async () => {
         try {
             const data = { id: user_id }

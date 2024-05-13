@@ -429,8 +429,8 @@ const Profile = () => {
               <div className="row">
                 <div className="col-lg-4">
                   <div className="card">
-                    <div className="card-header">
-                      <h5 className="card-title d-flex justify-content-between">
+                    <div className="card-header align-items-center">
+                      <h5 className="card-title d-flex justify-content-between mb-0">
                         <span>Profile</span>
                         <a
                           className="btn btn-sm btn-white"

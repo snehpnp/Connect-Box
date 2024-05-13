@@ -10,46 +10,44 @@ const FullDataTable = ({
   rowStyle,
   checkboxSelection,
 }) => {
-  var themeMode = localStorage.getItem("theme_mode");
+  const themeMode = localStorage.getItem("theme_mode") || "light";
 
   const rowsWithIds = rows.map((row, index) => ({ ...row, id: index }));
 
   const backgroundColor = themeMode === "light" ? "white" : "#16191c";
-  const Color = themeMode === "light" ? "black" : "white";
+  const color = themeMode === "light" ? "black" : "white";
 
-
-
-
- 
   return (
     <>
-
-      <DataGrid
-        rows={rowsWithIds}
-        columns={columns}
-        pageSize={10}
-        rowsPerPageOptions={[5, 10, 20,50]}
-        pagination={true}
-        disableSelectionOnClick
-        checkboxSelection={checkboxSelection}
-        disableColumnFilter={true}
-        disableColumnMenu={true}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 10 },
-          },
-        }}
-        pageSizeOptions={[10, 20,50]}
-        className="custom-data-grid"
-        style={{
-          border: "none",
-          fontFamily: "none",
-          fontWeight: "400",
-          fontSize: "14px",
-          // color: Color,
-        }}
-      />
-      {/* </div> */}
+      <div style={{ height: 400, width: "100%", position: "relative" }}>
+        <DataGrid
+          rows={rowsWithIds}
+          columns={columns}
+          pageSize={10}
+          rowsPerPageOptions={[5, 10, 20, 50]}
+          pagination={true}
+          disableSelectionOnClick
+          checkboxSelection={checkboxSelection}
+          disableColumnFilter={true}
+          disableColumnMenu={true}
+          initialState={{
+            pagination: {
+              paginationModel: { page: 0, pageSize: 10 },
+            },
+          }}
+          pageSizeOptions={[10, 20, 50]}
+          className="custom-data-grid"
+          style={{
+            border: "none",
+            fontFamily: "none",
+            fontWeight: "400",
+            fontSize: "14px",
+            backgroundColor: backgroundColor,
+            color: color,
+          }}
+          headerClassName="custom-header" // Apply custom header class
+        />
+      </div>
     </>
   );
 };

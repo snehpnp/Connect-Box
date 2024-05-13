@@ -313,6 +313,67 @@ class Clientservice {
 
     /// update active status 
 
+    //GET ALL USER 
+    async FindAllStrategy(req, res) {
+        const { id } = req.body;
+
+        try {
+            if (!id) {
+                return res.send({
+                    status: false,
+                    msg: "id is required",
+                    data: []
+                });
+            }
+
+            const UserData = await User_model.findOne({ _id: new ObjectId(id) }).select("parent_id");
+            const UserStgData = await strategy_client.find({ user_id: new ObjectId(id), ActiveStatus: "1" }).select("strategy_id");
+            const UserStgIds = UserStgData.map(data => data.strategy_id);
+        
+            const subadminStrategies = await User_model.aggregate([
+                {
+                    $match: {
+                        Role: "SUBADMIN",
+                        _id: new ObjectId(UserData.parent_id)
+                    }
+                },
+                {
+                    $lookup: {
+                        from: "strategies",
+                        localField: "_id",
+                        foreignField: "maker_id",
+                        as: "strategies"
+                    }
+                },
+                {
+                    $unwind: "$strategies"
+                },
+                {
+                    $project: {
+                        _id: "$strategies._id",
+                        strategy_name: "$strategies.strategy_name",
+                        UserName: "$UserName",
+                        stg_status: {
+                            $cond: { if: { $in: ["$strategies._id", UserStgIds] }, then: 1, else: 0 }
+                        }
+                    }
+                }
+            ]);
+
+
+            if (!subadminStrategies || subadminStrategies.length === 0) {
+                return res.send({ status: false, msg: "No strategies found", data: [] });
+            }
+
+
+            return res.send({ status: true, msg: "Fetched all strategies successfully!", data: subadminStrategies });
+        } catch (err) {
+            console.log("Error fetching the strategy: ", err);
+            return res.send({ status: false, msg: "Error fetching strategies", data: [] });
+        }
+    }
+
+
 
     async statusUpadate(req, res) {
         try {

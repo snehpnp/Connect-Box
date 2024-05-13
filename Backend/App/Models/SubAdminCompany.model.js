@@ -33,7 +33,11 @@ const SubCompanySchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    razorpay_key: {
+    razor_payment_key: {
+        type: String,
+        default: ""
+    },
+    razor_payment_secretKey: {
         type: String,
         default: ""
     },

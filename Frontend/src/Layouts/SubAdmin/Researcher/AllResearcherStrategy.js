@@ -114,7 +114,8 @@ const AllResearcherStrategy = () => {
                                 user_id: response.data.user_id,
                                 strategy_id: response.data.strategy_id,
                                 order_status: "Success",
-                                User_data:JSON.stringify(response1)
+                                User_data:JSON.stringify(response1),
+                                type:selectedOption
                             }
 
 
@@ -149,7 +150,6 @@ const AllResearcherStrategy = () => {
     }
 
 
-    console.log("allStrategy.data",allStrategy.data)
 
     return (
         <>
@@ -157,7 +157,7 @@ const AllResearcherStrategy = () => {
                 {/* PAGE HEADER */}
                 <div className="card">
                     <div className="card-header mb-0">
-                        <h5 className='card-title mb-0'>Researcher Strategy</h5>
+                        <h5 className='card-title mb-0'><i class="fe fe-target "> </i>Researcher Strategy</h5>
                     </div>
 
                     <div className='card-body'>
@@ -232,10 +232,10 @@ const AllResearcherStrategy = () => {
 
 
                                                 {stg.stg_active != 1 ? <div className="d-flex justify-content-center package-edit">
-                                                    <button type='submit' className='btn btn-primary' onClick={(e) => { setShowModal(true); setSelectStrategy(stg) }}>BUY</button>
+                                                    <button type='submit' className='btn btn-primary' onClick={(e) => { setShowModal(true); setSelectStrategy(stg) }}>Buy</button>
 
                                                 </div> : <div className="d-flex justify-content-center package-edit">
-                                                    <button type='submit' className='btn btn-primary' >BUYED</button>
+                                                    <button type='submit' className='btn btn-primary' >Subscribed</button>
 
                                                 </div>}
 
@@ -314,26 +314,28 @@ const AllResearcherStrategy = () => {
                                             />
                                             <span style={{ fontSize: '20px', color: '#ccc' }}></span> {/* Divider */}
                                         </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                            <Form.Check
-                                                type="radio"
-                                                name="plan"
-                                                id="percentageWise"
-                                                style={{ marginRight: '10px' }}
-                                                label={
-                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <strong style={{ marginRight: '5px', fontSize: '16px' }}>% Wise:</strong>
-                                                        <span style={{ fontWeight: 'bold', color: 'green', marginRight: '5px', fontSize: '16px' }}>
-                                                            <i className="fas fa-rupee-sign"></i>
-                                                        </span>
-                                                        <span style={{ fontWeight: 'bold', color: 'green', fontSize: '16px' }}>{selectStrategy.security_fund}</span>
-                                                        <span style={{ fontSize: '14px', color: '#999', marginLeft: '5px' }}>(security fund)</span>
-                                                    </div>
-                                                }
-                                                value="% Wise"
-                                                onChange={handleOptionChange}
-                                            />
-                                        </div>
+                                        {userDetails.subadmin_service_type == 2 ?
+                                         <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                         <Form.Check
+                                             type="radio"
+                                             name="plan"
+                                             id="percentageWise"
+                                             style={{ marginRight: '10px' }}
+                                             label={
+                                                 <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                     <strong style={{ marginRight: '5px', fontSize: '16px' }}>% Wise:</strong>
+                                                     <span style={{ fontWeight: 'bold', color: 'green', marginRight: '5px', fontSize: '16px' }}>
+                                                         <i className="fas fa-rupee-sign"></i>
+                                                     </span>
+                                                     <span style={{ fontWeight: 'bold', color: 'green', fontSize: '16px' }}>{selectStrategy.security_fund}</span>
+                                                     <span style={{ fontSize: '14px', color: '#999', marginLeft: '5px' }}>(security fund)</span>
+                                                 </div>
+                                             }
+                                             value="% Wise"
+                                             onChange={handleOptionChange}
+                                         />
+                                     </div> :"" }
+                                       
                                     </Form.Group>
                                 </Form>
                             </Modal.Body>

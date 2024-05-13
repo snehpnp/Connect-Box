@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_CLIENT_ALL_SERVICE,UPDATE_CLIENT_SERVICE, GET_ALL_SUBADMIN_STRATEGY,updatestatus} from "../../../Services/Users/allUsers.service";
+import { GET_CLIENT_ALL_SERVICE, UPDATE_CLIENT_SERVICE, GET_ALL_SUBADMIN_STRATEGY, GET_ALL_STRATEGY, updatestatus } from "../../../Services/Users/allUsers.service";
 
 export const GetAllclientDetails = createAsyncThunk("getall/user/clientServices",
   async (data) => {
@@ -11,7 +11,7 @@ export const GetAllclientDetails = createAsyncThunk("getall/user/clientServices"
     }
   }
 );
- 
+
 export const UPDATE_CLIENT_SERVICE_DATA = createAsyncThunk("update/clientServices",
   async (data) => {
     try {
@@ -23,31 +23,41 @@ export const UPDATE_CLIENT_SERVICE_DATA = createAsyncThunk("update/clientService
   }
 );
 
-export const Get_All_Subadmin_Strategy= createAsyncThunk('getall/strategy',
-async (data)=>{
-  try{
-    const res = await GET_ALL_SUBADMIN_STRATEGY(data)
-    return  await res;
-  }
-  catch(err){
-    return await err
-  }
-})
+export const Get_All_Subadmin_Strategy = createAsyncThunk('getall/strategy',
+  async (data) => {
+    try {
+      const res = await GET_ALL_SUBADMIN_STRATEGY(data)
+      return await res;
+    }
+    catch (err) {
+      return await err
+    }
+  })
 
+export const Get_All_Strategy = createAsyncThunk('get/allStrategy',
+  async (data) => {
+    try {
+      const res = await GET_ALL_STRATEGY(data)
+      return await res;
+    }
+    catch (err) {
+      return await err
+    }
+  })
 
 // update active status clientservice
-export const statusUpdate= createAsyncThunk('statusUpadate',
-async (data)=>{
-  try{
-    const res = await updatestatus(data)
-    return  await res;
-  }
-  catch(err){
-    return await err
-  }
-})
- 
- 
+export const statusUpdate = createAsyncThunk('statusUpadate',
+  async (data) => {
+    try {
+      const res = await updatestatus(data)
+      return await res;
+    }
+    catch (err) {
+      return await err
+    }
+  })
+
+
 
 const ClientServiceSlice = createSlice({
   name: "ClientServiceSlice",
@@ -55,8 +65,9 @@ const ClientServiceSlice = createSlice({
     isLoading: false,
     isError: false,
     getAllservice: null,
-    get_all_subadmin_strategy:null,
-    statusUpdate:null,
+    get_all_subadmin_strategy: null,
+    get_all_strategy: null,
+    statusUpdate: null,
 
   },
   reducers: {},
@@ -89,6 +100,10 @@ const ClientServiceSlice = createSlice({
         state.isLoading = false;
         state.get_all_subadmin_strategy = action.payload;
       })
+      .addCase(Get_All_Strategy.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.get_all_strategy = action.payload;
+      })
       .addCase(statusUpdate.pending, (state, action) => {
         state.isLoading = false;
         state.isError = false;
@@ -101,7 +116,7 @@ const ClientServiceSlice = createSlice({
         state.isLoading = false;
         state.statusUpdate = action.payload;
       })
-      
+
   },
 });
 
