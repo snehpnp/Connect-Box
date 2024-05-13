@@ -16,6 +16,7 @@ export default function BrokerResponse() {
   const dispatch = useDispatch();
 
   const [refresh, setrefresh] = useState(false);
+  const [searchInput,setSearchInput] = useState("")
   const [showModal, setshowModal] = useState(false);
   const [BrokerResponseId, setBrokerResponseId] = useState([]);
   const [DashboardData, setDashboardData] = useState({
@@ -126,21 +127,32 @@ export default function BrokerResponse() {
       .unwrap()
       .then((response) => {
         if (response.status) {
+            const filterdata = response.data && response.data.filter((item)=>{
+              const inputSearchMatch = searchInput === "" ||
+          (item && item.symbol && item.symbol.toLowerCase().includes(searchInput.toLowerCase())) ||
+          (item && item.type && item.type.toLowerCase().includes(searchInput.toLowerCase())) ||
+          (item && item.broker_name && item.broker_name.toLowerCase().includes(searchInput.toLowerCase())) ||
+          (item && item.item && item.item.symbol && item.item.symbol.toLowerCase().includes(searchInput.toLowerCase())) ||
+          (item && item.createdAt && item.createdAt.toLowerCase().includes(searchInput.toLowerCase()))||
+          (item && item.order_status && item.order_status.toLowerCase().includes(searchInput.toLowerCase()))||
+          (item && item.order_id && item.order_id.toLowerCase().includes(searchInput.toLowerCase()));
+        return inputSearchMatch;
+            })
           setDashboardData({
             loading: false,
-            data: response.data,
-          });
+            data: searchInput ? filterdata : response.data});
         }
       });
   };
 
   useEffect(() => {
     BrokerResponse();
-  }, [refresh]);
+  }, [refresh,searchInput]);
 
   // REFRESH HANDEL
   const RefreshHandle = () => {
     BrokerResponse();
+    setSearchInput("")
     setrefresh(!refresh);
   };
 
@@ -180,8 +192,8 @@ export default function BrokerResponse() {
                           placeholder="Search..."
                           aria-label="Search"
                           aria-describedby="search-addon"
-                          // onChange={(e) => setSearchInput(e.target.value)}
-                          // value={searchInput}
+                          onChange={(e) => setSearchInput(e.target.value)}
+                          value={searchInput}
                         />
                       </div>
                     </li>
