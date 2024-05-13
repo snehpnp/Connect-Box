@@ -29,9 +29,11 @@ const Alice_Socket = async () => {
     const url = "wss://ws1.aliceblueonline.com/NorenWS/"
     var socket = null
     var broker_infor = await live_price_token.find({ broker_id: "2", trading_status: "on" });
+
     if (broker_infor.length == 0) {
         return
     }
+
     const stock_live_price = db_main.collection('token_chain');
     const updateToken = await stock_live_price.find({}).toArray();
 

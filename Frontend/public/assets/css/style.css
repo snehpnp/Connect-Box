@@ -35036,3 +35036,26 @@ input:disabled {
 
 }
 
+/* Make header sticky */
+.custom-header, .header-class{
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+  }
+  .table-container {
+    position: relative;
+    overflow-x: auto;
+    max-height: 400px; /* Adjust max-height as needed */
+  }
+  
+  .custom-checkbox .form-check-input {
+    /* width: 14px !important; */
+    height: 15px !important;
+    padding: 9px;
+    margin-right: 5px !important;
+}
+.custom-modal .card, .custom-modal .card-body{
+    box-shadow: none !important;
+    padding: 0 !important;
+}

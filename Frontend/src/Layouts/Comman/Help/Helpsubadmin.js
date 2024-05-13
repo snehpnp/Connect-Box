@@ -312,7 +312,7 @@ const Helpsubadmin = () => {
                           />
                         </div>
                         <div className="col-md-7">
-                          <div className="invoice-total-box px-3 border">
+                          <div className="invoice-total-box ">
                             <div className="invoice-total-inner">
                               <form action="#" className="mt-3">
                                 <div className="card">

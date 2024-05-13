@@ -94,14 +94,15 @@ function BrokerInfoForm() {
   }, []);
 
   return (
-    <div className="container mt-4">
+    <div className="container ">
       <div className="row justify-content-center">
-        <div className="col-md-8">
-          <div className="card">
-            <div className="card-body">
-              <h5>Set Broker Information</h5> {/* Added mb-4 class for bottom margin */}
+  
+<div className="content-page-header">
+
+              <h5>Set Broker Information</h5>
+              </div> {/* Added mb-4 class for bottom margin */}
               <form onSubmit={handleSubmit}>
-                <div className="form-group">
+                <div className="form-group mb-4">
                   <label htmlFor="brokerName">Broker Name:</label>
                   <input
                     type="text"
@@ -111,7 +112,7 @@ function BrokerInfoForm() {
                     onChange={(e) => setBrokerName(e.target.value)}
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group mb-4">
                   <label htmlFor="apiKey">API Key:</label>
                   <input
                     type="text"
@@ -121,7 +122,7 @@ function BrokerInfoForm() {
                     onChange={(e) => setApiKey(e.target.value)}
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group mb-4">
                   <label htmlFor="secretKey">Secret Key:</label>
                   <input
                     type="text"
@@ -131,7 +132,7 @@ function BrokerInfoForm() {
                     onChange={(e) => setSecretKey(e.target.value)}
                   />
                 </div>
-                <div className="form-group">
+                <div className="form-group mb-4">
                   <label htmlFor="dematUserId">Demat User Id:</label>
                   <input
                     type="text"
@@ -145,9 +146,7 @@ function BrokerInfoForm() {
               </form>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        
   );
 }
 
