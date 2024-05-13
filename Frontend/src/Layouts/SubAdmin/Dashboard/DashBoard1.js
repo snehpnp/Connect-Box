@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
+import { Eye } from 'lucide-react';
 
 const DashBoard = () => {
   const dispatch = useDispatch();
@@ -60,7 +61,7 @@ const DashBoard = () => {
           const categories = response.data.categories;
           const data = response.data.userCounts;
 
-          console.log("categories", categories)
+       
 
           setOptions((prevOptions) => ({
             ...prevOptions,
@@ -117,24 +118,24 @@ const DashBoard = () => {
       : null;
 
   const cardDataList = [
-    { key: "TotalUsercount", title: "Total Users" },
-    { key: "TotalActiveUsercount", title: "Active Users" },
-    { key: "TotalExpiredUsercount", title: "Expired Users" },
-    { key: "TotalLiveUsercount", title: "Total Live Users" },
-    { key: "TotalActiveLiveUsercount", title: "Active Live Users" },
-    { key: "TotalExpiredLiveUsercount", title: "Expired Live Users" },
-    { key: "TotalTodayUsercount", title: "Total 2 days Users" },
-    { key: "TotalActiveTodayUsercount", title: "Active 2 days Users" },
-    { key: "TotalExpiredTodayUsercount", title: "Expired 2 days Users" },
-    { key: "TotalDemoUsercount", title: "Total Demo Users" },
-    { key: "TotalActiveDemoUsercount", title: "Active Demo Users" },
-    { key: "TotalExpiredDemoUsercount", title: "Expired Demo Users" },
+    { key: "TotalUsercount", title: "Total Users", route: "/subadmin/users?filter=1" },
+    { key: "TotalActiveUsercount", title: "Active Users", route: "/subadmin/users?filter=2" },
+    { key: "TotalExpiredUsercount", title: "Expired Users", route: "/subadmin/users?filter=3" },
+    { key: "TotalLiveUsercount", title: "Total Live Users", route: "/subadmin/users?filter=4" },
+    { key: "TotalActiveLiveUsercount", title: "Active Live Users", route: "/subadmin/users?filter=5" },
+    { key: "TotalExpiredLiveUsercount", title: "Expired Live Users", route: "/subadmin/users?filter=6" },
+    { key: "TotalTodayUsercount", title: "Total 2 days Users", route: "/subadmin/users?filter=7" },
+    { key: "TotalActiveTodayUsercount", title: "Active 2 days Users", route: "/subadmin/users?filter=8" },
+    { key: "TotalExpiredTodayUsercount", title: "Expired 2 days Users", route: "/subadmin/users?filter=9" },
+    { key: "TotalDemoUsercount", title: "Total Demo Users", route: "/subadmin/users?filter=10" },
+    { key: "TotalActiveDemoUsercount", title: "Active Demo Users", route: "/subadmin/users?filter=11" },
+    { key: "TotalExpiredDemoUsercount", title: "Expired Demo Users", route: "/subadmin/users?filter=12" },
   ];
 
 
-  const cardsData = cardDataList.map(({ key, title }) => {
+  const cardsData = cardDataList.map(({ key, title, route }) => {
     const count = userData[key];
-    console.log("count" , userData)
+
     const percentage = calculatePercentage(count, userData.TotalUsercount);
     let progressBarClass = "";
     switch (true) {
@@ -157,6 +158,7 @@ const DashBoard = () => {
     return {
       iconClass: "fas fa-users",
       title: title,
+      route: route,
       count: count !== undefined ? count : "Loading...",
       progress: percentage !== null ? percentage : 0,
       arrowIcon: count !== undefined && percentage !== null
@@ -171,6 +173,8 @@ const DashBoard = () => {
       progressBarClass: progressBarClass,
     };
   });
+
+  console.log("cardsData :", cardsData)
 
 
 
@@ -194,6 +198,13 @@ const DashBoard = () => {
     totalUserdata(selectedOption, selectedUser);
     dashData();
   }, [dispatch]);
+
+
+
+
+  const handleClick = (route) => {
+    navigate(route)
+  }
 
   return (
     <div className="main-wrapper">
@@ -225,14 +236,21 @@ const DashBoard = () => {
                             <div className="dash-widget-header crad-widge justify-content-between 
                             ">
                               <div className="dash-count">
-                                <div className="dash-title">{data.title}</div>
-                                <div className="dash-counts">
-                                  <p>{data.count}</p>
+                                <div className="d-flex gap-4">
+                                  <div className="dash-title">{data.title}</div>
+                                  <div> <Eye onClick={(e) => handleClick(data.route)} /></div>
+
                                 </div>
+
+                                <div>
+                                  <div className="dash-">
+                                    <p>{data.count}</p>
+                                  </div>
+
+                                </div>
+
                               </div>
                               <img src="/assets/img/category/report.png" className="w-25" />
-
-
                             </div>
 
                             <div className="progress progress-sm mt-3">
