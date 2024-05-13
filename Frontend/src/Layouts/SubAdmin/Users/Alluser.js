@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,10 +9,10 @@ import { useDispatch } from "react-redux";
 import ExportToExcel from '../../../Utils/ExportCSV'
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
-import { update_Balance} from "../../../ReduxStore/Slice/Admin/Subadmins";
+import { update_Balance } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
- import { GetAllUsers, Get_All_Broker, Show_Status, DeleteUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
+import { GetAllUsers, Get_All_Broker, Show_Status, DeleteUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 
 
 
@@ -52,6 +52,9 @@ export default function AllUsers() {
 
 
 
+  const location = useLocation();
+  var dashboard_filter = location.search.split("=")[1];
+
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -84,11 +87,6 @@ export default function AllUsers() {
       return "Live";
     }
   };
-
-
-
-
-
 
 
   const showBrokerName = (row) => {
@@ -196,9 +194,9 @@ export default function AllUsers() {
             onClick={() => handleEdit(params.row)}
           >
             <EditIcon />
-          
+
           </IconButton>
-         {params.row.license_type == 1 ? <IconButton
+          {params.row.license_type == 1 ? <IconButton
             aria-label="delete"
             size="small"
             onClick={() => {
@@ -271,8 +269,6 @@ export default function AllUsers() {
       window.location.reload();
     }
   };
-
-
 
 
 
@@ -384,6 +380,9 @@ export default function AllUsers() {
   };
 
 
+
+  console.log("getAllUsers :", getAllUsers.data)
+
   const getUsersData = async () => {
     var data = { user_ID: user_id }
     await dispatch(GetAllUsers(data))
@@ -396,7 +395,66 @@ export default function AllUsers() {
             id: index + 1,
           }));
 
-          const filterData = formattedData.filter((item) => {
+          let formattedData1;
+          if (dashboard_filter == 1) {
+            formattedData1 = formattedData
+          }
+          else if (dashboard_filter == 2) {
+            formattedData1 = formattedData.filter((item) => item.ActiveStatus == 1)
+          }
+          else if (dashboard_filter == 3) {
+            formattedData1 = formattedData.filter((item) => item.ActiveStatus == 1)
+          }  
+          else if (dashboard_filter == 4) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 2)
+          } 
+          else if (dashboard_filter == 5) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 2 && item.ActiveStatus == 1)
+          } 
+          else if (dashboard_filter == 6) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 2 && item.ActiveStatus == 1)
+          } 
+          else if (dashboard_filter == 7) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 0)
+          } 
+          else if (dashboard_filter == 8) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 1)
+          } 
+          else if (dashboard_filter == 9) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 1)
+          } 
+          else if (dashboard_filter == 10) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1)
+          }
+          else if (dashboard_filter == 11) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1)
+          } else if (dashboard_filter == 10) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1)
+          }
+          else if (dashboard_filter == 1) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1)
+          }else if (dashboard_filter == 10) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1)
+          }
+
+
+
+          const cardDataList = [
+            { key: "TotalUsercount", title: "Total Users", route: "/subadmin/users?filter=1" },
+            { key: "TotalActiveUsercount", title: "Active Users", route: "/subadmin/users?filter=2" },
+            { key: "TotalExpiredUsercount", title: "Expired Users", route: "/subadmin/users?filter=3" },
+            { key: "TotalLiveUsercount", title: "Total Live Users", route: "/subadmin/users?filter=4" },
+            { key: "TotalActiveLiveUsercount", title: "Active Live Users", route: "/subadmin/users?filter=5" },
+            { key: "TotalExpiredLiveUsercount", title: "Expired Live Users", route: "/subadmin/users?filter=6" },
+            { key: "TotalTodayUsercount", title: "Total 2 days Users", route: "/subadmin/users?filter=7" },
+            { key: "TotalActiveTodayUsercount", title: "Active 2 days Users", route: "/subadmin/users?filter=8" },
+            { key: "TotalExpiredTodayUsercount", title: "Expired 2 days Users", route: "/subadmin/users?filter=9" },
+            { key: "TotalDemoUsercount", title: "Total Demo Users", route: "/subadmin/users?filter=10" },
+            { key: "TotalActiveDemoUsercount", title: "Active Demo Users", route: "/subadmin/users?filter=11" },
+            { key: "TotalExpiredDemoUsercount", title: "Expired Demo Users", route: "/subadmin/users?filter=12" },
+          ];
+
+          const filterData = formattedData1.filter((item) => {
             const searchInputMatch =
               searchInput == '' ||
               item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -410,7 +468,7 @@ export default function AllUsers() {
 
           setAllUsers({
             loading: false,
-            data: searchInput ? filterData : formattedData,
+            data: searchInput ? filterData : formattedData1,
 
           });
 
@@ -439,6 +497,12 @@ export default function AllUsers() {
   }, [refresh, searchInput]);
 
 
+
+
+
+
+  console.log("dashboard_filter :", dashboard_filter)
+
   return (
     <>
       {!getAllUsers.loading ? (
@@ -448,91 +512,91 @@ export default function AllUsers() {
               <div className="card-header">
                 <div className="row align-items-center">
                   <div className="col">
-                <h5 className="card-title mb-0">
-                  <i className="pe-2 fa-solid fa-users"></i>
-                  All Users</h5>
-                </div>
-                <div className="col-auto">
-                <div className="list-btn">
-                    <ul className="filter-list mb-0">
-                      <li className="">
-                        <p
-                          className="mb-0 btn-filters"
+                    <h5 className="card-title mb-0">
+                      <i className="pe-2 fa-solid fa-users"></i>
+                      All Users</h5>
+                  </div>
+                  <div className="col-auto">
+                    <div className="list-btn">
+                      <ul className="filter-list mb-0">
+                        <li className="">
+                          <p
+                            className="mb-0 btn-filters"
 
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Refresh"
-                          onClick={RefreshHandle}
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            title="Refresh"
+                            onClick={RefreshHandle}
 
-                        >
-                          <span>
-                            <i className="fe fe-refresh-ccw" />
-                          </span>
-                        </p>
-                      </li>
-                      <li className="serach-li">
-                        <div className="input-group input-block">
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Search..."
-                            aria-label="Search"
-                            aria-describedby="search-addon"
-                            onChange={(e) => setSearchInput(e.target.value)}
-                            value={searchInput}
+                          >
+                            <span>
+                              <i className="fe fe-refresh-ccw" />
+                            </span>
+                          </p>
+                        </li>
+                        <li className="serach-li">
+                          <div className="input-group input-block">
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Search..."
+                              aria-label="Search"
+                              aria-describedby="search-addon"
+                              onChange={(e) => setSearchInput(e.target.value)}
+                              value={searchInput}
 
-                          />
-                        </div>
-                      </li>
-                      <li>
-                        <div
-                          className="dropdown dropdown-action"
-                          data-bs-toggle="tooltip"
-                          data-bs-placement="bottom"
-                          title="Download"
-                        >
+                            />
+                          </div>
+                        </li>
+                        <li>
+                          <div
+                            className="dropdown dropdown-action"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            title="Download"
+                          >
 
-                       
+
                             <ExportToExcel
                               className="btn btn-primary "
                               apiData={ForGetCSV}
                               fileName={'All Strategy'} />
-                          
 
-                        </div>
-                      </li>
 
-                      <li>
-                        <Link
-                          to={"/subadmin/User/add"}
-                          className="btn btn-primary"
-                        >
-                          <i
-                            className="fa fa-plus-circle me-2"
-                            aria-hidden="true"
-                          />
-                          Add Users
-                        </Link>
-                      </li>
-                    </ul>
+                          </div>
+                        </li>
+
+                        <li>
+                          <Link
+                            to={"/subadmin/User/add"}
+                            className="btn btn-primary"
+                          >
+                            <i
+                              className="fa fa-plus-circle me-2"
+                              aria-hidden="true"
+                            />
+                            Add Users
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
-                </div>
-                </div>
-                <div className="card-body">
-                
-               
-             
-            
+              </div>
+              <div className="card-body">
 
-            <FullDataTable
-              styles={styles}
-              label={label}
-              columns={columns}
-              rows={getAllUsers.data}
-            />
-          </div>
-          </div>
+
+
+
+
+                <FullDataTable
+                  styles={styles}
+                  label={label}
+                  columns={columns}
+                  rows={getAllUsers.data}
+                />
+              </div>
+            </div>
           </div>
         </>
       ) : (
