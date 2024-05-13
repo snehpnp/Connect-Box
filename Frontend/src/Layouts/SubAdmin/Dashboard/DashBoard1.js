@@ -174,7 +174,7 @@ const DashBoard = () => {
     };
   });
 
-  console.log("cardsData :", cardsData)
+ 
 
 
 
@@ -233,8 +233,7 @@ const DashBoard = () => {
                       {cardGroup.map((data, idx) => (
                         <div className="card moving-border mb-4" key={idx}>
                           <div className="card-body ">
-                            <div className="dash-widget-header crad-widge justify-content-between 
-                            ">
+                            <div className="dash-widget-header crad-widge justify-content-between">
                               <div className="dash-count">
                                 <div className="d-flex gap-4">
                                   <div className="dash-title">{data.title}</div>

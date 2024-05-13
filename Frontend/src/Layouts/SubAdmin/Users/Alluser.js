@@ -381,7 +381,7 @@ export default function AllUsers() {
 
 
 
-  console.log("getAllUsers :", getAllUsers.data)
+ 
 
   const getUsersData = async () => {
     var data = { user_ID: user_id }
@@ -396,7 +396,7 @@ export default function AllUsers() {
           }));
 
           let formattedData1;
-          if (dashboard_filter == 1) {
+          if (dashboard_filter == 1 || dashboard_filter == undefined) {
             formattedData1 = formattedData
           }
           else if (dashboard_filter == 2) {
@@ -404,38 +404,34 @@ export default function AllUsers() {
           }
           else if (dashboard_filter == 3) {
             formattedData1 = formattedData.filter((item) => item.ActiveStatus == 1)
-          }  
+          }
           else if (dashboard_filter == 4) {
             formattedData1 = formattedData.filter((item) => item.license_type == 2)
-          } 
+          }
           else if (dashboard_filter == 5) {
             formattedData1 = formattedData.filter((item) => item.license_type == 2 && item.ActiveStatus == 1)
-          } 
+          }
           else if (dashboard_filter == 6) {
-            formattedData1 = formattedData.filter((item) => item.license_type == 2 && item.ActiveStatus == 1)
-          } 
+            formattedData1 = formattedData.filter((item) => item.license_type == 2 && item.ActiveStatus == 0)
+          }
           else if (dashboard_filter == 7) {
             formattedData1 = formattedData.filter((item) => item.license_type == 0)
-          } 
+          }
           else if (dashboard_filter == 8) {
             formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 1)
-          } 
+          }
           else if (dashboard_filter == 9) {
-            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 1)
-          } 
+            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 0)
+          }
           else if (dashboard_filter == 10) {
             formattedData1 = formattedData.filter((item) => item.license_type == 1)
           }
           else if (dashboard_filter == 11) {
-            formattedData1 = formattedData.filter((item) => item.license_type == 1)
-          } else if (dashboard_filter == 10) {
-            formattedData1 = formattedData.filter((item) => item.license_type == 1)
+            formattedData1 = formattedData.filter((item) => item.license_type == 1  && item.ActiveStatus == 1)
+          } else if (dashboard_filter == 12) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1  && item.ActiveStatus == 0)
           }
-          else if (dashboard_filter == 1) {
-            formattedData1 = formattedData.filter((item) => item.license_type == 1)
-          }else if (dashboard_filter == 10) {
-            formattedData1 = formattedData.filter((item) => item.license_type == 1)
-          }
+          
 
 
 
@@ -501,7 +497,7 @@ export default function AllUsers() {
 
 
 
-  console.log("dashboard_filter :", dashboard_filter)
+  
 
   return (
     <>

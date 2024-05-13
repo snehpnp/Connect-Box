@@ -300,7 +300,7 @@ export default function Help() {
               formattedData1 = formattedData.filter(data => data.ActiveStatus == 1);
             } else if (dashboard_filter == 3) {
               formattedData1 = formattedData.filter(data => data.ActiveStatus == 0);
-            } else if (dashboard_filter == 1) {
+            } else if (dashboard_filter == 1 || dashboard_filter==undefined ) {
               formattedData1 = formattedData
 
             } 

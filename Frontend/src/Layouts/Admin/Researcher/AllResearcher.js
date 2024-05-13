@@ -279,7 +279,7 @@ const AllResearcher = () => {
 
         var formattedData
 
-         if (dashboard_filter == 4) {
+        if (dashboard_filter == 4 || dashboard_filter==undefined ) {
           formattedData = response.data 
         }
         else if (dashboard_filter == 5) {
