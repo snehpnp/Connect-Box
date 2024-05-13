@@ -26,8 +26,12 @@ const AddEmployee = () => {
     data: [],
   });
 
-  const [state, setstate] = useState([]);
-  const [state1, setstate1] = useState([]);
+  const [groupId, setGroupId] = useState([]);
+  const [StrategyId, setStrategyId] = useState([]);
+  const [groupServiceCheck, setGroupServiceCheck] = useState(false);
+  const [strategyCheck, setStrategyCheck] = useState(false);
+
+console.log("state1 :", groupId)
 
 
   const isValidEmail = (email) => {
@@ -117,12 +121,7 @@ const AddEmployee = () => {
         }
       }
 
-      if ((values.addemployee || values.editemployee) && values.groupservice && state.length === 0) {
-        errors.grouper_servcice = "You must select a Group Service from the list";
-      }
-      if ((values.addemployee || values.editemployee) && values.Strategy && state1.length === 0) {
-        errors.strateg_servcice = "You must select a Strategy from the list";
-      }
+
       return errors;
     },
     onSubmit: async (values) => {
@@ -143,39 +142,58 @@ const AddEmployee = () => {
           employee_edit: values.editemployee ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           trade_history_old: values.tradehistory ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           detailsinfo: values.detailsinfo ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
-          strategy: state1,
-          group_services: state,
+          strategy: StrategyId,
+          group_services: groupId,
         },
       };
 
-      await dispatch(Add_Employee(req)).unwrap()
-        .then((response) => {
-          if (response.status) {
-            Swal.fire({
-              title: "Create Successful!",
-              text: response.msg,
-              icon: "success",
-              timer: 1500,
-              timerProgressBar: true,
-            }).then(() => {
-              navigate("/subadmin/employees");
-            });
-          }
-          else {
-            Swal.fire({
-              title: "Error !",
-              text: response.msg,
-              icon: "error",
-              timer: 1500,
-              timerProgressBar: true,
-            })
 
-          }
+      if (!groupServiceCheck && formik.values.groupservice == 1 || !strategyCheck && formik.values.Strategy) {
+        Swal.fire({
+          title: "Error",
+          text: "Select at least one group and strategy",
+          icon: "error",
+          timer: 1500,
+          timerProgressBar: true,
+        })
+        return
+      }
 
-        })
-        .catch((err) => {
-          console.log("Error in add employee", err)
-        })
+
+
+      else {
+        await dispatch(Add_Employee(req)).unwrap()
+          .then((response) => {
+            if (response.status) {
+              Swal.fire({
+                title: "Create Successful!",
+                text: response.msg,
+                icon: "success",
+                timer: 1500,
+                timerProgressBar: true,
+              }).then(() => {
+                navigate("/subadmin/employees");
+              });
+            }
+            else {
+              Swal.fire({
+                title: "Error !",
+                text: response.msg,
+                icon: "error",
+                timer: 1500,
+                timerProgressBar: true,
+              })
+
+            }
+
+          })
+          .catch((err) => {
+            console.log("Error in add employee", err)
+          })
+
+      }
+
+
 
 
     }
@@ -397,8 +415,8 @@ const AddEmployee = () => {
     if (
       formik.values.addemployee || formik.values.editemployee || formik.values.Strategy || formik.values.groupservice || formik.values.detailsinfo || formik.values.tradehistory) {
       formik.setFieldValue("updateapikeys", false);
-      setstate([]);
-      setstate1([]);
+      setGroupId([]);
+      setStrategyId([]);
     }
 
     if (formik.values.show_employee_users) {
@@ -419,11 +437,19 @@ const AddEmployee = () => {
     }
     if (formik.values.Strategy) {
       formik.setFieldValue("Strategy", true);
+
       return
     }
     if (formik.values.groupservice) {
       formik.setFieldValue("groupservice", true);
       return
+    }
+
+    if (!formik.values.Strategy) {
+      setStrategyCheck(false)
+    }
+    if (!formik.values.groupservice) {
+      setGroupServiceCheck(false)
     }
 
 
@@ -449,36 +475,60 @@ const AddEmployee = () => {
 
 
 
+
+
   const handleGroupChange = (event) => {
     const strategyId = event.target.value;
 
+
+
+    
+
     if (event.target.checked) {
-      setstate([...state, strategyId]);
+      setGroupId([...groupId, strategyId]);
     } else {
-      setstate(state.filter((id) => id != strategyId));
+      setGroupId(groupId.filter((id) => id != strategyId));
     }
 
   };
 
 
   useEffect(() => {
-    if (state.length > 1) {
+    if (groupId.length > 1) {
       formik.setFieldValue("grouper_servcice", "");
     }
-    if (state1.length > 1) {
+    if (StrategyId.length > 1) {
       formik.setFieldValue("grouper_servcice", "");
     }
-  }, [state, state1]);
+  }, [groupId, StrategyId]);
 
   const handleStrategyChange = (event) => {
     const strategyId = event.target.value;
+
+    
     if (event.target.checked) {
-      setstate1([...state1, strategyId]);
+      setStrategyId([...StrategyId, strategyId]);
     } else {
-      setstate1(state1.filter((id) => id !== strategyId));
+      setStrategyId(StrategyId.filter((id) => id !== strategyId));
     }
   };
 
+
+  useEffect(() => {
+    if (StrategyId.length > 0) {
+      setStrategyCheck(true)
+    }
+    else if (StrategyId.length == 0) {
+      setStrategyCheck(false)
+    }
+    if (groupId.length > 0) {
+      setGroupServiceCheck(true)
+    }
+    else if (groupId.length == 0) {
+      setGroupServiceCheck(false)
+
+    }
+  }, [StrategyId, groupId])
 
 
 
@@ -517,16 +567,17 @@ const AddEmployee = () => {
                           >
                             {strategy.name}
                           </label>
+
                         </div>
                       </div>
                     </div>
                   </div>
                 ))}
-                {formik.errors.grouper_servcice && (
-                  <div style={{ color: "red" }}>
-                    {formik.errors.grouper_servcice}
-                  </div>
-                )}
+                {!groupServiceCheck ?
+                  <div style={{ color: 'red' }}>
+                    <p>You must select a Group Service from the list</p>
+                  </div> : ''}
+
               </>
             ) : (
               ""
@@ -561,14 +612,10 @@ const AddEmployee = () => {
                     </div>
                   </div>
                 ))}
-
-
-
-                {formik.errors.strateg_servcice && (
-                  <div style={{ color: "red" }}>
-                    {formik.errors.strateg_servcice}
-                  </div>
-                )}
+                {!strategyCheck ?
+                  <div style={{ color: 'red' }}>
+                    <p>You must select a Group Service from the list</p>
+                  </div> : ''}
               </>
             ) : (
               ""
