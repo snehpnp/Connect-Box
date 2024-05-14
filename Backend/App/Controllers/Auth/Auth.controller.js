@@ -227,6 +227,8 @@ class Auth {
 
     // Logout User
     async logoutUser(req, res) {
+
+        
         try {
             const { userId, Device, system_ip } = req.body;
             var addData = {}
@@ -236,9 +238,6 @@ class Auth {
             if (EmailCheck.length === 0) {
                 return res.send({ status: false, msg: 'User Not exists', data: [] });
             }
-
-
-
 
             try {
                 // WHERE LOGIN CHECK

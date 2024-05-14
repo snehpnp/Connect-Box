@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { SIGN_IN_USER , SIGN_UP_USER,PasswordChange, FORGET_PASSWORD,resetPassword} from "../../../Services/Auth/Auth.service";
+import { SIGN_IN_USER , SIGN_UP_USER,PasswordChange, FORGET_PASSWORD,resetPassword , LOG_OUT_USER} from "../../../Services/Auth/Auth.service";
 
 
 
@@ -36,15 +36,15 @@ export const SignUpUser = createAsyncThunk("signup", async (data) => {
 // });
 
 
-// export const Log_Out_User = createAsyncThunk("DispatchUserLogout", async (data) => {
-//   try {
-//     const res = await LOG_OUT_USER(data)
-//     return res;
-//   }
-//   catch (err) {
-//     return err;
-//   }
-// });
+export const LogOut = createAsyncThunk("logoutUser", async (data) => {
+  try {
+    const res = await LOG_OUT_USER(data)
+    return res;
+  }
+  catch (err) {
+    return err;
+  }
+});
 
 
 // export const get_theme_details = createAsyncThunk("/get/theme", async (data) => {
@@ -161,6 +161,7 @@ const AuthSlice = createSlice({
     ChangedPassword:null,
     ForgetPassword:null,
     UpdatePassword:null,
+    logout:null,
      
   },
 
@@ -211,6 +212,10 @@ const AuthSlice = createSlice({
       .addCase(UpdatePassword.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+      })
+      .addCase(LogOut.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.logout = action.payload;
       })
   },
    
