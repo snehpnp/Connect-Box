@@ -11,7 +11,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 // ALICE BLUE CONTROLLER FILE
 const { GetAccessToken, GetOrderFullInformationAll } = require('../../Controllers/Brokeraccesstoken/Aliceblue')
-const { GetAccessTokenAngel,UpdateTotp } = require('../../Controllers/Brokeraccesstoken/Angel')
+const { GetAccessTokenAngel, GetOrderFullInformationAngel, UpdateTotp } = require('../../Controllers/Brokeraccesstoken/Angel')
 
 
 // BROKER REDIRECT
@@ -39,7 +39,7 @@ const GetOrderFullInformationAll_broker = async (req, res) => {
     }
 
     const broker = result[0].broker;
-
+    console.log("broker", broker)
 
     // ALICE BLUE   -  2
     if (broker == 2) {
@@ -47,9 +47,9 @@ const GetOrderFullInformationAll_broker = async (req, res) => {
     }
 
     // ANGEL   -  12
-    //    else if(broker == 12){
-    //     GetOrderFullInformationAngel(req,res,result);
-    //    }
+    else if (broker == 12) {
+        // GetOrderFullInformationAngel(req, res, result);
+    }
 
     //    // 5 PAISA   -  14
     //    else if(broker == 14){

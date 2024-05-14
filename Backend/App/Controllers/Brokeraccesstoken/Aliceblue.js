@@ -408,14 +408,18 @@ const GetAllBrokerResponse = async (user_id, res) => {
  
     try {
         const objectId = new ObjectId(user_id);
-        var FindUserAccessToken = await User.find({ _id: objectId })
+        var FindUserAccessToken = await User.find({ _id: objectId,TradingStatus: "on"})
+      
+        if (FindUserAccessToken[0].length == 0) {
+            return res.send({ status: false, msg: "Trading is Off" })
+        }
+        
         var FindUserBrokerResponse = await BrokerResponse.find({ user_id: objectId, order_id: { $ne: "" } });
 
 
         if (FindUserBrokerResponse.length > 0) {
 
             FindUserBrokerResponse.forEach((data1) => {
-                console.log("FindUserBrokerResponse", data1.order_id)
 
                 let data = JSON.stringify({
                     "nestOrderNumber": data1.order_id
