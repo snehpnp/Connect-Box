@@ -182,7 +182,7 @@ export default function AllEmployees() {
         {
             dataField: "exit_dt_date",
             text: "Signals Exit Time",
-            formatter: (cell) => <>{cell ? fDateTimeSuffix(cell) :"-"}</>,
+            formatter: (cell) => <>{cell ? fDateTimeSuffix(cell) : "-"}</>,
         },
         {
             dataField: "trade_symbol",
@@ -515,18 +515,31 @@ export default function AllEmployees() {
                                 if (get_entry_type === "SE") {
                                     abc = ((parseFloat(get_entry_price) - parseFloat(live_price)) * parseInt(get_entry_qty)).toFixed();
                                 }
+                            
 
 
-                                if (isNaN(abc)) {
-                                    return "-";
-                                } else {
-                                    $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");
-                                    $(".UPL_" + response.tk + "_" + get_id_token).html(abc);
-                                    $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
-                                    ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, "-", response.tk, get_id_token);
-                                    ShowColor1(".UPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
-                                    ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                if (get_entry_qty !== "" && (get_exit_qty == "" || get_exit_qty == 0)) {
+                                   
+                                    if (isNaN(abc)) {
+                                        return "-";
+                                    } else {
+                                        $(".UPL_" + response.tk + "_" + get_id_token).html(abc);
+                                        $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
+                                        ShowColor1(".UPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                        ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                    }
+                                }else{
+                                    if (isNaN(abc)) {
+                                        return "-";
+                                    } else {
+                                        $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");                                
+                                        $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
+                                        ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, "-", response.tk, get_id_token);
+                                       ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                    }
                                 }
+
+                          
                             }
 
                             //  if Only Exist qty Exist

@@ -473,49 +473,63 @@ class SignalController {
 
 
   // UPDATE STOPLOASS
-  async update_stop_loss(req, res) {
+  async  update_stop_loss(req, res) {
     try {
-      const { data } = req.body;
+        const { data } = req.body;
 
-      for (const signal of data) {
-        const ExistfindSignal = await Mainsignals.findOne({ _id: signal._id }).select('target stop_loss exit_time');
+        for (const signal of data) {
+            const ExistfindSignal = await Mainsignals.findOne({ _id: signal._id }).select('target stop_loss exit_time');
 
-        let activityMessage = "";
-        if (!ExistfindSignal) {
-          return res.status(404).send({ status: false, msg: "Signal not found", data: null });
+            if (!ExistfindSignal) {
+                return res.status(404).send({ status: false, msg: "Signal not found", data: null });
+            }
+
+            let updateFields = {};
+            let activityMessages = [];
+
+            if (ExistfindSignal.target !== signal.target) {
+                updateFields.target = signal.target;
+                activityMessages.push(`${signal.trade_symbol} Update Target price to ${signal.target}`);
+            }
+
+            if (ExistfindSignal.stop_loss !== signal.stop_loss) {
+                updateFields.stop_loss = signal.stop_loss;
+                activityMessages.push(`${signal.trade_symbol} Update Stop Loss price to ${signal.stop_loss}`);
+            }
+
+            if (ExistfindSignal.exit_time !== signal.exit_time) {
+                updateFields.exit_time = signal.exit_time;
+                activityMessages.push(`${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`);
+            }
+
+            if (activityMessages.length > 0) {
+                for (const message of activityMessages) {
+                    const Activity_logsData = new Activity_logs({
+                        admin_Id: signal.StrategyData.maker_id,
+                        category: "TARGET-STOPLOSS-TIME",
+                        message: message,
+                        maker_role: "SUBADMIN",
+                        device: "web",
+                        system_ip: ""
+                    });
+                    await Activity_logsData.save();
+                }
+            }
+
+            if (Object.keys(updateFields).length > 0) {
+                const filter = { _id: signal._id };
+                const updateOperation = { $set: updateFields };
+                await Mainsignals.updateOne(filter, updateOperation);
+            }
         }
 
-        if (ExistfindSignal.target !== signal.target) {
-          activityMessage = `${signal.trade_symbol} Update Target price to ${signal.target}`;
-        } else if (ExistfindSignal.stop_loss !== signal.stop_loss) {
-          activityMessage = `${signal.trade_symbol} Update Stop Loss price to ${signal.stop_loss}`;
-        } else if (ExistfindSignal.exit_time !== signal.exit_time) {
-          activityMessage = `${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`;
-        }
-
-        if (activityMessage) {
-          const Activity_logsData = new Activity_logs({
-            admin_Id: signal.StrategyData.maker_id,
-            category: "TARGET-STOPLOSS-TIME",
-            message: activityMessage,
-            maker_role: "SUBADMIN",
-            device: "web",
-            system_ip: ""
-          });
-          await Activity_logsData.save();
-        }
-
-        const filter = { _id: signal._id };
-        const updateOperation = { $set: signal };
-        await Mainsignals.updateOne(filter, updateOperation);
-      }
-
-      return res.status(200).send({ status: true, msg: "Update Successful", data: null });
+        return res.status(200).send({ status: true, msg: "Update Successful", data: null });
     } catch (error) {
-      console.error("Error in update_stop_loss:", error);
-      return res.status(500).send({ status: false, msg: "Internal server error", data: error.message });
+        console.error("Error in update_stop_loss:", error);
+        return res.status(500).send({ status: false, msg: "Internal server error", data: error.message });
     }
-  }
+}
+
 
 
 
