@@ -31,8 +31,6 @@ const AddEmployee = () => {
   const [groupServiceCheck, setGroupServiceCheck] = useState(false);
   const [strategyCheck, setStrategyCheck] = useState(false);
 
-console.log("state1 :", groupId)
-
 
   const isValidEmail = (email) => {
     return Email_regex(email);

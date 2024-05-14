@@ -772,8 +772,6 @@ class Researcher {
             const getAllstrategy = await researcher_strategy.aggregate(pipeline);
 
 
-            console.log("getAllstrategy", getAllstrategy)
-
             // IF DATA NOT EXIST
             if (getAllstrategy.length == 0) {
                 res.send({ status: false, msg: "Empty data", data: getAllstrategy });

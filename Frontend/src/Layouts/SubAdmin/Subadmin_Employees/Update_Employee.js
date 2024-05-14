@@ -39,8 +39,6 @@ const Edit_Employee = () => {
   const [strategyCheck, setStrategyCheck] = useState(false);
 
 
-  console.log("groupServiceCheck :", groupServiceCheck)
-
   const [AllGroupServices, setAllGroupServices] = useState({
     loading: true,
     data: [],
@@ -633,11 +631,6 @@ const Edit_Employee = () => {
       }
     });
   };
-
-
-
-  console.log("selectedStrategyIds :", selectedStrategyIds)
-  console.log("selectedGroupIds :", selectedGroupIds)
 
 
   useEffect(() => {

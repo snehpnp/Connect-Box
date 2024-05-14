@@ -1218,7 +1218,6 @@ app.post('/broker-signals', async (req, res) => {
       }
 
     } else {
-      // console.log('receive signals -', req.body);
       return res.send({ status: false, msg: "req is not correct" });
     }
 

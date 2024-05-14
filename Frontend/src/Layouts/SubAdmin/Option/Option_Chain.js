@@ -132,7 +132,6 @@ function Option_Chain() {
 
     const CreateRequest = (option_type, row_data, call_type, index, e) => {
 
-        console.log("SNEH JAISWAL 1", call_type)
         if (strategyRef.current === "") {
         
             Swal.fire({
@@ -675,7 +674,6 @@ function Option_Chain() {
 
             axios.request(config)
                 .then(async (response) => {
-                    //console.log("response ", response);
                     if (response.status) {
                         Swal.fire({
                             title: "Data Add Successful!",
@@ -708,7 +706,6 @@ function Option_Chain() {
                     }
                 })
                 .catch((error) => {
-                    // console.log(error.response.data);
                 });
         })
     }

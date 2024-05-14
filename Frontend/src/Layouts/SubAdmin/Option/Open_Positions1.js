@@ -26,9 +26,6 @@ const TradeHistory = () => {
     const dispatch = useDispatch();
     const location = useLocation();
 
-
-
-
     const token = JSON.parse(localStorage.getItem("user_details")).token;
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
     const Role = JSON.parse(localStorage.getItem("user_details")).Role;
@@ -44,36 +41,8 @@ const TradeHistory = () => {
     const [PanelKey, setPanelKey] = useState('');
     const [SocketState, setSocketState] = useState("null");
     const [getBrokerUrl, setBrokerUrl] = useState('')
-
     const [selected, setSelected] = useState([]);
     const [selected1, setSelected1] = useState([]);
-
-
-    // console.log("selected1", selected1)
-
-
-    // const [socketUrl, setSocketUrl] = useState("");
-    // let socketGetNotification = io(socketUrl);
-    // useEffect(() => {
-    //     // Connect to the server using Socket.IO
-
-    //     // Listen for the "TEST_TRUST" event from the server
-    //     if(socketGetNotification != null){
-    //         socketGetNotification.on("EXIT_TRADE_GET_NOTIFICATION", (data) => {
-    //       //console.log("Received data from 'EXIT_TRADE_GET_NOTIFICATION':", data);
-    //        toast.success(data.data);
-    //        setrefresh(!refresh)
-    //       // Do something with the received data here
-    //     });
-
-    //     // Clean up the socket connection when the component unmounts
-    //     return () => {
-    //       socketGetNotification.disconnect();
-    //     };
-    //    }
-    //   }, [socketGetNotification]);
-
-
 
 
 
@@ -363,44 +332,11 @@ const TradeHistory = () => {
 
     const SetStopLostPrice = async (event, name, row, qty_persent, symbol) => {
 
-
-        // alert(row._id)
-        // console.log("row._id ",row._id)
-        //  console.log("event.target.value ",event.target.value)
-        //  console.log("name ",name)
-
-
-
-        // setSelected1((prev) => {
-        //      return  prev.map((item) => {
-
-        //         // console.log("row._id inside ",item._id)
-        //         // console.log("item.trade_symbol ",item.trade_symbol)
-        //         // console.log("symbol ",symbol)
-        //         // console.log("event.target.value ",event.target.value)
-        //         // console.log("name ",name)
-        //         if (item._id === row._id  ) {
-
-        //             console.log("row._id inside 2 ",item._id)
-
-        //             return {
-        //                 ...item,
-        //                 sl_status: "1",
-        //                 [name]: event.target.value ? event.target.value : "testtt",
-        //             };
-        //         }
-        //         return item;
-        //     });
-        // });
-
-
-
         setTradeHistoryAllData((prev) => {
             return {
                 ...prev,
                 data: prev.data.map((item) => {
                     if (item._id === row._id) {
-                        console.log("row._id inside 2 ", item._id)
                         return {
                             ...item,
                             sl_status: "1",
@@ -431,7 +367,6 @@ const TradeHistory = () => {
                     alert("Please Select Atleast One Symbol")
                 }
                 else {
-                    console.log("UpdateStopLoss", filteredArray2);
                  
                 }
 
@@ -451,9 +386,6 @@ const TradeHistory = () => {
 
         let a = No_Negetive_Input_regex(event)
 
-        //  console.log("a -",a)
-
-        // console.log(event);
         if (a) {
 
             if (parseInt(event) > parseInt(qty_persent)) {
@@ -461,7 +393,6 @@ const TradeHistory = () => {
                 //setInputValue('');
 
                 setInputValue(qty_persent);
-                console.log("inputValue", inputValue)
                 setCreateSignalRequest((prev) => {
                     return prev.map((item) => {
 
@@ -482,7 +413,6 @@ const TradeHistory = () => {
 
             } else {
                 setInputValue(event);
-                console.log("inputValue", inputValue)
                 setCreateSignalRequest((prev) => {
                     return prev.map((item) => {
 
@@ -513,7 +443,6 @@ const TradeHistory = () => {
 
         let abc = CreateSignalRequest && CreateSignalRequest.map((pre_tag) => {
 
-            // console.log("pre_tag",pre_tag)
 
             if (pre_tag.new_qty_persent > pre_tag.old_qty_persent) {
                 alert('Error: Value cannot be greater than ' + pre_tag.old_qty_persent);
@@ -522,11 +451,6 @@ const TradeHistory = () => {
 
 
             let req = `DTime:${currentTimestamp}|Symbol:${pre_tag.symbol}|TType:${pre_tag.type}|Tr_Price:131|Price:${pre_tag.price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${pre_tag.segment}|Strike:${pre_tag.strike}|OType:${pre_tag.option_type}|Expiry:${pre_tag.expiry}|Strategy:${pre_tag.strategy}|Quntity:${pre_tag.new_qty_persent}|Key:${pre_tag.client_persnal_key}|TradeType:${pre_tag.TradeType}|Demo:demo`
-
-
-            // console.log("req - ",req)
-
-
 
 
 
@@ -549,7 +473,6 @@ const TradeHistory = () => {
                     window.location.reload()
                 })
                 .catch((error) => {
-                    console.log(error);
                 });
         })
     }
@@ -653,7 +576,6 @@ const TradeHistory = () => {
                 else {
                     if (res.data.stat) {
                         const handleResponse = async (response) => {
-                            // console.log("response", response)
                             $('.SP1_Call_Price_' + response.tk).html(response.sp1 ? response.sp1 : response.lp);
                             $('.BP1_Put_Price_' + response.tk).html(response.bp1 ? response.bp1 : response.lp);
 
@@ -881,8 +803,6 @@ const TradeHistory = () => {
 
     };
 
-
-    console.log("tradeHistoryData",tradeHistoryData)
 
     return (
         <>

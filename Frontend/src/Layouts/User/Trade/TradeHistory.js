@@ -172,18 +172,18 @@ export default function AllEmployees() {
         },
         {
             dataField: "createdAt",
-            text: "Signals time",
+            text: "Signals Entry Time",
             formatter: (cell) => <>{fDateTimeSuffix(cell)}</>,
         },
-        // {
-        //   dataField: "live",
-        //   text: "Live Price",
-        //   formatter: (cell, row, rowIndex) => (
-        //     <div>
-        //       <span className={`LivePrice_${row.token}`}></span>
-        //     </div>
-        //   ),
-        // },
+        {
+            dataField: "live",
+            text: "Live Price",
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <span className={`LivePrice_${row.token}`}></span>
+                </div>
+            ),
+        },
         // {
         //   dataField: "closeprice",
         //   text: "Previous Price",
@@ -240,54 +240,54 @@ export default function AllEmployees() {
             ),
         },
 
-        // {
-        //     dataField: "Action",
-        //     text: "Realised",
-        //     formatter: (cell, row, rowIndex) => {
-        //         return (
-        //             <div>
-        //                 <span className={`fw-bold show_rpl_${row.token}_${row._id}`}></span>
-        //                 <span className={`d-none entry_qty_${row.token}_${row._id}`}>
-        //                     {row.entry_qty_percent}
-        //                 </span>
-        //                 <span className={`d-none exit_qty_${row.token}_${row._id}`}>
-        //                     {row.exit_qty_percent}
-        //                 </span>
-        //                 <span className={`d-none exit_price_${row.token}_${row._id}`}>
-        //                     {row.exit_price}
-        //                 </span>
-        //                 <span className={`d-none entry_price_${row.token}_${row._id}`}>
-        //                     {row.entry_price}
-        //                 </span>
-        //                 <span className={`d-none entry_type_${row.token}_${row._id}`}>
-        //                     {row.entry_type}
-        //                 </span>
-        //                 <span className={`d-none exit_type_${row.token}_${row._id}`}>
-        //                     {row.exit_type}
-        //                 </span>
-        //                 <span className={`d-none strategy_${row.token}_${row._id}`}>
-        //                     {row.strategy}
-        //                 </span>
-        //                 <span className={`d-none _id_${row.token}_${row._id}`}>
-        //                     {row._id}
-        //                 </span>
-        //             </div>
-        //         );
-        //     },
-        // },
+        {
+            dataField: "Action",
+            text: "Realised",
+            formatter: (cell, row, rowIndex) => {
+                return (
+                    <div>
+                        <span className={`fw-bold show_rpl_${row.token}_${row._id}`}></span>
+                        <span className={`d-none entry_qty_${row.token}_${row._id}`}>
+                            {row.entry_qty_percent}
+                        </span>
+                        <span className={`d-none exit_qty_${row.token}_${row._id}`}>
+                            {row.exit_qty_percent}
+                        </span>
+                        <span className={`d-none exit_price_${row.token}_${row._id}`}>
+                            {row.exit_price}
+                        </span>
+                        <span className={`d-none entry_price_${row.token}_${row._id}`}>
+                            {row.entry_price}
+                        </span>
+                        <span className={`d-none entry_type_${row.token}_${row._id}`}>
+                            {row.entry_type}
+                        </span>
+                        <span className={`d-none exit_type_${row.token}_${row._id}`}>
+                            {row.exit_type}
+                        </span>
+                        <span className={`d-none strategy_${row.token}_${row._id}`}>
+                            {row.strategy}
+                        </span>
+                        <span className={`d-none _id_${row.token}_${row._id}`}>
+                            {row._id}
+                        </span>
+                    </div>
+                );
+            },
+        },
 
 
-        // {
-        //     dataField: "UPL",
-        //     text: "Un-Realised",
-        //     formatter: (cell, row, rowIndex) => (
-        //         <div>
-        //             <span className={`fw-bold UPL_${row.token}_${row._id}`}></span>
+        {
+            dataField: "UPL",
+            text: "Un-Realised",
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <span className={`fw-bold UPL_${row.token}_${row._id}`}></span>
 
 
-        //         </div>
-        //     ),
-        // },
+                </div>
+            ),
+        },
 
         {
             dataField: "TPL",
@@ -368,7 +368,7 @@ export default function AllEmployees() {
 
 
         const subadminId = userDetails.user_id
-        await dispatch(User_Tradehistory_data({ Role: Role, subadminId: userDetails.user_id, startDate: startDate, endDate: endDate, service: SelectService, strategy: strategies}))
+        await dispatch(User_Tradehistory_data({ Role: Role, subadminId: userDetails.user_id, startDate: startDate, endDate: endDate, service: SelectService, strategy: strategies }))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
@@ -496,15 +496,25 @@ export default function AllEmployees() {
                                 }
 
 
-                                if (isNaN(abc)) {
-                                    return "-";
+                                if (get_entry_qty !== "" && (get_exit_qty == "" || get_exit_qty == 0)) {
+
+                                    if (isNaN(abc)) {
+                                        return "-";
+                                    } else {
+                                        $(".UPL_" + response.tk + "_" + get_id_token).html(abc);
+                                        $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
+                                        ShowColor1(".UPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                        ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                    }
                                 } else {
-                                    $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");
-                                    $(".UPL_" + response.tk + "_" + get_id_token).html(abc);
-                                    $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
-                                    ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, "-", response.tk, get_id_token);
-                                    ShowColor1(".UPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
-                                    ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                    if (isNaN(abc)) {
+                                        return "-";
+                                    } else {
+                                        $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");
+                                        $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
+                                        ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, "-", response.tk, get_id_token);
+                                        ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                    }
                                 }
                             }
 
@@ -533,9 +543,6 @@ export default function AllEmployees() {
             // alert("ELSE")
             tradeHistoryData.data && tradeHistoryData.data.forEach((row, i) => {
 
-                // console.log(" row._id ",row._id)
-                // console.log(" row token ",row.token)
-                // console.log(" row ",row)
                 let get_ids = '_id_' + row.token + '_' + row._id
                 let get_id_token = $('.' + get_ids).html();
 
@@ -549,7 +556,7 @@ export default function AllEmployees() {
 
 
                 if ((get_entry_type === "LE" && get_exit_type === "LX") || (get_entry_type === "SE" && get_exit_type === "SX")) {
-                    //   console.log("row._id ",row._id)
+
                     if (get_entry_qty !== "" && get_exit_qty !== "") {
 
                         if (parseInt(get_entry_qty) == parseInt(get_exit_qty)) {
@@ -560,16 +567,12 @@ export default function AllEmployees() {
                                 rpl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_exit_qty);
                             }
 
-                            // console.log("rpl ",rpl)
                             let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
                             let finalyupl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * upl;
 
-                            // console.log("upl._id ",upl)
-                            // console.log("finalyupl._id ",finalyupl)
                             if ((isNaN(finalyupl) || isNaN(rpl))) {
                                 return "-";
                             } else {
-                                // console.log("rpl inside",rpl)
                                 $(".show_rpl_" + row.token + "_" + get_id_token).html(rpl.toFixed(2));
                                 $(".UPL_" + row.token + "_" + get_id_token).html(finalyupl.toFixed(2));
                                 $(".TPL_" + row.token + "_" + get_id_token).html((finalyupl + rpl).toFixed(2));
@@ -584,7 +587,6 @@ export default function AllEmployees() {
                 //  if Only entry qty Exist
                 else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
 
-                    //console.log("row._id else",row._id)
 
                     let abc = ((parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
 
@@ -695,19 +697,10 @@ export default function AllEmployees() {
         tradeHistoryData.data?.map((item) => {
             CreatechannelList += `${item.exchange}|${item.token}#`;
 
-
-
-
-
-            // if(parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price!= '' && item.exit_price){
-            // total += (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
-            // }
-
             if (parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price != '' && item.exit_price) {
 
 
                 if (item.entry_type === "LE") {
-                    // console.log("item iFF" ,item._id , " total ",total)
                     let total1 = (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
                     if (!isNaN(total1)) {
                         total += total1
@@ -715,7 +708,6 @@ export default function AllEmployees() {
 
                 } else {
                     let total1 = (parseFloat(item.entry_price) - parseFloat(item.exit_price)) * parseInt(item.exit_qty_percent);
-                    // console.log("item ELSE" ,item._id , " total ",total)
                     if (!isNaN(total1)) {
                         total += total1
                     }
@@ -831,6 +823,33 @@ export default function AllEmployees() {
 
                                                     </div>
                                                 </li>
+                                                <li className='serach-li'>
+                                                    <div className="input-group input-block">
+
+
+                                                        {/* <div className="input-block col-lg-2 mt-3 mb-3"> */}
+                                                      
+                                                            <select
+                                                                class="default-select wide form-control"
+                                                                aria-label="Default select example"
+                                                                id="select"
+                                                                onChange={(e) => setStrategies(e.target.value)}
+                                                                value={strategies}
+                                                            >
+                                                                <option value="null" selected >All</option>
+                                                                {GetAllStrategy.data &&
+                                                                    GetAllStrategy.data.map((item) => {
+                                                                        return (
+                                                                            <option value={item.strategy_name}>
+                                                                                {item.strategy_name}
+                                                                            </option>
+                                                                        );
+                                                                    })}
+                                                            </select>
+                                                        {/* </div> */}
+
+                                                    </div>
+                                                </li>
                                                 <li>
 
                                                     <ExportToExcel
@@ -847,7 +866,7 @@ export default function AllEmployees() {
 
                             <div className="card-body">
                                 <div className="row ">
-                                    <div className="input-block col-lg-2 mt-3 mb-3">
+                                    {/* <div className="input-block col-lg-2 mt-3 mb-3">
                                         <label>From Date</label>
                                         <input
                                             type="date"
@@ -870,36 +889,22 @@ export default function AllEmployees() {
                                             onChange={(e) => setToDate(e.target.value || '')}
                                             value={toDate}
                                         />
-                                    </div>
+                                    </div> */}
 
-                                    <div className="input-block col-lg-2 mt-3 mb-3">
-                                        <label for="select" class="form-label">
-                                            Strategy
-                                        </label>
-                                        <select
-                                            class="default-select wide form-control"
-                                            aria-label="Default select example"
-                                            id="select"
-                                            onChange={(e) => setStrategies(e.target.value)}
-                                            value={strategies}
-                                        >
-                                            <option value="null" selected >All</option>
-                                            {GetAllStrategy.data &&
-                                                GetAllStrategy.data.map((item) => {
-                                                    return (
-                                                        <option value={item.strategy_name}>
-                                                            {item.strategy_name}
-                                                        </option>
-                                                    );
-                                                })}
-                                        </select>
-                                    </div>
 
 
 
                                 </div>
 
                                 <div className="card-body table-responsive">
+
+                                    {tradeHistoryData.data.length > 0 ?
+
+                                        total >= 0 ?
+                                            <h4 >Total Realised P/L : <span style={{ color: "green" }}> {total.toFixed(2)}</span> </h4> :
+                                            <h4 >Total Realised P/L : <span style={{ color: "red" }}> {total.toFixed(2)}</span> </h4> : ""
+
+                                    }
                                     <FullDataTable
                                         TableColumns={columns}
                                         tableData={tradeHistoryData.data}

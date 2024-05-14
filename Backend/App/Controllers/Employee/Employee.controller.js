@@ -74,7 +74,6 @@ class Employee {
                 return res.status(404).send({ status: false, msg: 'Incorrect User Id', data: [] });
             }
 
-            console.log("findData 1:", findData)
 
             const findGroup = await group_services.find({ user_id: id });
             

@@ -18,7 +18,6 @@ function Payment() {
     try {
       const response = await dispatch(infocompany({ id: user_Id })).unwrap();
       if (response.status) {
-        console.log("response.data", response.data)
         setCompanyData(response.data[0]);
       } else {
       }

@@ -443,51 +443,6 @@ export default function AllUsers() {
       });
   };
 
-  // const getAllUsersData = async () => {
-  //   var data = { user_ID: user_id }
-  //   await dispatch(GetAllSubadminUsers(data))
-  //     .unwrap()
-  //     .then((response) => {
-
-  //       if (response.status) {
-  //         const formattedData = response.data && response.data.map((row, index) => ({
-  //           ...row,
-  //           id: index + 1,
-  //         }));
-
-  //         const filterData = formattedData.filter((item) => {
-  //           const searchInputMatch =
-  //             searchInput == '' ||
-  //             item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
-  //             item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
-  //             item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
-  //             item.prifix_key.toLowerCase().includes(searchInput.toLowerCase())
-
-  //           return searchInputMatch
-
-  //         })
-
-  //         setAllSubadminUsers({
-  //           loading: false,
-  //           data: searchInput ? filterData : formattedData,
-
-  //         });
-
-  //       } else {
-
-  //         setAllSubadminUsers({
-  //           loading: false,
-  //           data: [],
-  //           data1: [],
-  //         });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error", error);
-  //     });
-  // };
-
-
   useEffect(() => {
     getAllEmployeeUsersData();
     // getAllUsersData();
