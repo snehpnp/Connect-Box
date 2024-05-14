@@ -580,11 +580,6 @@ export default function AllUsers() {
                 </div>
               </div>
               <div className="card-body">
-
-
-
-
-
                 <FullDataTable
                   styles={styles}
                   label={label}

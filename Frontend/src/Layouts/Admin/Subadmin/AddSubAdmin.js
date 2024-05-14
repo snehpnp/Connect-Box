@@ -226,61 +226,7 @@ const AddClient = () => {
       showWhen: (value)=> formik.values.subadmin_servic_type==2
     },
 
-    // {
-
-    //   name: "prefix_key",
-    //   label: "Prefix Key",
-    //   type: "text2",
-    //   label_size: 12,
-    //   col_size: 6,
-    //   disable: false,
-    // },
-
-    // {
-    //   name: "subadmin_servic_type",
-    //   label: "Subadmin Service Type",
-    //   type: "select",
-    //   options: [
-    //     { label: "Per Trade", value: "1" },
-    //     { label: "Per Strategy", value: "2" },
-    //   ],
-    //   label_size: 12,
-    //   col_size: 6,
-    //   disable: false,
-    //   onChange: handleSelectChange,
-    //   value: formik.values["subadmin_servic_type"],
-    // },
-    // {
-    //   name:
-    //     formik.values.subadmin_servic_type === "1" ||
-    //       formik.values.subadmin_servic_type === "2"
-    //       ? formik.values.subadmin_servic_type === "1"
-    //         ? "Per_trade"
-    //         : "strategy_Percentage"
-    //       : "",
-    //   label:
-    //     formik.values.subadmin_servic_type === "1" ||
-    //       formik.values.subadmin_servic_type === "2"
-    //       ? formik.values.subadmin_servic_type === "1"
-    //         ? "Per Trade Value"
-    //         : "% Per Strategy"
-    //       : "",
-    //   type: "text4",
-    //   placeholder:
-    //     formik.values.subadmin_servic_type === "1" ||
-    //       formik.values.subadmin_servic_type === "2"
-    //       ? formik.values.subadmin_servic_type === "1"
-    //         ? "Please Enter Trade Value"
-    //         : "Please enter % between 1 to 100"
-    //       : "",
-    //   showWhen: (values) =>
-    //     values.subadmin_servic_type === "1" ||
-    //     values.subadmin_servic_type === "2",
-    //   label_size: 12,
-    //   col_size: 6,
-    //   disable: false,
-     
-    // },
+    
   ];
 
 

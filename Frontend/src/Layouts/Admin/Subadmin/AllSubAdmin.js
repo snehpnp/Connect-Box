@@ -37,15 +37,10 @@ export default function Help() {
   const [modal, setmodal] = useState(false);
   const [inputSearch, setInputSearch] = useState('');
   const [ForGetCSV, setForGetCSV] = useState([])
-
-
-
-
+  const [selectServiceType , setSelectServiceType] = useState('')
+ 
 
   const admin_id = JSON.parse(localStorage.getItem("user_details")).user_id
-
-
-
 
 
   const location = useLocation();
@@ -288,8 +283,6 @@ export default function Help() {
       .then(async (response) => {
 
         if (response.status) {
-
-          if (dashboard_filter !== undefined) {
             let formattedData = response.data && response.data.map((row, index) => ({
               ...row,
               id: index + 1,
@@ -302,11 +295,24 @@ export default function Help() {
               formattedData1 = formattedData.filter(data => data.ActiveStatus == 0);
             } else if (dashboard_filter == 1 || dashboard_filter==undefined ) {
               formattedData1 = formattedData
-
             } 
 
 
-            const filterData = formattedData1.filter(item => {
+         
+            let formattedData2
+            if(selectServiceType==0){
+              formattedData2 = formattedData1
+            }
+            else if(selectServiceType==1){
+              formattedData2 = formattedData1.filter(data => data.subadmin_service_type == 1);
+            }
+            else if(selectServiceType==2){
+              formattedData2 = formattedData1.filter(data => data.subadmin_service_type == 2);
+
+            }
+
+
+            const filterData = formattedData2.filter(item => {
               const inputSearchMatch =
                 inputSearch === '' ||
                 item.UserName.toLowerCase().includes(inputSearch.toLowerCase()) ||
@@ -321,42 +327,9 @@ export default function Help() {
 
             setAllSubadmins({
               loading: true,
-              data: inputSearch ? filterData : formattedData1,
+              data: inputSearch ? filterData : formattedData2,
               data1: [],
             });
-          } else {
-            const formattedData = response.data && response.data.map((row, index) => ({
-              ...row,
-              id: index + 1,
-            }));
-
-            const filterData = formattedData.filter(item => {
-              const inputSearchMatch =
-                inputSearch === '' ||
-                item.UserName.toLowerCase().includes(inputSearch.toLowerCase()) ||
-                item.FullName.toLowerCase().includes(inputSearch.toLowerCase()) ||
-                item.PhoneNo.toLowerCase().includes(inputSearch.toLowerCase()) ||
-                item.prifix_key.toLowerCase().includes(inputSearch.toLowerCase()) ||
-                item.Email.toLowerCase().includes(inputSearch.toLowerCase()) ||
-                item.Balance.toLowerCase().includes(inputSearch.toLowerCase());
-
-              return inputSearchMatch;
-            });
-
-            setAllSubadmins({
-              loading: true,
-              data: inputSearch ? filterData : formattedData,
-              data1: [],
-            });
-          }
-
-
-
-
-
-
-
-
         } else {
           setAllSubadmins({
             loading: true,
@@ -379,11 +352,13 @@ export default function Help() {
 
   useEffect(() => {
     getSubadminData();
-  }, [refresh, inputSearch]);
+  }, [refresh, inputSearch , selectServiceType]);
 
   const handleRefresh = () => {
     setInputSearch('')
+    setSelectServiceType('')
     setrefresh(!refresh)
+
   }
 
   const forCSVdata = () => {
@@ -452,6 +427,20 @@ export default function Help() {
                             />
                           </div>
                         </li>
+                        <li className="serach-li">
+                          <div className="input-group input-block">
+                             <select className="rounded form-control border-0 px-4"
+                              style={{height:"2.5rem"}}
+                              onChange={(e) => setSelectServiceType(e.target.value)}
+                              value={selectServiceType}
+                              >
+                              <option value="0" >Service Type</option>
+                              <option value="1">Per Trade</option>
+                              <option value="2">Per Strategy</option>
+                             </select>
+                          </div>
+                        </li>
+                        
 
 
 

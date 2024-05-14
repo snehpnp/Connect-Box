@@ -294,7 +294,9 @@ const AllResearcher = () => {
             items.UserName.toLowerCase().includes(inputSearch.toLowerCase()) ||
             items.FullName.toLowerCase().includes(inputSearch.toLowerCase()) ||
             items.Email.toLowerCase().includes(inputSearch.toLowerCase()) ||
-            items.PhoneNo.toLowerCase().includes(inputSearch.toLowerCase())
+            items.PhoneNo.toLowerCase().includes(inputSearch.toLowerCase()) || 
+            items.prifix_key.toLowerCase().includes(inputSearch.toLowerCase())  
+
 
           return searchMatch;
         })
