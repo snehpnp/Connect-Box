@@ -863,6 +863,7 @@ const AddClient = () => {
                                                   id={`${strategy._id}_1`}
                                                   checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 1)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
+                                                  disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                                 />
                                                 <label
                                                   style={{
@@ -881,6 +882,7 @@ const AddClient = () => {
                                                   id={`${strategy._id}_2`}
                                                   checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 2)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
+                                                  disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                                 />
                                                 <label
                                                   style={{
@@ -899,6 +901,7 @@ const AddClient = () => {
                                                   id={`${strategy._id}_3`}
                                                   checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 3)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
+                                                  disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                                 />
                                                 <label
                                                   style={{
@@ -917,6 +920,7 @@ const AddClient = () => {
                                                   id={`${strategy._id}_4`}
                                                   checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 4)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
+                                                  disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                                 />
                                                 <label
                                                   style={{

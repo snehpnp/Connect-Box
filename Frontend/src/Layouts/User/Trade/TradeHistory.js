@@ -368,7 +368,7 @@ export default function AllEmployees() {
 
 
         const subadminId = userDetails.user_id
-        await dispatch(User_Tradehistory_data({ Role: Role, subadminId: userDetails.user_id, startDate: startDate, endDate: endDate, service: SelectService, strategy: strategies}))
+        await dispatch(User_Tradehistory_data({ Role: Role, subadminId: userDetails.user_id, startDate: startDate, endDate: endDate, service: SelectService, strategy: strategies }))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
@@ -497,7 +497,7 @@ export default function AllEmployees() {
 
 
                                 if (get_entry_qty !== "" && (get_exit_qty == "" || get_exit_qty == 0)) {
-                                   
+
                                     if (isNaN(abc)) {
                                         return "-";
                                     } else {
@@ -506,14 +506,14 @@ export default function AllEmployees() {
                                         ShowColor1(".UPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
                                         ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
                                     }
-                                }else{
+                                } else {
                                     if (isNaN(abc)) {
                                         return "-";
                                     } else {
-                                        $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");                                
+                                        $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");
                                         $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
                                         ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, "-", response.tk, get_id_token);
-                                       ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                        ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
                                     }
                                 }
                             }
@@ -556,7 +556,7 @@ export default function AllEmployees() {
 
 
                 if ((get_entry_type === "LE" && get_exit_type === "LX") || (get_entry_type === "SE" && get_exit_type === "SX")) {
-            
+
                     if (get_entry_qty !== "" && get_exit_qty !== "") {
 
                         if (parseInt(get_entry_qty) == parseInt(get_exit_qty)) {
@@ -709,14 +709,14 @@ export default function AllEmployees() {
 
 
                 if (item.entry_type === "LE") {
-                   let total1 = (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
+                    let total1 = (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
                     if (!isNaN(total1)) {
                         total += total1
                     }
 
                 } else {
                     let total1 = (parseFloat(item.entry_price) - parseFloat(item.exit_price)) * parseInt(item.exit_qty_percent);
-               if (!isNaN(total1)) {
+                    if (!isNaN(total1)) {
                         total += total1
                     }
 

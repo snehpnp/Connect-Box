@@ -473,62 +473,62 @@ class SignalController {
 
 
   // UPDATE STOPLOASS
-  async  update_stop_loss(req, res) {
+  async update_stop_loss(req, res) {
     try {
-        const { data } = req.body;
+      const { data } = req.body;
 
-        for (const signal of data) {
-            const ExistfindSignal = await Mainsignals.findOne({ _id: signal._id }).select('target stop_loss exit_time');
+      for (const signal of data) {
+        const ExistfindSignal = await Mainsignals.findOne({ _id: signal._id }).select('target stop_loss exit_time');
 
-            if (!ExistfindSignal) {
-                return res.status(404).send({ status: false, msg: "Signal not found", data: null });
-            }
-
-            let updateFields = {};
-            let activityMessages = [];
-
-            if (ExistfindSignal.target !== signal.target) {
-                updateFields.target = signal.target;
-                activityMessages.push(`${signal.trade_symbol} Update Target price to ${signal.target}`);
-            }
-
-            if (ExistfindSignal.stop_loss !== signal.stop_loss) {
-                updateFields.stop_loss = signal.stop_loss;
-                activityMessages.push(`${signal.trade_symbol} Update Stop Loss price to ${signal.stop_loss}`);
-            }
-
-            if (ExistfindSignal.exit_time !== signal.exit_time) {
-                updateFields.exit_time = signal.exit_time;
-                activityMessages.push(`${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`);
-            }
-
-            if (activityMessages.length > 0) {
-                for (const message of activityMessages) {
-                    const Activity_logsData = new Activity_logs({
-                        admin_Id: signal.StrategyData.maker_id,
-                        category: "TARGET-STOPLOSS-TIME",
-                        message: message,
-                        maker_role: "SUBADMIN",
-                        device: "web",
-                        system_ip: ""
-                    });
-                    await Activity_logsData.save();
-                }
-            }
-
-            if (Object.keys(updateFields).length > 0) {
-                const filter = { _id: signal._id };
-                const updateOperation = { $set: updateFields };
-                await Mainsignals.updateOne(filter, updateOperation);
-            }
+        if (!ExistfindSignal) {
+          return res.status(404).send({ status: false, msg: "Signal not found", data: null });
         }
 
-        return res.status(200).send({ status: true, msg: "Update Successful", data: null });
+        let updateFields = {};
+        let activityMessages = [];
+
+        if (ExistfindSignal.target !== signal.target) {
+          updateFields.target = signal.target;
+          activityMessages.push(`${signal.trade_symbol} Update Target price to ${signal.target}`);
+        }
+
+        if (ExistfindSignal.stop_loss !== signal.stop_loss) {
+          updateFields.stop_loss = signal.stop_loss;
+          activityMessages.push(`${signal.trade_symbol} Update Stop Loss price to ${signal.stop_loss}`);
+        }
+
+        if (ExistfindSignal.exit_time !== signal.exit_time) {
+          updateFields.exit_time = signal.exit_time;
+          activityMessages.push(`${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`);
+        }
+
+        if (activityMessages.length > 0) {
+          for (const message of activityMessages) {
+            const Activity_logsData = new Activity_logs({
+              admin_Id: signal.StrategyData.maker_id,
+              category: "TARGET-STOPLOSS-TIME",
+              message: message,
+              maker_role: "SUBADMIN",
+              device: "web",
+              system_ip: ""
+            });
+            await Activity_logsData.save();
+          }
+        }
+
+        if (Object.keys(updateFields).length > 0) {
+          const filter = { _id: signal._id };
+          const updateOperation = { $set: updateFields };
+          await Mainsignals.updateOne(filter, updateOperation);
+        }
+      }
+
+      return res.status(200).send({ status: true, msg: "Update Successful", data: null });
     } catch (error) {
-        console.error("Error in update_stop_loss:", error);
-        return res.status(500).send({ status: false, msg: "Internal server error", data: error.message });
+      console.error("Error in update_stop_loss:", error);
+      return res.status(500).send({ status: false, msg: "Internal server error", data: error.message });
     }
-}
+  }
 
 
 
@@ -864,12 +864,14 @@ class SignalController {
 
 
 
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
       let startDateObj = new Date(startDate);
       let endDateObj = new Date(endDate);
       let stg1;
       let ser1;
 
-
+      let stgArr = []
 
 
       //  For Service
@@ -930,24 +932,34 @@ class SignalController {
         },
       ];
 
-      const GetAllClientServices = await client_service.aggregate(pipeline);
+      let GetAllClientServices = await client_service.aggregate(pipeline);
 
+
+      GetAllClientServices.map((data) => {
+        stgArr.push(data.strategys.strategy_name)
+      })
+
+
+      console.log("strategy", stgArr)
 
       var abc = [];
 
       if (GetAllClientServices.length > 0) {
         for (const item of GetAllClientServices) {
 
-
-
-
           //  For Strategy
-          if (strategy === "null" || strategy === "") {
+          if (strategy === "null" || strategy === "" || strategy.length != 0) {
             stg1 = item.strategys.strategy_name
           } else {
-            stg1 = strategy;
+            stg1 = { $in: stgArr }
           }
 
+          console.log({
+            symbol: item.service.name,
+            strategy: stg1,
+            gt: today,
+            lte: new Date(today.getTime() + 24 * 60 * 60 * 1000)
+          })
 
           try {
 
@@ -956,10 +968,10 @@ class SignalController {
                 $match: {
                   symbol: item.service.name,
                   strategy: stg1,
-                  dt_date: {
-                    $gte: startDate,
-                    $lte: endDate,
-                  },
+                  createdAt: {
+                    $gte: today,
+                    $lte: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+                  }
                 },
               },
               {
