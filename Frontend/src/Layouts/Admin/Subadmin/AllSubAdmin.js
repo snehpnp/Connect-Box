@@ -440,10 +440,6 @@ export default function Help() {
                              </select>
                           </div>
                         </li>
-                        
-
-
-
                         <li>
                           <div
                             className="dropdown dropdown-action"
