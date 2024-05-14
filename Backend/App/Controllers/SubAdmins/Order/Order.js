@@ -948,10 +948,10 @@ class SignalController {
         for (const item of GetAllClientServices) {
 
           //  For Strategy
-          if (strategy === "null" || strategy === "" || strategy.length != 0) {
-            stg1 = item.strategys.strategy_name
-          } else {
+          if (strategy === "null" || strategy === "" || strategy.length == 0) {
             stg1 = { $in: stgArr }
+          } else {
+            stg1 = strategy
           }
 
           console.log({
@@ -989,29 +989,19 @@ class SignalController {
               },
             ]);
 
+
             if (data.length > 0) {
               data.forEach(function (item) {
-                var findstg = GetAllClientServices.find(
-                  (data) =>
-                    data.service.name == item.symbol &&
-                    data.strategys.strategy_name == item.strategy
+                var findstg = GetAllClientServices.find((data1) => data1.service.name == item.symbol &&
+                  data1.strategys.strategy_name == item.strategy
                 );
 
                 item.result.forEach(function (signal) {
-                  signal.qty_percent =
-                    findstg.quantity *
-                    (Math.ceil(Number(signal.qty_percent) / 100) * 100) *
-                    0.01;
+                  signal.qty_percent = findstg.quantity * (Math.ceil(Number(signal.qty_percent || 100) / 100) * 100) * 0.01;
                 });
 
-                (item.entry_qty_percent =
-                  findstg.quantity *
-                  (Math.ceil(Number(item.entry_qty_percent) / 100) * 100) *
-                  0.01),
-                  (item.exit_qty_percent =
-                    findstg.quantity *
-                    (Math.ceil(Number(item.exit_qty_percent) / 100) * 100) *
-                    0.01);
+                (item.entry_qty_percent = findstg.quantity * (Math.ceil(Number(item.entry_qty_percent || 100) / 100) * 100) * 0.01),
+                  (item.exit_qty_percent = findstg.quantity * (Math.ceil(Number(item.exit_qty_percent || 100) / 100) * 100) * 0.01);
               });
 
               abc.push(data);
@@ -1020,6 +1010,17 @@ class SignalController {
             console.error("Error fetching data:", error);
           }
         }
+
+
+
+
+
+
+
+
+
+
+
       } else {
         res.send({
           status: false,
