@@ -940,8 +940,6 @@ class SignalController {
       })
 
 
-      console.log("strategy", stgArr)
-
       var abc = [];
 
       if (GetAllClientServices.length > 0) {
@@ -954,12 +952,7 @@ class SignalController {
             stg1 = strategy
           }
 
-          console.log({
-            symbol: item.service.name,
-            strategy: stg1,
-            gt: today,
-            lte: new Date(today.getTime() + 24 * 60 * 60 * 1000)
-          })
+   
 
           try {
 
@@ -1010,13 +1003,6 @@ class SignalController {
             console.error("Error fetching data:", error);
           }
         }
-
-
-
-
-
-
-
 
 
 
