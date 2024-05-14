@@ -3,26 +3,15 @@
 // 13 =Fyers , 14 = 5-Paisa , 15 Zerodha ,
 import * as Config from "./Config";
 import Swal from 'sweetalert2';
+import axios from "axios";
 
-
-export const loginWithApi = async (broker_id, UserDetails) => {
-
+export const loginWithApi = async (broker_id, UserDetails,ip) => {
+    console.log("UserDetails", UserDetails)
     if (broker_id === "2" || broker_id === 2) {
-        // if (UserDetails.api_key) {
-            window.location.href = `https://ant.aliceblueonline.com/?appcode=${UserDetails.api_key}`;
-          
-        // } else {
-        //     Swal.fire({
-        //         title: "Error !",
-        //         text: "Api Key Is Null",
-        //         icon: "error",
-        //         timer: 1500,
-        //         timerProgressBar: true,
-        //     })
-        //     return false
-        // }
+        window.location.href = `https://ant.aliceblueonline.com/?appcode=${UserDetails.api_key}`;
+
     }
-    
+
     else if (broker_id === "1" || broker_id === 1) {
 
     }
@@ -55,7 +44,62 @@ export const loginWithApi = async (broker_id, UserDetails) => {
     }
 
     else if (broker_id === "12" || broker_id === 12) {
-        window.location.href = "https://smartapi.angelbroking.com/publisher-login?api_key=" + UserDetails.api_key;
+        // console.log("RUN");
+        axios({
+            url: `${Config.base_url}angel`,
+            method: "post",
+            data: {
+                id: UserDetails._id,
+            },
+        }).then((res) => {
+            if (res.data.status) {
+                let value = prompt("Enter Your TOTP Here");
+                if (value === null) {
+                    return;
+                }
+                axios({
+                    url: `${Config.base_url}update/angel/totp`,
+                    method: "post",
+                    data: {
+                        id: UserDetails._id,
+                        totp: value,
+                        system_ip: ip
+                    },
+                }).then((res) => {
+                    if (res.data.status) {
+                        Swal.fire({
+                            title: "Trading On",
+                            icon: "success",
+                            html: "Your trading has On successfully .",
+                            timer: 1500,
+                            timerProgressBar: true,
+                        });
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 1200);
+                    } else {
+
+                        Swal.fire({
+                            title: "Error In Totp!",
+                            text: res.data.data,
+                            icon: "Error",
+                            timer: 1500,
+                            timerProgressBar: true,
+                        });
+                    }
+                });
+
+            } else {
+
+                Swal.fire({
+                    title: "Error In Trading!",
+                    text: res.data.msg,
+                    icon: "Error",
+                    timer: 1500,
+                    timerProgressBar: true,
+                });
+            }
+        })
     }
 
     else if (broker_id === "13" || broker_id === 13) {

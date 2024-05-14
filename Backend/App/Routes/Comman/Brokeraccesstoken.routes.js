@@ -11,7 +11,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 // ALICE BLUE CONTROLLER FILE
 const { GetAccessToken, GetOrderFullInformationAll } = require('../../Controllers/Brokeraccesstoken/Aliceblue')
-const { GetAccessTokenAngel } = require('../../Controllers/Brokeraccesstoken/Angel')
+const { GetAccessTokenAngel,UpdateTotp } = require('../../Controllers/Brokeraccesstoken/Angel')
 
 
 // BROKER REDIRECT
@@ -87,7 +87,9 @@ router.post('/getall/order/info', GetOrderFullInformationAll_broker);
 // AliCE BLUE
 router.get('/AliceBlue', GetAccessToken);
 
-router.get('/angel', GetAccessTokenAngel);
+router.post('/angel', GetAccessTokenAngel);
+router.post('/update/angel/totp', UpdateTotp);
+
 
 
 module.exports = router;

@@ -12,7 +12,7 @@ const FullDataTable = ({ tableData, TableColumns, tableoptions, selectRow, keyFi
     };
 
     return (
-        <div className='table-container'> {/* Add a container div */}
+        <div className='table-container'> 
             <BootstrapTable
                 keyField={keyField ? keyField : "id"}
                 data={tableData}
