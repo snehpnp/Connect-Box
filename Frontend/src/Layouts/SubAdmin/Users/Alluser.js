@@ -28,21 +28,19 @@ export default function AllUsers() {
   const navigate = useNavigate();
 
 
-  const [initialRowData, setInitialRowData] = useState({});
-  const [balanceValue, setBalanceValue] = useState("");
+   
   const [refresh, setrefresh] = useState(false);
   const [modal, setmodal] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [ForGetCSV, setForGetCSV] = useState([])
   const [getAllBroker, setAllBroker] = useState([]);
+  const [licenceType, setLicenceType] = useState('null');
+  const [BrokerType, setBrokerType] = useState('null');
+
+ 
 
   const [ShowDeleteModal, setShowDeleteModal] = useState(false);
-
-
-
-
   const [modalId, setmodalId] = useState('');
-
   const [getAllUsers, setAllUsers] = useState({
     loading: true,
     data: [],
@@ -227,11 +225,7 @@ export default function AllUsers() {
 
   };
 
-
-
-
-
-
+ 
 
   const handleSwitchChange = async (event, id) => {
     const user_active_status = event.target.checked ? 1 : 0;
@@ -291,23 +285,20 @@ export default function AllUsers() {
 
   }
 
+   
 
   useState(() => {
     AllBroker();
   }, [])
 
 
-
-
-
-
-
-
-
+ 
 
   const RefreshHandle = () => {
-    setrefresh(!refresh)
     setSearchInput('')
+    setBrokerType('null')
+    setLicenceType('null')
+    setrefresh(!refresh)
   }
 
   const forCSVdata = () => {
@@ -381,7 +372,7 @@ export default function AllUsers() {
 
 
 
- 
+
 
   const getUsersData = async () => {
     var data = { user_ID: user_id }
@@ -427,44 +418,34 @@ export default function AllUsers() {
             formattedData1 = formattedData.filter((item) => item.license_type == 1)
           }
           else if (dashboard_filter == 11) {
-            formattedData1 = formattedData.filter((item) => item.license_type == 1  && item.ActiveStatus == 1)
+            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 1)
           } else if (dashboard_filter == 12) {
-            formattedData1 = formattedData.filter((item) => item.license_type == 1  && item.ActiveStatus == 0)
+            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 0)
           }
-          
 
+ 
 
-
-          const cardDataList = [
-            { key: "TotalUsercount", title: "Total Users", route: "/subadmin/users?filter=1" },
-            { key: "TotalActiveUsercount", title: "Active Users", route: "/subadmin/users?filter=2" },
-            { key: "TotalExpiredUsercount", title: "Expired Users", route: "/subadmin/users?filter=3" },
-            { key: "TotalLiveUsercount", title: "Total Live Users", route: "/subadmin/users?filter=4" },
-            { key: "TotalActiveLiveUsercount", title: "Active Live Users", route: "/subadmin/users?filter=5" },
-            { key: "TotalExpiredLiveUsercount", title: "Expired Live Users", route: "/subadmin/users?filter=6" },
-            { key: "TotalTodayUsercount", title: "Total 2 days Users", route: "/subadmin/users?filter=7" },
-            { key: "TotalActiveTodayUsercount", title: "Active 2 days Users", route: "/subadmin/users?filter=8" },
-            { key: "TotalExpiredTodayUsercount", title: "Expired 2 days Users", route: "/subadmin/users?filter=9" },
-            { key: "TotalDemoUsercount", title: "Total Demo Users", route: "/subadmin/users?filter=10" },
-            { key: "TotalActiveDemoUsercount", title: "Active Demo Users", route: "/subadmin/users?filter=11" },
-            { key: "TotalExpiredDemoUsercount", title: "Expired Demo Users", route: "/subadmin/users?filter=12" },
-          ];
-
+           
+           
           const filterData = formattedData1.filter((item) => {
-            const searchInputMatch =
+
+            const filter1Data = licenceType== 'null' || item.license_type.includes(licenceType)
+            const filter2Data = BrokerType== 'null' || item.broker == BrokerType
+
+            const searchInputMatch = 
               searchInput == '' ||
               item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
               item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
               item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
               item.prifix_key.toLowerCase().includes(searchInput.toLowerCase())
 
-            return searchInputMatch
+            return searchInputMatch && filter1Data && filter2Data
 
           })
 
           setAllUsers({
             loading: false,
-            data: searchInput ? filterData : formattedData1,
+            data: searchInput || licenceType!='null' || BrokerType!= 'null' ? filterData : formattedData1,
 
           });
 
@@ -490,14 +471,8 @@ export default function AllUsers() {
 
   useEffect(() => {
     getUsersData();
-  }, [refresh, searchInput]);
+  }, [refresh, searchInput , licenceType , BrokerType]);
 
-
-
-
-
-
-  
 
   return (
     <>
@@ -518,12 +493,10 @@ export default function AllUsers() {
                         <li className="">
                           <p
                             className="mb-0 btn-filters"
-
                             data-bs-toggle="tooltip"
                             data-bs-placement="bottom"
                             title="Refresh"
                             onClick={RefreshHandle}
-
                           >
                             <span>
                               <i className="fe fe-refresh-ccw" />
@@ -540,8 +513,33 @@ export default function AllUsers() {
                               aria-describedby="search-addon"
                               onChange={(e) => setSearchInput(e.target.value)}
                               value={searchInput}
-
                             />
+                          </div>
+                        </li>
+                        <li className="serach-li">
+                          <div className="input-group input-block">
+                            <select className="rounded form-control border-0 px-4"
+                            onChange={(e)=>setLicenceType(e.target.value)}
+                            value={licenceType}>
+                              <option value="null">License Type</option>
+                              <option value="1">Demo</option>
+                              <option value="0">2 day Live</option>
+                              <option value="2">Live</option>
+                            </select>
+                          </div>
+                        </li>
+                        <li className="serach-li">
+                          <div className="input-group input-block">
+                            <select className="rounded form-control border-0 px-4"
+                            onChange={(e)=>setBrokerType(e.target.value)}
+                            value={BrokerType}
+                            >
+                              <option value="null">Broker Type</option>
+                              {getAllBroker && getAllBroker.map((item, index) => {
+                                return <option value={`${item.broker_id}`}>{item.title}</option>
+                              })}
+                            </select>
+
                           </div>
                         </li>
                         <li>
