@@ -176,13 +176,13 @@ export default function AllEmployees() {
             formatter: (cell) => <>{fDateTimeSuffix(cell)}</>,
         },
         {
-          dataField: "live",
-          text: "Live Price",
-          formatter: (cell, row, rowIndex) => (
-            <div>
-              <span className={`LivePrice_${row.token}`}></span>
-            </div>
-          ),
+            dataField: "live",
+            text: "Live Price",
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <span className={`LivePrice_${row.token}`}></span>
+                </div>
+            ),
         },
         // {
         //   dataField: "closeprice",
@@ -697,14 +697,6 @@ export default function AllEmployees() {
         tradeHistoryData.data?.map((item) => {
             CreatechannelList += `${item.exchange}|${item.token}#`;
 
-
-
-
-
-            // if(parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price!= '' && item.exit_price){
-            // total += (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty_percent);
-            // }
-
             if (parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price != '' && item.exit_price) {
 
 
@@ -831,6 +823,33 @@ export default function AllEmployees() {
 
                                                     </div>
                                                 </li>
+                                                <li className='serach-li'>
+                                                    <div className="input-group input-block">
+
+
+                                                        {/* <div className="input-block col-lg-2 mt-3 mb-3"> */}
+                                                      
+                                                            <select
+                                                                class="default-select wide form-control"
+                                                                aria-label="Default select example"
+                                                                id="select"
+                                                                onChange={(e) => setStrategies(e.target.value)}
+                                                                value={strategies}
+                                                            >
+                                                                <option value="null" selected >All</option>
+                                                                {GetAllStrategy.data &&
+                                                                    GetAllStrategy.data.map((item) => {
+                                                                        return (
+                                                                            <option value={item.strategy_name}>
+                                                                                {item.strategy_name}
+                                                                            </option>
+                                                                        );
+                                                                    })}
+                                                            </select>
+                                                        {/* </div> */}
+
+                                                    </div>
+                                                </li>
                                                 <li>
 
                                                     <ExportToExcel
@@ -847,7 +866,7 @@ export default function AllEmployees() {
 
                             <div className="card-body">
                                 <div className="row ">
-                                    <div className="input-block col-lg-2 mt-3 mb-3">
+                                    {/* <div className="input-block col-lg-2 mt-3 mb-3">
                                         <label>From Date</label>
                                         <input
                                             type="date"
@@ -870,36 +889,22 @@ export default function AllEmployees() {
                                             onChange={(e) => setToDate(e.target.value || '')}
                                             value={toDate}
                                         />
-                                    </div>
+                                    </div> */}
 
-                                    <div className="input-block col-lg-2 mt-3 mb-3">
-                                        <label for="select" class="form-label">
-                                            Strategy
-                                        </label>
-                                        <select
-                                            class="default-select wide form-control"
-                                            aria-label="Default select example"
-                                            id="select"
-                                            onChange={(e) => setStrategies(e.target.value)}
-                                            value={strategies}
-                                        >
-                                            <option value="null" selected >All</option>
-                                            {GetAllStrategy.data &&
-                                                GetAllStrategy.data.map((item) => {
-                                                    return (
-                                                        <option value={item.strategy_name}>
-                                                            {item.strategy_name}
-                                                        </option>
-                                                    );
-                                                })}
-                                        </select>
-                                    </div>
 
 
 
                                 </div>
 
                                 <div className="card-body table-responsive">
+
+                                    {tradeHistoryData.data.length > 0 ?
+
+                                        total >= 0 ?
+                                            <h4 >Total Realised P/L : <span style={{ color: "green" }}> {total.toFixed(2)}</span> </h4> :
+                                            <h4 >Total Realised P/L : <span style={{ color: "red" }}> {total.toFixed(2)}</span> </h4> : ""
+
+                                    }
                                     <FullDataTable
                                         TableColumns={columns}
                                         tableData={tradeHistoryData.data}

@@ -515,11 +515,11 @@ export default function AllEmployees() {
                                 if (get_entry_type === "SE") {
                                     abc = ((parseFloat(get_entry_price) - parseFloat(live_price)) * parseInt(get_entry_qty)).toFixed();
                                 }
-                            
+
 
 
                                 if (get_entry_qty !== "" && (get_exit_qty == "" || get_exit_qty == 0)) {
-                                   
+
                                     if (isNaN(abc)) {
                                         return "-";
                                     } else {
@@ -528,18 +528,18 @@ export default function AllEmployees() {
                                         ShowColor1(".UPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
                                         ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
                                     }
-                                }else{
+                                } else {
                                     if (isNaN(abc)) {
                                         return "-";
                                     } else {
-                                        $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");                                
+                                        $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");
                                         $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
                                         ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, "-", response.tk, get_id_token);
-                                       ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                        ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
                                     }
                                 }
 
-                          
+
                             }
 
                             //  if Only Exist qty Exist
@@ -615,17 +615,25 @@ export default function AllEmployees() {
                         abc = ((parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_entry_qty)).toFixed();
                     }
 
+                    if (get_entry_qty !== "" && (get_exit_qty == "" || get_exit_qty == 0)) {
 
-
-                    if (isNaN(abc)) {
-                        return "-";
+                        if (isNaN(abc)) {
+                            return "-";
+                        } else {
+                            $(".UPL_" + row.tk + "_" + get_id_token).html(abc);
+                            $(".TPL_" + row.tk + "_" + get_id_token).html(abc);
+                            ShowColor1(".UPL_" + row.tk + "_" + get_id_token, abc, row.tk, get_id_token);
+                            ShowColor1(".TPL_" + row.tk + "_" + get_id_token, abc, row.tk, get_id_token);
+                        }
                     } else {
-                        $(".show_rpl_" + row.token + "_" + get_id_token).html("-");
-                        $(".UPL_" + row.token + "_" + get_id_token).html(abc);
-                        $(".TPL_" + row.token + "_" + get_id_token).html(abc);
-                        ShowColor1(".show_rpl_" + row.token + "_" + get_id_token, "-", row.token, get_id_token);
-                        ShowColor1(".UPL_" + row.token + "_" + get_id_token, abc, row.token, get_id_token);
-                        ShowColor1(".TPL_" + row.token + "_" + get_id_token, abc, row.token, get_id_token);
+                        if (isNaN(abc)) {
+                            return "-";
+                        } else {
+                            $(".show_rpl_" + row.tk + "_" + get_id_token).html("-");
+                            $(".TPL_" + row.tk + "_" + get_id_token).html(abc);
+                            ShowColor1(".show_rpl_" + row.tk + "_" + get_id_token, "-", row.tk, get_id_token);
+                            ShowColor1(".TPL_" + row.tk + "_" + get_id_token, abc, row.tk, get_id_token);
+                        }
                     }
                 }
 
@@ -754,6 +762,9 @@ export default function AllEmployees() {
     useEffect(() => {
         fetchStrategies();
     }, [refresh]);
+
+
+
 
     return (
         <>
