@@ -157,7 +157,7 @@ const AllResearcherStrategy = () => {
                 {/* PAGE HEADER */}
                 <div className="card">
                     <div className="card-header mb-0">
-                        <h5 className='card-title mb-0'><i className="fe fe-target pe-2" id="animated-icon" style={{ color: "#28084b" }}></i>Researcher Strategy</h5>
+                        <h5 className='card-title mb-0'><i class="fe fe-target "> </i>Researcher Strategy</h5>
                     </div>
 
                     <div className='card-body'>
@@ -232,10 +232,10 @@ const AllResearcherStrategy = () => {
 
 
                                                 {stg.stg_active != 1 ? <div className="d-flex justify-content-center package-edit">
-                                                    <button type='submit' className='btn btn-primary' onClick={(e) => { setShowModal(true); setSelectStrategy(stg) }}>BUY</button>
+                                                    <button type='submit' className='btn btn-primary' onClick={(e) => { setShowModal(true); setSelectStrategy(stg) }}>Buy</button>
 
                                                 </div> : <div className="d-flex justify-content-center package-edit">
-                                                    <button type='submit' className='btn btn-primary' >BUYED</button>
+                                                    <button type='submit' className='btn btn-primary' >Subscribed</button>
 
                                                 </div>}
 

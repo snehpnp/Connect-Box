@@ -12,26 +12,31 @@ import Usersetbrokerinfo from "../../../Layouts/Comman/Setting_Page/Setbrokerinf
 import { X, AlignJustify } from 'lucide-react';
 
 const Settings = () => {
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  // const [isSidebarOpen, setSidebarOpen] = useState(false);
   let Role = JSON.parse(localStorage.getItem("user_details")).Role;
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!isSidebarOpen);
-  };
+  // const toggleSidebar = () => {
+  //   setSidebarOpen(!isSidebarOpen);
+  // };
 
   return (
     <>
-      <div>
-
+      <div className="content container-fluid pb-0">
+        <div className="card">
+       <div className="card-header">
+        <h5 className="card-title mb-0">
+           <i className="fa fa-gear pe-2"></i>Setting
+        </h5>
+       </div>
+       <div className="card-body">
         <div className="row">
-
-          <button className="toggle-sidebarsetting" onClick={toggleSidebar} style={{
-            width: "3rem", height: "3rem", position: isSidebarOpen ? "absolute" : "fixed", left: isSidebarOpen ? "15.6rem" : "3rem", zIndex: "999",
-            marginTop: isSidebarOpen ? "0.9rem" : "1rem"
-          }}>
-            {isSidebarOpen ? <X /> : <AlignJustify />}
-          </button>
-          {isSidebarOpen && (
+                      
+        {/* <button  className="toggle-sidebarsetting" onClick={toggleSidebar}style={{ width: "3rem", height: "3rem", position: isSidebarOpen ? "absolute" : "fixed", left: isSidebarOpen ? "15.6rem" : "3rem", zIndex: "999",
+          marginTop: isSidebarOpen ? "0.9rem" : "1rem"
+         }}>
+          {isSidebarOpen ?  <X /> :  <AlignJustify />}
+        </button>
+          {isSidebarOpen && ( */}
             <div className="col-sm-3 left-side" >
               <div
                 className="nav flex-column nav-pills nav-pills-tab"
@@ -165,18 +170,14 @@ const Settings = () => {
                 </div>
               </div>
             </div>
-          )}
-          <div className={isSidebarOpen ? "col-sm-7" : "col-sm-12"}>
+          {/* )} */}
+          {/* <div className={isSidebarOpen ? "col-sm-7" : "col-sm-12"}> */}
+          <div className= "col-sm-9 ">
             <div className="tab-content"  >
-              <div style={{
-                width: isSidebarOpen ? "80rem" : "90rem",
-                marginLeft: isSidebarOpen ? "" : "10rem"
-              }} >
-                <div className="" >
-                  <div className="card">
+              <div   >
+                
                     <div className="card-body">
-                      <div className="row">
-                        <div className="col-sm-9">
+                     
                           <div className="tab-content ">
                             {/* {/ Company Settings /} */}
                             <div
@@ -186,8 +187,8 @@ const Settings = () => {
                               aria-labelledby="v-pills-company-tab"
                             >
                               <div className="col-xl-12 col-md-12">
-                                <div className="card company-settings-new">
-                                  <div className="card-body w-100">
+                                <div className=" company-settings-new">
+                                  <div className=" w-100">
                                     <div className="content-page-header">
                                       <h5>Company Setting</h5>
                                     </div>
@@ -315,16 +316,16 @@ const Settings = () => {
                                 <Usersetbrokerinfo />
                               ) : null}
                             </div>
-                          </div>
-                        </div>
+                          
                       </div>
                     </div>
-                  </div>
-                </div>
+                 
               </div>
             </div>
           </div>
         </div>
+      </div>
+      </div>
       </div>
     </>
   );

@@ -108,7 +108,7 @@ function System() {
   };
 
   return (
-    <div className="content container-fluid">
+    <div className="">
       <div className="row mb-2">
         <div className="col-lg-4 col-md-4" data-aos="fade-left">
           <div className="page-header">

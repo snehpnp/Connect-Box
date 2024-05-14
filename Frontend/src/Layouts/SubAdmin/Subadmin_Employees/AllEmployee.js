@@ -209,9 +209,7 @@ export default function AllEmployees() {
               <option key={index} value={data.UserName}>{data.UserName}</option>
             ))}
           </select>
-          <div className="dropdown-arrow" style={{ position: 'absolute', right: '5px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }}>
-            ▼
-          </div>
+       
         </div>
 
       ),
