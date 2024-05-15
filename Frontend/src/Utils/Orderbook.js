@@ -25,7 +25,7 @@ export const OrderBook = async (UserDetails, ip) => {
 
         axios(config)
             .then(async (response) => {
-                console.log("response", response.data);
+                console.log("response==>", response.data);
 
 
             })
