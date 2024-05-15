@@ -8,6 +8,7 @@ import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
 import { OrderBook } from "../../../Utils/Orderbook";
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import Swal from 'sweetalert2';
+import ExportToExcel from '../../../Utils/ExportCSV'
 
 
 const Dashboards = () => {
@@ -18,6 +19,7 @@ const Dashboards = () => {
   var user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   var Role = JSON.parse(localStorage.getItem("user_details")).Role;
 
+  const [ForGetCSV, setForGetCSV] = useState([])
 
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
@@ -230,8 +232,14 @@ const Dashboards = () => {
       .then(async (response) => {
         if (response.status) {
           if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
+            OrderBook(response.data[0])
+              .then(response => {
+                setForGetCSV(response)
 
-            OrderBook(response.data[0], "!23")
+              })
+              .catch(error => {
+                console.error("Error:", error);
+              });
           } else {
             Swal.fire({
               title: "Trading Is Off",
@@ -278,12 +286,27 @@ const Dashboards = () => {
                 ) : (
                   <p>Loading...</p>
                 )}
-                <div className="dash-btns">
-                  <a className="btn view-company-btn" onClick={(e) => DawnloadOrderBook(e)}>
-                    Download Order Book
-                  </a>
+                <hr style={{color:"white",width:"450px" ,height:"10px"}}/>
+                <div className="dash-btns gap-5 mt-5" style={{ display: "flex" }}>
+                  <div style={{ marginBottom: "10px" }}>
+                    <h3 style={{ color: "white" }}>Balance</h3>
+                    <p>10000</p>
+                  </div>
+                  <div style={{ marginBottom: "10px" }}>
+                    <h3 style={{ color: "white" }}>M2M</h3>
+                    <p>7860</p>
+                  </div>
+                  <div style={{ marginBottom: "10px" }}>
+                    <h3 style={{ color: "white" }}>Dawnload</h3>
+                    <a className="btn view-company-btn" onClick={(e) => DawnloadOrderBook(e)}>
+                      Order Book
+                    </a>
+                  </div>
 
                 </div>
+
+
+
                 <div className="dash-img">
                   <img src="assets/img/dashboard-card-img.png" alt="" />
                 </div>

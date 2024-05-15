@@ -1,16 +1,11 @@
-//  1= Master Trust, 2=  'Alice Blue, 3= Master Trust , 4 = Motilal Oswal, 5=Zebull ,
-//  6=IIFl , 7=Kotak , 8=Mandot , 9=Choice, 10=Anand Rathi, 11=B2C, 13=Angel,
-// 13 =Fyers , 14 = 5-Paisa , 15 Zerodha ,
-import * as Config from "./Config";
-import Swal from 'sweetalert2';
 import axios from "axios";
-import { PDFDownloadLink, PDFViewer, Document, Page, Text } from "@react-pdf/renderer";
-import { CSVLink } from "react-csv";
+import React from 'react'
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 
-export const OrderBook = async (UserDetails, ip) => {
-
-    var broker_id = UserDetails.broker
+export const OrderBook = async (UserDetails) => {
+    var broker_id = UserDetails.broker;
 
     if (broker_id === "2" || broker_id === 2) {
         let config = {
@@ -23,21 +18,39 @@ export const OrderBook = async (UserDetails, ip) => {
             },
         };
 
-        axios(config)
-            .then(async (response) => {
-                console.log("response==>", response.data);
+        // Return a promise
+        return new Promise((resolve, reject) => {
+            axios(config)
+                .then(response => {
+                    console.log("response==>", response.data);
 
 
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-                // Handle error
-            });
+
+                    const fileType =
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+                    const fileExtension = ".xlsx";
+
+
+                        const ws = XLSX.utils.json_to_sheet(response.data);
+                        const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+                        const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+                        const data = new Blob([excelBuffer], { type: fileType });
+                        FileSaver.saveAs(data, "Orderbook" + fileExtension);
+            
+
+
+
+                    resolve(response.data); // Resolve the promise with response data
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    reject(error); // Reject the promise with error
+                });
+        });
+    } else if (broker_id === "12" || broker_id === 12) {
+        // Logic for broker 12
     }
 
-
-    else if (broker_id === "12" || broker_id === 12) {
-
-    }
-   
-}
+    // Return null if broker_id is not handled
+    return null;
+};
