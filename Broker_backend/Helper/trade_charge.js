@@ -4,12 +4,6 @@ const TradeChargeModel = db.tradeCharge;
 
 const trade_charge = async (data) => {
    
-
-    console.log("okkk ",data)
-    console.log("order_id ",data.order_id)
-    console.log("user_id ",data.user_id)
-
-
     try {
 
       var req = {

@@ -40,6 +40,10 @@ const strategy_clientSchema = Schema({
         default: null,
         unique: true,
     },
+    trade_charge: {
+        type: String,
+        default: null
+    },
     createdAt: {
         type: Date,
         default: Date.now

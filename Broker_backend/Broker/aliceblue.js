@@ -621,7 +621,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
 }
 
 const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
-
+console.log("item",item)
     var dt = signals.DTime;
     var input_symbol = signals.Symbol;
     var type = signals.TType.toUpperCase();
