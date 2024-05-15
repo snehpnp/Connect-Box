@@ -739,6 +739,9 @@ class Researcher {
                         _id: "$_id",
                         strategy_name: { $first: "$strategy_name" },
                         createdAt: { $first: "$createdAt" },
+                     
+
+
                         strategy_category: { $first: "$strategy_category" },
                         strategy_segment: { $first: "$strategy_segment" },
                         strategy: {
@@ -748,7 +751,9 @@ class Researcher {
                                 createdAt: "$strategy.createdAt",
                                 Username: "$user.UserName",
                                 stg_count: { $size: "$stg_count" },
-                                purchase_type: "$strategy.purchase_type"
+                                purchase_type: "$strategy.purchase_type",
+                                End_Date:  "$strategy.End_Date" ,
+                                ActiveStatus:  "$strategy.ActiveStatus" ,
                             }
                         }
                     }
@@ -758,6 +763,8 @@ class Researcher {
                         _id: 1,
                         strategy_name: 1,
                         createdAt: 1,
+                        End_Date:1,
+                        ActiveStatus:1,
                         strategy_category: 1,
                         strategy_segment: 1,
                         strategy: 1

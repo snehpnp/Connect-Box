@@ -100,6 +100,15 @@ const strategySchema = Schema({
         type: String,
         default: null
     },
+    End_Date: {
+        type: Date,
+        default: null
+    },
+    ActiveStatus: {
+        type: String,
+        enum: ['1', '0'],
+        default: '1'
+    },
     createdAt: {
         type: Date,
         default: Date.now
