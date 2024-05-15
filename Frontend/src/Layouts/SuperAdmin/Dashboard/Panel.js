@@ -4,7 +4,11 @@ import {
   getadmindata,
   updateBalance,
   Adminhistory,
+  Subadmindetail,
+  getuserdata,
 } from "../../../ReduxStore/Slice/SuperAdmin/SuperAdmin";
+
+import { GetAllUsers } from "../../../ReduxStore/Slice/Subadmin/UsersSlice";
 import { useDispatch } from "react-redux";
 import IconButton from "@mui/material/IconButton";
 import { Plus } from "lucide-react";
@@ -19,12 +23,26 @@ const Panel = () => {
 
   const [Panel, setPanel] = useState([]);
   const [open, setOpen] = useState(false);
+  const [getsubadmin, setGetsubadmin] = useState([]);
+  const [subSearch, setSubSearch] = useState("All");
   const [refresh, setRefresh] = useState(false);
+  const [userdata, setUserdata] = useState([]);
   const [update, setUpdate] = useState({
     _id: "",
     Balance: "",
   });
+  const [getid,setGetid] = useState([])
+  const [getAllUsers, setAllUsers] = useState({
+    loading: true,
+    data: [],
+    data1: [],
+  });
 
+
+  const handleRefresh = () => {
+    getadmintable();
+    setRefresh(!refresh);
+  };
 
   /// get admin table
 
@@ -70,6 +88,86 @@ const Panel = () => {
         console.log("error", error);
       });
   };
+
+  // get subadmin data
+
+  const getsubadminDetail = async () => {
+    await dispatch(Subadmindetail({}))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          console.log("subadmin",response.data)
+        
+          setGetsubadmin(response.data);
+          setGetid(response.data[0]._id)
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+
+ 
+   const getUsersData = async () => {
+    var data = { user_ID:getid }
+    await dispatch(GetAllUsers(data))
+      .unwrap()
+      .then((response) => {
+         console.log("aaaa",response.data)
+        if (response.status) {
+          const formattedData = response.data && response.data.map((row, index) => ({
+            ...row,
+            id: index + 1,
+          }));
+
+          setAllUsers({
+            loading: false,
+            data: formattedData,
+
+          });
+
+        } else {
+
+          setAllUsers({
+            loading: false,
+            data: [],
+            data1: [],
+          });
+        }
+      })
+      .catch((error) => {
+
+        setAllUsers({
+          loading: true,
+          data: [],
+          data1: [],
+        });
+      });
+  };
+
+
+  
+
+  // const getUser = async () => {
+  //   await dispatch(getuserdata({}))
+  //     .unwrap()
+  //     .then(async (response) => {
+  //       if (response.status) {
+  //         console.log("user", response.data);
+  //         setUserdata(response.data)
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log("error", error);
+  //     });
+  // };
+
+  useEffect(() => {
+    getsubadminDetail();
+    getUsersData()
+  
+  }, []);
 
   const styles = {
     container: {
@@ -147,7 +245,6 @@ const Panel = () => {
     },
   ];
 
-
   return (
     <>
       <div className="content container-fluid" data-aos="fade-left">
@@ -163,6 +260,7 @@ const Panel = () => {
                       data-bs-toggle="tooltip"
                       data-bs-placement="bottom"
                       title="Refresh"
+                      onClick={handleRefresh}
                     >
                       <span>
                         <i className="fe fe-refresh-ccw" />
@@ -197,14 +295,24 @@ const Panel = () => {
                   </li>
 
                   <li>
-                    <Link className="btn btn-primary">
-                      <i
-                        className="fa fa-plus-circle me-2"
-                        aria-hidden="true"
-                      />
-                      Add Subadmin
-                    </Link>
-                    <div>
+                    <div className="d-flex">
+                      <div className="col-lg-12">
+                        <div className="">
+                          <div className="col-lg-12">
+                            <select
+                              className="form-control large-select"
+                              style={{ height: "40px" }}
+                              value={subSearch}
+                              onChange={(e) => setSubSearch(e.target.value)}
+                            >
+                              {getsubadmin &&
+                                getsubadmin.map((data, index) => (
+                                  <option key={index}>{data.FullName}</option>
+                                ))}
+                            </select>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </li>
                 </ul>

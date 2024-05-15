@@ -143,7 +143,7 @@ const MainSignalsRemainToken = async () => {
 
 
     const result = await MainSignals_modal.aggregate(pipeline)
-    console.log("result ",result)
+    // console.log("result ",result)
     result.forEach(async (element) => {
 
 

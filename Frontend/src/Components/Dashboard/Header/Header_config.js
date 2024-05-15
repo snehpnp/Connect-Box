@@ -438,9 +438,17 @@ export const superadmin_header = [
         Icon: "fe fe-help-circle",
         Data: []
     }, {
-        id: 9,
+        id: 10,
         name: 'History',
         route: "/superadmin/history",
+        Icon: "fe fe-help-circle",
+        Data: []
+
+    },
+    {
+        id: 20,
+        name: 'All USER',
+        route: "/superadmin/alluser",
         Icon: "fe fe-help-circle",
         Data: []
 
