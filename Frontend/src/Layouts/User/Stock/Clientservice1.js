@@ -59,7 +59,7 @@ function Clientservice() {
 
         <div className="content-page-header mt-2">
           <h5>Stock List</h5>
-          <div className="status-toggle pe-5" style={{ display: 'flex', alignItems: 'center' }}>
+          <div className="pe-5" style={{ display: 'flex', alignItems: 'center' }}>
             <span style={{ marginRight: '10px', fontSize: '16px', fontWeight: 'bold', color: getLoginStatus ? "green" : "red" }}>TRADING STATUS</span>
             <input
               id="1"

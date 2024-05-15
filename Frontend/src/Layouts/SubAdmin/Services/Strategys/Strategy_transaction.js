@@ -265,8 +265,8 @@ function Payment() {
 
 
                 <div className="d-flex gap-5">
-                  <h4 >Total Strategy Profit : <span style={{ color: "green" }}> {stg_total || 0 .toFixed(2)}</span> </h4>
-                  <h4 >Total Admin Charges : <span style={{ color: "green" }}> {Admin_charge_total || 0 .toFixed(2)}</span> </h4>
+                  <h5  className="mb-4">Total Strategy Profit : <span style={{ color: "green" }}> {stg_total || 0 .toFixed(2)}</span> </h5>
+                  <h5 className="mb-4">Total Admin Charges : <span style={{ color: "green" }}> {Admin_charge_total || 0 .toFixed(2)}</span> </h5>
                 </div>
                 : ""
 

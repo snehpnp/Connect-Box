@@ -101,7 +101,7 @@ function MessageBroadcast() {
     {
       field: "messageTitle",
       headerName: "Message",
-      width: 350,
+      width: 550,
       headerClassName: styles.boldHeader,
     },
 
@@ -145,7 +145,7 @@ function MessageBroadcast() {
     {
       field: "messageTitle",
       headerName: "Message",
-      width: 350,
+      width: 500,
       headerClassName: styles.boldHeader,
     },
 
@@ -378,7 +378,7 @@ function MessageBroadcast() {
 
         <div className="card" data-aos="fade-left">
           <div className="card-header">
-            <h5 className=" card-title mb-0 w-auto">Message Broadcast</h5>
+            <h5 className=" card-title mb-0 w-auto"><i class="fe fe-message-circle"> </i> Message Broadcast</h5>
           </div>
 
 

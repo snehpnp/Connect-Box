@@ -178,7 +178,7 @@ const DetailsView = ({ showModal, setshowModal, tradeHistoryData }) => {
 
 
     return (
-        <div>
+        <div className="custom-modal1">
             <Modal isOpen={showModal} size="xl" title="Licence Details" hideBtn={true}
                 handleClose={() => setshowModal(false)}
             >

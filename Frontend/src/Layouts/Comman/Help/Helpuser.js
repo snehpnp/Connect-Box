@@ -172,7 +172,7 @@ const Helpuser = () => {
     <div>
       <Content
         Card_title="Help"
-        Card_title_icon="fas fa-message pe-3"
+        Card_title_icon="fas fa-message pe-2"
         Content={
           <Box sx={{ width: "100%" }}>
             <TabContext value={value}>
@@ -248,7 +248,7 @@ const Helpuser = () => {
                           </div>
                           <div className="row">
                             <div className="col-lg-12 col-md-12">
-                              <div className="input-block mb-0 mt-2">
+                              <div className="input-block mb-4 mt-2">
                                 <label>Message</label>
                                 <textarea
                                   id="message"

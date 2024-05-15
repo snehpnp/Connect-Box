@@ -303,7 +303,29 @@ function Clientservice() {
                   <ul className="filter-list mb-0">
 
                     <li className='toggle-li'>
-                      <div className="status-toggle " style={{ display: 'flex', alignItems: 'center' }}>
+
+                    <div className="" id="app-cover">
+                            <div className="toggle-button-cover">
+                              <div className="button-cover">
+                                <div className="button r" id="button-1">
+                                  <input
+                                    type="checkbox"
+                                    className="checkbox check"
+                                    id="1"
+                                    onChange={(e) => LogIn_WIth_Api(e.target.checked,
+                                      profileData && profileData.data[0].broker,
+                                      profileData && profileData.data[0].TradingStatus,
+                                      profileData && profileData.data[0])
+                                    }
+                                    checked={getLoginStatus}
+                                  />
+                                  <div className="knobs" />
+                                  <div className="layer" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      {/* <div className="status-toggle " style={{ display: 'flex', alignItems: 'center' }}>
                         <span className={getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} style={{}}>Trading Status</span>
                         <input
                           id="1"
@@ -318,7 +340,7 @@ function Clientservice() {
                           style={{ marginRight: '5px' }}
                         />
                         <label htmlFor="1" className="checktoggle checkbox-bg"></label>
-                      </div>
+                      </div> */}
                     </li>
 
 

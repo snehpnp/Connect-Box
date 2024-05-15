@@ -662,7 +662,34 @@ export default function AllEmployees() {
                     <div className="list-btn">
                       <ul className="filter-list mb-0">
                         <li className="toggle-li">
-                          <div
+
+                        <div className="" id="app-cover">
+                            <div className="toggle-button-cover">
+                              <div className="button-cover">
+                                <div className="button r" id="button-1">
+                                  <input
+                                    type="checkbox"
+                                    className="checkbox check"
+                                    id="1"
+                                    onChange={(e) =>
+                                      LogIn_WIth_Api(
+                                        e.target.checked,
+                                        profileData && profileData.data[0].broker,
+                                        profileData &&
+                                        profileData.data[0].TradingStatus,
+                                        profileData && profileData.data[0]
+                                      )
+                                    }
+                                    defaultChecked={getLoginStatus}
+                                    
+                                  />
+                                  <div className="knobs" />
+                                  <div className="layer" />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          {/* <div
                             className="status-toggle pe-2"
                             style={{ display: "flex", alignItems: "center" }}
                           >
@@ -695,7 +722,7 @@ export default function AllEmployees() {
                               htmlFor="1"
                               className="checktoggle checkbox-bg"
                             ></label>
-                          </div>
+                          </div> */}
                         </li>
 
                         <li className="">
