@@ -18,6 +18,7 @@ import Subscriptiondata from '../Layouts/User/Subscription/Subscriptiondata';
 
 
 import Settings from '../Layouts/Comman/Setting_Page/Settings';
+import TradeCharge from '../Layouts/User/Trade/TradeCharge';
 
 
 
@@ -49,6 +50,7 @@ const User_Routing = () => {
                    
                     
                     <Route exact path="/setting" element={<Settings />} />
+                    <Route exact path="/tradecharge" element={<TradeCharge/>} />
 
 
 

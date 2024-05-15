@@ -278,7 +278,6 @@ export default function AllUsers() {
       .then((response) => {
         if (response.status) {
 
-
           setAllBroker(response.data);
         }
         else {
@@ -295,14 +294,6 @@ export default function AllUsers() {
   useState(() => {
     AllBroker();
   }, [])
-
-
-
-
-
-
-
-
 
 
   const RefreshHandle = () => {

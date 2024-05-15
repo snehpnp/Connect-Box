@@ -1510,9 +1510,6 @@ class Users {
 
 
 
-
-
-
   // GET ALL GetAllClients
   async GetAllUser(req, res) {
     try {
