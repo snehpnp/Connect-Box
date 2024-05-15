@@ -6,7 +6,7 @@ import {
   Delete_Researcher,
 } from "../../../ReduxStore/Slice/Researcher/ResearcherSlice";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate , useLocation } from 'react-router-dom';
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import { Trash2, IndianRupee } from "lucide-react";
@@ -33,6 +33,10 @@ const AllResearcher = () => {
   const [inputBalance, setInputBalance] = useState("0");
 
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+
+
+  const location = useLocation();
+  var dashboard_filter = location.search.split("=")[1];
 
   const styles = {
     container: {
@@ -285,6 +289,19 @@ const AllResearcher = () => {
     try {
       const response = await dispatch(Get_All_Researcher(data)).unwrap();
       if (response.status) {
+
+
+
+        var formattedData
+
+        if (dashboard_filter == 4 || dashboard_filter==undefined ) {
+          formattedData = response.data 
+        }
+        else if (dashboard_filter == 5) {
+          formattedData = response.data.filter(data => data.ActiveStatus == 1);
+        }else if (dashboard_filter == 6) {
+          formattedData = response.data.filter(data => data.ActiveStatus == 0);
+        }
         const filterData = response.data.filter((items) => {
           const searchMatch =
             inputSearch == "" ||
@@ -298,7 +315,7 @@ const AllResearcher = () => {
         });
         setAllResearcher({
           loading: false,
-          data: inputSearch ? filterData : response.data,
+          data: inputSearch ? filterData : formattedData,
         });
       } else {
         setAllResearcher({

@@ -329,7 +329,6 @@ console.log("111")
       }
     ];
    
-    console.log("pipeline",pipeline)
     // Create the view
     await db.createCollection('mastertrustView', { viewOn: 'users', pipeline });
 

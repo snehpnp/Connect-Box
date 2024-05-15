@@ -426,7 +426,6 @@ function Apicreate_info() {
     if (selectedItem) {
       setSelectedItem(selectedItem);
       setModel(true);
-      console.log("Model state:", model);
     }
   };
 

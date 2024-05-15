@@ -37,8 +37,6 @@ const AddClient = () => {
   const [getAllBroker, setAllBroker] = useState([]);
 
 
-  console.log("stgDiseble :", stgDiseble)
-
   const [employeeNames, setEmployeeNames] = useState({
     loading: true,
     data: [],
@@ -514,7 +512,6 @@ const AddClient = () => {
     var data = { id: user_id ,key:"1"}
     await dispatch(GetSubStrategys(data)).unwrap()
       .then((response) => {
-        // console.log(" response.data", response.data)
         if (response.status) {
           setgetallStrategy({
             loading: true,
@@ -633,7 +630,6 @@ const AddClient = () => {
   }, [formik.values.groupservice])
 
 
-  // console.log("formik.values.Service_Type", formik.values.Service_Type)
 
   // useEffect(() => {
   //   setSelectedCheckboxesAndPlan([])
@@ -867,6 +863,7 @@ const AddClient = () => {
                                                   id={`${strategy._id}_1`}
                                                   checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 1)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
+                                                  disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                                 />
                                                 <label
                                                   style={{
@@ -885,6 +882,7 @@ const AddClient = () => {
                                                   id={`${strategy._id}_2`}
                                                   checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 2)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
+                                                  disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                                 />
                                                 <label
                                                   style={{
@@ -903,6 +901,7 @@ const AddClient = () => {
                                                   id={`${strategy._id}_3`}
                                                   checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 3)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
+                                                  disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                                 />
                                                 <label
                                                   style={{
@@ -921,6 +920,7 @@ const AddClient = () => {
                                                   id={`${strategy._id}_4`}
                                                   checked={selectedCheckboxesAndPlan && selectedCheckboxesAndPlan.some((item) => item.id === strategy._id && item.plan_id == 4)}
                                                   onChange={(e) => PlanSetinState(e.target.id)}
+                                                  disabled={stgDiseble && stgDiseble.includes(strategy._id)}
                                                 />
                                                 <label
                                                   style={{

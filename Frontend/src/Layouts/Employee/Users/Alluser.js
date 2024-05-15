@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
-import { Link } from "react-router-dom";
+import { Link , useLocation } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -33,7 +33,7 @@ export default function AllUsers() {
   const [getAllBroker, setAllBroker] = useState([]);
   const [ShowDeleteModal, setShowDeleteModal] = useState(false);
   const [modalId, setmodalId] = useState('');
-  const [getllSubadminUsers, setAllSubadminUsers] = useState('');
+  
 
 
   const [getPermission, setPermission] = useState({
@@ -67,6 +67,9 @@ export default function AllUsers() {
     },
   };
 
+
+  const location = useLocation();
+  var dashboard_filter = location.search.split("=")[1];
 
   const showLicenceName = (row) => {
     if (row.license_type === "0") {
@@ -362,7 +365,47 @@ export default function AllUsers() {
             id: index + 1,
           }));
 
-          const filterData = formattedData.filter((item) => {
+          let formattedData1;
+          if (dashboard_filter == 1 || dashboard_filter == undefined) {
+            formattedData1 = formattedData
+          }
+          else if (dashboard_filter == 2) {
+            formattedData1 = formattedData.filter((item) => item.ActiveStatus == 1)
+          }
+          else if (dashboard_filter == 3) {
+            formattedData1 = formattedData.filter((item) => item.ActiveStatus == 1)
+          }
+          else if (dashboard_filter == 4) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 2)
+          }
+          else if (dashboard_filter == 5) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 2 && item.ActiveStatus == 1)
+          }
+          else if (dashboard_filter == 6) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 2 && item.ActiveStatus == 0)
+          }
+          else if (dashboard_filter == 7) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 0)
+          }
+          else if (dashboard_filter == 8) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 1)
+          }
+          else if (dashboard_filter == 9) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 0)
+          }
+          else if (dashboard_filter == 10) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1)
+          }
+          else if (dashboard_filter == 11) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1  && item.ActiveStatus == 1)
+          } else if (dashboard_filter == 12) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1  && item.ActiveStatus == 0)
+          }
+
+
+
+
+          const filterData = formattedData1.filter((item) => {
             const searchInputMatch =
               searchInput == '' ||
               item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -376,7 +419,7 @@ export default function AllUsers() {
 
           setAllUsers({
             loading: false,
-            data: searchInput ? filterData : formattedData,
+            data: searchInput ? filterData : formattedData1,
 
           });
 
@@ -399,51 +442,6 @@ export default function AllUsers() {
         });
       });
   };
-
-  // const getAllUsersData = async () => {
-  //   var data = { user_ID: user_id }
-  //   await dispatch(GetAllSubadminUsers(data))
-  //     .unwrap()
-  //     .then((response) => {
-
-  //       if (response.status) {
-  //         const formattedData = response.data && response.data.map((row, index) => ({
-  //           ...row,
-  //           id: index + 1,
-  //         }));
-
-  //         const filterData = formattedData.filter((item) => {
-  //           const searchInputMatch =
-  //             searchInput == '' ||
-  //             item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
-  //             item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
-  //             item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
-  //             item.prifix_key.toLowerCase().includes(searchInput.toLowerCase())
-
-  //           return searchInputMatch
-
-  //         })
-
-  //         setAllSubadminUsers({
-  //           loading: false,
-  //           data: searchInput ? filterData : formattedData,
-
-  //         });
-
-  //       } else {
-
-  //         setAllSubadminUsers({
-  //           loading: false,
-  //           data: [],
-  //           data1: [],
-  //         });
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log("Error", error);
-  //     });
-  // };
-
 
   useEffect(() => {
     getAllEmployeeUsersData();

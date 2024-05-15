@@ -53,12 +53,6 @@ const DetailsView = ({ showModal, setshowModal, tradeHistoryData }) => {
             }
         }
 
-
-
-        console.log(mergedArray);
-
-
-
     }
 
 
@@ -167,7 +161,6 @@ const DetailsView = ({ showModal, setshowModal, tradeHistoryData }) => {
    var dateString = day + "/" + month + "/" + year + " " + hours + ":" + minutes + ":" + seconds + " (IST)";
    
    // Output the result
-        // console.log(dateString);
          return dateString
          //return row.ft_time
         }else{

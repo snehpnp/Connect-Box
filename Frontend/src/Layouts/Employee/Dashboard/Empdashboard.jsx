@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {employee_dashboard_data} from "../../../ReduxStore/Slice/Admin/Subadmins";
+import { employee_dashboard_data } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
+import { Eye } from 'lucide-react';
 
 const DashBoard = () => {
   const dispatch = useDispatch();
@@ -11,10 +12,9 @@ const DashBoard = () => {
   const [colors] = useState(["#7539FF"]);
   const [userData, setUserData] = useState("");
   const userDetails = JSON.parse(localStorage.getItem("user_details"));
-  const [chart, setchart] = useState(false);
-  const [selectedUser, setSelectedUser] = useState("USERS");
+
   var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
-  const [selectedOption, setSelectedOption] = useState("Day");
+
   const storedTheme = localStorage.getItem("theme_mode");
 
 
@@ -25,21 +25,21 @@ const DashBoard = () => {
       : null;
 
   const cardDataList = [
-    { key: "TotalUsercount", title: "Total Users" },
-    { key: "TotalActiveUsercount", title: "Active Users" },
-    { key: "TotalExpiredUsercount", title: "Expired Users" },
-    { key: "TotalLiveUsercount", title: "Total Live Users" },
-    { key: "TotalActiveLiveUsercount", title: "Active Live Users" },
-    { key: "TotalExpiredLiveUsercount", title: "Expired Live Users" },
-    { key: "TotalTodayUsercount", title: "Total 2 Days User" },
-    { key: "TotalActiveTodayUsercount", title: "Active 2 Days Users" },
-    { key: "TotalExpiredTodayUsercount", title: "Expired 2 Days Users" },
-    { key: "TotalDemoUsercount", title: "Demo Users" },
-    { key: "TotalActiveDemoUsercount", title: "Active Demo Users" },
-    { key: "TotalExpiredDemoUsercount", title: "Expired Demo Users" },
+    { key: "TotalUsercount", title: "Total Users", route: "/employee/allusers?filter=1" },
+    { key: "TotalActiveUsercount", title: "Active Users", route: "/employee/allusers?filter=2" },
+    { key: "TotalExpiredUsercount", title: "Expired Users", route: "/employee/allusers?filter=3" },
+    { key: "TotalLiveUsercount", title: "Total Live Users", route: "/employee/allusers?filter=4" },
+    { key: "TotalActiveLiveUsercount", title: "Active Live Users", route: "/employee/allusers?filter=5" },
+    { key: "TotalExpiredLiveUsercount", title: "Expired Live Users", route: "/employee/allusers?filter=6" },
+    { key: "TotalTodayUsercount", title: "Total 2 days Users", route: "/employee/allusers?filter=7" },
+    { key: "TotalActiveTodayUsercount", title: "Active 2 days Users", route: "/employee/allusers?filter=8" },
+    { key: "TotalExpiredTodayUsercount", title: "Expired 2 days Users", route: "/employee/allusers?filter=9" },
+    { key: "TotalDemoUsercount", title: "Total Demo Users", route: "/employee/allusers?filter=10" },
+    { key: "TotalActiveDemoUsercount", title: "Active Demo Users", route: "/employee/allusers?filter=11" },
+    { key: "TotalExpiredDemoUsercount", title: "Expired Demo Users", route: "/employee/allusers?filter=12" },
   ];
 
-  const cardsData = cardDataList.map(({ key, title }) => {
+  const cardsData = cardDataList.map(({ key, title, route }) => {
     const count = userData[key];
     const percentage = calculatePercentage(count, userData.TotalUsercount);
     let progressBarClass = "";
@@ -63,6 +63,7 @@ const DashBoard = () => {
     return {
       iconClass: "fas fa-users",
       title: title,
+      route: route,
       count: count !== undefined ? count : "Loading...",
       progress: percentage !== null ? percentage : 0,
       arrowIcon: count !== undefined && percentage !== null
@@ -100,6 +101,12 @@ const DashBoard = () => {
     dashData();
   }, [dispatch]);
 
+  
+  const handleClick=(route)=>{
+    navigate( route)
+
+  }
+
   return (
     <div className="main-wrapper">
       <div>
@@ -130,7 +137,11 @@ const DashBoard = () => {
                             <div className="dash-widget-header crad-widge justify-content-between 
                             ">
                               <div className="dash-count">
-                                <div className="dash-title">{data.title}</div>
+                                <div className="d-flex gap-4">
+                                  <div className="dash-title">{data.title}</div>
+                                  <div> <Eye onClick={(e) => handleClick(data.route)} /></div>
+
+                                </div>
                                 <div className="dash-counts">
                                   <p>{data.count}</p>
                                 </div>

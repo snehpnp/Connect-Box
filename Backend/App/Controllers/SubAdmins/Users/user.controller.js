@@ -143,7 +143,7 @@ class Users {
 
 
 
-        var matchedStrategies = await Strategie_modal.find({ _id: { $in: stgIds } }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
+        var matchedStrategies = await Strategie_modal.find({ _id: { $in: stgIds } }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month');
 
         // Create an array of matched strategy IDs
         var matchedStrategyIds = matchedStrategies.map(strategy => strategy._id.toString());
@@ -203,7 +203,6 @@ class Users {
       } else {
         parent_prifix_key = SubadminCheck[0].prifix_key
       }
-      console.log("parent_prifix_key", parent_prifix_key)
 
       const mins = 1;
       const maxs = 1000000;
@@ -359,28 +358,37 @@ class Users {
             if (matchedStrategies.length > 0) {
               matchedStrategies.forEach((data) => {
                 const matchedStrategy = Strategies.find(strat => strat.id === data._id.toString());
-                console.log("matchedStrategy.plan_id ", matchedStrategy.plan_id)
-                console.log("data ", data)
 
 
                 var price_stg = 0
                 var daysforstg = 0
+                var trade_charge = 0
+
                 if (matchedStrategy.plan_id == 1) {
                   price_stg = data.security_fund_month
                   daysforstg = 1
+                  trade_charge = data.fixed_amount_per_trade_month
                 } else if (matchedStrategy.plan_id == 2) {
                   price_stg = data.security_fund_quarterly
                   daysforstg = 3
+                  trade_charge = data.fixed_amount_per_trade_quarterly
+
                 } else if (matchedStrategy.plan_id == 3) {
                   price_stg = data.security_fund_half_early
                   daysforstg = 6
+                  trade_charge = data.fixed_amount_per_trade_half_early
+
                 }
                 else if (matchedStrategy.plan_id == 4) {
                   price_stg = data.security_fund_early
                   daysforstg = 12
+                  trade_charge = data.fixed_amount_per_trade_early
+
                 } else {
                   daysforstg = 0
                   price_stg = 0
+                  trade_charge = 0
+
                 }
 
 
@@ -417,15 +425,13 @@ class Users {
                   uniqueUserStrategy: User_id + "_" + data.id,
                   admin_id: SubadminCheck[0]._id,
                   Start_Date: StartDate1,
-                  End_Date: EndDate1
+                  End_Date: EndDate1,
+                  price_stg,
+                  trade_charge: trade_charge
 
                 });
                 User_strategy_client.save();
 
-
-                console.log("parseInt(SubadminCheck[0].strategy_Percentage)", parseInt(SubadminCheck[0].strategy_Percentage))
-
-                console.log("parseInt(price_stg)", parseInt(price_stg))
 
 
                 const Admin_charge_percentage = parseInt(SubadminCheck[0].strategy_Percentage) / 100;
@@ -511,7 +517,6 @@ class Users {
 
             // I USER IF 2 DAYS CLICNT
             if (license_type == "0") {
-              // console.log("SNEH JAISWAL")
 
               const filter = { _id: User_id };
               const update = {
@@ -706,7 +711,6 @@ class Users {
             }
           }
         ]);
-        // console.log("stg_count", stg_count)
 
 
         if (stg_count && stg_count.length > 0 && stg_count[0].totalAdminCharge !== undefined) {
@@ -978,28 +982,36 @@ class Users {
           // IF ADD NEW STRATEGY
           if (add_startegy.length > 0) {
             add_startegy.forEach(async (data) => {
-              const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
+              const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month');
 
-              console.log("data", data)
 
               var price_stg = 0
               var daysforstg = 0
+              var trade_charge = 0
+
               if (data.plan_id == 1) {
                 price_stg = matchedStrategy.security_fund_month
                 daysforstg = 1
+                trade_charge = matchedStrategy.fixed_amount_per_trade_month
               } else if (data.plan_id == 2) {
                 price_stg = matchedStrategy.security_fund_quarterly
                 daysforstg = 3
+                trade_charge = matchedStrategy.fixed_amount_per_trade_quarterly
+
               } else if (data.plan_id == 3) {
                 price_stg = matchedStrategy.security_fund_half_early
                 daysforstg = 6
+                trade_charge = matchedStrategy.fixed_amount_per_trade_half_early
+
               }
               else if (data.plan_id == 4) {
                 price_stg = matchedStrategy.security_fund_early
                 daysforstg = 12
+                trade_charge = matchedStrategy.fixed_amount_per_trade_early
               } else {
                 daysforstg = 0
                 price_stg = 0
+                trade_charge = 0
               }
 
               var currentDate = new Date();
@@ -1032,6 +1044,7 @@ class Users {
                 Start_Date: StartDate1,
                 End_Date: EndDate1,
                 uniqueUserStrategy: existingUsername._id + "_" + matchedStrategy._id,
+                trade_charge: trade_charge
               });
               User_strategy_client.save();
 
@@ -1066,27 +1079,37 @@ class Users {
           // UPDATE PLAN DEMO TO LIVE
           Exist_strategy1.map(async (data) => {
 
-            const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
-            console.log("Esist -", data)
+            const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month');
+
 
             var price_stg = 0
             var daysforstg = 0
+            var trade_charge = 0
+
             if (data.plan_id == 1) {
               price_stg = matchedStrategy.security_fund_month
               daysforstg = 1
+              trade_charge = matchedStrategy.fixed_amount_per_trade_month
+
             } else if (data.plan_id == 2) {
               price_stg = matchedStrategy.security_fund_quarterly
               daysforstg = 3
+              trade_charge = matchedStrategy.fixed_amount_per_trade_quarterly
             } else if (data.plan_id == 3) {
               price_stg = matchedStrategy.security_fund_half_early
               daysforstg = 6
+              trade_charge = matchedStrategy.fixed_amount_per_trade_half_early
             }
             else if (data.plan_id == 4) {
               price_stg = matchedStrategy.security_fund_early
               daysforstg = 12
+              trade_charge = matchedStrategy.fixed_amount_per_trade_early
+
             } else {
               daysforstg = 0
               price_stg = 0
+              trade_charge = 0
+
             }
 
             var currentDate = new Date();
@@ -1119,8 +1142,8 @@ class Users {
                 plan_id: data.plan_id,
                 Start_Date: StartDate1,
                 End_Date: EndDate1,
-                ActiveStatus: "1"
-
+                ActiveStatus: "1",
+                trade_charge: trade_charge
               },
             };
 
@@ -1168,29 +1191,43 @@ class Users {
 
           if (add_startegy.length > 0) {
             add_startegy.forEach(async (data) => {
-              const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('security_fund_month security_fund_quarterly security_fund_half_early security_fund_early');
-         
+              const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month');
+
+              console.log("matchedStrategy", matchedStrategy)
               var price_stg = 0
               var daysforstg = 0
+              var trade_charge = 0
+
               if (data.plan_id == 1) {
                 price_stg = matchedStrategy.security_fund_month
                 daysforstg = 1
+                trade_charge = matchedStrategy.fixed_amount_per_trade_month
+
               } else if (data.plan_id == 2) {
                 price_stg = matchedStrategy.security_fund_quarterly
                 daysforstg = 3
+                trade_charge = matchedStrategy.ixed_amount_per_trade_quarterly
+
               } else if (data.plan_id == 3) {
                 price_stg = matchedStrategy.security_fund_half_early
                 daysforstg = 6
+                trade_charge = matchedStrategy.fixed_amount_per_trade_half_early
+
+
               }
               else if (data.plan_id == 4) {
                 price_stg = matchedStrategy.security_fund_early
                 daysforstg = 12
+                trade_charge = matchedStrategy.fixed_amount_per_trade_early
+
               } else {
                 daysforstg = 0
                 price_stg = 0
+                trade_charge = 0
+
               }
 
-
+              console.log("trade_charge", trade_charge)
 
 
 
@@ -1225,6 +1262,8 @@ class Users {
                 Start_Date: StartDate1,
                 End_Date: EndDate1,
                 uniqueUserStrategy: existingUsername._id + "_" + matchedStrategy._id,
+                trade_charge: trade_charge
+
 
               });
               User_strategy_client.save();
@@ -1554,7 +1593,6 @@ class Users {
 
     try {
 
-      console.log("cppppppp")
       const { page, limit, Find_Role, user_ID } = req.body; //LIMIT & PAGE
 
       if (!user_ID || user_ID == '' || user_ID == null) {

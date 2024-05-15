@@ -187,10 +187,17 @@ export const subamdin_header = [
             }
         ]
     },
+    // {
+    //     id: 7,
+    //     name: 'Strategy History',
+    //     route: "/subadmin/strategys/history",
+    //     Icon: "fa-solid fa-clock-rotate-left",
+    //     Data: []
+    // },
     {
-        id: 7,
-        name: 'Strategy History',
-        route: "/subadmin/strategys/history",
+        id: 8,
+        name: 'Trade Charges',
+        route: "/subadmin/trade/charges",
         Icon: "fa-solid fa-clock-rotate-left",
         Data: []
     },
@@ -555,7 +562,7 @@ export const research_header = [
         Icon: "fe fe-users",
         Data: []
     },
-    
+
     // {
     //     id: 10,
     //     name: 'Message Broadcast',

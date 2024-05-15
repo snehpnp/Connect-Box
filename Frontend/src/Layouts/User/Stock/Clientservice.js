@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import {
-  GetAllclientDetails,
-  UPDATE_CLIENT_SERVICE_DATA,
-  statusUpdate,
-} from "../../../ReduxStore/Slice/Users/ClientServiceSlice";
+import { GetAllclientDetails, UPDATE_CLIENT_SERVICE_DATA, statusUpdate} from "../../../ReduxStore/Slice/Users/ClientServiceSlice";
 import { SquarePen } from "lucide-react";
 import Swal from "sweetalert2";
-import {
-  Userinfo,
-  Trading_Off_Btn,
-} from "../../../ReduxStore/Slice/Comman/Userinfo";
+import { Userinfo,Trading_Off_Btn} from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { ipAddress } from "../../../Utils/Ipaddress";
+
 
 function Clientservice() {
   const dispatch = useDispatch();
@@ -72,12 +66,12 @@ function Clientservice() {
         .catch((error) => {
           console.log("Error", error);
         });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [refresh]);
 
   // status update active
   const ActiveStatus = async (item, e) => {
@@ -87,9 +81,9 @@ function Clientservice() {
         service_id: item.service._id,
         active_status: e.checked ? "1" : "0",
       };
-  
+
       const response = await dispatch(statusUpdate(data)).unwrap();
-  
+
       if (response.status) {
         if (e.checked) {
           Swal.fire({
@@ -104,7 +98,7 @@ function Clientservice() {
             html: "Your trading has been successfully deactivated.",
           });
         }
-  
+
         setRefresh(!refresh);
       } else {
         Swal.fire({
@@ -117,11 +111,11 @@ function Clientservice() {
       console.log("Error:", error);
     }
   };
-  
+
 
   const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
     if (check) {
-      loginWithApi(brokerid, UserDetails);
+      loginWithApi(brokerid, UserDetails,ip);
     } else {
       handleTradingOff(user_id);
     }
@@ -134,13 +128,13 @@ function Clientservice() {
     await dispatch(Trading_Off_Btn(data))
       .unwrap()
       .then((response) => {
+        setRefresh(!refresh);
         if (response.status) {
           Swal.fire({
             title: "Trading Off Successfully!",
             icon: "success",
             html: "Your trading has been successfully completed.",
           });
-          setRefresh(!refresh);
         } else {
         }
       })
@@ -252,7 +246,6 @@ function Clientservice() {
             timerProgressBar: true,
           });
           setModal(!modal);
-
           emptyState();
         } else {
           setModal(!modal);
@@ -351,8 +344,8 @@ function Clientservice() {
     fetchIP();
 
     // Clean up function
-    return () => {};
-  }, []);
+    return () => { };
+  }, [refresh]);
 
   return (
     <>
@@ -536,12 +529,12 @@ function Clientservice() {
                                     {item.order_type == 1
                                       ? "MARKET"
                                       : item.order_type == 2
-                                      ? "LIMIT"
-                                      : item.order_type == 3
-                                      ? "STOPLOSS LIMIT"
-                                      : item.order_type == 4
-                                      ? "STOPLOSS MARKET"
-                                      : "MARKET"}
+                                        ? "LIMIT"
+                                        : item.order_type == 3
+                                          ? "STOPLOSS LIMIT"
+                                          : item.order_type == 4
+                                            ? "STOPLOSS MARKET"
+                                            : "MARKET"}
                                   </p>
                                 </div>
                               </li>
@@ -552,12 +545,12 @@ function Clientservice() {
                                     {item.product_type == 1
                                       ? "CNC"
                                       : item.product_type == 2
-                                      ? "MIS"
-                                      : item.product_type == 3
-                                      ? "BO"
-                                      : item.product_type == 4
-                                      ? "CO"
-                                      : "CNC"}
+                                        ? "MIS"
+                                        : item.product_type == 3
+                                          ? "BO"
+                                          : item.product_type == 4
+                                            ? "CO"
+                                            : "CNC"}
                                   </p>
                                 </div>
                               </li>

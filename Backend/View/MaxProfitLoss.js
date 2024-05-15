@@ -360,13 +360,6 @@ async function createViewMaxProfitLoss() {
     // Create or update the view
     await db.createCollection(viewName, { viewOn: 'mainsignals', pipeline: Pipeline });
 
-
-
-    console.log("okkk done")
-      
-    
-
-
   } catch (error) {
     console.log('Error:', error);
   } finally {

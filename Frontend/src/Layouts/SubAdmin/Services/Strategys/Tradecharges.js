@@ -11,7 +11,7 @@ import ExportToExcel from '../../../../Utils/ExportCSV'
 
 
 
-function Payment() {
+function Tradecharges() {
   const dispatch = useDispatch();
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
   const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
@@ -172,19 +172,6 @@ function Payment() {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          const filterdata = response.data && response.data.filter((item)=>{
-            const inputSearchMatch =
-                inputSearch == "" ||
-                item.user_id.toLowerCase().includes(
-                  inputSearch.toLowerCase()
-                ) ||
-                item.strategy_id.toLowerCase().includes(inputSearch.toLowerCase()) ||
-                item.createdAt
-                  .toLowerCase()
-                  .includes(inputSearch.toLowerCase());
-
-              return inputSearchMatch ;
-          })
           const formattedData = response.data.map((row, index) => ({
             ...row,
             id: index + 1,
@@ -192,7 +179,7 @@ function Payment() {
 
           setCompanyData({
             loading: true,
-            data: inputSearch ? filterdata : formattedData,
+            data: formattedData,
           });
         } else {
           setCompanyData({
@@ -222,7 +209,7 @@ function Payment() {
 
   useEffect(() => {
     getCompanyData();
-  }, [refresh,inputSearch]);
+  }, [refresh]);
 
   const handleRefresh = () => {
     setInputSearch('')
@@ -240,7 +227,7 @@ function Payment() {
                 <div className="col">
                   <h5 className="card-title mb-0">
                     <i class="fe fe-users pe-2" ></i>
-                    Payment History</h5>
+                    Trade charges</h5>
                 </div>
                 <div className="col-auto">
                   <div className="list-btn">
@@ -302,8 +289,7 @@ function Payment() {
 
 
                 <div className="d-flex gap-5">
-                  <h4 >Total Strategy Profit : <span style={{ color: "green" }}> {stg_total || 0 .toFixed(2)}</span> </h4>
-                 {subadmin_service_type == 2 ? <h4 >Total Admin Charges : <span style={{ color: "green" }}> {Admin_charge_total || 0 .toFixed(2)}</span> </h4>:""}
+                  <h4 >Total Trade Charges : <span style={{ color: "green" }}> {stg_total || 0 .toFixed(2)}</span> </h4>
                 </div>
                 : ""
 
@@ -338,4 +324,4 @@ function Payment() {
 };
 
 
-export default Payment;
+export default Tradecharges;

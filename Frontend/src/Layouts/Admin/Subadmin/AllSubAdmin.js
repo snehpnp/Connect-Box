@@ -10,7 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import Switch from "@mui/material/Switch";
 import { useDispatch } from "react-redux";
 import ExportToExcel from '../../../Utils/ExportCSV'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   GetAllSubAdmin,
   update_Balance, Show_Status
@@ -46,6 +46,13 @@ export default function Help() {
 
 
 
+
+
+  const location = useLocation();
+  var dashboard_filter = location.search.split("=")[1];
+
+
+  // console.log("dashboard_filter :", dashboard_filter)
 
 
   const styles = {
@@ -281,29 +288,74 @@ export default function Help() {
       .then(async (response) => {
 
         if (response.status) {
-          const formattedData = response.data && response.data.map((row, index) => ({
-            ...row,
-            id: index + 1,
-          }));
 
-          const filterData = formattedData.filter((item) => {
+          if (dashboard_filter !== undefined) {
+            let formattedData = response.data && response.data.map((row, index) => ({
+              ...row,
+              id: index + 1,
+            }));
+         
+            var formattedData1
+            if (dashboard_filter == 2) {
+              formattedData1 = formattedData.filter(data => data.ActiveStatus == 1);
+            } else if (dashboard_filter == 3) {
+              formattedData1 = formattedData.filter(data => data.ActiveStatus == 0);
+            } else if (dashboard_filter == 1 || dashboard_filter==undefined ) {
+              formattedData1 = formattedData
 
-            const inputSearchMatch =
-              inputSearch == '' ||
-              item.UserName.toLowerCase().includes(inputSearch.toLowerCase()) ||
-              item.FullName.toLowerCase().includes(inputSearch.toLowerCase()) ||
-              item.PhoneNo.toLowerCase().includes(inputSearch.toLowerCase()) ||
-              item.prifix_key.toLowerCase().includes(inputSearch.toLowerCase()) ||
-              item.Email.toLowerCase().includes(inputSearch.toLowerCase()) ||
-              item.Balance.toLowerCase().includes(inputSearch.toLowerCase())
+            } 
 
-            return inputSearchMatch;
-          })
-          setAllSubadmins({
-            loading: true,
-            data: inputSearch ? filterData : formattedData,
-            data1: [],
-          });
+
+            const filterData = formattedData1.filter(item => {
+              const inputSearchMatch =
+                inputSearch === '' ||
+                item.UserName.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                item.FullName.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                item.PhoneNo.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                item.prifix_key.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                item.Email.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                item.Balance.toLowerCase().includes(inputSearch.toLowerCase());
+
+              return inputSearchMatch;
+            });
+
+            setAllSubadmins({
+              loading: true,
+              data: inputSearch ? filterData : formattedData1,
+              data1: [],
+            });
+          } else {
+            const formattedData = response.data && response.data.map((row, index) => ({
+              ...row,
+              id: index + 1,
+            }));
+
+            const filterData = formattedData.filter(item => {
+              const inputSearchMatch =
+                inputSearch === '' ||
+                item.UserName.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                item.FullName.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                item.PhoneNo.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                item.prifix_key.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                item.Email.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                item.Balance.toLowerCase().includes(inputSearch.toLowerCase());
+
+              return inputSearchMatch;
+            });
+
+            setAllSubadmins({
+              loading: true,
+              data: inputSearch ? filterData : formattedData,
+              data1: [],
+            });
+          }
+
+
+
+
+
+
+
 
         } else {
           setAllSubadmins({

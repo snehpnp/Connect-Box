@@ -33,29 +33,24 @@ const token_chain_collection = db_main.collection('token_chain');
 
 
 cron.schedule('5 2 * * *', () => {
-    console.log('Run First Time');
     LogoutAllUsers()
 });
 
 cron.schedule('5 5 * * *', () => {
-    console.log('Run Second Time');
     LogoutAllUsers()
 });
 
 
 cron.schedule('1 1 * * *', () => {
-    console.log('running a task every minute');
     TruncateTable()
     numberOfTrade_count_trade();
 });
 
 
 cron.schedule('10 1 * * *', () => {
-    console.log('running a task every minute');
     TokenSymbolUpdate()
 });
 cron.schedule('* 1 * * *', () => {
-    console.log('running a task every minute');
     TokenSymbolUpdate()
 });
 
@@ -63,7 +58,6 @@ cron.schedule('* 1 * * *', () => {
 
 
 cron.schedule('5 23 * * *', () => {
-    console.log('Run Every 1 Second');
     twodaysclient();
 });
 
@@ -192,7 +186,6 @@ const MainSignalsRemainToken = async () => {
 
 
     const result = await MainSignals_modal.aggregate(pipeline)
-    //console.log("result ",result)
     result.forEach(async (element) => {
 
 
@@ -313,7 +306,7 @@ const MakecallABR = async () => {
 
 
     const result = await makecallABR.aggregate(pipeline)
-   // console.log("result ",result)
+
     result.forEach(async (element) => {
 
 
@@ -323,7 +316,6 @@ const MakecallABR = async () => {
         };
         const update_token = await token_chain_collection.updateOne(filter, update, { upsert: true });
 
-       // console.log("update_token ",update_token)
 
     });
 

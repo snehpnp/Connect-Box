@@ -47,7 +47,6 @@ function Clientservice() {
     GetAllClientServiceDetails();
   }, []);
   const colorTog = (e) => {
-    console.log(e.target)
 
   }
 

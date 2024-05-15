@@ -3,7 +3,7 @@
 const router = require("express").Router()
 const { verifyToken } = require('../../Middlewares/autt.middleware')
 
-const { AddStragegy, GetOneStragegy, EditStragegy, GetAllStrategy, DeleteStragegy, GetAllStrategyForClient, ClientsAccordingToStrategy, GetAddRemoveStrategy, UpdateAddRemoveStrategy,GetAllSubadminStrategy , getAllResearcherStrategy } = require('../../Controllers/SubAdmins/strategys/strategy.controller')
+const { AddStragegy, GetOneStragegy, EditStragegy, GetAllStrategy, DeleteStragegy, GetAllStrategyForClient, ClientsAccordingToStrategy, GetAddRemoveStrategy, UpdateAddRemoveStrategy,GetAllSubadminStrategy , getAllResearcherStrategy,subadminTradeCharges,userTradeCharges } = require('../../Controllers/SubAdmins/strategys/strategy.controller')
 
 const { GetDashboardData ,EmployeeDashboardData} = require('../../Controllers/SubAdmins/DashBoardData/DashboardData')
 
@@ -19,6 +19,11 @@ router.post('/strategy_for_add_client/getall', GetAllStrategyForClient);
 router.post('/strategy/delete', DeleteStragegy);
 router.post('/strategy/client/get', ClientsAccordingToStrategy);
 router.post('/sub/strategy/getall', GetAllSubadminStrategy);
+
+router.post('/sub/trade/charges', subadminTradeCharges);
+router.post('/user/trade/charges', userTradeCharges);
+
+
  
 
 //DashBoard Route

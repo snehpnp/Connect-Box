@@ -143,7 +143,7 @@ const MainSignalsRemainToken = async () => {
 
 
     const result = await MainSignals_modal.aggregate(pipeline)
-    // console.log("result ",result)
+  
     result.forEach(async (element) => {
 
 
@@ -264,7 +264,6 @@ const MakecallABR = async () => {
 
 
     const result = await makecallABR.aggregate(pipeline)
-   // console.log("result ",result)
     result.forEach(async (element) => {
 
 
@@ -274,7 +273,6 @@ const MakecallABR = async () => {
         };
         const update_token = await token_chain_collection.updateOne(filter, update, { upsert: true });
 
-       // console.log("update_token ",update_token)
 
     });
 

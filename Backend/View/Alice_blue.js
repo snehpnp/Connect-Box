@@ -8,7 +8,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 
 client.connect();
 
-const db = client.db(process.env.DB_NAME); 
+const db = client.db(process.env.DB_NAME);
 
 
 async function createViewAlice() {
@@ -82,6 +82,30 @@ async function createViewAlice() {
         $unwind: '$strategys',
       },
       {
+        $addFields: {
+          dynamicKey: {
+            $concat: [{ $toString: "$_id" },"_",{  $toString:"$strategys._id" } ]
+          }
+        }
+      },
+      {
+        $lookup: {
+          from: "strategy_clients",
+          localField: "dynamicKey",
+          foreignField: "uniqueUserStrategy",
+          as: "stg_client",
+        },
+      },
+      {
+        $addFields: {
+          stg_client: { $ifNull: ["$stg_client", [null]] } 
+        }
+      },
+      {
+        $unwind: '$stg_client',
+      },
+      
+      {
         $project: {
           "client_services": 1,
           'service.name': 1,
@@ -90,6 +114,9 @@ async function createViewAlice() {
           "strategys.strategy_name": 1,
           "category.segment": 1,
           "service.zebu_token": 1,
+          "stg_client.trade_charge": 1,
+          dynamicKey:1,
+
           _id: 1,
           FullName: 1,
           UserName: 1,
@@ -106,14 +133,15 @@ async function createViewAlice() {
           api_type: 1,
           demat_userid: 1,
           client_key: 1,
-          web_url: 1
+          web_url: 1,
+          parent_id: 1
         }
       },
       {
         $addFields: {
-          
-         
-           
+
+
+
           postdata:
           {
             complexty: 'REGULAR',
@@ -297,9 +325,9 @@ async function createViewAlice() {
             },
 
             price: '0',
-           // qty: "$client_services.quantity",
+            // qty: "$client_services.quantity",
 
-            qty: {  
+            qty: {
               $cond: {
                 if: {
                   $or: [
@@ -308,7 +336,7 @@ async function createViewAlice() {
                   ]
                 },
                 then: "$client_services.lot_size",
-                else:  "$client_services.quantity"
+                else: "$client_services.quantity"
 
               }
 

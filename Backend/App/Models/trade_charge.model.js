@@ -10,7 +10,14 @@ const tradeChargeSchema = Schema({
     order_id: {
         type: String,
         default: null
-        
+    },
+    user_charge: {
+        type: String,
+        default: null
+    },
+    admin_charge: {
+        type: String,
+        default: null
     },
     createdAt: {
         type: Date,

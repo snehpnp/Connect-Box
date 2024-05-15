@@ -68,7 +68,7 @@ const Header = () => {
 
 
   const toggleNav = (data) => {
-    
+
     if (data.Data.length == 0) {
       document.body.classList.remove("slide-nav");
     }
@@ -76,14 +76,24 @@ const Header = () => {
 
 
   const toggleNav1 = (item) => {
-   
-      document.body.classList.remove('slide-nav');
-  
+
+    document.body.classList.remove('slide-nav');
+
   };
+
 
   const handleLinkClick = (id) => {
     setActiveLink(id);
   };
+
+
+
+  if (subadmin_service_type == 2) {
+    HeaderData = HeaderData[0].filter(column => column.name != 'Trade Charges');
+  }
+
+  // console.log("HeaderData", HeaderData)
+  // console.log("subadmin_service_type", subadmin_service_type)
 
   return (
     <div className="sidebar" id="sidebar">
@@ -102,9 +112,8 @@ const Header = () => {
                     >
                       <Link
                         to={data.route}
-                        className={`${
-                          openSubMenu === data.id ? "subdrop" : ""
-                        } ${activeLink === data.id ? "active" : ""}`}
+                        className={`${openSubMenu === data.id ? "subdrop" : ""
+                          } ${activeLink === data.id ? "active" : ""}`}
                         style={{ textDecoration: "none", color: "inherit" }}
                         onClick={() => {
                           handleLinkClick(data.id);

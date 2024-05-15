@@ -13,7 +13,6 @@ const db = client.db(process.env.DB_NAME); // Replace with your actual database 
 
 async function createViewDhan() {
 
-console.log("111")
   // All Client Trading on view
   try {
 
@@ -333,11 +332,9 @@ console.log("111")
       }
     ];
    
-    console.log("pipeline",pipeline)
     // Create the view
     await db.createCollection('dhanView', { viewOn: 'users', pipeline });
 
-    console.log('View dhanView created successfully.');
   } catch (error) {
     console.log('Error:', error);
   } finally {
