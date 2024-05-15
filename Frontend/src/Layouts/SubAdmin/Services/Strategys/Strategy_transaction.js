@@ -172,6 +172,19 @@ function Payment() {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
+          const filterdata = response.data && response.data.filter((item)=>{
+            const inputSearchMatch =
+                inputSearch == "" ||
+                item.user_id.toLowerCase().includes(
+                  inputSearch.toLowerCase()
+                ) ||
+                item.strategy_id.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                item.createdAt
+                  .toLowerCase()
+                  .includes(inputSearch.toLowerCase());
+
+              return inputSearchMatch ;
+          })
           const formattedData = response.data.map((row, index) => ({
             ...row,
             id: index + 1,
@@ -179,7 +192,7 @@ function Payment() {
 
           setCompanyData({
             loading: true,
-            data: formattedData,
+            data: inputSearch ? filterdata : formattedData,
           });
         } else {
           setCompanyData({
@@ -209,7 +222,7 @@ function Payment() {
 
   useEffect(() => {
     getCompanyData();
-  }, [refresh]);
+  }, [refresh,inputSearch]);
 
   const handleRefresh = () => {
     setInputSearch('')

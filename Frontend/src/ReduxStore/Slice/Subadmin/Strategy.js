@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG,getOrders_data,EmployeeData,AddEmployeeBySub,DeleteEmployee,UpdateEmployee,get_Employee_Id,get_Employee_Status,GetAllStrategyFor_Employee,GetAllServicesForEmployee,StrategyPurchaseBySubadmin,strategyOrderUpdate} from "../../../Services/Subadmin/Strategy.service";
+import { GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG,getOrders_data,EmployeeData,AddEmployeeBySub,DeleteEmployee,UpdateEmployee,get_Employee_Id,get_Employee_Status,GetAllStrategyFor_Employee,GetAllServicesForEmployee,StrategyPurchaseBySubadmin,strategyOrderUpdate,starategyTradeCharge} from "../../../Services/Subadmin/Strategy.service";
 
 
 export const GetEmployeeServices= createAsyncThunk(
@@ -210,6 +210,19 @@ export const update_Stg_order = createAsyncThunk("strategy/order/update",
 );
 
 
+export const TradeCharge  = createAsyncThunk("sub/trade/charges",
+    async (data) => {
+        
+        try {
+            const res = await starategyTradeCharge(data);
+            
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
 
 
 
@@ -222,6 +235,7 @@ const StrategySlice = createSlice({
         Add_Strategy:null,
         delete_strategy:null,
         get_stretgy_with_img:null,
+        TradeCharge:null,
 
     },
     reducers: {},
@@ -299,7 +313,9 @@ const StrategySlice = createSlice({
             .addCase(update_Stg_order.fulfilled, (state, action) => {
                 state.isLoading = false;
             })
-     
+            .addCase(TradeCharge.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
         
           
     },

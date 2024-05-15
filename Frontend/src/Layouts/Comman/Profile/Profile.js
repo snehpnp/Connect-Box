@@ -184,7 +184,7 @@ const Profile = () => {
       })
     )
       .unwrap()
-      .then(async (response) => {
+      .then(  async (response) => {
         if (response.status) {
           setEditbtn(!editbtn);
           Swal.fire({
