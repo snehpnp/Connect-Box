@@ -5,6 +5,10 @@ import { fDateTime } from "../../../Utils/Date_formet";
 import { Link } from "react-router-dom"
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
+import { OrderBook } from "../../../Utils/Orderbook";
+import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
+import Swal from 'sweetalert2';
+
 
 const Dashboards = () => {
 
@@ -216,12 +220,46 @@ const Dashboards = () => {
     return images[randomIndex];
   };
 
+
+
+  const DawnloadOrderBook = async (e) => {
+
+    let data = { id: user_id };
+    await dispatch(ProfileInfo(data))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
+
+            OrderBook(response.data[0], "!23")
+          } else {
+            Swal.fire({
+              title: "Trading Is Off",
+              text: "Trading on ",
+              icon: "error",
+              timer: 1500,
+              timerProgressBar: true,
+            })
+          }
+
+        } else {
+
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+
+
+  }
+
   return (
     <div>
       <div className="content container-fluid pb-0">
         <div className="page-header">
           <div className="content-page-header">
             <h5>User Dashboard</h5>
+
           </div>
         </div>
         <div className="super-admin-dashboard">
@@ -241,12 +279,10 @@ const Dashboards = () => {
                   <p>Loading...</p>
                 )}
                 <div className="dash-btns">
-                  <a href="companies.html" className="btn view-company-btn">
-                    View Companies
+                  <a className="btn view-company-btn" onClick={(e) => DawnloadOrderBook(e)}>
+                    Download Order Book
                   </a>
-                  <a href="packages.html" className="btn view-package-btn">
-                    All Packages
-                  </a>
+
                 </div>
                 <div className="dash-img">
                   <img src="assets/img/dashboard-card-img.png" alt="" />
@@ -368,7 +404,7 @@ const Dashboards = () => {
                     <table className="table table-stripped table-hover">
                       <tbody>
 
-                        {getDashboardData.data.Latest_Strategies && getDashboardData.data.Latest_Strategies.map((data1 ,index) => {
+                        {getDashboardData.data.Latest_Strategies && getDashboardData.data.Latest_Strategies.map((data1, index) => {
                           return <tr key={index} >
                             <td>
                               <h2 className="table-avatar">

@@ -92,8 +92,7 @@ const Header = () => {
     HeaderData = HeaderData[0].filter(column => column.name != 'Trade Charges');
   }
 
-  // console.log("HeaderData", HeaderData)
-  // console.log("subadmin_service_type", subadmin_service_type)
+
 
   return (
     <div className="sidebar" id="sidebar">
