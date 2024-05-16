@@ -8,33 +8,43 @@ import { fDateTime } from "../../../../Utils/Date_formet";
 import CompanyChange from "../../../../Components/ExtraComponents/Models/CompanyChange";
 import { IndianRupee } from "lucide-react";
 import ExportToExcel from "../../../../Utils/ExportCSV";
-import { TradeCharge } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
+import {TradeCharge } from "../../../../ReduxStore/Slice/Subadmin/Strategy";
+
 
 function Tradecharges() {
+
+
   const dispatch = useDispatch();
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   const subadmin_service_type = JSON.parse(
     localStorage.getItem("user_details")
   ).subadmin_service_type;
 
-  const [inputSearch, setInputSearch] = useState("");
-  const [ForGetCSV, setForGetCSV] = useState([]);
-  const [refresh, setrefresh] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State to manage modal visibility
-  const [selectedRow, setSelectedRow] = useState(null);
+  
 
+  const [ForGetCSV, setForGetCSV] = useState([]);
+  const [refresh, setRefresh] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [searchInput, setSearchInput] = useState('');
   const [companyData, setCompanyData] = useState({
     loading: false,
     data: [],
   });
+
+
 
   const handleOpenModal = (rowData) => {
     setSelectedRow(rowData);
     setIsModalOpen(true);
   };
 
+
+
   let stg_total = 0;
+  let stg_total1 = 0;
   let Admin_charge_total = 0;
+  let user_charge_total = 0
 
   const styles = {
     container: {
@@ -95,29 +105,7 @@ function Tradecharges() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{params.value || "-"}</div>,
     },
-    // {
-    //   field: 'plan_id',
-    //   headerName: 'Plan',
-    //   width: 200,
-    //   headerClassName: styles.boldHeader,
-    //   renderCell: (params) => (
-    //     <div>
-    //       {params.value == 1 ? "MONTHLY" : params.value == 2 ? "QUATERLY" : params.value == 3 ? "HALF-YEARLY" : params.value == 4 ? "YEARLY" : "-"}
-    //     </div>
-    //   )
-    // },
 
-    // {
-    //   field: 'stg_charge',
-    //   headerName: 'Strategy Price',
-    //   width: 180,
-    //   headerClassName: styles.boldHeader,
-    //   renderCell: (params) => (
-    //     <div>
-    //       <span className="text-success-light">  <IndianRupee style={{ height: "19px" }} />{params.value || '-'}</span>
-    //     </div>
-    //   )
-    // },
     {
       field: "admin_charge",
       headerName: "Admin Charges",
@@ -140,32 +128,11 @@ function Tradecharges() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
     },
-    // {
-    //   field: 'updatedAt',
-    //   headerName: 'Update Date',
-    //   width: 220,
-    //   headerClassName: styles.boldHeader,
-    //   renderCell: (params) => (
-    //     <div>
-    //       {fDateTime(params.value)}
-    //     </div>
-    //   )
-    // },
-    // {
-    //   field: 'End_Date',
-    //   headerName: 'End Date',
-    //   width: 220,
-    //   headerClassName: styles.boldHeader,
-    //   renderCell: (params) => (
-    //     <div>
-    //       {fDateTime(params.value)}
-    //     </div>
-    //   )
-    // },
+    
   ];
 
   if (subadmin_service_type == 1) {
-    columns = columns.filter((column) => column.field !== "Admin_charge");
+    columns = columns.filter((column) => column.field !== "Admin_charge" || column.field !== "user_charge");
   }
 
   const getCompanyData = async () => {
@@ -178,10 +145,19 @@ function Tradecharges() {
             ...row,
             id: index + 1,
           }));
+           
+          const filterData = formattedData.filter((item) => {
+            const searchInputMatch =
+              searchInput == '' ||
+              item.UserName.toLowerCase().includes(searchInput.toLowerCase()) 
+             
+            return searchInputMatch
 
+          })
+            
           setCompanyData({
             loading: true,
-            data: formattedData,
+            data: searchInput ? filterData : formattedData,
           });
         } else {
           setCompanyData({
@@ -214,14 +190,36 @@ function Tradecharges() {
       }
     });
 
+   // for user charge
+   companyData.data &&
+   companyData.data.forEach((item) => {
+     if (
+       !isNaN(item.user_charge) &&
+       item.user_charge !== null &&
+       item.user_charge !== ""
+     ) {
+      stg_total1 += parseInt(item.user_charge);
+     }
+
+     if (
+       !isNaN(item.user_charge) &&
+       item.user_charge !== null &&
+       item.user_charge !== ""
+     ) {
+       user_charge_total += parseInt(item.user_charge);
+     }
+   });
+
   useEffect(() => {
     getCompanyData();
-  }, [refresh]);
+  }, [refresh,searchInput]);
 
   const handleRefresh = () => {
-    setInputSearch("");
-    setrefresh(!refresh);
+    setSearchInput("");
+    setRefresh(!refresh);
   };
+
+
 
   return (
     <>
@@ -260,8 +258,8 @@ function Tradecharges() {
                             placeholder="Search..."
                             aria-label="Search"
                             aria-describedby="search-addon"
-                            onChange={(e) => setInputSearch(e.target.value)}
-                            value={inputSearch}
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            value={searchInput}
                           />
                         </div>
                       </li>
@@ -286,20 +284,37 @@ function Tradecharges() {
               </div>
             </div>
             <div className="card-body">
+            <div style={{display:"flex" , gap:"3rem"}}>
               {companyData.data.length > 0 ? (
                 <div className="d-flex gap-5">
                   <h4>
-                    Total Trade Charges :{" "}
+                    Total Admin Trade Charges :{" "}
                     <span style={{ color: "green" }}>
                       {" "}
                       {stg_total || (0).toFixed(2)}
                     </span>{" "}
                   </h4>
                 </div>
-              ) : (
+              ) : 
+              (
                 ""
               )}
 
+              {companyData.data.length > 0 ? (
+                <div className="d-flex gap-5">
+                  <h4>
+                    Total User Trade Charges :{" "}
+                    <span style={{ color: "green" }}>
+                      {" "}
+                      {stg_total1 || (0).toFixed(2)}
+                    </span>{" "}
+                  </h4>
+                </div>
+              ) : 
+              (
+                ""
+              )}
+              </div>
               <FullDataTable
                 styles={styles}
                 columns={columns}

@@ -49,6 +49,9 @@ const Helpsubadmin = () => {
   const [value, setValue] = useState("0");
   const [getemployeedata, setGetemployeedata] = useState([]);
 
+
+
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -162,11 +165,13 @@ const Helpsubadmin = () => {
     },
   ];
 
+
+
+
+
   //post data by subadmin
   const postSubadminhelp = async (e) => {
     e.preventDefault();
-
-    console.log("help", help);
 
     if (
       !help.UserName ||
@@ -175,7 +180,10 @@ const Helpsubadmin = () => {
       !help.Message ||
       !help.Category
     ) {
-      alert("Please field the box");
+      Swal.fire({
+        icon: "error",
+        text: "Please Select the Category",
+      });
       return;
     }
 
@@ -223,6 +231,9 @@ const Helpsubadmin = () => {
       });
   };
 
+
+
+
   //get subadmin table
   const gettable = async () => {
     await dispatch(getsubadmintable({}))
@@ -247,6 +258,11 @@ const Helpsubadmin = () => {
       });
   };
 
+
+
+
+
+  //getting user detail
   const getusertable = async () => {
     await dispatch(userdataforhelp({}))
       .unwrap()
@@ -269,6 +285,12 @@ const Helpsubadmin = () => {
         console.log("error", error);
       });
   };
+
+
+
+
+
+
 
   //  get employee data
   const getEmployeetable = async () => {
@@ -294,6 +316,10 @@ const Helpsubadmin = () => {
       });
   };
 
+
+
+
+
   const deletesubadmindata = async (userId) => {
     var data = { id: userId };
     await dispatch(deletesubadminhelpdata(data))
@@ -309,6 +335,10 @@ const Helpsubadmin = () => {
         console.log("error", error);
       });
   };
+
+
+
+
 
   const userprefixBydata = async () => {
     var data = { prifix_key: userdataprifix_key };
@@ -344,6 +374,9 @@ const Helpsubadmin = () => {
     "Broker Response",
     "Login with api",
   ];
+
+
+
 
   return (
     <>

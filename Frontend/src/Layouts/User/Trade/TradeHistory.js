@@ -394,12 +394,6 @@ export default function AllEmployees() {
 
 
 
-
-
-
-
-
-
     var CreatechannelList = "";
     tradeHistoryData.data &&
         tradeHistoryData.data?.map((item) => {
