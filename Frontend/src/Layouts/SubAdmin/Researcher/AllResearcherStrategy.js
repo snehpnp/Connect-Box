@@ -89,7 +89,6 @@ const AllResearcherStrategy = () => {
             .unwrap()
             .then(async (response) => {
 
-                console.log("response ", response)
 
                 if (response.status) {
                     await loadScript('https://checkout.razorpay.com/v1/checkout.js');
@@ -114,7 +113,8 @@ const AllResearcherStrategy = () => {
                                 user_id: response.data.user_id,
                                 strategy_id: response.data.strategy_id,
                                 order_status: "Success",
-                                User_data:JSON.stringify(response1)
+                                User_data: JSON.stringify(response1),
+                                type: selectedOption
                             }
 
 
@@ -149,7 +149,6 @@ const AllResearcherStrategy = () => {
     }
 
 
-    console.log("allStrategy.data",allStrategy.data)
 
     return (
         <>
@@ -167,7 +166,7 @@ const AllResearcherStrategy = () => {
                                 <div className="row d-flex align-items-center justify-content-center">
 
                                     {allStrategy.data && allStrategy.data.map((stg) => {
-                                        return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                    return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3" >
                                             <div className="packages card" data-aos="fade-down">
                                                 <div className="package-header d-flex justify-content-between">
                                                     <div className="d-flex justify-content-between w-100">
@@ -235,7 +234,7 @@ const AllResearcherStrategy = () => {
                                                     <button type='submit' className='btn btn-primary' onClick={(e) => { setShowModal(true); setSelectStrategy(stg) }}>Buy</button>
 
                                                 </div> : <div className="d-flex justify-content-center package-edit">
-                                                    <button type='submit' className='btn btn-primary' >Subscribed</button>
+                                                    <button type='submit' className='btn btn-success' >Subscribed</button>
 
                                                 </div>}
 
@@ -287,62 +286,64 @@ const AllResearcherStrategy = () => {
                         showModal && (
 
                             <Modal show={showModal} onHide={handleClose} centered>
-                            <Modal.Header closeButton>
-                                <Modal.Title>Select Plan</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body>
-                                <Form>
-                                    <Form.Group controlId="formPlan">
-                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                            <Form.Check
-                                                type="radio"
-                                                name="plan"
-                                                id="monthlyPlan"
-                                                style={{ marginRight: '10px' }}
-                                                label={
-                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <strong style={{ marginRight: '5px', fontSize: '16px' }}>Monthly Plan:</strong>
-                                                        <span style={{ fontWeight: 'bold', color: 'green', marginRight: '5px', fontSize: '16px' }}>
-                                                            <i className="fas fa-rupee-sign"></i>
-                                                        </span>
-                                                        <span style={{ fontWeight: 'bold', color: 'green', fontSize: '16px' }}>{selectStrategy.monthly_charges}</span>
-                                                    </div>
-                                                }
-                                                value="monthlyPlan"
-                                                onChange={handleOptionChange}
-                                                defaultChecked
-                                            />
-                                            <span style={{ fontSize: '20px', color: '#ccc' }}></span> {/* Divider */}
-                                        </div>
-                                        <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
-                                            <Form.Check
-                                                type="radio"
-                                                name="plan"
-                                                id="percentageWise"
-                                                style={{ marginRight: '10px' }}
-                                                label={
-                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <strong style={{ marginRight: '5px', fontSize: '16px' }}>% Wise:</strong>
-                                                        <span style={{ fontWeight: 'bold', color: 'green', marginRight: '5px', fontSize: '16px' }}>
-                                                            <i className="fas fa-rupee-sign"></i>
-                                                        </span>
-                                                        <span style={{ fontWeight: 'bold', color: 'green', fontSize: '16px' }}>{selectStrategy.security_fund}</span>
-                                                        <span style={{ fontSize: '14px', color: '#999', marginLeft: '5px' }}>(security fund)</span>
-                                                    </div>
-                                                }
-                                                value="% Wise"
-                                                onChange={handleOptionChange}
-                                            />
-                                        </div>
-                                    </Form.Group>
-                                </Form>
-                            </Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={handleClose}>Close</Button>
-                                <Button variant="primary" onClick={handleSubmit}>Submit</Button>
-                            </Modal.Footer>
-                        </Modal>
-                        
+                                <Modal.Header closeButton>
+                                    <Modal.Title>Select Plan</Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body>
+                                    <Form>
+                                        <Form.Group controlId="formPlan">
+                                            <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                                <Form.Check
+                                                    type="radio"
+                                                    name="plan"
+                                                    id="monthlyPlan"
+                                                    style={{ marginRight: '10px' }}
+                                                    label={
+                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                            <strong style={{ marginRight: '5px', fontSize: '16px' }}>Monthly Plan:</strong>
+                                                            <span style={{ fontWeight: 'bold', color: 'green', marginRight: '5px', fontSize: '16px' }}>
+                                                                <i className="fas fa-rupee-sign"></i>
+                                                            </span>
+                                                            <span style={{ fontWeight: 'bold', color: 'green', fontSize: '16px' }}>{selectStrategy.monthly_charges}</span>
+                                                        </div>
+                                                    }
+                                                    value="monthlyPlan"
+                                                    onChange={handleOptionChange}
+                                                    defaultChecked
+                                                />
+                                                <span style={{ fontSize: '20px', color: '#ccc' }}></span> {/* Divider */}
+                                            </div>
+                                            {userDetails.subadmin_service_type == 2 ?
+                                                <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+                                                    <Form.Check
+                                                        type="radio"
+                                                        name="plan"
+                                                        id="percentageWise"
+                                                        style={{ marginRight: '10px' }}
+                                                        label={
+                                                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                                <strong style={{ marginRight: '5px', fontSize: '16px' }}>% Wise:</strong>
+                                                                <span style={{ fontWeight: 'bold', color: 'green', marginRight: '5px', fontSize: '16px' }}>
+                                                                    <i className="fas fa-rupee-sign"></i>
+                                                                </span>
+                                                                <span style={{ fontWeight: 'bold', color: 'green', fontSize: '16px' }}>{selectStrategy.security_fund}</span>
+                                                                <span style={{ fontSize: '14px', color: '#999', marginLeft: '5px' }}>(security fund)</span>
+                                                            </div>
+                                                        }
+                                                        value="% Wise"
+                                                        onChange={handleOptionChange}
+                                                    />
+                                                </div> : ""}
+
+                                        </Form.Group>
+                                    </Form>
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={handleClose}>Close</Button>
+                                    <Button variant="primary" onClick={handleSubmit}>Submit</Button>
+                                </Modal.Footer>
+                            </Modal>
+
 
 
                         )

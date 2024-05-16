@@ -5,6 +5,8 @@ const researcher_strategy = db.researcher_strategy;
 
 const User = db.user;
 const strategy_client_model = db.strategy_client;
+const tradeCharge_Modal = db.tradeCharge;
+
 const mongoose = require("mongoose");
 
 const ObjectId = mongoose.Types.ObjectId;
@@ -387,7 +389,17 @@ class strategy {
       }
 
       if (key == 1) {
-        const getAllstrategy = await strategy_model.find({ maker_id: id }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
+        const getAllstrategy = await strategy_model.find({
+          maker_id: id,
+          $or: [
+            { security_fund_month: { $ne: null, $ne: NaN, $ne: "" } },
+            { security_fund_quarterly: { $ne: null, $ne: NaN, $ne: "" } },
+            { security_fund_half_early: { $ne: null, $ne: NaN, $ne: "" } },
+            { security_fund_early: { $ne: null, $ne: NaN, $ne: "" } }
+
+          ]
+        }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
+
 
 
 
@@ -492,35 +504,12 @@ class strategy {
     }
   }
 
-  // GET ALL STRATEGYS FOR CLIENT
-  // async GetAllStrategyForClient(req, res) {
-  //   try {
-  //       const {id} = req.body
-  //     // const totalCount = await strategy_model.countDocuments();
 
-  //     // THEME LIST DATA
-  //     // var getAllTheme = await strategy_model.find()
-  //     const getAllstrategy = await strategy_model.find({maker_id:id }, "_id strategy_name");
-
-  //     // IF DATA NOT EXIST
-  //     if (getAllstrategy.length == 0) {
-  //       res.send({ status: false, msg: "Empty data", data: getAllstrategy });
-  //     }
-
-  //     // DATA GET SUCCESSFULLY
-  //     res.send({
-  //       status: true,
-  //       msg: "Get All Startegy",
-  //       data: getAllstrategy,
-  //     });
-  //   } catch (error) {
-  //   }
-  // }
 
   async GetAllStrategyForClient(req, res) {
     try {
       const { id } = req.body;
-     
+
       // Retrieve strategies based on maker_id
       const getAllStrategies = await strategy_model.find({ maker_id: id }, "_id strategy_name");
 
@@ -785,10 +774,6 @@ class strategy {
 
 
 
-
-
-
-
   // GET ALL RESEARCHER STRATEGYS
   async getAllResearcherStrategy(req, res) {
 
@@ -845,8 +830,6 @@ class strategy {
 
 
 
-
-
     if (!researchUsersWithStrategies) {
       return res.send({
         status: false,
@@ -860,6 +843,96 @@ class strategy {
 
 
   }
+
+
+
+  
+  async subadminTradeCharges(req, res) {
+
+  const { id } = req.body
+    var TradechargesWithUserDetails = await tradeCharge_Modal.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_id",
+          foreignField: "_id",
+          as: "user_details"
+        }
+      },
+      {
+        $unwind: "$user_details"
+      },
+      {
+        $match: {
+          "user_details.parent_id": id
+        }
+      },
+      {
+        $project: {
+          "UserName": "$user_details.UserName",
+          "parent_id": "$user_details.parent_id",
+          order_id: 1,
+          user_charge: 1,
+          admin_charge: 1,
+          createdAt: 1,
+          user_id: 1
+        }
+      },
+      {
+        $sort: {
+          createdAt: -1 
+        }
+      }
+      
+    ]);
+
+    return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails })
+
+  }
+
+
+
+
+  async userTradeCharges(req, res) {
+
+    const { id } = req.body
+
+    var TradechargesWithUserDetails = await tradeCharge_Modal.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_id",
+          foreignField: "_id",
+          as: "user_details"
+        }
+      },
+      {
+        $unwind: "$user_details"
+      },
+     
+      {
+        $project: {
+          "UserName": "$user_details.UserName",
+          "parent_id": "$user_details.parent_id",
+          order_id: 1,
+          user_charge: 1,
+          admin_charge: 1,
+          createdAt: 1,
+          user_id: 1
+        }
+      },
+      {
+        $sort: {
+          createdAt: -1 
+        }
+      }
+    ]);
+
+    return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails })
+
+  }
+
+
 }
 
 module.exports = new strategy();

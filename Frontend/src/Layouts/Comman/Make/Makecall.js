@@ -766,102 +766,7 @@ const Makecall = () => {
     };
 
 
-    // const GetBrokerData = async () => {
-    //     var data = { id: UserLocalDetails.user_id }
-    //     await dispatch(GetBrokerDatas(data))
-    //         .unwrap()
-    //         .then(async (response) => {
-    //             //console.log("GetBrokerData ",response.data)
-    //             if (response.status) {
-    //                 seUserDetails(response.data)
-    //                 if (response.data && response.data[0].demat_userid !== undefined && response.data && response.data[0].access_token !== undefined && response.data[0].TradingStatus == "on") {
-    //                     let type = { loginType: "API" };
-    //                     const res = await CreateSocketSession(type, response.data[0].demat_userid, response.data[0].access_token);
-    //                     //console.log("res ", res.data.stat)
-    //                     if (res.data.stat) {
-    //                         const url = "wss://ws1.aliceblueonline.com/NorenWS/"
-    //                         socket = new WebSocket(url)
-    //                         socket.onopen = function () {
-    //                             // var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession21).toString()).toString();
-    //                             let userSession1 = response.data[0].access_token;
-    //                             let userId1 = response.data[0].demat_userid;
-    //                             var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession1).toString()).toString();
-    //                             var initCon = {
-    //                                 susertoken: encrcptToken,
-    //                                 t: "c",
-    //                                 // actid: userId + "_" + "API",
-    //                                 // uid: userId + "_" + "API",
-    //                                 actid: userId1 + "_" + "API",
-    //                                 uid: userId1 + "_" + "API",
-    //                                 source: "API"
-    //                             }
-    //                             setSockets(socket)
-    //                             // console.log("initCon",initCon)
-    //                             socket.send(JSON.stringify(initCon))
-    //                             // console.log("inside ",socket)
-    //                             socket.onmessage = async function (msg) {
-    //                                 var response = JSON.parse(msg.data)
-    //                               //  console.log("response ", response)
-    //                                 if (response.tk) {
-    //                                     if (response.lp != undefined) {
-    //                                         //console.log('response token', response.lp)
-    //                                         //   console.log("response -soket ", response);
-    //                                         // setLiveprice(response.lp);
-    //                                         if (response.tk == liveToken.current) {
-    //                                             setLiveprice(response.lp);
-    //                                             if (response.pc != undefined) {
-    //                                                 //console.log('response.pc inside', response.pc)
-    //                                                 if (parseFloat(response.pc) > 0) {
-    //                                                     $('.liveprice' + response.tk).css({ "color": "green" });
-
-    //                                                 }
-    //                                                 else if (parseFloat(response.pc) < 0) {
-
-    //                                                     $('.liveprice' + response.tk).css({ "color": "red" });
-
-    //                                                 }
-    //                                                 else if (parseFloat(response.pc) == 0) {
-
-    //                                                     $('.liveprice' + response.tk).css({ "color": "black" });
-
-    //                                                 }
-    //                                             }
-
-    //                                             setLiveprice(response.lp);
-    //                                             $(".liveprice" + response.tk).html(response.lp);
-
-    //                                             //  SetEntryPrice
-
-    //                                             if (response.sp1 != undefined) {
-    //                                                 setStockSellPrice(response.sp1)
-    //                                             } if (response.bp1 != undefined) {
-    //                                                 setStockBuyPrice(response.bp1);
-    //                                             }
-    //                                         } else {
-    //                                             // setLiveprice("")
-    //                                         }
-    //                                         $(".liveprice" + response.tk).html(response.lp);
-    //                                     }
-    //                                 }
-    //                                 if (response.s === 'OK') {
-    //                                     console.log("response.s ", response.s)
-    //                                     // var channel = await channelList;
-    //                                     // let json = {
-    //                                     //     k: channelList,
-    //                                     //     t: 't'
-    //                                     // };
-    //                                     // await socket.send(JSON.stringify(json))
-
-
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-    //         });
-    // };
-
+  
     const GetBrokerData = async () => {
         var data = { id: UserLocalDetails.user_id }
         await dispatch(GetBrokerDatas(data))
@@ -972,8 +877,7 @@ const Makecall = () => {
 
         setAllServices({ loading: false, data: [] });
         getAllServicesFun()
-        // console.log("CatagoryData.data ",CatagoryData.data)
-        // console.log("selectCatagoryid ",selectCatagoryid)
+    
 
         let datra = CatagoryData.data && CatagoryData.data.filter((x) => {
             if ((selectCatagoryid) == x._id) {
@@ -981,20 +885,7 @@ const Makecall = () => {
             }
         })
 
-        
-        //  console.log("datra ---- ",datra)
-        // let datra = scriptdata && scriptdata.filter((x) => {
-        //   if ((selectCatagoryid) == parseInt(x.id)) {
-        //     return x
-        //   }
-        // })
 
-
-        // let stExhange = scriptdata && scriptdata.filter((x) => {
-        //   if (onChangeScriptname.includes(x.name)) {
-        //     return x
-        //   }
-        // })
 
         if (datra.length > 0) {
             SetScriptSegment(datra && datra[0].segment)
@@ -1071,12 +962,8 @@ const Makecall = () => {
 
     const getExpirybackend = async (selectCatagoryid, symbol) => {
           
-       // alert(selectCatagoryid)
-       // alert(symbol)
-
         if (selectCatagoryid != '' && symbol != '') {
-            // console.log("selectCatagoryid ", selectCatagoryid)
-            // console.log("symbol ", symbol)
+     
             await dispatch(getexpirymanualtrade(
                 {
                     req:
@@ -1288,11 +1175,9 @@ const Makecall = () => {
                 ))
                     .unwrap()
                     .then((response) => {
-                        //console.log("cash token", response);
                         if (response.status) {
 
                             if (sockets != null) {
-                                //console.log("previousToken.current", previousToken.current);
                                 let json1 = {
                                     k: previousToken.current,
                                     t: "u",
@@ -1309,7 +1194,6 @@ const Makecall = () => {
 
                             } else {
                                 liveToken.current = response.token;
-                                console.log("sockets closeeee");
                             }
 
                         } else {
@@ -1329,11 +1213,9 @@ const Makecall = () => {
                 ))
                     .unwrap()
                     .then((response) => {
-                        console.log("FO token", response);
                         if (response.status) {
 
                             if (sockets != null) {
-                                //console.log("previousToken.current", previousToken.current);
                                 let json1 = {
                                     k: previousToken.current,
                                     t: "u",
@@ -1350,7 +1232,6 @@ const Makecall = () => {
 
                             } else {
                                 liveToken.current = response.token;
-                                console.log("sockets closeeee");
                             }
 
                         } else {
@@ -1371,10 +1252,8 @@ const Makecall = () => {
                 ))
                     .unwrap()
                     .then((response) => {
-                        // console.log("FUTURE token", response);
                         if (response.status) {
                             if (sockets != null) {
-                                // console.log("previousToken.current", previousToken.current);
                                 let json1 = {
                                     k: previousToken.current,
                                     t: "u",
@@ -1391,7 +1270,7 @@ const Makecall = () => {
 
                             } else {
                                 liveToken.current = response.token;
-                                console.log("sockets closeeee");
+                           
                             }
 
                         } else {
@@ -1410,11 +1289,9 @@ const Makecall = () => {
                 ))
                     .unwrap()
                     .then((response) => {
-                        // console.log("Option token", response);
                         if (response.status) {
 
                             if (sockets != null) {
-                                //  console.log("previousToken.current", previousToken.current);
                                 let json1 = {
                                     k: previousToken.current,
                                     t: "u",
@@ -1432,7 +1309,7 @@ const Makecall = () => {
                             } else {
 
                                 liveToken.current = response.token;
-                                console.log("sockets closeeee");
+                            
                             }
 
                         } else {
@@ -1731,7 +1608,7 @@ const Makecall = () => {
         //Trade At price -------- AT
         if (EntryPriceBA == 'at') {
            let ExitTime  = selectedTimeExit.replace(":", "")
-          //console.log("ExitTime ",ExitTime)
+   
 
           
           
@@ -1766,8 +1643,7 @@ const Makecall = () => {
             SetForDisabledSubmit(true)
             const currentTimestamp = Math.floor(Date.now() / 1000);
             let req = `DTime:${currentTimestamp}|Symbol:${scriptname}|TType:${tradeType}|Tr_Price:0.00|Price:${price}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${scriptSegment}|Strike:${strikePrice == '' ? '100' : strikePrice}|OType:${optionType}|Expiry:${expiryOnChange}|Strategy:${selectStrategy}|Quntity:100|Key:${UserDetails && UserDetails[0].client_key}|TradeType:MAKECALL|Target:${Target == 0 ? 0 : Target.toFixed(2)}|StopLoss:${StopLoss == 0 ? 0 : StopLoss.toFixed(2)}|ExitTime:${ExitTime}|sl_status:${sl_status}|ExitStatus:MAKECALL AT|Demo:demo`
-            console.log("req ", req)
-            // console.log("process.env.BROKER_URL ",process.env.BROKER_URL)
+           
 
             let config = {
                 method: 'post',
@@ -1780,7 +1656,6 @@ const Makecall = () => {
             };
             axios.request(config)
                 .then(async (response) => {
-                    //console.log("response ", response);
                     if (response.status) {
 
 
@@ -1858,7 +1733,6 @@ const Makecall = () => {
                      }
                 })
                 .catch((error) => {
-                    // console.log(error.response.data);
                 });
 
 
@@ -2066,7 +1940,6 @@ const Makecall = () => {
             ))
                 .unwrap()
                 .then((response) => {
-                    // console.log("response ",response.data)
                      if (response.status) {
                         Swal.fire({
                             title: "Data Add Successful!",
@@ -2118,7 +1991,6 @@ const Makecall = () => {
             }
         }else if(e.target.name == "SecondPrice"){
 
-            console.log("EntryPriceRange_one ",EntryPriceRange_one)
             // alert(e.target.value)  
              if(EntryPriceRange_one == '' || EntryPriceRange_one == undefined){
                  Swal.fire({

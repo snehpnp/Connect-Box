@@ -27,6 +27,7 @@ import TabPanel from "@mui/lab/TabPanel";
 
 const Helpuser = () => {
   const dispatch = useDispatch();
+  const user = JSON.parse(localStorage.getItem("user_details"));
   const [getuserdata, setGetuserdata] = useState([]);
   const [help, setHelp] = useState({
     UserName: "",
@@ -102,7 +103,16 @@ const Helpuser = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          setGetuserdata(response.data);
+          if (response.data.length > 0) {
+            var filterData = response.data.filter(
+              (data) =>  data.admin_id === user.user_id
+            );
+
+            setGetuserdata(filterData);
+          } else {
+            setGetuserdata([]);
+          }
+         
           setLoading(false);
         }
       })
@@ -127,6 +137,8 @@ const Helpuser = () => {
           Message: help.Message,
           prifix_key: help.prifix_key,
           Role: "USER",
+          admin_id: user.user_id
+
         })
       ).unwrap();
       if (response.status) {

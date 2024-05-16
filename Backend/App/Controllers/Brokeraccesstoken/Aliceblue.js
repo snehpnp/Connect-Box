@@ -24,19 +24,17 @@ class AliceBlue {
 
             var Get_User = await User.find({ demat_userid: userId }).select('TradingStatus parent_id api_secret Role broker');
 
-            console.log("Get_User[0]", Get_User[0])
             if (Get_User[0].TradingStatus != "on") {
 
                 var apiSecret = ''
 
                 if (Get_User[0].Role == "USER") {
                     var subadmin = await User.find({ _id: Get_User[0].parent_id }).select('TradingStatus parent_id api_secret Role');
-                    console.log("subadmin[0]", subadmin[0])
+             
                     apiSecret = subadmin[0].api_secret
                 } else {
                     apiSecret = Get_User[0].api_secret
                 }
-                console.log(userId, "-----", apiSecret)
 
                 var hosts = req.headers.host;
 
@@ -83,7 +81,6 @@ class AliceBlue {
 
                     axios(config)
                         .then(async function (response) {
-                            console.log("response.data", response.data)
                             if (response.data.userSession) {
 
 
@@ -408,17 +405,21 @@ class AliceBlue {
 }
 
 const GetAllBrokerResponse = async (user_id, res) => {
-    console.log("hi")
+ 
     try {
         const objectId = new ObjectId(user_id);
-        var FindUserAccessToken = await User.find({ _id: objectId })
+        var FindUserAccessToken = await User.find({ _id: objectId,TradingStatus: "on"})
+      
+        if (FindUserAccessToken[0].length == 0) {
+            return res.send({ status: false, msg: "Trading is Off" })
+        }
+        
         var FindUserBrokerResponse = await BrokerResponse.find({ user_id: objectId, order_id: { $ne: "" } });
 
 
         if (FindUserBrokerResponse.length > 0) {
 
             FindUserBrokerResponse.forEach((data1) => {
-                console.log("FindUserBrokerResponse", data1.order_id)
 
                 let data = JSON.stringify({
                     "nestOrderNumber": data1.order_id

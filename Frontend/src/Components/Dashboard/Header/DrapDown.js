@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import { IndianRupee } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
+import { LogOut } from '../../../ReduxStore/Slice/Auth/AuthSlice'
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { Minimize } from "lucide-react";
+import Swal from 'sweetalert2';
+import { ipAddress } from '../../../Utils/Ipaddress';
 
 const DropDown = () => {
   const navigate = useNavigate();
@@ -14,6 +17,7 @@ const DropDown = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [showFunds, setShowFunds] = useState(false);
   const [themeMode, setThemeMode] = useState("light");
+  const [ip, setIp] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -52,13 +56,61 @@ const DropDown = () => {
     fetchData();
   }, []);
 
-  const LogoutUser = (e) => {
-    // e.stopPropagation(); // Stop event propagation
 
-    localStorage.removeItem("user_details");
-    localStorage.removeItem("user_role");
-    navigate("/login");
+
+  const fetchIP = async () => {
+    try {
+      const ip = await ipAddress();
+      setIp(ip);
+    } catch (error) {
+      console.error('Failed to fetch IP address:', error);
+    }
   };
+
+  useEffect(() => {
+    fetchIP();
+  }, []);
+
+
+
+  const LogoutUser = async (e) => {
+    const data = { userId: user_id, Device: "WEB", system_ip: ip }
+
+    await dispatch(LogOut(data)).unwrap()
+      .then((response) => {
+        if (response.status) {
+          Swal.fire({
+            title: "Logout Successful!",
+            text: response.msg,
+            icon: "success",
+            timer: 1500,
+            timerProgressBar: true
+          })
+          setTimeout(() => {
+            localStorage.removeItem("user_details")
+            localStorage.removeItem("user_role")
+            navigate("/login")
+          }, 1500)
+
+
+        }
+        else {
+          Swal.fire({
+            title: "Error!",
+            text: response.msg,
+            icon: "error",
+            timer: 1500,
+            timerProgressBar: true
+          });
+
+        }
+      })
+      .catch((error) => {
+        console.log("Error in logout user", error)
+      })
+
+
+  }
 
   // Define toggleTheme function
   const toggleTheme = () => {
@@ -108,7 +160,7 @@ const DropDown = () => {
       navigate("/subadmin/wallet");
     } else if (Role == "RESEARCH") {
       navigate("/research/wallet");
-    }
+    } 
   };
 
   const ProfilePage = () => {
@@ -188,7 +240,7 @@ const DropDown = () => {
       : text;
   };
 
-  
+
 
   return (
     <div className="mb-0 dropdown custom-dropdown">
@@ -198,7 +250,7 @@ const DropDown = () => {
             {subadmin_service_type == 2 ? "STRATEGY WISE" : "PER TRADE"}
           </li>
         )}
-        {!(Role === "USER" || Role === "EMPLOYEE") ? (
+        {!(Role === "EMPLOYEE") ? (
           <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
             <button
               type="button"
@@ -226,6 +278,9 @@ const DropDown = () => {
             </button>
           </li>
         ) : null}
+
+
+
 
         <li className="nav-item dropdown  flag-nav dropdown-heads">
           <a

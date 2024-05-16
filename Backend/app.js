@@ -9,6 +9,9 @@ const bodyparser = require('body-parser');
 const { Server } = require("socket.io");
 const server = http.createServer(app);
 
+
+const { createViewAlice } = require("./View/Alice_blue");
+
 // Setting up CORS options
 const corsOpts = {
   origin: '*',
@@ -55,7 +58,10 @@ require('./App/Utils/Cron.utils');
 require("./App/Routes")(app);
 require("./test")(app);
 
-
+app.get('/aliceblue/view',(req,res)=>{
+  createViewAlice()
+  res.send("done")
+})
 
 
 

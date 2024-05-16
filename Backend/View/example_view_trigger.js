@@ -26,8 +26,7 @@ async function createViewAndMonitor() {
     // Listen for changes
     changeStream.on('change', (change) => {
       if (change.operationType === 'update' && change.updateDescription.updatedFields.status_return === true) {
-        // Trigger your event or update the relevant collection
-        console.log('Status_return is true. Trigger your event here.');
+    
       }
     });
 

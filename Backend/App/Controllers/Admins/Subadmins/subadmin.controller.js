@@ -544,8 +544,7 @@ class Subadmin {
         
         
         let mergedArray = [...getAllClients, ...rechargeDetails];
-        console.log("rechargeDetails", getAllClients)
-        
+
         mergedArray.sort((a, b) => {
           return new Date(b.createdAt) - new Date(a.createdAt);
         });

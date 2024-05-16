@@ -35,6 +35,10 @@ import AllResearcherStrategy from '../Layouts/SubAdmin/Researcher/AllResearcherS
 import Test from '../Layouts/SubAdmin/MessageBroadCast/test.js'
 
 
+import Tradecharges from '../Layouts/SubAdmin/Services/Strategys/Tradecharges.js'
+
+
+
 
 
 
@@ -83,6 +87,9 @@ const SubAdmin_Routing = () => {
 
           
           <Route exact path="/test" element={<Test />} />
+
+          <Route exact path="/trade/charges" element={<Tradecharges/>} />
+
           
 
         </Routes>

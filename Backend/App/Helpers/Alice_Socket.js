@@ -19,24 +19,20 @@ client.connect();
 
 const db_main = client.db(process.env.DB_NAME);
 const dbTradeTools = client.db(process.env.DB_TRADETOOLS);
- 
+
 
 let socketObject = null;
 
 const Alice_Socket = async () => {
-   // console.log("Inside ")
-  var rr = 0;
+
+    var rr = 0;
     const url = "wss://ws1.aliceblueonline.com/NorenWS/"
     var socket = null
-    var broker_infor = await live_price_token.find({ broker_id: "2" , trading_status :"on" });
-    
+    var broker_infor = await live_price_token.find({ broker_id: "2", trading_status: "on" });
     if (broker_infor.length == 0) {
-
         return
-        
-        }
-
-  const stock_live_price = db_main.collection('token_chain');
+    }
+    const stock_live_price = db_main.collection('token_chain');
     const updateToken = await stock_live_price.find({}).toArray();
 
     var channelstr = ""
@@ -62,146 +58,141 @@ const Alice_Socket = async () => {
     var type = { "loginType": "API" }
 
 
-   // console.log("alltokenchannellist ",alltokenchannellist)
-
 
     //  Step -1
+    if (broker_infor[0].user_id !== undefined && broker_infor[0].access_token !== undefined && broker_infor[0].trading_status == "on") {
+        try {
+            await axios.post(`${aliceBaseUrl}ws/createSocketSess`, type, {
+                headers: {
+                    'Authorization': `Bearer ${userid} ${userSession1}`,
+                    'Content-Type': 'application/json'
+                },
 
-  if(broker_infor[0].user_id !== undefined && broker_infor[0].access_token !== undefined && broker_infor[0].trading_status == "on"){
-    try {
-        console.log("inside  2 ")
-        await axios.post(`${aliceBaseUrl}ws/createSocketSess`, type, {
-            headers: {
-                'Authorization': `Bearer ${userid} ${userSession1}`,
-                'Content-Type': 'application/json'
-            },
+            }).then(res => {
 
-        }).then(res => {
+                if (res.data.stat == "Ok") {
 
-           // console.log("res.data ",res.data)
-            if (res.data.stat == "Ok") {
+                    try {
+                        socket = new WebSocket(url)
 
-                try {
-                    socket = new WebSocket(url)
-
-                    socket.onopen = function () {
-                        var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession1).toString()).toString();
-                        var initCon = {
-                            susertoken: encrcptToken,
-                            t: "c",
-                            actid: userid + "_" + "API",
-                            uid: userid + "_" + "API",
-                            source: "API"
+                        socket.onopen = function () {
+                            var encrcptToken = CryptoJS.SHA256(CryptoJS.SHA256(userSession1).toString()).toString();
+                            var initCon = {
+                                susertoken: encrcptToken,
+                                t: "c",
+                                actid: userid + "_" + "API",
+                                uid: userid + "_" + "API",
+                                source: "API"
+                            }
+                            socket.send(JSON.stringify(initCon))
                         }
-                        socket.send(JSON.stringify(initCon))
-                    }
-                    socket.onmessage = async function (msg) {
+                        socket.onmessage = async function (msg) {
 
-                        var response = JSON.parse(msg.data)
+                            var response = JSON.parse(msg.data)
 
 
 
 
-                        if (response.tk) {
-                          //  console.log("response ",response)
-                            // const Make_startegy_token = await UserMakeStrategy.findOne({ tokensymbol: response.tk }, { _id: 1 });
-                          
-                            // if (Make_startegy_token) {
-                            //     ALice_View_data(response.tk, response,dbTradeTools);
-                            // }
+                            if (response.tk) {
+                                //  console.log("response ",response)
+                                // const Make_startegy_token = await UserMakeStrategy.findOne({ tokensymbol: response.tk }, { _id: 1 });
 
-                            const currentDate = new Date();
-                            const hours = currentDate.getHours().toString().padStart(2, '0');
-                            const minutes = currentDate.getMinutes().toString().padStart(2, '0');
-                            const stock_live_price = db_main.collection('stock_live_price');
-                            const filter = { _id: response.tk }; 
+                                // if (Make_startegy_token) {
+                                //     ALice_View_data(response.tk, response,dbTradeTools);
+                                // }
+
+                                const currentDate = new Date();
+                                const hours = currentDate.getHours().toString().padStart(2, '0');
+                                const minutes = currentDate.getMinutes().toString().padStart(2, '0');
+                                const stock_live_price = db_main.collection('stock_live_price');
+                                const filter = { _id: response.tk };
 
 
-                            if (response.lp != undefined) {
-                                let bp1 = response.lp
-                                let sp1 = response.lp
+                                if (response.lp != undefined) {
+                                    let bp1 = response.lp
+                                    let sp1 = response.lp
 
-                                if (response.bp1 != undefined) {
-                                    bp1 = response.bp1;
+                                    if (response.bp1 != undefined) {
+                                        bp1 = response.bp1;
+                                    }
+
+                                    if (response.sp1 != undefined) {
+                                        sp1 = response.sp1;
+                                    }
+
+                                    const update = {
+                                        $set: {
+                                            lp: response.lp,
+                                            exc: response.e,
+                                            sp1: sp1,
+                                            bp1: bp1,
+                                            curtime: `${hours}${minutes}`,
+                                            ft: response.ft
+                                        },
+                                    };
+                                    const result = await stock_live_price.updateOne(filter, update, { upsert: true });
                                 }
 
-                                if (response.sp1 != undefined) {
-                                    sp1 = response.sp1;
-                                }
 
-                                const update = {
-                                    $set: {
-                                        lp: response.lp,
-                                        exc: response.e,
-                                        sp1: sp1,
-                                        bp1: bp1,
-                                        curtime: `${hours}${minutes}`,
-                                        ft: response.ft
-                                    },
-                                };
-                                const result = await stock_live_price.updateOne(filter, update, { upsert: true });
+
+
+
+
+
+                            } else {
                             }
 
+                            if (response.s === 'OK') {
+                                // var channel = await channelList;
+                                let json = {
+                                    k: channelList,
+                                    t: 't'
+                                };
+                                await socket.send(JSON.stringify(json))
 
+                                socketObject = socket
 
-
-
-
-
-                        } else {
+                            }
                         }
 
-                        if (response.s === 'OK') {
-                            // var channel = await channelList;
-                            let json = {
-                                k: channelList,
-                                t: 't'
-                            };
-                            await socket.send(JSON.stringify(json))
+                        socket.onclose = async function (event) {
+                            if (event.wasClean) {
+                                // console.log("Socket -- event.wasClean IF")
 
-                            socketObject = socket
+                                await socketRestart()
 
-                        }
+
+
+
+                            } else {
+                                // console.log("Socket -- event.wasClean ELSE")
+                                // await socketRestart()
+                                // connect
+                                // alert('[close] Connection died');
+                            }
+                        };
+
+                        socket.onerror = function (error) {
+                            console.log("Socket -- onerror")
+
+                        };
+
+                    } catch (error) {
+                        console.log("Error Shocket", error);
+
                     }
-
-                    socket.onclose = async function (event) {
-                        if (event.wasClean) {
-                       // console.log("Socket -- event.wasClean IF")
-                        
-                        await socketRestart()
-                          
-
-
-
-                        } else {
-                        // console.log("Socket -- event.wasClean ELSE")
-                        // await socketRestart()
-                          // connect
-                          // alert('[close] Connection died');
-                        }
-                      };
-  
-                     socket.onerror = function (error) {
-                        console.log("Socket -- onerror")
-                       
-                      };
-
-                } catch (error) {
-                    console.log("Error Shocket", error);
-
                 }
-            }
-        })
-            .catch((error) => {
-            
-
-                return "error"
             })
+                .catch((error) => {
 
 
-    } catch (error) {
-        console.log("Error createSocketSess", error);
-    }
+                    return "error"
+                })
+
+
+        } catch (error) {
+            console.log("Error createSocketSess", error);
+        }
 
     }
 
@@ -217,7 +208,7 @@ const getSocket = () => {
 
 const socketRestart = async () => {
     //console.log("socketRestart")
-   await Alice_Socket()
+    await Alice_Socket()
 };
 
 

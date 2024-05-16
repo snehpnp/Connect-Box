@@ -34987,11 +34987,11 @@ input:disabled {
     background: rgba(230, 33, 33, 0.1) !important;
 }
 
-.tg {
+/* .tg {
     width: 100%;
     border-collapse: collapse;
     border-spacing: 0;
-}
+} */
 
 .tg td {
 
@@ -35000,9 +35000,11 @@ input:disabled {
     border-width: 1px;
     font-family: Arial, sans-serif;
     font-size: 14px;
-    overflow: hidden;
+    overflow: visible;
     padding: 10px 5px;
-    word-break: normal;
+    word-break: break-all;
+    color: black;
+    
 }
 
 .tg th {
@@ -35010,16 +35012,21 @@ input:disabled {
     border-style: solid;
     border-width: 1px;
     font-family: Arial, sans-serif;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: normal;
-    overflow: hidden;
+    overflow: visible;
     padding: 10px 5px;
-    word-break: normal;
+    color: black;
+    
+    
+    
+   
 }
 
 .tg .tg-0lax {
     text-align: left;
-    vertical-align: top
+    vertical-align: top;
+   
 }
 
 .postiontab {
@@ -35059,6 +35066,7 @@ input:disabled {
     box-shadow: none !important;
     padding: 0 !important;
 }
+
 /* --------------------toggle button------------------------ */
 
   
@@ -35176,4 +35184,8 @@ input:disabled {
   /* ------------------------------------------------- */
   .modal-title.h4 {
     color: #000;
+=======
+.packages .card{
+    border: 1px solid green !important;
+>>>>>>> bf547b37cf05d3f6e07802aa8928e0e7c92e429a
 }

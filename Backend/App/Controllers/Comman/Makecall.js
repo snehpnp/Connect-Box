@@ -69,8 +69,6 @@ class Makecall {
   async GetServiceByCatagory(req, res) {
 
 
-    console.log("req.body ", req.body)
-
     if (req.body.category_id == '' || req.body.category_id == null) {
       return res.send({ status: false, msg: "Category not fount service", data: [] })
     }
@@ -79,11 +77,9 @@ class Makecall {
 
     const categorySegment = await categorie.findById(CategoryObjectId).select('segment')
 
-    // console.log("categorySegment",categorySegment.segment)
     if (categorySegment.segment == "FO") {
 
       const categorySegmentId = await categorie.findOne({ segment: "F" }).select('_id');
-      //  console.log("categorySegmentId",categorySegmentId._id)
 
 
       const pipeline = [
@@ -634,7 +630,6 @@ class Makecall {
 
   //Add data above beleow range
   async AddDataAboveBelowRange(req, res) {
-    console.log("req - ", req.body)
 
     try {
 
@@ -670,45 +665,7 @@ class Makecall {
         WiseTypeDropdown
       } = req.body;
 
-      console.log("ABR_TYPE", ABR_TYPE)
-      // if (ABR_TYPE == 'at') {
-      //   let exch = "NFO"
-
-      //   if (Segment == "C") {
-      //     exch = "NSE"
-      //   }
-      //   else if (Segment == "MO" || Segment == "MF") {
-      //     exch = "MCX"
-      //   }
-      //   else if (Segment == "CO" || Segment == "CF") {
-      //     exch = "CDS"
-      //   }
-      //   console.log("token ", token)
-      //   console.log("exch ", exch)
-
-      //   const tokenExisst = await token_chain.findOne({ _id: token })
-      //   //console.log("tokenExisst ",tokenExisst)
-      //   if (tokenExisst != null) {
-      //     console.log("tokenExisst if", tokenExisst)
-      //     return res.send({ status: true, msg: "Data Add Successfully....", data: result });
-
-      //   } else {
-      //     //  console.log("tokenExisst else",tokenExisst)
-      //     const filter = { _id: token };
-      //     const update = { $set: { _id: token, exch: exch } };
-      //     await token_chain.updateOne(filter, update, { upsert: true });
-      //     Alice_Socket()
-      //     return res.send({ status: true, msg: "Data Add Successfully....", data: result });
-
-      //   }
-
-      // }
-      
-
-      //  const filter = { _id:token  };
-      //  const update = { $set: { _id:token,exch:exch} };
-      //  await token_chain.updateOne(filter, update, { upsert: true });
-      //  return
+    
 
       //crete data
       const makecallABR_insert = new makecallABR({
@@ -761,13 +718,11 @@ class Makecall {
         else if (Segment == "CO" || Segment == "CF") {
           exch = "CDS"
         }
-        console.log("token ", token)
-        console.log("exch ", exch)
+ 
 
         const tokenExisst = await token_chain.findOne({ _id: token })
-        //console.log("tokenExisst ",tokenExisst)
+      
         if (tokenExisst != null) {
-          console.log("tokenExisst if", tokenExisst)
           return res.send({ status: true, msg: "Data Add Successfully....", data: result });
 
         } else {
@@ -1055,7 +1010,6 @@ async function run() {
 
               axios.request(config)
                 .then(async (response) => {
-                  console.log(" response ", response)
                   //  let tradeSymbol;
                   //  if(item.Segment.toLowerCase() == 'o' || item.Segment.toLowerCase() == 'co' || item.Segment.toLowerCase() == 'fo' || item.Segment.toLowerCase() == 'mo')
                   //  {
