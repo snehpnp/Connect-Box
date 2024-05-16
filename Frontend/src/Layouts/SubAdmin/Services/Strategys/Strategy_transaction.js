@@ -188,7 +188,22 @@ function Payment() {
           const formattedData = response.data.map((row, index) => ({
             ...row,
             id: index + 1,
-          }));
+          }))
+
+
+          const filterData = formattedData.filter((item)=>{
+            console.log("formattedData :", item.user_id)
+
+            const searchMatch = 
+            inputSearch=='' || 
+            item.user_id ?.toLowerCase().includes(inputSearch.toLowerCase()) ||
+            item.strategy_id ?.toLowerCase().includes(inputSearch.toLowerCase()) ||
+            
+            item.user_id ?.toLowerCase().includes(inputSearch.toLowerCase()) 
+
+            return searchMatch
+            
+          })
 
           setCompanyData({
             loading: true,
@@ -229,10 +244,11 @@ function Payment() {
     setrefresh(!refresh)
   }
 
+
+  console.log("inputSearch :" , inputSearch)
   return (
     <>
       {companyData && companyData.loading ? (
-
         <div className="content container-fluid" data-aos="fade-left">
           <div className="card">
             <div className="card-header">
@@ -271,7 +287,6 @@ function Payment() {
                           />
                         </div>
                       </li>
-
                       <li>
                         <div
                           className="dropdown dropdown-action"
@@ -283,18 +298,12 @@ function Payment() {
                             className="btn btn-primary "
                             // apiData={ForGetCSV}
                             fileName={'Payment Details'} />
-
-
                         </div>
                       </li>
-
-
                     </ul>
                   </div>
                 </div>
               </div>
-
-
             </div>
             <div className="card-body">
 

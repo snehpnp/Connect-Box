@@ -230,6 +230,22 @@ export async function PasswordChange(data,token) {
 }
 
 
+export async function LOG_OUT_USER(data,token) {
+    try {
+        const res = await axios.post(`${Config.base_url}logoutUser`, data, {
+           
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return err
+
+    }
+
+}
+
+
 
 
 

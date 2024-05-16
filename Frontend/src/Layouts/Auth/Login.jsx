@@ -233,7 +233,7 @@ function Login() {
   };
 
   useEffect(() => {
-    console.log("theme_mode", theme_mode);
+     
     const htmlElement = document.querySelector("html");
     htmlElement.setAttribute("data-sidebar", theme_mode);
     htmlElement.setAttribute("data-layout-mode", theme_mode);
@@ -246,23 +246,17 @@ function Login() {
   }, [isLoggedIn, getData.Role, navigate]);
 
 
+  const fetchIP = async () => {
+    try {
+      const ip = await ipAddress();
+      setIp(ip);
+    } catch (error) {
+      console.error('Failed to fetch IP address:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchIP = async () => {
-      try {
-        const ip = await ipAddress();
-        setIp(ip);
-      } catch (error) {
-        console.error('Failed to fetch IP address:', error);
-      }
-    };
-
     fetchIP();
-
-    // Clean up function
-    return () => {
-
-    };
   }, []);
 
 
