@@ -677,8 +677,9 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
                 let tradeChargeData = {
                     order_id: response.data[0].NOrdNo,
                     user_id: item._id,
-                    admin_charge: item.stg_client.trade_charge,
-                    user_charge: 10
+                    admin_charge: 10,
+                    user_charge: item.stg_client.trade_charge,
+                    parent_id:item.parent_id
                 }
                 trade_charge(tradeChargeData)
 
@@ -884,8 +885,9 @@ const ExitPlaceOrder = async (item, filePath, possition_qty, signals, signal_req
                 let tradeChargeData = {
                     order_id: response.data[0].NOrdNo,
                     user_id: item._id,
-                    admin_charge: item.stg_client.trade_charge,
-                    user_charge: 10
+                    admin_charge: 10,
+                    user_charge: item.stg_client.trade_charge,
+                    parent_id:item.parent_id
                 }
                 trade_charge(tradeChargeData)
 
