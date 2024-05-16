@@ -2,20 +2,17 @@
 const bcrypt = require("bcrypt");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+
+const { CommonEmail } = require("../../../Helpers/CommonEmail");
+const { firstOptPass } = require("../../../Helpers/Email_formate/first_login");
+
 const db = require("../../../Models");
 const User_model = db.user;
-
 const Role_model = db.role;
 const Strategie_modal = db.Strategies;
 const strategy_client = db.strategy_client;
 const strategy_transaction = db.strategy_transaction;
 const Activity_logs = db.Activity_logs;
-
-const { CommonEmail } = require("../../../Helpers/CommonEmail");
-const { firstOptPass } = require("../../../Helpers/Email_formate/first_login");
-
-
-
 const Company_info = db.company_information;
 const groupService_User = db.group_services;
 const client_services = db.client_service;
@@ -24,8 +21,6 @@ const count_licenses = db.count_licenses;
 const strategy = db.strategy;
 const serviceGroupName = db.serviceGroupName;
 const Client_group_Service = db.group_services;
-
-
 
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
@@ -135,7 +130,6 @@ class Users {
 
 
 
-      const { ObjectId } = require('mongodb');
 
       try {
         // Map each strategy ID to its corresponding ObjectId
@@ -1206,7 +1200,7 @@ class Users {
               } else if (data.plan_id == 2) {
                 price_stg = matchedStrategy.security_fund_quarterly
                 daysforstg = 3
-                trade_charge = matchedStrategy.ixed_amount_per_trade_quarterly
+                trade_charge = matchedStrategy.fixed_amount_per_trade_quarterly
 
               } else if (data.plan_id == 3) {
                 price_stg = matchedStrategy.security_fund_half_early

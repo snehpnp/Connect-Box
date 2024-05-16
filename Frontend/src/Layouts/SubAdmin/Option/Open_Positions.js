@@ -604,13 +604,13 @@ export default function AllEmployees() {
                 <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>
             ),
         },
-        {
-            dataField: "exit_qty_percent",
-            text: "Exit Qty %",
-            formatter: (cell, row, rowIndex) => (
-                <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>
-            ),
-        },
+        // {
+        //     dataField: "exit_qty_percent",
+        //     text: "Exit Qty %",
+        //     formatter: (cell, row, rowIndex) => (
+        //         <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>
+        //     ),
+        // },
         {
             dataField: "live",
             text: "Live Price bp",
