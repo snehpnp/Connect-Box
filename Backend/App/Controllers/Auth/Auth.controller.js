@@ -49,7 +49,7 @@ class Auth {
                 return res.send({ status: false, msg: 'Password Not Match', data: [] });
             }
 
-            if (EmailCheck.Role == "USER") {
+            if (EmailCheck.Role == "USER" || EmailCheck.Role == "SUBADMIN" || EmailCheck.Role == "EMPLOYEE" || EmailCheck.Role == "RESEARCH" ) {
 
                 // User active Status
                 if (EmailCheck.ActiveStatus == 0) {
