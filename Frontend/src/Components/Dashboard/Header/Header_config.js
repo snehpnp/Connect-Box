@@ -329,6 +329,13 @@ export const User_header = [
         ]
     },
     {
+        id: 50,
+        name: 'Trade Charges',
+        route: "/user/tradecharge",
+        Icon: "fa-solid fa-clock-rotate-left",
+        Data: []
+    },
+    {
         id: 4,
         name: 'Subscription ',
         route: "/user/subscription",

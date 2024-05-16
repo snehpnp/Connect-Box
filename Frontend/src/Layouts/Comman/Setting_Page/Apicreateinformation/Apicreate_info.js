@@ -7,8 +7,6 @@ import * as Config from "../../../../Utils/Config";
 function Apicreate_info() {
   const dispatch = useDispatch();
 
-  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
-
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [model, setModel] = useState(false);

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_CLIENT_ALL_SERVICE, UPDATE_CLIENT_SERVICE, GET_ALL_SUBADMIN_STRATEGY, GET_ALL_STRATEGY, updatestatus } from "../../../Services/Users/allUsers.service";
+import { GET_CLIENT_ALL_SERVICE, UPDATE_CLIENT_SERVICE, GET_ALL_SUBADMIN_STRATEGY, GET_ALL_STRATEGY, updatestatus, UserTradeCharge } from "../../../Services/Users/allUsers.service";
 
 export const GetAllclientDetails = createAsyncThunk("getall/user/clientServices",
   async (data) => {
@@ -58,6 +58,20 @@ export const statusUpdate = createAsyncThunk('statusUpadate',
   })
 
 
+  // user trade charge 
+
+
+  export const UserTrade = createAsyncThunk('user/trade/charges',
+  async (data) => {
+    try {
+      const res = await UserTradeCharge(data)
+      return await res;
+    }
+    catch (err) {
+      return await err
+    }
+  })
+
 
 const ClientServiceSlice = createSlice({
   name: "ClientServiceSlice",
@@ -68,6 +82,7 @@ const ClientServiceSlice = createSlice({
     get_all_subadmin_strategy: null,
     get_all_strategy: null,
     statusUpdate: null,
+    UserTrade:null,
 
   },
   reducers: {},
@@ -115,6 +130,18 @@ const ClientServiceSlice = createSlice({
       .addCase(statusUpdate.fulfilled, (state, action) => {
         state.isLoading = false;
         state.statusUpdate = action.payload;
+      })
+      .addCase(UserTrade.pending, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+      })
+      .addCase(UserTrade.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(UserTrade.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.UserTrade = action.payload;
       })
 
   },

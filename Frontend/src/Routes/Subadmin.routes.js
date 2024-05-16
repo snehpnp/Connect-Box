@@ -88,7 +88,7 @@ const SubAdmin_Routing = () => {
           
           <Route exact path="/test" element={<Test />} />
 
-          <Route exact path="/trade/charges" element={<Tradecharges />} />
+          <Route exact path="/trade/charges" element={<Tradecharges/>} />
 
           
 

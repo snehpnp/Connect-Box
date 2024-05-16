@@ -774,10 +774,6 @@ class strategy {
 
 
 
-
-
-
-
   // GET ALL RESEARCHER STRATEGYS
   async getAllResearcherStrategy(req, res) {
 
@@ -834,8 +830,6 @@ class strategy {
 
 
 
-
-
     if (!researchUsersWithStrategies) {
       return res.send({
         status: false,
@@ -852,14 +846,10 @@ class strategy {
 
 
 
-
-
-
-
+  
   async subadminTradeCharges(req, res) {
 
-    const { id } = req.body
-
+  const { id } = req.body
     var TradechargesWithUserDetails = await tradeCharge_Modal.aggregate([
       {
         $lookup: {
@@ -887,7 +877,13 @@ class strategy {
           createdAt: 1,
           user_id: 1
         }
+      },
+      {
+        $sort: {
+          createdAt: -1 
+        }
       }
+      
     ]);
 
     return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails })
@@ -924,21 +920,17 @@ class strategy {
           createdAt: 1,
           user_id: 1
         }
+      },
+      {
+        $sort: {
+          createdAt: -1 
+        }
       }
     ]);
 
     return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails })
 
   }
-
-
-
-
-
-
-
-
-
 
 
 }
