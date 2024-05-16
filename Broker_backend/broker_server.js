@@ -361,7 +361,6 @@ app.post('/broker-signals', async (req, res) => {
       var client_key = signals.Key;
       var TradeType = signals.TradeType;
 
-    console.log("signals - ",signals)
       let ExitStatus = '-'
 
       let ft_time = ''
@@ -589,9 +588,7 @@ app.post('/broker-signals', async (req, res) => {
           }
 
 
-       
-          console.log("ft_time -- ", ft_time);
-
+    
 
           // HIT TRADE IN BROKER SERVER
           if (client_key_array.includes(client_key)) {
@@ -796,7 +793,6 @@ app.post('/broker-signals', async (req, res) => {
 
           } else {
 
-            console.log("Trading View  trade", client_key)
             //Process Tading View Client Alice Blue
             try {
               const AliceBlueCollection = db1.collection('aliceblueView');
@@ -1170,7 +1166,6 @@ app.post('/broker-signals', async (req, res) => {
 
               } else {
 
-                console.log("ExitMainSignals", ExitMainSignals)
 
                 if (parseFloat(ExitMainSignals[0].entry_qty_percent) >= (parseFloat(qty_percent) + (isNaN(ExitMainSignals[0].exit_qty_percent) || ExitMainSignals[0].exit_qty_percent === "" ? 0 : parseFloat(ExitMainSignals[0].exit_qty_percent)))) {
 
