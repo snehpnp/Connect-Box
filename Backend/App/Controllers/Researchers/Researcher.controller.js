@@ -788,6 +788,17 @@ class Researcher {
         }
     }
 
+    // async DemoData(req,res){
+
+    //     const {id} = req.body
+
+    //     let findData = await User_model.find({_id: id})
+        
+    //     console.log(findData)
+
+        
+    // }
+
 
 
 }
