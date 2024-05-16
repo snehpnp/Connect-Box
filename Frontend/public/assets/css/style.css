@@ -35066,3 +35066,6 @@ input:disabled {
     box-shadow: none !important;
     padding: 0 !important;
 }
+.packages .card{
+    border: 1px solid green !important;
+}

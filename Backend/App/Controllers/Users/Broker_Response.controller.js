@@ -24,8 +24,20 @@ class BrokerResponses {
             if (!id) {
                 return res.send({ status: false, msg: "User Id not found", data: [] })
             }
-            const findResponse = await BrokerResponse.find({ user_id: id }).sort({ createdAt: -1 })
-
+            const currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to 0 for the start of the day
+            
+            const nextDate = new Date(currentDate);
+            nextDate.setDate(nextDate.getDate() + 1); // Get the next date to include data up to the end of the day
+            
+            const findResponse = await BrokerResponse.find({ 
+                user_id: id,
+                createdAt: { 
+                    $gte: currentDate, // Greater than or equal to the start of the current day
+                    $lt: nextDate // Less than the start of the next day
+                }
+            }).sort({ createdAt: -1 });
+            
 
 
             GetAllBrokerResponse1(id, res)

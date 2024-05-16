@@ -165,8 +165,8 @@ function Login() {
           case "Password Not Match":
             showErrorModal("Incorrect Password", "Enter the correct password.");
             break;
-          case "Contact admin you are inactive.":
-            showInactiveAccountModal();
+          case "please contact admin you are inactive.":
+            showInactiveAccountModal("please contact admin you are inactive.","please contact admin you are inactive.");
             break;
           case "User Not exists":
             showErrorModal("User Not Exists", "The user you are trying to access does not exist.");

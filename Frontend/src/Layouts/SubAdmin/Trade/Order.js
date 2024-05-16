@@ -120,13 +120,11 @@ export default function AllEmployees() {
 
     ];
 
-    // REFRESH HANDEL
+ // REFRESH HANDEL
     const RefreshHandle = () => {
         setrefresh(!refresh);
         setSearchInput("");
     };
-
-
 
 
     const userDataRes = async () => {

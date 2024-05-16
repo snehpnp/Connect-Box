@@ -1,20 +1,20 @@
 var axios = require('axios');
-const db = require('../../Backend/App/Models');
+
+const db = require('../../BACKEND/App/Models');
+// const db = require('../../Backend/App/Models');
+
+
 const TradeChargeModel = db.tradeCharge;
 
 const trade_charge = async (data) => {
    
-
-    console.log("okkk ",data)
-    console.log("order_id ",data.order_id)
-    console.log("user_id ",data.user_id)
-
-
     try {
 
       var req = {
-          user_id: data.user_id,
-          order_id: data.order_id,
+        user_id: data.user_id,
+        order_id: data.order_id,
+        admin_charge: data.admin_charge,
+        user_charge: data.user_charge
         }
 
         let tradeChargeStore = new TradeChargeModel(req)

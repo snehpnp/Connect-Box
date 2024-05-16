@@ -53,7 +53,7 @@ const StrategyUsers = () => {
                 <div className="mx-3 mb-5">
                     <div className="accordion" id="accordionExample">
                         {getUsers.map((item, index) => (
-                            < div className="accordion-item" key={`accordion-item-${index}`}>                             
+                            < div className="accordion-item" key={`accordion-item-${index}`}>
                                 <h2 className="accordion-header" id={`heading${index}`}>
                                     <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse-${index}`} aria-expanded="false" aria-controls={`collapse-${index}`}>
                                         <div className="d-flex align-items-center" style={{ width: '100%' }}>
@@ -76,7 +76,7 @@ const StrategyUsers = () => {
                                                     text: "#",
                                                     formatter: (cell, row, rowIndex) => rowIndex + 1,
                                                 },
-                                            
+
                                                 {
                                                     dataField: "Username",
                                                     text: "Username",
@@ -110,6 +110,15 @@ const StrategyUsers = () => {
                                                     formatter: (cell, row, rowIndex) => (
                                                         <div>
                                                             {fDateTime(row.createdAt)}
+                                                        </div>
+                                                    ),
+                                                },
+                                                {
+                                                    dataField: "End_Date",
+                                                    text: "End Date",
+                                                    formatter: (cell, row, rowIndex) => (
+                                                        <div>
+                                                            {row.End_Date ? fDateTime(row.End_Date) : "-"}
                                                         </div>
                                                     ),
                                                 },

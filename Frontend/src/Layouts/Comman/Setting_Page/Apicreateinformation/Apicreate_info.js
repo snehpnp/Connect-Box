@@ -7,6 +7,7 @@ import * as Config from "../../../../Utils/Config";
 function Apicreate_info() {
   const dispatch = useDispatch();
 
+
   const [selectedItem, setSelectedItem] = useState(null);
   const [model, setModel] = useState(false);
   const [UserDetails, setUserDetails] = useState({
@@ -30,6 +31,9 @@ function Apicreate_info() {
   useEffect(() => {
     data();
   }, []);
+  
+
+
 
   const Data = [
     {

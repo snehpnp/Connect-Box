@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { admindata,addadminandupdate,History } from "../../../Services/SuperAdmin/SuperadminPanel";
+import { admindata,addadminandupdate,History ,subadmindata,updateuserdata,deleteById} from "../../../Services/SuperAdmin/SuperadminPanel";
 
 
 
@@ -48,6 +48,57 @@ export const Adminhistory = createAsyncThunk(
   );
 
 
+  // subadmin detail  for superadmin page
+
+
+  export const Subadmindetail = createAsyncThunk(
+    "subadmindetail",
+    async (data) => {
+      try {
+        const res = await subadmindata(data);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
+
+
+  
+
+
+
+  // update user in superadmin
+
+  export const updateUser = createAsyncThunk(
+    "getUserdetail",
+    async (data) => {
+      try {
+        const res = await updateuserdata(data);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
+
+  // delet user by id of superadmin
+
+
+  export const DeleteUser = createAsyncThunk(
+    "deleteUser",
+    async (data) => {
+      try {
+        const res = await deleteById(data);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
+
+
+
 
   const GrouoServicesSlice = createSlice({
     name: "SystemSlice",
@@ -57,6 +108,9 @@ export const Adminhistory = createAsyncThunk(
       getadmindata:null,
       updateBalance:null,
       Adminhistory:null,
+      Subadmindetail:null,
+      updateUser:null,
+      DeleteUser:null,
   
     },
     reducers: {},
@@ -94,6 +148,43 @@ export const Adminhistory = createAsyncThunk(
             state.Adminhistory = action.payload;
           })
           .addCase(Adminhistory.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+          })
+          .addCase(Subadmindetail.pending, (state, action) => {
+            state.isLoading = true;
+            state.isError = false;
+          })
+          .addCase(Subadmindetail.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.Subadmindetail = action.payload;
+          })
+          .addCase(Subadmindetail.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+          })
+          
+          .addCase(updateUser.pending, (state, action) => {
+            state.isLoading = true;
+            state.isError = false;
+          })
+          .addCase(updateUser.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.updateUser = action.payload;
+          })
+          .addCase(updateUser.rejected, (state, action) => {
+            state.isLoading = false;
+            state.isError = true;
+          })
+          .addCase(DeleteUser.pending, (state, action) => {
+            state.isLoading = true;
+            state.isError = false;
+          })
+          .addCase(DeleteUser.fulfilled, (state, action) => {
+            state.isLoading = false;
+            state.DeleteUser = action.payload;
+          })
+          .addCase(DeleteUser.rejected, (state, action) => {
             state.isLoading = false;
             state.isError = true;
           })

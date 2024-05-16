@@ -45,7 +45,9 @@ const Header = () => {
   }
 
   const ClearSession = async () => {
-    if (token) {
+    if (!token) {
+      return;
+    } else {
       const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT token
       const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
 
@@ -65,25 +67,27 @@ const Header = () => {
     ClearSession();
   }, []);
 
-
-
   const toggleNav = (data) => {
-    
     if (data.Data.length == 0) {
       document.body.classList.remove("slide-nav");
     }
   };
 
-
   const toggleNav1 = (item) => {
-   
-      document.body.classList.remove('slide-nav');
-  
+    document.body.classList.remove("slide-nav");
   };
 
   const handleLinkClick = (id) => {
     setActiveLink(id);
   };
+
+  if (subadmin_service_type == 2) {
+    HeaderData = HeaderData[0].filter(
+      (column) => column.name != "Trade Charges"
+    );
+  }
+
+
 
   return (
     <div className="sidebar" id="sidebar">

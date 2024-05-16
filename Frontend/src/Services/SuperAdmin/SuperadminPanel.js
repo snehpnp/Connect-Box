@@ -51,3 +51,52 @@ export async function History(data) {
 
     }
 }
+
+
+
+// getting subadmin data
+
+export async function subadmindata(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}subadmindetail`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+
+   
+/// get user data 
+
+export async function  updateuserdata(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}updateUserdetail`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+// delete user by id  in superadmin
+
+export async function  deleteById(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}deleteUser`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}

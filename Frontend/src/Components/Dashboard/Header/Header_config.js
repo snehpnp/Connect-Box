@@ -187,10 +187,17 @@ export const subamdin_header = [
             }
         ]
     },
+    // {
+    //     id: 7,
+    //     name: 'Strategy History',
+    //     route: "/subadmin/strategys/history",
+    //     Icon: "fa-solid fa-clock-rotate-left",
+    //     Data: []
+    // },
     {
-        id: 7,
-        name: 'Strategy History',
-        route: "/subadmin/strategys/history",
+        id: 8,
+        name: 'Trade Charges',
+        route: "/subadmin/trade/charges",
         Icon: "fa-solid fa-clock-rotate-left",
         Data: []
     },
@@ -322,6 +329,13 @@ export const User_header = [
         ]
     },
     {
+        id: 50,
+        name: 'Trade Charges',
+        route: "/user/tradecharge",
+        Icon: "fa-solid fa-clock-rotate-left",
+        Data: []
+    },
+    {
         id: 4,
         name: 'Subscription ',
         route: "/user/subscription",
@@ -438,9 +452,17 @@ export const superadmin_header = [
         Icon: "fe fe-help-circle",
         Data: []
     }, {
-        id: 9,
+        id: 10,
         name: 'History',
         route: "/superadmin/history",
+        Icon: "fe fe-help-circle",
+        Data: []
+
+    },
+    {
+        id: 20,
+        name: 'All USER',
+        route: "/superadmin/alluser",
         Icon: "fe fe-help-circle",
         Data: []
 
@@ -547,7 +569,7 @@ export const research_header = [
         Icon: "fe fe-users",
         Data: []
     },
-    
+
     // {
     //     id: 10,
     //     name: 'Message Broadcast',
