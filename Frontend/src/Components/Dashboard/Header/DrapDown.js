@@ -56,13 +56,7 @@ const DropDown = () => {
     fetchData();
   }, []);
 
-  // const LogoutUser = (e) => {
-  //   // e.stopPropagation(); // Stop event propagation
 
-  //   localStorage.removeItem("user_details");
-  //   localStorage.removeItem("user_role");
-  //   navigate("/login");
-  // };
 
   const fetchIP = async () => {
     try {
@@ -92,13 +86,13 @@ const DropDown = () => {
             timer: 1500,
             timerProgressBar: true
           })
-          setTimeout(()=>{
+          setTimeout(() => {
             localStorage.removeItem("user_details")
             localStorage.removeItem("user_role")
             navigate("/login")
           }, 1500)
 
-         
+
         }
         else {
           Swal.fire({
@@ -166,7 +160,7 @@ const DropDown = () => {
       navigate("/subadmin/wallet");
     } else if (Role == "RESEARCH") {
       navigate("/research/wallet");
-    }
+    } 
   };
 
   const ProfilePage = () => {
@@ -256,7 +250,7 @@ const DropDown = () => {
             {subadmin_service_type == 2 ? "STRATEGY WISE" : "PER TRADE"}
           </li>
         )}
-        {!(Role === "USER" || Role === "EMPLOYEE") ? (
+        {!(Role === "EMPLOYEE") ? (
           <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
             <button
               type="button"
@@ -284,6 +278,9 @@ const DropDown = () => {
             </button>
           </li>
         ) : null}
+
+
+
 
         <li className="nav-item dropdown  flag-nav dropdown-heads">
           <a
