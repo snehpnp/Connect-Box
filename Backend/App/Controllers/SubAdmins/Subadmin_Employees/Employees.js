@@ -100,6 +100,7 @@ class Employee {
     try {
       const {
         FullName,
+        UserName,
         Email,
         PhoneNo,
         password,
@@ -120,11 +121,7 @@ class Employee {
         return res.send({ status: false, msg: "Phone number already exists" });
       }
 
-      // const existingPhone = await User_model.findOne({ PhoneNo });
-      // if (existingPhone) {
-      //   return res.send({ status: false, msg: "Phone number already exists" });
-      // }
-
+  
 
       const existingPrefix = await User_model.findOne({
         Role: "SUBADMIN",
@@ -143,8 +140,7 @@ class Employee {
       // Create new user
       const newUser = new User_model({
         FullName: FullName,
-        UserName:
-          FullName + (PhoneNo && PhoneNo.length >= 4 ? PhoneNo.slice(-4) : ""),
+        UserName: UserName,
         Email,
         PhoneNo,
         Password: hashedPassword,

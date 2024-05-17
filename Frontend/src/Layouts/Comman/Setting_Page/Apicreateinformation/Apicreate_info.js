@@ -24,26 +24,23 @@ function Apicreate_info() {
       .then((response) => {
         if (response.status) {
 
-          const formattedData = response.data && response.data.map((row, index) => {
-            if (Role === 'USER') {
-              return {
-                ...row,
-                id: index + 1,
-             
-              };
-            } else {
-              return {
-                ...row,
-                id: index + 1,
-              };
-            }
-          });
-          
+          var formattedData1
+
+          if(Role == "USER"){
+             formattedData1 = response.data.filter((item) =>  item.broker_id == broker)
+          }else{
+            formattedData1 = response.data
+
+          }
+
+
+
+          console.log("formattedData", formattedData1)
 
 
           setUserDetails({
             loading: false,
-            data: response.data,
+            data: formattedData1,
           });
         }
       });
@@ -51,7 +48,7 @@ function Apicreate_info() {
   useEffect(() => {
     data();
   }, []);
-  
+
 
 
 
@@ -455,9 +452,9 @@ function Apicreate_info() {
   };
 
 
-console.log("broker",broker)
-console.log("Role",Role)
-console.log("UserDetails.data",UserDetails.data)
+  console.log("broker", broker)
+  console.log("Role", Role)
+  console.log("UserDetails.data", UserDetails.data)
 
 
 
@@ -467,7 +464,7 @@ console.log("UserDetails.data",UserDetails.data)
       <div className="row">
         {UserDetails.data &&
           UserDetails.data.map((item) => {
-       
+
             return (
               <section
                 key={item.id}

@@ -610,7 +610,6 @@ class Makecall {
       }
 
 
-
       if (result != null) {
         return res.send({ status: true, msg: "Data Get", data: result });
       } else {

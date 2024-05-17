@@ -2,34 +2,40 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IndianRupee } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
+import { ProfileInfo, userdataforhelp } from "../../../ReduxStore/Slice/Admin/System";
 import { LogOut } from '../../../ReduxStore/Slice/Auth/AuthSlice'
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { Minimize } from "lucide-react";
 import Swal from 'sweetalert2';
 import { ipAddress } from '../../../Utils/Ipaddress';
+import { admin_Msg_Get } from "../../../ReduxStore/Slice/Admin/MessageData";
+import { fDateTime } from "../../../Utils/Date_formet";
 
 const DropDown = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  const [pipelineData, setPipelineData] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [showFunds, setShowFunds] = useState(false);
   const [themeMode, setThemeMode] = useState("light");
   const [ip, setIp] = useState(null);
-
-  const dispatch = useDispatch();
-
   const [profileData, setProfileData] = useState([]);
   const [error, setError] = useState(null);
+  const [getuserdata, setGetuserdata] = useState([]);
   const [profileImage, setProfileImage] = useState("");
+
+
+  const user = JSON.parse(localStorage.getItem("user_details"));
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
-  const subadmin_service_type = JSON.parse(
-    localStorage.getItem("user_details")
-  ).subadmin_service_type;
-  var Role = JSON.parse(localStorage.getItem("user_details")).Role;
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
+  var Role = JSON.parse(localStorage.getItem("user_details")).Role;
+  const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type;
+
+
+
 
   const fetchData = async () => {
     try {
@@ -52,10 +58,6 @@ const DropDown = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
 
 
   const fetchIP = async () => {
@@ -66,10 +68,6 @@ const DropDown = () => {
       console.error('Failed to fetch IP address:', error);
     }
   };
-
-  useEffect(() => {
-    fetchIP();
-  }, []);
 
 
 
@@ -122,9 +120,6 @@ const DropDown = () => {
     htmlElement.setAttribute("data-topbar", newThemeMode);
     localStorage.setItem("theme_mode", newThemeMode);
 
-    // setTimeout(() => {
-    //     window.location.reload();
-    // }, 200);
   };
 
   const toggleFullScreen = () => {
@@ -153,6 +148,7 @@ const DropDown = () => {
     setIsFullScreen(!isFullScreen);
   };
 
+
   const walletmodal = () => {
     if (Role == "ADMIN") {
       // navigate('/admin/wallet')
@@ -160,7 +156,7 @@ const DropDown = () => {
       navigate("/subadmin/wallet");
     } else if (Role == "RESEARCH") {
       navigate("/research/wallet");
-    } 
+    }
   };
 
   const ProfilePage = () => {
@@ -196,21 +192,8 @@ const DropDown = () => {
     walletmodal();
   };
 
-  // Apply theme based on localStorage value on page load
-  useEffect(() => {
-    const storedThemeMode = localStorage.getItem("theme_mode");
-    if (storedThemeMode) {
-      setThemeMode(storedThemeMode);
-    }
-  }, []);
 
-  // Update theme-related attributes on HTML element
-  useEffect(() => {
-    const htmlElement = document.querySelector("html");
-    htmlElement.setAttribute("data-sidebar", themeMode);
-    htmlElement.setAttribute("data-layout-mode", themeMode);
-    htmlElement.setAttribute("data-topbar", themeMode);
-  }, [themeMode]);
+
 
   function formatNumber(value) {
     if (value < 1000) {
@@ -239,6 +222,97 @@ const DropDown = () => {
       ? text.substring(0, maxLength) + "..."
       : text;
   };
+
+
+
+
+  // ADMIN NOTIFICATION NOTIFICATION
+  const getSubadminTableData = async () => {
+    try {
+
+      const response = await dispatch(admin_Msg_Get({ ownerId: user_id, key: 3 })).unwrap();
+      if (response.status) {
+        setPipelineData(response.data);
+      } else {
+      }
+    } catch (error) {
+      console.log("Error", error);
+    } finally {
+    }
+  };
+
+
+
+  // USER NOTIFICATION
+  const getusertable = async () => {
+    await dispatch(userdataforhelp({}))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          if (response.data.length > 0) {
+            var filterData = response.data.filter(
+              (data) => data.prifix_key.substring(0, 3) === user.prifix_key
+            );
+
+            setGetuserdata(filterData);
+          } else {
+            setGetuserdata([]);
+          }
+
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+
+
+
+  useEffect(() => {
+    fetchIP();
+    fetchData();
+    getSubadminTableData();
+    getusertable()
+  }, []);
+
+
+
+  useEffect(() => {
+    const storedThemeMode = localStorage.getItem("theme_mode");
+    if (storedThemeMode) {
+      setThemeMode(storedThemeMode);
+    }
+  }, []);
+
+  useEffect(() => {
+    const htmlElement = document.querySelector("html");
+    htmlElement.setAttribute("data-sidebar", themeMode);
+    htmlElement.setAttribute("data-layout-mode", themeMode);
+    htmlElement.setAttribute("data-topbar", themeMode);
+  }, [themeMode]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+console.log("getuserdata",getuserdata)
+console.log("pipelineData",pipelineData)
 
 
 
@@ -302,63 +376,63 @@ const DropDown = () => {
             </div>
             <div className="noti-content">
               <ul className="notification-list">
-                <li className="notification-message">
-                  <a href="profile.html">
-                    <div className="d-flex">
-                      <div className="media-body">
-                        <div className="d-flex justify-content-between">
-                          <p className="noti-details">
-                            <span className="noti-title">Chandra Prakash</span>
-                          </p>
-                          <p className="noti-time">
-                            <span className="notification-time">
-                              30-04-2024 11:15 AM
+              
+              
+                {pipelineData && Role == "SUBADMIN" && pipelineData.map((data, index) => (
+                  <li className="notification-message" key={`pipeline-${index}`}>
+                    <a href="/#/subadmin/message-broadcast">
+                      <div className="d-flex">
+                        <div className="media-body">
+                          <div className="d-flex justify-content-between">
+                            <p className="noti-details">
+                              <span className="noti-title">{data.UserName}</span>
+                            </p>
+                            <p className="noti-time">
+                              <span className="notification-time">{fDateTime(data.createdAt)}</span>
+                            </p>
+                          </div>
+                          <div className="d-flex justify-content-between">
+                            <span style={{ maxWidth: "18rem" }}>
+                              {truncateText(data.messageTitle, 80)}
                             </span>
-                          </p>
-                        </div>
-                        <div className="d-flex justify-content-between">
-                          <span style={{ maxWidth: "18rem" }}>
-                            {truncateText("Alice Broker Some Issue Today", 80)}
-                          </span>
-                          <span>Admin{""}</span>
+                            <span>Admin</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
-                </li>
+                    </a>
+                  </li>
+                ))}
 
-                <li className="notification-message">
-                  <a href="profile.html">
-                    <div className="d-flex">
-                      <div className="media-body">
-                        <div className="d-flex justify-content-between">
-                          <p className="noti-details">
-                            <span className="noti-title">Sneh Jaiswal</span>
-                          </p>
-                          <p className="noti-time">
-                            <span className="notification-time">
-                              30-04-2024 11:15 AM
+                {getuserdata && getuserdata.map((data, index) => (
+                  <li className="notification-message" key={`getuserdata-${index}`}>
+                    <a href="/#/subadmin/help">
+                      <div className="d-flex">
+                        <div className="media-body">
+                          <div className="d-flex justify-content-between">
+                            <p className="noti-details">
+                              <span className="noti-title">{data.UserName}</span>
+                            </p>
+                            <p className="noti-time">
+                              <span className="notification-time">{fDateTime(data.createdAt)}</span>
+                            </p>
+                          </div>
+                          <div className="d-flex justify-content-between">
+                            <span style={{ maxWidth: "18rem" }}>
+                              {truncateText(data.Message, 80)}
                             </span>
-                          </p>
-                        </div>
-                        <div className="d-flex justify-content-between">
-                          <span style={{ maxWidth: "18rem" }}>
-                            {truncateText(
-                              "I Have issue in Kotak New Please Resoleve my probleam",
-                              80
-                            )}
-                          </span>
-                          <span>Help </span>
+                            <span>Help</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
-                </li>
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
-            <div className="topnav-dropdown-footer">
+
+            {/* <div className="topnav-dropdown-footer">
               <a href="#">Clear All</a>
-            </div>
+            </div> */}
           </div>
         </li>
 
@@ -424,12 +498,7 @@ const DropDown = () => {
                       <i class="fa-solid fa-user p-2"></i>Profile
                     </Link>
                   </li>
-                  {/* {Role == "ADMIN" || Role === "SUBADMIN" ?
-                                        <li>
-                                            <Link className="dropdown-item dev" to={Role === "ADMIN" ? "/admin/system" : "/subadmin/system"}>
-                                                <i class="fa-solid fa-gear p-2"></i> System
-                                            </Link>
-                                        </li> : ''} */}
+
                   <li onClick={() => SettingPage()}>
                     <Link className="dropdown-item dev" to="/setting">
                       <i class="fa-solid fa-gear p-2"></i>Settings
