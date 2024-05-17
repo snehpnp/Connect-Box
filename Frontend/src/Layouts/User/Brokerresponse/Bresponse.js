@@ -19,10 +19,10 @@ export default function BrokerResponse() {
   const [searchInput,setSearchInput] = useState("")
   const [showModal, setshowModal] = useState(false);
   const [BrokerResponseId, setBrokerResponseId] = useState([]);
-  const [DashboardData, setDashboardData] = useState({
-    loading: true,
-    data: [],
-  });
+  const [DashboardData, setDashboardData] = useState({ loading: true, data: []});
+
+
+
   const [borkerData, setBrokerData] = useState();
 
   //  for Add Licence
@@ -70,6 +70,12 @@ export default function BrokerResponse() {
     {
       field: "symbol",
       headerName: "Symbol",
+      width: 200,
+      headerClassName: styles.boldHeader,
+    },
+    {
+      field: "strategy",
+      headerName: "strategy",
       width: 200,
       headerClassName: styles.boldHeader,
     },

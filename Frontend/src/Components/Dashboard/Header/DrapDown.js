@@ -311,8 +311,8 @@ const DropDown = () => {
 
 
 
-console.log("getuserdata",getuserdata)
-console.log("pipelineData",pipelineData)
+  console.log("getuserdata", getuserdata)
+  console.log("pipelineData", pipelineData)
 
 
 
@@ -365,19 +365,21 @@ console.log("pipelineData",pipelineData)
             <i className="fe fe-bell" /> <span className="badge rounded-pill" />
           </a>
           <div className="dropdown-menu notifications">
+
             <div className="topnav-dropdown-header">
               <div className="notification-title">Notifications</div>
-              <a
+              {/* <a
                 href="javascript:void(0)"
                 className="clear-noti d-flex align-items-center"
               >
                 Mark all as read <i className="fe fe-check-circle" />
-              </a>
+              </a> */}
             </div>
+            
             <div className="noti-content">
               <ul className="notification-list">
-              
-              
+
+
                 {pipelineData && Role == "SUBADMIN" && pipelineData.map((data, index) => (
                   <li className="notification-message" key={`pipeline-${index}`}>
                     <a href="/#/subadmin/message-broadcast">

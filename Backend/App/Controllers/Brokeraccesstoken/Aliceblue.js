@@ -61,7 +61,10 @@ class AliceBlue {
                         } else if (Get_User[0].Role == "USER") {
                             redirect_uri = `https://${redirect}/#/user/stock`
 
-                        } else {
+                        } else if (Get_User[0].Role == "RESEARCH") {
+                            redirect_uri = `https://${redirect}/#/research/position`
+
+                        }  else {
                             redirect_uri = `https://${redirect}/#/`
 
                         }

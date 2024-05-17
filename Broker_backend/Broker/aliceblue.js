@@ -98,7 +98,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                                         symbol: input_symbol,
                                         order_status: 0,
                                         order_id: "",
-                                        trading_symbol: "",
+                                        trading_symbol: trading_symbol,
                                         broker_name: "",
                                         send_request: "",
                                         reject_reason: "Invalid segment value",
@@ -177,7 +177,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                                     symbol: input_symbol,
                                     order_status: "",
                                     order_id: "",
-                                    trading_symbol: "",
+                                    trading_symbol: trading_symbol,
                                     broker_name: "ALICE BLUE",
                                     send_request: "",
                                     reject_reason: "Token not Found",
@@ -317,6 +317,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                                                 broker_name: "ALICE BLUE",
                                                 send_request: send_rr,
                                                 open_possition_qty: possition_qty,
+                                                trading_symbol: trading_symbol,
 
                                             })
                                                 .then((BrokerResponseCreate) => {
@@ -360,6 +361,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                                                 broker_name: "ALICE BLUE",
                                                 send_request: send_rr,
                                                 open_possition_qty: possition_qty,
+                                                trading_symbol: trading_symbol,
 
                                             })
                                                 .then((BrokerResponseCreate) => {
@@ -662,7 +664,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
                     symbol: input_symbol,
                     order_status: response.data[0].stat,
                     order_id: response.data[0].NOrdNo,
-                    trading_symbol: "",
+                    trading_symbol: trading_symbol,
                     broker_name: "ALICE BLUE",
                     send_request: send_rr,
 
@@ -692,7 +694,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
                     symbol: input_symbol,
                     order_status: 0,
                     order_id: "",
-                    trading_symbol: "",
+                    trading_symbol: trading_symbol,
                     broker_name: "ALICE BLUE",
                     send_request: send_rr,
                     reject_reason: message,
