@@ -87,7 +87,7 @@ function Clientservice() {
       if (response.status) {
         if (e.checked) {
           Swal.fire({
-            title: "Trading On",
+            title: "Trading On",  
             icon: "success",
             html: "Your trading has been successfully activated.",
           });

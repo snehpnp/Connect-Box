@@ -283,6 +283,7 @@ const Helpuser = () => {
                             data-bs-dismiss="modal"
                             className="btn btn-primary paid-continue-btn"
                             onClick={userhelp}
+                            style={{marginTop:"20px"}}
                           >
                             Send
                           </button>

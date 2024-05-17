@@ -536,6 +536,7 @@ const Helpsubadmin = () => {
                                         data-bs-dismiss="modal"
                                         className="btn btn-primary paid-continue-btn"
                                         onClick={postSubadminhelp}
+                                        style={{marginTop:"20px"}}
                                       >
                                         Send
                                       </button>

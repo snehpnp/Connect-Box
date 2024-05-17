@@ -75,7 +75,7 @@ export default function BrokerResponse() {
     },
     {
       field: "strategy",
-      headerName: "strategy",
+      headerName: "Strategy",
       width: 200,
       headerClassName: styles.boldHeader,
     },
@@ -141,7 +141,8 @@ export default function BrokerResponse() {
           (item && item.item && item.item.symbol && item.item.symbol.toLowerCase().includes(searchInput.toLowerCase())) ||
           (item && item.createdAt && item.createdAt.toLowerCase().includes(searchInput.toLowerCase()))||
           (item && item.order_status && item.order_status.toLowerCase().includes(searchInput.toLowerCase()))||
-          (item && item.order_id && item.order_id.toLowerCase().includes(searchInput.toLowerCase()));
+          (item && item.order_id && item.order_id.toLowerCase().includes(searchInput.toLowerCase()))||
+          (item && item.strategy && item.strategy.toLowerCase().includes(searchInput.toLowerCase()))
         return inputSearchMatch;
             })
           setDashboardData({
@@ -242,11 +243,11 @@ export default function BrokerResponse() {
             // onHide={handleClose}
             handleClose={() => setshowModal(false)}
           >
-            <div style={{ padding: "20px", overflow: "auto" }}>
+            <div style={{ padding: "20px", overflow: "auto"}}>
               <table className="tg">
                 <thead>
                   <tr>
-                    <th>Created At</th>
+                    <th style={{width:"8rem"}}>Created At</th>
                     <th>{fDateTimeSuffix(borkerData.createdAt)}</th>
                   </tr>
                 </thead>

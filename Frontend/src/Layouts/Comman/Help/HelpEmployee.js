@@ -310,6 +310,7 @@ const HelpEmployee = () => {
                                       className="modal-footer mt-2"
                                       style={{
                                         justifyContent: "center !important",
+                                      
                                       }}
                                     >
                                       <button
@@ -317,6 +318,7 @@ const HelpEmployee = () => {
                                         data-bs-dismiss="modal"
                                         className="btn btn-primary paid-continue-btn"
                                         onClick={postSubadminhelp}
+                                        style={{marginTop:"20px"}}
                                       >
                                         Send
                                       </button>

@@ -17,6 +17,7 @@ import TradeHistory from '../Layouts/User/Trade/TradeHistory';
 import Subscriptiondata from '../Layouts/User/Subscription/Subscriptiondata';
 import Settings from '../Layouts/Comman/Setting_Page/Settings';
 import TradeCharges from '../Layouts/User/Trade/TradeCharges';
+import BroadCastMessage from '../Layouts/User/BroadCastMessage/BroadCastMessage';
 
 
 
@@ -48,6 +49,7 @@ const User_Routing = () => {
                 
                     <Route exact path="/setting" element={<Settings />} />
                     <Route exact path="/tradecharge" element={<TradeCharges/>} />
+                    <Route exact path="/broadcast" element={<BroadCastMessage/>} />
                    
 
 

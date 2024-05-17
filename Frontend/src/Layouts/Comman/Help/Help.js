@@ -408,7 +408,6 @@ function System() {
                       >
                         <ExportToExcel
                           className="btn btn-primary "
-                          // apiData={ForGetCSV}
                           fileName={"Payment Details"}
                         />
                       </div>

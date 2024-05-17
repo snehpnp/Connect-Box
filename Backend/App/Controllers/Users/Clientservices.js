@@ -389,12 +389,12 @@ class Clientservice {
             const result = await client_services.updateMany(filter, updateOperation);
       
             if (result.nModified === 0) {
-                return res.send({ status: false, msg: "No data was updated", data: [] });
+                return res.send({ status: false, msg: "status is Deactivated", data: [] });
             }
       
             return res.send({
                 status: true,
-                msg: "Data Updated",
+                msg: "Status is Activated",
                 data: result
             });
         } catch (error) {
