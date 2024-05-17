@@ -17,6 +17,8 @@ import Modal from "../../../Components/ExtraComponents/Modal";
 import * as Config from "../../../Utils/Config";
 import axios from "axios"
 
+import io from 'socket.io-client';
+
 import {
     getAllServices,
     getCatogries,
@@ -33,6 +35,19 @@ import {
 } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
 export default function AllEmployees() {
+
+
+    const SOCKET_SERVER_URL = "http://185.209.75.6:7700"; 
+    const [socketBackend, setSocketBackend] = useState(SOCKET_SERVER_URL);
+     
+    const TradeNotification = () => {
+        alert("Okkkk")
+    }
+    useEffect(() => {
+       TradeNotification()
+    }, [socketBackend]);
+
+
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
     const token = JSON.parse(localStorage.getItem('user_details')).token
 

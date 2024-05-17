@@ -29,8 +29,11 @@ const Alice_Socket = async () => {
     const url = "wss://ws1.aliceblueonline.com/NorenWS/"
     var socket = null
     var broker_infor = await live_price_token.find({ broker_id: "2" , trading_status :"on" });
+    
 
-  const stock_live_price = db_main.collection('token_chain');
+    
+
+    const stock_live_price = db_main.collection('token_chain');
     const updateToken = await stock_live_price.find({}).toArray();
 
     var channelstr = ""
@@ -57,9 +60,7 @@ const Alice_Socket = async () => {
 
 
    // console.log("alltokenchannellist ",alltokenchannellist)
-
-
-    //  Step -1
+   //  Step -1
 
   if(broker_infor[0].user_id !== undefined && broker_infor[0].access_token !== undefined && broker_infor[0].trading_status == "on"){
     try {
