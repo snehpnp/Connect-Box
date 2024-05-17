@@ -286,26 +286,25 @@ const Dashboards = () => {
                 ) : (
                   <p>Loading...</p>
                 )}
-                <hr style={{color:"white",width:"450px" ,height:"10px"}}/>
-                <div className="dash-btns gap-5 mt-5" style={{ display: "flex" }}>
-                  <div style={{ marginBottom: "10px" }}>
-                    <h3 style={{ color: "white" }}>Balance</h3>
+                <hr style={{ backgroundColor: "white", height: "5px", border: "none", width: "18rem" }} />
+
+                <div className="dash-btns gap-3 mt-5" style={{ display: "flex",color:"white"}}>
+                  <div>
+                    <h4>Balance</h4>
                     <p>10000</p>
                   </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <h3 style={{ color: "white" }}>M2M</h3>
+                  <div >
+                    <h4>M2M</h4>
                     <p>7860</p>
                   </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <h3 style={{ color: "white" }}>Dawnload</h3>
+                  <div >
+                    <h4>Dawnload</h4><br/>
                     <a className="btn view-company-btn" onClick={(e) => DawnloadOrderBook(e)}>
                       Order Book
                     </a>
                   </div>
 
                 </div>
-
-
 
                 <div className="dash-img">
                   <img src="assets/img/dashboard-card-img.png" alt="" />

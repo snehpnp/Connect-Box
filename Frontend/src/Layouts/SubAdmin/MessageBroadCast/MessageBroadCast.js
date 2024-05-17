@@ -488,10 +488,8 @@ function MessageBroadcast() {
                       rows={pipelineData}
                     />)}
 
-
                   </TabPanel>
-
-                </TabContext>
+               </TabContext>
               </Box>
             </div>
 

@@ -310,6 +310,7 @@ const HelpResearcher = () => {
                                         data-bs-dismiss="modal"
                                         className="btn btn-primary paid-continue-btn"
                                         onClick={postResearcher}
+                                        style={{marginTop:"20px"}}
                                       >
                                         Send
                                       </button>

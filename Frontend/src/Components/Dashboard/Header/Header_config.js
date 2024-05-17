@@ -364,6 +364,13 @@ export const User_header = [
         Data: []
     },
     {
+        id: 10,
+        name: 'Message Broadcast',
+        route: "/user/broadcast",
+        Icon: "fe fe-message-circle",
+        Data: []
+    },
+    {
         id: 9,
         name: 'FAQs',
         route: "/user/faqs",
