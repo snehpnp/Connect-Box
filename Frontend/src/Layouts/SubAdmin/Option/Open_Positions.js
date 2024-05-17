@@ -34,18 +34,43 @@ import {
 
 } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
+const SOCKET_SERVER_URL = "http://185.209.75.6:7700";
+
 export default function AllEmployees() {
 
+    const [socketBackend, setSocketBackend] = useState(null);
 
-    const SOCKET_SERVER_URL = "http://185.209.75.6:7700"; 
-    const [socketBackend, setSocketBackend] = useState(SOCKET_SERVER_URL);
-     
-    const TradeNotification = () => {
-        alert("Okkkk")
-    }
     useEffect(() => {
-       TradeNotification()
-    }, [socketBackend]);
+      const newSocket = io(SOCKET_SERVER_URL);
+      setSocketBackend(newSocket);
+  
+      return () => {
+        newSocket.disconnect();
+      };
+    }, []); // Empty dependency array ensures this runs only once
+
+
+    useEffect(() => {
+        if (socketBackend) {
+          const handleShkRec = (data) => {
+
+        
+
+
+
+            console.log("Received Connect Box SSl:", data);
+          };
+    
+          socketBackend.on("shk_rec", handleShkRec);
+    
+          return () => {
+            socketBackend.off("shk_rec", handleShkRec);
+          };
+        }
+      }, [socketBackend]); // Runs whenever the socket changes
+
+
+   
 
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
@@ -1313,6 +1338,13 @@ export default function AllEmployees() {
     useEffect(() => {
         ShowLivePrice();
     }, [tradeHistoryData.data, SocketState, livePriceDataDetails]);
+
+
+
+     // const SOCKET_SERVER_URL = "http://185.209.75.6:7700"; 
+     // const [socketBackend, setSocketBackend] = useState(SOCKET_SERVER_URL);
+     
+     
 
 
     return (
