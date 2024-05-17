@@ -2305,6 +2305,7 @@ const Makecall = () => {
                         </div>
                     </div>
                 </div>
+                
                 <div className="card">
                     <div className="card-body">
                         <div className="row">
@@ -2592,7 +2593,7 @@ const Makecall = () => {
                     </div>
                 </div>
                 
-                 <div className='card'>
+                 {/* <div className='card'>
                     <div className='card-body'>
                         
                         <div className="col-lg-12 col-md-12" data-aos="fade-right">
@@ -2634,18 +2635,11 @@ const Makecall = () => {
 
                         </div>
 
-                        {/* <button className='btn btn-success float-end' onClick={() => delete_data()}>DELETE</button>
-                    
-                        <button className='btn btn-success float-end' onClick={() => update_data()}>UPDATE</button> */}
-
-
-
+                       
                         <div className="col-lg-12 col-md-12" data-aos="fade-left">
                             <div className="card h-100">
                                 <div className="card-body">
                                     <div className="tab-content">
-
-                                  
 
                                         <div className="tab-pane show active" id="solid-tab1">
 
@@ -2665,10 +2659,7 @@ const Makecall = () => {
                                             <div className="card-header d-flex justify-content-between align-items-center border-bottom mb-3">
                                                 <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-landmark pe-2"></i>Below</h5>
                                                 <div className="pay-btn text-end w-auto">
-                                                    {/* <button className="btn btn-primary " data-bs-toggle="modal"
-                                                        data-bs-target="#company">
-                                                        Edit Customer Information
-                                                    </button> */}
+                                                   
                                                 </div>
                                             </div>
 
@@ -2709,10 +2700,7 @@ const Makecall = () => {
 
                                                 <h5 className="card-title mb-0 w-auto"> <i className="fa-solid fa-envelope pe-2"></i>Above</h5>
                                                 <div className="pay-btn text-end w-auto">
-                                                    {/* <button className="btn btn-primary " data-bs-toggle="modal"
-                                                        data-bs-target="#email">
-                                                        Edit Email Information
-                                                    </button> */}
+                                                   
                                                 </div>
                                             </div>
 
@@ -2752,8 +2740,8 @@ const Makecall = () => {
                                                   
                                                 </div>
                                             </div>
-<div className="card-body table-responsive">
-<div className="invoice-total-box border">
+                                            <div className="card-body table-responsive">
+                                            <div className="invoice-total-box border">
                                                 <div className="invoice-total-inner">
                                                     <div className="inventory-table">
                                                         <FullDataTable
@@ -2779,7 +2767,7 @@ const Makecall = () => {
                             </div>
                         </div>
                     </div>
-                 </div>
+                 </div> */}
             </div>
 
         </div>

@@ -400,7 +400,9 @@ class Makecall {
       const expiry = req.body.expiry;
       const segment = req.body.segment;
 
-
+      // console.log("expiry ",expiry)
+      // console.log("segment ",segment)
+      // console.log("symbol ",symbol)
 
       const pipeline = [
         {
