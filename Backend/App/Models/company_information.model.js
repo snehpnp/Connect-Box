@@ -77,6 +77,14 @@ const CompanySchema = new mongoose.Schema({
     Balance: {
         type: Number
     },
+    razor_payment_key: {
+        type: String,
+        default: ""
+    },
+    razor_payment_secretKey: {
+        type: String,
+        default: ""
+    },
     createdAt: {
         type: Date,
         default: Date.now

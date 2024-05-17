@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import toast from "react-hot-toast";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -9,13 +8,10 @@ import { useDispatch } from "react-redux";
 import ExportToExcel from '../../../Utils/ExportCSV'
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
-import { update_Balance } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
 import { Get_Permission } from '../../../ReduxStore/Slice/Employee/EmployeeSlice'
-
-import { GetAllUsers, Get_All_Broker, Show_Status, DeleteUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
-
+import { Get_All_Broker, Show_Status, DeleteUser, GetAllSubadminUsers } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 
 
 export default function AllUsers() {
@@ -28,32 +24,25 @@ export default function AllUsers() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [licenceType, setLicenceType] = useState('null');
 
 
-  const [initialRowData, setInitialRowData] = useState({});
-  const [balanceValue, setBalanceValue] = useState("");
+
+
   const [refresh, setrefresh] = useState(false);
-  const [modal, setmodal] = useState(false);
   const [searchInput, setSearchInput] = useState('');
   const [ForGetCSV, setForGetCSV] = useState([])
   const [getAllBroker, setAllBroker] = useState([]);
+  const [ShowDeleteModal, setShowDeleteModal] = useState(false);
+  const [modalId, setmodalId] = useState('');
+
+
+
   const [getPermission, setPermission] = useState({
     loading: true,
     data: [],
 
   });
-
-
-
-
- 
-  const [ShowDeleteModal, setShowDeleteModal] = useState(false);
-
-
-
-
-  const [modalId, setmodalId] = useState('');
-
   const [getAllUsers, setAllUsers] = useState({
     loading: true,
     data: [],
@@ -81,6 +70,9 @@ export default function AllUsers() {
   };
 
 
+  const location = useLocation();
+  var dashboard_filter = location.search.split("=")[1];
+
   const showLicenceName = (row) => {
     if (row.license_type === "0") {
       return "2 Days Only";
@@ -90,8 +82,6 @@ export default function AllUsers() {
       return "Live";
     }
   };
-
-
 
   const showBrokerName = (row) => {
 
@@ -107,8 +97,6 @@ export default function AllUsers() {
       }
     }
   };
-
-
 
   let columns = [
     {
@@ -204,7 +192,7 @@ export default function AllUsers() {
         </div>
       ),
       headerClassName: styles.boldHeader,
-      hideColumn: getPermission.data && getPermission.data.Update_Api_Key==1 ? true : getPermission.data && getPermission.data.employee_edit == 1 ? true : false
+      hideColumn: getPermission.data && getPermission.data.Update_Api_Key == 1 ? true : getPermission.data && getPermission.data.employee_edit == 1 ? true : false
 
     },
 
@@ -219,20 +207,20 @@ export default function AllUsers() {
     },
   ];
 
- 
+
 
   const handleEdit = async (row) => {
 
     const additionalData = {
-      Update_Api_Key: getPermission.data && getPermission.data.Update_Api_Key  ,
+      Update_Api_Key: getPermission.data && getPermission.data.Update_Api_Key,
     };
-  
+
     navigate(`/employee/user/edit/${row._id}`, { state: { rowData: row, additionalData } });
   };
-  
 
 
- 
+
+
 
   const getpermission = async () => {
     const data = { id: user_id }
@@ -264,7 +252,7 @@ export default function AllUsers() {
   }, [])
 
 
- 
+
 
   const AllBroker = async () => {
 
@@ -295,6 +283,7 @@ export default function AllUsers() {
   const RefreshHandle = () => {
     setrefresh(!refresh)
     setSearchInput('')
+    setLicenceType('null')
   }
 
   const forCSVdata = () => {
@@ -305,8 +294,9 @@ export default function AllUsers() {
           "FullName": item.FullName,
           "UserName": item.UserName,
           "PhoneNo": item.PhoneNo,
-          "Prifix Key": item.prifix_key,
-          "Created At": item.createdAt
+          "Email Id" : item.Email,
+          "Broker Type" : item.broker,
+          "Licence Type" : item.license_type
         })
       })
 
@@ -367,9 +357,9 @@ export default function AllUsers() {
   };
 
 
-  const getUsersData = async () => {
+  const getAllEmployeeUsersData = async () => {
     var data = { user_ID: user_id }
-    await dispatch(GetAllUsers(data))
+    await dispatch(GetAllSubadminUsers(data))
       .unwrap()
       .then((response) => {
 
@@ -379,7 +369,51 @@ export default function AllUsers() {
             id: index + 1,
           }));
 
-          const filterData = formattedData.filter((item) => {
+          let formattedData1;
+          if (dashboard_filter == 1 || dashboard_filter == undefined) {
+            formattedData1 = formattedData
+          }
+          else if (dashboard_filter == 2) {
+            formattedData1 = formattedData.filter((item) => item.ActiveStatus == 1)
+          }
+          else if (dashboard_filter == 3) {
+            formattedData1 = formattedData.filter((item) => item.ActiveStatus == 1)
+          }
+          else if (dashboard_filter == 4) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 2)
+          }
+          else if (dashboard_filter == 5) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 2 && item.ActiveStatus == 1)
+          }
+          else if (dashboard_filter == 6) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 2 && item.ActiveStatus == 0)
+          }
+          else if (dashboard_filter == 7) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 0)
+          }
+          else if (dashboard_filter == 8) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 1)
+          }
+          else if (dashboard_filter == 9) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 0)
+          }
+          else if (dashboard_filter == 10) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1)
+          }
+          else if (dashboard_filter == 11) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 1)
+          } else if (dashboard_filter == 12) {
+            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 0)
+          }
+
+
+
+
+          const filterData = formattedData1.filter((item) => {
+
+            const filter1Data = licenceType== 'null' || item.license_type.includes(licenceType)
+
+
             const searchInputMatch =
               searchInput == '' ||
               item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -387,14 +421,13 @@ export default function AllUsers() {
               item.PhoneNo.toLowerCase().includes(searchInput.toLowerCase()) ||
               item.prifix_key.toLowerCase().includes(searchInput.toLowerCase())
 
-            return searchInputMatch
+            return searchInputMatch && filter1Data
 
           })
 
           setAllUsers({
             loading: false,
-            data: searchInput ? filterData : formattedData,
-
+            data: searchInput || licenceType!='null'  ? filterData : formattedData1,
           });
 
         } else {
@@ -417,10 +450,10 @@ export default function AllUsers() {
       });
   };
 
-
   useEffect(() => {
-    getUsersData();
-  }, [refresh, searchInput]);
+    getAllEmployeeUsersData();
+    // getAllUsersData();
+  }, [refresh, searchInput , licenceType]);
 
 
 
@@ -466,8 +499,19 @@ export default function AllUsers() {
                               aria-describedby="search-addon"
                               onChange={(e) => setSearchInput(e.target.value)}
                               value={searchInput}
-
                             />
+                          </div>
+                        </li>
+                        <li className="serach-li">
+                          <div className="input-group input-block">
+                            <select className="rounded form-control border-0 px-4"
+                              onChange={(e) => setLicenceType(e.target.value)}
+                              value={licenceType}>
+                              <option value="null">License Type</option>
+                              <option value="1">Demo</option>
+                              <option value="0">2 day Live</option>+
+                              <option value="2">Live</option>
+                            </select>
                           </div>
                         </li>
                         <li>
@@ -482,7 +526,7 @@ export default function AllUsers() {
                             <ExportToExcel
                               className="btn btn-primary "
                               apiData={ForGetCSV}
-                              fileName={'All Strategy'} />
+                              fileName={'All Users'} />
 
 
                           </div>

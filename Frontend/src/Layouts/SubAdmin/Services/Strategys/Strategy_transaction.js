@@ -60,7 +60,7 @@ function Payment() {
     {
       field: "id",
       headerName: "ID",
-      width: 70,
+      width:60,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div> <b>{params.value + 1}</b></div>
@@ -69,20 +69,19 @@ function Payment() {
 
     {
       field: 'user_id',
-      headerName: 'User Name',
-      width: 210,
+      headerName: 'UserName',
+      width: 180,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>
-          {params.value || '-'}
-        </div>
+        <div title={params.value}>{params.value || '-'}</div>
+
       )
     },
 
     {
       field: 'strategy_id',
       headerName: 'Strategy Name',
-      width: 250,
+      width: 200,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -94,7 +93,7 @@ function Payment() {
     {
       field: 'plan_id',
       headerName: 'Plan',
-      width: 210,
+      width: 200,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -107,7 +106,7 @@ function Payment() {
     {
       field: 'stg_charge',
       headerName: 'Strategy Price',
-      width: 250,
+      width: 180,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -118,7 +117,7 @@ function Payment() {
     {
       field: 'Admin_charge',
       headerName: 'Admin Charges',
-      width: 210,
+      width: 180,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -127,7 +126,32 @@ function Payment() {
       )
     },
     {
-      field: 'createdAt', headerName: 'Created At', width: 250, headerClassName: styles.boldHeader,
+      field: 'createdAt',
+      headerName: 'Created At',
+      width: 220,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          {fDateTime(params.value)}
+        </div>
+      )
+    },
+    {
+      field: 'Start_Date',
+      headerName: 'Start Date',
+      width: 220,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          {fDateTime(params.value)}
+        </div>
+      )
+    },
+    {
+      field: 'End_Date',
+      headerName: 'End Date',
+      width: 220,
+      headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
           {fDateTime(params.value)}
@@ -148,14 +172,42 @@ function Payment() {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
+          const filterdata = response.data && response.data.filter((item)=>{
+            const inputSearchMatch =
+                inputSearch == "" ||
+                item.user_id.toLowerCase().includes(
+                  inputSearch.toLowerCase()
+                ) ||
+                item.strategy_id.toLowerCase().includes(inputSearch.toLowerCase()) ||
+                item.createdAt
+                  .toLowerCase()
+                  .includes(inputSearch.toLowerCase());
+
+              return inputSearchMatch ;
+          })
           const formattedData = response.data.map((row, index) => ({
             ...row,
             id: index + 1,
-          }));
+          }))
+
+
+          const filterData = formattedData.filter((item)=>{
+            console.log("formattedData :", item.user_id)
+
+            const searchMatch = 
+            inputSearch=='' || 
+            item.user_id ?.toLowerCase().includes(inputSearch.toLowerCase()) ||
+            item.strategy_id ?.toLowerCase().includes(inputSearch.toLowerCase()) ||
+            
+            item.user_id ?.toLowerCase().includes(inputSearch.toLowerCase()) 
+
+            return searchMatch
+            
+          })
 
           setCompanyData({
             loading: true,
-            data: formattedData,
+            data: inputSearch ? filterdata : formattedData,
           });
         } else {
           setCompanyData({
@@ -172,30 +224,31 @@ function Payment() {
   }
 
   companyData.data && companyData.data.forEach((item) => {
-   
+
     if (!isNaN(item.stg_charge) && item.stg_charge !== null && item.stg_charge !== "") {
-        stg_total += parseInt(item.stg_charge);
+      stg_total += parseInt(item.stg_charge);
     }
 
     if (!isNaN(item.Admin_charge) && item.Admin_charge !== null && item.Admin_charge !== "") {
-        Admin_charge_total += parseInt(item.Admin_charge);
+      Admin_charge_total += parseInt(item.Admin_charge);
     }
-});
+  });
 
 
   useEffect(() => {
     getCompanyData();
-  }, [refresh]);
+  }, [refresh,inputSearch]);
 
   const handleRefresh = () => {
     setInputSearch('')
     setrefresh(!refresh)
   }
 
+
+  console.log("inputSearch :" , inputSearch)
   return (
     <>
       {companyData && companyData.loading ? (
-
         <div className="content container-fluid" data-aos="fade-left">
           <div className="card">
             <div className="card-header">
@@ -234,7 +287,6 @@ function Payment() {
                           />
                         </div>
                       </li>
-
                       <li>
                         <div
                           className="dropdown dropdown-action"
@@ -246,18 +298,12 @@ function Payment() {
                             className="btn btn-primary "
                             // apiData={ForGetCSV}
                             fileName={'Payment Details'} />
-
-
                         </div>
                       </li>
-
-
                     </ul>
                   </div>
                 </div>
               </div>
-
-
             </div>
             <div className="card-body">
 
@@ -266,7 +312,7 @@ function Payment() {
 
                 <div className="d-flex gap-5">
                   <h4 >Total Strategy Profit : <span style={{ color: "green" }}> {stg_total || 0 .toFixed(2)}</span> </h4>
-                  <h4 >Total Admin Charges : <span style={{ color: "green" }}> {Admin_charge_total || 0 .toFixed(2)}</span> </h4>
+                 {subadmin_service_type == 2 ? <h4 >Total Admin Charges : <span style={{ color: "green" }}> {Admin_charge_total || 0 .toFixed(2)}</span> </h4>:""}
                 </div>
                 : ""
 

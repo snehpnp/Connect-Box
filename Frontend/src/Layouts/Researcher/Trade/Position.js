@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/DataTable";
-
 import { useDispatch } from "react-redux";
 import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
-import { useNavigate } from "react-router-dom";
 import {
   Userinfo,
   Trading_Off_Btn,
@@ -18,11 +16,11 @@ import { fDateTimeSuffix } from "../../../Utils/Date_formet";
 import {
   CreateSocketSession,
   ConnctSocket,
-  GetAccessToken,
+
 } from "../../../Utils/Alice_Socket";
 import { ShowColor1 } from "../../../Utils/ShowTradeColor";
 import { Eye } from "lucide-react";
-
+import { Get_All_Strategy_for_Client } from '../../../ReduxStore/Slice/Subadmin/OptionChainSlice'
 import DetailsView from "./DetailsView";
 
 import { GetBrokerLiveDatas } from "../../../ReduxStore/Slice/Comman/Makecall/make";
@@ -35,12 +33,14 @@ export default function AllEmployees() {
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
   const token = JSON.parse(localStorage.getItem("user_details")).token;
 
+
+
+
   const [tradeHistoryData, setTradeHistoryData] = useState({
     loading: false,
     data: [],
   });
   const [rowData, setRowData] = useState({ loading: true, data: [] });
-  const [StrategyClientStatus, setStrategyClientStatus] = useState("null");
   const [SelectService, setSelectService] = useState("null");
   const [livePriceDataDetails, setLivePriceDataDetails] = useState("");
   const [userIdSocketRun, setUserIdSocketRun] = useState("none");
@@ -55,6 +55,12 @@ export default function AllEmployees() {
   const [SocketState, setSocketState] = useState("null");
   const [tableData, setTableData] = useState({ loading: false, data: [] });
   const [inputSearch, SetInputSearch] = useState("");
+  const [selectStrategy, setSelectStrategy] = useState('');
+
+  const [getAllStrategyName, setAllStrategyName] = useState({
+    loading: true,
+    data: [],
+  });
   const [getLoginStatus, setLoginStatus] = useState({
     loading: false,
     data: [],
@@ -80,7 +86,6 @@ export default function AllEmployees() {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          // console.log("Data --- ", response.data)
           setLivePriceDataDetails(response.data);
         }
       });
@@ -111,7 +116,7 @@ export default function AllEmployees() {
         .catch((error) => {
           console.log("Error", error);
         });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -262,10 +267,10 @@ export default function AllEmployees() {
             {row.result[0].exit_status === "above"
               ? "ABOVE"
               : row.result[0].exit_status === "below"
-              ? "BELOW"
-              : row.result[0].exit_status == "range"
-              ? "RANGE"
-              : " - "}
+                ? "BELOW"
+                : row.result[0].exit_status == "range"
+                  ? "RANGE"
+                  : " - "}
           </span>
         </div>
       ),
@@ -297,18 +302,15 @@ export default function AllEmployees() {
     },
   ];
 
-  const ResetDate = (e) => {
-    e.preventDefault();
-    setFromDate("");
-    setStrategyClientStatus("");
-    setSelectService("");
-    setToDate("");
-  };
+
 
   const RefreshHandle = () => {
     setrefresh(!refresh);
     userDataRes();
     setSearchInput("");
+    setFromDate('')
+    setToDate('')
+    setSelectStrategy('')
   };
 
   // CONVERT DATE FORMATE
@@ -328,19 +330,13 @@ export default function AllEmployees() {
     let year = abc.getFullYear();
     let full = `${year}/${month}/${date}`;
 
-    let startDate = getActualDateFormate(fromDate);
-    let endDate = getActualDateFormate(toDate);
 
-    await dispatch(
-      Trade_history_data({
-        Role: Role,
-        subadminId: userDetails.user_id,
-        startDate: !fromDate ? full : startDate,
-        endDate: !toDate ? (fromDate ? "" : full) : endDate,
-        service: SelectService,
-        strategy: StrategyClientStatus,
-      })
-    )
+    const startDate = fromDate ? getActualDateFormate(fromDate) : full;
+    const endDate = toDate ? getActualDateFormate(toDate) : full;
+
+
+
+    await dispatch(Trade_history_data({ Role: Role, subadminId: userDetails.user_id, startDate: startDate, endDate: endDate, service: SelectService, strategy: selectStrategy, }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
@@ -355,9 +351,10 @@ export default function AllEmployees() {
       });
   };
 
+
   useEffect(() => {
-    userDataRes(refresh, fromDate, toDate, SelectService, StrategyClientStatus);
-  }, []);
+    userDataRes()
+  }, [refresh, fromDate, toDate, selectStrategy, SelectService])
 
   var CreatechannelList = "";
   let total = 0;
@@ -496,41 +493,32 @@ export default function AllEmployees() {
                   }
                 }
                 //  if Only entry qty Exist
-                else if (
-                  (get_entry_type === "LE" && get_exit_type === "") ||
-                  (get_entry_type === "SE" && get_exit_type === "")
-                ) {
-                  let abc = (
-                    (parseFloat(live_price) - parseFloat(get_entry_price)) *
-                    parseInt(get_entry_qty)
-                  ).toFixed();
-                  if (isNaN(abc)) {
-                    return "-";
-                  } else {
-                    $(".show_rpl_" + response.tk + "_" + get_id_token).html(
-                      "-"
-                    );
-                    $(".UPL_" + response.tk + "_" + get_id_token).html(abc);
-                    $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
-                    ShowColor1(
-                      ".show_rpl_" + response.tk + "_" + get_id_token,
-                      "-",
-                      response.tk,
-                      get_id_token
-                    );
-                    ShowColor1(
-                      ".UPL_" + response.tk + "_" + get_id_token,
-                      abc,
-                      response.tk,
-                      get_id_token
-                    );
-                    ShowColor1(
-                      ".TPL_" + response.tk + "_" + get_id_token,
-                      abc,
-                      response.tk,
-                      get_id_token
-                    );
-                  }
+                else if ((get_entry_type === "LE" && get_exit_type === "") ||(get_entry_type === "SE" && get_exit_type === "")) {
+                  let abc = ((parseFloat(live_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
+              
+                  if (get_entry_qty !== "" && (get_exit_qty == "" || get_exit_qty == 0)) {
+                                   
+                    if (isNaN(abc)) {
+                        return "-";
+                    } else {
+                        $(".UPL_" + response.tk + "_" + get_id_token).html(abc);
+                        $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
+                        ShowColor1(".UPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                        ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                    }
+                }else{
+                    if (isNaN(abc)) {
+                        return "-";
+                    } else {
+                        $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");                                
+                        $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
+                        ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, "-", response.tk, get_id_token);
+                       ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                    }
+                }
+
+
+
                 }
 
                 //  if Only Exist qty Exist
@@ -549,7 +537,7 @@ export default function AllEmployees() {
             channelList,
             livePriceDataDetails.demate_user_id,
             livePriceDataDetails.access_token
-          ).then((res) => {});
+          ).then((res) => { });
         } else {
           // $(".UPL_").html("-");
           // $(".show_rpl_").html("-");
@@ -624,6 +612,29 @@ export default function AllEmployees() {
     fetchIP();
   }, []);
 
+
+
+
+  const GetAllStrategyNames = async (e) => {
+    var data = { id: user_id, key: "2" }
+    await dispatch(Get_All_Strategy_for_Client(data))
+      .unwrap()
+      .then((response) => {
+        if (response.status) {
+          setAllStrategyName({
+            loading: false,
+            data: response.data,
+          });
+        }
+      });
+  };
+
+  useEffect(() => {
+    GetAllStrategyNames();
+  }, [])
+
+
+
   return (
     <>
       {tradeHistoryData.loading ? (
@@ -663,7 +674,7 @@ export default function AllEmployees() {
                                   e.target.checked,
                                   profileData && profileData.data[0].broker,
                                   profileData &&
-                                    profileData.data[0].TradingStatus,
+                                  profileData.data[0].TradingStatus,
                                   profileData && profileData.data[0]
                                 )
                               }
@@ -728,8 +739,8 @@ export default function AllEmployees() {
                       placeholder="Search..."
                       aria-label="Search"
                       aria-describedby="search-addon"
-                      onChange={(e) => SetInputSearch(e.target.value || "")}
-                      value={inputSearch}
+                      onChange={(e) => setFromDate(e.target.value || '')}
+                      value={fromDate}
                     />
                   </div>
                   <div className="input-block col-lg-2 mt-3 mb-3">
@@ -740,8 +751,8 @@ export default function AllEmployees() {
                       placeholder="Search..."
                       aria-label="Search"
                       aria-describedby="search-addon"
-                      onChange={(e) => SetInputSearch(e.target.value || "")}
-                      value={inputSearch}
+                      onChange={(e) => setToDate(e.target.value || '')}
+                      value={toDate}
                     />
                   </div>
 
@@ -753,22 +764,24 @@ export default function AllEmployees() {
                       class="default-select wide form-control"
                       aria-label="Default select example"
                       id="select"
-                      // onChange={(e) => setStrategyClientStatus(e.target.value)}
-                      // value={StrategyClientStatus}
+                      onChange={(e) => setSelectStrategy(e.target.value)}
+                      value={selectStrategy}
                     >
-                      <option value="null" selected>
-                        All
-                      </option>
-                      {/* {getAllStrategyName.data &&
-                                                getAllStrategyName.data.map((item) => {
-                                                    return (
-                                                        <option value={item.strategy_name}>
-                                                            {item.strategy_name}
-                                                        </option>
-                                                    );
-                                                })} */}
+                      <option value="null" selected >All</option>
+
+
+                      {getAllStrategyName.data &&
+                        getAllStrategyName.data.map((item) => {
+                          return (
+                            <option value={item.strategy_name}>
+                              {item.strategy_name}
+                            </option>
+                          );
+                        })}
                     </select>
                   </div>
+
+
                 </div>
 
                 <div className="card-body table-responsive">

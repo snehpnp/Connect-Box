@@ -406,7 +406,6 @@ const AddClient = () => {
   };
 
   const handleStrategyChange = (id) => {
-    console.log("id :", id)
     if (selectedCheckboxes.includes(id)) {
       setSelectedCheckboxes(
         selectedCheckboxes.filter((checkboxId) => checkboxId !== id)

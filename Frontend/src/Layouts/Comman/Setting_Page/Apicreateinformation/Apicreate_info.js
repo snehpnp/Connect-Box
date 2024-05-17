@@ -7,6 +7,9 @@ import * as Config from "../../../../Utils/Config";
 function Apicreate_info() {
   const dispatch = useDispatch();
 
+  const Role = JSON.parse(localStorage.getItem("user_details")).Role;
+  const broker = JSON.parse(localStorage.getItem("user_details")).broker;
+
   const [selectedItem, setSelectedItem] = useState(null);
   const [model, setModel] = useState(false);
   const [UserDetails, setUserDetails] = useState({
@@ -20,6 +23,24 @@ function Apicreate_info() {
       .unwrap()
       .then((response) => {
         if (response.status) {
+
+          const formattedData = response.data && response.data.map((row, index) => {
+            if (Role === 'USER') {
+              return {
+                ...row,
+                id: index + 1,
+             
+              };
+            } else {
+              return {
+                ...row,
+                id: index + 1,
+              };
+            }
+          });
+          
+
+
           setUserDetails({
             loading: false,
             data: response.data,
@@ -30,6 +51,9 @@ function Apicreate_info() {
   useEffect(() => {
     data();
   }, []);
+  
+
+
 
   const Data = [
     {
@@ -418,6 +442,7 @@ function Apicreate_info() {
     },
   ];
 
+
   const handleOpenModel = (title) => {
     const selectedItem = Data.find(
       (item) =>
@@ -426,15 +451,23 @@ function Apicreate_info() {
     if (selectedItem) {
       setSelectedItem(selectedItem);
       setModel(true);
-      console.log("Model state:", model);
     }
   };
+
+
+console.log("broker",broker)
+console.log("Role",Role)
+console.log("UserDetails.data",UserDetails.data)
+
+
+
 
   return (
     <>
       <div className="row">
         {UserDetails.data &&
           UserDetails.data.map((item) => {
+       
             return (
               <section
                 key={item.id}
@@ -462,6 +495,7 @@ function Apicreate_info() {
                 </div>
               </section>
             );
+
           })}
       </div>
       {model && selectedItem && (

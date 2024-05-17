@@ -51,8 +51,8 @@ export default function AllEmployees() {
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
-    const [fromDate, setFromDate] = useState('');
-    const [toDate, setToDate] = useState('');
+    // const [fromDate, setFromDate] = useState('');
+    // const [toDate, setToDate] = useState('');
     const [inputSearch, SetInputSearch] = useState('');
     const [getLoginStatus, setLoginStatus] = useState({
         loading: false,
@@ -83,11 +83,9 @@ export default function AllEmployees() {
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
 
         if (check) {
-            console.log("Trading On")
             loginWithApi(brokerid, UserDetails);
 
         } else {
-            console.log("Trading Off")
             handleTradingOff(user_id);
 
 
@@ -261,7 +259,7 @@ export default function AllEmployees() {
                         </div>
 
                      <div className="card-body">
-                            <div className="row ">
+                            {/* <div className="row ">
                                 <div className="input-block col-lg-2 mt-3 mb-3">
                                     <label>From Date</label>
                                     <input
@@ -286,7 +284,7 @@ export default function AllEmployees() {
                                         value={toDate}
                                     />
                                 </div>
-                            </div>
+                            </div> */}
 
 
                             <FullDataTable

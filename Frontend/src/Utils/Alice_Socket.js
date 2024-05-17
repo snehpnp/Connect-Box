@@ -61,8 +61,6 @@ export async function ConnctSocket(onResponse, channelList, userId1, userSession
         var initCon = {
             susertoken: encrcptToken,
             t: "c",
-            // actid: userId + "_" + "API",
-            // uid: userId + "_" + "API",
             actid: userId1 + "_" + "API",
             uid: userId1 + "_" + "API",
             source: "API"

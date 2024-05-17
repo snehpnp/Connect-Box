@@ -36,6 +36,12 @@ let helpmessage = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  Category: {
+    type: String, 
+   
+    
+  }
+  
 
 } ,{
   // This enables Mongoose to handle the _id field automatically

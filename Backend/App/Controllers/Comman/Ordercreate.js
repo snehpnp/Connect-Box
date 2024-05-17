@@ -17,10 +17,7 @@ const user_logs = db.user_logs;
 const Razorpay = require('razorpay');
 
 
-const razorpay = new Razorpay({
-    key_id: 'rzp_test_QGXT06GA89GCnR',
-    key_secret: '7WrsXBrtl0T1Py7VfiFkOCRP',
-});
+
 
 // Product CLASS
 class Ordercreate {
@@ -33,6 +30,8 @@ class Ordercreate {
             {
                 $project: {
                     razor_payment_key: 1,
+                    panel_name:1,
+                    razor_payment_secretKey:1,
                     _id: 0
                 }
             },
@@ -41,6 +40,10 @@ class Ordercreate {
             }
         ]);
 
+        let razorpay = new Razorpay({
+            key_id: companyInformation[0].razor_payment_key,
+            key_secret: companyInformation[0].razor_payment_secretKey,
+        });
 
 
         const { strategy_name, user_id, admin_id, strategy_id, type, amount, currency, receipt } = req.body;
@@ -62,18 +65,18 @@ class Ordercreate {
                 strategy_id: strategy_id,
                 order_id: response.id,
                 User_data: "",
-                amount: parseInt(amount) /100, // in paise
+                amount: parseInt(amount) / 100, // in paise
                 receipt: receipt,
                 razorpay_order_id: "",
-                razorpay_payment_id: ""
+                razorpay_payment_id: "",
+
             })
 
             var order_data = await strategy_Order.save()
             var data1 = {
 
-                // key: "rzp_test_QGXT06GA89GCnR",
                 key: companyInformation[0].razor_payment_key,
-                name: 'TRUST ALGO',
+                name: companyInformation[0].panel_name,
             }
 
             res.send({ status: true, data: order_data, data1: data1, msg: "Msg Done" });
@@ -108,7 +111,8 @@ class Ordercreate {
                 maker_id: req.body.user_id,
                 max_trade: findStg.max_trade || null,
                 strategy_percentage: findStg.strategy_percentage || null,
-                researcher_id: findStg.maker_id
+                researcher_id: findStg.maker_id,
+                purchase_type:req.body.type 
             });
 
 
@@ -121,7 +125,7 @@ class Ordercreate {
                 $push: { collaboration_id: req.body.user_id }
             };
             const update_token1 = await researcher_strategy.updateOne(filter1, update1);
-         
+
 
             // Update strategy_Order_modal collection
             const filter = { _id: req.body.id };
@@ -150,49 +154,49 @@ class Ordercreate {
                 },
                 {
                     $lookup: {
-                        from: "users", 
-                        localField: "admin_id", 
+                        from: "users",
+                        localField: "admin_id",
                         foreignField: "_id",
-                        as: "userData" 
+                        as: "userData"
                     }
                 },
                 {
-                    $unwind: "$userData" 
+                    $unwind: "$userData"
                 },
                 {
                     $lookup: {
-                        from: "users", 
-                        localField: "user_id", 
+                        from: "users",
+                        localField: "user_id",
                         foreignField: "_id",
-                        as: "userData1" 
+                        as: "userData1"
                     }
                 },
                 {
-                    $unwind: "$userData1" 
+                    $unwind: "$userData1"
                 },
-                
+
                 {
                     $project: {
-                        _id: 0, 
+                        _id: 0,
                         Admin_name: "$userData.UserName",
                         User_name: "$userData1.UserName",
-                        plan_name:1,
-                        strategy_name:1,
-                        order_id:1,
-                        amount:1,
-                        receipt:1,
-                        razorpay_order_id:1,
-                        razorpay_payment_id:1,
-                        razorpay_signature:1,
-                        order_status:1,
-                        createdAt:1,
-                        updatedAt:1
-                       
+                        plan_name: 1,
+                        strategy_name: 1,
+                        order_id: 1,
+                        amount: 1,
+                        receipt: 1,
+                        razorpay_order_id: 1,
+                        razorpay_payment_id: 1,
+                        razorpay_signature: 1,
+                        order_status: 1,
+                        createdAt: 1,
+                        updatedAt: 1
+
                     }
                 }
             ]);
-            
-            
+
+
 
             if (!GetResearcherData) {
                 return res.send({ status: false, data: [], msg: "Empty Data" });

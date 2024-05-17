@@ -5,70 +5,51 @@ import FullDataTable from "../../../Components/ExtraComponents/Tables/DataTable"
 import { useDispatch } from "react-redux";
 import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
-import { useNavigate } from "react-router-dom";
 import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { Trade_history_data } from "../../../ReduxStore/Slice/Comman/Trades";
 import { loginWithApi } from "../../../Utils/log_with_api";
-import { fDateTime } from "../../../Utils/Date_formet";
 import { ipAddress } from '../../../Utils/Ipaddress';
+import { allStrategy_subAd } from "../../../ReduxStore/Slice/Admin/Subadmins";
+
 import Swal from 'sweetalert2';
 import $ from "jquery";
-import { fDateTimeSuffix, GetMarketOpenDays, convert_string_to_month } from "../../../Utils/Date_formet";
-import { CreateSocketSession, ConnctSocket, GetAccessToken } from "../../../Utils/Alice_Socket";
+import { fDateTimeSuffix } from "../../../Utils/Date_formet";
+import { CreateSocketSession, ConnctSocket } from "../../../Utils/Alice_Socket";
 import { ShowColor1 } from "../../../Utils/ShowTradeColor";
-import { Eye, CandlestickChart, Pencil } from "lucide-react";
+import { Eye } from "lucide-react";
 
 import DetailsView from "./DetailsView";
 
-import {
-    getAllServices,
-    getCatogries,
-    getexpirymanualtrade,
-    getAllStrikePriceApi,
-    getStrategyData,
-    gettokenbysocket,
-    GetBrokerLiveDatas,
-    AddDataAboveBelowRange,
-    GetDataAboveBelowRange,
-    DeleteDataMakeCall,
-    UpdateDataMakeCall
-
-} from "../../../ReduxStore/Slice/Comman/Makecall/make";
+import { GetBrokerLiveDatas, } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
 
 export default function AllEmployees() {
-    const userDetails = JSON.parse(localStorage.getItem("user_details"));
-    const [showModal, setshowModal] = useState(false);
-
-    const [SelectService, setSelectService] = useState("null");
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
-const Role = JSON.parse(localStorage.getItem("user_details")).Role
-const token = JSON.parse(localStorage.getItem('user_details')).token
+    const Role = JSON.parse(localStorage.getItem("user_details")).Role
+    const token = JSON.parse(localStorage.getItem('user_details')).token
+    const userDetails = JSON.parse(localStorage.getItem("user_details"));
 
-    const [rowData, setRowData] = useState({ loading: true, data: [], });
 
+    const [showModal, setshowModal] = useState(false);
+    const [SelectService, setSelectService] = useState("null");
     const [profileData, setProfileData] = useState([]);
-
     const [refresh, setrefresh] = useState(false);
     const [searchInput, setSearchInput] = useState("");
     const [ForGetCSV, setForGetCSV] = useState([]);
     const [ip, setIp] = useState(null);
     const [fromDate, setFromDate] = useState("");
     const [toDate, setToDate] = useState("");
-    const [StrategyClientStatus, setStrategyClientStatus] = useState("null");
-    const [tradeHistoryData, setTradeHistoryData] = useState({ loading: false, data: [] });
+    const [inputSearch, SetInputSearch] = useState('');
     const [SocketState, setSocketState] = useState("null");
-
-    const [tableData, setTableData] = useState({
-        loading: false,
-        data: [],
-    });
-
-
+    const [selectStrategy, setSelectStrategy] = useState('');
     const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
     const [userIdSocketRun, setUserIdSocketRun] = useState("none");
+    const [tradeHistoryData, setTradeHistoryData] = useState({ loading: false, data: [] });
+    const [getLoginStatus, setLoginStatus] = useState({ loading: false, data: [] })
+    const [tableData, setTableData] = useState({ loading: false, data: [] });
+    const [strategies, setStrategies] = useState({ loading: true, data: [] });
+    const [rowData, setRowData] = useState({ loading: true, data: [] });
 
 
 
@@ -76,70 +57,25 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
         GetBrokerLiveData(userIdSocketRun)
     }, [userIdSocketRun]);
 
+
+    // GET LIVE CREDENSITAL BROKER
     const GetBrokerLiveData = async (userIdSocketRun) => {
-
-        //alert(userIdSocketRun)
         await dispatch(GetBrokerLiveDatas(
-
             {
-                req:
-                {
+                req: {
                     id: user_id,
                     exist_user: userIdSocketRun,
                     exist_user_details: livePriceDataDetails
-                },
-
-                token: token
+                }, token: token
             }
         ))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
-                    // console.log("Data --- ", response.data)
                     setLivePriceDataDetails(response.data)
                 }
             });
     };
-
-
-// console.log("livePriceDataDetails",livePriceDataDetails)
-
-
-    const label = { inputProps: { "aria-label": "Switch demo" } };
-
-    const styles = {
-        container: {
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "80vh",
-        },
-        card: {
-            width: "auto",
-        },
-        boldHeader: {
-            fontWeight: "bold",
-        },
-        headerButton: {
-            marginRight: 8,
-        },
-    };
-    const handleFromDateChange = (e) => {
-        setFromDate(e.target.value);
-    };
-
-    const handleToDateChange = (e) => {
-        setToDate(e.target.value);
-    };
-
-
-
-    const [inputSearch, SetInputSearch] = useState('');
-    const [getLoginStatus, setLoginStatus] = useState({
-        loading: false,
-        data: [],
-    })
-
 
     const fetchData = async () => {
         try {
@@ -179,9 +115,6 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
     }, []);
 
 
-
-
-
     // LOGOUT TRADING 
     const handleTradingOff = async (id) => {
 
@@ -202,12 +135,27 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
 
     }
 
+
+
     // LOGIN DEMAT WITH API
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
 
         if (check) {
-            console.log("Trading On")
-            loginWithApi(brokerid, UserDetails);
+            if (UserDetails.api_key) {
+                loginWithApi(brokerid, UserDetails);
+
+            } else {
+                Swal.fire({
+                    title: "Error !",
+                    text: "Api Key Is Null",
+                    icon: "error",
+                    timer: 1500,
+                    timerProgressBar: true,
+                })
+                return false
+            }
+
+
 
         } else {
             console.log("Trading Off")
@@ -218,6 +166,7 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
 
 
     }
+
     const columns = [
         {
             dataField: "index",
@@ -227,28 +176,14 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
         },
         {
             dataField: "createdAt",
-            text: "Signals time",
+            text: "Signals Entry Time",
             formatter: (cell) => <>{fDateTimeSuffix(cell)}</>,
         },
-        // {
-        //   dataField: "live",
-        //   text: "Live Price",
-        //   formatter: (cell, row, rowIndex) => (
-        //     <div>
-        //       <span className={`LivePrice_${row.token}`}></span>
-        //     </div>
-        //   ),
-        // },
-        // {
-        //   dataField: "closeprice",
-        //   text: "Previous Price",
-        //   formatter: (cell, row, rowIndex) => (
-        //     <div>
-        //       <span className={`ClosePrice_${row.token}`}></span>
-        //     </div>
-        //   ),
-        // },
-
+        {
+            dataField: "exit_dt_date",
+            text: "Signals Exit Time",
+            formatter: (cell) => <>{cell ? fDateTimeSuffix(cell) : "-"}</>,
+        },
         {
             dataField: "trade_symbol",
             text: "Symbol",
@@ -261,14 +196,14 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
             dataField: "2",
             text: "Entry Type",
             formatter: (cell, row, rowIndex) => (
-              <div>
-                <span>{row.entry_type === "LE"?"BUY ENTRY":"SELL ENTRY"}</span>
-              </div>
+                <div>
+                    <span>{row.entry_type === "LE" ? "BUY ENTRY" : "SELL ENTRY"}</span>
+                </div>
             ),
-          },
+        },
         {
             dataField: "entry_qty",
-            text: "Entry Qty",
+            text: "Quantity",
             formatter: (cell, row, rowIndex) => (
                 <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>
             ),
@@ -360,10 +295,6 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
             formatter: (cell, row, rowIndex) => (
                 <div>
                     <span>{StatusEntry(row)}</span>
-
-                    {/* <span>{row.result[0].exit_status === "above" ? "ABOVE" : row.result[0].exit_status === "below" ? "BELOW" : row.result[0].exit_status == "range" ? "RANGE" : " - "}</span> */}
-
-
                 </div>
             ),
         },
@@ -400,34 +331,27 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
     const StatusEntry = (row) => {
 
         const filteredData = row.result.find(obj => obj.type === "LE" || obj.type === 'SE');
-    
-        if(filteredData != undefined){
-            return filteredData.exit_status=="above"?"ABOVE":filteredData.exit_status=="below"?"BELOW":filteredData.exit_status=="range"?"RANGE":filteredData.exit_status 
-        }else{
-          return'-' 
+
+        if (filteredData != undefined) {
+            return filteredData.exit_status == "above" ? "ABOVE" : filteredData.exit_status == "below" ? "BELOW" : filteredData.exit_status == "range" ? "RANGE" : filteredData.exit_status
+        } else {
+            return '-'
         }
-         
-      }
+
+    }
 
 
-    const ResetDate = (e) => {
-        e.preventDefault();
-        setFromDate("");
-        setStrategyClientStatus("");
-        setSelectService("");
-        setToDate("");
 
-    };
 
     const RefreshHandle = () => {
         setrefresh(!refresh);
         userDataRes()
         setSearchInput("");
-    
-        
-
+        setFromDate('')
+        setToDate('')
+        setSelectStrategy('')
     };
-  
+
 
 
     const getActualDateFormate = (date) => {
@@ -438,7 +362,7 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
         )}/${parseInt(dateParts[2], 10)}`;
         return formattedDate;
     };
-    
+
 
     const userDataRes = async () => {
         let abc = new Date();
@@ -448,11 +372,11 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
         let full = `${year}/${month}/${date}`;
 
 
-        
+
         const startDate = fromDate ? getActualDateFormate(fromDate) : full;
-             const endDate = toDate ? getActualDateFormate(toDate) : full;
-        const subadminId = userDetails.user_id
-        await dispatch(Trade_history_data({ Role:Role,subadminId: userDetails.user_id, startDate:startDate, endDate:endDate, service: SelectService, strategy: StrategyClientStatus, }))
+        const endDate = toDate ? getActualDateFormate(toDate) : full;
+
+        await dispatch(Trade_history_data({ Role: Role, subadminId: userDetails.user_id, startDate: startDate, endDate: endDate, service: SelectService, strategy: selectStrategy, }))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
@@ -469,17 +393,15 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
             });
     };
 
+
+
     useEffect(() => {
-        userDataRes(refresh, fromDate, toDate, SelectService, StrategyClientStatus)
-    }, [])
+        userDataRes()
+    }, [refresh, fromDate, toDate, selectStrategy, SelectService])
 
 
 
-    // var CreatechannelList = "";
-    // tradeHistoryData.data &&
-    //     tradeHistoryData.data?.map((item) => {
-    //         CreatechannelList += `${item.exchange}|${item.token}#`;
-    //     });
+
 
 
 
@@ -488,25 +410,22 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
     tradeHistoryData.data &&
         tradeHistoryData.data?.map((item) => {
             CreatechannelList += `${item.exchange}|${item.token}#`;
-            // console.log("item", item)
-            if(parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price!= '' && item.exit_price){
-      
-                if(item.entry_type ==="LE"){
-                 // console.log("item iFF" ,item._id , " total ",total)
-                  let total1 = (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty);
-                  if(!isNaN(total1)){
-                    total += total1
-                  }
-                 
-                }else{
-                 let total1 = (parseFloat(item.entry_price) - parseFloat(item.exit_price)) * parseInt(item.exit_qty);
-                 // console.log("item ELSE" ,item._id , " total ",total)
-                  if(!isNaN(total1)){
-                    total += total1
-                  }
-          
+            if (parseInt(item.exit_qty) == parseInt(item.entry_qty) && item.entry_price != '' && item.exit_price) {
+
+                if (item.entry_type === "LE") {
+                    let total1 = (parseFloat(item.exit_price) - parseFloat(item.entry_price)) * parseInt(item.exit_qty);
+                    if (!isNaN(total1)) {
+                        total += total1
+                    }
+
+                } else {
+                    let total1 = (parseFloat(item.entry_price) - parseFloat(item.exit_price)) * parseInt(item.exit_qty);
+                    if (!isNaN(total1)) {
+                        total += total1
+                    }
+
                 }
-                }
+            }
         });
 
 
@@ -515,224 +434,230 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
         let type = { loginType: "API" };
         let channelList = CreatechannelList;
 
-            if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
+        if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
 
-                const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
+            const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
 
-                if (res.status === 200) {
-                    setSocketState("Ok");
-                }
-                if (res.status === 401 || res.status === '401') {
-                    setSocketState("Unauthorized");
+            if (res.status === 200) {
+                setSocketState("Ok");
+            }
+            if (res.status === 401 || res.status === '401') {
+                setSocketState("Unauthorized");
 
-                    tradeHistoryData.data && tradeHistoryData.data.forEach((row, i) => {
-                        const previousRow = i > 0 ? tradeHistoryData.data[i - 1] : null;
-                        calcultateRPL(row, null, previousRow);
-                    });
-                }
-                else {
-                    if (res.data.stat) {
-                        const handleResponse = async (response) => {
-
-
-                            $('.BP1_Put_Price_' + response.tk).html();
-                            $('.SP1_Call_Price_' + response.tk).html();
-
-                            // UPL_
-                            $(".LivePrice_" + response.tk).html(response.lp);
-                            $(".ClosePrice_" + response.tk).html(response.c);
+                tradeHistoryData.data && tradeHistoryData.data.forEach((row, i) => {
+                    const previousRow = i > 0 ? tradeHistoryData.data[i - 1] : null;
+                    calcultateRPL(row, null, previousRow);
+                });
+            }
+            else {
+                if (res.data.stat) {
+                    const handleResponse = async (response) => {
 
 
-                            var live_price = response.lp === undefined ? "" : response.lp;
+                        $('.BP1_Put_Price_' + response.tk).html();
+                        $('.SP1_Call_Price_' + response.tk).html();
 
-                            //  if entry qty and exist qty both exist
-                            tradeHistoryData.data && tradeHistoryData.data.forEach((row, i) => {
-                                let get_ids = '_id_' + response.tk + '_' + row._id
-                                let get_id_token = $('.' + get_ids).html();
-
-                                const get_entry_qty = $(".entry_qty_" + response.tk + '_' + row._id).html();
-                                const get_exit_qty = $(".exit_qty_" + response.tk + '_' + row._id).html();
-                                const get_exit_price = $(".exit_price_" + response.tk + '_' + row._id).html();
-                                const get_entry_price = $(".entry_price_" + response.tk + '_' + row._id).html();
-                                const get_entry_type = $(".entry_type_" + response.tk + '_' + row._id).html();
-                                const get_exit_type = $(".exit_type_" + response.tk + '_' + row._id).html();
-                                const get_Strategy = $(".strategy_" + response.tk + '_' + row._id).html();
-
-                                if ((get_entry_type === "LE" && get_exit_type === "LX") || (get_entry_type === "SE" && get_exit_type === "SX")) {
-                                    if (get_entry_qty !== "" && get_exit_qty !== "") {
-
-                                        if (parseInt(get_entry_qty) >= parseInt(get_exit_qty)) {
-                                            let rpl = (parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_exit_qty);
+                        // UPL_
+                        $(".LivePrice_" + response.tk).html(response.lp);
+                        $(".ClosePrice_" + response.tk).html(response.c);
 
 
-                                            if(get_entry_type === "SE"){
-                                              rpl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_exit_qty);
-                                            }
+                        var live_price = response.lp === undefined ? "" : response.lp;
+
+                        //  if entry qty and exist qty both exist
+                        tradeHistoryData.data && tradeHistoryData.data.forEach((row, i) => {
+                            let get_ids = '_id_' + response.tk + '_' + row._id
+                            let get_id_token = $('.' + get_ids).html();
+
+                            const get_entry_qty = $(".entry_qty_" + response.tk + '_' + row._id).html();
+                            const get_exit_qty = $(".exit_qty_" + response.tk + '_' + row._id).html();
+                            const get_exit_price = $(".exit_price_" + response.tk + '_' + row._id).html();
+                            const get_entry_price = $(".entry_price_" + response.tk + '_' + row._id).html();
+                            const get_entry_type = $(".entry_type_" + response.tk + '_' + row._id).html();
+                            const get_exit_type = $(".exit_type_" + response.tk + '_' + row._id).html();
+                            const get_Strategy = $(".strategy_" + response.tk + '_' + row._id).html();
+
+                            if ((get_entry_type === "LE" && get_exit_type === "LX") || (get_entry_type === "SE" && get_exit_type === "SX")) {
+                                if (get_entry_qty !== "" && get_exit_qty !== "") {
+
+                                    if (parseInt(get_entry_qty) >= parseInt(get_exit_qty)) {
+                                        let rpl = (parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_exit_qty);
 
 
-                                            let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
-                                            let finalyupl = (parseFloat(get_entry_price) - parseFloat(live_price)) * upl;
+                                        if (get_entry_type === "SE") {
+                                            rpl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_exit_qty);
+                                        }
 
-                                            if ((isNaN(finalyupl) || isNaN(rpl))) {
-                                                return "-";
-                                            } else {
-                                                $(".show_rpl_" + response.tk + "_" + get_id_token).html(rpl.toFixed(2));
-                                                $(".UPL_" + response.tk + "_" + get_id_token).html(finalyupl.toFixed(2));
-                                                $(".TPL_" + response.tk + "_" + get_id_token).html((finalyupl + rpl).toFixed(2));
 
-                                                ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, rpl.toFixed(2), response.tk, get_id_token);
-                                                ShowColor1(".UPL_" + response.tk + "_" + get_id_token, finalyupl.toFixed(2), response.tk, get_id_token);
-                                                ShowColor1(".TPL_" + response.tk + "_" + get_id_token, (finalyupl + rpl).toFixed(2), response.tk, get_id_token);
-                                            }
+                                        let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
+                                        let finalyupl = (parseFloat(get_entry_price) - parseFloat(live_price)) * upl;
+
+                                        if ((isNaN(finalyupl) || isNaN(rpl))) {
+                                            return "-";
+                                        } else {
+                                            $(".show_rpl_" + response.tk + "_" + get_id_token).html(rpl.toFixed(2));
+                                            $(".UPL_" + response.tk + "_" + get_id_token).html(finalyupl.toFixed(2));
+                                            $(".TPL_" + response.tk + "_" + get_id_token).html((finalyupl + rpl).toFixed(2));
+
+                                            ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, rpl.toFixed(2), response.tk, get_id_token);
+                                            ShowColor1(".UPL_" + response.tk + "_" + get_id_token, finalyupl.toFixed(2), response.tk, get_id_token);
+                                            ShowColor1(".TPL_" + response.tk + "_" + get_id_token, (finalyupl + rpl).toFixed(2), response.tk, get_id_token);
                                         }
                                     }
                                 }
-                                //  if Only entry qty Exist
-                                else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
+                            }
+                            //  if Only entry qty Exist
+                            else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
 
-                                    let abc = ((parseFloat(live_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
+                                let abc = ((parseFloat(live_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
 
-                                    if(get_entry_type === "SE"){
-                                        abc = ((parseFloat(get_entry_price) - parseFloat(live_price)) * parseInt(get_entry_qty)).toFixed();
-                                      }
+                                if (get_entry_type === "SE") {
+                                    abc = ((parseFloat(get_entry_price) - parseFloat(live_price)) * parseInt(get_entry_qty)).toFixed();
+                                }
 
+
+
+                                if (get_entry_qty !== "" && (get_exit_qty == "" || get_exit_qty == 0)) {
 
                                     if (isNaN(abc)) {
                                         return "-";
                                     } else {
-                                        $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");
                                         $(".UPL_" + response.tk + "_" + get_id_token).html(abc);
                                         $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
-                                        ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, "-", response.tk, get_id_token);
                                         ShowColor1(".UPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                        ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                    }
+                                } else {
+                                    if (isNaN(abc)) {
+                                        return "-";
+                                    } else {
+                                        $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");
+                                        $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
+                                        ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, "-", response.tk, get_id_token);
                                         ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
                                     }
                                 }
 
-                                //  if Only Exist qty Exist
-                                else if (
-                                    (get_entry_type === "" && get_exit_type === "LX") ||
-                                    (get_entry_type === "" && get_exit_type === "SX")
-                                ) {
-                                } else {
-                                }
-                            });
+
+                            }
+
+                            //  if Only Exist qty Exist
+                            else if (
+                                (get_entry_type === "" && get_exit_type === "LX") ||
+                                (get_entry_type === "" && get_exit_type === "SX")
+                            ) {
+                            } else {
+                            }
+                        });
 
 
-                            // }
-                        };
-                        await ConnctSocket(handleResponse, channelList, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token).then((res) => { });
-                    } else {
-                        // $(".UPL_").html("-");
-                        // $(".show_rpl_").html("-");
-                        // $(".TPL_").html("-");
-                    }
+                        // }
+                    };
+                    await ConnctSocket(handleResponse, channelList, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token).then((res) => { });
+                } else {
+                    // $(".UPL_").html("-");
+                    // $(".show_rpl_").html("-");
+                    // $(".TPL_").html("-");
                 }
             }
+        } else {
+            tradeHistoryData.data && tradeHistoryData.data.forEach((row, i) => {
 
-            else{
-                // alert("ELSE")
-                tradeHistoryData.data && tradeHistoryData.data.forEach((row, i) => {
-                  
-                  // console.log(" row._id ",row._id)
-                  // console.log(" row token ",row.token)
-                  // console.log(" row ",row)
-                  let get_ids = '_id_' + row.token + '_' + row._id
-                  let get_id_token = $('.' + get_ids).html();
-          
-                  const get_entry_qty = $(".entry_qty_" + row.token + '_' + row._id).html();
-                  const get_exit_qty = $(".exit_qty_" + row.token + '_' + row._id).html();
-                  const get_exit_price = $(".exit_price_" + row.token + '_' + row._id).html();
-                  const get_entry_price = $(".entry_price_" + row.token + '_' + row._id).html();
-                  const get_entry_type = $(".entry_type_" + row.token + '_' + row._id).html();
-                  const get_exit_type = $(".exit_type_" + row.token + '_' + row._id).html();
-                  const get_Strategy = $(".strategy_" + row.token + '_' + row._id).html();
-          
-          
+                let get_ids = '_id_' + row.token + '_' + row._id
+                let get_id_token = $('.' + get_ids).html();
+
+                const get_entry_qty = $(".entry_qty_" + row.token + '_' + row._id).html();
+                const get_exit_qty = $(".exit_qty_" + row.token + '_' + row._id).html();
+                const get_exit_price = $(".exit_price_" + row.token + '_' + row._id).html();
+                const get_entry_price = $(".entry_price_" + row.token + '_' + row._id).html();
+                const get_entry_type = $(".entry_type_" + row.token + '_' + row._id).html();
+                const get_exit_type = $(".exit_type_" + row.token + '_' + row._id).html();
+                const get_Strategy = $(".strategy_" + row.token + '_' + row._id).html();
+
+
                 if ((get_entry_type === "LE" && get_exit_type === "LX") || (get_entry_type === "SE" && get_exit_type === "SX")) {
-                 //   console.log("row._id ",row._id)
+
                     if (get_entry_qty !== "" && get_exit_qty !== "") {
-          
-                      if (parseInt(get_entry_qty) == parseInt(get_exit_qty)) {
-          
-                        
-                        let rpl = (parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_exit_qty);
-                        if(get_entry_type === "SE"){
-                          rpl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_exit_qty);
+
+                        if (parseInt(get_entry_qty) == parseInt(get_exit_qty)) {
+
+
+                            let rpl = (parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_exit_qty);
+                            if (get_entry_type === "SE") {
+                                rpl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_exit_qty);
+                            }
+
+                            let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
+                            let finalyupl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * upl;
+
+                            if ((isNaN(finalyupl) || isNaN(rpl))) {
+                                return "-";
+                            } else {
+                                $(".show_rpl_" + row.token + "_" + get_id_token).html(rpl.toFixed(2));
+                                $(".UPL_" + row.token + "_" + get_id_token).html(finalyupl.toFixed(2));
+                                $(".TPL_" + row.token + "_" + get_id_token).html((finalyupl + rpl).toFixed(2));
+
+                                ShowColor1(".show_rpl_" + row.token + "_" + get_id_token, rpl.toFixed(2), row.token, get_id_token);
+                                ShowColor1(".UPL_" + row.token + "_" + get_id_token, finalyupl.toFixed(2), row.token, get_id_token);
+                                ShowColor1(".TPL_" + row.token + "_" + get_id_token, (finalyupl + rpl).toFixed(2), row.token, get_id_token);
+                            }
                         }
-                         
-                      // console.log("rpl ",rpl)
-                        let upl = parseInt(get_exit_qty) - parseInt(get_entry_qty);
-                        let finalyupl = (parseFloat(get_entry_price) - parseFloat(get_exit_price)) * upl;
-                       
-                        // console.log("upl._id ",upl)
-                        // console.log("finalyupl._id ",finalyupl)
-                        if ((isNaN(finalyupl) || isNaN(rpl))) {
-                          return "-";
-                        } else {
-                         // console.log("rpl inside",rpl)
-                          $(".show_rpl_" + row.token + "_" + get_id_token).html(rpl.toFixed(2));
-                          $(".UPL_" + row.token + "_" + get_id_token).html(finalyupl.toFixed(2));
-                          $(".TPL_" + row.token + "_" + get_id_token).html((finalyupl + rpl).toFixed(2));
-          
-                          ShowColor1(".show_rpl_" + row.token + "_" + get_id_token, rpl.toFixed(2), row.token, get_id_token);
-                          ShowColor1(".UPL_" + row.token + "_" + get_id_token, finalyupl.toFixed(2), row.token, get_id_token);
-                          ShowColor1(".TPL_" + row.token + "_" + get_id_token, (finalyupl + rpl).toFixed(2), row.token, get_id_token);
-                        }
-                      }
                     }
-                  }
-                  //  if Only entry qty Exist
-                  else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
-          
-                    //console.log("row._id else",row._id)
-          
+                }
+                //  if Only entry qty Exist
+                else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
+
+
                     let abc = ((parseFloat(get_exit_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
-                     
-                    if(get_entry_type === "SE"){
-                      abc = ((parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_entry_qty)).toFixed();
+
+                    if (get_entry_type === "SE") {
+                        abc = ((parseFloat(get_entry_price) - parseFloat(get_exit_price)) * parseInt(get_entry_qty)).toFixed();
                     }
-          
-          
-          
-                    if (isNaN(abc)) {
-                      return "-";
+
+                    if (get_entry_qty !== "" && (get_exit_qty == "" || get_exit_qty == 0)) {
+
+                        if (isNaN(abc)) {
+                            return "-";
+                        } else {
+                            $(".UPL_" + row.tk + "_" + get_id_token).html(abc);
+                            $(".TPL_" + row.tk + "_" + get_id_token).html(abc);
+                            ShowColor1(".UPL_" + row.tk + "_" + get_id_token, abc, row.tk, get_id_token);
+                            ShowColor1(".TPL_" + row.tk + "_" + get_id_token, abc, row.tk, get_id_token);
+                        }
                     } else {
-                      $(".show_rpl_" + row.token + "_" + get_id_token).html("-");
-                      $(".UPL_" + row.token + "_" + get_id_token).html(abc);
-                      $(".TPL_" + row.token + "_" + get_id_token).html(abc);
-                      ShowColor1(".show_rpl_" + row.token + "_" + get_id_token, "-", row.token, get_id_token);
-                      ShowColor1(".UPL_" + row.token + "_" + get_id_token, abc, row.token, get_id_token);
-                      ShowColor1(".TPL_" + row.token + "_" + get_id_token, abc, row.token, get_id_token);
+                        if (isNaN(abc)) {
+                            return "-";
+                        } else {
+                            $(".show_rpl_" + row.tk + "_" + get_id_token).html("-");
+                            $(".TPL_" + row.tk + "_" + get_id_token).html(abc);
+                            ShowColor1(".show_rpl_" + row.tk + "_" + get_id_token, "-", row.tk, get_id_token);
+                            ShowColor1(".TPL_" + row.tk + "_" + get_id_token, abc, row.tk, get_id_token);
+                        }
                     }
-                  }
-          
-                  //  if Only Exist qty Exist
-                  else if (
+                }
+
+                //  if Only Exist qty Exist
+                else if (
                     (get_entry_type === "" && get_exit_type === "LX") ||
                     (get_entry_type === "" && get_exit_type === "SX")
-                  ) {
-                  } else {
-                  }
-          
-          
-          
-          
-          
-                });
-          
-          
-              }
-        
+                ) {
+                } else {
+                }
 
 
 
 
 
+            });
+
+
+        }
     };
 
 
+
+    // CALCULATE PNL
     const calcultateRPL = (row, livePrice, pre_row) => {
 
         let get_ids = '_id_' + row.token + '_' + row._id
@@ -772,7 +697,7 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
 
     useEffect(() => {
         ShowLivePrice();
-    }, [tradeHistoryData.data, SocketState,livePriceDataDetails]);
+    }, [tradeHistoryData.data, SocketState, livePriceDataDetails]);
 
 
 
@@ -786,14 +711,60 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
                 console.error('Failed to fetch IP address:', error);
             }
         };
-
         fetchIP();
-
-        // Clean up function
-        return () => {
-
-        };
     }, []);
+
+
+    // FATCH STRATEGYS
+    const fetchStrategies = async () => {
+        try {
+            const data = { id: user_id }
+            await dispatch(allStrategy_subAd(data))
+                .unwrap()
+                .then((response) => {
+                    if (response.status) {
+                        setStrategies({
+                            loading: false,
+                            data: response.data
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error !",
+                            text: response.msg,
+                            icon: "error",
+                            timer: 1500,
+                            timerProgressBar: true,
+                        })
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error in API response:", error);
+                    Swal.fire({
+                        title: "Error !",
+                        text: "Error in API response",
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true,
+                    })
+                });
+        } catch (error) {
+            console.error("Error in dispatching action:", error);
+            Swal.fire({
+                title: "Error !",
+                text: "Failed to dispatch action for fetching strategies",
+                icon: "error",
+                timer: 1500,
+                timerProgressBar: true,
+            })
+        }
+    };
+
+    useEffect(() => {
+        fetchStrategies();
+    }, [refresh]);
+
+
+
 
     return (
         <>
@@ -811,7 +782,7 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
                                         <div className="list-btn">
                                             <ul className="filter-list mb-0">
 
-                                            <li className="toggle-li">
+                                                <li className="toggle-li">
                                                     <div className="status-toggle pe-2" style={{ display: 'flex', alignItems: 'center' }}>
                                                         <span className={getLoginStatus ? 'bg-success-light px-2' : 'px-2 bg-danger-light'} >Trading Status</span>
                                                         <input
@@ -822,7 +793,7 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
                                                                 profileData.data[0].broker,
                                                                 profileData.data[0].TradingStatus,
                                                                 profileData.data[0])}
-                                                            defaultChecked={getLoginStatus}
+                                                            checked={getLoginStatus}
                                                             style={{ marginRight: '5px' }}
                                                         />
                                                         <label htmlFor="1" className="checktoggle checkbox-bg"></label>
@@ -874,6 +845,10 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
                                 </div>
                             </div>
 
+
+
+
+
                             <div className="card-body">
                                 <div className="row ">
                                     <div className="input-block col-lg-2 mt-3 mb-3">
@@ -884,8 +859,8 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
                                             placeholder="Search..."
                                             aria-label="Search"
                                             aria-describedby="search-addon"
-                                            onChange={(e) => SetInputSearch(e.target.value || '')}
-                                            value={inputSearch}
+                                            onChange={(e) => setFromDate(e.target.value || '')}
+                                            value={fromDate}
                                         />
                                     </div>
                                     <div className="input-block col-lg-2 mt-3 mb-3">
@@ -896,8 +871,8 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
                                             placeholder="Search..."
                                             aria-label="Search"
                                             aria-describedby="search-addon"
-                                            onChange={(e) => SetInputSearch(e.target.value || '')}
-                                            value={inputSearch}
+                                            onChange={(e) => setToDate(e.target.value || '')}
+                                            value={toDate}
                                         />
                                     </div>
 
@@ -909,25 +884,25 @@ const token = JSON.parse(localStorage.getItem('user_details')).token
                                             class="default-select wide form-control"
                                             aria-label="Default select example"
                                             id="select"
-                                        // onChange={(e) => setStrategyClientStatus(e.target.value)}
-                                        // value={StrategyClientStatus}
+                                            onChange={(e) => setSelectStrategy(e.target.value)}
+                                            value={selectStrategy}
                                         >
                                             <option value="null" selected >All</option>
-                                            {/* {getAllStrategyName.data &&
-                                                getAllStrategyName.data.map((item) => {
+                                            {strategies.data &&
+                                                strategies.data.map((item) => {
                                                     return (
                                                         <option value={item.strategy_name}>
                                                             {item.strategy_name}
                                                         </option>
                                                     );
-                                                })} */}
+                                                })}
                                         </select>
                                     </div>
 
 
 
                                 </div>
-                                
+
 
 
                                 <div className="card-body table-responsive">

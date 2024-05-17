@@ -15,16 +15,15 @@ import Orders from '../Layouts/User/Trade/Order';
 import TradeHistory from '../Layouts/User/Trade/TradeHistory';
 
 import Subscriptiondata from '../Layouts/User/Subscription/Subscriptiondata';
-
-
 import Settings from '../Layouts/Comman/Setting_Page/Settings';
+import TradeCharges from '../Layouts/User/Trade/TradeCharges';
+
 
 
 
 
 // strategydesc
 const User_Routing = () => {
-
 
     return (
         <>
@@ -34,7 +33,6 @@ const User_Routing = () => {
 
                 <Routes>
                     <Route exact path="/dashboard" element={<Dashboards />} />
-
 
                     <Route path="/faqs" element={<Faqs />} />
                     <Route path="/help" element={<Help />} />
@@ -47,8 +45,10 @@ const User_Routing = () => {
                     <Route exact path="/positions" element={<TradeHistory />} />
                     <Route exact path="/subscription" element={<Subscriptiondata />} />
                    
-                    
+                
                     <Route exact path="/setting" element={<Settings />} />
+                    <Route exact path="/tradecharge" element={<TradeCharges/>} />
+                   
 
 
 

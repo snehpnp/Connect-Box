@@ -165,8 +165,8 @@ function Login() {
           case "Password Not Match":
             showErrorModal("Incorrect Password", "Enter the correct password.");
             break;
-          case "Contact admin you are inactive.":
-            showInactiveAccountModal();
+          case "please contact admin you are inactive.":
+            showInactiveAccountModal("please contact admin you are inactive.","please contact admin you are inactive.");
             break;
           case "User Not exists":
             showErrorModal("User Not Exists", "The user you are trying to access does not exist.");
@@ -233,7 +233,7 @@ function Login() {
   };
 
   useEffect(() => {
-    console.log("theme_mode", theme_mode);
+     
     const htmlElement = document.querySelector("html");
     htmlElement.setAttribute("data-sidebar", theme_mode);
     htmlElement.setAttribute("data-layout-mode", theme_mode);
@@ -246,23 +246,17 @@ function Login() {
   }, [isLoggedIn, getData.Role, navigate]);
 
 
+  const fetchIP = async () => {
+    try {
+      const ip = await ipAddress();
+      setIp(ip);
+    } catch (error) {
+      console.error('Failed to fetch IP address:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchIP = async () => {
-      try {
-        const ip = await ipAddress();
-        setIp(ip);
-      } catch (error) {
-        console.error('Failed to fetch IP address:', error);
-      }
-    };
-
     fetchIP();
-
-    // Clean up function
-    return () => {
-
-    };
   }, []);
 
 
@@ -532,7 +526,7 @@ function Login() {
                 <div class="intro-fill">
                   <span class="tf-user-welcome welcome-1">Hi `{getData.UserName}!`</span>
                   <span class="tf-user-welcome welcome-2">Welcome to Connect Box</span>
-                  <span class="tf-user-welcome welcome-3">We’re delighted to be at your Service</span>
+                  {/* <span class="tf-user-welcome welcome-3">We’re delighted to be at your Service</span> */}
                 </div>
               </div>
 

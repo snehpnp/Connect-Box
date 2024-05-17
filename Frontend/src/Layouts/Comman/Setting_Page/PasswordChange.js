@@ -61,8 +61,11 @@ const PasswordChange = () => {
           name="passwordChangeForm"
           id="passwordChangeForm"
         >
+          <div className="content-page-header">
           <h5 className="formTitle">Change Password</h5>
-          <div className="inputDiv">
+          </div>
+         
+          <div className="inputDiv w-100">
             <label className="inputLabel" htmlFor="currentPassword">
               Current Password
             </label>
@@ -78,7 +81,7 @@ const PasswordChange = () => {
               }
             />
           </div>
-          <div className="inputDiv">
+          <div className="inputDiv w-100">
             <label className="inputLabel" htmlFor="newPassword">
               New Password
             </label>
@@ -94,7 +97,7 @@ const PasswordChange = () => {
               }
             />
           </div>
-          <div className="inputDiv">
+          <div className="inputDiv w-100">
             <label className="inputLabel" htmlFor="confirmNewPassword">
               Confirm New Password
             </label>
@@ -114,7 +117,7 @@ const PasswordChange = () => {
             />
           </div>
           <div className="buttonWrapper">
-            <button type="submit" className="submitButton">
+            <button type="submit" className="submitButton btn btn-primary w-auto">
               Submit
             </button>
           </div>

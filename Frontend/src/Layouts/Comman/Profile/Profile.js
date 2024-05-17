@@ -10,7 +10,7 @@ import { fDateTime } from "../../../Utils/Date_formet";
 import { fDate } from "../../../Utils/Date_formet";
 import { isToday } from "../../../Utils/Date_formet";
 import Swal from "sweetalert2";
-import { Employeedatabyid } from "../../../ReduxStore/Slice/Admin/System";
+import { Employeedatabyid , Get_Parent_Type  } from "../../../ReduxStore/Slice/Admin/System";
 //Employeedatabyid
 import {
   ProfilImage,
@@ -40,6 +40,8 @@ const Profile = () => {
 
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   const user = JSON.parse(localStorage.getItem("user_details"));
+  const Role = JSON.parse(localStorage.getItem("user_details")).Role;
+
 
   const [getemployeedata, setGetemployeedata] = useState("");
   const [profileData, setProfileData] = useState([]);
@@ -51,6 +53,7 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState("");
   const [editbtn, setEditbtn] = useState(false);
   const [info, setInfo] = useState([]);
+  const [getParentType, setParentType]= useState('')
   const [update, setUpdate] = useState({
     user_Id: "",
     Address: "",
@@ -62,6 +65,7 @@ const Profile = () => {
   });
 
   const currentDate = new Date();
+  currentDate.setFullYear(currentDate.getFullYear() - 1);
   const currentDateISOString = currentDate.toISOString().split("T")[0];
 
   const avatarImages = [
@@ -180,7 +184,7 @@ const Profile = () => {
       })
     )
       .unwrap()
-      .then(async (response) => {
+      .then(  async (response) => {
         if (response.status) {
           setEditbtn(!editbtn);
           Swal.fire({
@@ -272,6 +276,30 @@ const Profile = () => {
   useEffect(() => {
     fetchData();
   }, [refresh]);
+
+
+  const FindParentType = async()=>{
+    try{
+      const data={id : user_id , Role :Role}
+      await dispatch(Get_Parent_Type(data)).unwrap()
+      .then((response)=>{
+        if(response.status){
+          setParentType(response.data)
+        }
+        else{
+          setParentType('')
+        }
+      })
+
+    }
+    catch(error){
+      console.log("Error in fatching in Parent Type", error)
+    }
+  }
+
+  useEffect(()=>{
+    FindParentType()
+  },[])
 
   return (
     <div>
@@ -401,8 +429,8 @@ const Profile = () => {
               <div className="row">
                 <div className="col-lg-4">
                   <div className="card">
-                    <div className="card-header">
-                      <h5 className="card-title d-flex justify-content-between">
+                    <div className="card-header align-items-center">
+                      <h5 className="card-title d-flex justify-content-between mb-0">
                         <span>Profile</span>
                         <a
                           className="btn btn-sm btn-white"
@@ -648,8 +676,7 @@ const Profile = () => {
                             </li>
                           ))}
                        {user.Role === "EMPLOYEE" ?  <li>
-                          <label>Subadmin Name</label>
-                          {getemployeedata && getemployeedata}
+                           <h6>Subadmin Name : {getemployeedata && getemployeedata}</h6>
                         </li> : ""}
                       </ul>
                     </div>

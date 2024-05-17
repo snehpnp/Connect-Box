@@ -130,6 +130,33 @@ class profile {
         .send({ status: false, msg: "Internal server error" });
     }
   }
+
+  async GetParentType(req , res){
+    try{
+      const {id , Role} = req.body;
+      
+      if(!id){
+        return res.send({status :false , msg:"Empty user Id", data :[]})
+      }
+      const findData = await user.find({_id :id})
+      if(!findData){
+        return res.send({status : false , msg: "Invalid user Id" , data: []})
+      }
+
+      if(findData[0].Role=='ADMIN'){
+      return res.send({status :false , msg:"This is admin" , data :[]})
+      }
+
+      const findData1 = await user.find({_id :findData[0].parent_id})
+      return res.send({status :true , msg:"get Parent Name Successfully" , data :findData1[0].UserName})
+
+    }
+    catch(error){
+      console.log("Eror to fatching the Parent Name", error)
+      return res.send({status:false, msg:"Internal server error" , data: []})
+    }
+
+  }
 }
 
 module.exports = new profile();

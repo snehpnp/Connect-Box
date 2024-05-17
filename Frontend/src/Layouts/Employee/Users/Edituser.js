@@ -267,7 +267,7 @@ const EditClient = () => {
             type: "text",
             label_size: 12,
             col_size: 6,
-            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
+            disable: true 
         },
         {
             name: "email",
@@ -275,7 +275,7 @@ const EditClient = () => {
             type: "text",
             label_size: 12,
             col_size: 6,
-            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
+            disable: true
         },
 
         {
@@ -284,21 +284,9 @@ const EditClient = () => {
             type: "text3",
             label_size: 12,
             col_size: 6,
-            disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
+            disable: true,
         },
-        // {
-        //     name: "licence",
-        //     label: "License Type",
-        //     type: "select",
-        //     options: [
-        //         { label: "Demo", value: "1" },
-        //         { label: "2 Day Live", value: "0" },
-        //         { label: "Live", value: "2" },
-        //     ],
-        //     label_size: 12,
-        //     col_size: 6,
-        //     disable: additionalData && additionalData.Update_Api_Key == 1 ? true : false,
-        // },
+        
         {
             name: "licence",
             label: "Lincense Type",
@@ -462,7 +450,6 @@ const EditClient = () => {
     useEffect(() => {
         formik.setFieldValue("fullName", getUserData && getUserData.FullName)
         formik.setFieldValue("Employees", getUserData && getUserData.employee_id)
-
         formik.setFieldValue("username", getUserData && getUserData.UserName)
         formik.setFieldValue("email", getUserData && getUserData.Email)
         formik.setFieldValue("phone", getUserData && getUserData.PhoneNo)
@@ -634,7 +621,7 @@ const EditClient = () => {
                                     <div className={`col-lg-3 mt-2`} key={strategy.id}>
                                         <div className="row">
                                             <div className="col-lg-12">
-                                                <div className="form-check custom-checkbox mb-3">
+                                                <div className="form-check custom-checkbox ">
                                                     <input
                                                         type="checkbox"
                                                         className="form-check-input"
@@ -769,7 +756,7 @@ const EditClient = () => {
                                         <div className={`col-lg-3 mt-2`} key={strategy.id}>
                                             <div className="row">
                                                 <div className="col-lg-12">
-                                                    <div className="form-check custom-checkbox mb-3">
+                                                    <div className="form-check custom-checkbox">
                                                         <input
                                                             type="checkbox"
                                                             className="form-check-input"

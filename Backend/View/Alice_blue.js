@@ -1,48 +1,35 @@
-const MongoClient = require('mongodb').MongoClient;
-
-const mongoose = require('mongoose');
-
-
-const uri = process.env.MONGO_URI
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-
-client.connect();
-
-const db = client.db(process.env.DB_NAME); 
-
+const { MongoClient } = require('mongodb');
 
 async function createViewAlice() {
+  const uri = process.env.MONGO_URI;
+  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-
-
-  // All Client Trading on view
   try {
+    await client.connect();
+    const db = client.db(process.env.DB_NAME);
 
     const currentDate = new Date(); // Get the current date and time
 
-    // Define the pipeline to create the view
     const pipeline = [
       {
         $match: {
           broker: "2",
-          TradingStatus: 'on',// Condition from the user collection
+          TradingStatus: 'on',
           $or: [
-            { EndDate: { $gte: currentDate } }, // EndDate is today or in the future
-            { EndDate: null } // EndDate is not set
+            { EndDate: { $gte: currentDate } },
+            { EndDate: null }
           ]
         }
       },
       {
         $lookup: {
           from: 'client_services',
-          localField: '_id', // Field from the user collection to match
-          foreignField: 'user_id', // Field from the client_services collection to match
+          localField: '_id',
+          foreignField: 'user_id',
           as: 'client_services'
         }
       },
-      {
-        $unwind: '$client_services',
-      },
+      { $unwind: '$client_services' },
       {
         $match: {
           'client_services.active_status': '1'
@@ -56,9 +43,7 @@ async function createViewAlice() {
           as: "service",
         },
       },
-      {
-        $unwind: '$service',
-      },
+      { $unwind: '$service' },
       {
         $lookup: {
           from: "categories",
@@ -67,9 +52,7 @@ async function createViewAlice() {
           as: "category",
         },
       },
-      {
-        $unwind: '$category',
-      },
+      { $unwind: '$category' },
       {
         $lookup: {
           from: "strategies",
@@ -78,9 +61,42 @@ async function createViewAlice() {
           as: "strategys",
         },
       },
+      { $unwind: '$strategys' },
       {
-        $unwind: '$strategys',
+        $addFields: {
+          dynamicKey: {
+            $concat: [{ $toString: "$_id" }, "_", { $toString: "$strategys._id" }]
+          }
+        }
       },
+      {
+        $lookup: {
+          from: "strategy_clients",
+          localField: "dynamicKey",
+          foreignField: "uniqueUserStrategy",
+          as: "stg_client",
+        },
+      },
+      {
+        $addFields: {
+          stg_client: { $ifNull: ["$stg_client", [null]] }
+        }
+      },
+      { $unwind: '$stg_client' },
+      // {
+      //   $lookup: {
+      //     from: "users",
+      //     localField: "parent_id",
+      //     foreignField: "_id",
+      //     as: "parentdata",
+      //   },
+      // },
+      // {
+      //   $addFields: {
+      //     parentdata: { $ifNull: ["$parentdata", [null]] }
+      //   }
+      // },
+      // { $unwind: '$parentdata' },
       {
         $project: {
           "client_services": 1,
@@ -90,6 +106,8 @@ async function createViewAlice() {
           "strategys.strategy_name": 1,
           "category.segment": 1,
           "service.zebu_token": 1,
+          "stg_client.trade_charge": 1,
+          // "parentdata": 1,
           _id: 1,
           FullName: 1,
           UserName: 1,
@@ -106,23 +124,18 @@ async function createViewAlice() {
           api_type: 1,
           demat_userid: 1,
           client_key: 1,
-          web_url: 1
+          web_url: 1,
+          parent_id: 1
         }
       },
       {
         $addFields: {
-          
-         
-           
-          postdata:
-          {
+          postdata: {
             complexty: 'REGULAR',
             discqty: '0',
-
-            // exchange condition here
             exch: {
               $cond: {
-                if: { $eq: ['$category.segment', 'C'] }, // Your condition here
+                if: { $eq: ['$category.segment', 'C'] },
                 then: 'NSE',
                 else: {
                   $cond: {
@@ -135,7 +148,6 @@ async function createViewAlice() {
                     },
                     then: 'NFO',
                     else: {
-
                       $cond: {
                         if: {
                           $or: [
@@ -145,7 +157,6 @@ async function createViewAlice() {
                         },
                         then: 'MCX',
                         else: {
-
                           $cond: {
                             if: {
                               $or: [
@@ -154,152 +165,106 @@ async function createViewAlice() {
                               ]
                             },
                             then: 'CDS',
-
-                            // all not exist condition 
                             else: "NFO"
-
                           }
-
                         }
-
                       }
-
-
                     }
-
                   }
-
                 }
-
               }
             },
-
-
-
-            // product code condition here
             pCode: {
               $cond: {
                 if: {
-                  $and:
-                    [
-                      { $eq: ['$client_services.product_type', '1'] },
-                      {
-                        $or: [
-                          { $eq: ['$category.segment', 'F'] },
-                          { $eq: ['$category.segment', 'O'] },
-                          { $eq: ['$category.segment', 'FO'] }
-                        ]
-                      },
-                    ]
+                  $and: [
+                    { $eq: ['$client_services.product_type', '1'] },
+                    {
+                      $or: [
+                        { $eq: ['$category.segment', 'F'] },
+                        { $eq: ['$category.segment', 'O'] },
+                        { $eq: ['$category.segment', 'FO'] }
+                      ]
+                    },
+                  ]
                 },
                 then: 'NRML',
                 else: {
                   $cond: {
                     if: {
-                      $and:
-                        [
-                          { $eq: ['$client_services.product_type', '2'] },
-                        ]
+                      $and: [
+                        { $eq: ['$client_services.product_type', '2'] },
+                      ]
                     },
                     then: 'MIS',
                     else: {
                       $cond: {
                         if: {
-                          $and:
-                            [
-                              { $eq: ['$client_services.product_type', '3'] },
-                            ]
+                          $and: [
+                            { $eq: ['$client_services.product_type', '3'] },
+                          ]
                         },
                         then: 'BO',
                         else: {
                           $cond: {
                             if: {
-                              $and:
-                                [
-                                  { $eq: ['$client_services.product_type', '4'] },
-                                ]
+                              $and: [
+                                { $eq: ['$client_services.product_type', '4'] },
+                              ]
                             },
                             then: 'CO',
                             else: "CNC"
-
                           }
-
                         }
-
                       }
-
                     }
-
                   }
                 }
-
               }
-
-
             },
-
-
-
-            // ordertype code condition here
             prctyp: {
               $cond: {
                 if: {
-                  $and:
-                    [
-                      { $eq: ['$client_services.order_type', '1'] },
-                    ]
+                  $and: [
+                    { $eq: ['$client_services.order_type', '1'] },
+                  ]
                 },
                 then: 'MKT',
                 else: {
                   $cond: {
                     if: {
-                      $and:
-                        [
-                          { $eq: ['$client_services.order_type', '2'] },
-                        ]
+                      $and: [
+                        { $eq: ['$client_services.order_type', '2'] },
+                      ]
                     },
                     then: 'L',
                     else: {
                       $cond: {
                         if: {
-                          $and:
-                            [
-                              { $eq: ['$client_services.order_type', '3'] },
-                            ]
+                          $and: [
+                            { $eq: ['$client_services.order_type', '3'] },
+                          ]
                         },
                         then: 'SL',
                         else: {
                           $cond: {
                             if: {
-                              $and:
-                                [
-                                  { $eq: ['$client_services.order_type', '4'] },
-                                ]
+                              $and: [
+                                { $eq: ['$client_services.order_type', '4'] },
+                              ]
                             },
                             then: 'SL-M',
-
-                            //All condition exist
                             else: "MKT"
-
                           }
-
                         }
-
                       }
-
                     }
-
                   }
                 }
-
               }
-
             },
-
             price: '0',
-           // qty: "$client_services.quantity",
-
-            qty: {  
+            qty: {
               $cond: {
                 if: {
                   $or: [
@@ -308,67 +273,47 @@ async function createViewAlice() {
                   ]
                 },
                 then: "$client_services.lot_size",
-                else:  "$client_services.quantity"
-
+                else: "$client_services.quantity"
               }
-
             },
-
-
             ret: 'DAY',
-
-            // symbol id token condition here
             symbol_id: {
               $cond: {
                 if: {
-                  $and:
-                    [
-                      { $eq: ['$category.segment', 'C'] },
-                    ]
+                  $and: [
+                    { $eq: ['$category.segment', 'C'] },
+                  ]
                 },
                 then: "$service.instrument_token",
                 else: ""
-
               }
             },
-
-
-            // trading symbol condition here
             trading_symbol: {
               $cond: {
                 if: {
-                  $and:
-                    [
-                      { $eq: ['$category.segment', 'C'] },
-                    ]
+                  $and: [
+                    { $eq: ['$category.segment', 'C'] },
+                  ]
                 },
                 then: "$service.zebu_token",
                 else: ""
-
               }
             },
-
-
             transtype: 'BUY',
             trigPrice: '',
             orderTag: 'order1',
-
           }
         }
       }
     ];
 
-    // Create the view
     await db.createCollection('aliceblueView', { viewOn: 'users', pipeline });
-
     console.log('View created successfully.');
   } catch (error) {
     console.log('Error:', error);
   } finally {
-    client.close();
+    await client.close();
   }
 }
 
-
-module.exports = { createViewAlice }
-
+module.exports = { createViewAlice };

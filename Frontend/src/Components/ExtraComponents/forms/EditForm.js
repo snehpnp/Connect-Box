@@ -97,7 +97,7 @@ const ReusableForm = ({ initialValues, validationSchema, onSubmit, btn_name_sign
                                                 <div className={`col-lg-${title === "addgroup" ? 2 : 3}`} key={option.id}>
                                                     <div className="row d-flex">
                                                         <div className="col-lg-12 ">
-                                                            <div className="form-check custom-checkbox mb-3">
+                                                            <div className="form-check custom-checkbox">
                                                                 <input type={field.type} className="form-check-input" id={option.label}   {...formik.getFieldProps(option.label)}
                                                                 />
                                                                 <label className="form-check-label" for={option.label} >{option.label}</label>

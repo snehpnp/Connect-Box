@@ -36,15 +36,21 @@ const Helpsubadmin = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [getsubadmin, setGetsubadmin] = useState([]);
   const [getuserdata, setGetuserdata] = useState([]);
+
   const [help, setHelp] = useState({
     UserName: "",
     Email: "",
     mobile: "",
     Message: "",
+    Category: "",
   });
+
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState("0");
   const [getemployeedata, setGetemployeedata] = useState([]);
+
+
+
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -110,11 +116,74 @@ const Helpsubadmin = () => {
     },
   ];
 
+  const columns1 = [
+    {
+      field: "index",
+      headerName: "SR. No.",
+      width: 100,
+      headerClassName: styles.boldHeader,
+      renderCell: (params, index) => params.row.id + 1,
+    },
+    {
+      field: "UserName",
+      headerName: "User Name",
+      width: 220,
+      headerClassName: styles.boldHeader,
+    },
+    {
+      field: "Email",
+      headerName: "Email Id",
+      width: 220,
+      headerClassName: styles.boldHeader,
+    },
+
+    {
+      field: "mobile",
+      headerName: "Phone No",
+      width: 220,
+      headerClassName: styles.boldHeader,
+    },
+    {
+      field: "Message",
+      headerName: "Message",
+      width: 320,
+      headerClassName: styles.boldHeader,
+    },
+
+    {
+      field: "createdAt",
+      headerName: "Created At",
+      width: 270,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => <div>{fDateTime(params.value || "")}</div>,
+    },
+    {
+      field: "Category",
+      headerName: "Category",
+      width: 300,
+      headerClassName: styles.boldHeader,
+    },
+  ];
+
+
+
+
+
   //post data by subadmin
   const postSubadminhelp = async (e) => {
     e.preventDefault();
-    if (!help.UserName || !help.Email || !help.mobile || !help.Message) {
-      toast.error("Please field the box");
+
+    if (
+      !help.UserName ||
+      !help.Email ||
+      !help.mobile ||
+      !help.Message ||
+      !help.Category
+    ) {
+      Swal.fire({
+        icon: "error",
+        text: "Please Select the Category",
+      });
       return;
     }
 
@@ -126,12 +195,12 @@ const Helpsubadmin = () => {
         Message: help.Message,
         Role: "SUBADMIN",
         admin_id: user.user_id,
+        Category: help.Category,
       })
     )
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          setHelp({ Message: "" });
           let timerInterval;
           Swal.fire({
             title: "Messgage Send!",
@@ -149,7 +218,8 @@ const Helpsubadmin = () => {
               clearInterval(timerInterval);
             },
           }).then((result) => {
-            /* Read more about handling dismissals below */
+            setHelp({ Message: "", Category: "" });
+            setRefresh(!refresh);
             if (result.dismiss === Swal.DismissReason.timer) {
               console.log("I was closed by the timer");
             }
@@ -160,6 +230,9 @@ const Helpsubadmin = () => {
         console.log("error", error);
       });
   };
+
+
+
 
   //get subadmin table
   const gettable = async () => {
@@ -185,14 +258,16 @@ const Helpsubadmin = () => {
       });
   };
 
+
+
+
+
+  //getting user detail
   const getusertable = async () => {
     await dispatch(userdataforhelp({}))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          // setGetuserdata(response.data);
-          // console.log("ress",response.data)
-
           if (response.data.length > 0) {
             var filterData = response.data.filter(
               (data) => data.prifix_key.substring(0, 3) === user.prifix_key
@@ -211,15 +286,18 @@ const Helpsubadmin = () => {
       });
   };
 
-  //  get employee data
 
+
+
+
+
+
+  //  get employee data
   const getEmployeetable = async () => {
     await dispatch(getemployee({}))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          // console.log("ress",response.data)
-
           if (response.data.length > 0) {
             var filterData = response.data.filter(
               (data) => data.prifix_key.substring(0, 3) === user.prifix_key
@@ -238,6 +316,10 @@ const Helpsubadmin = () => {
       });
   };
 
+
+
+
+
   const deletesubadmindata = async (userId) => {
     var data = { id: userId };
     await dispatch(deletesubadminhelpdata(data))
@@ -253,6 +335,10 @@ const Helpsubadmin = () => {
         console.log("error", error);
       });
   };
+
+
+
+
 
   const userprefixBydata = async () => {
     var data = { prifix_key: userdataprifix_key };
@@ -276,7 +362,21 @@ const Helpsubadmin = () => {
     gettable();
     getusertable();
     getEmployeetable();
-  }, [value]);
+  }, [refresh, value]);
+
+  const categorydata = [
+    "Select",
+    "Panel",
+    "Api Create",
+    "Trade Exceute",
+    "Client Panel",
+    "Employee Panel",
+    "Broker Response",
+    "Login with api",
+  ];
+
+
+
 
   return (
     <>
@@ -312,7 +412,7 @@ const Helpsubadmin = () => {
                           />
                         </div>
                         <div className="col-md-7">
-                          <div className="invoice-total-box px-3 border">
+                          <div className="invoice-total-box ">
                             <div className="invoice-total-inner">
                               <form action="#" className="mt-3">
                                 <div className="card">
@@ -361,7 +461,7 @@ const Helpsubadmin = () => {
                                     </div>
 
                                     <div style={{ width: "23rem" }}>
-                                      <div className="input-block mb-0">
+                                      <div className="input-block mb-2">
                                         <label>Phone No</label>
                                         <input
                                           type="number"
@@ -376,6 +476,33 @@ const Helpsubadmin = () => {
                                             });
                                           }}
                                         />
+                                      </div>
+                                    </div>
+
+                                    <div
+                                      style={{
+                                        maxWidth: "23rem",
+                                      }}
+                                    >
+                                      <div className="input-block mb-2">
+                                        <label htmlFor="categorySelect">
+                                          Category
+                                        </label>
+                                        <select
+                                          id="categorySelect"
+                                          className="form-control"
+                                          value={help.Category}
+                                          onChange={(e) =>
+                                            setHelp({
+                                              ...help,
+                                              Category: e.target.value,
+                                            })
+                                          }
+                                        >
+                                          {categorydata.map((data) => (
+                                            <option value={data}>{data}</option>
+                                          ))}
+                                        </select>
                                       </div>
                                     </div>
 
@@ -429,7 +556,7 @@ const Helpsubadmin = () => {
                       <div className="mt-5">
                         <FullDataTable
                           styles={styles}
-                          columns={columns}
+                          columns={columns1}
                           rows={getsubadmin}
                         />
                       </div>

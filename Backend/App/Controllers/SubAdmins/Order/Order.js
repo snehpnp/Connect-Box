@@ -421,7 +421,6 @@ class SignalController {
           data: results,
         });
       } else if (resultUser.Role == "RESEARCH") {
-        console.log("researcher_strategy");
 
         var results = await Mainsignals.aggregate([
           {
@@ -477,52 +476,67 @@ class SignalController {
   async update_stop_loss(req, res) {
     try {
       const { data } = req.body;
-  
+
       for (const signal of data) {
         const ExistfindSignal = await Mainsignals.findOne({ _id: signal._id }).select('target stop_loss exit_time');
-  
-        let activityMessage = "";
+
         if (!ExistfindSignal) {
           return res.status(404).send({ status: false, msg: "Signal not found", data: null });
         }
-  
+
+        let updateFields = {};
+        let activityMessages = [];
+
         if (ExistfindSignal.target !== signal.target) {
-          activityMessage = `${signal.trade_symbol} Update Target price to ${signal.target}`;
-        } else if (ExistfindSignal.stop_loss !== signal.stop_loss) {
-          activityMessage = `${signal.trade_symbol} Update Stop Loss price to ${signal.stop_loss}`;
-        } else if (ExistfindSignal.exit_time !== signal.exit_time) {
-          activityMessage = `${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`;
+          updateFields.target = signal.target;
+          activityMessages.push(`${signal.trade_symbol} Update Target price to ${signal.target}`);
         }
-  
-        if (activityMessage) {
-          const Activity_logsData = new Activity_logs({
-            admin_Id: signal.StrategyData.maker_id,
-            category: "TARGET-STOPLOSS-TIME",
-            message: activityMessage,
-            maker_role: "SUBADMIN",
-            device: "web",
-            system_ip: ""
-          });
-          await Activity_logsData.save();
+
+        if (ExistfindSignal.stop_loss !== signal.stop_loss) {
+          updateFields.stop_loss = signal.stop_loss;
+          activityMessages.push(`${signal.trade_symbol} Update Stop Loss price to ${signal.stop_loss}`);
         }
-  
-        const filter = { _id: signal._id };
-        const updateOperation = { $set: signal };
-        await Mainsignals.updateOne(filter, updateOperation);
+
+        if (ExistfindSignal.exit_time !== signal.exit_time) {
+          updateFields.exit_time = signal.exit_time;
+          activityMessages.push(`${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`);
+        }
+
+        if (activityMessages.length > 0) {
+          for (const message of activityMessages) {
+            const Activity_logsData = new Activity_logs({
+              admin_Id: signal.StrategyData.maker_id,
+              category: "TARGET-STOPLOSS-TIME",
+              message: message,
+              maker_role: "SUBADMIN",
+              device: "web",
+              system_ip: ""
+            });
+            await Activity_logsData.save();
+          }
+        }
+
+        if (Object.keys(updateFields).length > 0) {
+          const filter = { _id: signal._id };
+          const updateOperation = { $set: updateFields };
+          await Mainsignals.updateOne(filter, updateOperation);
+        }
       }
-  
+
       return res.status(200).send({ status: true, msg: "Update Successful", data: null });
     } catch (error) {
       console.error("Error in update_stop_loss:", error);
       return res.status(500).send({ status: false, msg: "Internal server error", data: error.message });
     }
   }
-  
+
+
 
 
   // SUBADMIN TRADE HISTORY DATA
   async Tradehistory_data(req, res) {
     try {
+
       const { Role, subadminId, startDate, endDate, strategy, service, type } =
         req.body;
 
@@ -566,7 +580,7 @@ class SignalController {
 
         // Extracting strategy names from resultUser array
         strategyNames = resultUser.map((user) => user.strategy_name);
-        console.log("researcher_strategy", strategyNames)
+
 
       } else if (Role === "EMPLOYEE") {
         Stg_col_name = "strategies"
@@ -603,7 +617,6 @@ class SignalController {
           },
         ]);
 
-        // console.log("subadminStgFind", subadminStgFind[0].strategyInfo);S
         resultUser = subadminStgFind[0].strategyInfo;
 
 
@@ -641,15 +654,20 @@ class SignalController {
 
 
       let startDateObj = new Date(startDate);
+
       let endDateObj = new Date(endDate);
+      endDateObj.setDate(endDateObj.getDate() + 1);
+
+
       let stg1;
       let ser1;
       //  For Strategy
-      if (strategy === "null") {
-        stg1 = { $exists: true };
+      if (strategy === "null" || strategy === "") {
+        stg1 = { $in: strategyNames }
       } else {
         stg1 = strategy;
       }
+
 
       //  For Service
       if (service === "null") {
@@ -661,13 +679,12 @@ class SignalController {
       const filteredSignals = await Mainsignals.aggregate([
         {
           $match: {
-            dt_date: {
-              $gte: startDate,
-              $lte: endDate,
+            createdAt: {
+              $gte: startDateObj,
+              $lte: endDateObj,
             },
-            strategy: stg1,
             trade_symbol: ser1,
-            strategy: { $in: strategyNames },
+            strategy: stg1
           },
         },
         {
@@ -845,6 +862,25 @@ class SignalController {
 
       const objectId = new ObjectId(subadminId);
 
+
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      let startDateObj = new Date(startDate);
+      let endDateObj = new Date(endDate);
+      let stg1;
+      let ser1;
+
+      let stgArr = []
+
+
+      //  For Service
+      if (service === "null") {
+        ser1 = { $exists: true };
+      } else {
+        ser1 = service;
+      }
+
       const pipeline = [
         {
           $match: {
@@ -896,26 +932,39 @@ class SignalController {
         },
       ];
 
-      const GetAllClientServices = await client_service.aggregate(pipeline);
+      let GetAllClientServices = await client_service.aggregate(pipeline);
 
-      console.log("GetAllClientServices", GetAllClientServices);
+
+      GetAllClientServices.map((data) => {
+        stgArr.push(data.strategys.strategy_name)
+      })
+
 
       var abc = [];
 
       if (GetAllClientServices.length > 0) {
         for (const item of GetAllClientServices) {
+
+          //  For Strategy
+          if (strategy === "null" || strategy === "" || strategy.length == 0) {
+            stg1 = { $in: stgArr }
+          } else {
+            stg1 = strategy
+          }
+
+   
+
           try {
-            // console.log("client_persnal_key1", item.quantity);
 
             var data = await Mainsignals.aggregate([
               {
                 $match: {
                   symbol: item.service.name,
-                  strategy: item.strategys.strategy_name,
-                  dt_date: {
-                    $gte: startDate,
-                    $lte: endDate,
-                  },
+                  strategy: stg1,
+                  createdAt: {
+                    $gte: today,
+                    $lte: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+                  }
                 },
               },
               {
@@ -933,29 +982,19 @@ class SignalController {
               },
             ]);
 
+
             if (data.length > 0) {
               data.forEach(function (item) {
-                var findstg = GetAllClientServices.find(
-                  (data) =>
-                    data.service.name == item.symbol &&
-                    data.strategys.strategy_name == item.strategy
+                var findstg = GetAllClientServices.find((data1) => data1.service.name == item.symbol &&
+                  data1.strategys.strategy_name == item.strategy
                 );
 
                 item.result.forEach(function (signal) {
-                  signal.qty_percent =
-                    findstg.quantity *
-                    (Math.ceil(Number(signal.qty_percent) / 100) * 100) *
-                    0.01;
+                  signal.qty_percent = findstg.quantity * (Math.ceil(Number(signal.qty_percent || 100) / 100) * 100) * 0.01;
                 });
 
-                (item.entry_qty_percent =
-                  findstg.quantity *
-                  (Math.ceil(Number(item.entry_qty_percent) / 100) * 100) *
-                  0.01),
-                  (item.exit_qty_percent =
-                    findstg.quantity *
-                    (Math.ceil(Number(item.exit_qty_percent) / 100) * 100) *
-                    0.01);
+                (item.entry_qty_percent = findstg.quantity * (Math.ceil(Number(item.entry_qty_percent || 100) / 100) * 100) * 0.01),
+                  (item.exit_qty_percent = findstg.quantity * (Math.ceil(Number(item.exit_qty_percent || 100) / 100) * 100) * 0.01);
               });
 
               abc.push(data);
@@ -964,6 +1003,10 @@ class SignalController {
             console.error("Error fetching data:", error);
           }
         }
+
+
+
+
       } else {
         res.send({
           status: false,

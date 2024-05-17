@@ -132,7 +132,6 @@ function Option_Chain() {
 
     const CreateRequest = (option_type, row_data, call_type, index, e) => {
 
-        console.log("SNEH JAISWAL 1", call_type)
         if (strategyRef.current === "") {
         
             Swal.fire({
@@ -675,7 +674,6 @@ function Option_Chain() {
 
             axios.request(config)
                 .then(async (response) => {
-                    //console.log("response ", response);
                     if (response.status) {
                         Swal.fire({
                             title: "Data Add Successful!",
@@ -705,24 +703,12 @@ function Option_Chain() {
                             timer: 1500,
                             timerProgressBar: true
                         });
-
-
-
-
                     }
                 })
                 .catch((error) => {
-                    // console.log(error.response.data);
                 });
-
         })
-
-
-
-
     }
-
-
 
 
     const RemoveClases = (option_type, row_data, call_type, index,) => {
@@ -738,8 +724,6 @@ function Option_Chain() {
             element3.removeClass('active');
 
         })
-
-
     }
 
 
@@ -753,14 +737,8 @@ function Option_Chain() {
         cutoffTimeIST.setHours(15, 30, 0, 0);
         // Check if the current time is after 3:30 PM in IST timezone
         const isAfterCutoffTime = new Date(currentDateIST).getTime() > cutoffTimeIST.getTime();
-
-
-
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
-
-
             let Arr = []
-
 
             const expiry_i = convert_string_to_month(expiry && expiry)
 

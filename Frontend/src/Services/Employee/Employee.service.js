@@ -26,7 +26,6 @@ export async function GET_USER_DATA(data) {
         return await res?.data
     }
     catch (err) {
-        console.log("err", err);
         return await err;
 
     }

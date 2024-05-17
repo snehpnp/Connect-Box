@@ -191,7 +191,7 @@ class Researcher {
         const { id } = req.body
 
         try {
-            const AllData = await User_model.find({ parent_id: id, Role: "RESEARCH" }).sort({createdAt:-1})
+            const AllData = await User_model.find({ parent_id: id, Role: "RESEARCH" }).sort({ createdAt: -1 })
 
 
 
@@ -690,11 +690,6 @@ class Researcher {
         try {
             const { id } = req.body;
 
-
-            // var getAllTheme = await strategy_model.find()
-            // const getAllstrategy = await researcher_strategy.find({ maker_id: id }).sort({ createdAt: -1 })
-            //     .select('_id strategy_name collaboration_id');
-
             const pipeline = [
                 {
                     $match: { "maker_id": new ObjectId(id) }
@@ -703,38 +698,85 @@ class Researcher {
                     $unwind: "$collaboration_id"
                 },
                 {
-                    $lookup: {
-                        from: "users",
-                        localField: "collaboration_id",
-                        foreignField: "_id",
-                        as: "collaboration"
+                    $addFields: {
+                        dynamicKey: {
+                            $concat: ["$strategy_name", "_", { $toString: "$collaboration_id" }]
+                        }
                     }
                 },
                 {
-                    $unwind: "$collaboration"
+                    $lookup: {
+                        from: "strategies",
+                        localField: "dynamicKey",
+                        foreignField: "stgname_adminid",
+                        as: "strategy"
+                    }
+                },
+                {
+                    $unwind: "$strategy"
+                },
+                {
+                    $lookup: {
+                        from: "users",
+                        localField: "strategy.maker_id",
+                        foreignField: "_id",
+                        as: "user"
+                    }
+                },
+                {
+                    $unwind: "$user"
+                },
+                {
+                    $lookup: {
+                        from: "strategy_clients",
+                        localField: "strategy._id",
+                        foreignField: "strategy_id",
+                        as: "stg_count"
+                    }
                 },
                 {
                     $group: {
                         _id: "$_id",
                         strategy_name: { $first: "$strategy_name" },
-                        // collaboration_id: { $push: "$collaboration_id" },
-                        collaboration_names: { $push: "$collaboration.UserName" }
+                        createdAt: { $first: "$createdAt" },
+                     
+
+
+                        strategy_category: { $first: "$strategy_category" },
+                        strategy_segment: { $first: "$strategy_segment" },
+                        strategy: {
+                            $push: {
+                                strategy_name: "$strategy.strategy_name",
+                                maker_id: "$strategy.maker_id",
+                                createdAt: "$strategy.createdAt",
+                                Username: "$user.UserName",
+                                stg_count: { $size: "$stg_count" },
+                                purchase_type: "$strategy.purchase_type",
+                                End_Date:  "$strategy.End_Date" ,
+                                ActiveStatus:  "$strategy.ActiveStatus" ,
+                            }
+                        }
                     }
                 },
                 {
                     $project: {
                         _id: 1,
                         strategy_name: 1,
-                        collaboration_id: 1, // Corrected field name
-                        collaboration_names: 1
+                        createdAt: 1,
+                        End_Date:1,
+                        ActiveStatus:1,
+                        strategy_category: 1,
+                        strategy_segment: 1,
+                        strategy: 1
                     }
+                },
+                {
+                    "$sort": { "createdAt": -1 }
                 }
             ];
 
             // Executing the aggregation pipeline
             const getAllstrategy = await researcher_strategy.aggregate(pipeline);
-
-
 
 
             // IF DATA NOT EXIST
@@ -752,6 +794,17 @@ class Researcher {
             console.log("Error Get All Strategy Error-", error);
         }
     }
+
+    // async DemoData(req,res){
+
+    //     const {id} = req.body
+
+    //     let findData = await User_model.find({_id: id})
+        
+    //     console.log(findData)
+
+        
+    // }
 
 
 
