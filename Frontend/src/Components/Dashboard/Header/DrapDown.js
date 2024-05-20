@@ -53,7 +53,8 @@ const DropDown = () => {
             setProfileImage(response.data[0].profile_img);
           } else {
             if (response.msg == "Unauthorized!") {
-              LogoutUser()
+         
+    logout(user_id, ip);
             }
 
 
@@ -80,51 +81,50 @@ const DropDown = () => {
 
 
 
-  const LogoutUser = async (e) => {
-    // const data = { userId: user_id, Device: "WEB", system_ip: ip }
+//   const LogoutUser = async (e) => {
+//     // const data = { userId: user_id, Device: "WEB", system_ip: ip }
 
-console.log("SNEH")
-
-    logout(user_id, ip);
+// console.log("SNEH")
 
 
-    // await dispatch(LogOut(data)).unwrap()
-    //   .then((response) => {
-    //     if (response.status) {
-    //       Swal.fire({
-    //         title: "Logout Successful!",
-    //         icon: "success",
-    //         position: "top-end",
-    //         text: response.msg,
-    //         showConfirmButton: false,
-    //         timer: 800,
-    //         timerProgressBar: true
-    //       });
-    //       setTimeout(() => {
-    //         localStorage.removeItem("user_details")
-    //         localStorage.removeItem("user_role")
-    //         navigate("/login")
-    //       }, 800)
+
+//     // await dispatch(LogOut(data)).unwrap()
+//     //   .then((response) => {
+//     //     if (response.status) {
+//     //       Swal.fire({
+//     //         title: "Logout Successful!",
+//     //         icon: "success",
+//     //         position: "top-end",
+//     //         text: response.msg,
+//     //         showConfirmButton: false,
+//     //         timer: 800,
+//     //         timerProgressBar: true
+//     //       });
+//     //       setTimeout(() => {
+//     //         localStorage.removeItem("user_details")
+//     //         localStorage.removeItem("user_role")
+//     //         navigate("/login")
+//     //       }, 800)
 
 
-    //     }
-    //     else {
-    //       Swal.fire({
-    //         title: "Error!",
-    //         text: response.msg,
-    //         icon: "error",
-    //         timer: 1500,
-    //         timerProgressBar: true
-    //       });
+//     //     }
+//     //     else {
+//     //       Swal.fire({
+//     //         title: "Error!",
+//     //         text: response.msg,
+//     //         icon: "error",
+//     //         timer: 1500,
+//     //         timerProgressBar: true
+//     //       });
 
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log("Error in logout user", error)
-    //   })
+//     //     }
+//     //   })
+//     //   .catch((error) => {
+//     //     console.log("Error in logout user", error)
+//     //   })
 
 
-  }
+//   }
 
   // Define toggleTheme function
   const toggleTheme = () => {
@@ -510,7 +510,7 @@ console.log("SNEH")
                   <li>
                     <a
                       className="dropdown-item dev"
-                      onClick={(e) => LogoutUser(e)}
+                      onClick={(e) => logout(user_id, ip)}
                     >
                       <i class="fa-solid fa-right-to-bracket p-2"></i> Log out
                     </a>
