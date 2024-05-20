@@ -277,9 +277,9 @@ class Auth {
             await user_login.save();
 
             // If Not Update User
-            if (!result) {
-                return res.send({ status: false, msg: 'Server Side issue.', data: [] });
-            }
+            // if (!result) {
+                // return res.send({ status: false, msg: 'Server Side issue.', data: [] });
+            // }
 
 
             return res.send({ status: true, msg: "Logout Succesfully", data: [] })
