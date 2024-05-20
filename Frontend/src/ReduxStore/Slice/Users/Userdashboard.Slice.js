@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_USER_DASHBOARD,OrderCreateStg,OrderUpdateStg} from "../../../Services/Users/allUsers.service";
+import { GET_USER_DASHBOARD, OrderCreateStg, OrderUpdateStg } from "../../../Services/Users/allUsers.service";
 
 export const GetUserDashboardData = createAsyncThunk("user/dashboard",
   async (data) => {
     try {
-      const res = await GET_USER_DASHBOARD(data);
+      const { req, token } = data
+      const res = await GET_USER_DASHBOARD(req, token);
       return res;
     } catch (err) {
       throw err;
@@ -34,8 +35,8 @@ export const OrderUpdateStgUser = createAsyncThunk("user/strategy/order/update",
     }
   }
 );
- 
- 
+
+
 
 const DashboardSlice = createSlice({
   name: "ClientServiceSlice",
@@ -61,8 +62,8 @@ const DashboardSlice = createSlice({
       .addCase(GetUserDashboardData.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-      })  
-       .addCase(OrderCreateStgUser.pending, (state, action) => {
+      })
+      .addCase(OrderCreateStgUser.pending, (state, action) => {
         state.isLoading = true;
         state.isError = false;
       })
@@ -77,7 +78,7 @@ const DashboardSlice = createSlice({
       .addCase(OrderUpdateStgUser.fulfilled, (state, action) => {
         state.isLoading = false;
       })
-      
+
   },
 });
 

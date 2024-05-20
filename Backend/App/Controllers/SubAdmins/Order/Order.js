@@ -327,7 +327,7 @@ class SignalController {
 
     } catch (error) {
       console.log("Error retrieving data:", error);
-      res.status(500).send({
+      res.send({
         status: false,
         msg: "Internal Server Error",
       });
@@ -463,7 +463,7 @@ class SignalController {
       }
     } catch (error) {
       console.log("Error retrieving data:", error);
-      res.status(500).send({
+      res.send({
         status: false,
         msg: "Internal Server Error",
       });
@@ -523,10 +523,10 @@ class SignalController {
         }
       }
 
-      return res.status(200).send({ status: true, msg: "Update Successful", data: null });
+      return res.send({ status: true, msg: "Update Successful", data: null });
     } catch (error) {
       console.error("Error in update_stop_loss:", error);
-      return res.status(500).send({ status: false, msg: "Internal server error", data: error.message });
+      return res.send({ status: false, msg: "Internal server error", data: error.message });
     }
   }
 
@@ -846,7 +846,7 @@ class SignalController {
       });
     } catch (error) {
       console.log("Error retrieving data:", error);
-      res.status(500).send({
+      res.send({
         status: false,
         msg: "Internal Server Error",
       });
@@ -1022,7 +1022,7 @@ class SignalController {
       }
     } catch (error) {
       console.log("Error retrieving data:", error);
-      res.status(500).send({
+      res.send({
         status: false,
         msg: "Internal Server Error",
       });
@@ -1096,7 +1096,7 @@ class SignalController {
       });
     } catch (error) {
       console.log("Error retrieving data:", error);
-      res.status(500).send({
+      res.send({
         status: false,
         msg: "Internal Server Error",
       });

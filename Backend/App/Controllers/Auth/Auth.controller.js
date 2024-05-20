@@ -260,11 +260,11 @@ class Auth {
             addData = { ...addData, web_login_token: '' }
 
 
-            // Update Successfully
-            const result = await User.updateMany(
-                { Email: EmailCheck[0].Email },
-                { $set: addData }
-            );
+            // // Update Successfully
+            // const result = await User.updateMany(
+            //     { Email: EmailCheck[0].Email },
+            //     { $set: addData }
+            // );
 
 
             const user_login = new user_logs({

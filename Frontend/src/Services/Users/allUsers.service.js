@@ -1,5 +1,7 @@
 import axios from "axios";
 import * as Config from "../../Utils/Config";
+import { header } from "../../Utils/ApiHeader";
+
 
 
 // CLIENT ALL SERVICE
@@ -53,8 +55,11 @@ export async function BROKER_RESPONSE(data,token){
  export async function GET_USER_DASHBOARD(data,token){
     try{
         const res = await axios.post(`${Config.base_url}user/dashboard`, data, {
-            data: {}
+            data: {},
+            headers: header(token),
+
         })
+
         return await res?.data
 
     }

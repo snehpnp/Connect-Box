@@ -11,10 +11,13 @@ import Swal from 'sweetalert2';
 import { ipAddress } from '../../../Utils/Ipaddress';
 import { admin_Msg_Get } from "../../../ReduxStore/Slice/Admin/MessageData";
 import { fDateTime } from "../../../Utils/Date_formet";
+import useLogout  from "../../../Utils/Logout";
+
 
 const DropDown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const logout = useLogout();
 
   const [pipelineData, setPipelineData] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -32,6 +35,8 @@ const DropDown = () => {
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
   var Role = JSON.parse(localStorage.getItem("user_details")).Role;
+  var token = JSON.parse(localStorage.getItem("user_details")).token;
+
   const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type;
 
 
@@ -40,14 +45,18 @@ const DropDown = () => {
   const fetchData = async () => {
     try {
       let data = { id: user_id };
-      await dispatch(ProfileInfo(data))
+      await dispatch(ProfileInfo({ req: data, token: token }))
         .unwrap()
         .then(async (response) => {
           if (response.status) {
             setProfileData(response.data);
             setProfileImage(response.data[0].profile_img);
           } else {
-            toast.error(response.msg);
+            if (response.msg == "Unauthorized!") {
+              LogoutUser()
+            }
+
+
           }
         })
         .catch((error) => {
@@ -72,40 +81,47 @@ const DropDown = () => {
 
 
   const LogoutUser = async (e) => {
-    const data = { userId: user_id, Device: "WEB", system_ip: ip }
+    // const data = { userId: user_id, Device: "WEB", system_ip: ip }
 
-    await dispatch(LogOut(data)).unwrap()
-      .then((response) => {
-        if (response.status) {
-          Swal.fire({
-            title: "Logout Successful!",
-            text: response.msg,
-            icon: "success",
-            timer: 1500,
-            timerProgressBar: true
-          })
-          setTimeout(() => {
-            localStorage.removeItem("user_details")
-            localStorage.removeItem("user_role")
-            navigate("/login")
-          }, 1500)
+console.log("SNEH")
+
+    logout(user_id, ip);
 
 
-        }
-        else {
-          Swal.fire({
-            title: "Error!",
-            text: response.msg,
-            icon: "error",
-            timer: 1500,
-            timerProgressBar: true
-          });
+    // await dispatch(LogOut(data)).unwrap()
+    //   .then((response) => {
+    //     if (response.status) {
+    //       Swal.fire({
+    //         title: "Logout Successful!",
+    //         icon: "success",
+    //         position: "top-end",
+    //         text: response.msg,
+    //         showConfirmButton: false,
+    //         timer: 800,
+    //         timerProgressBar: true
+    //       });
+    //       setTimeout(() => {
+    //         localStorage.removeItem("user_details")
+    //         localStorage.removeItem("user_role")
+    //         navigate("/login")
+    //       }, 800)
 
-        }
-      })
-      .catch((error) => {
-        console.log("Error in logout user", error)
-      })
+
+    //     }
+    //     else {
+    //       Swal.fire({
+    //         title: "Error!",
+    //         text: response.msg,
+    //         icon: "error",
+    //         timer: 1500,
+    //         timerProgressBar: true
+    //       });
+
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log("Error in logout user", error)
+    //   })
 
 
   }
@@ -300,22 +316,6 @@ const DropDown = () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-  console.log("getuserdata", getuserdata)
-  console.log("pipelineData", pipelineData)
-
-
-
   return (
     <div className="mb-0 dropdown custom-dropdown">
       <ul className="nav nav-tabs user-menu">
@@ -375,7 +375,7 @@ const DropDown = () => {
                 Mark all as read <i className="fe fe-check-circle" />
               </a> */}
             </div>
-            
+
             <div className="noti-content">
               <ul className="notification-list">
 
