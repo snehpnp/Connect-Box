@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import toast from "react-hot-toast";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/DataTable";
 
@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
-import { Userinfo } from "../../../ReduxStore/Slice/Comman/Userinfo";
+import { Userinfo ,GetBrokerDatas } from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { Trade_Details, Update_Signals } from "../../../ReduxStore/Slice/Comman/Trades";
 import { fDateTimeSuffix, GetMarketOpenDays, convert_string_to_month } from "../../../Utils/Date_formet";
 import { CreateSocketSession, ConnctSocket } from "../../../Utils/Alice_Socket";
@@ -34,9 +34,23 @@ import {
 
 } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
-const SOCKET_SERVER_URL = "http://185.209.75.6:7700";
+//const SOCKET_SERVER_URL = "http://185.209.75.6:7700";
+const SOCKET_SERVER_URL = "https://connectbox.tradestreet.in:1001/";
+
+
 
 export default function AllEmployees() {
+
+
+    const [UserDetails, seUserDetails] = useState('')
+    const [exitOpenPosition, setExitOpenPosition] = useState('')
+    
+    const currentClientKeyRef = useRef("")
+    const currenPageStatusRef = useRef("openposition")
+    const currentTypeABRRef = useRef("below")
+    const [typeABROnclickFunc, setTypeABROnclickFunc] = useState("below");
+   // console.log("UserDetails ", UserDetails && UserDetails[0].client_key)
+
 
     const [socketBackend, setSocketBackend] = useState(null);
 
@@ -53,18 +67,114 @@ export default function AllEmployees() {
     useEffect(() => {
         if (socketBackend) {
           const handleShkRec = (data) => {
+          
+             console.log("Received Connect Type:", data.type);
+            // console.log("currenPageStatusRef ", currenPageStatusRef.current)
+            // console.log("ABR TYPE ", currentTypeABRRef.current)
+            // console.log("currentClientKeyRef.current ", currentClientKeyRef.current)
 
-        
+
+            if(data.type == "MAKECALL" && currenPageStatusRef.current == "pendingposition"){
+                 console.log("Received Connect data: makecall", data);
+               // alert("Okk")
+                console.log("data. type_makecall ", data.type_makecall)
+                // TRADE MAKE CALL
+                if(data.type_makecall == "TRADE"){
+                if(data.data.Key == currentClientKeyRef.current){
+                    // console.log("data.data.Segment ", data.data.Segment)
+                    // console.log("data.data.Expiry ", data.data.Expiry)
+                    // console.log("data.data.Strike ", data.data.Strike)
+                    // console.log("data.data.OType ", data.data.OType)
 
 
 
-            console.log("Received Connect Box SSl:", data);
+                   let tradeSymbol;
+                   if(data.data.Segment.toLowerCase() == 'o' || data.data.Segment.toLowerCase() == 'co' || data.data.Segment.toLowerCase() == 'fo' || data.data.Segment.toLowerCase() == 'mo')
+                   {
+                    tradeSymbol = data.data.Symbol+"  "+data.data.Expiry+"  "+data.data.Strike+"  "+data.data.OType+"  "+" [ "+data.data.Segment+" ] ";
+                   }
+                   else if(data.data.Segment.toLowerCase() == 'f' || data.data.Segment.toLowerCase() == 'cf' || data.data.Segment.toLowerCase() == 'mf')
+                   {
+                    tradeSymbol = data.data.Symbol+"  "+data.data.Expiry+"  "+" [ "+data.data.Segment+" ] ";
+                   }
+                   else{
+                    tradeSymbol = data.data.Symbol+"  "+" [ "+data.data.Segment+" ] ";
+                   }
+               
+                   
+                   if(data.data.ABR_TYPE == currentTypeABRRef.current){
+                    Swal.fire({
+                        title: data.type,
+                        text: tradeSymbol,
+                        icon: "success",
+                        timer: 1500,
+                        timerProgressBar: true
+                        });
+
+                        handleClick_abr(currentTypeABRRef.current)
+                    }else{
+                        handleClick_abr("below")
+                    }
+                  
+                   
+                }
+                } 
+
+                //NO TRADE TIME TRADE 
+                else if(data.type_makecall == "NO_TRADE"){
+                  console.log("data NoTRADE",data.data)
+                  
+                }
+                
+            }
+
+            else if(data.type == "OPENPOSITION" && currenPageStatusRef.current == "openposition"){
+                // console.log("Received Connect data: open possition", data);  
+                if(data.data.client_persnal_key == currentClientKeyRef.current){
+
+
+                // console.log("data.data.segment ", data.data.segment)
+                // console.log("data.data.expiry ", data.data.expiry)
+                // console.log("data.data.strike ", data.data.strike)
+                // console.log("data.data.option_type ", data.data.option_type)
+
+                  let tradeSymbol;
+                 if(data.data.segment.toLowerCase() == 'o' || data.data.segment.toLowerCase() == 'co' || data.data.segment.toLowerCase() == 'fo' || data.data.segment.toLowerCase() == 'mo')
+                 {
+                  tradeSymbol = data.data.symbol+"  "+data.data.expiry+"  "+data.data.strike+"  "+data.data.option_type+"  "+" [ "+data.data.segment+" ] ";
+                 }
+                 else if(data.data.segment.toLowerCase() == 'f' || data.data.segment.toLowerCase() == 'cf' || data.data.segment.toLowerCase() == 'mf')
+                 {
+                  tradeSymbol = data.data.symbol+"  "+data.data.expiry+"  "+" [ "+data.data.segment+" ] ";
+                 }
+                 else{
+                  tradeSymbol = data.data.symbol+"  "+" [ "+data.data.segment+" ] ";
+                 }
+
+
+                Swal.fire({
+                title: "Trade Executed Successfully  "+data.ExitStatus,
+                text: tradeSymbol,
+                icon: "success",
+                timer: 1500,
+                timerProgressBar: true
+                });
+                
+                setExitOpenPosition(tradeSymbol)
+
+              }    
+              
+            }
+
+
           };
     
-          socketBackend.on("shk_rec", handleShkRec);
+          //socketBackend.on("shk_rec", handleShkRec);
+          socketBackend.on("TRADE_NOTIFICATION", handleShkRec);
     
           return () => {
-            socketBackend.off("shk_rec", handleShkRec);
+            socketBackend.off("TRADE_NOTIFICATION", handleShkRec);
+          //  socketBackend.off("shk_rec", handleShkRec);
           };
         }
       }, [socketBackend]); // Runs whenever the socket changes
@@ -106,12 +216,36 @@ export default function AllEmployees() {
     });
 
 
+ 
     const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
     const [userIdSocketRun, setUserIdSocketRun] = useState("none");
+
+
+    const GetBrokerData = async () => {
+        var data = { id: user_id }
+        await dispatch(GetBrokerDatas(data))
+
+            .unwrap()
+            .then((response) => {
+
+                if (response.status) {
+                    currentClientKeyRef.current = response.data[0].client_key
+                    seUserDetails(response.data)
+                }
+            });
+    };
+  
+
+    useEffect(() => {
+        GetBrokerData()
+    }, []);
+
 
     useEffect(() => {
         GetBrokerLiveData(userIdSocketRun)
     }, [userIdSocketRun]);
+
+    
 
     const GetBrokerLiveData = async (userIdSocketRun) => {
 
@@ -139,7 +273,8 @@ export default function AllEmployees() {
 
     // MAKECALL  START///////
     const [aboveBelowRangData, setAboveBelowRangData] = useState({ loading: true, data: [] });
-    const [typeABROnclickFunc, setTypeABROnclickFunc] = useState("below");
+   
+    // console.log("typeABROnclickFunc",)
     const [iscolumntPrice, setiscolumntPrice] = useState(false);
     const [iscolumntPriceRange, setiscolumntPriceRange] = useState(true);
     const [selectedM, setSelectedM] = useState([]);
@@ -562,7 +697,7 @@ export default function AllEmployees() {
             setiscolumntPriceRange(true)
 
         }
-
+        currentTypeABRRef.current = ABR
         setTypeABROnclickFunc(ABR)
         GetDataAboveBelowRangeFun(ABR)
     }
@@ -818,7 +953,7 @@ export default function AllEmployees() {
 
     // GET TRADE
     const userDataRes = async () => {
-
+    //   alert("okkk")
         // const subadminId =user_id
         await dispatch(Trade_Details({ subadminId: user_id }))
             .unwrap()
@@ -879,7 +1014,7 @@ export default function AllEmployees() {
 
     useEffect(() => {
         userDataRes()
-    }, [searchInput, refresh])
+    }, [searchInput, refresh ,exitOpenPosition])
 
 
 
@@ -1344,7 +1479,16 @@ export default function AllEmployees() {
      // const SOCKET_SERVER_URL = "http://185.209.75.6:7700"; 
      // const [socketBackend, setSocketBackend] = useState(SOCKET_SERVER_URL);
      
-     
+    const selectPageStatus = (value) => {
+       //alert(value)
+        if(value == "openposition"){
+            currenPageStatusRef.current = "openposition";
+        }
+
+        else if(value == "pendingposition"){
+            currenPageStatusRef.current = "pendingposition";
+        }
+    }  
 
 
     return (
@@ -1366,6 +1510,7 @@ export default function AllEmployees() {
                                             className="nav-link active"
                                             href="#solid-tab4"
                                             data-bs-toggle="tab"
+                                            onClick={()=>selectPageStatus('openposition')}
                                             
                                         >
                                             <i className="fa-solid fa-landmark pe-2"></i>
@@ -1377,6 +1522,7 @@ export default function AllEmployees() {
                                             className="nav-link ms-2"
                                             href="#solid-tab5"
                                             data-bs-toggle="tab"
+                                            onClick={()=>selectPageStatus('pendingposition')}
                                            
                                         >
                                             <i className="fa-solid fa-envelope pe-2"></i>

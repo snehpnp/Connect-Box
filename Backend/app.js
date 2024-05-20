@@ -7,7 +7,11 @@ const http = require('http');
 const cors = require('cors');
 const bodyparser = require('body-parser');
 const { Server } = require("socket.io");
+
+
 const server = http.createServer(app);
+
+const { setIO ,getIO} = require('./App/Helpers/BackendSocketIo');
 
 
 const { createViewAlice } = require("./View/Alice_blue");
@@ -48,6 +52,20 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
   });
 });
+
+setIO(io).then(() => {
+  // console.log("io set successfully");
+   
+   // After io is set, you can call getIO
+   getIO().then(ioObject => {
+      // console.log("ioObject from getIO: ", ioObject);
+   }).catch(error => {
+       //console.error("Error getting io:", error);
+   });
+ 
+ }).catch((error) => {
+   console.error("Error setting io:", error);
+ });
 
 
 

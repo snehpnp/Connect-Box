@@ -33,6 +33,9 @@ const makecallABR = db.makecallABR;
 const { Alice_Socket } = require("../../Helpers/Alice_Socket");
 
 
+const { getIO } = require('../../Helpers/BackendSocketIo');
+
+
 const User = db.user;
 
 
@@ -396,9 +399,7 @@ class Makecall {
       const expiry = req.body.expiry;
       const segment = req.body.segment;
 
-      // console.log("expiry ",expiry)
-      // console.log("segment ",segment)
-      // console.log("symbol ",symbol)
+
 
       const pipeline = [
         {
@@ -610,7 +611,6 @@ class Makecall {
 
 
       }
-
 
 
       if (result != null) {
@@ -1012,20 +1012,9 @@ async function run() {
 
               axios.request(config)
                 .then(async (response) => {
-                  //  let tradeSymbol;
-                  //  if(item.Segment.toLowerCase() == 'o' || item.Segment.toLowerCase() == 'co' || item.Segment.toLowerCase() == 'fo' || item.Segment.toLowerCase() == 'mo')
-                  //  {
-                  //   tradeSymbol = item.Symbol+"  "+item.expiry+"  "+item.strike+"  "+item.option_type+"  "+" [ "+item.Segment+" ] ";
-                  //  }
-                  //  else if(item.Segment.toLowerCase() == 'f' || item.Segment.toLowerCase() == 'cf' || item.Segment.toLowerCase() == 'mf')
-                  //  {
-                  //   tradeSymbol = item.Symbol+"  "+item.expiry+"  "+" [ "+item.Segment+" ] ";
-                  //  }
-                  //  else{
-                  //   tradeSymbol = item.Symbol+"  "+" [ "+item.Segment+" ] ";
-                  //  }
-                  // const io = await getIO();
-                  // io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
+
+                 const io = await getIO();
+                 io.emit("TRADE_NOTIFICATION", { data: item ,type : "MAKECALL" , type_makecall : "TRADE"});
 
 
                 })
@@ -1062,11 +1051,7 @@ async function run() {
 
         if (openPosition.length > 0) {
 
-
-
-          openPosition && openPosition.map((item) => {
-
-
+          openPosition && openPosition.map(async(item) => {
 
             let ExitStatus = 'TS'
             if (item.isLpInRangeTarget == true) {
@@ -1081,7 +1066,7 @@ async function run() {
             }
 
 
-
+              
 
             const currentTimestamp = Math.floor(Date.now() / 1000);
             let req = `DTime:${currentTimestamp}|Symbol:${item.symbol}|TType:${item.entry_type == "SE" ? "SX" : "LX"}|Tr_Price:131|Price:${item.stockInfo_lp}|Sq_Value:0.00|Sl_Value:0.00|TSL:0.00|Segment:${item.segment}|Strike:${item.strike}|OType:${item.option_type}|Expiry:${item.expiry}|Strategy:${item.strategy}|Quntity:${item.entry_qty_percent}|Key:${item.client_persnal_key}|TradeType:${item.TradeType}|ExitStatus:${ExitStatus}|Demo:demo`
@@ -1118,6 +1103,9 @@ async function run() {
                 //  const io = await getIO();
                 //  io.emit("EXIT_TRADE_GET_NOTIFICATION", { data: tradeSymbol });
 
+                 const io = await getIO();
+                 io.emit("TRADE_NOTIFICATION", { data: item , type : "OPENPOSITION" , ExitStatus : ExitStatus });
+
 
               })
               .catch((error) => {
@@ -1143,6 +1131,7 @@ async function run() {
         var NotradeTimeExucuted = await makecall_NotradeTime_status_excute.find().toArray();
 
         if (NotradeTimeExucuted.length > 0) {
+          const items = NotradeTimeExucuted.map(item => item)
           const ids = NotradeTimeExucuted.map(item => item._id)
 
 
@@ -1150,6 +1139,9 @@ async function run() {
             { _id: { $in: ids } },
             { $set: { status: 2 } }
           );
+
+          const io = await getIO();
+          io.emit("TRADE_NOTIFICATION", { data: items ,type : "MAKECALL" , type_makecall : "NO_TRADE"});
 
           return
 
@@ -1169,7 +1161,7 @@ async function run() {
     // Use a while loop with setTimeout for a delay
     while (true) {
       // Delay for 1000 milliseconds (1 second)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise(resolve => setTimeout(resolve, 15000));
       await makecallabrView_excute_run();
       await exitOpentrade();
       await noTradeTimeExcuteSetStatus()
@@ -1182,7 +1174,7 @@ async function run() {
 }
 
 
-// run().catch(console.error);
+ //run().catch(console.error);
 
 
 //////////////////----- makecallabrView_excute_run --//////////////////////////////
