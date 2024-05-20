@@ -123,3 +123,36 @@ export async function BROKER_RESPONSE(data,token){
     }
  }
  
+
+
+
+
+//  USER STRATEGY PURCHASE ORDER CREATE API
+export async function  OrderCreateStg(data){
+    try{
+        const res= await axios.post(`${Config.base_url}user/strategy/order/create`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch(err){
+        
+        return await err
+    }
+ }
+
+
+
+ //  USER STRATEGY PURCHASE ORDER UPDATE  API
+export async function  OrderUpdateStg(data){
+    try{
+        const res= await axios.post(`${Config.base_url}user/strategy/order/update`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch(err){
+        
+        return await err
+    }
+ }
