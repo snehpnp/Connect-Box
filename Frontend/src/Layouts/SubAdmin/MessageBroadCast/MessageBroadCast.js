@@ -1,23 +1,30 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { allStrategy_subAd, get_allBroker } from "../../../ReduxStore/Slice/Admin/Subadmins";
-import { admin_Msg_Delete, add_message, admin_Msg_Get, admin_Msg_Edit } from "../../../ReduxStore/Slice/Admin/MessageData";
+import {
+  allStrategy_subAd,
+  get_allBroker,
+} from "../../../ReduxStore/Slice/Admin/Subadmins";
+import {
+  admin_Msg_Delete,
+  add_message,
+  admin_Msg_Get,
+  admin_Msg_Edit,
+} from "../../../ReduxStore/Slice/Admin/MessageData";
 
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import { fDateTime } from "../../../Utils/Date_formet";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
+import Tab from "@mui/material/Tab";
+import Box from "@mui/material/Box";
 import Loader from "../../../Utils/Loader";
 
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 import * as Config from "../../../Utils/Config";
-import io from 'socket.io-client';
-
+import io from "socket.io-client";
 
 function MessageBroadcast() {
   const dispatch = useDispatch();
@@ -36,20 +43,22 @@ function MessageBroadcast() {
   const [socket, setSocket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState("1");
+ 
+ 
+// console.log("selectedBroker",selectedBroker)
+// console.log("brokers",brokers)
 
-  const ownerId = JSON.parse(localStorage.getItem("user_details")).user_id
-  const ownerRole = JSON.parse(localStorage.getItem("user_details")).Role
-
+  const ownerId = JSON.parse(localStorage.getItem("user_details")).user_id;
+  const ownerRole = JSON.parse(localStorage.getItem("user_details")).Role;
 
   const [messageText, setMessageText] = useState("");
-
 
   // CONNECT SOCKET
   useEffect(() => {
     const newSocket = io.connect(Config.base_url);
     setSocket(newSocket);
     newSocket.on("receive_message", (data) => {
-      setrefresh(!refresh)
+      setrefresh(!refresh);
     });
 
     return () => {
@@ -57,7 +66,6 @@ function MessageBroadcast() {
       newSocket.close();
     };
   }, []);
-
 
   const styles = {
     container: {
@@ -87,7 +95,10 @@ function MessageBroadcast() {
       width: 70,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div> <b>{params.value + 1}</b></div>
+        <div>
+          {" "}
+          <b>{params.value + 1}</b>
+        </div>
       ),
     },
 
@@ -105,7 +116,6 @@ function MessageBroadcast() {
       headerClassName: styles.boldHeader,
     },
 
-
     {
       field: "createdAt",
       headerName: "created BY",
@@ -113,7 +123,6 @@ function MessageBroadcast() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
     },
-
   ];
 
   // SENT DATA
@@ -124,7 +133,10 @@ function MessageBroadcast() {
       width: 70,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div> <b>{params.value + 1}</b></div>
+        <div>
+          {" "}
+          <b>{params.value + 1}</b>
+        </div>
       ),
     },
 
@@ -149,7 +161,6 @@ function MessageBroadcast() {
       headerClassName: styles.boldHeader,
     },
 
-
     {
       field: "createdAt",
       headerName: "created AT",
@@ -157,10 +168,9 @@ function MessageBroadcast() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
     },
-
-
   ];
 
+  
 
   const handleUpdate = async () => {
     var data = { id: openModalId, messageTitle: msgData };
@@ -170,7 +180,7 @@ function MessageBroadcast() {
       .then(async (response) => {
         if (response.status) {
           toast.success(response.msg);
-          setModal(0)
+          setModal(0);
           setopenModalId("");
           setrefresh(!refresh);
         } else {
@@ -182,9 +192,12 @@ function MessageBroadcast() {
       });
   };
 
+
+
+
   const fetchStrategies = async () => {
     try {
-      const data = { id: ownerId }
+      const data = { id: ownerId };
       await dispatch(allStrategy_subAd(data))
         .unwrap()
         .then((response) => {
@@ -205,6 +218,9 @@ function MessageBroadcast() {
     }
   };
 
+
+
+
   const fetchBrokers = async () => {
     try {
       await dispatch(get_allBroker())
@@ -213,6 +229,7 @@ function MessageBroadcast() {
           if (response.status) {
             toast.success(response.msg);
             setBrokers(response.data);
+      
           } else {
             toast.error(response.msg);
           }
@@ -227,12 +244,13 @@ function MessageBroadcast() {
     }
   };
 
+  
+
   const sendMessage = async () => {
     try {
-
       if (!selectedStrategy && !selectedBroker) {
-        alert("Please Select any Strategy Or Broker")
-        return
+        alert("Please Select any Strategy Or Broker");
+        return;
       }
 
       const newMessage = {
@@ -241,14 +259,15 @@ function MessageBroadcast() {
         strategyId: selectedStrategy,
         brokerId: selectedBroker,
         messageTitle: messageText,
+       
       };
       await dispatch(add_message(newMessage))
         .unwrap()
         .then(async (response) => {
           if (response.status) {
-            setSelectedStrategy("")
-            setSelectedBroker("")
-            setMessageText("")
+            setSelectedStrategy("");
+            setSelectedBroker("");
+            setMessageText("");
             let timerInterval;
             Swal.fire({
               title: "Messgage Send!",
@@ -264,16 +283,13 @@ function MessageBroadcast() {
               },
               willClose: () => {
                 clearInterval(timerInterval);
-              }
+              },
             }).then((result) => {
               /* Read more about handling dismissals below */
               if (result.dismiss === Swal.DismissReason.timer) {
                 console.log("I was closed by the timer");
               }
             });
-
-
-
           } else {
             toast.error(response.msg);
           }
@@ -286,28 +302,26 @@ function MessageBroadcast() {
     }
   };
 
-
-
   const getSubadminTableData = async () => {
     try {
       // Show loader
       setLoading(true);
-      console.log("value", value)
-      var key
+      var key;
       if (value == 1) {
-        key = 2
+        key = 2;
       } else {
-        key = value
+        key = value;
       }
 
-      const response = await dispatch(admin_Msg_Get({ ownerId, key: key })).unwrap();
+      const response = await dispatch(
+        admin_Msg_Get({ ownerId, key: key })
+      ).unwrap();
 
       if (response.status) {
-
-
         let filteredData = [];
-
         setPipelineData(response.data);
+        // console.log("aa",response.data)
+      
       } else {
         toast.error(response.msg);
       }
@@ -319,17 +333,14 @@ function MessageBroadcast() {
     }
   };
 
-
-
   const handleDlt = async () => {
-
     await dispatch(admin_Msg_Delete({ id: getModalId }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
           toast.success(response.msg);
           setrefresh(!refresh);
-          setdeleteModal(false)
+          setdeleteModal(false);
         } else {
           toast.error(response.msg);
         }
@@ -337,8 +348,9 @@ function MessageBroadcast() {
       .catch((error) => {
         console.log("Error", error);
       });
-
   };
+
+
 
   const handleMessageChange = (e) => {
     setMessageText(e.target.value);
@@ -351,41 +363,36 @@ function MessageBroadcast() {
   useEffect(() => {
     fetchStrategies();
     fetchBrokers();
-  }, [refresh])
-
-
+  }, [refresh]);
 
   useEffect(() => {
     getSubadminTableData();
   }, [refresh, value]);
 
-
-
-
   return (
     <>
-      <div className="content container-fluid" >
-
+      <div className="content container-fluid">
         <div className="card" data-aos="fade-left">
           <div className="card-header">
             <h5 className=" card-title mb-0 w-auto">Message Broadcast</h5>
           </div>
 
-
           <div className="card-body">
             <div className="mt-3 ">
               <Box sx={{ width: "100%" }}>
                 <TabContext value={value}>
-
-                  <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <TabList onChange={handleChange} aria-label="lab API tabs example">
+                  <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                    <TabList
+                      onChange={handleChange}
+                      aria-label="lab API tabs example"
+                    >
                       <Tab label="Send" value="1" />
                       <Tab label="Sent Messages" value="2" />
                       <Tab label="Received Messages" value="3" />
                     </TabList>
                   </Box>
 
-                  <TabPanel value="1" >
+                  <TabPanel value="1">
                     <div className="row align-items-center">
                       <div className="col-md-5">
                         <img
@@ -395,10 +402,12 @@ function MessageBroadcast() {
                         />
                       </div>
                       <div className="col-md-7">
-
                         <div>
                           <div className="input-block mt-3">
-                            <label className="form-label" htmlFor="strategy-select">
+                            <label
+                              className="form-label"
+                              htmlFor="strategy-select"
+                            >
                               Strategy
                             </label>
                             <div className="input-group">
@@ -406,12 +415,17 @@ function MessageBroadcast() {
                                 id="strategy-select"
                                 className="form-control"
                                 value={selectedStrategy}
-                                onChange={(e) => setSelectedStrategy(e.target.value)}
+                                onChange={(e) =>
+                                  setSelectedStrategy(e.target.value)
+                                }
                               >
                                 <option value="">Select Strategy</option>
                                 {strategies &&
                                   strategies.map((strategy) => (
-                                    <option key={strategy._id} value={strategy._id}>
+                                    <option
+                                      key={strategy._id}
+                                      value={strategy._id}
+                                    >
                                       {strategy.strategy_name}
                                     </option>
                                   ))}
@@ -419,7 +433,10 @@ function MessageBroadcast() {
                             </div>
                           </div>
                           <div className=" input-block mt-3">
-                            <label className="form-label" htmlFor="broker-select">
+                            <label
+                              className="form-label"
+                              htmlFor="broker-select"
+                            >
                               Broker
                             </label>
                             <div className="input-group">
@@ -427,19 +444,24 @@ function MessageBroadcast() {
                                 id="broker-select"
                                 className="form-control"
                                 value={selectedBroker}
-                                onChange={(e) => setSelectedBroker(e.target.value)}
+                                
+                                onChange={(e) =>
+                                  setSelectedBroker(e.target.value)
+                                }
                               >
                                 <option value="">Select Broker</option>
                                 {brokers &&
                                   brokers.map((broker) => (
-                                    <option key={broker._id} value={broker._id}>
+                                    <option
+                                      key={broker._id}
+                                      value={broker.broker_id } 
+                                    >
                                       {broker.title}
                                     </option>
                                   ))}
                               </select>
                             </div>
                           </div>
-
 
                           <div className="input-block mt-3">
                             <label className="form-label" htmlFor="message">
@@ -463,33 +485,34 @@ function MessageBroadcast() {
                         </div>
                       </div>
                     </div>
-
                   </TabPanel>
 
-                  <TabPanel value="2" >
+                  <TabPanel value="2">
                     {loading ? (
                       <Loader /> // Show loader while loading
-                    ) : (<FullDataTable
-                      styles={styles}
-                      label={label}
-                      columns={columns1}
-                      rows={pipelineData}
-                    />)}
-
+                    ) : (
+                      <FullDataTable
+                        styles={styles}
+                        label={label}
+                        columns={columns1}
+                        rows={pipelineData}
+                      />
+                    )}
                   </TabPanel>
 
-                  <TabPanel value="3" >
+                  <TabPanel value="3">
                     {loading ? (
                       <Loader /> // Show loader while loading
-                    ) : (<FullDataTable
-                      styles={styles}
-                      label={label}
-                      columns={columns}
-                      rows={pipelineData}
-                    />)}
-
+                    ) : (
+                      <FullDataTable
+                        styles={styles}
+                        label={label}
+                        columns={columns}
+                        rows={pipelineData}
+                      />
+                    )}
                   </TabPanel>
-               </TabContext>
+                </TabContext>
               </Box>
             </div>
 
@@ -542,7 +565,7 @@ function MessageBroadcast() {
             )}
 
             {deleteModal && (
-              <div className="modal custom-modal modal-delete d-block" >
+              <div className="modal custom-modal modal-delete d-block">
                 <div className="modal-dialog modal-dialog-centered modal-md">
                   <div className="modal-content">
                     <div className="modal-body">
@@ -557,8 +580,20 @@ function MessageBroadcast() {
                       </div>
                       <div className="modal-btn delete-action">
                         <div className="modal-footer justify-content-center p-0">
-                          <button type="submit" onClick={() => handleDlt()} className="btn btn-primary paid-continue-btn me-2">Yes, Delete</button>
-                          <button type="button" onClick={() => setdeleteModal(false)} className="btn btn-back cancel-btn">No, Cancel</button>
+                          <button
+                            type="submit"
+                            onClick={() => handleDlt()}
+                            className="btn btn-primary paid-continue-btn me-2"
+                          >
+                            Yes, Delete
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setdeleteModal(false)}
+                            className="btn btn-back cancel-btn"
+                          >
+                            No, Cancel
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -566,21 +601,10 @@ function MessageBroadcast() {
                 </div>
               </div>
             )}
-
           </div>
-
-
-
         </div>
-
-
-
-
-
-
       </div>
     </>
-
   );
 }
 

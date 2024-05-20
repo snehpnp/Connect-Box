@@ -251,3 +251,17 @@ export async function SalesData_Subadmin(data, token) {
     return await err;
   }
 }
+
+
+//user getbroadcast message
+
+export async function getUserbroadcast(data, token) {
+  try {
+    const res = await axios.post(`${Config.base_url}getbroadcastMsg`, data, {
+      data: {},
+    });
+    return await res?.data;
+  } catch (err) {
+    return await err;
+  }
+}

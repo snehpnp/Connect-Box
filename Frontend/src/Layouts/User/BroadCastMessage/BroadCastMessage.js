@@ -1,31 +1,50 @@
 import React, { useState, useEffect } from "react";
-import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { admin_Msg_Get, } from "../../../ReduxStore/Slice/Admin/MessageData";
+import { Get_UserBroadcast } from "../../../ReduxStore/Slice/Admin/MessageData";
 
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import { fDateTime } from "../../../Utils/Date_formet";
-import Swal from 'sweetalert2';
 
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
 import Loader from "../../../Utils/Loader";
 
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import * as Config from "../../../Utils/Config";
-import io from 'socket.io-client';
 
 
 const BroadCastMessage = () => {
+  const dispatch = useDispatch();
   const [pipelineData, setPipelineData] = useState([]);
   const [getAllUsers, setAllUsers] = useState({
     loading: true,
     data: [],
     data1: [],
   });
-   
+
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+  const broker = JSON.parse(localStorage.getItem("user_details")).broker;
+
+
+
+
+  /// get user broadcast message
+  const getbroadcastmsg = async () => {
+    const data = { id: user_id, broker: broker };
+
+    await dispatch(Get_UserBroadcast(data))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          setPipelineData(response.data);
+          setAllUsers(response.data);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
+  useEffect(() => {
+    getbroadcastmsg();
+  }, []);
+
 
 
 
@@ -50,43 +69,47 @@ const BroadCastMessage = () => {
 
 
 
-
-   // RECIVED DATA
-   const columns = [
+  
+  // RECIVED DATA
+  const columns = [
     {
       field: "id",
       headerName: "ID",
-      width: 70,
+      width: 140,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div> <b>{params.value + 1}</b></div>
+        <div>
+          {" "}
+          <b>{params.value + 1}</b>
+        </div>
       ),
     },
 
     {
       field: "Role",
       headerName: "From",
-      width: 200,
+      width: 280,
       headerClassName: styles.boldHeader,
     },
 
     {
       field: "messageTitle",
       headerName: "Message",
-      width: 350,
+      width: 370,
       headerClassName: styles.boldHeader,
     },
 
-
     {
       field: "createdAt",
-      headerName: "created BY",
+      headerName: "created At",
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
     },
-
   ];
+
+
+
 
   return (
     <>
@@ -99,26 +122,21 @@ const BroadCastMessage = () => {
                   <div className="col">
                     <h5 className="card-title mb-0">
                       <i className="pe-2 fa-solid fa-users"></i>
-                      Message</h5>
+                      Message
+                    </h5>
                   </div>
                   <div className="col-auto">
-                    <div className="list-btn">
-                    </div>
+                    <div className="list-btn"></div>
                   </div>
                 </div>
               </div>
               <div className="card-body">
-
-
-
-
-
-              <FullDataTable
-              styles={styles}
-              label={label}
-              columns={columns}
-              rows={pipelineData}
-            />
+                <FullDataTable
+                  styles={styles}
+                  label={label}
+                  columns={columns}
+                  rows={pipelineData}
+                />
               </div>
             </div>
           </div>
@@ -126,9 +144,8 @@ const BroadCastMessage = () => {
       ) : (
         <Loader />
       )}
-
     </>
-  )
-}
+  );
+};
 
-export default BroadCastMessage
+export default BroadCastMessage;
