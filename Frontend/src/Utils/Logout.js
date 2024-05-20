@@ -18,21 +18,21 @@ const useLogout = () => {
             const response = await dispatch(LogOut(data)).unwrap();
 
             if (response.status) {
+                localStorage.removeItem("user_details");
+                localStorage.removeItem("user_role");
+                navigate("/login");
+               
                 Swal.fire({
                     title: "Logout Successful!",
                     icon: "success",
                     position: "top-end",
                     text: response.msg,
                     showConfirmButton: false,
-                    timer: 1500,
+                    timer: 700,
                     timerProgressBar: true
                 });
 
-                setTimeout(() => {
-                    localStorage.removeItem("user_details");
-                    localStorage.removeItem("user_role");
-                    navigate("/login");
-                }, 800);
+              
 
             } else {
                 Swal.fire({
