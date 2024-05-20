@@ -962,6 +962,90 @@ db.createView("makecall_NotradeTime_status", "makecallabrs",
   ]
 )
 
+db.createView("makecall_NotradeTime_status", "makecallabrs",
+[   
+
+    {
+        $match : {
+           status :0
+        }
+   
+     },
+    {
+        "$addFields": {
+          "ISTOffset": 19800000 // Offset for Indian Standard Time (19800000 milliseconds = 5 hours 30 minutes)
+        }
+      },
+      {
+        "$addFields": {
+          "currentTime": {
+            "$let": {
+              "vars": {
+                "currentTime": {
+                  "$add": ["$$NOW", "$ISTOffset"]
+                }
+              },
+              "in": {
+                "$concat": [
+                  {
+                    "$cond": {
+                      "if": { "$lt": [{ "$hour": "$$currentTime" }, 10] },
+                      "then": { "$concat": ["0", { "$toString": { "$hour": "$$currentTime" } }] },
+                      "else": { "$toString": { "$hour": "$$currentTime" } }
+                    }
+                  },
+                  {
+                    "$cond": {
+                      "if": { "$lt": [{ "$minute": "$$currentTime" }, 10] },
+                      "then": { "$concat": ["0", { "$toString": { "$minute": "$$currentTime" } }] },
+                      "else": { "$toString": { "$minute": "$$currentTime" } }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      {
+        $project : 
+        {
+            currentTime : 1 ,   
+            token : 1  ,
+            NoTradeTime: 1,
+            Key: 1,
+            Strategy: 1,
+            ABR_TYPE: 1,
+            Symbol: 1,
+            Segment: 1,
+            OType: 1,
+            Expiry: 1,
+            Strike: 1,
+            isLpInRange: {
+                $cond: {
+                    if: {
+                        $or: [
+                            { $eq: ['$NoTradeTime', "0"] },
+                            { $eq: ['$NoTradeTime', ""] },
+                        ],
+                    },
+                    then: -1,
+                    else: {
+                        $cmp: [
+                            { $toInt: '$currentTime' },
+                            { $toInt: '$NoTradeTime' },
+                        ],
+                    },
+                },
+            },  
+        }
+      }
+
+  ]
+)
+
+
+
 //Notrade Time trade Excuted set status 1
 db.createView("makecall_NotradeTime_status_excute", "makecall_NotradeTime_status",
 [
