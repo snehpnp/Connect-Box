@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import AddForm from "../../../../Components/ExtraComponents/forms/AddForm";
 import { useFormik } from "formik";
-import toast from "react-hot-toast";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Loader from "../../../../Utils/Loader";
 import Swal from 'sweetalert2'
-import {
-  EditSubStrategys,
-  GetSubStrategys_ById,
-} from "../../../../ReduxStore/Slice/Subadmin/Strategy";
+import { EditSubStrategys, GetSubStrategys_ById} from "../../../../ReduxStore/Slice/Subadmin/Strategy";
 import { Get_All_Catagory } from '../../../../ReduxStore/Slice/Subadmin/GroupServicesSlice'
 
 function Edit_Strategies() {
@@ -18,17 +14,15 @@ function Edit_Strategies() {
   const { id } = useParams();
 
   const makerId = JSON.parse(localStorage.getItem("user_details"))
+  var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
+
 
   const [loading, setloading] = useState(false);
 
   const [allStrategy, setAllStrategy] = useState(null);
   const [getStgDescription, setStgDescription] = useState('');
-  const [GetAllSgments, setGetAllSgments] = useState({
-    loading: true,
-    data: [],
-  });
+  const [GetAllSgments, setGetAllSgments] = useState({loading: true,data: []});
 
-  var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
 
 
 

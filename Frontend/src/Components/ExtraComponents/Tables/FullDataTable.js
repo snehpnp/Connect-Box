@@ -24,7 +24,7 @@ const FullDataTable = ({
           rows={rowsWithIds}
           columns={columns}
           pageSize={10}
-          rowsPerPageOptions={[5, 10, 20, 50]}
+          rowsPerPageOptions={[5, 10, 50, 100]}
           pagination={true}
           disableSelectionOnClick
           checkboxSelection={checkboxSelection}
@@ -35,7 +35,7 @@ const FullDataTable = ({
               paginationModel: { page: 0, pageSize: 10 },
             },
           }}
-          pageSizeOptions={[10, 20, 50]}
+          pageSizeOptions={[10, 50, 100]}
           className="custom-data-grid"
           style={{
             border: "none",

@@ -6,6 +6,7 @@ const researcher_strategy = db.researcher_strategy;
 const User = db.user;
 const strategy_client_model = db.strategy_client;
 const tradeCharge_Modal = db.tradeCharge;
+const Activity_logs = db.Activity_logs;
 
 const mongoose = require("mongoose");
 
@@ -249,16 +250,7 @@ class strategy {
             data: [],
           });
         }
-        // if (
-        //   maker_id_find.prifix_key !=
-        //   strategy_name.substring(0, 3).toUpperCase()
-        // ) {
-        //   return res.send({
-        //     status: false,
-        //     msg: "Please Enter Strategy starting 3 leter is your priPrefix Key fix letter",
-        //     data: [],
-        //   });
-        // }
+
         return true;
       }
 
@@ -268,6 +260,41 @@ class strategy {
           msg: "Some Issue in strategy",
           data: [],
         });
+      }
+
+
+
+
+
+      function compareObjects(oldObj, newObj) {
+  
+        if (oldObj.strategy_category != newObj.strategy_category) {
+          const Activity_logsData = new Activity_logs({
+            user_Id: maker_id,
+            admin_Id: maker_id,
+            category: "EDIT_STRATEGY",
+            message:"Strategy Category Update "+oldObj.strategy_category +" "+newObj.strategy_category,
+            maker_role: "SUBADMIN",
+            device: "web",
+            system_ip: ""
+          });
+          Activity_logsData.save();
+        }
+
+
+
+
+
+
+
+        return changes;
+      }
+      const changes = compareObjects(strategy_check, req.body);
+
+      if (Object.keys(changes).length > 0) {
+        console.log("Changes detected:", changes);
+      } else {
+        console.log("No changes detected.");
       }
 
 
@@ -846,10 +873,10 @@ class strategy {
 
 
 
-  
+
   async subadminTradeCharges(req, res) {
 
-  const { id } = req.body
+    const { id } = req.body
     var TradechargesWithUserDetails = await tradeCharge_Modal.aggregate([
       {
         $lookup: {
@@ -880,10 +907,10 @@ class strategy {
       },
       {
         $sort: {
-          createdAt: -1 
+          createdAt: -1
         }
       }
-      
+
     ]);
 
     return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails })
@@ -909,7 +936,7 @@ class strategy {
       {
         $unwind: "$user_details"
       },
-     
+
       {
         $project: {
           "UserName": "$user_details.UserName",
@@ -923,7 +950,7 @@ class strategy {
       },
       {
         $sort: {
-          createdAt: -1 
+          createdAt: -1
         }
       }
     ]);
