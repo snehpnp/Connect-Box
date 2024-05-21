@@ -37,6 +37,8 @@ module.exports = {
     Broker_information: require('./Broker_information.model'),
     BrokerResponse: require('./broker_response.model'),
     tradeCharge: require('./trade_charge.model'),
+    User_strategy_Order: require('./User_Strategy_order.model'),
+
     
 
 };

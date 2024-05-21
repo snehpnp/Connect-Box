@@ -260,11 +260,11 @@ class Auth {
             addData = { ...addData, web_login_token: '' }
 
 
-            // Update Successfully
-            const result = await User.updateMany(
-                { Email: EmailCheck[0].Email },
-                { $set: addData }
-            );
+            // // Update Successfully
+            // const result = await User.updateMany(
+            //     { Email: EmailCheck[0].Email },
+            //     { $set: addData }
+            // );
 
 
             const user_login = new user_logs({
@@ -277,9 +277,9 @@ class Auth {
             await user_login.save();
 
             // If Not Update User
-            if (!result) {
-                return res.send({ status: false, msg: 'Server Side issue.', data: [] });
-            }
+            // if (!result) {
+                // return res.send({ status: false, msg: 'Server Side issue.', data: [] });
+            // }
 
 
             return res.send({ status: true, msg: "Logout Succesfully", data: [] })

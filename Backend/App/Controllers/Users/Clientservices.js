@@ -290,6 +290,11 @@ class Clientservice {
                         createdAt: "$strategies.createdAt",
                         max_trade: "$strategies.max_trade",
                         strategy_percentage: "$strategies.strategy_percentage",
+                        month: "$strategies.security_fund_month",
+                        quarterly: "$strategies.security_fund_quarterly",
+                        half_early: "$strategies.security_fund_half_early",
+                        yearly: "$strategies.security_fund_early",
+
                         stg_status: {
                             $cond: { if: { $in: ["$strategies._id", UserStgIds] }, then: 1, else: 0 }
                         }

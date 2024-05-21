@@ -138,12 +138,7 @@ export default function AllUsers() {
       width: 180,
       headerClassName: styles.boldHeader,
     },
-    {
-      field: "client_key",
-      headerName: "Client Key",
-      width: 200,
-      headerClassName: styles.boldHeader,
-    },
+
     {
       field: "broker",
       headerName: "Broker",

@@ -8,16 +8,18 @@ import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
 import { OrderBook } from "../../../Utils/Orderbook";
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import Swal from 'sweetalert2';
-import ExportToExcel from '../../../Utils/ExportCSV'
+import useLogout  from '../../../Utils/Logout'
 
 
 const Dashboards = () => {
-
+  const logout = useLogout();
   const dispatch = useDispatch()
 
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
   var user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   var Role = JSON.parse(localStorage.getItem("user_details")).Role;
+  var token = JSON.parse(localStorage.getItem("user_details")).token;
+
 
   const [ForGetCSV, setForGetCSV] = useState([])
 
@@ -164,13 +166,14 @@ const Dashboards = () => {
 
 
   const userDataRes = async () => {
-    await dispatch(Orders_Details({ subadminId: user_id, Role: Role }))
+    await dispatch(Orders_Details({ req: { subadminId: user_id, Role: Role }, token: token }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
           setTableData({ loading: true, data: response.data });
         } else {
           setTableData({ loading: true, data: [] });
+          
 
         }
       })
@@ -187,7 +190,7 @@ const Dashboards = () => {
   const UserdashboardDATA = async () => {
 
     var data = { "id": user_id };
-    await dispatch(GetUserDashboardData(data)).unwrap()
+    await dispatch(GetUserDashboardData({ req: data, token: token })).unwrap()
       .then((response) => {
 
         if (response.status) {
@@ -225,9 +228,8 @@ const Dashboards = () => {
 
 
   const DawnloadOrderBook = async (e) => {
-
     let data = { id: user_id };
-    await dispatch(ProfileInfo(data))
+    await dispatch(ProfileInfo({ req: data, token: token }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
@@ -251,7 +253,7 @@ const Dashboards = () => {
           }
 
         } else {
-
+          console.log("response", response)
         }
       })
       .catch((error) => {
@@ -288,7 +290,7 @@ const Dashboards = () => {
                 )}
                 <hr style={{ backgroundColor: "white", height: "5px", border: "none", width: "18rem" }} />
 
-                <div className="dash-btns gap-3 mt-5" style={{ display: "flex",color:"white"}}>
+                <div className="dash-btns gap-3 mt-5" style={{ display: "flex", color: "white" }}>
                   <div>
                     <h4>Balance</h4>
                     <p>10000</p>
@@ -298,7 +300,7 @@ const Dashboards = () => {
                     <p>7860</p>
                   </div>
                   <div >
-                    <h4>Dawnload</h4><br/>
+                    <h4>Dawnload</h4><br />
                     <a className="btn view-company-btn" onClick={(e) => DawnloadOrderBook(e)}>
                       Order Book
                     </a>

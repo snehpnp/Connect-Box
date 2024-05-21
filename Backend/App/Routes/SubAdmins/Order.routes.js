@@ -8,7 +8,7 @@ const {Signal_data,MainSignal_data,getAllSignalByPrefix,update_stop_loss,Tradehi
 
 
 //Order Releated Routes
-router.post('/orders/data', Signal_data);
+router.post('/orders/data',verifyToken, Signal_data);
 router.post('/trade/data', MainSignal_data);
 
 router.post('/update/trade', update_stop_loss);

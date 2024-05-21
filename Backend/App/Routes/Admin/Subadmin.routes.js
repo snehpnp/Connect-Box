@@ -2,6 +2,7 @@
 "use strict"
 
 const router = require("express").Router()
+const { verifyToken } = require('../../Middlewares/autt.middleware')
 
 const { AddSubadmin,EditSubadmin,getallSubadmin,getallSubadminClients,getOneSubadmin,GetAllRechargeDetails,UpdateActiveStatusSubadmin,AddBalanceSubadmin,getallSubadminName,GetAllRechargeDetailsById,UpdateBrokerInfo,GetBrokerInfo} = require('../../Controllers/Admins/Subadmins/subadmin.controller')
 
@@ -22,7 +23,7 @@ router.post('/subadmin/getall', getallSubadmin);
 router.post('/subadmin/name/getall', getallSubadminName);
 
 router.post('/subadmin/clients/getall', getallSubadminClients);
-router.post('/subadmin/get', getOneSubadmin);
+router.post('/subadmin/get',verifyToken, getOneSubadmin);
 
 router.post('/recharge/get', GetAllRechargeDetails);
 router.post('/recharge/id/get', GetAllRechargeDetailsById);

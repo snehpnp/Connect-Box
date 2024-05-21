@@ -10,16 +10,13 @@ import { fDateTime } from "../../../Utils/Date_formet";
 import { fDate } from "../../../Utils/Date_formet";
 import { isToday } from "../../../Utils/Date_formet";
 import Swal from "sweetalert2";
-import { Employeedatabyid , Get_Parent_Type  } from "../../../ReduxStore/Slice/Admin/System";
-//Employeedatabyid
-import {
-  ProfilImage,
-  ProfileUpdatedata,
-  profiledatauserId,
-  ActiveProfile,
-} from "../../../ReduxStore/Slice/Comman/Userinfo";
-
+import { Employeedatabyid, Get_Parent_Type } from "../../../ReduxStore/Slice/Admin/System";
+import {ProfilImage, ProfileUpdatedata, profiledatauserId,ActiveProfile} from "../../../ReduxStore/Slice/Comman/Userinfo";
 import Toaster from "../../../Components/ExtraComponents/Alert_Toast";
+import useLogout from "../../../Utils/Logout";
+import { ipAddress } from '../../../Utils/Ipaddress';
+
+
 
 const style = {
   position: "absolute",
@@ -35,14 +32,20 @@ const style = {
   borderRadius: "3rem",
 };
 
+
+
+
 const Profile = () => {
   const dispatch = useDispatch();
+  const logout = useLogout();
 
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   const user = JSON.parse(localStorage.getItem("user_details"));
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
+  const token = JSON.parse(localStorage.getItem("user_details")).token;
 
 
+  const [ip, setIp] = useState(null);
   const [getemployeedata, setGetemployeedata] = useState("");
   const [profileData, setProfileData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -53,7 +56,7 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState("");
   const [editbtn, setEditbtn] = useState(false);
   const [info, setInfo] = useState([]);
-  const [getParentType, setParentType]= useState('')
+  const [getParentType, setParentType] = useState('')
   const [update, setUpdate] = useState({
     user_Id: "",
     Address: "",
@@ -63,6 +66,7 @@ const Profile = () => {
     DOB: "",
     CompanyName: "",
   });
+
 
   const currentDate = new Date();
   currentDate.setFullYear(currentDate.getFullYear() - 1);
@@ -110,14 +114,14 @@ const Profile = () => {
 
   const Employeetable = async () => {
 
-    const data = {id: user_id}
+    const data = { id: user_id }
 
 
     await dispatch(Employeedatabyid(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-       
+
           setGetemployeedata(response.subadmin)
           setLoading(false);
         }
@@ -184,7 +188,7 @@ const Profile = () => {
       })
     )
       .unwrap()
-      .then(  async (response) => {
+      .then(async (response) => {
         if (response.status) {
           setEditbtn(!editbtn);
           Swal.fire({
@@ -252,7 +256,7 @@ const Profile = () => {
   const fetchData = async () => {
     try {
       let data = { id: user_id };
-      await dispatch(ProfileInfo(data))
+      await dispatch(ProfileInfo({ req: data, token: token }))
         .unwrap()
         .then(async (response) => {
           if (response.status) {
@@ -260,8 +264,14 @@ const Profile = () => {
             setProfileImage(response.data[0].profile_img);
             setLoading(true);
           } else {
-            toast.error(response.msg);
-            setLoading(false);
+            if (response.msg == "Unauthorized!") {
+
+              logout(user_id, ip);
+            } else {
+
+              toast.error(response.msg);
+              setLoading(false);
+            }
           }
         })
         .catch((error) => {
@@ -278,29 +288,42 @@ const Profile = () => {
   }, [refresh]);
 
 
-  const FindParentType = async()=>{
-    try{
-      const data={id : user_id , Role :Role}
+  const FindParentType = async () => {
+    try {
+      const data = { id: user_id, Role: Role }
       await dispatch(Get_Parent_Type(data)).unwrap()
-      .then((response)=>{
-        if(response.status){
-          setParentType(response.data)
-        }
-        else{
-          setParentType('')
-        }
-      })
+        .then((response) => {
+          if (response.status) {
+            setParentType(response.data)
+          }
+          else {
+            setParentType('')
+          }
+        })
 
     }
-    catch(error){
+    catch (error) {
       console.log("Error in fatching in Parent Type", error)
     }
   }
 
-  useEffect(()=>{
-    FindParentType()
-  },[])
 
+
+
+
+  const fetchIP = async () => {
+    try {
+      const ip = await ipAddress();
+      setIp(ip);
+    } catch (error) {
+      console.error('Failed to fetch IP address:', error);
+    }
+  };
+
+  useEffect(() => {
+    FindParentType()
+    fetchIP();
+  }, [])
   return (
     <div>
       {loading ? (
@@ -675,8 +698,8 @@ const Profile = () => {
                               </span>
                             </li>
                           ))}
-                       {user.Role === "EMPLOYEE" ?  <li>
-                           <h6>Subadmin Name : {getemployeedata && getemployeedata}</h6>
+                        {user.Role === "EMPLOYEE" ? <li>
+                          <h6>Subadmin Name : {getemployeedata && getemployeedata}</h6>
                         </li> : ""}
                       </ul>
                     </div>
