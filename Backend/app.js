@@ -44,10 +44,7 @@ io.on("connection", (socket) => {
   socket.on("send_message", (data) => {
     io.emit("receive_message", data);
   });
-  socket.on('register', (data) => {
-    console.log('User registered: ', data);
-});
-  
+
   socket.on("disconnect", () => {
   });
 });
@@ -74,6 +71,3 @@ const { Alice_Socket } = require("./App/Helpers/Alice_Socket");
   Alice_Socket()
   console.log(`Server is running on http://0.0.0.0:${process.env.PORT}`);
 });
-
-
-global.io = io; // To make io instance accessible globally

@@ -12,12 +12,6 @@ import { Link } from 'react-router-dom';
 
 import ReCAPTCHA from 'react-google-recaptcha';
 
-import io from 'socket.io-client';
-
-const socket = io('http://localhost:3000');
-
-
-
 function Login() {
 
   const dispatch = useDispatch();
@@ -70,23 +64,6 @@ function Login() {
       
     } else {
       
-
-      socket.emit('register', { _id:getData.user_id, Token:getData.token });
-
-      // Handle logout event
-      socket.on('logout', (data) => {
-          alert(data.message);
-          console.log("data.message",data.message)
-          // Handle actual logout logic here, e.g., redirect to login page
-      });
-
-
-
-
-
-
-
-
       localStorage.setItem("user_details", JSON.stringify(getData));
       localStorage.setItem("user_role", JSON.stringify(getData.Role));
       setIsLoggedIn(true);
