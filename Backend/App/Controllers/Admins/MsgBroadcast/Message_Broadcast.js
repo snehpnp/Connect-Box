@@ -173,6 +173,7 @@ class MessageController {
               createdAt: 1,
               StrategyName: 1,
               BrokerName: 1,
+              brokerId: 1
             },
           },
           { $sort: { createdAt: -1 } },
@@ -233,6 +234,8 @@ class MessageController {
     }
   }
 
+
+
   async deleteMsgData(req, res) {
     try {
       const { id } = req.body;
@@ -254,6 +257,9 @@ class MessageController {
       });
     }
   }
+
+
+
 
   async editMsgData(req, res) {
     try {
@@ -283,6 +289,9 @@ class MessageController {
     }
   }
 
+
+
+
   async getadminandresearchername(req, res) {
     try {
       const { id } = req.body;
@@ -305,6 +314,9 @@ class MessageController {
       });
     }
   }
+
+
+
 
   // getting getbroadcastMsg   data
 
@@ -337,6 +349,11 @@ class MessageController {
       console.error("internal error:", error);
     }
   }
+  
 }
+
+
+
+
 
 module.exports = new MessageController();

@@ -43,10 +43,10 @@ function MessageBroadcast() {
   const [socket, setSocket] = useState(null);
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState("1");
+  const [brokerName, setBrokerName] = useState([]);
  
+
  
-// console.log("selectedBroker",selectedBroker)
-// console.log("brokers",brokers)
 
   const ownerId = JSON.parse(localStorage.getItem("user_details")).user_id;
   const ownerRole = JSON.parse(localStorage.getItem("user_details")).Role;
@@ -148,12 +148,19 @@ function MessageBroadcast() {
       renderCell: (params) => <div>{params.value || "-"}</div>,
     },
     {
-      field: "BrokerName",
+      field: "brokerId",
       headerName: "Broker Name",
       width: 250,
       headerClassName: styles.boldHeader,
-      renderCell: (params) => <div>{params.value || "-"}</div>,
+      renderCell: (params) => {
+        const broker = brokerName.find(
+          (data) => data.broker_id.toString() === params.row.brokerId.toString()
+        );
+
+        return <div>{broker ? broker.title : "-"}</div>;
+      },
     },
+
     {
       field: "messageTitle",
       headerName: "Message",
@@ -170,8 +177,9 @@ function MessageBroadcast() {
     },
   ];
 
-  
 
+
+  
   const handleUpdate = async () => {
     var data = { id: openModalId, messageTitle: msgData };
 
@@ -229,7 +237,7 @@ function MessageBroadcast() {
           if (response.status) {
             toast.success(response.msg);
             setBrokers(response.data);
-      
+            setBrokerName(response.data);
           } else {
             toast.error(response.msg);
           }
@@ -244,8 +252,6 @@ function MessageBroadcast() {
     }
   };
 
-  
-
   const sendMessage = async () => {
     try {
       if (!selectedStrategy && !selectedBroker) {
@@ -259,7 +265,6 @@ function MessageBroadcast() {
         strategyId: selectedStrategy,
         brokerId: selectedBroker,
         messageTitle: messageText,
-       
       };
       await dispatch(add_message(newMessage))
         .unwrap()
@@ -320,8 +325,6 @@ function MessageBroadcast() {
       if (response.status) {
         let filteredData = [];
         setPipelineData(response.data);
-        // console.log("aa",response.data)
-      
       } else {
         toast.error(response.msg);
       }
@@ -349,8 +352,6 @@ function MessageBroadcast() {
         console.log("Error", error);
       });
   };
-
-
 
   const handleMessageChange = (e) => {
     setMessageText(e.target.value);
@@ -444,7 +445,6 @@ function MessageBroadcast() {
                                 id="broker-select"
                                 className="form-control"
                                 value={selectedBroker}
-                                
                                 onChange={(e) =>
                                   setSelectedBroker(e.target.value)
                                 }
@@ -454,7 +454,7 @@ function MessageBroadcast() {
                                   brokers.map((broker) => (
                                     <option
                                       key={broker._id}
-                                      value={broker.broker_id } 
+                                      value={broker.broker_id}
                                     >
                                       {broker.title}
                                     </option>

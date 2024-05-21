@@ -180,6 +180,8 @@ class Helpmessage {
   }
 
 
+
+
    //get Researcher table 
 
    async getResearcher(req, res) {
@@ -199,6 +201,9 @@ class Helpmessage {
       console.error("internal error:", error);
     }
   }
+
+
+
 
 
   //get employee table
@@ -222,7 +227,7 @@ class Helpmessage {
   }
 
 
-
+// for  getting employee 
   async getEmployeebyid(req, res) {
     try {
        const {id} = req.body

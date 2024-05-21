@@ -25,12 +25,16 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Swal from "sweetalert2";
 
+
+
 const Helpsubadmin = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user_details"));
   const userdataprifix_key = JSON.parse(
     localStorage.getItem("user_details")
   ).prifix_key;
+
+
 
   const [refresh, setRefresh] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -45,9 +49,12 @@ const Helpsubadmin = () => {
     Category: "",
   });
 
+
+
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState("0");
   const [getemployeedata, setGetemployeedata] = useState([]);
+
 
 
 
@@ -234,6 +241,7 @@ const Helpsubadmin = () => {
 
 
 
+
   //get subadmin table
   const gettable = async () => {
     await dispatch(getsubadmintable({}))
@@ -373,6 +381,7 @@ const Helpsubadmin = () => {
     "Employee Panel",
     "Broker Response",
     "Login with api",
+    "Other"
   ];
 
 
