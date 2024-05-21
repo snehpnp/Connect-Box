@@ -69,6 +69,7 @@ class Makecall {
   async GetServiceByCatagory(req, res) {
 
 
+    
     if (req.body.category_id == '' || req.body.category_id == null) {
       return res.send({ status: false, msg: "Category not fount service", data: [] })
     }
@@ -165,16 +166,11 @@ class Makecall {
 
     }
 
-
-
-
-
   }
 
 
   //get expiry
   async Getgetexpirymanualtrade(req, res) {
-
 
 
     try {
