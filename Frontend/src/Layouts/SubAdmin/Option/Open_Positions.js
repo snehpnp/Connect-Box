@@ -125,7 +125,7 @@ export default function AllEmployees() {
                   const remainData = data.data.filter(item => item.Key == currentClientKeyRef.current);
                   if(remainData.length > 0){
                    
-                    const formattedMessages = data.map(item => {
+                    const formattedMessages = remainData.map(item => {
                         if (item.Segment.toUpperCase() === "O" || item.Segment.toUpperCase() === "FO" || item.Segment.toUpperCase() === "CO" || item.Segment.toUpperCase() === "MO" ) {
                             return `Script : ${item.Symbol} ${item.Expiry} ${item.OType} ${item.Strike} [ ${item.Segment} ]`;
                         }

@@ -4,21 +4,27 @@ const mongoConnection = require('./App/Connections/mongo_connection');
 const express = require("express");
 const app = express();
 const http = require('http'); 
+const https = require('https');
+const fs = require('fs');
 const cors = require('cors');
 const bodyparser = require('body-parser');
 const { Server } = require("socket.io");
 
+const socketIo = require("socket.io");
 
-const server = http.createServer(app);
 
-const { setIO ,getIO} = require('./App/Helpers/BackendSocketIo');
+
+
+
+
 
 
 const { createViewAlice } = require("./View/Alice_blue");
 
 // Setting up CORS options
 const corsOpts = {
-  origin: '*',
+  //origin: '*',
+  origin: "https://connectbox.tradestreet.in/",
   methods: ['GET', 'POST'],
   allowedHeaders: [
     "Access-Control-Allow-Headers",
@@ -31,20 +37,38 @@ app.use(cors(corsOpts));
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json({ limit: '10mb', extended: true }));
 
-//socket.io
-const io = new Server(server, {
-  cors: {
-    // origin: "https://connectbox.tradestreet.in/",
-    origin: "http://localhost:3000",
+// LIVE CODE --------
+var privateKey = fs.readFileSync('../crt/privkey.pem', 'utf8');
+var certificate = fs.readFileSync('../crt/fullchain.pem', 'utf8');
+var credentials = { key: privateKey, cert: certificate };
+const httpsserver = https.createServer(credentials, app);
 
-    methods: ["GET", "POST"],
-  },
+
+const server = http.createServer(app);
+
+ 
+ 
+const { setIO ,getIO} = require('./App/Helpers/BackendSocketIo');
+
+//socket.io
+// const io = new Server(server, {
+//   cors: {
+//      origin: "https://connectbox.tradestreet.in/",
+//    // origin: "http://localhost:3000",
+
+//     methods: ["GET", "POST"],
+//   },
+// });
+
+const io = socketIo(httpsserver, {
+  cors: {
+      origin: "*",
+      credentials: true
+  }
 });
 
 
 io.on("connection", (socket) => {
-
-
   socket.on("send_message", (data) => {
     io.emit("receive_message", data);
   });
@@ -52,6 +76,8 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
   });
 });
+
+
 
 setIO(io).then(() => {
   // console.log("io set successfully");
@@ -68,7 +94,10 @@ setIO(io).then(() => {
  });
 
 
-
+app.get('/testsocket',(req,res)=>{
+  io.emit("shk_rec", "OKK connectbox");
+  res.send("okkk connect")
+})
 // Requiring utility files
 require('./App/Utils/Cron.utils');
 
@@ -84,8 +113,16 @@ app.get('/aliceblue/view',(req,res)=>{
 
 
 // Starting the server
+// server.listen(process.env.PORT, () => {
+// const { Alice_Socket } = require("./App/Helpers/Alice_Socket");
+//   Alice_Socket()
+//   console.log(`Server is running on http://0.0.0.0:${process.env.PORT}`);
+// });
+
+
+httpsserver.listen(1001)
 server.listen(process.env.PORT, () => {
-const { Alice_Socket } = require("./App/Helpers/Alice_Socket");
-  Alice_Socket()
-  console.log(`Server is running on http://0.0.0.0:${process.env.PORT}`);
-});
+  const { Alice_Socket } = require("./App/Helpers/Alice_Socket");
+      Alice_Socket()
+      console.log(`Server is running on http://0.0.0.0:${process.env.PORT}`);
+  });

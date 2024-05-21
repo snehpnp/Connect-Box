@@ -1133,8 +1133,6 @@ async function run() {
         if (NotradeTimeExucuted.length > 0) {
           const items = NotradeTimeExucuted.map(item => item)
           const ids = NotradeTimeExucuted.map(item => item._id)
-
-
           const result = await makecallABR.updateMany(
             { _id: { $in: ids } },
             { $set: { status: 2 } }
@@ -1161,20 +1159,19 @@ async function run() {
     // Use a while loop with setTimeout for a delay
     while (true) {
       // Delay for 1000 milliseconds (1 second)
-      await new Promise(resolve => setTimeout(resolve, 15000));
+      await new Promise(resolve => setTimeout(resolve, 500));
       await makecallabrView_excute_run();
       await exitOpentrade();
       await noTradeTimeExcuteSetStatus()
     }
   } finally {
     // Close the client when you're done
-
   }
 
 }
 
 
- //run().catch(console.error);
+ run().catch(console.error);
 
 
 //////////////////----- makecallabrView_excute_run --//////////////////////////////
