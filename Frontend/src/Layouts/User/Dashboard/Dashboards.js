@@ -8,11 +8,11 @@ import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
 import { OrderBook } from "../../../Utils/Orderbook";
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import Swal from 'sweetalert2';
-import useLogout  from '../../../Utils/Logout'
+// import useLogout  from '../../../Utils/Logout'
 
 
 const Dashboards = () => {
-  const logout = useLogout();
+  // const logout = useLogout();
   const dispatch = useDispatch()
 
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;

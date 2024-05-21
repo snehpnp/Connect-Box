@@ -265,8 +265,8 @@ const Profile = () => {
             setLoading(true);
           } else {
             if (response.msg == "Unauthorized!") {
-
-              logout(user_id, ip);
+console.log("Profile",user_id, ip)
+              // logout(user_id, ip);
             } else {
 
               toast.error(response.msg);
