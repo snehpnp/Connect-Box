@@ -110,7 +110,6 @@ export default function AllEmployees() {
                         timer: 1500,
                         timerProgressBar: true
                         });
-
                         handleClick_abr(currentTypeABRRef.current)
                     }else{
                         handleClick_abr("below")
@@ -123,6 +122,32 @@ export default function AllEmployees() {
                 //NO TRADE TIME TRADE 
                 else if(data.type_makecall == "NO_TRADE"){
                   console.log("data NoTRADE",data.data)
+                  const remainData = data.data.filter(item => item.Key == currentClientKeyRef.current);
+                  if(remainData.length > 0){
+                   
+                    const formattedMessages = data.map(item => {
+                        if (item.Segment.toUpperCase() === "O" || item.Segment.toUpperCase() === "FO" || item.Segment.toUpperCase() === "CO" || item.Segment.toUpperCase() === "MO" ) {
+                            return `Script : ${item.Symbol} ${item.Expiry} ${item.OType} ${item.Strike} [ ${item.Segment} ]`;
+                        }
+                        else if (item.Segment.toUpperCase() === "F" || item.Segment.toUpperCase() === "CF" || item.Segment.toUpperCase() === "MF" ) {
+                            return `Script : ${item.Symbol} ${item.Expiry} [ ${item.Segment} ]`;
+                        }else{
+                            return `Script : ${item.Symbol} [ ${item.Segment} ]`;
+                        }
+                    });
+                    const formattedString = formattedMessages.join('\n');
+                    
+                    Swal.fire({
+                        title: data.type + "CLOSE TRADE",
+                        text: formattedString,
+                        icon: "success",
+                        timer: 1500,
+                        timerProgressBar: true
+                        });
+                    handleClick_abr(currentTypeABRRef.current)
+    
+                  }
+
                   
                 }
                 
@@ -131,7 +156,6 @@ export default function AllEmployees() {
             else if(data.type == "OPENPOSITION" && currenPageStatusRef.current == "openposition"){
                 // console.log("Received Connect data: open possition", data);  
                 if(data.data.client_persnal_key == currentClientKeyRef.current){
-
 
                 // console.log("data.data.segment ", data.data.segment)
                 // console.log("data.data.expiry ", data.data.expiry)
