@@ -138,7 +138,7 @@ export default function AllEmployees() {
                     const formattedString = formattedMessages.join('\n');
                     
                     Swal.fire({
-                        title: data.type +"  CLOSE TRADE",
+                        title: data.type +" CLOSE TRADE",
                         text: formattedString,
                         icon: "success",
                         timer: 1500,
