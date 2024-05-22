@@ -2,17 +2,20 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IndianRupee } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { ProfileInfo, userdataforhelp,getsubadmintable } from "../../../ReduxStore/Slice/Admin/System";
-import { LogOut } from '../../../ReduxStore/Slice/Auth/AuthSlice'
+import {
+  ProfileInfo,
+  userdataforhelp,
+  getsubadmintable,
+} from "../../../ReduxStore/Slice/Admin/System";
+import { LogOut } from "../../../ReduxStore/Slice/Auth/AuthSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { Minimize } from "lucide-react";
-import Swal from 'sweetalert2';
-import { ipAddress } from '../../../Utils/Ipaddress';
+import Swal from "sweetalert2";
+import { ipAddress } from "../../../Utils/Ipaddress";
 import { admin_Msg_Get } from "../../../ReduxStore/Slice/Admin/MessageData";
 import { fDateTime } from "../../../Utils/Date_formet";
-import useLogout  from "../../../Utils/Logout";
-
+import useLogout from "../../../Utils/Logout";
 
 const DropDown = () => {
   const navigate = useNavigate();
@@ -31,18 +34,15 @@ const DropDown = () => {
   const [profileImage, setProfileImage] = useState("");
   const [getsubadmin, setGetsubadmin] = useState([]);
 
-
-
   const user = JSON.parse(localStorage.getItem("user_details"));
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
   var Role = JSON.parse(localStorage.getItem("user_details")).Role;
   var token = JSON.parse(localStorage.getItem("user_details")).token;
 
-  const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type;
-
-
-
+  const subadmin_service_type = JSON.parse(
+    localStorage.getItem("user_details")
+  ).subadmin_service_type;
 
   const fetchData = async () => {
     try {
@@ -55,11 +55,8 @@ const DropDown = () => {
             setProfileImage(response.data[0].profile_img);
           } else {
             if (response.msg == "Unauthorized!") {
-         
-    logout(user_id, ip);
+              logout(user_id, ip);
             }
-
-
           }
         })
         .catch((error) => {
@@ -70,63 +67,55 @@ const DropDown = () => {
     }
   };
 
-
-
   const fetchIP = async () => {
     try {
       const ip = await ipAddress();
       setIp(ip);
     } catch (error) {
-      console.error('Failed to fetch IP address:', error);
+      console.error("Failed to fetch IP address:", error);
     }
   };
 
+  //   const LogoutUser = async (e) => {
+  //     // const data = { userId: user_id, Device: "WEB", system_ip: ip }
 
+  // console.log("SNEH")
 
-//   const LogoutUser = async (e) => {
-//     // const data = { userId: user_id, Device: "WEB", system_ip: ip }
+  //     // await dispatch(LogOut(data)).unwrap()
+  //     //   .then((response) => {
+  //     //     if (response.status) {
+  //     //       Swal.fire({
+  //     //         title: "Logout Successful!",
+  //     //         icon: "success",
+  //     //         position: "top-end",
+  //     //         text: response.msg,
+  //     //         showConfirmButton: false,
+  //     //         timer: 800,
+  //     //         timerProgressBar: true
+  //     //       });
+  //     //       setTimeout(() => {
+  //     //         localStorage.removeItem("user_details")
+  //     //         localStorage.removeItem("user_role")
+  //     //         navigate("/login")
+  //     //       }, 800)
 
-// console.log("SNEH")
+  //     //     }
+  //     //     else {
+  //     //       Swal.fire({
+  //     //         title: "Error!",
+  //     //         text: response.msg,
+  //     //         icon: "error",
+  //     //         timer: 1500,
+  //     //         timerProgressBar: true
+  //     //       });
 
+  //     //     }
+  //     //   })
+  //     //   .catch((error) => {
+  //     //     console.log("Error in logout user", error)
+  //     //   })
 
-
-//     // await dispatch(LogOut(data)).unwrap()
-//     //   .then((response) => {
-//     //     if (response.status) {
-//     //       Swal.fire({
-//     //         title: "Logout Successful!",
-//     //         icon: "success",
-//     //         position: "top-end",
-//     //         text: response.msg,
-//     //         showConfirmButton: false,
-//     //         timer: 800,
-//     //         timerProgressBar: true
-//     //       });
-//     //       setTimeout(() => {
-//     //         localStorage.removeItem("user_details")
-//     //         localStorage.removeItem("user_role")
-//     //         navigate("/login")
-//     //       }, 800)
-
-
-//     //     }
-//     //     else {
-//     //       Swal.fire({
-//     //         title: "Error!",
-//     //         text: response.msg,
-//     //         icon: "error",
-//     //         timer: 1500,
-//     //         timerProgressBar: true
-//     //       });
-
-//     //     }
-//     //   })
-//     //   .catch((error) => {
-//     //     console.log("Error in logout user", error)
-//     //   })
-
-
-//   }
+  //   }
 
   // Define toggleTheme function
   const toggleTheme = () => {
@@ -137,7 +126,6 @@ const DropDown = () => {
     htmlElement.setAttribute("data-layout-mode", newThemeMode);
     htmlElement.setAttribute("data-topbar", newThemeMode);
     localStorage.setItem("theme_mode", newThemeMode);
-
   };
 
   const toggleFullScreen = () => {
@@ -165,7 +153,6 @@ const DropDown = () => {
     }
     setIsFullScreen(!isFullScreen);
   };
-
 
   const walletmodal = () => {
     if (Role == "ADMIN") {
@@ -210,9 +197,6 @@ const DropDown = () => {
     walletmodal();
   };
 
-
-
-
   function formatNumber(value) {
     if (value < 1000) {
       return value.toString();
@@ -241,14 +225,12 @@ const DropDown = () => {
       : text;
   };
 
-
-
-
   // ADMIN NOTIFICATION NOTIFICATION
   const getSubadminTableData = async () => {
     try {
-
-      const response = await dispatch(admin_Msg_Get({ ownerId: user_id, key: 3 })).unwrap();
+      const response = await dispatch(
+        admin_Msg_Get({ ownerId: user_id, key: 3 })
+      ).unwrap();
       if (response.status) {
         setPipelineData(response.data);
       } else {
@@ -259,26 +241,21 @@ const DropDown = () => {
     }
   };
 
-
-
-
   // subadmin help notification for admin page
 
   const gettable = async () => {
     try {
-      const today = new Date().toISOString().split('T')[0];  // Format YYYY-MM-DD
+      const today = new Date().toISOString().split("T")[0]; // Format YYYY-MM-DD
       const response = await dispatch(getsubadmintable({})).unwrap();
-      
+
       if (response.status) {
         if (response.data.length > 0) {
           var filterData = response.data.filter((data) => {
-  
-            const dataDate = data.createdAt.split('T')[0];
+            const dataDate = data.createdAt.split("T")[0];
 
-            return  dataDate === today;
+            return dataDate === today;
           });
-  
-        
+
           setGetsubadmin(filterData);
         } else {
           setGetsubadmin([]);
@@ -288,26 +265,24 @@ const DropDown = () => {
       console.log("error", error);
     }
   };
-  
 
-
-
-  // USER NOTIFICATION  
+  // USER NOTIFICATION
   const getusertable = async () => {
     try {
       const response = await dispatch(userdataforhelp({})).unwrap();
-      const today = new Date().toISOString().split('T')[0]; 
-  
+      const today = new Date().toISOString().split("T")[0];
+
       if (response.status) {
         if (response.data.length > 0) {
           var filterData = response.data.filter((data) => {
-  
-            const dataDate = data.createdAt.split('T')[0];
+            const dataDate = data.createdAt.split("T")[0];
 
-            return data.prifix_key.substring(0, 3) === user.prifix_key && dataDate === today;
+            return (
+              data.prifix_key.substring(0, 3) === user.prifix_key &&
+              dataDate === today
+            );
           });
-  
-        
+
           setGetuserdata(filterData);
         } else {
           setGetuserdata([]);
@@ -317,18 +292,14 @@ const DropDown = () => {
       console.error("Error in getusertable:", error);
     }
   };
-  
-  
 
   useEffect(() => {
     fetchIP();
     fetchData();
     getSubadminTableData();
-    getusertable()
-    gettable()
+    getusertable();
+    gettable();
   }, []);
-
-
 
   useEffect(() => {
     const storedThemeMode = localStorage.getItem("theme_mode");
@@ -343,14 +314,6 @@ const DropDown = () => {
     htmlElement.setAttribute("data-layout-mode", themeMode);
     htmlElement.setAttribute("data-topbar", themeMode);
   }, [themeMode]);
-
-
-
-
-
-
-
-
 
   return (
     <div className="mb-0 dropdown custom-dropdown">
@@ -389,9 +352,6 @@ const DropDown = () => {
           </li>
         ) : null}
 
-
-
-
         <li className="nav-item dropdown  flag-nav dropdown-heads">
           <a
             className="nav-link iconclass"
@@ -401,7 +361,6 @@ const DropDown = () => {
             <i className="fe fe-bell" /> <span className="badge rounded-pill" />
           </a>
           <div className="dropdown-menu notifications">
-
             <div className="topnav-dropdown-header">
               <div className="notification-title">Notifications</div>
               {/* <a
@@ -414,81 +373,121 @@ const DropDown = () => {
 
             <div className="noti-content">
               <ul className="notification-list">
-
-
-                {pipelineData && Role == "SUBADMIN" && pipelineData.map((data, index) => (
-                  <li className="notification-message" key={`pipeline-${index}`}>
-                    <a href="/#/subadmin/message-broadcast">
-                      <div className="d-flex">
-                        <div className="media-body">
-                          <div className="d-flex justify-content-between">
-                            <p className="noti-details">
-                              <span className="noti-title">{data.UserName}</span>
-                            </p>
-                            <p className="noti-time">
-                              <span className="notification-time">{fDateTime(data.createdAt)}</span>
-                            </p>
-                          </div>
-                          <div className="d-flex justify-content-between">
-                            <span style={{ maxWidth: "18rem" }}>
-                              {truncateText(data.messageTitle, 80)}
-                            </span>
-                            <span>Admin</span>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                ))}
-
-                { Role === "SUBADMIN" ? getuserdata && getuserdata.map((data, index) => (
-                  <li className="notification-message" key={`getuserdata-${index}`}>
-                    <a href="/#/subadmin/help">
-                      <div className="d-flex">
-                        <div className="media-body">
-                          <div className="d-flex justify-content-between">
-                            <p className="noti-details">
-                              <span className="noti-title">{data.UserName}</span>
-                            </p>
-                            <p className="noti-time">
-                              <span className="notification-time">{fDateTime(data.createdAt)}</span>
-                            </p>
-                          </div>
-                          <div className="d-flex justify-content-between">
-                            <span style={{ maxWidth: "18rem" }}>
-                              {truncateText(data.Message, 80)}
-                            </span>
-                            <span>Help</span>
+                {pipelineData &&
+                  Role == "SUBADMIN" &&
+                  pipelineData.map((data, index) => (
+                    <li
+                      className="notification-message"
+                      key={`pipeline-${index}`}
+                    >
+                      <a href="/#/subadmin/message-broadcast">
+                        <div className="d-flex">
+                          <div className="media-body">
+                            <div className="d-flex justify-content-between">
+                              <p className="noti-details">
+                                <span className="noti-title">
+                                  {data.UserName}
+                                </span>
+                              </p>
+                              <p className="noti-time">
+                                <span className="notification-time">
+                                  {fDateTime(data.createdAt)}
+                                </span>
+                              </p>
+                            </div>
+                            <div className="d-flex justify-content-between">
+                              <span style={{ maxWidth: "18rem" }}>
+                                {truncateText(data.messageTitle, 80)}
+                              </span>
+                              <span>Admin</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </a>
-                  </li>
-                )) : 
-                 Role ==="ADMIN" ?  getsubadmin && getsubadmin.map((data, index) => (
-                  <li className="notification-message" key={`getuserdata-${index}`}>
-                    <a href="/#/subadmin/help">
-                      <div className="d-flex">
-                        <div className="media-body">
-                          <div className="d-flex justify-content-between">
-                            <p className="noti-details">
-                              <span className="noti-title">{data.UserName}</span>
-                            </p>
-                            <p className="noti-time">
-                              <span className="notification-time">{fDateTime(data.createdAt)}</span>
-                            </p>
+                      </a>
+                    </li>
+                  ))}
+
+                {Role === "SUBADMIN"
+                  ? getuserdata &&
+                    getuserdata.map((data, index) => (
+                      <li
+                        className="notification-message"
+                        key={`getuserdata-${index}`}
+                      >
+                        <a href="/#/subadmin/help">
+                          <div className="d-flex">
+                            <div className="media-body">
+                              <div className="d-flex justify-content-between">
+                                <p className="noti-details">
+                                  <span className="noti-title">
+                                    {data.UserName}
+                                  </span>
+                                </p>
+                                <p className="noti-time">
+                                  <span className="notification-time">
+                                    {fDateTime(data.createdAt)}
+                                  </span>
+                                </p>
+                              </div>
+                              <div className="d-flex justify-content-between">
+                                <span
+                                  style={{
+                                    maxWidth: "18rem",
+                                    display: "inline-block",
+                                    wordWrap: "break-word",
+                                    whiteSpace: "normal",
+                                  }}
+                                >
+                                  {truncateText(data.Message)}
+                                </span>
+                                <span>Help</span>
+                              </div>
+                            </div>
                           </div>
-                          <div className="d-flex justify-content-between">
-                            <span style={{ maxWidth: "18rem" }}>
-                              {truncateText(data.Message, 80)}
-                            </span>
-                            <span>Help</span>
+                        </a>
+                      </li>
+                    ))
+                  : Role === "ADMIN"
+                  ? getsubadmin &&
+                    getsubadmin.map((data, index) => (
+                      <li
+                        className="notification-message"
+                        key={`getuserdata-${index}`}
+                      >
+                        <a href="/#/subadmin/help">
+                          <div className="d-flex">
+                            <div className="media-body">
+                              <div className="d-flex justify-content-between">
+                                <p className="noti-details">
+                                  <span className="noti-title">
+                                    {data.UserName}
+                                  </span>
+                                </p>
+                                <p className="noti-time">
+                                  <span className="notification-time">
+                                    {fDateTime(data.createdAt)}
+                                  </span>
+                                </p>
+                              </div>
+                              <div className="d-flex justify-content-between">
+                                <span
+                                  style={{
+                                    maxWidth: "18rem",
+                                    display: "inline-block",
+                                    wordWrap: "break-word",
+                                    whiteSpace: "normal",
+                                  }}
+                                >
+                                  {truncateText(data.Message)}
+                                </span>
+                                <span>Help</span>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                )):  "" } 
+                        </a>
+                      </li>
+                    ))
+                  : ""}
               </ul>
             </div>
 

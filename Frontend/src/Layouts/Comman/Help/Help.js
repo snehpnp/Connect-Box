@@ -88,6 +88,8 @@ function System() {
     "Login with api",
   ];
 
+
+
   const styles = {
     container: {
       display: "flex",
@@ -105,6 +107,9 @@ function System() {
       marginRight: 8,
     },
   };
+
+
+
 
 
   const columns = [
@@ -149,6 +154,11 @@ function System() {
       renderCell: (params) => <div>{fDateTime(params.value || "")}</div>,
     },
   ];
+
+
+
+
+
 
   const columns1 = [
     {
@@ -198,6 +208,10 @@ function System() {
       renderCell: (params) => <div>{fDateTime(params.value || "")}</div>,
     },
   ];
+
+
+
+
 
   //get subadmin table
   const gettable = async () => {
@@ -249,6 +263,8 @@ function System() {
       });
   };
 
+
+
   // // get user help data
   const getusertable = async () => {
     await dispatch(userdataforhelp({}))
@@ -288,6 +304,10 @@ function System() {
       });
   };
 
+
+
+
+
   // get Research
   const getResearcher = async () => {
     await dispatch(getResearch({}))
@@ -321,20 +341,29 @@ function System() {
       });
   };
 
+
+
+
   // fetch data by using local storage
   useEffect(() => {
     gettable();
   }, [value == 0, category,inputSearch]);
 
+
+
   useEffect(() => {
     getusertable();
   }, [value == 1,inputSearch]);
+
+
 
   useEffect(() => {
     getResearcher();
   }, [value == 2,inputSearch]);
 
-  console.log("filterData", getsubadmin);
+
+
+  
 
   return (
     <>

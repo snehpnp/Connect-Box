@@ -381,7 +381,6 @@ const DashBoard = () => {
                                       shadeIntensity: 0.65
                                     }
                                   }
-
                                 }}
                                 series={series}
                                 type="bar"
@@ -398,9 +397,6 @@ const DashBoard = () => {
                     </div>
                   </div>
                 </div>
-
-
-
 
                 {/* <div className="col-xl-4 d-flex">
                   <div className="card flex-fill">
@@ -477,7 +473,6 @@ const DashBoard = () => {
                     </div>
                   </div>
                 </div> */}
-
 
               </div>
             </div>

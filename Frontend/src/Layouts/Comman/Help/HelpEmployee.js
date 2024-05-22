@@ -66,6 +66,9 @@ const HelpEmployee = () => {
     },
   };
 
+
+
+
   const columns = [
     {
       field: "index",
@@ -108,6 +111,9 @@ const HelpEmployee = () => {
     },
   ];
 
+
+
+  // post help to subadmin 
   const postSubadminhelp = async (e) => {
     e.preventDefault();
     if (!help.UserName || !help.Email || !help.mobile || !help.Message) {
@@ -159,6 +165,11 @@ const HelpEmployee = () => {
       });
   };
 
+
+
+
+
+    // get employee table
   const gettable = async () => {
     await dispatch(getemployee({}))
       .unwrap()
@@ -188,6 +199,11 @@ const HelpEmployee = () => {
     gettable();
   }, [value]);
 
+
+
+
+
+  
   return (
     <>
       <div data-aos="fade-left">
