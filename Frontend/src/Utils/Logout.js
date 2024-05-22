@@ -35,7 +35,7 @@ const useLogout = () => {
                         localStorage.removeItem("user_role");
                         navigate("/login");
                         window.location.reload()
-                    }, 1500);
+                    }, 700);
 
 
 
