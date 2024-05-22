@@ -30,11 +30,75 @@ module.exports = function (app) {
     app.get('/str', async (req, res) => {
 
       //  await MainSignalsRemainToken();
-      //  await MakecallABR()
+        await MakecallABRCloseExpiry()
         res.send("Okkkkkkkkkkkk Test File...")
 
        
     });   
+}
+
+
+
+
+
+const MakecallABRCloseExpiry = async () => {
+    
+  console.log("Run code")
+  
+  const pipeline = [
+      {
+          $match: {
+           status: { $in: [0, 2] }
+          }
+      },
+      {
+          $addFields: {
+              expiry_date: {
+                  $dateFromString: {
+                      dateString: "$Expiry",
+                      format: "%d%m%Y"
+                  }
+              },
+          }
+      },
+      {
+          $match: {
+              expiry_date: {
+                  $lt: new Date(new Date().setHours(0, 0, 0, 0)) // Get the current date with time set to midnight
+              }
+          }
+      },
+
+      {
+          $sort: {
+              _id: -1 // Sort in ascending order. Use -1 for descending.
+          }
+      },
+      {
+          $project: {
+              _id: 1,
+              Expiry: 1,
+              status: 1,
+              Symbol: 1
+          }
+      }
+
+
+  ]
+
+
+  const result = await makecallABR.aggregate(pipeline)
+  
+  if(result.length > 0){
+    const ids = result.map(item => item._id)
+    const UpdateData = await makecallABR.updateMany(
+            { _id: { $in: ids } },
+            { $set: { status: 1 } }
+       );
+       console.log("UpdateData" ,UpdateData)
+  }
+
+  return
 }
 
 

@@ -29,25 +29,31 @@ export async function GetAccessToken(data) {
 
 
 export async function CreateSocketSession(type, userid, userSession1) {
+      try {
+        
+        return axios.post(`${aliceBaseUrl}ws/createSocketSess`, type, {
+            headers: {
+                // 'Authorization': `Bearer ${userid} ${token}`,
+                'Authorization': `Bearer ${userid} ${userSession1}`,
+                // 'Authorization': `Bearer ${userid} ${userSession1}`,
+                // 'Authorization': Payload,
+                // 'Access-Control-Allow-Origin' : "*",
+                'Content-Type': 'application/json'
+            },
+    
+           })
+            .then(res => {
+                return res;
+            })
+            .catch(error => {
+                return error.response
+            })
+        
+      } catch (error) {
+         return
+      }
 
-
-    return axios.post(`${aliceBaseUrl}ws/createSocketSess`, type, {
-        headers: {
-            // 'Authorization': `Bearer ${userid} ${token}`,
-            'Authorization': `Bearer ${userid} ${userSession1}`,
-            // 'Authorization': `Bearer ${userid} ${userSession1}`,
-            // 'Authorization': Payload,
-            // 'Access-Control-Allow-Origin' : "*",
-            'Content-Type': 'application/json'
-        },
-
-    })
-        .then(res => {
-            return res;
-        })
-        .catch(error => {
-            return error.response
-        })
+      
 }
 
 

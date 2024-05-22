@@ -18,6 +18,8 @@ const live_price = db.live_price;
 const UserMakeStrategy = db.UserMakeStrategy;
 const Get_Option_Chain_modal = db.get_option_chain_symbols;
 const MainSignals_modal = db.MainSignals
+const makecallABR = db.makecallABR
+
 
 
 const mongoose = require('mongoose');
@@ -49,6 +51,7 @@ cron.schedule('1 1 * * *', () => {
 
 cron.schedule('10 1 * * *', () => {
     TokenSymbolUpdate()
+    MakecallABRCloseExpiry()
 });
 cron.schedule('* 1 * * *', () => {
     TokenSymbolUpdate()
@@ -77,6 +80,7 @@ cron.schedule('30 6 * * *', () => {
     console.log('Run cron token chain');
     TruncateTableTokenChain();
 });
+
 
 
 
@@ -186,24 +190,28 @@ const MainSignalsRemainToken = async () => {
 
 
     const result = await MainSignals_modal.aggregate(pipeline)
-    result.forEach(async (element) => {
 
 
-        const filter = { _id: element.token };
-        const update = {
-            $set: { _id: element.token, exch: element.exch_seg },
-        };
-        const update_token = await token_chain_collection.updateOne(filter, update, { upsert: true });
-
-    });
+    if(result.length > 0){
+        result.forEach(async (element) => {
 
 
+            const filter = { _id: element.token };
+            const update = {
+                $set: { _id: element.token, exch: element.exch_seg },
+            };
+            const update_token = await token_chain_collection.updateOne(filter, update, { upsert: true });
+    
+        });
+    }
+   
+
+  return
 
 
 }
 
 const MakecallABR = async () => {
-
 
     const pipeline = [
         {
@@ -307,22 +315,85 @@ const MakecallABR = async () => {
 
     const result = await makecallABR.aggregate(pipeline)
 
-    result.forEach(async (element) => {
+    if(result.length > 0){
+        result.forEach(async (element) => {
 
 
-        const filter = { _id: element.token };
-        const update = {
-            $set: { _id: element.token, exch: element.exch_seg },
-        };
-        const update_token = await token_chain_collection.updateOne(filter, update, { upsert: true });
+            const filter = { _id: element.token };
+            const update = {
+                $set: { _id: element.token, exch: element.exch_seg },
+            };
+            const update_token = await token_chain_collection.updateOne(filter, update, { upsert: true });
+    
+    
+        });
+    }
+  
 
-
-    });
-
-
-
+ 
+    return
 
 }
+
+const MakecallABRCloseExpiry = async () => {
+    
+  //  console.log("Run code")
+    
+    const pipeline = [
+        {
+            $match: {
+             status: { $in: [0, 2] }
+            }
+        },
+        {
+            $addFields: {
+                expiry_date: {
+                    $dateFromString: {
+                        dateString: "$Expiry",
+                        format: "%d%m%Y"
+                    }
+                },
+            }
+        },
+        {
+            $match: {
+                expiry_date: {
+                    $lt: new Date(new Date().setHours(0, 0, 0, 0)) // Get the current date with time set to midnight
+                }
+            }
+        },
+  
+        {
+            $sort: {
+                _id: -1 // Sort in ascending order. Use -1 for descending.
+            }
+        },
+        {
+            $project: {
+                _id: 1,
+                Expiry: 1,
+                status: 1,
+                Symbol: 1
+            }
+        }
+  
+  
+    ]
+  
+  
+    const result = await makecallABR.aggregate(pipeline)
+    
+    if(result.length > 0){
+      const ids = result.map(item => item._id)
+      const UpdateData = await makecallABR.updateMany(
+              { _id: { $in: ids } },
+              { $set: { status: 1 } }
+         );
+         console.log("UpdateData" ,UpdateData)
+    }
+  
+    return
+  }
 
 
 const TruncateTableTokenChainAdd_fiveMinute = async () => {
