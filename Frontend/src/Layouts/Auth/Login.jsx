@@ -9,8 +9,10 @@ import Swal from 'sweetalert2';
 import { ipAddress } from '../../Utils/Ipaddress';
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
-
 import ReCAPTCHA from 'react-google-recaptcha';
+import io from "socket.io-client";
+import * as Config from "../../Utils/Config";
+
 
 function Login() {
 
@@ -27,14 +29,31 @@ function Login() {
   const [password, setPassword] = useState('');
   const [ip, setIp] = useState(null);
   const [isVerified, setIsVerified] = useState(false);
+  const [socket, setSocket] = useState(null);
 
 
   var sitekey = "6LeLC88pAAAAAM8P1WFYgAHJOwwlZ3MLfV9hyStu"
 
-  
+
+
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
+
+  const fetchIP = async () => {
+    try {
+      const ip = await ipAddress();
+      setIp(ip);
+    } catch (error) {
+      console.error('Failed to fetch IP address:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchIP();
+    const newSocket = io.connect(Config.base_url);
+    setSocket(newSocket);
+  }, []);
 
 
 
@@ -42,7 +61,7 @@ function Login() {
     setIsVerified(!!value);
   };
 
-  const verifyOTP = () => {
+  const verifyOTP = async () => {
     var Otp = getData && getData.mobile.slice(-4);
 
     if (typeOtp.length !== 4) {
@@ -50,20 +69,22 @@ function Login() {
         icon: 'error',
         title: 'Fill OTP',
         showConfirmButton: false,
-        timer: 800 
+        timer: 800
       });
-      
+
 
     } else if (Otp !== typeOtp) {
       Swal.fire({
         icon: 'error',
         title: 'Otp Is Incorrect',
         showConfirmButton: false,
-        timer: 800 
+        timer: 800
       });
-      
+
     } else {
-      
+      var newMessage = { user_id: getData.user_id, token: getData.token }
+      await socket.emit("login", newMessage);
+
       localStorage.setItem("user_details", JSON.stringify(getData));
       localStorage.setItem("user_role", JSON.stringify(getData.Role));
       setIsLoggedIn(true);
@@ -112,7 +133,7 @@ function Login() {
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
 
-    if (!trimmedEmail ||!trimmedPassword) {
+    if (!trimmedEmail || !trimmedPassword) {
       Swal.fire({
         title: 'Error',
         text: 'Enter the credentials to login.',
@@ -144,7 +165,7 @@ function Login() {
       });
       return;
     }
-    
+
 
 
     const req = {
@@ -166,7 +187,7 @@ function Login() {
             showErrorModal("Incorrect Password", "Enter the correct password.");
             break;
           case "please contact admin you are inactive.":
-            showInactiveAccountModal("please contact admin you are inactive.","please contact admin you are inactive.");
+            showInactiveAccountModal("please contact admin you are inactive.", "please contact admin you are inactive.");
             break;
           case "User Not exists":
             showErrorModal("User Not Exists", "The user you are trying to access does not exist.");
@@ -233,7 +254,7 @@ function Login() {
   };
 
   useEffect(() => {
-     
+
     const htmlElement = document.querySelector("html");
     htmlElement.setAttribute("data-sidebar", theme_mode);
     htmlElement.setAttribute("data-layout-mode", theme_mode);
@@ -246,18 +267,7 @@ function Login() {
   }, [isLoggedIn, getData.Role, navigate]);
 
 
-  const fetchIP = async () => {
-    try {
-      const ip = await ipAddress();
-      setIp(ip);
-    } catch (error) {
-      console.error('Failed to fetch IP address:', error);
-    }
-  };
 
-  useEffect(() => {
-    fetchIP();
-  }, []);
 
 
   const handleKeyPress = (event) => {
@@ -325,7 +335,7 @@ function Login() {
 
                         <ReCAPTCHA
                           sitekey={sitekey}
-                        onChange={handleRecaptchaChange}
+                          onChange={handleRecaptchaChange}
                         />
 
                         <div class="add-customer-btns d-flex justify-content-between text-end mt-3">

@@ -29,19 +29,19 @@ class Auth {
                 return res.send({ status: false, msg: 'User Not exists', data: [] });
             }
 
-            if (EmailCheck.Role == "USER" || EmailCheck.Role == "SUBADMIN") {
-                // WHERE LOGIN CHECKgetIPAddress
-                if (device == "APP") {                  //App Login Check
-                    if (EmailCheck.AppLoginStatus == 1) {
-                        return res.send({ status: false, msg: 'You are already logged in on the phone.', data: [] });
-                    }
-                } else if (device == "WEB") {          //Web login check
-                    if (EmailCheck.WebLoginStatus == 1) {
-                        return res.send({ status: false, msg: 'You are already logged in on the Web.', data: [] });
-                    }
-                }
+            // if (EmailCheck.Role == "USER" || EmailCheck.Role == "SUBADMIN") {
+            //     // WHERE LOGIN CHECKgetIPAddress
+            //     if (device == "APP") {                  //App Login Check
+            //         if (EmailCheck.AppLoginStatus == 1) {
+            //             return res.send({ status: false, msg: 'You are already logged in on the phone.', data: [] });
+            //         }
+            //     } else if (device == "WEB") {          //Web login check
+            //         if (EmailCheck.WebLoginStatus == 1) {
+            //             return res.send({ status: false, msg: 'You are already logged in on the Web.', data: [] });
+            //         }
+            //     }
 
-            }
+            // }
 
             // Password Check
             const validPassword = await bcrypt.compare(Password, EmailCheck.Password);

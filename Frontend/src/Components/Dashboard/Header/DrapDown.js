@@ -12,7 +12,8 @@ import { ipAddress } from '../../../Utils/Ipaddress';
 import { admin_Msg_Get } from "../../../ReduxStore/Slice/Admin/MessageData";
 import { fDateTime } from "../../../Utils/Date_formet";
 import useLogout from "../../../Utils/Logout";
-
+import io from "socket.io-client";
+import * as Config from "../../../Utils/Config";
 
 const DropDown = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const DropDown = () => {
   const [getuserdata, setGetuserdata] = useState([]);
   const [profileImage, setProfileImage] = useState("");
   const [getsubadmin, setGetsubadmin] = useState([]);
+  const [socket, setSocket] = useState(null);
 
 
 
@@ -41,7 +43,23 @@ const DropDown = () => {
 
   const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type;
 
+  useEffect(async() => {
+    const ip = await ipAddress();
+    const newSocket = io.connect(Config.base_url);
+    setSocket(newSocket);
 
+    newSocket.on("logout", (data) => {
+      if (user_id == data.user_id && token != data.token) {
+   
+        logout(user_id, ip);
+      }
+    });
+
+    return () => {
+      newSocket.off("logout");
+      newSocket.close();
+    };
+  }, []);
 
 
   const fetchData = async () => {

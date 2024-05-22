@@ -18,11 +18,8 @@ const Header = () => {
 
   const navigate = useNavigate();
 
-  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
-  const token = JSON.parse(localStorage.getItem("user_details")).token;
-  const subadmin_service_type = JSON.parse(
-    localStorage.getItem("user_details")
-  ).subadmin_service_type;
+  const user_details = JSON.parse(localStorage.getItem("user_details"))
+
 
   const toggleSubMenu = (menuTitle) => {
     setOpenSubMenu(openSubMenu === menuTitle ? "" : menuTitle);
@@ -45,10 +42,10 @@ const Header = () => {
   }
 
   const ClearSession = async () => {
-    if (!token) {
+    if (!user_details.token) {
       return;
     } else {
-      const decodedToken = JSON.parse(atob(token.split(".")[1])); // Decode JWT token
+      const decodedToken = JSON.parse(atob(user_details.token.split(".")[1])); // Decode JWT token
       const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
 
       if (decodedToken.exp && decodedToken.exp < currentTime) {
@@ -81,7 +78,7 @@ const Header = () => {
     setActiveLink(id);
   };
 
-  if (subadmin_service_type == 2) {
+  if (user_details.subadmin_service_type == 2) {
     HeaderData = HeaderData[0].filter(
       (column) => column.name != "Trade Charges"
     );
