@@ -402,8 +402,14 @@ const DropDown = () => {
                             </p>
                           </div>
                           <div className="d-flex justify-content-between">
-                            <span style={{ maxWidth: "18rem" }}>
-                              {truncateText(data.messageTitle, 50)}
+                            <span style={{
+                              maxWidth: "18rem",
+                              display: "inline-block",
+                              wordWrap: "break-word",
+                              whiteSpace: "normal",
+
+                            }}>
+                              {truncateText(data.messageTitle)}
                             </span>
                             <span>Admin</span>
                           </div>
@@ -457,8 +463,14 @@ const DropDown = () => {
                               </p>
                             </div>
                             <div className="d-flex justify-content-between">
-                              <span style={{ maxWidth: "18rem" }}>
-                                {truncateText(data.Message, 80)}
+                              <span style={{
+                              maxWidth: "18rem",
+                              display: "inline-block",
+                              wordWrap: "break-word",
+                              whiteSpace: "normal",
+
+                            }}>
+                                {truncateText(data.Message)}
                               </span>
                               <span>Help</span>
                             </div>
