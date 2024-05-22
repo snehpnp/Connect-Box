@@ -52,7 +52,7 @@ const DropDown = () => {
       newSocket.on("logout", (data) => {
         console.log("data", data)
         console.log("user_id", user_id)
-        console.log("token",token);
+        console.log("token", token);
 
 
         if (user_id == data.user_id && token != data.token) {
@@ -93,11 +93,11 @@ const DropDown = () => {
         setError(error.message);
       }
     };
-  
+
     fetchData();
-  
-  }, [user_id, token]); 
-  
+
+  }, [user_id, token]);
+
 
 
 
@@ -403,7 +403,7 @@ const DropDown = () => {
                           </div>
                           <div className="d-flex justify-content-between">
                             <span style={{ maxWidth: "18rem" }}>
-                              {truncateText(data.messageTitle, 80)}
+                              {truncateText(data.messageTitle, 50)}
                             </span>
                             <span>Admin</span>
                           </div>
@@ -427,8 +427,14 @@ const DropDown = () => {
                             </p>
                           </div>
                           <div className="d-flex justify-content-between">
-                            <span style={{ maxWidth: "18rem" }}>
-                              {truncateText(data.Message, 80)}
+                            <span style={{
+                              maxWidth: "18rem",
+                              display: "inline-block",
+                              wordWrap: "break-word",
+                              whiteSpace: "normal",
+
+                            }}>
+                              {truncateText(data.Message)}
                             </span>
                             <span>Help</span>
                           </div>
