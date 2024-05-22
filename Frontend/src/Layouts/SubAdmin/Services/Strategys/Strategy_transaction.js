@@ -318,8 +318,6 @@ function Payment() {
 
               }
 
-
-
               <FullDataTable
                 styles={styles}
                 columns={columns}

@@ -63,6 +63,8 @@ const Helpsubadmin = () => {
     setValue(newValue);
   };
 
+
+
   const styles = {
     container: {
       display: "flex",
@@ -80,6 +82,8 @@ const Helpsubadmin = () => {
       marginRight: 8,
     },
   };
+
+
 
   const columns = [
     {
@@ -122,6 +126,10 @@ const Helpsubadmin = () => {
       renderCell: (params) => <div>{fDateTime(params.value || "")}</div>,
     },
   ];
+
+
+
+
 
   const columns1 = [
     {
@@ -327,7 +335,7 @@ const Helpsubadmin = () => {
 
 
 
-
+// delete subadmin data
   const deletesubadmindata = async (userId) => {
     var data = { id: userId };
     await dispatch(deletesubadminhelpdata(data))
@@ -355,7 +363,7 @@ const Helpsubadmin = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          toast.success("Message is deleted");
+          toast.success("getting");
           setRefresh(!refresh);
           gettable();
         }
@@ -365,6 +373,9 @@ const Helpsubadmin = () => {
       });
   };
 
+
+
+  
   useEffect(() => {
     setHelp(user);
     gettable();

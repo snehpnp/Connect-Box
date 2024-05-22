@@ -37,8 +37,13 @@ const Helpuser = () => {
     prifix_key: "",
   });
 
+
+
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState("0");
+
+
+
 
   const styles = {
     container: {
@@ -57,6 +62,9 @@ const Helpuser = () => {
       marginRight: 8,
     },
   };
+
+
+
   const columns2 = [
     {
       field: "index",
@@ -93,9 +101,14 @@ const Helpuser = () => {
     },
   ];
 
+
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+
+
 
   // GET USER HELP DATA
   const getusertable = async () => {
@@ -120,6 +133,9 @@ const Helpuser = () => {
         console.log("error", error);
       });
   };
+
+
+
 
   // POST API TO SEND HELP SMS
   const userhelp = async (e) => {
@@ -171,15 +187,23 @@ const Helpuser = () => {
     }
   };
 
+
+
+
+
   useEffect(() => {
     const user = localStorage.getItem("user_details");
     setHelp(JSON.parse(user));
   }, [value]);
 
+
+
   useEffect(() => {
     getusertable();
   }, [value]);
 
+
+  
   return (
     <div>
       <Content

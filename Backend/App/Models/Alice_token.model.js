@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const AliceTokenSchema = new mongoose.Schema({
     symbol: {
         type: String,
