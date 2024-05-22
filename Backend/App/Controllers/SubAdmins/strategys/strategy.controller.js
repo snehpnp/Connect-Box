@@ -926,6 +926,11 @@ class strategy {
 
     var TradechargesWithUserDetails = await tradeCharge_Modal.aggregate([
       {
+        $match: {
+          user_id: new ObjectId(id)
+        }
+      },
+      {
         $lookup: {
           from: "users",
           localField: "user_id",
