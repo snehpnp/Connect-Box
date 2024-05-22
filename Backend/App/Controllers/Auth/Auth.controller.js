@@ -29,26 +29,26 @@ class Auth {
                 return res.send({ status: false, msg: 'User Not exists', data: [] });
             }
 
-            if (EmailCheck.Role == "USER" || EmailCheck.Role == "SUBADMIN") {
-                // WHERE LOGIN CHECKgetIPAddress
-                if (device == "APP") {                  //App Login Check
-                    if (EmailCheck.AppLoginStatus == 1) {
-                        return res.send({ status: false, msg: 'You are already logged in on the phone.', data: [] });
-                    }
-                } else if (device == "WEB") {          //Web login check
-                    if (EmailCheck.WebLoginStatus == 1) {
-                        return res.send({ status: false, msg: 'You are already logged in on the Web.', data: [] });
-                    }
-                }
+            // if (EmailCheck.Role == "USER" || EmailCheck.Role == "SUBADMIN") {
+            //     // WHERE LOGIN CHECKgetIPAddress
+            //     if (device == "APP") {                  //App Login Check
+            //         if (EmailCheck.AppLoginStatus == 1) {
+            //             return res.send({ status: false, msg: 'You are already logged in on the phone.', data: [] });
+            //         }
+            //     } else if (device == "WEB") {          //Web login check
+            //         if (EmailCheck.WebLoginStatus == 1) {
+            //             return res.send({ status: false, msg: 'You are already logged in on the Web.', data: [] });
+            //         }
+            //     }
 
-            }
+            // }
 
             // Password Check
             const validPassword = await bcrypt.compare(Password, EmailCheck.Password);
             if (validPassword == false) {
                 return res.send({ status: false, msg: 'Password Not Match', data: [] });
             }
-            if (EmailCheck.Role == "USER" || EmailCheck.Role == "SUBADMIN" || EmailCheck.Role == "EMPLOYEE" || EmailCheck.Role == "RESEARCH" ) {
+            if (EmailCheck.Role == "USER" || EmailCheck.Role == "SUBADMIN" || EmailCheck.Role == "EMPLOYEE" || EmailCheck.Role == "RESEARCH") {
 
                 // User active Status
                 if (EmailCheck.ActiveStatus == 0) {
@@ -123,7 +123,6 @@ class Auth {
         }
 
     }
-
 
     // Verify user
     async verifyUser(req, res) {
@@ -223,11 +222,10 @@ class Auth {
         }
     }
 
-
     // Logout User
     async logoutUser(req, res) {
 
-        
+
         try {
             const { userId, Device, system_ip } = req.body;
             var addData = {}
@@ -259,14 +257,6 @@ class Auth {
 
             addData = { ...addData, web_login_token: '' }
 
-
-            // // Update Successfully
-            // const result = await User.updateMany(
-            //     { Email: EmailCheck[0].Email },
-            //     { $set: addData }
-            // );
-
-
             const user_login = new user_logs({
                 user_Id: EmailCheck[0]._id,
                 admin_Id: EmailCheck[0].parent_id,
@@ -276,12 +266,6 @@ class Auth {
             })
             await user_login.save();
 
-            // If Not Update User
-            // if (!result) {
-                // return res.send({ status: false, msg: 'Server Side issue.', data: [] });
-            // }
-
-
             return res.send({ status: true, msg: "Logout Succesfully", data: [] })
 
 
@@ -290,7 +274,7 @@ class Auth {
         }
     }
 
-
+    // FORGOTE PASSWORD
     async ForgetPassword(req, res) {
         try {
             const { Email } = req.body;
@@ -323,82 +307,42 @@ class Auth {
         }
     }
 
-
-    // Update Password
-    // async UpdatePassword(req, res) {
-    //     try {
-    //         const { userid, NewPassword, ConfirmPassword } = req.body;
-
-
-    //         // // IF Login Time Email CHECK
-    //         const EmailCheck = await User.findById(userid);
-
-    //         if (!EmailCheck) {
-    //             return res.send({ status: false, msg: 'User Not exists', data: [] });
-    //         }
-
-    //         if (NewPassword !== ConfirmPassword) {
-    //             return res.send({ status: false, msg: 'New Password and Confirm Password Not Match', data: [] });
-    //         }
-
-    //         const hashedPassword = await bcrypt.hash(NewPassword, 8);
-    //         let result = await User.findByIdAndUpdate(
-    //             EmailCheck._id,
-    //             {
-    //                 Password: hashedPassword,
-    //                 Otp: NewPassword
-    //             },
-    //             { new: true }
-    //         )
-
-    //         // If Not Update User
-    //         if (!result) {
-    //             return res.send({ status: false, msg: 'Server Side issue.', data: [] });
-    //         }
-
-
-    //         return res.send({ status: true, msg: "Password Update Successfully" });
-    //     } catch (error) {
-
-    //     }
-    // }
-
-
+    // UPDATE PASSWORD
     async UpdatePassword(req, res) {
         try {
             const { userid, NewPassword } = req.body;
-    
+
             // Validate input
-            if (!mongoose.Types.ObjectId.isValid(userid)  || !NewPassword ) {
+            if (!mongoose.Types.ObjectId.isValid(userid) || !NewPassword) {
                 return res.send({ status: false, msg: 'Missing required fields', data: [] });
             }
 
             const user = await User.findById(userid);
-    
+
             if (!user) {
                 return res.send({ status: false, msg: 'User not found', data: [] });
             }
-            
+
             // Check if the new password is the same as the old password
             const isSamePassword = await bcrypt.compare(NewPassword, user.Password);
             if (isSamePassword) {
                 return res.send({ status: false, msg: 'New password must be different from the old password', data: [] });
             }
-    
+
             const hashedPassword = await bcrypt.hash(NewPassword, 8);
             const updatedUser = await User.findByIdAndUpdate(
                 user._id,
                 {
                     Password: hashedPassword,
-                    Otp: NewPassword 
+                    Otp: NewPassword
                 },
                 { new: true }
             );
-    
+
             if (!updatedUser) {
                 return res.send({ status: false, msg: 'Failed to update password', data: [] });
             }
-    
+
             return res.json({ status: true, msg: 'Password updated successfully' });
 
         } catch (error) {
@@ -406,11 +350,6 @@ class Auth {
             return res.send({ status: false, msg: 'An error occurred', data: [] });
         }
     }
-    
-
-
-
-
 
     // Reset Password
     async ResetPassword(req, res) {
@@ -453,6 +392,7 @@ class Auth {
         }
     }
 
+    // SIGNUP USER
     async SignUpUser(req, res) {
         try {
             const { UserName, Email, PhoneNo, ReferralCode } = req.body;
@@ -528,9 +468,7 @@ class Auth {
 
     }
 
-
     // changed password
-
     async PasswordChanged(req, res) {
         try {
             const { userid, NewPassword, CurrentPassword, ConfirmNewPassword } = req.body;
@@ -573,12 +511,6 @@ class Auth {
             res.send({ success: false, message: "An error occurred while Updating password" });
         }
     }
-
-
-
-
-
-
 
 
 }

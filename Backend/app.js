@@ -72,6 +72,11 @@ io.on("connection", (socket) => {
     io.emit("receive_message", data);
   });
 
+  
+  socket.on("login", (data) => {
+    io.emit("logout", data);
+  });
+
   socket.on("disconnect", () => {
   });
 });

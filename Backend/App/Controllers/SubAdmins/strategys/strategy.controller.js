@@ -926,6 +926,11 @@ class strategy {
 
     var TradechargesWithUserDetails = await tradeCharge_Modal.aggregate([
       {
+        $match: {
+          user_id: new ObjectId(id)
+        }
+      },
+      {
         $lookup: {
           from: "users",
           localField: "user_id",
@@ -941,6 +946,7 @@ class strategy {
         $project: {
           "UserName": "$user_details.UserName",
           "parent_id": "$user_details.parent_id",
+          "Balance": "$user_details.Balance",
           order_id: 1,
           user_charge: 1,
           admin_charge: 1,

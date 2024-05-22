@@ -11,7 +11,7 @@ import { fDate } from "../../../Utils/Date_formet";
 import { isToday } from "../../../Utils/Date_formet";
 import Swal from "sweetalert2";
 import { Employeedatabyid, Get_Parent_Type } from "../../../ReduxStore/Slice/Admin/System";
-import {ProfilImage, ProfileUpdatedata, profiledatauserId,ActiveProfile} from "../../../ReduxStore/Slice/Comman/Userinfo";
+import { ProfilImage, ProfileUpdatedata, profiledatauserId, ActiveProfile } from "../../../ReduxStore/Slice/Comman/Userinfo";
 import Toaster from "../../../Components/ExtraComponents/Alert_Toast";
 import useLogout from "../../../Utils/Logout";
 import { ipAddress } from '../../../Utils/Ipaddress';
@@ -265,8 +265,7 @@ const Profile = () => {
             setLoading(true);
           } else {
             if (response.msg == "Unauthorized!") {
-
-              logout(user_id, ip);
+              // logout(user_id, ip);
             } else {
 
               toast.error(response.msg);

@@ -1,16 +1,8 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import {
-  allStrategy_subAd,
-  get_allBroker,
-} from "../../../ReduxStore/Slice/Admin/Subadmins";
-import {
-  admin_Msg_Delete,
-  add_message,
-  admin_Msg_Get,
-  admin_Msg_Edit,
-} from "../../../ReduxStore/Slice/Admin/MessageData";
+import {allStrategy_subAd,get_allBroker} from "../../../ReduxStore/Slice/Admin/Subadmins";
+import {admin_Msg_Delete, add_message,admin_Msg_Get, admin_Msg_Edit} from "../../../ReduxStore/Slice/Admin/MessageData";
 
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import { fDateTime } from "../../../Utils/Date_formet";

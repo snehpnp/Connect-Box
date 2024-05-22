@@ -33,39 +33,61 @@ const token_chain_collection = db_main.collection('token_chain');
 
 
 
-
+// LOGOUT ALL USERS
 cron.schedule('5 2 * * *', () => {
     LogoutAllUsers()
 });
 
+// LOGOUT ALL USERS
 cron.schedule('5 5 * * *', () => {
     LogoutAllUsers()
 });
 
-
-cron.schedule('1 1 * * *', () => {
-    TruncateTable()
+// MAKSTRATEGY
+cron.schedule('0 1 * * *', () => {
     numberOfTrade_count_trade();
 });
 
 
+// TRUNCATE TABEL
+cron.schedule('0 1 * * *', () => {
+    TruncateTable()
+});
+
+// TOKE UPDATE I ALICE TOKEN
 cron.schedule('10 1 * * *', () => {
     TokenSymbolUpdate()
     MakecallABRCloseExpiry()
 });
-cron.schedule('* 1 * * *', () => {
-    TokenSymbolUpdate()
+
+// TOKE UPDATE I ALICE TOKEN
+cron.schedule('15 6 * * *', async() => {
+    var AliceTokenData = await Alice_token.find({});
+    if (AliceTokenData.length == 0) {
+        TokenSymbolUpdate()
+    }
 });
 
 
 
+// ================TESTING START===================
+// cron.schedule('15 14 * * *', () => {
+//     var AliceTokenData =  Alice_token.find({});
+//     if (AliceTokenData.length == 0) {
+//         TokenSymbolUpdate()
+//     }
+// });
 
+// ================TESTING END===================
+
+
+// COUNT TWODAYS USER END SET EXPIRY
 cron.schedule('5 23 * * *', () => {
     twodaysclient();
 });
 
 
-
+// GET LIVE PRICE IN ECEL TO COLLECTION
 cron.schedule('*/30 * * * *', () => {
     GetStrickPriceFromSheet();
 });
@@ -76,6 +98,7 @@ cron.schedule('*/10 * * * *', async () => {
 });
 
 
+// OPTION CHAIN TABEL TRUNCATE
 cron.schedule('30 6 * * *', () => {
     console.log('Run cron token chain');
     TruncateTableTokenChain();
@@ -106,62 +129,62 @@ const MainSignalsRemainToken = async () => {
                         format: "%d%m%Y"
                     }
                 },
-                
+
 
                 exch_seg: {
                     $cond: {
-                      if: { $eq: ['$segment', 'C'] }, // Your condition here
-                      then: 'NSE',
-                      else: {
-                        $cond: {
-                          if: {
-                            $or: [
-                              { $eq: ['$segment', 'F'] },
-                              { $eq: ['$segment', 'O'] },
-                              { $eq: ['$segment', 'FO'] }
-                            ]
-                          },
-                          then: 'NFO',
-                          else: {
-        
+                        if: { $eq: ['$segment', 'C'] }, // Your condition here
+                        then: 'NSE',
+                        else: {
                             $cond: {
-                              if: {
-                                $or: [
-                                  { $eq: ['$segment', 'MF'] },
-                                  { $eq: ['$segment', 'MO'] }
-                                ]
-                              },
-                              then: 'MCX',
-                              else: {
-        
-                                $cond: {
-                                  if: {
+                                if: {
                                     $or: [
-                                      { $eq: ['$segment', 'CF'] },
-                                      { $eq: ['$segment', 'CO'] }
+                                        { $eq: ['$segment', 'F'] },
+                                        { $eq: ['$segment', 'O'] },
+                                        { $eq: ['$segment', 'FO'] }
                                     ]
-                                  },
-                                  then: 'CDS',
-        
-                                  // all not exist condition 
-                                  else: "NFO"
-        
+                                },
+                                then: 'NFO',
+                                else: {
+
+                                    $cond: {
+                                        if: {
+                                            $or: [
+                                                { $eq: ['$segment', 'MF'] },
+                                                { $eq: ['$segment', 'MO'] }
+                                            ]
+                                        },
+                                        then: 'MCX',
+                                        else: {
+
+                                            $cond: {
+                                                if: {
+                                                    $or: [
+                                                        { $eq: ['$segment', 'CF'] },
+                                                        { $eq: ['$segment', 'CO'] }
+                                                    ]
+                                                },
+                                                then: 'CDS',
+
+                                                // all not exist condition 
+                                                else: "NFO"
+
+                                            }
+
+                                        }
+
+                                    }
+
+
                                 }
-        
-                              }
-        
+
                             }
-        
-        
-                          }
-        
+
                         }
-        
-                      }
-        
+
                     }
-                  },
-        
+                },
+
             }
         },
         {
@@ -216,10 +239,10 @@ const MakecallABR = async () => {
     const pipeline = [
         {
             $match: {
-              $and: [
-                { status: 0 },
-                { ABR_TYPE: { $ne: "at" } }  
-              ]
+                $and: [
+                    { status: 0 },
+                    { ABR_TYPE: { $ne: "at" } }
+                ]
             }
         },
         {
@@ -230,62 +253,62 @@ const MakecallABR = async () => {
                         format: "%d%m%Y"
                     }
                 },
-                
+
 
                 exch_seg: {
                     $cond: {
-                      if: { $eq: ['$Segment', 'C'] }, // Your condition here
-                      then: 'NSE',
-                      else: {
-                        $cond: {
-                          if: {
-                            $or: [
-                              { $eq: ['$Segment', 'F'] },
-                              { $eq: ['$Segment', 'O'] },
-                              { $eq: ['$Segment', 'FO'] }
-                            ]
-                          },
-                          then: 'NFO',
-                          else: {
-        
+                        if: { $eq: ['$Segment', 'C'] }, // Your condition here
+                        then: 'NSE',
+                        else: {
                             $cond: {
-                              if: {
-                                $or: [
-                                  { $eq: ['$Segment', 'MF'] },
-                                  { $eq: ['$Segment', 'MO'] }
-                                ]
-                              },
-                              then: 'MCX',
-                              else: {
-        
-                                $cond: {
-                                  if: {
+                                if: {
                                     $or: [
-                                      { $eq: ['$Segment', 'CF'] },
-                                      { $eq: ['$Segment', 'CO'] }
+                                        { $eq: ['$Segment', 'F'] },
+                                        { $eq: ['$Segment', 'O'] },
+                                        { $eq: ['$Segment', 'FO'] }
                                     ]
-                                  },
-                                  then: 'CDS',
-        
-                                  // all not exist condition 
-                                  else: "NFO"
-        
+                                },
+                                then: 'NFO',
+                                else: {
+
+                                    $cond: {
+                                        if: {
+                                            $or: [
+                                                { $eq: ['$Segment', 'MF'] },
+                                                { $eq: ['$Segment', 'MO'] }
+                                            ]
+                                        },
+                                        then: 'MCX',
+                                        else: {
+
+                                            $cond: {
+                                                if: {
+                                                    $or: [
+                                                        { $eq: ['$Segment', 'CF'] },
+                                                        { $eq: ['$Segment', 'CO'] }
+                                                    ]
+                                                },
+                                                then: 'CDS',
+
+                                                // all not exist condition 
+                                                else: "NFO"
+
+                                            }
+
+                                        }
+
+                                    }
+
+
                                 }
-        
-                              }
-        
+
                             }
-        
-        
-                          }
-        
+
                         }
-        
-                      }
-        
+
                     }
-                  },
-        
+                },
+
             }
         },
         {
@@ -406,7 +429,7 @@ const TruncateTableTokenChainAdd_fiveMinute = async () => {
     await Get_Option_All_Token_Chain_stock()
 
     await MainSignalsRemainToken()
-    
+
     await MakecallABR()
 
     await Alice_Socket();
@@ -960,6 +983,7 @@ const service_token_update = () => {
 
 const TruncateTable = async () => {
     const drop = await Alice_token.deleteMany({});
+    console.log("drop", drop)
 }
 
 
