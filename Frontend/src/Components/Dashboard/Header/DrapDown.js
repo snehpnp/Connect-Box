@@ -50,7 +50,12 @@ const DropDown = () => {
     if (user) {
 
       newSocket.on("logout", (data) => {
-        if (user && user_id == data.user_id && token != data.token) {
+        console.log("data", data)
+        console.log("user_id", user_id)
+        console.log("token",token);
+
+
+        if (user_id == data.user_id && token != data.token) {
           logout(user_id, ip);
           // window.location.reload()
           return
@@ -307,9 +312,9 @@ const DropDown = () => {
 
   useEffect(() => {
     const htmlElement = document.querySelector("html");
-    htmlElement.setAttribute("data-sidebar", themeMode? themeMode :"light");
-    htmlElement.setAttribute("data-layout-mode", themeMode? themeMode :"light");
-    htmlElement.setAttribute("data-topbar", themeMode? themeMode :"light");
+    htmlElement.setAttribute("data-sidebar", themeMode ? themeMode : "light");
+    htmlElement.setAttribute("data-layout-mode", themeMode ? themeMode : "light");
+    htmlElement.setAttribute("data-topbar", themeMode ? themeMode : "light");
   }, [themeMode]);
 
 

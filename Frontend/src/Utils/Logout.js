@@ -10,49 +10,58 @@ const useLogout = () => {
     const logout = async (user_id, ip) => {
 
 
-        console.log("sneh jaiswal")
-        console.log("user_id, ip",user_id, ip)
-        const data = { userId: user_id, Device: "WEB", system_ip: ip };
+        setTimeout(async () => {
+            console.log("sneh jaiswal")
+            console.log("user_id, ip", user_id, ip)
+            const data = { userId: user_id, Device: "WEB", system_ip: ip };
 
-        try {
-            const response = await dispatch(LogOut(data)).unwrap();
+            try {
+                const response = await dispatch(LogOut(data)).unwrap();
 
-            if (response.status) {
-                localStorage.removeItem("user_details");
-                localStorage.removeItem("user_role");
-                navigate("/login");
-               
-                Swal.fire({
-                    title: "Logout Successful!",
-                    icon: "success",
-                    position: "top-end",
-                    text: response.msg,
-                    showConfirmButton: false,
-                    timer: 700,
-                    timerProgressBar: true
-                });
+                if (response.status) {
 
-              
+                    Swal.fire({
+                        title: "Logout Successful!",
+                        icon: "success",
+                        position: "top-end",
+                        text: response.msg,
+                        showConfirmButton: false,
+                        timer: 700,
+                        timerProgressBar: true
+                    });
+                    setTimeout(() => {
+                        console.log("SNEH JAISWAL.......")
+                        localStorage.removeItem("user_details");
+                        localStorage.removeItem("user_role");
+                        navigate("/login");
+                        window.location.reload()
+                    }, 1500);
 
-            } else {
+
+
+
+                } else {
+                    Swal.fire({
+                        title: "Error!",
+                        text: response.msg,
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                }
+            } catch (error) {
+                console.log("Error in logout user", error);
                 Swal.fire({
                     title: "Error!",
-                    text: response.msg,
+                    text: "An error occurred during logout.",
                     icon: "error",
                     timer: 1500,
                     timerProgressBar: true
                 });
             }
-        } catch (error) {
-            console.log("Error in logout user", error);
-            Swal.fire({
-                title: "Error!",
-                text: "An error occurred during logout.",
-                icon: "error",
-                timer: 1500,
-                timerProgressBar: true
-            });
-        }
+
+        }, 3000);
+
     };
 
     return logout;
