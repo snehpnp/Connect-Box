@@ -38,20 +38,17 @@ function Login() {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-
+  const fetchIpAddress = async () => {
+    try {
+      const ip = await ipAddress();
+      setIp(ip);
+    } catch (error) {
+      console.error('Failed to fetch IP address:', error);
+    }
+  };
 
   useEffect(() => {
-    // Define the async function inside useEffect
-    const fetchIpAddress = async () => {
-      try {
-        const ip = await ipAddress();
-        setIp(ip);
-      } catch (error) {
-        console.error('Failed to fetch IP address:', error);
-      }
-    };
-  
-    // Call the async function
+    
     fetchIpAddress();
   
     // Initialize socket connection

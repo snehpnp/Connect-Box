@@ -43,20 +43,16 @@ const DropDown = () => {
 
   const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type;
 
-  useEffect(async () => {
-    const ip = await ipAddress();
+  useEffect(() => {
     const newSocket = io.connect(Config.base_url);
     setSocket(newSocket);
+   
     if (user) {
-
       newSocket.on("logout", (data) => {
-        console.log("data", data)
-        console.log("user_id", user_id)
-        console.log("token", token);
-
 
         if (user_id == data.user_id && token != data.token) {
-          logout(user_id, ip);
+          // logout(user_id, ip);
+          LogoutUser()
           // window.location.reload()
           return
         }
@@ -73,33 +69,33 @@ const DropDown = () => {
   }, []);
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const ip = await ipAddress();
-        let data = { id: user_id };
-        const response = await dispatch(ProfileInfo({ req: data, token: token })).unwrap();
-        if (response.status) {
-          setProfileData(response.data);
-          setProfileImage(response.data[0].profile_img);
-        } else {
-          if (response.msg === "Unauthorized!") {
-            console.log("Dropdown", user_id, ip);
-            logout(user_id, ip);
-          }
+  const fetchData = async () => {
+    try {
+      const ip = await ipAddress();
+      let data = { id: user_id };
+      const response = await dispatch(ProfileInfo({ req: data, token: token })).unwrap();
+      if (response.status) {
+        setProfileData(response.data);
+        setProfileImage(response.data[0].profile_img);
+      } else {
+        if (response.msg === "Unauthorized!") {
+          console.log("Dropdown", user_id, ip);
+          // logout(user_id, ip);
+          LogoutUser()
+
         }
-      } catch (error) {
-        console.log("Error", error);
-        setError(error.message);
       }
-    };
+    } catch (error) {
+      console.log("Error", error);
+      setError(error.message);
+    }
+  };
 
-    fetchData();
 
-  }, [user_id, token]);
 
 
   const LogoutUser = async (e) => {
+    const ip = await ipAddress();
     const data = { userId: user_id, Device: "WEB", system_ip: ip }
 
     await dispatch(LogOut(data)).unwrap()
@@ -112,13 +108,13 @@ const DropDown = () => {
             timer: 1500,
             timerProgressBar: true
           })
-          setTimeout(()=>{
+          setTimeout(() => {
             localStorage.removeItem("user_details")
             localStorage.removeItem("user_role")
             navigate("/login")
           }, 1500)
 
-         
+
         }
         else {
           Swal.fire({
@@ -331,6 +327,8 @@ const DropDown = () => {
 
 
   useEffect(() => {
+
+    fetchData();
     fetchIP();
     getSubadminTableData();
     getusertable()
@@ -344,13 +342,10 @@ const DropDown = () => {
     if (storedThemeMode) {
       setThemeMode(storedThemeMode);
     }
-  }, []);
-
-  useEffect(() => {
     const htmlElement = document.querySelector("html");
-    htmlElement.setAttribute("data-sidebar", themeMode ? themeMode : "light");
-    htmlElement.setAttribute("data-layout-mode", themeMode ? themeMode : "light");
-    htmlElement.setAttribute("data-topbar", themeMode ? themeMode : "light");
+    htmlElement.setAttribute("data-sidebar", storedThemeMode ? storedThemeMode : "light");
+    htmlElement.setAttribute("data-layout-mode", storedThemeMode ? storedThemeMode : "light");
+    htmlElement.setAttribute("data-topbar", storedThemeMode ? storedThemeMode : "light");
   }, [themeMode]);
 
 
@@ -413,12 +408,7 @@ const DropDown = () => {
 
             <div className="topnav-dropdown-header">
               <div className="notification-title">Notifications</div>
-              {/* <a
-                href="javascript:void(0)"
-                className="clear-noti d-flex align-items-center"
-              >
-                Mark all as read <i className="fe fe-check-circle" />
-              </a> */}
+
             </div>
 
             <div className="noti-content">
@@ -501,12 +491,12 @@ const DropDown = () => {
                             </div>
                             <div className="d-flex justify-content-between">
                               <span style={{
-                              maxWidth: "18rem",
-                              display: "inline-block",
-                              wordWrap: "break-word",
-                              whiteSpace: "normal",
+                                maxWidth: "18rem",
+                                display: "inline-block",
+                                wordWrap: "break-word",
+                                whiteSpace: "normal",
 
-                            }}>
+                              }}>
                                 {truncateText(data.Message)}
                               </span>
                               <span>Help</span>
@@ -519,9 +509,7 @@ const DropDown = () => {
               </ul>
             </div>
 
-            {/* <div className="topnav-dropdown-footer">
-              <a href="#">Clear All</a>
-            </div> */}
+
           </div>
         </li>
 

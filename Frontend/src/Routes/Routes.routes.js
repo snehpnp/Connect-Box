@@ -19,7 +19,7 @@ import Update from '../Layouts/Auth/Update';
 
 const Routing = () => {
     const location = useLocation();
-    
+
     const navigate = useNavigate();
     const roles = JSON.parse(localStorage.getItem('user_role'));
     const user_details = JSON.parse(localStorage.getItem("user_details"));
@@ -29,7 +29,7 @@ const Routing = () => {
             navigate(location.pathname);
             return;
         }
-        
+
         if (location.pathname === "/forget") {
             navigate("/forget");
             return;
@@ -85,7 +85,7 @@ const Routing = () => {
     }, [navigate, location.pathname, roles, user_details]);
 
 
-    
+
     return (
         <Routes>
             {/* Use wildcard (*) in the paths to capture all routes starting with a specific prefix */}
@@ -101,9 +101,9 @@ const Routing = () => {
             {/* Add other routes here */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-          
+
             <Route path="/forget" element={<Forget />} />
-            <Route path="/updatepassword/:id" element={<Update/>}/>
+            <Route path="/updatepassword/:id" element={<Update />} />
         </Routes>
     );
 }
