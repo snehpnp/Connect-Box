@@ -13,12 +13,6 @@ const { Server } = require("socket.io");
 const socketIo = require("socket.io");
 
 
-
-
-
-
-
-
 const { createViewAlice } = require("./View/Alice_blue");
 
 // Setting up CORS options
@@ -37,10 +31,10 @@ app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json({ limit: '10mb', extended: true }));
 
 // LIVE CODE --------
-// var privateKey = fs.readFileSync('../crt/privkey.pem', 'utf8');
-// var certificate = fs.readFileSync('../crt/fullchain.pem', 'utf8');
-// var credentials = { key: privateKey, cert: certificate };
-// const httpsserver = https.createServer(credentials, app);
+var privateKey = fs.readFileSync('../crt/privkey.pem', 'utf8');
+var certificate = fs.readFileSync('../crt/fullchain.pem', 'utf8');
+var credentials = { key: privateKey, cert: certificate };
+const httpsserver = https.createServer(credentials, app);
 
 
 const server = http.createServer(app);
@@ -50,21 +44,21 @@ const server = http.createServer(app);
 const { setIO ,getIO} = require('./App/Helpers/BackendSocketIo');
 
 //socket.io
-const io = new Server(server, {
-  cors: {
-     
-    origin: "http://localhost:3000",
-
-    methods: ["GET", "POST"],
-  },
-});
-
-// const io = socketIo(httpsserver, {
+// const io = new Server(server, {
 //   cors: {
-//       origin: "*",
-//       credentials: true
-//   }
+     
+//     origin: "http://localhost:3000",
+
+//     methods: ["GET", "POST"],
+//   },
 // });
+
+const io = socketIo(httpsserver, {
+  cors: {
+      origin: "*",
+      credentials: true
+  }
+});
 
 
 io.on("connection", (socket) => {
@@ -119,7 +113,7 @@ app.get('/aliceblue/view',(req,res)=>{
 
 
 
-// httpsserver.listen(1001)
+httpsserver.listen(1001)
 server.listen(process.env.PORT, () => {
   const { Alice_Socket } = require("./App/Helpers/Alice_Socket");
       Alice_Socket()

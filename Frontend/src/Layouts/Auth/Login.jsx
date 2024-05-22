@@ -52,7 +52,7 @@ function Login() {
     fetchIpAddress();
   
     // Initialize socket connection
-    const newSocket = io.connect(Config.base_url);
+    const newSocket = io.connect(Config.socket_Url);
     setSocket(newSocket);
   
     // Cleanup function to disconnect socket when component unmounts

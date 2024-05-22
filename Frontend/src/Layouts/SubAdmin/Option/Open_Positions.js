@@ -35,7 +35,7 @@ import {
 } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
 //const SOCKET_SERVER_URL = "http://185.209.75.6:7700";
-const SOCKET_SERVER_URL = "https://connectbox.tradestreet.in:1001/";
+const SOCKET_SERVER_URL = Config.socket_Url;
 
 
 
@@ -1500,8 +1500,6 @@ export default function AllEmployees() {
 
 
 
-     // const SOCKET_SERVER_URL = "http://185.209.75.6:7700"; 
-     // const [socketBackend, setSocketBackend] = useState(SOCKET_SERVER_URL);
      
     const selectPageStatus = (value) => {
        //alert(value)
