@@ -99,7 +99,44 @@ const DropDown = () => {
   }, [user_id, token]);
 
 
+  const LogoutUser = async (e) => {
+    const data = { userId: user_id, Device: "WEB", system_ip: ip }
 
+    await dispatch(LogOut(data)).unwrap()
+      .then((response) => {
+        if (response.status) {
+          Swal.fire({
+            title: "Logout Successful!",
+            text: response.msg,
+            icon: "success",
+            timer: 1500,
+            timerProgressBar: true
+          })
+          setTimeout(()=>{
+            localStorage.removeItem("user_details")
+            localStorage.removeItem("user_role")
+            navigate("/login")
+          }, 1500)
+
+         
+        }
+        else {
+          Swal.fire({
+            title: "Error!",
+            text: response.msg,
+            icon: "error",
+            timer: 1500,
+            timerProgressBar: true
+          });
+
+        }
+      })
+      .catch((error) => {
+        console.log("Error in logout user", error)
+      })
+
+
+  }
 
   const fetchIP = async () => {
     try {
@@ -560,7 +597,7 @@ const DropDown = () => {
                   <li>
                     <a
                       className="dropdown-item dev"
-                      onClick={(e) => logout(user_id, ip)}
+                      onClick={(e) => LogoutUser(e)}
                     >
                       <i class="fa-solid fa-right-to-bracket p-2"></i> Log out
                     </a>

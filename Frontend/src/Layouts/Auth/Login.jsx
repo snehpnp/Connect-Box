@@ -38,20 +38,34 @@ function Login() {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
 
-  const fetchIP = async () => {
-    try {
-      const ip = await ipAddress();
-      setIp(ip);
-    } catch (error) {
-      console.error('Failed to fetch IP address:', error);
-    }
-  };
+
 
   useEffect(() => {
-    fetchIP();
+    // Define the async function inside useEffect
+    const fetchIpAddress = async () => {
+      try {
+        const ip = await ipAddress();
+        setIp(ip);
+      } catch (error) {
+        console.error('Failed to fetch IP address:', error);
+      }
+    };
+  
+    // Call the async function
+    fetchIpAddress();
+  
+    // Initialize socket connection
     const newSocket = io.connect(Config.base_url);
     setSocket(newSocket);
-  }, []);
+  
+    // Cleanup function to disconnect socket when component unmounts
+    return () => {
+      if (newSocket) {
+        newSocket.disconnect();
+      }
+    };
+  }, []); // The empty array means this effect runs once, similar to componentDidMount
+  
 
 
 
