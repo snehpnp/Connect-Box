@@ -82,14 +82,14 @@ function Login() {
 
     } else {
       var newMessage = { user_id: getData.user_id, token: getData.token }
-    
+
 
       localStorage.setItem("user_details", JSON.stringify(getData));
       localStorage.setItem("user_role", JSON.stringify(getData.Role));
       setIsLoggedIn(true);
       setIsLoading(true);
       setShowModal(false);
-      
+
       await socket.emit("login", newMessage);
 
       if (getData.Role === "ADMIN") {
@@ -256,9 +256,9 @@ function Login() {
   useEffect(() => {
 
     const htmlElement = document.querySelector("html");
-    htmlElement.setAttribute("data-sidebar", theme_mode);
-    htmlElement.setAttribute("data-layout-mode", theme_mode);
-    htmlElement.setAttribute("data-topbar", theme_mode);
+    htmlElement.setAttribute("data-sidebar", theme_mode ? theme_mode : "light");
+    htmlElement.setAttribute("data-layout-mode", theme_mode ? theme_mode : "light");
+    htmlElement.setAttribute("data-topbar", theme_mode ? theme_mode : "light");
     if (isLoggedIn) {
       setTimeout(() => {
         navigate(`/${getData.Role.toLowerCase()}/dashboard`);

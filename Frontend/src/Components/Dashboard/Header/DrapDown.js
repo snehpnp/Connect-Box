@@ -52,7 +52,7 @@ const DropDown = () => {
       newSocket.on("logout", (data) => {
         if (user && user_id == data.user_id && token != data.token) {
           logout(user_id, ip);
-          window.location.reload()
+          // window.location.reload()
           return
         }
       });
@@ -220,9 +220,6 @@ const DropDown = () => {
       : text;
   };
 
-
-
-
   // ADMIN NOTIFICATION NOTIFICATION
   const getSubadminTableData = async () => {
     try {
@@ -238,11 +235,7 @@ const DropDown = () => {
     }
   };
 
-
-
-
   // subadmin help notification for admin page
-
   const gettable = async () => {
     try {
       const today = new Date().toISOString().split('T')[0];  // Format YYYY-MM-DD
@@ -267,9 +260,6 @@ const DropDown = () => {
       console.log("error", error);
     }
   };
-
-
-
 
   // USER NOTIFICATION  
   const getusertable = async () => {
@@ -298,7 +288,6 @@ const DropDown = () => {
   };
 
 
-
   useEffect(() => {
     fetchIP();
     fetchData();
@@ -318,9 +307,9 @@ const DropDown = () => {
 
   useEffect(() => {
     const htmlElement = document.querySelector("html");
-    htmlElement.setAttribute("data-sidebar", themeMode);
-    htmlElement.setAttribute("data-layout-mode", themeMode);
-    htmlElement.setAttribute("data-topbar", themeMode);
+    htmlElement.setAttribute("data-sidebar", themeMode? themeMode :"light");
+    htmlElement.setAttribute("data-layout-mode", themeMode? themeMode :"light");
+    htmlElement.setAttribute("data-topbar", themeMode? themeMode :"light");
   }, [themeMode]);
 
 
