@@ -43,17 +43,23 @@ const DropDown = () => {
 
   const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type;
 
-  useEffect(async() => {
+  useEffect(async () => {
     const ip = await ipAddress();
     const newSocket = io.connect(Config.base_url);
     setSocket(newSocket);
+    if (user) {
 
-    newSocket.on("logout", (data) => {
-      if (user_id == data.user_id && token != data.token) {
-   
-        logout(user_id, ip);
-      }
-    });
+      newSocket.on("logout", (data) => {
+        if (user && user_id == data.user_id && token != data.token) {
+          logout(user_id, ip);
+          window.location.reload()
+          return
+        }
+      });
+    } else {
+      window.location.reload()
+      return
+    }
 
     return () => {
       newSocket.off("logout");
@@ -78,7 +84,6 @@ const DropDown = () => {
               logout(user_id, ip);
             }
 
-
           }
         })
         .catch((error) => {
@@ -101,51 +106,6 @@ const DropDown = () => {
   };
 
 
-
-  //   const LogoutUser = async (e) => {
-  //     // const data = { userId: user_id, Device: "WEB", system_ip: ip }
-
-  // console.log("SNEH")
-
-
-
-  //     // await dispatch(LogOut(data)).unwrap()
-  //     //   .then((response) => {
-  //     //     if (response.status) {
-  //     //       Swal.fire({
-  //     //         title: "Logout Successful!",
-  //     //         icon: "success",
-  //     //         position: "top-end",
-  //     //         text: response.msg,
-  //     //         showConfirmButton: false,
-  //     //         timer: 800,
-  //     //         timerProgressBar: true
-  //     //       });
-  //     //       setTimeout(() => {
-  //     //         localStorage.removeItem("user_details")
-  //     //         localStorage.removeItem("user_role")
-  //     //         navigate("/login")
-  //     //       }, 800)
-
-
-  //     //     }
-  //     //     else {
-  //     //       Swal.fire({
-  //     //         title: "Error!",
-  //     //         text: response.msg,
-  //     //         icon: "error",
-  //     //         timer: 1500,
-  //     //         timerProgressBar: true
-  //     //       });
-
-  //     //     }
-  //     //   })
-  //     //   .catch((error) => {
-  //     //     console.log("Error in logout user", error)
-  //     //   })
-
-
-  //   }
 
   // Define toggleTheme function
   const toggleTheme = () => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   admin_header,
   subamdin_header,
@@ -9,82 +9,68 @@ import {
   research_header,
 } from "./Header_config";
 
-import { useNavigate } from "react-router-dom";
-
 const Header = () => {
-  const roles = JSON.parse(localStorage.getItem("user_role"));
   const [openSubMenu, setOpenSubMenu] = useState("");
   const [activeLink, setActiveLink] = useState(null);
-
   const navigate = useNavigate();
+  
+  const roles = JSON.parse(localStorage.getItem("user_role"));
+  const user_details = JSON.parse(localStorage.getItem("user_details"));
 
-  const user_details = JSON.parse(localStorage.getItem("user_details"))
+  useEffect(() => {
+    const clearSession = async () => {
+      if (user_details?.token) {
+        const decodedToken = JSON.parse(atob(user_details.token.split(".")[1]));
+        const currentTime = Math.floor(Date.now() / 1000);
 
+        if (decodedToken.exp && decodedToken.exp < currentTime) {
+          localStorage.clear();
+          setTimeout(() => navigate("/"), 1000);
+        }
+      } else {
+        window.location.reload();
+      }
+    };
+    
+    clearSession();
+  }, [navigate, user_details]);
+
+  const getHeaderData = () => {
+    switch (roles) {
+      case "ADMIN":
+        return admin_header;
+      case "SUBADMIN":
+        return subamdin_header;
+      case "USER":
+        return User_header;
+      case "EMPLOYEE":
+        return employee_header;
+      case "SUPERADMIN":
+        return superadmin_header;
+      case "RESEARCH":
+        return research_header;
+      default:
+        return [];
+    }
+  };
+
+  let headerData = getHeaderData();
+
+  if (user_details?.subadmin_service_type === 2) {
+    headerData = headerData.filter(column => column.name !== "Trade Charges");
+  }
 
   const toggleSubMenu = (menuTitle) => {
     setOpenSubMenu(openSubMenu === menuTitle ? "" : menuTitle);
-  };
-
-  var HeaderData = [];
-
-  if (roles === "ADMIN") {
-    HeaderData.push(admin_header);
-  } else if (roles === "SUBADMIN") {
-    HeaderData.push(subamdin_header);
-  } else if (roles === "USER") {
-    HeaderData.push(User_header);
-  } else if (roles === "EMPLOYEE") {
-    HeaderData.push(employee_header);
-  } else if (roles === "SUPERADMIN") {
-    HeaderData.push(superadmin_header);
-  } else if (roles === "RESEARCH") {
-    HeaderData.push(research_header);
-  }
-
-  const ClearSession = async () => {
-    if (!user_details.token) {
-      return;
-    } else {
-      const decodedToken = JSON.parse(atob(user_details.token.split(".")[1])); // Decode JWT token
-      const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-
-      if (decodedToken.exp && decodedToken.exp < currentTime) {
-        // Token has expired
-        localStorage.removeItem("user_role");
-        localStorage.removeItem("user_details");
-        localStorage.clear();
-        setTimeout(() => {
-          navigate("/");
-        }, 1000);
-      }
-    }
-  };
-
-  useEffect(() => {
-    ClearSession();
-  }, []);
-
-  const toggleNav = (data) => {
-    if (data.Data.length == 0) {
-      document.body.classList.remove("slide-nav");
-    }
-  };
-
-  const toggleNav1 = (item) => {
-    document.body.classList.remove("slide-nav");
   };
 
   const handleLinkClick = (id) => {
     setActiveLink(id);
   };
 
-  if (user_details.subadmin_service_type == 2) {
-    HeaderData = HeaderData[0].filter(
-      (column) => column.name != "Trade Charges"
-    );
-  }
-
-
+  const closeNav = () => {
+    document.body.classList.remove("slide-nav");
+  };
 
   return (
     <div className="sidebar" id="sidebar">
@@ -92,58 +78,43 @@ const Header = () => {
         <div id="sidebar-menu" className="sidebar-menu">
           <nav className="greedys sidebar-horizantal">
             <ul className="list-inline-item list-unstyled links">
-              {HeaderData.flat() &&
-                HeaderData.flat().map((data) => {
-                  return (
-                    <li
-                      className="submenu"
-                      key={data.id}
-                      onMouseEnter={() => toggleSubMenu(data.id)}
-                      onMouseLeave={() => setOpenSubMenu("")}
-                    >
-                      <Link
-                        to={data.route}
-                        className={`${
-                          openSubMenu === data.id ? "subdrop" : ""
-                        } ${activeLink === data.id ? "active" : ""}`}
-                        style={{ textDecoration: "none", color: "inherit" }}
-                        onClick={() => {
-                          handleLinkClick(data.id);
-                          toggleNav(data);
-                        }}
-                      >
-                        <i className={data.Icon} id="animated-icon"></i>{" "}
-                        <span> {data.name}</span>{" "}
-                        {data.Data.length > 0 ? (
-                          <span className="menu-arrow"></span>
-                        ) : (
-                          ""
-                        )}
-                      </Link>
-
-                      <ul
-                        style={{
-                          display: openSubMenu === data.id ? "block" : "none",
-                        }}
-                      >
-                        {data.Data.map((item) => (
-                          <li key={item.id}>
-                            <Link
-                              to={item.route}
-                              className=""
-                              onClick={() => {
-                                toggleNav1(item);
-                              }}
-                            >
-                              <i className={item.Icon} id="animated1-icon"></i>{" "}
-                              <span> {item.name}</span>
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                  );
-                })}
+              {headerData.flat().map(data => (
+                <li
+                  className="submenu"
+                  key={data.id}
+                  onMouseEnter={() => toggleSubMenu(data.id)}
+                  onMouseLeave={() => setOpenSubMenu("")}
+                >
+                  <Link
+                    to={data.route}
+                    className={`${openSubMenu === data.id ? "subdrop" : ""} ${activeLink === data.id ? "active" : ""}`}
+                    style={{ textDecoration: "none", color: "inherit" }}
+                    onClick={() => {
+                      handleLinkClick(data.id);
+                      closeNav();
+                    }}
+                  >
+                    <i className={data.Icon} id="animated-icon"></i>
+                    <span>{data.name}</span>
+                    {data.Data.length > 0 && <span className="menu-arrow"></span>}
+                  </Link>
+                  {data.Data.length > 0 && (
+                    <ul style={{ display: openSubMenu === data.id ? "block" : "none" }}>
+                      {data.Data.map(item => (
+                        <li key={item.id}>
+                          <Link
+                            to={item.route}
+                            onClick={closeNav}
+                          >
+                            <i className={item.Icon} id="animated1-icon"></i>
+                            <span>{item.name}</span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
             </ul>
           </nav>
         </div>

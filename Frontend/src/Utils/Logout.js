@@ -9,17 +9,13 @@ const useLogout = () => {
 
     const logout = async (user_id, ip) => {
 
-
-        console.log("sneh jaiswal")
-        console.log("user_id, ip",user_id, ip)
         const data = { userId: user_id, Device: "WEB", system_ip: ip };
 
         try {
             const response = await dispatch(LogOut(data)).unwrap();
 
             if (response.status) {
-                localStorage.removeItem("user_details");
-                localStorage.removeItem("user_role");
+                localStorage.clear()
                 navigate("/login");
                
                 Swal.fire({

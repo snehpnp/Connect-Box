@@ -31,10 +31,8 @@ function Login() {
   const [isVerified, setIsVerified] = useState(false);
   const [socket, setSocket] = useState(null);
 
-
+  // GOOGLE CAPTCH
   var sitekey = "6LeLC88pAAAAAM8P1WFYgAHJOwwlZ3MLfV9hyStu"
-
-
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -61,6 +59,7 @@ function Login() {
     setIsVerified(!!value);
   };
 
+
   const verifyOTP = async () => {
     var Otp = getData && getData.mobile.slice(-4);
 
@@ -83,14 +82,15 @@ function Login() {
 
     } else {
       var newMessage = { user_id: getData.user_id, token: getData.token }
-      await socket.emit("login", newMessage);
+    
 
       localStorage.setItem("user_details", JSON.stringify(getData));
       localStorage.setItem("user_role", JSON.stringify(getData.Role));
       setIsLoggedIn(true);
       setIsLoading(true);
       setShowModal(false);
-
+      
+      await socket.emit("login", newMessage);
 
       if (getData.Role === "ADMIN") {
         setTimeout(() => {
@@ -350,19 +350,6 @@ function Login() {
                         <span className="span-or">or</span>
                       </div>
 
-                      {/* <div className="social-login ">
-                        <span >Login with</span>
-                        <div className='mt-2'>
-                          <a href="/" className="facebook">
-                            <i className="fab fa-facebook-f" />
-                          </a>
-                          <a href="/" className="google">
-                            <i className="fab fa-google" />
-                          </a>
-                        </div>
-                      </div> */}
-
-
                       <div className="text-center dont-have">
                         Don't have an account yet?{" "}
                         <Link to="/register">Register</Link>
@@ -396,11 +383,7 @@ function Login() {
                 btn_name="Verify"
                 btn_name1="Verify1"
                 Submit_Function={verifyOTP}
-
               >
-
-
-
                 <section onSubmit={verifyOTP} className='section1'>
                   <svg
                     width={250}
