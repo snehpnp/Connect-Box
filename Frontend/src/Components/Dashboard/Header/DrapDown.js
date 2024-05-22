@@ -73,31 +73,31 @@ const DropDown = () => {
   }, []);
 
 
-  const fetchData = async () => {
-    try {
-      const ip = await ipAddress();
-      let data = { id: user_id };
-      await dispatch(ProfileInfo({ req: data, token: token }))
-        .unwrap()
-        .then(async (response) => {
-          if (response.status) {
-            setProfileData(response.data);
-            setProfileImage(response.data[0].profile_img);
-          } else {
-            if (response.msg == "Unauthorized!") {
-              console.log("Dropdown", user_id, ip)
-              logout(user_id, ip);
-            }
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const ip = await ipAddress();
+        let data = { id: user_id };
+        const response = await dispatch(ProfileInfo({ req: data, token: token })).unwrap();
+        if (response.status) {
+          setProfileData(response.data);
+          setProfileImage(response.data[0].profile_img);
+        } else {
+          if (response.msg === "Unauthorized!") {
+            console.log("Dropdown", user_id, ip);
+            logout(user_id, ip);
           }
-        })
-        .catch((error) => {
-          console.log("Error", error);
-        });
-    } catch (error) {
-      setError(error.message);
-    }
-  };
+        }
+      } catch (error) {
+        console.log("Error", error);
+        setError(error.message);
+      }
+    };
+  
+    fetchData();
+  
+  }, [user_id, token]); 
+  
 
 
 
@@ -295,7 +295,6 @@ const DropDown = () => {
 
   useEffect(() => {
     fetchIP();
-    fetchData();
     getSubadminTableData();
     getusertable()
     gettable()
