@@ -16,7 +16,6 @@ const TradeCharges = () => {
   ).subadmin_service_type;
 
   const [searchInput, setSearchInput] = useState('');
-  const [ForGetCSV, setForGetCSV] = useState([]);
   const [refresh, setrefresh] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -241,9 +240,9 @@ const TradeCharges = () => {
               <div className="super-admin-list-head">
                 <div className="row">
                   {[
-                    { name: "Total Balance", icon: "fe fe-package", value: "700" },
+                    { name: "Total Balance", icon: "fe fe-package", value: companyData && companyData.data[0].Balance },
                     { name: "Used Balance", icon: "fe fe-list", value: stg_total },
-                    { name: "Remaining Balance", icon: "fe fe-pause-circle", value: 700 - stg_total },
+                    { name: "Remaining Balance", icon: "fe fe-pause-circle", value: Number(companyData && companyData.data[0].Balance || 0) - stg_total },
                     { name: "Wallet", icon: "fe fe-wallet" }
                   ].map((item, index) => (
                     <div className="col-xl-3 col-md-6 d-flex" key={index}>
@@ -273,21 +272,6 @@ const TradeCharges = () => {
                 </div>
               </div>
 
-
-
-              {/* {companyData.data.length > 0 ? (
-                <div className="d-flex gap-5">
-                  <h4>
-                    Total Trade Charges :{" "}
-                    <span style={{ color: "green" }}>
-                      {" "}
-                      {stg_total || (0).toFixed(2)}
-                    </span>{" "}
-                  </h4>
-                </div>
-              ) : (
-                ""
-              )} */}
 
               <FullDataTable
                 styles={styles}

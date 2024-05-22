@@ -133,7 +133,7 @@ function Option_Chain() {
     const CreateRequest = (option_type, row_data, call_type, index, e) => {
 
         if (strategyRef.current === "") {
-        
+
             Swal.fire({
                 title: "Error",
                 text: "Please Select Strategy First",
@@ -826,114 +826,123 @@ function Option_Chain() {
     return (
         <>
             {companyData.loading ? (
-                <Content
-                    Card_title="Option Chain"
 
-                    Content={
-                        <>
-                            <div className="row d-flex mb-3">
-                                <div className="col-md-2  input-block">
-                                    <label className=""
-
-                                    >SYMBOLS</label>
-                                    <select
-                                        name="symbols_filter"
-                                        className="default-select wide form-control spacing  "
-                                        onChange={(e) => {
-                                            setSymbol(e.target.value)
-                                            // setSymbolStrike(e.target.options[e.target.selectedIndex].getAttribute("name"))
-                                            setStrategy("")
-                                            setExpiry("")
-                                            setOptionChainData({
-                                                loading: false,
-                                                data: [],
-                                            });
-                                        }}
-                                    >
-                                        <option value="" >Select Stock Name</option>
-
-
-                                        {All_Symbols.data && All_Symbols.data.map((item) => {
-                                            return <option key={item._id} value={item.symbol} name={item.symbol}>{item.symbol}</option>
-                                        })}
-                                    </select>
+                <div className="content container-fluid" data-aos="fade-left">
+                    <div className="card">
+                        <div className="card-header">
+                            <div className="row align-items-center">
+                                <div className="col">
+                                    <h5 className="card-title mb-0">
+                                        <i className="pe-2 fa-solid fa-users"></i>
+                                        Option Chain</h5>
                                 </div>
-                                <div className="col-md-2  input-block">
-                                    <label
-                                        className=""
+                            </div>
+                        </div>
+                        <div className="card-body">
+                            <>
+                                <div className="row d-flex mb-3">
+                                    <div className="col-md-2  input-block">
+                                        <label className=""
 
-                                    >
-                                        EXPIRY DATE
-                                    </label>
-                                    <select className="default-select wide form-control" name="expiry_date"
-                                        onChange={(e) => {
-                                            setExpiry(e.target.value)
-                                        }}
-                                        value={expiry}
-                                    >
-                                        <option value="" >Select Expiry</option>
-                                        {All_Symbols_Expiry.data && All_Symbols_Expiry.data.map((item) => {
-                                            return <option value={item.uniqueExpiryValues}>{get_three_digit_month(item.expiryDate)}</option>
-                                        })}
-                                    </select>
-                                </div>
-                                <div className="col-md-2 input-block ">
-                                    <label
-                                        className=""
-
-                                    >
-                                        STRATEGY
-                                    </label>
-                                    <select className="default-select wide form-control" name="strategyname"
-                                        onChange={(e) => {
-                                            setStrategy(e.target.value);
-                                            test(e);
-
-                                        }} value={strategy}
-
-                                    // disabled={CreateSignalRequest.length === 0}
-                                    >
-                                        <option value="">Select Strategy</option>
-                                        {expiry && getAllStrategyName.data &&
-                                            getAllStrategyName.data.map((item) => {
-                                                return (
-                                                    <option value={item.strategy_name}>
-                                                        {item.strategy_name}
-                                                    </option>
-                                                );
-                                            })}
-                                    </select>
-                                </div>
-
-
-                                <div className="col-md-6 d-flex justify-content-end align-items-center">
-                                    <div>
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={(e) => ExcuteTradeButton()}
-                                            disabled={CreateSignalRequest.length === 0}
-                                            style={{ marginLeft: 'auto' }} // Add this inline style
+                                        >SYMBOLS</label>
+                                        <select
+                                            name="symbols_filter"
+                                            className="default-select wide form-control spacing  "
+                                            onChange={(e) => {
+                                                setSymbol(e.target.value)
+                                                // setSymbolStrike(e.target.options[e.target.selectedIndex].getAttribute("name"))
+                                                setStrategy("")
+                                                setExpiry("")
+                                                setOptionChainData({
+                                                    loading: false,
+                                                    data: [],
+                                                });
+                                            }}
                                         >
-                                            Execute Trade
-                                        </button>
+                                            <option value="" >Select Stock Name</option>
+
+
+                                            {All_Symbols.data && All_Symbols.data.map((item) => {
+                                                return <option key={item._id} value={item.symbol} name={item.symbol}>{item.symbol}</option>
+                                            })}
+                                        </select>
                                     </div>
+                                    <div className="col-md-2  input-block">
+                                        <label
+                                            className=""
+
+                                        >
+                                            EXPIRY DATE
+                                        </label>
+                                        <select className="default-select wide form-control" name="expiry_date"
+                                            onChange={(e) => {
+                                                setExpiry(e.target.value)
+                                            }}
+                                            value={expiry}
+                                        >
+                                            <option value="" >Select Expiry</option>
+                                            {All_Symbols_Expiry.data && All_Symbols_Expiry.data.map((item) => {
+                                                return <option value={item.uniqueExpiryValues}>{get_three_digit_month(item.expiryDate)}</option>
+                                            })}
+                                        </select>
+                                    </div>
+                                    <div className="col-md-2 input-block ">
+                                        <label
+                                            className=""
+
+                                        >
+                                            STRATEGY
+                                        </label>
+                                        <select className="default-select wide form-control" name="strategyname"
+                                            onChange={(e) => {
+                                                setStrategy(e.target.value);
+                                                test(e);
+
+                                            }} value={strategy}
+
+                                        // disabled={CreateSignalRequest.length === 0}
+                                        >
+                                            <option value="">Select Strategy</option>
+                                            {expiry && getAllStrategyName.data &&
+                                                getAllStrategyName.data.map((item) => {
+                                                    return (
+                                                        <option value={item.strategy_name}>
+                                                            {item.strategy_name}
+                                                        </option>
+                                                    );
+                                                })}
+                                        </select>
+                                    </div>
+
+
+                                    <div className="col-md-6 d-flex justify-content-end align-items-center">
+                                        <div>
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={(e) => ExcuteTradeButton()}
+                                                disabled={CreateSignalRequest.length === 0}
+                                                style={{ marginLeft: 'auto' }} // Add this inline style
+                                            >
+                                                Execute Trade
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div className="borderless-table">
+                                    <FullDataTable
+                                        styles={styles}
+                                        TableColumns={columns}
+                                        tableData={OptionChainData.data}
+                                        pagination1={true}>
+                                    </FullDataTable>
                                 </div>
 
-                            </div>
-                            <div className="borderless-table">
-                                <FullDataTable
-                                    styles={styles}
-                                    TableColumns={columns}
-                                    tableData={OptionChainData.data}
-                                    pagination1={true}>
-                                </FullDataTable>
-                            </div>
+                            </>
+                        </div>
+                    </div>
+                </div>
 
-                        </>
-
-
-                    }
-                />
             ) : (
                 <Loader />
             )}
