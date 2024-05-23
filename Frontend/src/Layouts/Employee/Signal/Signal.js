@@ -222,7 +222,7 @@ const Signal = () => {
 
     const userDataRes = async () => {
         const subadminId = userDetails.user_id
-        await dispatch(Orders_Details({ subadminId:subadminId,Role:Role }))
+        await dispatch(Orders_Details({req:{ subadminId:subadminId,Role:Role },token:userDetails.token}))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {

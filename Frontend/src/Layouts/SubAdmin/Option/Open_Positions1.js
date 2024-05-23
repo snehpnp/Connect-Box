@@ -48,7 +48,7 @@ const TradeHistory = () => {
 
     const userDataRes = async () => {
         const subadminId = user_id
-        await dispatch(Orders_Details({ subadminId:subadminId,Role:Role }))
+        await dispatch(Orders_Details({req:{ subadminId:subadminId,Role:Role },token:token}))
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
@@ -117,7 +117,7 @@ const TradeHistory = () => {
 
     const Get_Position = async (e) => {
         const subadminId = user_id
-        await dispatch(Orders_Details({ subadminId:subadminId,Role:Role }))
+        await dispatch(Orders_Details({req:{ subadminId:subadminId,Role:Role },token:token}))
             .unwrap()
             .then((response) => {
 

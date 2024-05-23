@@ -33232,11 +33232,11 @@ li.submenu {
     background-color: #555;
 }
 
-.table-container {
-    max-height: 400px;
+/* .table-container { */
+    /* max-height: 70%; */
     /* Adjust the max height of the container as needed */
-    overflow-y: auto;
-}
+    /* overflow-y: auto; */
+/* } */
 
 .table-container table {
     width: 100%;
@@ -34137,17 +34137,6 @@ img {
     /* Adjusted delay to start 1s later */
 }
 
-.intro-fill .welcome-3 {
-    font-size: 32px;
-    width: inherit;
-    text-align: center;
-    opacity: 0;
-    color: white;
-    animation: tanss 2s ease;
-    /* Reduced duration to 2s */
-    animation-delay: 2s;
-    /* Adjusted delay to start 2s later */
-}
 
 
 @keyframes tans {
@@ -35050,11 +35039,11 @@ input:disabled {
     z-index: 1;
 
   }
-  .table-container {
+  /* .table-container {
     position: relative;
     overflow-x: auto;
-    max-height: 400px; /* Adjust max-height as needed */
-  }
+    max-height: 100%;
+  } */
   
   .custom-checkbox .form-check-input {
     /* width: 14px !important; */

@@ -104,7 +104,7 @@ const DynamicForm = ({
         ) : (
           ""
         )}
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit}  autoComplete="off">
           <div className="card-body ">
             <div className="page-header">
               <div className="content-page-header d-flex justify-content-between align-items-center">
@@ -147,6 +147,7 @@ const DynamicForm = ({
                                 aria-describedby="basic-addon1"
                                 placeholder={`Enter Strategy Name (Ex: AAA_demo )`}
                                 readOnly={field.disable}
+                                autoComplete="new-email"
                                 id={field.name}
                                 name={field.name}
                                 {...formik.getFieldProps(field.name)}
@@ -187,6 +188,7 @@ const DynamicForm = ({
 
                               <input
                                 type="text"
+                                autoComplete="new-email1"
                                 aria-describedby="basic-addon1"
                                 className="form-control"
                                 placeholder={`Enter ${field.label}`}
@@ -215,6 +217,7 @@ const DynamicForm = ({
 
                               <input
                                 type="text"
+                                autoComplete="new-email2"
                                 aria-describedby="basic-addon1"
                                 className="form-control"
                                 placeholder={`Enter ${field.label}`}
@@ -569,6 +572,7 @@ const DynamicForm = ({
                               >
                                 <input
                                   id={field.name}
+                                  autoComplete="new-password"
                                   type={
                                     passwordVisible[field.name]
                                       ? "text"
@@ -624,6 +628,8 @@ const DynamicForm = ({
                               >
                                 <input
                                   id={field.name}
+                                  autoComplete="new-password1"
+
                                   type={
                                     passwordVisible[field.name]
                                       ? "text"
