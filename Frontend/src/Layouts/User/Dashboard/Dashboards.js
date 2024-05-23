@@ -266,12 +266,12 @@ const Dashboards = () => {
   return (
     <div>
       <div className="content container-fluid pb-0">
-        <div className="page-header">
+        {/* <div className="page-header">
           <div className="content-page-header">
             <h5>User Dashboard</h5>
 
           </div>
-        </div>
+        </div> */}
         <div className="super-admin-dashboard">
           <div className="row">
             <div className="col-xl-5 d-flex">
@@ -489,13 +489,14 @@ const Dashboards = () => {
                   </div>
                 </div>
 
-                <div className="card-body p-0 mr-2" style={{ maxHeight: "300px", overflowY: "auto" }}>
+                <div className="card-body p-0 mr-0" style={{ maxHeight: "400px", overflowY: "auto" }}>
                   <div className="table-responsive">
                     <FullDataTable
                       styles={styles}
                       label={label}
                       columns={columns}
                       rows={tableData.data}
+                      pginationSize={10}
                     />
                   </div>
                 </div>

@@ -52,7 +52,7 @@ function Login() {
     fetchIpAddress();
   
     // Initialize socket connection
-    const newSocket = io.connect(Config.base_url);
+    const newSocket = io.connect(Config.socket_Url);
     setSocket(newSocket);
   
     // Cleanup function to disconnect socket when component unmounts
@@ -106,25 +106,25 @@ function Login() {
       if (getData.Role === "ADMIN") {
         setTimeout(() => {
           navigate("/admin/dashboard");
-        }, 3300);
+        }, 2200);
       } else if (getData.Role === "SUBADMIN") {
         setTimeout(() => {
           navigate("/subadmin/dashboard");
-        }, 3300);
+        }, 2200);
       } else if (getData.Role === "EMPLOYEE") {
 
         setTimeout(() => {
           navigate("/employee/dashboard");
-        }, 3300);
+        }, 2200);
       } else if (getData.Role === "RESEARCH") {
 
         setTimeout(() => {
           navigate("/research/dashboard");
-        }, 3300);
+        }, 2200);
       } else {
         setTimeout(() => {
           navigate("/user/dashboard");
-        }, 3300);
+        }, 2200);
       }
     }
 
@@ -270,11 +270,13 @@ function Login() {
     htmlElement.setAttribute("data-sidebar", theme_mode ? theme_mode : "light");
     htmlElement.setAttribute("data-layout-mode", theme_mode ? theme_mode : "light");
     htmlElement.setAttribute("data-topbar", theme_mode ? theme_mode : "light");
-    if (isLoggedIn) {
-      setTimeout(() => {
-        navigate(`/${getData.Role.toLowerCase()}/dashboard`);
-      }, 9000);
-    }
+    // if (isLoggedIn) {
+    //   setTimeout(() => {
+    // console.log("sneh")
+
+    //     navigate(`/${getData.Role.toLowerCase()}/dashboard`);
+    //   }, 6000);
+    // }
   }, [isLoggedIn, getData.Role, navigate]);
 
 

@@ -12,26 +12,28 @@ verifyToken = (req, res, next) => {
     }
     jwt.verify(token, process.env.SECRET, async (err, decoded) => {
 
+        if (decoded) {
 
-        var UserToken = await User_model.find({ _id: decoded.id }).select('web_login_token app_login_token')
+            var UserToken = await User_model.find({ _id: decoded.id }).select('web_login_token app_login_token')
 
-        if (UserToken[0].web_login_token != token) {
-            return res.send({
-                status: false,
-                msg: "Unauthorized!",
-                data: [],
-            });
+            if (UserToken[0].web_login_token != token) {
+                return res.send({
+                    status: false,
+                    msg: "Unauthorized!",
+                    data: [],
+                });
+            }
+
+            if (err) {
+                return res.send({
+                    status: false,
+                    msg: "Unauthorized!",
+                    data: [],
+                });
+            }
+            req.userId = decoded._id;
+            next();
         }
-
-        if (err) {
-            return res.send({
-                status: false,
-                msg: "Unauthorized!",
-                data: [],
-            });
-        }
-        req.userId = decoded._id;
-        next();
     });
 };
 

@@ -4,6 +4,7 @@ export const react_domain = `${window.location.origin}`;
 
 export const broker_redirect_url = "https://connectbox.tradestreet.in/backend/";
 
+export const socket_Url = `https://connectbox.tradestreet.in:1001`;
 
 
 

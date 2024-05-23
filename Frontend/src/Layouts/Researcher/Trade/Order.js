@@ -12,6 +12,8 @@ export default function AllEmployees() {
 
     const Role = JSON.parse(localStorage.getItem("user_details")).Role;
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+    const token = JSON.parse(localStorage.getItem("user_details")).token
+
 
     const [tableData, setTableData] = useState({ loading: false, data: [] });
     const [refresh, setrefresh] = useState(false);
@@ -130,7 +132,7 @@ export default function AllEmployees() {
 
 
     const userDataRes = async () => {
-        await dispatch(Orders_Details({ subadminId: user_id, Role: Role })).unwrap()
+        await dispatch(Orders_Details({req:{ subadminId: user_id, Role: Role },token:token})).unwrap()
             .then(async (response) => {
                 if (response.status) {
                     const filterData = response.data.filter((item) => {

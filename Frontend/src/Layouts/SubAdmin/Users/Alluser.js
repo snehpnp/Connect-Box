@@ -26,8 +26,8 @@ export default function AllUsers() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [HeaderNAme, setHeaderNAme] = useState('All Users');
 
-   
   const [refresh, setrefresh] = useState(false);
   const [modal, setmodal] = useState(false);
   const [searchInput, setSearchInput] = useState('');
@@ -36,7 +36,7 @@ export default function AllUsers() {
   const [licenceType, setLicenceType] = useState('null');
   const [BrokerType, setBrokerType] = useState('null');
 
- 
+
 
   const [ShowDeleteModal, setShowDeleteModal] = useState(false);
   const [modalId, setmodalId] = useState('');
@@ -219,7 +219,7 @@ export default function AllUsers() {
 
   };
 
- 
+
 
   const handleSwitchChange = async (event, id) => {
     const user_active_status = event.target.checked ? 1 : 0;
@@ -278,7 +278,7 @@ export default function AllUsers() {
 
   }
 
-   
+
 
   useState(() => {
     AllBroker();
@@ -312,6 +312,7 @@ export default function AllUsers() {
 
   useEffect(() => {
     forCSVdata()
+
   }, [getAllUsers.data])
 
 
@@ -364,7 +365,6 @@ export default function AllUsers() {
 
 
 
-
   const getUsersData = async () => {
     var data = { user_ID: user_id }
     await dispatch(GetAllUsers(data))
@@ -376,54 +376,84 @@ export default function AllUsers() {
             ...row,
             id: index + 1,
           }));
+          setHeaderNAme("All Users")
 
           let formattedData1;
-          if (dashboard_filter == 1 || dashboard_filter == undefined) {
+          if (dashboard_filter == 1) {
             formattedData1 = formattedData
+            setHeaderNAme("Total Users")
+          }
+          else if (dashboard_filter == undefined) {
+            formattedData1 = formattedData
+            setHeaderNAme("All Users")
+
+
           }
           else if (dashboard_filter == 2) {
             formattedData1 = formattedData.filter((item) => item.ActiveStatus == 1)
+            setHeaderNAme("Active Users")
+
           }
           else if (dashboard_filter == 3) {
             formattedData1 = formattedData.filter((item) => item.ActiveStatus == 1)
+            setHeaderNAme("Expired Users")
+
           }
           else if (dashboard_filter == 4) {
             formattedData1 = formattedData.filter((item) => item.license_type == 2)
+            setHeaderNAme("Total Live Users")
+
           }
           else if (dashboard_filter == 5) {
             formattedData1 = formattedData.filter((item) => item.license_type == 2 && item.ActiveStatus == 1)
+            setHeaderNAme("Active Live Users")
+
           }
           else if (dashboard_filter == 6) {
             formattedData1 = formattedData.filter((item) => item.license_type == 2 && item.ActiveStatus == 0)
+            setHeaderNAme("Expired Live Users")
+
           }
           else if (dashboard_filter == 7) {
             formattedData1 = formattedData.filter((item) => item.license_type == 0)
+            setHeaderNAme("Total 2 days Users")
+
           }
           else if (dashboard_filter == 8) {
-            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 1)
+            formattedData1 = formattedData.filter((item) => item.license_type == 0 && item.ActiveStatus == 1)
+            setHeaderNAme("Active 2 days Users")
+
           }
           else if (dashboard_filter == 9) {
-            formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 0)
+            formattedData1 = formattedData.filter((item) => item.license_type == 0 && item.ActiveStatus == 0)
+            setHeaderNAme("Expired 2 days Users")
+
           }
           else if (dashboard_filter == 10) {
             formattedData1 = formattedData.filter((item) => item.license_type == 1)
+            setHeaderNAme("Total Demo Users")
+
           }
           else if (dashboard_filter == 11) {
             formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 1)
+            setHeaderNAme("Active Demo Users")
+
           } else if (dashboard_filter == 12) {
             formattedData1 = formattedData.filter((item) => item.license_type == 1 && item.ActiveStatus == 0)
+            setHeaderNAme("Expired Demo Users")
+
           }
 
- 
 
-           
-           
+
+
+
           const filterData = formattedData1.filter((item) => {
 
-            const filter1Data = licenceType== 'null' || item.license_type.includes(licenceType)
-            const filter2Data = BrokerType== 'null' || item.broker == BrokerType
+            const filter1Data = licenceType == 'null' || item.license_type.includes(licenceType)
+            const filter2Data = BrokerType == 'null' || item.broker == BrokerType
 
-            const searchInputMatch = 
+            const searchInputMatch =
               searchInput == '' ||
               item.FullName.toLowerCase().includes(searchInput.toLowerCase()) ||
               item.UserName.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -436,7 +466,7 @@ export default function AllUsers() {
 
           setAllUsers({
             loading: false,
-            data: searchInput || licenceType!='null' || BrokerType!= 'null' ? filterData : formattedData1,
+            data: searchInput || licenceType != 'null' || BrokerType != 'null' ? filterData : formattedData1,
 
           });
 
@@ -462,8 +492,9 @@ export default function AllUsers() {
 
   useEffect(() => {
     getUsersData();
-  }, [refresh, searchInput , licenceType , BrokerType]);
+  }, [refresh, searchInput, licenceType, BrokerType]);
 
+  console.log("Header_name", HeaderNAme)
 
   return (
     <>
@@ -476,7 +507,7 @@ export default function AllUsers() {
                   <div className="col">
                     <h5 className="card-title mb-0">
                       <i className="pe-2 fa-solid fa-users"></i>
-                      All Users</h5>
+                      {HeaderNAme && HeaderNAme}</h5>
                   </div>
                   <div className="col-auto">
                     <div className="list-btn">
@@ -510,8 +541,8 @@ export default function AllUsers() {
                         <li className="serach-li">
                           <div className="input-group input-block">
                             <select className="rounded form-control border-0 px-4"
-                            onChange={(e)=>setLicenceType(e.target.value)}
-                            value={licenceType}>
+                              onChange={(e) => setLicenceType(e.target.value)}
+                              value={licenceType}>
                               <option value="null">License Type</option>
                               <option value="1">Demo</option>
                               <option value="0">2 day Live</option>
@@ -522,8 +553,8 @@ export default function AllUsers() {
                         <li className="serach-li">
                           <div className="input-group input-block">
                             <select className="rounded form-control border-0 px-4"
-                            onChange={(e)=>setBrokerType(e.target.value)}
-                            value={BrokerType}
+                              onChange={(e) => setBrokerType(e.target.value)}
+                              value={BrokerType}
                             >
                               <option value="null">Broker Type</option>
                               {getAllBroker && getAllBroker.map((item, index) => {

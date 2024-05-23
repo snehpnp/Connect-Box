@@ -3,7 +3,7 @@ require('dotenv').config();
 const mongoConnection = require('./App/Connections/mongo_connection');
 const express = require("express");
 const app = express();
-const http = require('http'); 
+const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const cors = require('cors');
@@ -11,12 +11,6 @@ const bodyparser = require('body-parser');
 const { Server } = require("socket.io");
 
 const socketIo = require("socket.io");
-
-
-
-
-
-
 
 
 const { createViewAlice } = require("./View/Alice_blue");
@@ -45,16 +39,15 @@ app.use(bodyparser.json({ limit: '10mb', extended: true }));
 
 const server = http.createServer(app);
 
- 
- 
-const { setIO ,getIO} = require('./App/Helpers/BackendSocketIo');
+
+
+const { setIO, getIO } = require('./App/Helpers/BackendSocketIo');
 
 //socket.io
 const io = new Server(server, {
   cors: {
-     
-    origin: "http://localhost:3000",
-
+    origin: "*",
+    credentials: true,
     methods: ["GET", "POST"],
   },
 });
@@ -72,7 +65,7 @@ io.on("connection", (socket) => {
     io.emit("receive_message", data);
   });
 
-  
+
   socket.on("login", (data) => {
     io.emit("logout", data);
   });
@@ -85,20 +78,20 @@ io.on("connection", (socket) => {
 
 setIO(io).then(() => {
   // console.log("io set successfully");
-   
-   // After io is set, you can call getIO
-   getIO().then(ioObject => {
-      // console.log("ioObject from getIO: ", ioObject);
-   }).catch(error => {
-       //console.error("Error getting io:", error);
-   });
- 
- }).catch((error) => {
-   console.error("Error setting io:", error);
- });
+
+  // After io is set, you can call getIO
+  getIO().then(ioObject => {
+    // console.log("ioObject from getIO: ", ioObject);
+  }).catch(error => {
+    //console.error("Error getting io:", error);
+  });
+
+}).catch((error) => {
+  console.error("Error setting io:", error);
+});
 
 
-app.get('/testsocket',(req,res)=>{
+app.get('/testsocket', (req, res) => {
   io.emit("shk_rec", "OKK connectbox");
   res.send("okkk connect")
 })
@@ -107,9 +100,9 @@ require('./App/Utils/Cron.utils');
 
 // Importing routes
 require("./App/Routes")(app);
-require("./test")(app);
 
-app.get('/aliceblue/view',(req,res)=>{
+
+app.get('/aliceblue/view', (req, res) => {
   createViewAlice()
   res.send("done")
 })
@@ -122,6 +115,6 @@ app.get('/aliceblue/view',(req,res)=>{
 // httpsserver.listen(1001)
 server.listen(process.env.PORT, () => {
   const { Alice_Socket } = require("./App/Helpers/Alice_Socket");
-      Alice_Socket()
-      console.log(`Server is running on http://0.0.0.0:${process.env.PORT}`);
-  });
+  Alice_Socket()
+  console.log(`Server is running on http://0.0.0.0:${process.env.PORT}`);
+});

@@ -9,6 +9,8 @@ const FullDataTable = ({
   keyField,
   rowStyle,
   checkboxSelection,
+  pginationSize,
+
 }) => {
   const themeMode = localStorage.getItem("theme_mode") || "light";
 
@@ -19,7 +21,7 @@ const FullDataTable = ({
 
   return (
     <>
-      <div style={{ maxHeight:"100%", width: "100%", position: "relative" }}>
+      <div style={{ height: pginationSize ? "400px" : "100%", width: "100%", position: "relative" }}>
         <DataGrid
           rows={rowsWithIds}
           columns={columns}
@@ -32,7 +34,7 @@ const FullDataTable = ({
           disableColumnMenu={true}
           initialState={{
             pagination: {
-              paginationModel: { page: 0, pageSize: 10 },
+              paginationModel: { page: 0, pageSize: pginationSize ? pginationSize : 10 },
             },
           }}
           pageSizeOptions={[10, 50, 100]}

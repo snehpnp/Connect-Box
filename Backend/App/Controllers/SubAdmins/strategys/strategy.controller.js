@@ -262,10 +262,6 @@ class strategy {
         });
       }
 
-
-
-
-
       function compareObjects(oldObj, newObj) {
   
         if (oldObj.strategy_category != newObj.strategy_category) {
@@ -281,22 +277,12 @@ class strategy {
           Activity_logsData.save();
         }
 
-
-
-
-
-
-
-        return changes;
       }
+
+
       const changes = compareObjects(strategy_check, req.body);
 
-      if (Object.keys(changes).length > 0) {
-        console.log("Changes detected:", changes);
-      } else {
-        console.log("No changes detected.");
-      }
-
+   
 
 
       const filter = { _id: _id };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/DataTable";
 
@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { useNavigate } from "react-router-dom";
-import { Userinfo ,GetBrokerDatas } from "../../../ReduxStore/Slice/Comman/Userinfo";
+import { Userinfo, GetBrokerDatas } from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { Trade_Details, Update_Signals } from "../../../ReduxStore/Slice/Comman/Trades";
 import { fDateTimeSuffix, GetMarketOpenDays, convert_string_to_month } from "../../../Utils/Date_formet";
 import { CreateSocketSession, ConnctSocket } from "../../../Utils/Alice_Socket";
@@ -35,7 +35,7 @@ import {
 } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
 //const SOCKET_SERVER_URL = "http://185.209.75.6:7700";
-const SOCKET_SERVER_URL = "https://connectbox.tradestreet.in:1001/";
+const SOCKET_SERVER_URL = Config.socket_Url;
 
 
 
@@ -44,167 +44,163 @@ export default function AllEmployees() {
 
     const [UserDetails, seUserDetails] = useState('')
     const [exitOpenPosition, setExitOpenPosition] = useState('')
-    
+
     const currentClientKeyRef = useRef("")
     const currenPageStatusRef = useRef("openposition")
     const currentTypeABRRef = useRef("below")
     const [typeABROnclickFunc, setTypeABROnclickFunc] = useState("below");
-   // console.log("UserDetails ", UserDetails && UserDetails[0].client_key)
+    // console.log("UserDetails ", UserDetails && UserDetails[0].client_key)
 
 
     const [socketBackend, setSocketBackend] = useState(null);
 
     useEffect(() => {
-      const newSocket = io(SOCKET_SERVER_URL);
-      setSocketBackend(newSocket);
-  
-      return () => {
-        newSocket.disconnect();
-      };
+        const newSocket = io(SOCKET_SERVER_URL);
+        setSocketBackend(newSocket);
+
+        return () => {
+            newSocket.disconnect();
+        };
     }, []); // Empty dependency array ensures this runs only once
 
 
     useEffect(() => {
         if (socketBackend) {
-          const handleShkRec = (data) => {
-          
-             console.log("Received Connect Type:", data.type);
-            // console.log("currenPageStatusRef ", currenPageStatusRef.current)
-            // console.log("ABR TYPE ", currentTypeABRRef.current)
-            // console.log("currentClientKeyRef.current ", currentClientKeyRef.current)
+            const handleShkRec = (data) => {
+
+                console.log("Received Connect Type:", data.type);
+                // console.log("currenPageStatusRef ", currenPageStatusRef.current)
+                // console.log("ABR TYPE ", currentTypeABRRef.current)
+                // console.log("currentClientKeyRef.current ", currentClientKeyRef.current)
 
 
-            if(data.type == "MAKECALL" && currenPageStatusRef.current == "pendingposition"){
-                 console.log("Received Connect data: makecall", data);
-               // alert("Okk")
-                console.log("data. type_makecall ", data.type_makecall)
-                // TRADE MAKE CALL
-                if(data.type_makecall == "TRADE"){
-                if(data.data.Key == currentClientKeyRef.current){
-                    // console.log("data.data.Segment ", data.data.Segment)
-                    // console.log("data.data.Expiry ", data.data.Expiry)
-                    // console.log("data.data.Strike ", data.data.Strike)
-                    // console.log("data.data.OType ", data.data.OType)
+                if (data.type == "MAKECALL" && currenPageStatusRef.current == "pendingposition") {
+                    console.log("Received Connect data: makecall", data);
+                    // alert("Okk")
+                    console.log("data. type_makecall ", data.type_makecall)
+                    // TRADE MAKE CALL
+                    if (data.type_makecall == "TRADE") {
+                        if (data.data.Key == currentClientKeyRef.current) {
+                            // console.log("data.data.Segment ", data.data.Segment)
+                            // console.log("data.data.Expiry ", data.data.Expiry)
+                            // console.log("data.data.Strike ", data.data.Strike)
+                            // console.log("data.data.OType ", data.data.OType)
 
 
 
-                   let tradeSymbol;
-                   if(data.data.Segment.toLowerCase() == 'o' || data.data.Segment.toLowerCase() == 'co' || data.data.Segment.toLowerCase() == 'fo' || data.data.Segment.toLowerCase() == 'mo')
-                   {
-                    tradeSymbol = data.data.Symbol+"  "+data.data.Expiry+"  "+data.data.Strike+"  "+data.data.OType+"  "+" [ "+data.data.Segment+" ] ";
-                   }
-                   else if(data.data.Segment.toLowerCase() == 'f' || data.data.Segment.toLowerCase() == 'cf' || data.data.Segment.toLowerCase() == 'mf')
-                   {
-                    tradeSymbol = data.data.Symbol+"  "+data.data.Expiry+"  "+" [ "+data.data.Segment+" ] ";
-                   }
-                   else{
-                    tradeSymbol = data.data.Symbol+"  "+" [ "+data.data.Segment+" ] ";
-                   }
-               
-                   
-                   if(data.data.ABR_TYPE == currentTypeABRRef.current){
-                    Swal.fire({
-                        title: data.type,
-                        text: tradeSymbol,
-                        icon: "success",
-                        timer: 1500,
-                        timerProgressBar: true
-                        });
-                        handleClick_abr(currentTypeABRRef.current)
-                    }else{
-                        handleClick_abr("below")
+                            let tradeSymbol;
+                            if (data.data.Segment.toLowerCase() == 'o' || data.data.Segment.toLowerCase() == 'co' || data.data.Segment.toLowerCase() == 'fo' || data.data.Segment.toLowerCase() == 'mo') {
+                                tradeSymbol = data.data.Symbol + "  " + data.data.Expiry + "  " + data.data.Strike + "  " + data.data.OType + "  " + " [ " + data.data.Segment + " ] ";
+                            }
+                            else if (data.data.Segment.toLowerCase() == 'f' || data.data.Segment.toLowerCase() == 'cf' || data.data.Segment.toLowerCase() == 'mf') {
+                                tradeSymbol = data.data.Symbol + "  " + data.data.Expiry + "  " + " [ " + data.data.Segment + " ] ";
+                            }
+                            else {
+                                tradeSymbol = data.data.Symbol + "  " + " [ " + data.data.Segment + " ] ";
+                            }
+
+
+                            if (data.data.ABR_TYPE == currentTypeABRRef.current) {
+                                Swal.fire({
+                                    title: data.type,
+                                    text: tradeSymbol,
+                                    icon: "success",
+                                    timer: 1500,
+                                    timerProgressBar: true
+                                });
+                                handleClick_abr(currentTypeABRRef.current)
+                            } else {
+                                handleClick_abr("below")
+                            }
+
+
+                        }
                     }
-                  
-                   
-                }
-                } 
 
-                //NO TRADE TIME TRADE 
-                else if(data.type_makecall == "NO_TRADE"){
-                  console.log("data NoTRADE",data.data)
-                  const remainData = data.data.filter(item => item.Key == currentClientKeyRef.current);
-                  if(remainData.length > 0){
-                   
-                    const formattedMessages = remainData.map(item => {
-                        if (item.Segment.toUpperCase() === "O" || item.Segment.toUpperCase() === "FO" || item.Segment.toUpperCase() === "CO" || item.Segment.toUpperCase() === "MO" ) {
-                            return `Script : ${item.Symbol} ${item.Expiry} ${item.OType} ${item.Strike} [ ${item.Segment} ]`;
+                    //NO TRADE TIME TRADE 
+                    else if (data.type_makecall == "NO_TRADE") {
+                        console.log("data NoTRADE", data.data)
+                        const remainData = data.data.filter(item => item.Key == currentClientKeyRef.current);
+                        if (remainData.length > 0) {
+
+                            const formattedMessages = remainData.map(item => {
+                                if (item.Segment.toUpperCase() === "O" || item.Segment.toUpperCase() === "FO" || item.Segment.toUpperCase() === "CO" || item.Segment.toUpperCase() === "MO") {
+                                    return `Script : ${item.Symbol} ${item.Expiry} ${item.OType} ${item.Strike} [ ${item.Segment} ]`;
+                                }
+                                else if (item.Segment.toUpperCase() === "F" || item.Segment.toUpperCase() === "CF" || item.Segment.toUpperCase() === "MF") {
+                                    return `Script : ${item.Symbol} ${item.Expiry} [ ${item.Segment} ]`;
+                                } else {
+                                    return `Script : ${item.Symbol} [ ${item.Segment} ]`;
+                                }
+                            });
+                            const formattedString = formattedMessages.join('\n');
+
+                            Swal.fire({
+                                title: data.type + " CLOSE TRADE",
+                                text: formattedString,
+                                icon: "success",
+                                timer: 1500,
+                                timerProgressBar: true
+                            });
+                            handleClick_abr(currentTypeABRRef.current)
+
                         }
-                        else if (item.Segment.toUpperCase() === "F" || item.Segment.toUpperCase() === "CF" || item.Segment.toUpperCase() === "MF" ) {
-                            return `Script : ${item.Symbol} ${item.Expiry} [ ${item.Segment} ]`;
-                        }else{
-                            return `Script : ${item.Symbol} [ ${item.Segment} ]`;
+
+
+                    }
+
+                }
+
+                else if (data.type == "OPENPOSITION" && currenPageStatusRef.current == "openposition") {
+                    // console.log("Received Connect data: open possition", data);  
+                    if (data.data.client_persnal_key == currentClientKeyRef.current) {
+
+                        // console.log("data.data.segment ", data.data.segment)
+                        // console.log("data.data.expiry ", data.data.expiry)
+                        // console.log("data.data.strike ", data.data.strike)
+                        // console.log("data.data.option_type ", data.data.option_type)
+
+                        let tradeSymbol;
+                        if (data.data.segment.toLowerCase() == 'o' || data.data.segment.toLowerCase() == 'co' || data.data.segment.toLowerCase() == 'fo' || data.data.segment.toLowerCase() == 'mo') {
+                            tradeSymbol = data.data.symbol + "  " + data.data.expiry + "  " + data.data.strike + "  " + data.data.option_type + "  " + " [ " + data.data.segment + " ] ";
                         }
-                    });
-                    const formattedString = formattedMessages.join('\n');
-                    
-                    Swal.fire({
-                        title: data.type +" CLOSE TRADE",
-                        text: formattedString,
-                        icon: "success",
-                        timer: 1500,
-                        timerProgressBar: true
+                        else if (data.data.segment.toLowerCase() == 'f' || data.data.segment.toLowerCase() == 'cf' || data.data.segment.toLowerCase() == 'mf') {
+                            tradeSymbol = data.data.symbol + "  " + data.data.expiry + "  " + " [ " + data.data.segment + " ] ";
+                        }
+                        else {
+                            tradeSymbol = data.data.symbol + "  " + " [ " + data.data.segment + " ] ";
+                        }
+
+
+                        Swal.fire({
+                            title: "Trade Executed Successfully  " + data.ExitStatus,
+                            text: tradeSymbol,
+                            icon: "success",
+                            timer: 1500,
+                            timerProgressBar: true
                         });
-                    handleClick_abr(currentTypeABRRef.current)
-    
-                  }
 
-                  
+                        setExitOpenPosition(tradeSymbol)
+
+                    }
+
                 }
-                
-            }
-
-            else if(data.type == "OPENPOSITION" && currenPageStatusRef.current == "openposition"){
-                // console.log("Received Connect data: open possition", data);  
-                if(data.data.client_persnal_key == currentClientKeyRef.current){
-
-                // console.log("data.data.segment ", data.data.segment)
-                // console.log("data.data.expiry ", data.data.expiry)
-                // console.log("data.data.strike ", data.data.strike)
-                // console.log("data.data.option_type ", data.data.option_type)
-
-                  let tradeSymbol;
-                 if(data.data.segment.toLowerCase() == 'o' || data.data.segment.toLowerCase() == 'co' || data.data.segment.toLowerCase() == 'fo' || data.data.segment.toLowerCase() == 'mo')
-                 {
-                  tradeSymbol = data.data.symbol+"  "+data.data.expiry+"  "+data.data.strike+"  "+data.data.option_type+"  "+" [ "+data.data.segment+" ] ";
-                 }
-                 else if(data.data.segment.toLowerCase() == 'f' || data.data.segment.toLowerCase() == 'cf' || data.data.segment.toLowerCase() == 'mf')
-                 {
-                  tradeSymbol = data.data.symbol+"  "+data.data.expiry+"  "+" [ "+data.data.segment+" ] ";
-                 }
-                 else{
-                  tradeSymbol = data.data.symbol+"  "+" [ "+data.data.segment+" ] ";
-                 }
 
 
-                Swal.fire({
-                title: "Trade Executed Successfully  "+data.ExitStatus,
-                text: tradeSymbol,
-                icon: "success",
-                timer: 1500,
-                timerProgressBar: true
-                });
-                
-                setExitOpenPosition(tradeSymbol)
+            };
 
-              }    
-              
-            }
+            //socketBackend.on("shk_rec", handleShkRec);
+            socketBackend.on("TRADE_NOTIFICATION", handleShkRec);
 
-
-          };
-    
-          //socketBackend.on("shk_rec", handleShkRec);
-          socketBackend.on("TRADE_NOTIFICATION", handleShkRec);
-    
-          return () => {
-            socketBackend.off("TRADE_NOTIFICATION", handleShkRec);
-          //  socketBackend.off("shk_rec", handleShkRec);
-          };
+            return () => {
+                socketBackend.off("TRADE_NOTIFICATION", handleShkRec);
+                //  socketBackend.off("shk_rec", handleShkRec);
+            };
         }
-      }, [socketBackend]); // Runs whenever the socket changes
+    }, [socketBackend]); // Runs whenever the socket changes
 
 
-   
+
 
 
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
@@ -240,7 +236,7 @@ export default function AllEmployees() {
     });
 
 
- 
+
     const [livePriceDataDetails, setLivePriceDataDetails] = useState('');
     const [userIdSocketRun, setUserIdSocketRun] = useState("none");
 
@@ -258,7 +254,7 @@ export default function AllEmployees() {
                 }
             });
     };
-  
+
 
     useEffect(() => {
         GetBrokerData()
@@ -269,7 +265,7 @@ export default function AllEmployees() {
         GetBrokerLiveData(userIdSocketRun)
     }, [userIdSocketRun]);
 
-    
+
 
     const GetBrokerLiveData = async (userIdSocketRun) => {
 
@@ -297,7 +293,7 @@ export default function AllEmployees() {
 
     // MAKECALL  START///////
     const [aboveBelowRangData, setAboveBelowRangData] = useState({ loading: true, data: [] });
-   
+
     // console.log("typeABROnclickFunc",)
     const [iscolumntPrice, setiscolumntPrice] = useState(false);
     const [iscolumntPriceRange, setiscolumntPriceRange] = useState(true);
@@ -555,6 +551,8 @@ export default function AllEmployees() {
     }
 
     const handleOnSelectM = (row, isSelect) => {
+
+        console.log(row, isSelect)
         if (isSelect) {
             setSelectedM([...selectedM, row._id]);
             setSelected1M([...selected1M, row]);
@@ -567,7 +565,7 @@ export default function AllEmployees() {
 
     const handleOnSelectAllM = (isSelect, rows) => {
         const ids = rows.map(r => r._id);
- 
+
         if (isSelect) {
             setSelectedM(ids);
             setSelected1M(rows);
@@ -587,9 +585,11 @@ export default function AllEmployees() {
         onSelectAll: handleOnSelectAllM
 
     };
-
+    
+    console.log("selected1",selected1M)
     const delete_data = async (ABR) => {
-        if (selected1.length <= 0) {
+
+        if (selected1M.length <= 0) {
             //   alert("please select any signal");
             Swal.fire({
                 text: "please select any signal",
@@ -607,7 +607,7 @@ export default function AllEmployees() {
                     req:
                     {
                         user_id: UserLocalDetails.user_id,
-                        row: selected1,
+                        row: selected1M,
                     },
 
                     token: UserLocalDetails.token
@@ -780,7 +780,7 @@ export default function AllEmployees() {
             dataField: "TradeType",
             text: "Trade Type",
         },
-        
+
         {
             dataField: "type",
             text: "Type",
@@ -937,7 +937,7 @@ export default function AllEmployees() {
             text: "Signals time",
             formatter: (cell) => <>{fDateTimeSuffix(cell)}</>,
         },
-       
+
 
 
     ];
@@ -977,7 +977,7 @@ export default function AllEmployees() {
 
     // GET TRADE
     const userDataRes = async () => {
-    //   alert("okkk")
+        //   alert("okkk")
         // const subadminId =user_id
         await dispatch(Trade_Details({ subadminId: user_id }))
             .unwrap()
@@ -1038,7 +1038,7 @@ export default function AllEmployees() {
 
     useEffect(() => {
         userDataRes()
-    }, [searchInput, refresh ,exitOpenPosition])
+    }, [searchInput, refresh, exitOpenPosition])
 
 
 
@@ -1083,6 +1083,10 @@ export default function AllEmployees() {
 
     // ONE SELECT
     const handleOnSelect = (row, isSelect) => {
+
+        console.log("isSelect",isSelect)
+        console.log("row",row);
+
         if (isSelect) {
             setSelected([...selected, row._id]);
             setSelected1([...selected1, row]);
@@ -1319,12 +1323,12 @@ export default function AllEmployees() {
                             //  if Only entry qty Exist
                             else if ((get_entry_type === "LE" && get_exit_type === "") || (get_entry_type === "SE" && get_exit_type === "")) {
                                 let abc = ((parseFloat(live_price) - parseFloat(get_entry_price)) * parseInt(get_entry_qty)).toFixed();
-                              
-                              
-                          
+
+
+
 
                                 if (get_entry_qty !== "" && (get_exit_qty == "" || get_exit_qty == 0)) {
-                                   
+
                                     if (isNaN(abc)) {
                                         return "-";
                                     } else {
@@ -1333,14 +1337,14 @@ export default function AllEmployees() {
                                         ShowColor1(".UPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
                                         ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
                                     }
-                                }else{
+                                } else {
                                     if (isNaN(abc)) {
                                         return "-";
                                     } else {
-                                        $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");                                
+                                        $(".show_rpl_" + response.tk + "_" + get_id_token).html("-");
                                         $(".TPL_" + response.tk + "_" + get_id_token).html(abc);
                                         ShowColor1(".show_rpl_" + response.tk + "_" + get_id_token, "-", response.tk, get_id_token);
-                                       ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
+                                        ShowColor1(".TPL_" + response.tk + "_" + get_id_token, abc, response.tk, get_id_token);
                                     }
                                 }
 
@@ -1500,19 +1504,17 @@ export default function AllEmployees() {
 
 
 
-     // const SOCKET_SERVER_URL = "http://185.209.75.6:7700"; 
-     // const [socketBackend, setSocketBackend] = useState(SOCKET_SERVER_URL);
-     
+
     const selectPageStatus = (value) => {
-       //alert(value)
-        if(value == "openposition"){
+        //alert(value)
+        if (value == "openposition") {
             currenPageStatusRef.current = "openposition";
         }
 
-        else if(value == "pendingposition"){
+        else if (value == "pendingposition") {
             currenPageStatusRef.current = "pendingposition";
         }
-    }  
+    }
 
 
     return (
@@ -1534,8 +1536,8 @@ export default function AllEmployees() {
                                             className="nav-link active"
                                             href="#solid-tab4"
                                             data-bs-toggle="tab"
-                                            onClick={()=>selectPageStatus('openposition')}
-                                            
+                                            onClick={() => selectPageStatus('openposition')}
+
                                         >
                                             <i className="fa-solid fa-landmark pe-2"></i>
                                             Open Position
@@ -1546,8 +1548,8 @@ export default function AllEmployees() {
                                             className="nav-link ms-2"
                                             href="#solid-tab5"
                                             data-bs-toggle="tab"
-                                            onClick={()=>selectPageStatus('pendingposition')}
-                                           
+                                            onClick={() => selectPageStatus('pendingposition')}
+
                                         >
                                             <i className="fa-solid fa-envelope pe-2"></i>
                                             Pending Position
@@ -1589,7 +1591,7 @@ export default function AllEmployees() {
                                                                             data-bs-toggle="tooltip"
                                                                             data-bs-placement="bottom"
                                                                             title="Refresh"
-                                                                            
+
                                                                         >
                                                                             <span>
                                                                                 <i className="fe fe-refresh-ccw" />
@@ -1605,7 +1607,7 @@ export default function AllEmployees() {
                                                                                 placeholder="Search..."
                                                                                 aria-label="Search"
                                                                                 aria-describedby="search-addon"
-                                                                               
+
 
                                                                             />
 

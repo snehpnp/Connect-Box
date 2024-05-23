@@ -44,7 +44,7 @@ const DropDown = () => {
   const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type;
 
   useEffect(() => {
-    const newSocket = io.connect(Config.base_url);
+    const newSocket = io.connect(Config.socket_Url);
     setSocket(newSocket);
    
     if (user) {
