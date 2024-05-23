@@ -478,7 +478,7 @@ const DropDown = () => {
                 )) :
                   Role === "ADMIN" ? getsubadmin && getsubadmin.map((data, index) => (
                     <li className="notification-message" key={`getuserdata-${index}`}>
-                      <a href="/#/subadmin/help">
+                      <a href="/#/admin/help">
                         <div className="d-flex">
                           <div className="media-body">
                             <div className="d-flex justify-content-between">

@@ -131,6 +131,9 @@ const Profile = () => {
       });
   };
 
+
+
+  // function to update profile
   const handleAvatarClick = async (avatarUrl) => {
     try {
       var data = { user_id: user_id, profile_img: avatarUrl };
@@ -155,6 +158,9 @@ const Profile = () => {
     setOpen(false);
   };
 
+
+
+
   ///  handler to handle form
 
   const handleAddInfo = () => {
@@ -172,6 +178,10 @@ const Profile = () => {
     }
     setEditbtn(!editbtn);
   };
+
+
+
+
 
   // update profile data
 
@@ -209,6 +219,10 @@ const Profile = () => {
       });
   };
 
+
+
+
+
   //  profile information
 
   const profiledata = async () => {
@@ -231,6 +245,10 @@ const Profile = () => {
     Employeetable();
   }, []);
 
+
+
+
+
   ///active status
 
   const profilestatus = async () => {
@@ -251,6 +269,11 @@ const Profile = () => {
   useEffect(() => {
     profilestatus();
   }, []);
+
+
+
+
+
 
   // api for getting ProfileInfo
   const fetchData = async () => {
@@ -287,6 +310,8 @@ const Profile = () => {
   }, [refresh]);
 
 
+
+  
   const FindParentType = async () => {
     try {
       const data = { id: user_id, Role: Role }
@@ -323,6 +348,9 @@ const Profile = () => {
     FindParentType()
     fetchIP();
   }, [])
+  
+
+
   return (
     <div>
       {loading ? (

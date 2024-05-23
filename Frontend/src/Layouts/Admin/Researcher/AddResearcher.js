@@ -120,6 +120,7 @@ const AddResearcher = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
+      autoComplete:"off"
     },
 
     {
@@ -129,6 +130,7 @@ const AddResearcher = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
+      autoComplete: "new-email",
     },
     {
       name: "PhoneNo",
@@ -145,6 +147,7 @@ const AddResearcher = () => {
       label_size: 12,
       col_size: 6,
       disable: false,
+      
     },
     // {
     //   name: "prifix_key",
@@ -172,6 +175,9 @@ const AddResearcher = () => {
     },
 
   ]
+
+ 
+
 
   return (
     <>
