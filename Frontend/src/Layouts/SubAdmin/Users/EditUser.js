@@ -87,6 +87,14 @@ const AddClient = () => {
       parent_role: null,
       demat_userid: null,
       api_key: null,
+
+      app_key: null,
+      api_type: null,
+      client_code: null,
+      app_id: null,
+      api_secret: null,
+
+
       Service_Type: 0,
       balance: 0,
       per_trade_value: null,
@@ -145,6 +153,15 @@ const AddClient = () => {
         parent_id: user_id,
         parent_role: Role || "SUBADMIN",
         demat_userid: values.demat_userid,
+        api_key: values.api_key,
+
+        app_key: values.app_key,
+        api_type: values.api_type,
+        client_code: values.client_code,
+        app_id: values.app_id,
+        api_secret: values.api_secret,
+
+
         group_service: values.groupservice,
         broker: values.broker,
         Per_trade: null,
@@ -439,6 +456,15 @@ const AddClient = () => {
     formik.setFieldValue('per_trade_value', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].per_trade_value);
     formik.setFieldValue('balance', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Balance);
     formik.setFieldValue('demat_userid', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].demat_userid);
+    formik.setFieldValue('api_key', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].api_key);
+
+    formik.setFieldValue('app_key', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].app_key);
+    formik.setFieldValue('api_type', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].api_type);
+    formik.setFieldValue('client_code', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].client_code);
+    formik.setFieldValue('app_id', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].app_id);
+    formik.setFieldValue('api_secret', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].api_secret);
+
+
     formik.setFieldValue('Employees', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].employee_id);
     
 

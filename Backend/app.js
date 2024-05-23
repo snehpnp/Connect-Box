@@ -100,7 +100,7 @@ require('./App/Utils/Cron.utils');
 
 // Importing routes
 require("./App/Routes")(app);
-require("./test")(app);
+
 
 app.get('/aliceblue/view', (req, res) => {
   createViewAlice()
