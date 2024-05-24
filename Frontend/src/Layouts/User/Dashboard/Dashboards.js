@@ -6,6 +6,8 @@ import { Link } from "react-router-dom"
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
 import { OrderBook } from "../../../Utils/Orderbook";
+import { dashboardData } from "../../../Utils/Userdasboard";
+
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import Swal from 'sweetalert2';
 // import useLogout  from '../../../Utils/Logout'
@@ -14,26 +16,22 @@ import Swal from 'sweetalert2';
 const Dashboards = () => {
   // const logout = useLogout();
   const dispatch = useDispatch()
+  const images = ["assets/img/companies/company-01.svg", "assets/img/companies/company-02.svg", "assets/img/companies/company-03.svg"];
+
 
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
   var user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   var Role = JSON.parse(localStorage.getItem("user_details")).Role;
   var token = JSON.parse(localStorage.getItem("user_details")).token;
 
+  const [getUserBalance, SetUserBalance] = useState(null);
 
   const [ForGetCSV, setForGetCSV] = useState([])
-
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
-  const [getDashboardData, setDashboardData] = useState({
-    loading: false,
-    data: []
-  });
+  const [getDashboardData, setDashboardData] = useState({ loading: false,data: []});
+  const [tableData, setTableData] = useState({loading: false,data: []});
 
-  const [tableData, setTableData] = useState({
-    loading: false,
-    data: [],
-  });
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
   const styles = {
@@ -142,28 +140,7 @@ const Dashboards = () => {
 
   const { greeting, icon } = getGreetingMessage();
 
-  useEffect(() => {
-    // Check if the browser supports Geolocation
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
-          setLocation({ latitude, longitude });
-        },
-        error => {
-          setError(error.message);
-        }
-      );
-    } else {
-      setError("Geolocation is not supported by this browser.");
-    }
-  }, []);
-
-
-
-
-
+ 
 
   const userDataRes = async () => {
     await dispatch(Orders_Details({ req: { subadminId: user_id, Role: Role }, token: token }))
@@ -182,9 +159,6 @@ const Dashboards = () => {
       });
   };
 
-  useEffect(() => {
-    userDataRes()
-  }, [])
 
 
   const UserdashboardDATA = async () => {
@@ -213,18 +187,13 @@ const Dashboards = () => {
 
   }
 
-  useState(() => {
-    UserdashboardDATA();
-  }, []);
+  
 
-
-  const images = ["assets/img/companies/company-01.svg", "assets/img/companies/company-02.svg", "assets/img/companies/company-03.svg"];
 
   const getRandomImage = () => {
     const randomIndex = Math.floor(Math.random() * images.length);
     return images[randomIndex];
   };
-
 
 
   const DawnloadOrderBook = async (e) => {
@@ -263,15 +232,74 @@ const Dashboards = () => {
 
   }
 
+
+  const UserdasboardData = async (e) => {
+    let data = { id: user_id };
+    await dispatch(ProfileInfo({ req: data, token: token }))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
+            dashboardData(response.data[0])
+              .then(response => {
+            //  console.log("SNEH JAUSWAL",response)
+             SetUserBalance(response)
+              })
+              .catch(error => {
+                console.error("Error:", error);
+              });
+          } else {
+            Swal.fire({
+              title: "Trading Is Off",
+              text: "Trading on ",
+              icon: "error",
+              timer: 1500,
+              timerProgressBar: true,
+            })
+          }
+
+        } else {
+          console.log("response", response)
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+
+
+  }
+
+
+  useEffect(() => {
+    // Check if the browser supports Geolocation
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          setLocation({ latitude, longitude });
+        },
+        error => {
+          setError(error.message);
+        }
+      );
+    } else {
+      setError("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
+
+  useEffect(() => {
+    UserdasboardData()
+    userDataRes()
+    UserdashboardDATA();
+  }, [])
+
+
   return (
     <div>
       <div className="content container-fluid pb-0">
-        {/* <div className="page-header">
-          <div className="content-page-header">
-            <h5>User Dashboard</h5>
-
-          </div>
-        </div> */}
+   
         <div className="super-admin-dashboard">
           <div className="row">
             <div className="col-xl-5 d-flex">
@@ -293,11 +321,11 @@ const Dashboards = () => {
                 <div className="dash-btns gap-3 mt-5" style={{ display: "flex", color: "white" }}>
                   <div>
                     <h4>Balance</h4>
-                    <p>10000</p>
+                    <p>{getUserBalance && getUserBalance.limitsData || "-"}</p>
                   </div>
                   <div >
                     <h4>M2M</h4>
-                    <p>7860</p>
+                    <p>{getUserBalance && getUserBalance.unrealisedProfitLossSum|| "-"}</p>
                   </div>
                   <div >
                     <h4>Dawnload</h4><br />

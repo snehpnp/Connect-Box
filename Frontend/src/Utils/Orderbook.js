@@ -47,6 +47,8 @@ export const OrderBook = async (UserDetails) => {
                     reject(error); // Reject the promise with error
                 });
         });
+
+
     } else if (broker_id === "12" || broker_id === 12) {
         // Logic for broker 12
     }

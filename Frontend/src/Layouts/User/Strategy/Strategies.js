@@ -209,7 +209,7 @@ const Strategies = () => {
                         <p>{item.strategy_description}</p>
                       </div>
 
-                      <h2>Price : 5000 only</h2>
+                      {/* <h2>Price : 5000 only</h2> */}
                       <h6>What’s included</h6>
                       <ul>
                         <li>

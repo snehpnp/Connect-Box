@@ -637,7 +637,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
     };
     axios(config)
         .then(async (response) => {
-            //  console.log("respose ENTRY", response.data)
+             console.log("respose ENTRY", response.data)
             fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE AFTER PLACE ORDER USER ENTRY - ' + item.UserName + ' RESPONSE -' + JSON.stringify(response.data) + '\n', function (err) {
                 if (err) {
                     return console.log(err);
@@ -646,6 +646,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
 
             if (response.data[0].stat == "Ok") {
 
+                console.log("SNEH JAISWAL")
                 let tradeChargeData = {
                     order_id: response.data[0].NOrdNo,
                     user_id: item._id,
@@ -653,7 +654,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
                     user_charge: item.stg_client.trade_charge,
                     parent_id:item.parent_id
                 }
-                trade_charge(tradeChargeData)
+                // trade_charge(tradeChargeData)
 
 
                 BrokerResponse.create({
@@ -664,14 +665,14 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
                     symbol: input_symbol,
                     order_status: response.data[0].stat,
                     order_id: response.data[0].NOrdNo,
-                    trading_symbol: trading_symbol,
+                    // trading_symbol: trading_symbol,
                     broker_name: "ALICE BLUE",
                     send_request: send_rr,
 
 
                 })
                     .then((BrokerResponseCreate) => {
-                        // console.log('User created and saved:', BrokerResponseCreate._id)
+                        console.log('User created and saved:', BrokerResponseCreate._id)
                     })
                     .catch((err) => {
                         try {
@@ -694,7 +695,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
                     symbol: input_symbol,
                     order_status: 0,
                     order_id: "",
-                    trading_symbol: trading_symbol,
+                    // trading_symbol: trading_symbol,
                     broker_name: "ALICE BLUE",
                     send_request: send_rr,
                     reject_reason: message,

@@ -192,7 +192,6 @@ function Payment() {
 
 
           const filterData = formattedData.filter((item)=>{
-            console.log("formattedData :", item.user_id)
 
             const searchMatch = 
             inputSearch=='' || 

@@ -402,7 +402,7 @@ const DropDown = () => {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <i className="fe fe-bell" /> <span className="badge rounded-pill" />
+            <i className="fe fe-bell" /> {pipelineData && pipelineData.length > 0 ?  <span className="badge rounded-pill" /> :" "}
           </a>
           <div className="dropdown-menu notifications">
 
