@@ -61,7 +61,7 @@ const Header = () => {
 
   let headerData = getHeaderData();
 
-  if (user_details?.subadmin_service_type === 2) {
+  if (user_details?.subadmin_service_type == 2) {
     headerData = headerData.filter(column => column.name !== "Trade Charges");
   }
 

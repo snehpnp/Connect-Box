@@ -402,18 +402,19 @@ class strategy {
       }
 
       if (key == 1) {
-        const getAllstrategy = await strategy_model.find({
+        const getAllstrategy  = await strategy_model.find({
           maker_id: id,
           $or: [
-            { security_fund_month: { $ne: null, $ne: NaN, $ne: "" } },
-            { security_fund_quarterly: { $ne: null, $ne: NaN, $ne: "" } },
-            { security_fund_half_early: { $ne: null, $ne: NaN, $ne: "" } },
-            { security_fund_early: { $ne: null, $ne: NaN, $ne: "" } }
-
+              { security_fund_month: { $nin: [null, "", undefined] } },
+              { security_fund_quarterly: { $nin: [null, "", undefined] } },
+              { security_fund_half_early: { $nin: [null, "", undefined] } },
+              { security_fund_early: { $nin: [null, "", undefined] } }
           ]
-        }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
+      }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
+      
 
 
+        console.log("getAllstrategy",getAllstrategy)
 
 
         // IF DATA NOT EXIST

@@ -137,7 +137,7 @@ class Users {
 
 
 
-        var matchedStrategies = await Strategie_modal.find({ _id: { $in: stgIds } }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month');
+        var matchedStrategies = await Strategie_modal.find({ _id: { $in: stgIds } }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month strategy_percentage researcher_id research_strategy_percentage');
 
         // Create an array of matched strategy IDs
         var matchedStrategyIds = matchedStrategies.map(strategy => strategy._id.toString());
@@ -439,7 +439,8 @@ class Users {
                   Start_Date: StartDate1,
                   End_Date: EndDate1,
                   stg_charge: price_stg,
-                  Admin_charge: Admin_charge1
+                  Admin_charge: Admin_charge1,
+                  Research_charge:""
                 });
                 strategy_transactionData.save();
               });
@@ -976,7 +977,7 @@ class Users {
           // IF ADD NEW STRATEGY
           if (add_startegy.length > 0) {
             add_startegy.forEach(async (data) => {
-              const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month');
+              const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month strategy_percentage researcher_id research_strategy_percentage');
 
 
               var price_stg = 0
@@ -1053,6 +1054,9 @@ class Users {
               });
               Activity_logsData.save();
 
+              const Researcher_charge_percentage = Number(matchedStrategy.research_strategy_percentage || 0) / 100;
+              const Researcher_charge1 = Researcher_charge_percentage * Number(price_stg);
+
               const Admin_charge_percentage = parseInt(ParentData.strategy_Percentage) / 100;
               const Admin_charge1 = Admin_charge_percentage * parseInt(price_stg);
 
@@ -1064,7 +1068,9 @@ class Users {
                 Start_Date: StartDate1,
                 End_Date: EndDate1,
                 stg_charge: price_stg,
-                Admin_charge: Admin_charge1
+                Admin_charge: Admin_charge1,
+                Research_charge:matchedStrategy.researcher_id ? Researcher_charge1 :0
+
               });
               strategy_transactionData.save();
             });
@@ -1073,7 +1079,7 @@ class Users {
           // UPDATE PLAN DEMO TO LIVE
           Exist_strategy1.map(async (data) => {
 
-            const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month');
+            const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month strategy_percentage researcher_id research_strategy_percentage');
 
 
             var price_stg = 0
@@ -1158,7 +1164,8 @@ class Users {
             });
             Activity_logsData.save();
 
-
+            const Researcher_charge_percentage = Number(matchedStrategy.research_strategy_percentage || 0) / 100;
+            const Researcher_charge1 = Researcher_charge_percentage * Number(price_stg);
 
             const Admin_charge_percentage = parseInt(ParentData.strategy_Percentage) / 100;
             const Admin_charge1 = Admin_charge_percentage * parseInt(price_stg);
@@ -1171,7 +1178,9 @@ class Users {
               Start_Date: StartDate1,
               End_Date: EndDate1,
               stg_charge: price_stg,
-              Admin_charge: Admin_charge1
+              Admin_charge: Admin_charge1,
+              Research_charge:matchedStrategy.researcher_id ? Researcher_charge1 :0
+
             });
             strategy_transactionData.save();
           });
@@ -1185,7 +1194,7 @@ class Users {
 
           if (add_startegy.length > 0) {
             add_startegy.forEach(async (data) => {
-              const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month');
+              const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month strategy_percentage researcher_id research_strategy_percentage');
 
               console.log("matchedStrategy", matchedStrategy)
               var price_stg = 0
@@ -1221,7 +1230,6 @@ class Users {
 
               }
 
-              console.log("trade_charge", trade_charge)
 
 
 
@@ -1275,6 +1283,10 @@ class Users {
               Activity_logsData.save();
 
 
+              console.log("trade_charge", matchedStrategy)
+
+              const Researcher_charge_percentage = Number(matchedStrategy.research_strategy_percentage || 0) / 100;
+              const Researcher_charge1 = Researcher_charge_percentage * Number(price_stg);
 
               const Admin_charge_percentage = Number(ParentData.strategy_Percentage) / 100;
               const Admin_charge1 = Admin_charge_percentage * Number(price_stg);
@@ -1287,7 +1299,8 @@ class Users {
                 Start_Date: StartDate1,
                 End_Date: EndDate1,
                 stg_charge: price_stg,
-                Admin_charge: Admin_charge1
+                Admin_charge: Admin_charge1,
+                Research_charge:matchedStrategy.researcher_id ? Researcher_charge1 :0
               });
               strategy_transactionData.save();
             });
@@ -1811,6 +1824,7 @@ class Users {
             Start_Date: 1,
             End_Date: 1,
             createdAt: 1,
+            Research_charge:1
           }
         },
         {

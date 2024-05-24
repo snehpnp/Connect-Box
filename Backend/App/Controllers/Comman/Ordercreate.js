@@ -119,7 +119,8 @@ class Ordercreate {
                 max_trade: findStg.max_trade || null,
                 strategy_percentage: findStg.strategy_percentage || null,
                 researcher_id: findStg.maker_id,
-                purchase_type: req.body.type
+                purchase_type: req.body.type,
+                research_strategy_percentage:findStg.strategy_percentage || 0
             });
 
 

@@ -109,6 +109,10 @@ const strategySchema = Schema({
         enum: ['1', '0'],
         default: '1'
     },
+    research_strategy_percentage: {
+        type: String,
+        default: null
+    },
     createdAt: {
         type: Date,
         default: Date.now
