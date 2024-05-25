@@ -95,11 +95,6 @@ require("./App/Routes")(app);
 
 
 
-// APIs
-app.get('/testsocket', (req, res) => {
-  io.emit("shk_rec", "OKK connectbox");
-  res.send("okkk connect")
-})
 
 app.get('/aliceblue/view', (req, res) => {
   createViewAlice()

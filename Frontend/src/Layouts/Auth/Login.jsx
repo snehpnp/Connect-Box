@@ -166,7 +166,6 @@ function Login() {
 
     if (isVerified) {
       // Proceed with login or form submission
-      console.log('reCAPTCHA verified. Submitting form...');
     } else {
       Swal.fire({
         title: 'Oops!',
@@ -270,13 +269,7 @@ function Login() {
     htmlElement.setAttribute("data-sidebar", theme_mode ? theme_mode : "light");
     htmlElement.setAttribute("data-layout-mode", theme_mode ? theme_mode : "light");
     htmlElement.setAttribute("data-topbar", theme_mode ? theme_mode : "light");
-    // if (isLoggedIn) {
-    //   setTimeout(() => {
-    // console.log("sneh")
-
-    //     navigate(`/${getData.Role.toLowerCase()}/dashboard`);
-    //   }, 6000);
-    // }
+ 
   }, [isLoggedIn, getData.Role, navigate]);
 
 

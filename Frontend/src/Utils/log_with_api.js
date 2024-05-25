@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import axios from "axios";
 
 export const loginWithApi = async (broker_id, UserDetails,ip) => {
-    console.log("UserDetails", UserDetails)
+ 
     
     if (broker_id === "2" || broker_id === 2) {
         window.location.href = `https://ant.aliceblueonline.com/?appcode=${UserDetails.api_key}`;
@@ -45,7 +45,7 @@ export const loginWithApi = async (broker_id, UserDetails,ip) => {
     }
 
     else if (broker_id === "12" || broker_id === 12) {
-        // console.log("RUN");
+    
         axios({
             url: `${Config.base_url}angel`,
             method: "post",

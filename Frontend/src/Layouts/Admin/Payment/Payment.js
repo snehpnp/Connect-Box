@@ -137,7 +137,6 @@ function Payment() {
       if (response.status) {
         let formattedData = response.data;
 
-        console.log("inputSearch", inputSearch);
 
         if (first !== "all") {
           formattedData = formattedData.filter(row => row.Role === first);

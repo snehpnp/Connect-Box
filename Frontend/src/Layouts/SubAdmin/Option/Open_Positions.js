@@ -49,9 +49,7 @@ export default function AllEmployees() {
     const currenPageStatusRef = useRef("openposition")
     const currentTypeABRRef = useRef("below")
     const [typeABROnclickFunc, setTypeABROnclickFunc] = useState("below");
-    // console.log("UserDetails ", UserDetails && UserDetails[0].client_key)
-
-
+    
     const [socketBackend, setSocketBackend] = useState(null);
 
     useEffect(() => {
@@ -68,23 +66,14 @@ export default function AllEmployees() {
         if (socketBackend) {
             const handleShkRec = (data) => {
 
-                console.log("Received Connect Type:", data.type);
-                // console.log("currenPageStatusRef ", currenPageStatusRef.current)
-                // console.log("ABR TYPE ", currentTypeABRRef.current)
-                // console.log("currentClientKeyRef.current ", currentClientKeyRef.current)
 
 
                 if (data.type == "MAKECALL" && currenPageStatusRef.current == "pendingposition") {
-                    console.log("Received Connect data: makecall", data);
-                    // alert("Okk")
-                    console.log("data. type_makecall ", data.type_makecall)
+          
                     // TRADE MAKE CALL
                     if (data.type_makecall == "TRADE") {
                         if (data.data.Key == currentClientKeyRef.current) {
-                            // console.log("data.data.Segment ", data.data.Segment)
-                            // console.log("data.data.Expiry ", data.data.Expiry)
-                            // console.log("data.data.Strike ", data.data.Strike)
-                            // console.log("data.data.OType ", data.data.OType)
+ 
 
 
 
@@ -119,7 +108,6 @@ export default function AllEmployees() {
 
                     //NO TRADE TIME TRADE 
                     else if (data.type_makecall == "NO_TRADE") {
-                        console.log("data NoTRADE", data.data)
                         const remainData = data.data.filter(item => item.Key == currentClientKeyRef.current);
                         if (remainData.length > 0) {
 
@@ -152,13 +140,9 @@ export default function AllEmployees() {
                 }
 
                 else if (data.type == "OPENPOSITION" && currenPageStatusRef.current == "openposition") {
-                    // console.log("Received Connect data: open possition", data);  
+
                     if (data.data.client_persnal_key == currentClientKeyRef.current) {
 
-                        // console.log("data.data.segment ", data.data.segment)
-                        // console.log("data.data.expiry ", data.data.expiry)
-                        // console.log("data.data.strike ", data.data.strike)
-                        // console.log("data.data.option_type ", data.data.option_type)
 
                         let tradeSymbol;
                         if (data.data.segment.toLowerCase() == 'o' || data.data.segment.toLowerCase() == 'co' || data.data.segment.toLowerCase() == 'fo' || data.data.segment.toLowerCase() == 'mo') {
@@ -189,12 +173,11 @@ export default function AllEmployees() {
 
             };
 
-            //socketBackend.on("shk_rec", handleShkRec);
             socketBackend.on("TRADE_NOTIFICATION", handleShkRec);
 
             return () => {
                 socketBackend.off("TRADE_NOTIFICATION", handleShkRec);
-                //  socketBackend.off("shk_rec", handleShkRec);
+              
             };
         }
     }, [socketBackend]); // Runs whenever the socket changes
@@ -294,7 +277,6 @@ export default function AllEmployees() {
     // MAKECALL  START///////
     const [aboveBelowRangData, setAboveBelowRangData] = useState({ loading: true, data: [] });
 
-    // console.log("typeABROnclickFunc",)
     const [iscolumntPrice, setiscolumntPrice] = useState(false);
     const [iscolumntPriceRange, setiscolumntPriceRange] = useState(true);
     const [selectedM, setSelectedM] = useState([]);
@@ -552,7 +534,6 @@ export default function AllEmployees() {
 
     const handleOnSelectM = (row, isSelect) => {
 
-        console.log(row, isSelect)
         if (isSelect) {
             setSelectedM([...selectedM, row._id]);
             setSelected1M([...selected1M, row]);
@@ -586,7 +567,6 @@ export default function AllEmployees() {
 
     };
     
-    console.log("selected1",selected1M)
     const delete_data = async (ABR) => {
 
         if (selected1M.length <= 0) {
@@ -1084,8 +1064,8 @@ export default function AllEmployees() {
     // ONE SELECT
     const handleOnSelect = (row, isSelect) => {
 
-        console.log("isSelect",isSelect)
-        console.log("row",row);
+
+
 
         if (isSelect) {
             setSelected([...selected, row._id]);
@@ -1467,7 +1447,7 @@ export default function AllEmployees() {
                     window.location.reload()
                 })
                 .catch((error) => {
-                    console.log(error);
+                    console.log("Error ",error);
                 });
         })
     }

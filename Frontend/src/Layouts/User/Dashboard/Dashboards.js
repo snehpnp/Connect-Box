@@ -29,8 +29,8 @@ const Dashboards = () => {
   const [ForGetCSV, setForGetCSV] = useState([])
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
-  const [getDashboardData, setDashboardData] = useState({ loading: false,data: []});
-  const [tableData, setTableData] = useState({loading: false,data: []});
+  const [getDashboardData, setDashboardData] = useState({ loading: false, data: [] });
+  const [tableData, setTableData] = useState({ loading: false, data: [] });
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -140,7 +140,7 @@ const Dashboards = () => {
 
   const { greeting, icon } = getGreetingMessage();
 
- 
+
 
   const userDataRes = async () => {
     await dispatch(Orders_Details({ req: { subadminId: user_id, Role: Role }, token: token }))
@@ -150,7 +150,7 @@ const Dashboards = () => {
           setTableData({ loading: true, data: response.data });
         } else {
           setTableData({ loading: true, data: [] });
-          
+
 
         }
       })
@@ -187,7 +187,7 @@ const Dashboards = () => {
 
   }
 
-  
+
 
 
   const getRandomImage = () => {
@@ -242,8 +242,8 @@ const Dashboards = () => {
           if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
             dashboardData(response.data[0])
               .then(response => {
-            //  console.log("SNEH JAUSWAL",response)
-             SetUserBalance(response)
+                //  console.log("SNEH JAUSWAL",response)
+                SetUserBalance(response)
               })
               .catch(error => {
                 console.error("Error:", error);
@@ -299,7 +299,7 @@ const Dashboards = () => {
   return (
     <div>
       <div className="content container-fluid pb-0">
-   
+
         <div className="super-admin-dashboard">
           <div className="row">
             <div className="col-xl-5 d-flex">
@@ -325,7 +325,7 @@ const Dashboards = () => {
                   </div>
                   <div >
                     <h4>M2M</h4>
-                    <p>{getUserBalance && getUserBalance.unrealisedProfitLossSum|| "-"}</p>
+                    <p>{getUserBalance && getUserBalance.unrealisedProfitLossSum || "-"}</p>
                   </div>
                   <div >
                     <h4>Dawnload</h4><br />

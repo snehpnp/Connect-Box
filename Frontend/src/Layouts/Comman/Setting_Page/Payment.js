@@ -27,7 +27,7 @@ function Payment() {
   };
 
   const UpdateRazorpayKey = async () => {
-    console.log("run")
+
     const updatedData = {
       id: getCompanyData && getCompanyData._id,
       data: {

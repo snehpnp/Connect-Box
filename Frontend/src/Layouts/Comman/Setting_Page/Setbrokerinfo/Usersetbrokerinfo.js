@@ -101,7 +101,7 @@ const Update_Broker_Key = ({ closeModal }) => {
       }).then(async (result) => {
         /* Read more about handling dismissals below */
         if (result.dismiss === Swal.DismissReason.timer) {
-          // console.log("I was closed by the timer");
+
         }
 
         await dispatch(UpdateUserBrokerInfoData({ req: req, token: AdminToken })).unwrap().then((response) => {
@@ -126,7 +126,6 @@ const Update_Broker_Key = ({ closeModal }) => {
   });
 
 
-  console.log("formik.values.broker", formik.values.broker)
 
   const fields = [
 

@@ -11,8 +11,8 @@ const useLogout = () => {
 
 
         setTimeout(async () => {
-            console.log("sneh jaiswal")
-            console.log("user_id, ip", user_id, ip)
+            // console.log("sneh jaiswal")
+     
             const data = { userId: user_id, Device: "WEB", system_ip: ip };
 
             try {
@@ -30,7 +30,7 @@ const useLogout = () => {
                         timerProgressBar: true
                     });
                     setTimeout(() => {
-                        console.log("SNEH JAISWAL.......")
+                        // console.log("SNEH JAISWAL.......")
                         localStorage.removeItem("user_details");
                         localStorage.removeItem("user_role");
                         navigate("/login");

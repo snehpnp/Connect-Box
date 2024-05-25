@@ -58,13 +58,13 @@ function BrokerInfoForm() {
           }).then((result) => {
             /* Read more about handling dismissals below */
             if (result.dismiss === Swal.DismissReason.timer) {
-              console.log("I was closed by the timer");
+     
             }
           });
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Error", error);
       });
   };
 
@@ -82,11 +82,10 @@ function BrokerInfoForm() {
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Error", error);
       });
   };
 
-  // console.log("SNEH JAISWAL")
 
 
   useEffect(() => {

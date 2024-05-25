@@ -22,9 +22,6 @@ export const OrderBook = async (UserDetails) => {
         return new Promise((resolve, reject) => {
             axios(config)
                 .then(response => {
-                    console.log("response==>", response.data);
-
-
 
                     const fileType =
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";

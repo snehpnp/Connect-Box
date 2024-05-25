@@ -494,7 +494,6 @@ export default function AllUsers() {
     getUsersData();
   }, [refresh, searchInput, licenceType, BrokerType]);
 
-  console.log("Header_name", HeaderNAme)
 
   return (
     <>

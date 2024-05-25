@@ -59,8 +59,6 @@ const Strategies = () => {
 
   const handleSubmit = async () => {
 
-    console.log("selectStrategy", selectStrategy)
-    console.log("selectedOption", selectedOption)
 
 
     var amount;
@@ -99,7 +97,6 @@ const Strategies = () => {
       receipt: receipt
     };
 
-    console.log("REQ-", req)
 
 
 
