@@ -7,25 +7,20 @@ import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTa
 import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
 import { OrderBook } from "../../../Utils/Orderbook";
 import { dashboardData } from "../../../Utils/Userdasboard";
-
+import { useSelector } from 'react-redux'
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import Swal from 'sweetalert2';
-// import useLogout  from '../../../Utils/Logout'
 
 
 const Dashboards = () => {
-  // const logout = useLogout();
   const dispatch = useDispatch()
   const images = ["assets/img/companies/company-01.svg", "assets/img/companies/company-02.svg", "assets/img/companies/company-03.svg"];
-
-
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
   var user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   var Role = JSON.parse(localStorage.getItem("user_details")).Role;
   var token = JSON.parse(localStorage.getItem("user_details")).token;
 
   const [getUserBalance, SetUserBalance] = useState(null);
-
   const [ForGetCSV, setForGetCSV] = useState([])
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
@@ -196,77 +191,50 @@ const Dashboards = () => {
   };
 
 
+
+  const ReduxData = useSelector((state) => {
+    return state.SystemSlice.profileInfo.data[0]
+  })
+  console.log("ReduxData", ReduxData)
+
   const DawnloadOrderBook = async (e) => {
-    let data = { id: user_id };
-    await dispatch(ProfileInfo({ req: data, token: token }))
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
-            OrderBook(response.data[0])
-              .then(response => {
-                setForGetCSV(response)
+    if (ReduxData.TradingStatus == "on" && ReduxData.access_token != '' && ReduxData.access_token != null) {
 
-              })
-              .catch(error => {
-                console.error("Error:", error);
-              });
-          } else {
-            Swal.fire({
-              title: "Trading Is Off",
-              text: "Trading on ",
-              icon: "error",
-              timer: 1500,
-              timerProgressBar: true,
-            })
-          }
 
-        } else {
-          console.log("response", response)
-        }
+      OrderBook(ReduxData)
+        .then(response => {
+          setForGetCSV(response)
+
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+
+    } else {
+      Swal.fire({
+        title: "Trading Is Off",
+        text: "Trading on ",
+        icon: "error",
+        timer: 1500,
+        timerProgressBar: true,
       })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-
-
+    }
   }
 
 
   const UserdasboardData = async (e) => {
-    let data = { id: user_id };
-    await dispatch(ProfileInfo({ req: data, token: token }))
-      .unwrap()
-      .then(async (response) => {
-        if (response.status) {
-          if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
-            dashboardData(response.data[0])
-              .then(response => {
-                //  console.log("SNEH JAUSWAL",response)
-                SetUserBalance(response)
-              })
-              .catch(error => {
-                console.error("Error:", error);
-              });
-          } else {
-            Swal.fire({
-              title: "Trading Is Off",
-              text: "Trading on ",
-              icon: "error",
-              timer: 1500,
-              timerProgressBar: true,
-            })
-          }
+    if (ReduxData.TradingStatus == "on" && ReduxData.access_token != '' && ReduxData.access_token != null) {
+      dashboardData(ReduxData)
+        .then(response => {
+          //  console.log("SNEH JAUSWAL",response)
+          SetUserBalance(response)
+        })
+        .catch(error => {
+          console.error("Error:", error);
+        });
+    } else {
 
-        } else {
-          console.log("response", response)
-        }
-      })
-      .catch((error) => {
-        console.log("Error", error);
-      });
-
-
+    }
   }
 
 
