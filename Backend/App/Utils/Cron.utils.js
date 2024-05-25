@@ -100,7 +100,6 @@ cron.schedule('*/10 * * * *', async () => {
 
 // OPTION CHAIN TABEL TRUNCATE
 cron.schedule('30 6 * * *', () => {
-    console.log('Run cron token chain');
     TruncateTableTokenChain();
 });
 
@@ -360,7 +359,6 @@ const MakecallABR = async () => {
 
 const MakecallABRCloseExpiry = async () => {
     
-  //  console.log("Run code")
     
     const pipeline = [
         {
@@ -983,7 +981,7 @@ const service_token_update = () => {
 
 const TruncateTable = async () => {
     const drop = await Alice_token.deleteMany({});
-    console.log("drop", drop)
+
 }
 
 

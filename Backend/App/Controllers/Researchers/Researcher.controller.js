@@ -805,7 +805,6 @@ class Researcher {
             // Executing the aggregation pipeline
             const getAllstrategy = await researcher_strategy.aggregate(pipeline);
 
-            console.log("getAllstrategy", getAllstrategy)
 
             // IF DATA NOT EXIST
             if (getAllstrategy.length == 0) {
@@ -822,17 +821,6 @@ class Researcher {
             console.log("Error Get All Strategy Error-", error);
         }
     }
-
-    // async DemoData(req,res){
-
-    //     const {id} = req.body
-
-    //     let findData = await User_model.find({_id: id})
-
-    //     console.log(findData)
-
-
-    // }
 
 
 

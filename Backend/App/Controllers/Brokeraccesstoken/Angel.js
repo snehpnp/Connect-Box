@@ -51,7 +51,7 @@ class Angel {
     async UpdateTotp(req, res) {
         try {
             const { id, totp, system_ip } = req.body;
-            console.log("ip",system_ip)
+     
             const userData = await User.findOne({ _id: new ObjectId(id) }).select('TradingStatus client_code app_id api_key');
 
             if (!userData) {
@@ -198,7 +198,6 @@ class Angel {
 
 const GetAllBrokerResponse = async (user_info,res) => {
     try {
-        console.log("user_info",user_info)
         const objectId = new ObjectId(user_info[0]._id);
        // var FindUserAccessToken = await User.find({ _id: objectId }).limit(1);
         var FindUserBrokerResponse = await BrokerResponse.find({ user_id: objectId , order_view_status : "0" })

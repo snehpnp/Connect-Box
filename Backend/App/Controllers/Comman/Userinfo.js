@@ -170,10 +170,6 @@ class Userinfo {
 
 
 
-      console.log("userdata",userdata)
-
-
-
       const filter = { _id: _id };
       const updateOperation = { $set: userdata };
       const result = await User_model.updateOne(filter, updateOperation);

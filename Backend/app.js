@@ -77,13 +77,9 @@ io.on("connection", (socket) => {
 
 
 setIO(io).then(() => {
-  // console.log("io set successfully");
 
-  // After io is set, you can call getIO
   getIO().then(ioObject => {
-    // console.log("ioObject from getIO: ", ioObject);
   }).catch(error => {
-    //console.error("Error getting io:", error);
   });
 
 }).catch((error) => {
@@ -91,10 +87,6 @@ setIO(io).then(() => {
 });
 
 
-app.get('/testsocket', (req, res) => {
-  io.emit("shk_rec", "OKK connectbox");
-  res.send("okkk connect")
-})
 // Requiring utility files
 require('./App/Utils/Cron.utils');
 
@@ -102,14 +94,17 @@ require('./App/Utils/Cron.utils');
 require("./App/Routes")(app);
 
 
+
+// APIs
+app.get('/testsocket', (req, res) => {
+  io.emit("shk_rec", "OKK connectbox");
+  res.send("okkk connect")
+})
+
 app.get('/aliceblue/view', (req, res) => {
   createViewAlice()
   res.send("done")
 })
-
-
-
-
 
 
 // httpsserver.listen(1001)

@@ -617,8 +617,6 @@ class Subadmin {
 
         ]);
 
-        console.log("TradechargesWithUserDetails", TradechargesWithUserDetails)
-
         var UsedBalanceData =0
 
         TradechargesWithUserDetails && TradechargesWithUserDetails.map((data) => {

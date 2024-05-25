@@ -149,7 +149,7 @@ class strategy {
             });
         })
         .catch((err) => {
-          console.log(" Error Add Time Error-", err);
+          console.log("Error Add Time Error-", err);
           if (err.keyValue) {
             return res.send({
               status: false,
@@ -412,10 +412,6 @@ class strategy {
           ]
       }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
       
-
-
-        console.log("getAllstrategy",getAllstrategy)
-
 
         // IF DATA NOT EXIST
         if (getAllstrategy.length == 0) {

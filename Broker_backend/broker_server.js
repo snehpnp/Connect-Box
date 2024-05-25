@@ -2,8 +2,8 @@
 "use strict";
 require('dotenv').config();
 
-require('../BACKEND/App/Connections/mongo_connection')
-const db = require('../BACKEND/App/Models');
+// require('../BACKEND/App/Connections/mongo_connection')
+// const db = require('../BACKEND/App/Models');
 
 // require('../Backend/App/Connections/mongo_connection')
 // const db = require('../Backend/App/Models');
@@ -323,7 +323,7 @@ app.post('/broker-signals', async (req, res) => {
 
       fs.appendFile(filePath, '\nNEW TRADE TIME ' + new Date() + '\nRECEIVED_SIGNALS ' + splitArray + '\n', function (err) {
         if (err) {
-          return console.log(err);
+          return console.log("Error",err);
         }
       });
 
@@ -555,7 +555,7 @@ app.post('/broker-signals', async (req, res) => {
 
           fs.appendFile(filePath, 'TIME ' + new Date() + ' RECEIVED_SIGNALS_TOKEN ' + instrument_token + '\n', function (err) {
             if (err) {
-              return console.log(err);
+              return console.log("Error",err);
             }
           });
 
@@ -602,7 +602,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE ALL CLIENT LENGTH ' + AliceBluedocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -625,7 +625,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE ALL CLIENT LENGTH ' + angelBluedocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -648,7 +648,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE ALL CLIENT LENGTH ' + fivepaisaBluedocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -672,7 +672,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE ALL CLIENT LENGTH ' + zerodhaBluedocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -697,7 +697,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' UPSTOX ALL CLIENT LENGTH ' + upstoxdocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -723,7 +723,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' dhan ALL CLIENT LENGTH ' + dhandocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -748,7 +748,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' fyers ALL CLIENT LENGTH ' + fyersdocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -773,7 +773,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' markethub ALL CLIENT LENGTH ' + markethubdocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -800,7 +800,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE TRADING VIEW CLIENT LENGTH ' + AliceBluedocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -822,7 +822,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ANGEL TRADING VIEW CLIENT LENGTH ' + angeldocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -845,7 +845,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' fivepaisa TRADING VIEW CLIENT LENGTH ' + fivepaisadocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -867,7 +867,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' zerodha TRADING VIEW CLIENT LENGTH ' + zerodhadocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -890,7 +890,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' UPSTOX TRADING VIEW CLIENT LENGTH ' + upstoxdocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -912,7 +912,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' dhan TRADING VIEW CLIENT LENGTH ' + dhandocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -934,7 +934,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' fyers TRADING VIEW CLIENT LENGTH ' + fyersdocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 
@@ -957,7 +957,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' markethub TRADING VIEW CLIENT LENGTH ' + markethubdocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log(err);
+                  return console.log("Error",err);
                 }
               });
 

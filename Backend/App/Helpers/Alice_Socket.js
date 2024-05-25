@@ -91,15 +91,8 @@ const Alice_Socket = async () => {
                             var response = JSON.parse(msg.data)
 
 
-
-
                             if (response.tk) {
-                                //  console.log("response ",response)
-                                // const Make_startegy_token = await UserMakeStrategy.findOne({ tokensymbol: response.tk }, { _id: 1 });
 
-                                // if (Make_startegy_token) {
-                                //     ALice_View_data(response.tk, response,dbTradeTools);
-                                // }
 
                                 const currentDate = new Date();
                                 const hours = currentDate.getHours().toString().padStart(2, '0');
@@ -157,7 +150,6 @@ const Alice_Socket = async () => {
 
                         socket.onclose = async function (event) {
                             if (event.wasClean) {
-                                // console.log("Socket -- event.wasClean IF")
 
                                 await socketRestart()
 
@@ -165,7 +157,7 @@ const Alice_Socket = async () => {
 
 
                             } else {
-                                // console.log("Socket -- event.wasClean ELSE")
+                                // console.log("Error Socket -- event.wasClean ELSE")
                                 // await socketRestart()
                                 // connect
                                 // alert('[close] Connection died');
@@ -173,7 +165,7 @@ const Alice_Socket = async () => {
                         };
 
                         socket.onerror = function (error) {
-                            console.log("Socket -- onerror")
+                            console.log("Error Socket -- onerror")
 
                         };
 
@@ -207,7 +199,6 @@ const getSocket = () => {
 
 
 const socketRestart = async () => {
-    //console.log("socketRestart")
     await Alice_Socket()
 };
 
