@@ -10,6 +10,8 @@ var dt = dateTime.create();
 
 class Dashboard_Subadmin_Data {
 
+
+  
   async GetDashboardData(req, res) {
     try {
       const { subadminId } = req.body;
@@ -162,6 +164,9 @@ class Dashboard_Subadmin_Data {
       });
     }
   }
+
+
+
 
   async DashboardChartData(req, res) {
     try {

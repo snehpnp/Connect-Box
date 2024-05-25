@@ -10,13 +10,20 @@ import { fDateTime } from "../../../Utils/Date_formet";
 import { fDate } from "../../../Utils/Date_formet";
 import { isToday } from "../../../Utils/Date_formet";
 import Swal from "sweetalert2";
-import { Employeedatabyid, Get_Parent_Type } from "../../../ReduxStore/Slice/Admin/System";
-import { ProfilImage, ProfileUpdatedata, profiledatauserId, ActiveProfile } from "../../../ReduxStore/Slice/Comman/Userinfo";
+import { countries } from "./ProfileCountrydata";
+import {
+  Employeedatabyid,
+  Get_Parent_Type,
+} from "../../../ReduxStore/Slice/Admin/System";
+import {
+  ProfilImage,
+  ProfileUpdatedata,
+  profiledatauserId,
+  ActiveProfile,
+} from "../../../ReduxStore/Slice/Comman/Userinfo";
 import Toaster from "../../../Components/ExtraComponents/Alert_Toast";
 import useLogout from "../../../Utils/Logout";
-import { ipAddress } from '../../../Utils/Ipaddress';
-
-
+import { ipAddress } from "../../../Utils/Ipaddress";
 
 const style = {
   position: "absolute",
@@ -32,9 +39,6 @@ const style = {
   borderRadius: "3rem",
 };
 
-
-
-
 const Profile = () => {
   const dispatch = useDispatch();
   const logout = useLogout();
@@ -43,7 +47,6 @@ const Profile = () => {
   const user = JSON.parse(localStorage.getItem("user_details"));
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
   const token = JSON.parse(localStorage.getItem("user_details")).token;
-
 
   const [ip, setIp] = useState(null);
   const [getemployeedata, setGetemployeedata] = useState("");
@@ -56,7 +59,7 @@ const Profile = () => {
   const [profileImage, setProfileImage] = useState("");
   const [editbtn, setEditbtn] = useState(false);
   const [info, setInfo] = useState([]);
-  const [getParentType, setParentType] = useState('')
+  const [getParentType, setParentType] = useState("");
   const [update, setUpdate] = useState({
     user_Id: "",
     Address: "",
@@ -67,9 +70,11 @@ const Profile = () => {
     CompanyName: "",
   });
 
+  const [selectedCountry, setSelectedCountry] = useState(update.Country || "");
+  const [selectedState, setSelectedState] = useState(update.State || "");
 
   const currentDate = new Date();
-  currentDate.setFullYear(currentDate.getFullYear() - 1);
+  currentDate.setFullYear(currentDate.getFullYear() - 12);
   const currentDateISOString = currentDate.toISOString().split("T")[0];
 
   const avatarImages = [
@@ -113,16 +118,13 @@ const Profile = () => {
   // get employee by id
 
   const Employeetable = async () => {
-
-    const data = { id: user_id }
-
+    const data = { id: user_id };
 
     await dispatch(Employeedatabyid(data))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-
-          setGetemployeedata(response.subadmin)
+          setGetemployeedata(response.subadmin);
           setLoading(false);
         }
       })
@@ -130,8 +132,6 @@ const Profile = () => {
         console.log("Error", error);
       });
   };
-
-
 
   // function to update profile
   const handleAvatarClick = async (avatarUrl) => {
@@ -158,9 +158,6 @@ const Profile = () => {
     setOpen(false);
   };
 
-
-
-
   ///  handler to handle form
 
   const handleAddInfo = () => {
@@ -178,10 +175,6 @@ const Profile = () => {
     }
     setEditbtn(!editbtn);
   };
-
-
-
-
 
   // update profile data
 
@@ -219,10 +212,6 @@ const Profile = () => {
       });
   };
 
-
-
-
-
   //  profile information
 
   const profiledata = async () => {
@@ -245,10 +234,6 @@ const Profile = () => {
     Employeetable();
   }, []);
 
-
-
-
-
   ///active status
 
   const profilestatus = async () => {
@@ -270,11 +255,6 @@ const Profile = () => {
     profilestatus();
   }, []);
 
-
-
-
-
-
   // api for getting ProfileInfo
   const fetchData = async () => {
     try {
@@ -290,7 +270,6 @@ const Profile = () => {
             if (response.msg == "Unauthorized!") {
               // logout(user_id, ip);
             } else {
-
               toast.error(response.msg);
               setLoading(false);
             }
@@ -309,47 +288,36 @@ const Profile = () => {
     fetchData();
   }, [refresh]);
 
-
-
-  
   const FindParentType = async () => {
     try {
-      const data = { id: user_id, Role: Role }
-      await dispatch(Get_Parent_Type(data)).unwrap()
+      const data = { id: user_id, Role: Role };
+      await dispatch(Get_Parent_Type(data))
+        .unwrap()
         .then((response) => {
           if (response.status) {
-            setParentType(response.data)
+            setParentType(response.data);
+          } else {
+            setParentType("");
           }
-          else {
-            setParentType('')
-          }
-        })
-
+        });
+    } catch (error) {
+      console.log("Error in fatching in Parent Type", error);
     }
-    catch (error) {
-      console.log("Error in fatching in Parent Type", error)
-    }
-  }
-
-
-
-
+  };
 
   const fetchIP = async () => {
     try {
       const ip = await ipAddress();
       setIp(ip);
     } catch (error) {
-      console.error('Failed to fetch IP address:', error);
+      console.error("Failed to fetch IP address:", error);
     }
   };
 
   useEffect(() => {
-    FindParentType()
+    FindParentType();
     fetchIP();
-  }, [])
-  
-
+  }, []);
 
   return (
     <div>
@@ -489,6 +457,7 @@ const Profile = () => {
                           Update Info
                         </a>
                       </h5>
+
                       {editbtn && (
                         <div
                           className="modal custom-modal d-block kk"
@@ -500,7 +469,6 @@ const Profile = () => {
                                 <div className="form-header modal-header-title text-start mb-0">
                                   <h4 className="mb-0">Information</h4>
                                 </div>
-
                                 <button
                                   type="button"
                                   className="btn-close"
@@ -509,11 +477,108 @@ const Profile = () => {
                                   onClick={() => setEditbtn(!editbtn)}
                                 ></button>
                               </div>
-
-                              <form>
+                              <form onSubmit={Updateprofile}>
                                 <div className="modal-body">
                                   <div className="row">
-                                    <div className="col-lg-4 col-sm-12">
+                                    <div className="col-lg-6 col-sm-12">
+                                      <div className="input-block mb-3">
+                                        <label>Country</label>
+                                        <select
+                                          className="form-control"
+                                          value={selectedCountry}
+                                          onChange={(e) => {
+                                            const newCountry = e.target.value;
+                                            setSelectedCountry(newCountry);
+                                            setSelectedState("");
+                                            setUpdate({
+                                              ...update,
+                                              Country: newCountry,
+                                              State: "",
+                                              Location: "",
+                                            });
+                                          }}
+                                        >
+                                          <option value="" disabled>
+                                            Select Country
+                                          </option>
+                                          {Object.keys(countries).map(
+                                            (country) => (
+                                              <option
+                                                key={country}
+                                                value={country}
+                                              >
+                                                {country}
+                                              </option>
+                                            )
+                                          )}
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div className="col-lg-6 col-sm-12">
+                                      <div className="input-block mb-3">
+                                        <label>State</label>
+                                        <select
+                                          className="form-control"
+                                          value={selectedState}
+                                          onChange={(e) => {
+                                            const newState = e.target.value;
+                                            setSelectedState(newState);
+                                            setUpdate({
+                                              ...update,
+                                              State: newState,
+                                              Location: "",
+                                            });
+                                          }}
+                                          disabled={!selectedCountry}
+                                        >
+                                          <option value="" disabled>
+                                            Select State
+                                          </option>
+                                          {selectedCountry &&
+                                            Object.keys(
+                                              countries[selectedCountry]
+                                            ).map((state) => (
+                                              <option key={state} value={state}>
+                                                {state}
+                                              </option>
+                                            ))}
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <div className="col-lg-6 col-sm-12">
+                                      <div className="input-block mb-3">
+                                        <label>Location</label>
+                                        <select
+                          
+                                          className="form-control"
+                                          value={update.Location}
+                                          onChange={(e) => {
+                                            setUpdate({
+                                              ...update,
+                                              Location: e.target.value,
+                                            });
+                                          }}
+                                          disabled={!selectedState}
+                                        >
+                                          <option value="" disabled>
+                                            Select Location
+                                          </option>
+                                          {selectedState &&
+                                            countries[selectedCountry][
+                                              selectedState
+                                            ].map((location) => (
+                                              <option
+                                                key={location}
+                                                value={location}
+                                              >
+                                                {location}
+                                              </option>
+                                            ))}
+                                        </select>
+                                      </div>
+                                    </div>
+
+                                    <div className="col-lg-6 col-sm-12">
                                       <div className="input-block mb-3">
                                         <label>Address</label>
                                         <input
@@ -529,55 +594,8 @@ const Profile = () => {
                                           }}
                                         />
                                       </div>
-                                      <div className="input-block mb-3">
-                                        <label>Country</label>
-                                        <input
-                                          type="text"
-                                          className="form-control"
-                                          placeholder="Enter Country"
-                                          value={update.Country}
-                                          onChange={(e) => {
-                                            setUpdate({
-                                              ...update,
-                                              Country: e.target.value,
-                                            });
-                                          }}
-                                        />
-                                      </div>
                                     </div>
-                                    <div className="col-lg-4 col-sm-12">
-                                      <div className="input-block mb-3">
-                                        <label>State</label>
-                                        <input
-                                          type="text"
-                                          className="form-control"
-                                          placeholder="Enter State"
-                                          value={update.State}
-                                          onChange={(e) => {
-                                            setUpdate({
-                                              ...update,
-                                              State: e.target.value,
-                                            });
-                                          }}
-                                        />
-                                      </div>
-                                      <div className="input-block mb-3">
-                                        <label>Location</label>
-                                        <input
-                                          type="text"
-                                          className="form-control"
-                                          placeholder="Enter current Location"
-                                          value={update.Location}
-                                          onChange={(e) => {
-                                            setUpdate({
-                                              ...update,
-                                              Location: e.target.value,
-                                            });
-                                          }}
-                                        />
-                                      </div>
-                                    </div>
-                                    <div className="col-lg-4 col-sm-12">
+                                    <div className="col-lg-6 col-sm-12">
                                       <div className="input-block mb-3">
                                         <label>DOB</label>
                                         <input
@@ -594,9 +612,9 @@ const Profile = () => {
                                           }}
                                         />
                                       </div>
-                                      {user.Role === "USER" ? (
-                                        ""
-                                      ) : (
+                                    </div>
+                                    {user.Role !== "USER" && (
+                                      <div className="col-lg-6 col-sm-12">
                                         <div className="input-block mb-3">
                                           <label>Company Name</label>
                                           <input
@@ -612,8 +630,8 @@ const Profile = () => {
                                             }}
                                           />
                                         </div>
-                                      )}
-                                    </div>
+                                      </div>
+                                    )}
                                   </div>
                                 </div>
                                 <div className="modal-footer">
@@ -621,16 +639,13 @@ const Profile = () => {
                                     type="button"
                                     data-bs-dismiss="modal"
                                     className="btn btn-back cancel-btn me-2"
-                                    onClick={() => {
-                                      setEditbtn(!editbtn);
-                                    }}
+                                    onClick={() => setEditbtn(!editbtn)}
                                   >
                                     Cancel
                                   </button>
                                   <button
                                     type="submit"
                                     className="btn btn-primary paid-continue-btn"
-                                    onClick={Updateprofile}
                                   >
                                     Update
                                   </button>
@@ -725,9 +740,16 @@ const Profile = () => {
                               </span>
                             </li>
                           ))}
-                        {user.Role === "EMPLOYEE" ? <li>
-                          <h6>Subadmin Name : {getemployeedata && getemployeedata}</h6>
-                        </li> : ""}
+                        {user.Role === "EMPLOYEE" ? (
+                          <li>
+                            <h6>
+                              Subadmin Name :{" "}
+                              {getemployeedata && getemployeedata}
+                            </h6>
+                          </li>
+                        ) : (
+                          ""
+                        )}
                       </ul>
                     </div>
                   </div>
