@@ -45,7 +45,6 @@ function Edit_Strategies() {
     await dispatch(Get_All_Catagory())
       .unwrap()
       .then((response) => {
-
         if (response.status) {
 
           setGetAllSgments({
@@ -327,7 +326,16 @@ function Edit_Strategies() {
 
     },
     onSubmit: async (values, { resetForm }) => {
-
+      if (!getStgDescription) {
+        
+        Swal.fire({
+          title: "field strategy description!",
+          text: "Please enter a strategy description.",
+          icon: "warning",
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
       const data = {
         _id: id,
         strategy_name: values.strategy_name,
@@ -356,6 +364,7 @@ function Edit_Strategies() {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
+              
             Swal.fire({
               title: "Strategy Updated !",
               text: response.msg,
@@ -427,12 +436,15 @@ function Edit_Strategies() {
                 placeholder="Enter Strategy Description"
                 onChange={(e) => setStgDescription(e.target.value)}
                 value={getStgDescription}
-                disabled={allStrategy && allStrategy.researcher_id != null} // Corrected 'disable' to 'disabled'
+                disabled={allStrategy &&  allStrategy.researcher_id != null } // Corrected 'disable' to 'disabled'
+               
               ></textarea>
-
+            
             </>
           }
+
         />
+        
       ) : <Loader />}
     </>
   );
