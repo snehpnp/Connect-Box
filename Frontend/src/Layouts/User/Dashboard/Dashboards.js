@@ -7,25 +7,30 @@ import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTa
 import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
 import { OrderBook } from "../../../Utils/Orderbook";
 import { dashboardData } from "../../../Utils/Userdasboard";
-import { useSelector } from 'react-redux'
+
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import Swal from 'sweetalert2';
+// import useLogout  from '../../../Utils/Logout'
 
 
 const Dashboards = () => {
+  // const logout = useLogout();
   const dispatch = useDispatch()
   const images = ["assets/img/companies/company-01.svg", "assets/img/companies/company-02.svg", "assets/img/companies/company-03.svg"];
+
+
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
   var user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   var Role = JSON.parse(localStorage.getItem("user_details")).Role;
   var token = JSON.parse(localStorage.getItem("user_details")).token;
 
   const [getUserBalance, SetUserBalance] = useState(null);
+
   const [ForGetCSV, setForGetCSV] = useState([])
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
-  const [getDashboardData, setDashboardData] = useState({ loading: false, data: [] });
-  const [tableData, setTableData] = useState({ loading: false, data: [] });
+  const [getDashboardData, setDashboardData] = useState({ loading: false,data: []});
+  const [tableData, setTableData] = useState({loading: false,data: []});
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -135,7 +140,7 @@ const Dashboards = () => {
 
   const { greeting, icon } = getGreetingMessage();
 
-
+ 
 
   const userDataRes = async () => {
     await dispatch(Orders_Details({ req: { subadminId: user_id, Role: Role }, token: token }))
@@ -145,7 +150,7 @@ const Dashboards = () => {
           setTableData({ loading: true, data: response.data });
         } else {
           setTableData({ loading: true, data: [] });
-
+          
 
         }
       })
@@ -182,7 +187,7 @@ const Dashboards = () => {
 
   }
 
-
+  
 
 
   const getRandomImage = () => {
@@ -191,50 +196,77 @@ const Dashboards = () => {
   };
 
 
-
-  const ReduxData = useSelector((state) => {
-    return state.SystemSlice.profileInfo.data[0]
-  })
-  console.log("ReduxData", ReduxData)
-
   const DawnloadOrderBook = async (e) => {
-    if (ReduxData.TradingStatus == "on" && ReduxData.access_token != '' && ReduxData.access_token != null) {
+    let data = { id: user_id };
+    await dispatch(ProfileInfo({ req: data, token: token }))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
+            OrderBook(response.data[0])
+              .then(response => {
+                setForGetCSV(response)
 
+              })
+              .catch(error => {
+                console.error("Error:", error);
+              });
+          } else {
+            Swal.fire({
+              title: "Trading Is Off",
+              text: "Trading on ",
+              icon: "error",
+              timer: 1500,
+              timerProgressBar: true,
+            })
+          }
 
-      OrderBook(ReduxData)
-        .then(response => {
-          setForGetCSV(response)
-
-        })
-        .catch(error => {
-          console.error("Error:", error);
-        });
-
-    } else {
-      Swal.fire({
-        title: "Trading Is Off",
-        text: "Trading on ",
-        icon: "error",
-        timer: 1500,
-        timerProgressBar: true,
+        } else {
+          console.log("response", response)
+        }
       })
-    }
+      .catch((error) => {
+        console.log("Error", error);
+      });
+
+
   }
 
 
   const UserdasboardData = async (e) => {
-    if (ReduxData.TradingStatus == "on" && ReduxData.access_token != '' && ReduxData.access_token != null) {
-      dashboardData(ReduxData)
-        .then(response => {
-          //  console.log("SNEH JAUSWAL",response)
-          SetUserBalance(response)
-        })
-        .catch(error => {
-          console.error("Error:", error);
-        });
-    } else {
+    let data = { id: user_id };
+    await dispatch(ProfileInfo({ req: data, token: token }))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
+            dashboardData(response.data[0])
+              .then(response => {
+            //  console.log("SNEH JAUSWAL",response)
+             SetUserBalance(response)
+              })
+              .catch(error => {
+                console.error("Error:", error);
+              });
+          } else {
+            Swal.fire({
+              title: "Trading Is Off",
+              text: "Trading on ",
+              icon: "error",
+              timer: 1500,
+              timerProgressBar: true,
+            })
+          }
 
-    }
+        } else {
+          console.log("response", response)
+        }
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
+
+
   }
 
 
@@ -267,7 +299,7 @@ const Dashboards = () => {
   return (
     <div>
       <div className="content container-fluid pb-0">
-
+   
         <div className="super-admin-dashboard">
           <div className="row">
             <div className="col-xl-5 d-flex">
@@ -293,7 +325,7 @@ const Dashboards = () => {
                   </div>
                   <div >
                     <h4>M2M</h4>
-                    <p>{getUserBalance && getUserBalance.unrealisedProfitLossSum || "-"}</p>
+                    <p>{getUserBalance && getUserBalance.unrealisedProfitLossSum|| "-"}</p>
                   </div>
                   <div >
                     <h4>Dawnload</h4><br />
