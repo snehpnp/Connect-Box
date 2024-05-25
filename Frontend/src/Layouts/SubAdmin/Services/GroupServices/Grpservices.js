@@ -386,7 +386,7 @@ function GroupStrategy() {
                                         <div className="row d-flex align-items-center justify-content-center">
 
                                             {allGroupService.data.map((stg) => {
-                                                return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                                return <div key={stg._id} className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
                                                     <div className="packages card" data-aos="fade-down">
                                                         <div className="package-header  ">
                                                             <div className="d-flex w-100">
