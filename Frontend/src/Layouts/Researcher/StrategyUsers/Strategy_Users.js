@@ -91,7 +91,7 @@ const StrategyUsers = () => {
                                                     text: "Service Type",
                                                     formatter: (cell, row, rowIndex) => (
                                                         <div>
-                                                            {row.purchase_type}
+                                                            {row.purchase_type == "monthlyPlan" ? "Monthly" : row.purchase_type}
                                                         </div>
                                                     ),
                                                 },
@@ -101,6 +101,15 @@ const StrategyUsers = () => {
                                                     formatter: (cell, row, rowIndex) => (
                                                         <div>
                                                             {row.stg_count}
+                                                        </div>
+                                                    ),
+                                                },
+                                                {
+                                                    dataField: "stg_count",
+                                                    text: "Amount",
+                                                    formatter: (cell, row, rowIndex) => (
+                                                        <div>
+                                                            {row.Amount}
                                                         </div>
                                                     ),
                                                 },

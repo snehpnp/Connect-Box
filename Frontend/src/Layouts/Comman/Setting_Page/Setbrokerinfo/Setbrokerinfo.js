@@ -96,57 +96,57 @@ function BrokerInfoForm() {
   return (
     <div className="container ">
       <div className="row justify-content-center">
-  
-<div className="content-page-header">
 
-              <h5>Set Broker Information</h5>
-              </div> {/* Added mb-4 class for bottom margin */}
-              <form onSubmit={handleSubmit}>
-                <div className="form-group mb-4">
-                  <label htmlFor="brokerName">Broker Name:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="brokerName"
-                    value={brokerName}
-                    onChange={(e) => setBrokerName(e.target.value)}
-                  />
-                </div>
-                <div className="form-group mb-4">
-                  <label htmlFor="apiKey">API Key:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="apiKey"
-                    value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
-                  />
-                </div>
-                <div className="form-group mb-4">
-                  <label htmlFor="secretKey">Secret Key:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="secretKey"
-                    value={secretKey}
-                    onChange={(e) => setSecretKey(e.target.value)}
-                  />
-                </div>
-                <div className="form-group mb-4">
-                  <label htmlFor="dematUserId">Demat User Id:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="dematUserId"
-                    value={dematUserId}
-                    onChange={(e) => setDematUserId(e.target.value)}
-                  />
-                </div>
-                <button type="submit" className="btn btn-primary mt-3">Submit</button>
-              </form>
-            </div>
+        <div className="content-page-header">
+
+          <h5>Set Broker Information</h5>
+        </div> {/* Added mb-4 class for bottom margin */}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group mb-4">
+            <label htmlFor="brokerName">Broker Name:</label>
+            <input
+              type="text"
+              className="form-control"
+              id="brokerName"
+              value={brokerName}
+              onChange={(e) => setBrokerName(e.target.value)}
+            />
           </div>
-        
+          <div className="form-group mb-4">
+            <label htmlFor="apiKey">API Key:</label>
+            <input
+              type="text"
+              className="form-control"
+              id="apiKey"
+              value={apiKey}
+              onChange={(e) => setApiKey(e.target.value)}
+            />
+          </div>
+          <div className="form-group mb-4">
+            <label htmlFor="secretKey">Secret Key:</label>
+            <input
+              type="text"
+              className="form-control"
+              id="secretKey"
+              value={secretKey}
+              onChange={(e) => setSecretKey(e.target.value)}
+            />
+          </div>
+          <div className="form-group mb-4">
+            <label htmlFor="dematUserId">Demat User Id:</label>
+            <input
+              type="text"
+              className="form-control"
+              id="dematUserId"
+              value={dematUserId}
+              onChange={(e) => setDematUserId(e.target.value)}
+            />
+          </div>
+          <button type="submit" className="btn btn-primary mt-3">Submit</button>
+        </form>
+      </div>
+    </div>
+
   );
 }
 

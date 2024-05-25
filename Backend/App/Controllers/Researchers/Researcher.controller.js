@@ -735,13 +735,38 @@ class Researcher {
                     }
                 },
                 {
+                    $lookup: {
+                        from: "strategy_orders",
+                        let: { strategyName: "$strategy_name", admin_id: "$strategy.maker_id" },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ["$strategy_name", "$$strategyName"] },
+                                            { $eq: ["$user_id", "$$admin_id"] },
+                                            { $eq: ["$order_status", "Success"] }
+                                        ]
+                                    }
+                                }
+                            }
+                        ],
+                        as: "stg_order"
+                    }
+                },
+                {
+                    $unwind: "$stg_order"
+                },
+
+
+                {
                     $group: {
                         _id: "$_id",
                         strategy_name: { $first: "$strategy_name" },
                         createdAt: { $first: "$createdAt" },
-                     
 
 
+                        // stg_order: { $push: "$stg_order.amount" },
                         strategy_category: { $first: "$strategy_category" },
                         strategy_segment: { $first: "$strategy_segment" },
                         strategy: {
@@ -752,8 +777,9 @@ class Researcher {
                                 Username: "$user.UserName",
                                 stg_count: { $size: "$stg_count" },
                                 purchase_type: "$strategy.purchase_type",
-                                End_Date:  "$strategy.End_Date" ,
-                                ActiveStatus:  "$strategy.ActiveStatus" ,
+                                End_Date: "$strategy.End_Date",
+                                ActiveStatus: "$strategy.ActiveStatus",
+                                Amount: "$stg_order.amount"
                             }
                         }
                     }
@@ -763,11 +789,12 @@ class Researcher {
                         _id: 1,
                         strategy_name: 1,
                         createdAt: 1,
-                        End_Date:1,
-                        ActiveStatus:1,
+                        End_Date: 1,
+                        ActiveStatus: 1,
                         strategy_category: 1,
                         strategy_segment: 1,
-                        strategy: 1
+                        strategy: 1,
+                        stg_order: 1
                     }
                 },
                 {
@@ -778,6 +805,7 @@ class Researcher {
             // Executing the aggregation pipeline
             const getAllstrategy = await researcher_strategy.aggregate(pipeline);
 
+            console.log("getAllstrategy", getAllstrategy)
 
             // IF DATA NOT EXIST
             if (getAllstrategy.length == 0) {
@@ -800,10 +828,10 @@ class Researcher {
     //     const {id} = req.body
 
     //     let findData = await User_model.find({_id: id})
-        
+
     //     console.log(findData)
 
-        
+
     // }
 
 

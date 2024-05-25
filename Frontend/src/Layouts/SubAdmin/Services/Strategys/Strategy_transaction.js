@@ -126,6 +126,18 @@ function Payment() {
       )
     },
     {
+      field: 'Research_charge',
+      headerName: 'Researcher Charges',
+      width: 180,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+         {params.value? <span className="text-success-light">  <IndianRupee style={{ height: "19px" }} />{params.value || '-'}</span> : "-"}
+        </div>
+      )
+    },
+    
+    {
       field: 'createdAt',
       headerName: 'Created At',
       width: 220,
@@ -192,7 +204,6 @@ function Payment() {
 
 
           const filterData = formattedData.filter((item)=>{
-            console.log("formattedData :", item.user_id)
 
             const searchMatch = 
             inputSearch=='' || 

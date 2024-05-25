@@ -256,6 +256,8 @@ export const subamdin_header = [
     {
         id: 25,
         name: 'More',
+        Icon: "fa fa-crosshairs",
+
         Data: [
             {
                 id: 10,

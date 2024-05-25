@@ -452,12 +452,6 @@ function Apicreate_info() {
   };
 
 
-  console.log("broker", broker)
-  console.log("Role", Role)
-  console.log("UserDetails.data", UserDetails.data)
-
-
-
 
   return (
     <>

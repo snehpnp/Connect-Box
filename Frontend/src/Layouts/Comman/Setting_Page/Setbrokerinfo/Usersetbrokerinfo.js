@@ -29,7 +29,7 @@ const Update_Broker_Key = ({ closeModal }) => {
 
   const data = async () => {
     let data = { "id": user_id }
-    await dispatch(ProfileInfo(data))
+    await dispatch(ProfileInfo({ req: data, token: AdminToken }))
       .unwrap()
       .then((response) => {
         if (response.status) {
@@ -68,7 +68,6 @@ const Update_Broker_Key = ({ closeModal }) => {
     },
     onSubmit: async (values) => {
 
-      console.log("values", values)
 
       const req = {
         "id": user_id,
@@ -126,6 +125,9 @@ const Update_Broker_Key = ({ closeModal }) => {
     }
   });
 
+
+  console.log("formik.values.broker", formik.values.broker)
+
   const fields = [
 
     {
@@ -142,13 +144,13 @@ const Update_Broker_Key = ({ closeModal }) => {
     },
     {
       name: 'demat_userid',
-      label: formik.values.broker === 9 ? 'User Id' : formik.values.broker === '2' ? 'Demat User ID' : '', type: 'text',
+      label: formik.values.broker === 9 ? 'User Id' : formik.values.broker == '2' ? 'Demat User ID' : '', type: 'text',
       showWhen: values => values.broker === '9' || values.broker === '2',
       label_size: 12, col_size: 6, disable: false
     },
     {
       name: 'app_id',
-      label: formik.values.broker ==12 ? 'Mpin' : formik.values.broker === 1 ? 'Verification Code' : formik.values.broker === 5 ? 'Password' : formik.values.broker === 7 ? 'Demat Password' : formik.values.broker === 11 ? 'Password' : formik.values.broker === 13 ? 'App Id' : formik.values.broker === 9 ? 'Password' : formik.values.broker === 14 ? 'User Id ' : 'App Id', type: 'text',
+      label: formik.values.broker == 12 ? 'Mpin' : formik.values.broker === 1 ? 'Verification Code' : formik.values.broker === 5 ? 'Password' : formik.values.broker === 7 ? 'Demat Password' : formik.values.broker === 11 ? 'Password' : formik.values.broker === 13 ? 'App Id' : formik.values.broker === 9 ? 'Password' : formik.values.broker === 14 ? 'User Id ' : 'App Id', type: 'text',
       showWhen: values =>
         //  values.broker === '2' ||
         values.broker === '1' || values.broker === "3" || values.broker === '5' || values.broker === '7' || values.broker === '9' || values.broker === '11' || values.broker === '13' || values.broker === '14' || values.broker == '12',
