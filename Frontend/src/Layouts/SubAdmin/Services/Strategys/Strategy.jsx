@@ -690,7 +690,7 @@ function Strategy() {
                                                 <p>{stg.Service_Type == 1 ? "Service_type: PER TRADE" : stg.Service_Type == 2 ? "Service_type: PER TRADE FIXED" : ""}</p>
 
 
-                                                <p class="text-dark"><b>{stg.strategy_description}</b></p>
+                                                <p className="text-dark"><b>{stg.strategy_description}</b></p>
                                                 <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
                                                 {subadmin_service_type == 1 && stg.Service_Type == 1 ?
                                                     <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>

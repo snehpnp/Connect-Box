@@ -224,7 +224,7 @@ function Option_Chain() {
                             RemoveClases('CALL', row, 'LE', rowIndex, e);
                         }}
                     >
-                        Buy   <i class="fa-solid fa-arrow-up"></i>
+                        Buy   <i className="fa-solid fa-arrow-up"></i>
                     </button>
                     <button
                         value="SE"
@@ -238,7 +238,7 @@ function Option_Chain() {
                             RemoveClases('CALL', row, 'SE', rowIndex, e);
                         }}
                     >
-                        Sell   <i class="fa-solid fa-arrow-down"></i>
+                        Sell   <i className="fa-solid fa-arrow-down"></i>
                     </button>
                 </div>
             ),
@@ -332,7 +332,7 @@ function Option_Chain() {
                         onClick={(e) => { CreateRequest("PUT", row, "LE", rowIndex, e) }}
                         onDoubleClick={(e) => { RemoveClases("PUT", row, "LE", rowIndex, e) }}
                     >
-                        Buy <i class="fa-solid fa-arrow-up"></i>
+                        Buy <i className="fa-solid fa-arrow-up"></i>
                     </button>
                     <button
                         value="SE"
@@ -341,7 +341,7 @@ function Option_Chain() {
                         onDoubleClick={(e) => { RemoveClases("PUT", row, "SE", rowIndex, e) }}
 
                     >
-                        Sell <i class="fa-solid fa-arrow-down"></i>
+                        Sell <i className="fa-solid fa-arrow-down"></i>
                     </button >
                 </div >
             ),

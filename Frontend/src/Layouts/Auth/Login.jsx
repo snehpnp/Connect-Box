@@ -344,7 +344,7 @@ function Login() {
                           onChange={handleRecaptchaChange}
                         />
 
-                        <div class="add-customer-btns d-flex justify-content-between text-end mt-3">
+                        <div className="add-customer-btns d-flex justify-content-between text-end mt-3">
                           <button className="btn customer-btn-save" onClick={handleSubmit} onKeyPress={handleKeyPress} >
                             Login
                           </button>
@@ -521,11 +521,11 @@ function Login() {
         {isLoggedIn && (
           <div className="overlay">
             <div className="overlay-content">
-              <div class="first-intro">
-                <div class="intro-fill">
-                  <span class="tf-user-welcome welcome-1">Hi `{getData.UserName}!`</span>
-                  <span class="tf-user-welcome welcome-2">Welcome to Connect Box</span>
-                  {/* <span class="tf-user-welcome welcome-3">We’re delighted to be at your Service</span> */}
+              <div className="first-intro">
+                <div className="intro-fill">
+                  <span className="tf-user-welcome welcome-1">Hi `{getData.UserName}!`</span>
+                  <span className="tf-user-welcome welcome-2">Welcome to Connect Box</span>
+                  {/* <span className="tf-user-welcome welcome-3">We’re delighted to be at your Service</span> */}
                 </div>
               </div>
 

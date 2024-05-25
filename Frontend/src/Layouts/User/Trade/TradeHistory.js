@@ -935,7 +935,7 @@ export default function AllEmployees() {
                             {/* <div className="input-block col-lg-2 mt-3 mb-3"> */}
 
                             <select
-                              class="default-select wide form-control"
+                             className="default-select wide form-control"
                               aria-label="Default select example"
                               id="select"
                               onChange={(e) => setStrategies(e.target.value)}

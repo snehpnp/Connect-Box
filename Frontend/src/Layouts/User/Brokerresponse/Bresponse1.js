@@ -16,7 +16,7 @@ const Bresponse = () => {
                                 <div className="entry-title">
 
                                     <div className="price">
-                                        <a href="#"><i class="fa-solid fa-eye" style={{ color: "#fff" }}></i></a>
+                                        <a href="#"><i className="fa-solid fa-eye" style={{ color: "#fff" }}></i></a>
                                     </div>
                                 </div>
                                 <div className="entry-content">
@@ -51,7 +51,7 @@ const Bresponse = () => {
                                 <div className="entry-title">
 
                                     <div className="price">
-                                        <a href="#"><i class="fa-solid fa-eye" style={{ color: "#fff" }}></i></a>
+                                        <a href="#"><i className="fa-solid fa-eye" style={{ color: "#fff" }}></i></a>
                                     </div>
                                 </div>
                                 <div className="entry-content">
@@ -85,7 +85,7 @@ const Bresponse = () => {
                                 <div className="entry-title">
 
                                     <div className="price">
-                                        <i class="fa-solid fa-eye" style={{ color: "#fff" }}></i>
+                                        <i className="fa-solid fa-eye" style={{ color: "#fff" }}></i>
                                     </div>
                                 </div>
                                 <div className="entry-content">
@@ -118,7 +118,7 @@ const Bresponse = () => {
                             <div className="plan-inner">
                                 <div className="entry-title">
                                     <div className="price">
-                                        <i class="fa-solid fa-eye" style={{ color: "#fff" }}></i>
+                                        <i className="fa-solid fa-eye" style={{ color: "#fff" }}></i>
                                     </div>
                                 </div>
                                 <div className="entry-content">

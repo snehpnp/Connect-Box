@@ -642,7 +642,7 @@ function Clientservice() {
                         Select Strategy
                       </button>
                       {showstrategy && (
-                        <div id="myDropdown" class="dropdown-content">
+                        <div id="myDropdown"className="dropdown-content">
                           {getAllClientStrategy.data.strategy.map(
                             (data1, index) => {
                               return (

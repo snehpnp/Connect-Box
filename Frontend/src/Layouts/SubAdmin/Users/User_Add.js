@@ -529,7 +529,7 @@ const AddClient = () => {
             btn_name1_route={"/subadmin/users"}
             additional_field={
               <>
-                {serviceName.data.length > 0 ? <div class="input-block "> <label>All Group Service</label> </div> : ""}
+                {serviceName.data.length > 0 ? <div className="input-block "> <label>All Group Service</label> </div> : ""}
                 <div className="row">
 
                   {serviceName &&
@@ -553,7 +553,7 @@ const AddClient = () => {
 
                 {subadmin_service_type1 == 2 ?
                   (<div className="row mt-4">
-                    <div class="input-block ">
+                    <div className="input-block ">
                       <label>All Strategies</label>
                     </div>
                     {getAllStategy.data.map((strategy) => (
@@ -683,7 +683,7 @@ const AddClient = () => {
 
 
                   (<div className="row mt-4">
-                    <div class="input-block ">
+                    <div className="input-block ">
                       <label>All Strategy</label>
                     </div>
                     {getAllStategy.data.map((strategy) => (
