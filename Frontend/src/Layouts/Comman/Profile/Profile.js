@@ -74,7 +74,7 @@ const Profile = () => {
   const [selectedState, setSelectedState] = useState(update.State || "");
 
   const currentDate = new Date();
-  currentDate.setFullYear(currentDate.getFullYear() - 1);
+  currentDate.setFullYear(currentDate.getFullYear() - 12);
   const currentDateISOString = currentDate.toISOString().split("T")[0];
 
   const avatarImages = [
