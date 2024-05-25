@@ -5,6 +5,8 @@ const User_model = db.user;
 const Role_model = db.role;
 const SubAdminCompanyInfo = db.SubAdminCompanyInfo;
 const strategy_transaction = db.strategy_transaction;
+const tradeCharge_Modal = db.tradeCharge;
+
 const { CommonEmail } = require("../../../Helpers/CommonEmail");
 const { firstOptPass } = require("../../../Helpers/Email_formate/first_login");
 
@@ -289,7 +291,7 @@ class Subadmin {
       }
 
       // DATA GET SUCCESSFULLY
-      res.send({
+      return res.send({
         status: true,
         msg: "Get User",
         data: getAllSubAdmins,
@@ -485,7 +487,7 @@ class Subadmin {
               Start_Date: 1,
               End_Date: 1,
               createdAt: 1,
-              Role:"USER"
+              Role: "USER"
             }
           }
         ]);
@@ -540,19 +542,19 @@ class Subadmin {
         ]);
 
 
-        
-        
-        
+
+
+
         let mergedArray = [...getAllClients, ...rechargeDetails];
 
         mergedArray.sort((a, b) => {
           return new Date(b.createdAt) - new Date(a.createdAt);
         });
 
-        let UsedBalanceData=0
+        let UsedBalanceData = 0
 
         getAllClients && getAllClients.map((data) => {
-          if (!isNaN(data.Balance) && data.Balance !== null && data.Balance !== "" && data.Role=="USER") {
+          if (!isNaN(data.Balance) && data.Balance !== null && data.Balance !== "" && data.Role == "USER") {
             UsedBalanceData += parseInt(data.Balance);
           }
         })
@@ -579,24 +581,73 @@ class Subadmin {
 
       } else if (subadmin_service_type == 1) {
 
+        var TradechargesWithUserDetails = await tradeCharge_Modal.aggregate([
+          {
+            $lookup: {
+              from: "users",
+              localField: "user_id",
+              foreignField: "_id",
+              as: "user_details"
+            }
+          },
+          {
+            $unwind: "$user_details"
+          },
+          {
+            $match: {
+              "user_details.parent_id": id
+            }
+          },
+          {
+            $project: {
+              "UserName": "$user_details.UserName",
+              "parent_id": "$user_details.parent_id",
+              order_id: 1,
+              user_charge: 1,
+              admin_charge: 1,
+              createdAt: 1,
+              user_id: 1
+            }
+          },
+          {
+            $sort: {
+              createdAt: -1
+            }
+          }
+
+        ]);
+
+        console.log("TradechargesWithUserDetails", TradechargesWithUserDetails)
+
+        var UsedBalanceData =0
+
+        TradechargesWithUserDetails && TradechargesWithUserDetails.map((data) => {
+          if (!isNaN(data.admin_charge) && data.admin_charge !== null && data.admin_charge !== "" ) {
+            UsedBalanceData += parseInt(data.admin_charge);
+          }
+        })
+
+
+
+        let mergedArray = [...TradechargesWithUserDetails, ...rechargeDetails];
+
+        mergedArray.sort((a, b) => {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        });
+
         var Count = {
           TotalBalance: TotalBalance[0].Balance,
-          UsedBalance: "0",
-          RemainingBalance: Number(TotalBalance[0].Balance || 0) - Number(0)
+          UsedBalance: UsedBalanceData,
+          RemainingBalance: Number(TotalBalance[0].Balance || 0) - Number(UsedBalanceData)
         }
         return res.send({
           status: true,
           msg: "Recharge details fetched successfully",
-          data: rechargeDetails,
+          data: mergedArray,
           Count: Count
         });
       } else if (subadmin_service_type == 0) {
 
-        // var Count = {
-        //   TotalBalance: TotalBalance[0].Balance,
-        //   UsedBalance: "0",
-        //   RemainingBalance: Number(TotalBalance[0].Balance || 0) - Number(0)
-        // }
         return res.send({
           status: true,
           msg: "Recharge details fetched successfully",

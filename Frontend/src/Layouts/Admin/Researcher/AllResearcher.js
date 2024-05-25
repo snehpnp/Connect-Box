@@ -91,7 +91,7 @@ const AllResearcher = () => {
     {
       field: "PhoneNo",
       headerName: "Phone Number",
-      width: 200,
+      width: 180,
       headerClassName: styles.boldHeader,
     },
     {
