@@ -380,8 +380,6 @@ function GroupStrategy() {
                         {
                             allGroupService.loading ? (
                                 <>
-
-
                                     <div className="content container-fluid pb-0">
                                         <div className="row d-flex align-items-center justify-content-center">
 
