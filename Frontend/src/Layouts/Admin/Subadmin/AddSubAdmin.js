@@ -108,7 +108,6 @@ const AddClient = () => {
         parent_role: Role || "ADMIN",
       };
 
-      console.log("prefix_key :", data)
 
       setSubmitting(false);
 
@@ -139,7 +138,7 @@ const AddClient = () => {
           }
         })
         .catch((error) => {
-          console.log("error :", error)
+          console.log("Error :", error)
 
         });
     },
@@ -230,8 +229,6 @@ const AddClient = () => {
   ];
 
 
-
-  console.log("subadmin_servic_type :", formik.values.subadmin_servic_type)
 
 
   return (

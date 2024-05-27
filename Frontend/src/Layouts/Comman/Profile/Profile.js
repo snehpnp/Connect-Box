@@ -129,7 +129,7 @@ const Profile = () => {
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Error", error);
       });
   };
 
@@ -203,7 +203,7 @@ const Profile = () => {
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Error", error);
         Swal.fire({
           title: "Error",
           text: "Error to Updated",
@@ -225,7 +225,7 @@ const Profile = () => {
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Error", error);
       });
   };
 
@@ -247,7 +247,7 @@ const Profile = () => {
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Error", error);
       });
   };
 

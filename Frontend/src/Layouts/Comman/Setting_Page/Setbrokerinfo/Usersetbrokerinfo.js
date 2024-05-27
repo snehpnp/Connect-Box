@@ -5,13 +5,10 @@ import { useFormik } from 'formik';
 import { useDispatch } from "react-redux";
 import { UpdateUserBrokerInfoData } from '../../../../ReduxStore/Slice/Comman/Userinfo';
 import Swal from 'sweetalert2';
-
 import { ProfileInfo } from "../../../../ReduxStore/Slice/Admin/System";
 
 
 const Update_Broker_Key = ({ closeModal }) => {
-
-
 
   const dispatch = useDispatch();
 
@@ -27,6 +24,7 @@ const Update_Broker_Key = ({ closeModal }) => {
 
 
 
+  
   const data = async () => {
     let data = { "id": user_id }
     await dispatch(ProfileInfo({ req: data, token: AdminToken }))
@@ -101,7 +99,7 @@ const Update_Broker_Key = ({ closeModal }) => {
       }).then(async (result) => {
         /* Read more about handling dismissals below */
         if (result.dismiss === Swal.DismissReason.timer) {
-          // console.log("I was closed by the timer");
+
         }
 
         await dispatch(UpdateUserBrokerInfoData({ req: req, token: AdminToken })).unwrap().then((response) => {
@@ -126,7 +124,6 @@ const Update_Broker_Key = ({ closeModal }) => {
   });
 
 
-  console.log("formik.values.broker", formik.values.broker)
 
   const fields = [
 

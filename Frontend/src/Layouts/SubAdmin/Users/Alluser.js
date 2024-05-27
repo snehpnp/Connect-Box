@@ -494,7 +494,7 @@ export default function AllUsers() {
     getUsersData();
   }, [refresh, searchInput, licenceType, BrokerType]);
 
-  // console.log("Header_name", HeaderNAme)
+  console.log("Header_name", HeaderNAme)
 
   return (
     <>
@@ -552,18 +552,19 @@ export default function AllUsers() {
                         </li>
                         <li className="serach-li">
                           <div className="input-group input-block">
-                            <select className="rounded form-control border-0 px-4"
+                            <select
+                              className="rounded form-control border-0 px-4"
                               onChange={(e) => setBrokerType(e.target.value)}
                               value={BrokerType}
                             >
-                              <option value="null">Broker Type</option>
-                              {getAllBroker && getAllBroker.map((item, index) => {
-                                return <option value={`${item.broker_id}`}>{item.title}</option>
-                              })}
+                              <option value="">Broker Type</option>
+                              {getAllBroker && getAllBroker.map((item) => (
+                                <option key={item.broker_id} value={item.broker_id}>{item.title}</option>
+                              ))}
                             </select>
-
                           </div>
                         </li>
+
                         <li>
                           <div
                             className="dropdown dropdown-action"

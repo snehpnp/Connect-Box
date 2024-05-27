@@ -245,8 +245,6 @@ class Ordercreate {
             }
         ]);
 
-        console.log("companyInformation", companyInformation)
-
 
         let razorpay = new Razorpay({
             key_id: companyInformation[0].razor_payment_key,
@@ -299,7 +297,6 @@ class Ordercreate {
     // UPDATE ORDER
     async UpdateOrderstg(req, res) {
         try {
-            console.log("req.body", req.body);
 
             const { strategy_id, user_id, type, id } = req.body;
 

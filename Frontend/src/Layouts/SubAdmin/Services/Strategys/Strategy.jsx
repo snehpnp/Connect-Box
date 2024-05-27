@@ -20,6 +20,7 @@ function Strategy() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+    var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
 
     const [searchInput, setSearchInput] = useState("");
     const [showModal, setShowModal] = useState(false);
@@ -27,31 +28,12 @@ function Strategy() {
     const [deleteModal, setdeleteModal] = useState(false);
     const [getStgDescription, setStgDescription] = useState('');
     const [showError, setShowError] = useState(false);
-    const [GetAllSgments, setGetAllSgments] = useState({
-        loading: true,
-        data: [],
-    });
-
-
-
-
-
-
+    const [GetAllSgments, setGetAllSgments] = useState({ loading: true, data: [] });
+    const [ForGetCSV, setForGetCSV] = useState([])
+    const [allStategy, setAllStategy] = useState({ loading: false, data: [] });
     const [refresh, setrefresh] = useState(false);
-
     const [StrategyId, setStrategyId] = useState('')
 
-
-    var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
-
-
-
-    const [ForGetCSV, setForGetCSV] = useState([])
-
-    const [allStategy, setAllStategy] = useState({
-        loading: false,
-        data: [],
-    });
 
 
 
@@ -671,164 +653,158 @@ function Strategy() {
                                 <div className="row d-flex align-items-center justify-content-center">
 
                                     {allStategy.data.map((stg) => {
-                                        return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                        return <div key={stg._id} className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
                                             <div className="packages card" data-aos="fade-down">
                                                 <div className="package-header d-flex justify-content-between">
                                                     <div className="d-flex justify-content-between w-100">
-                                                        <div className="">
+                                                        <div>
                                                             <h2 className="my-2">{stg.strategy_name}</h2>
                                                             <h6>Segment: {stg.strategy_segment}</h6>
-
                                                         </div>
                                                         <span className="icon-frame d-flex align-items-center justify-content-center">
-                                                            {/* <img src="assets/img/icons/price-01.svg" alt="img" /> */}
                                                             <img src={stg.strategy_image ? stg.strategy_image : "assets/img/icons/price-01.svg"} alt="img" />
                                                         </span>
                                                     </div>
                                                 </div>
-                                                {stg.researcher_id != null ? <span><i>Researcher :</i> {stg.researcher_id && stg.researcher_id.UserName}</span> : ""}
-                                                <p>{stg.Service_Type == 1 ? "Service_type: PER TRADE" : stg.Service_Type == 2 ? "Service_type: PER TRADE FIXED" : ""}</p>
-
-
-                                                <p class="text-dark"><b>{stg.strategy_description}</b></p>
+                                                {stg.researcher_id != null && (
+                                                    <span><i>Researcher :</i> {stg.researcher_id && stg.researcher_id.UserName}</span>
+                                                )}
+                                                <div>
+                                                    {stg.Service_Type == 1 ? "Service_type: PER TRADE" : stg.Service_Type == 2 ? "Service_type: PER TRADE FIXED" : ""}
+                                                </div>
+                                                <div className="text-dark"><b>{stg.strategy_description}</b></div>
                                                 <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
-                                                {subadmin_service_type == 1 && stg.Service_Type == 1 ?
+
+                                                {subadmin_service_type == 1 && stg.Service_Type == 1 ? (
                                                     <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
                                                         <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                            <span >Max Trade</span>
+                                                            <span>Max Trade</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.max_trade} days</span>
                                                         </li>
                                                         <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                            <span > Strategy Category</span>
-                                                            <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.strategy_category}</span>
+                                                            <span>Strategy Category</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.strategy_category}</span>
                                                         </li>
                                                         <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                            <span >Demo</span>
+                                                            <span>Demo</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
                                                         </li>
                                                         <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                            <span >Month</span>
+                                                            <span>Month</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_month}/month</span>
                                                         </li>
                                                         <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                            <span >Quarterly</span>
+                                                            <span>Quarterly</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_quarterly}/Quarterly</span>
                                                         </li>
                                                         <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                            <span >Half Yearly</span>
+                                                            <span>Half Yearly</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_half_early}/half year</span>
                                                         </li>
                                                         <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                            <span >Yearly</span>
+                                                            <span>Yearly</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year</span>
                                                         </li>
                                                     </ul>
-
-                                                    :
-
-                                                    subadmin_service_type == 1 && stg.Service_Type == 2 ?
-
-                                                        <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
-                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                <span >Max Trade</span>
-                                                                <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.max_trade} days</span>
-                                                            </li>
-                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                <span > Strategy Category</span>
-                                                                <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.strategy_category}</span>
-                                                            </li>
-                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                <span >Demo</span>
-                                                                <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
-                                                            </li>
-                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                <span >Month</span>
-                                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_month}/month , {stg.fixed_amount_per_trade_month}/per trade</span>
-                                                            </li>
-                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                <span >Quarterly</span>
-                                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_quarterly}/Quarterly , {stg.fixed_amount_per_trade_quarterly}/per trade</span>
-                                                            </li>
-                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                <span >Half Yearly</span>
-                                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_half_early}/half year , {stg.fixed_amount_per_trade_half_early}/per trade</span>
-                                                            </li>
-                                                            <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                <span >Yearly</span>
-                                                                <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year , {stg.fixed_amount_per_trade_early}/per trade</span>
-                                                            </li>
-                                                        </ul>
-
-                                                        :
-
-                                                        subadmin_service_type == 2 ?
-                                                            <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
-                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                    <span >Max Trade</span>
-                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.max_trade} days</span>
-                                                                </li>
-                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                    <span > Strategy Category</span>
-                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.strategy_category}</span>
-                                                                </li>
-                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                    <span >Demo</span>
-                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
-                                                                </li>
-                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                    <span >Month</span>
-                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_month}/month</span>
-                                                                </li>
-                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                    <span >Quarterly</span>
-                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_quarterly}/Quarterly</span>
-                                                                </li>
-                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                    <span >Half Yearly</span>
-                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_half_early}/half year</span>
-                                                                </li>
-                                                                <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
-                                                                    <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
-                                                                    <span >Yearly</span>
-                                                                    <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year</span>
-                                                                </li>
-                                                            </ul>
-                                                            : ""
-                                                }
-
+                                                ) : subadmin_service_type == 1 && stg.Service_Type == 2 ? (
+                                                    <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Max Trade</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.max_trade} days</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Strategy Category</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.strategy_category}</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Demo</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Month</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_month}/month , {stg.fixed_amount_per_trade_month}/per trade</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Quarterly</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_quarterly}/Quarterly , {stg.fixed_amount_per_trade_quarterly}/per trade</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Half Yearly</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_half_early}/half year , {stg.fixed_amount_per_trade_half_early}/per trade</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Yearly</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year , {stg.fixed_amount_per_trade_early}/per trade</span>
+                                                        </li>
+                                                    </ul>
+                                                ) : subadmin_service_type == 2 ? (
+                                                    <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Max Trade</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}> {stg.max_trade} days</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Strategy Category</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}>{stg.strategy_category}</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Demo</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Month</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_month}/month</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Quarterly</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_quarterly}/Quarterly</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Half Yearly</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_half_early}/half year</span>
+                                                        </li>
+                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                            <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
+                                                            <span>Yearly</span>
+                                                            <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year</span>
+                                                        </li>
+                                                    </ul>
+                                                ) : (
+                                                    ""
+                                                )}
 
                                                 <div className="d-flex justify-content-center package-edit">
-
-
-                                                    <a className="btn-action-icon me-2"  >
+                                                    <a className="btn-action-icon me-2">
                                                         <i className="fe fe-edit" onClick={() => handleEditPackage({ id: stg._id })} />
                                                     </a>
-
-                                                    {stg.researcher_id == null ? <a className="btn-action-icon" onClick={() => { handleDelete(stg._id); }}  >
-                                                        <i className="fe fe-trash-2" />
-                                                    </a> : ""}
+                                                    {stg.researcher_id == null && (
+                                                        <a className="btn-action-icon" onClick={() => handleDelete(stg._id)}>
+                                                            <i className="fe fe-trash-2" />
+                                                        </a>
+                                                    )}
                                                 </div>
                                             </div>
+
                                         </div>
                                     })}
 

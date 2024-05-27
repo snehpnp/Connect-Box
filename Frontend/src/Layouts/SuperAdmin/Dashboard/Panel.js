@@ -149,19 +149,6 @@ const Panel = () => {
 
   
 
-  // const getUser = async () => {
-  //   await dispatch(getuserdata({}))
-  //     .unwrap()
-  //     .then(async (response) => {
-  //       if (response.status) {
-  //         console.log("user", response.data);
-  //         setUserdata(response.data)
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log("error", error);
-  //     });
-  // };
 
   useEffect(() => {
     getsubadminDetail();

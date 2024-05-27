@@ -156,7 +156,7 @@ const AllResearcherStrategy = () => {
                 {/* PAGE HEADER */}
                 <div className="card">
                     <div className="card-header mb-0">
-                        <h5 className='card-title mb-0'><i class="fe fe-target "> </i>Researcher Strategy</h5>
+                        <h5 className='card-title mb-0'><i className="fe fe-target "> </i>Researcher Strategy</h5>
                     </div>
 
                     <div className='card-body'>

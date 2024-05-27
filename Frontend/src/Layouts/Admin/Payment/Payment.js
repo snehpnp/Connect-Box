@@ -137,7 +137,6 @@ function Payment() {
       if (response.status) {
         let formattedData = response.data;
 
-        console.log("inputSearch", inputSearch);
 
         if (first !== "all") {
           formattedData = formattedData.filter(row => row.Role === first);
@@ -226,7 +225,7 @@ function Payment() {
               <div className="row align-items-center">
                 <div className="col">
                   <h5 className="card-title mb-0">
-                    <i class="fe fe-users pe-2" ></i>
+                    <i className="fe fe-users pe-2" ></i>
                     Payment History</h5>
                 </div>
                 <div className="col-auto">

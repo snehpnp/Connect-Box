@@ -757,11 +757,11 @@ export default function AllEmployees() {
                   </div>
 
                   <div className="input-block col-lg-2 mt-3 mb-3">
-                    <label for="select" class="form-label">
+                    <label for="select" className="form-label">
                       Strategy
                     </label>
                     <select
-                      class="default-select wide form-control"
+                      className="default-select wide form-control"
                       aria-label="Default select example"
                       id="select"
                       onChange={(e) => setSelectStrategy(e.target.value)}

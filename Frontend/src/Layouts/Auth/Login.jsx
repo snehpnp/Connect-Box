@@ -166,7 +166,6 @@ function Login() {
 
     if (isVerified) {
       // Proceed with login or form submission
-      console.log('reCAPTCHA verified. Submitting form...');
     } else {
       Swal.fire({
         title: 'Oops!',
@@ -251,14 +250,6 @@ function Login() {
     });
   };
 
-
-
-
-
-
-
-
-
   const handleChange = (value) => {
     const numericValue = value.replace(/\D/g, '');
     setTypeOtp(numericValue);
@@ -270,13 +261,7 @@ function Login() {
     htmlElement.setAttribute("data-sidebar", theme_mode ? theme_mode : "light");
     htmlElement.setAttribute("data-layout-mode", theme_mode ? theme_mode : "light");
     htmlElement.setAttribute("data-topbar", theme_mode ? theme_mode : "light");
-    // if (isLoggedIn) {
-    //   setTimeout(() => {
-    // console.log("sneh")
-
-    //     navigate(`/${getData.Role.toLowerCase()}/dashboard`);
-    //   }, 6000);
-    // }
+ 
   }, [isLoggedIn, getData.Role, navigate]);
 
 
@@ -310,8 +295,6 @@ function Login() {
                 <div className='col-md-6'>
                   <div className="login-right">
                     <div className="login-right-wrap">
-
-
                       <img
                         className="img-fluid logo-dark mb-2 "
                         src="/assets/img/pnp.png"
@@ -351,7 +334,7 @@ function Login() {
                           onChange={handleRecaptchaChange}
                         />
 
-                        <div class="add-customer-btns d-flex justify-content-between text-end mt-3">
+                        <div className="add-customer-btns d-flex justify-content-between text-end mt-3">
                           <button className="btn customer-btn-save" onClick={handleSubmit} onKeyPress={handleKeyPress} >
                             Login
                           </button>
@@ -528,11 +511,11 @@ function Login() {
         {isLoggedIn && (
           <div className="overlay">
             <div className="overlay-content">
-              <div class="first-intro">
-                <div class="intro-fill">
-                  <span class="tf-user-welcome welcome-1">Hi `{getData.UserName}!`</span>
-                  <span class="tf-user-welcome welcome-2">Welcome to Connect Box</span>
-                  {/* <span class="tf-user-welcome welcome-3">We’re delighted to be at your Service</span> */}
+              <div className="first-intro">
+                <div className="intro-fill">
+                  <span className="tf-user-welcome welcome-1">Hi `{getData.UserName}!`</span>
+                  <span className="tf-user-welcome welcome-2">Welcome to Connect Box</span>
+                  {/* <span className="tf-user-welcome welcome-3">We’re delighted to be at your Service</span> */}
                 </div>
               </div>
 

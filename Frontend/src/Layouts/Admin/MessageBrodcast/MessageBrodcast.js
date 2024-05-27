@@ -255,11 +255,9 @@ function MessageBroadcast() {
     const value = e.target.value;
     if (value === "all") {
       const allSubadminUsernames = subadmin.map((sub) => sub._id);
-      // console.log("1")
 
       setSelectedSubadmin(allSubadminUsernames);
     } else {
-      // console.log("2")
       setSelectedSubadmin(value);
     }
   };

@@ -349,11 +349,11 @@ const AddStrategy = () => {
           <div className="card-header">
             <div className="row align-items-center">
               <div className="col">
-              <h5 className="card-title mb-0"><i class="pe-2 fas fa-list"></i>Add Group</h5>
+              <h5 className="card-title mb-0"><i className="pe-2 fas fa-list"></i>Add Group</h5>
 
               </div>
               <div className="col">
-              <Link class="btn btn-primary float-lg-end mx-4" to="/subadmin/group-service"><i class="fa-solid  fa-arrow-left "></i> Back</Link>
+              <Link className="btn btn-primary float-lg-end mx-4" to="/subadmin/group-service"><i className="fa-solid  fa-arrow-left "></i> Back</Link>
               </div>
               </div>
               </div>

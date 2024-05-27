@@ -52,8 +52,7 @@ const TradeHistory = () => {
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
-                    // console.log("response=>",response.data)
-                    // setTableData({ loading: true, data: response.data });
+            
                 } else {
                     toast.error(response.msg);
                 }

@@ -123,7 +123,7 @@ export default function AllEmployees() {
         .catch((error) => {
           console.log("Error", error);
         });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -295,10 +295,10 @@ export default function AllEmployees() {
             {row.result[0].exit_status === "above"
               ? "ABOVE"
               : row.result[0].exit_status === "below"
-              ? "BELOW"
-              : row.result[0].exit_status == "range"
-              ? "RANGE"
-              : " - "}
+                ? "BELOW"
+                : row.result[0].exit_status == "range"
+                  ? "RANGE"
+                  : " - "}
           </span>
         </div>
       ),
@@ -595,7 +595,7 @@ export default function AllEmployees() {
             channelList,
             livePriceDataDetails.demate_user_id,
             livePriceDataDetails.access_token
-          ).then((res) => {});
+          ).then((res) => { });
         } else {
           // $(".UPL_").html("-");
           // $(".show_rpl_").html("-");
@@ -806,7 +806,7 @@ export default function AllEmployees() {
     fetchIP();
 
     // Clean up function
-    return () => {};
+    return () => { };
   }, []);
 
   let total = 0;
@@ -932,29 +932,23 @@ export default function AllEmployees() {
                         </li>
                         <li className="serach-li">
                           <div className="input-group input-block">
-                            {/* <div className="input-block col-lg-2 mt-3 mb-3"> */}
-
                             <select
-                              class="default-select wide form-control"
+                              className="default-select wide form-control"
                               aria-label="Default select example"
                               id="select"
                               onChange={(e) => setStrategies(e.target.value)}
                               value={strategies}
                             >
-                              <option value="null" selected>
-                                All
-                              </option>
+                              <option value="null">All</option>
                               {GetAllStrategy.data &&
-                                GetAllStrategy.data.map((item) => {
-                                  return (
-                                    <option value={item.strategy_name}>
-                                      {item.strategy_name}
-                                    </option>
-                                  );
-                                })}
+                                GetAllStrategy.data.map((item) => (
+                                  <option key={item.strategy_name} value={item.strategy_name}>
+                                    {item.strategy_name}
+                                  </option>
+                                ))}
                             </select>
-                            {/* </div> */}
                           </div>
+
                         </li>
                         <li>
                           <ExportToExcel
@@ -970,34 +964,6 @@ export default function AllEmployees() {
               </div>
 
               <div className="card-body">
-                <div className="row ">
-                  {/* <div className="input-block col-lg-2 mt-3 mb-3">
-                                        <label>From Date</label>
-                                        <input
-                                            type="date"
-                                            className="form-control"
-                                            placeholder="Search..."
-                                            aria-label="Search"
-                                            aria-describedby="search-addon"
-                                            onChange={(e) => setFromDate(e.target.value || '')}
-                                            value={fromDate}
-                                        />
-                                    </div>
-                                    <div className="input-block col-lg-2 mt-3 mb-3">
-                                        <label>To Date</label>
-                                        <input
-                                            type="date"
-                                            className="form-control"
-                                            placeholder="Search..."
-                                            aria-label="Search"
-                                            aria-describedby="search-addon"
-                                            onChange={(e) => setToDate(e.target.value || '')}
-                                            value={toDate}
-                                        />
-              
-              
-                                    </div> */}
-                </div>
 
                 <div className="card-body table-responsive">
                   {tradeHistoryData.data.length > 0 ? (

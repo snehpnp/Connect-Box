@@ -184,7 +184,7 @@ const ServicesList = () => {
           <div className="card-header">
             <div className="row align-items-center">
               <div className="col">
-              <h5 className="card-title mb-0"><i class="pe-2 fas fa-list"></i>All Services</h5>
+              <h5 className="card-title mb-0"><i className="pe-2 fas fa-list"></i>All Services</h5>
 
               </div>
               <div className="col-auto">

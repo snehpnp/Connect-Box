@@ -1196,7 +1196,6 @@ class Users {
             add_startegy.forEach(async (data) => {
               const matchedStrategy = await Strategie_modal.findOne({ _id: data.id }).select('strategy strategy_demo_days security_fund_month security_fund_quarterly security_fund_half_early security_fund_early Service_Type fixed_amount_per_trade_early fixed_amount_per_trade_half_early fixed_amount_per_trade_quarterly fixed_amount_per_trade_month strategy_percentage researcher_id research_strategy_percentage');
 
-              console.log("matchedStrategy", matchedStrategy)
               var price_stg = 0
               var daysforstg = 0
               var trade_charge = 0
@@ -1282,8 +1281,6 @@ class Users {
               });
               Activity_logsData.save();
 
-
-              console.log("trade_charge", matchedStrategy)
 
               const Researcher_charge_percentage = Number(matchedStrategy.research_strategy_percentage || 0) / 100;
               const Researcher_charge1 = Researcher_charge_percentage * Number(price_stg);

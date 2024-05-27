@@ -86,37 +86,11 @@ const Makecall = () => {
         setselectedTimeNoTrade(event.target.value);
     };
 
-    // console.log(
-
-    //     " scriptSegment ", scriptSegment, "\n",
-    //     " scriptname ", scriptname, "\n",
-    //     " expiryOnChange ", expiryOnChange, "\n",
-    //     " strikePrice ", strikePrice, "\n",
-    //     " optionType ", optionType, "\n",
-    //     " selectStrategy ", selectStrategy, "\n",
-    //     " tradeType ", tradeType, "\n",
-    //     " markettime ", markettime, "\n",
-    //     " EntryPrice ", EntryPrice, "\n",
-    //     " EntryPriceRange_one ", EntryPriceRange_one, "\n",
-    //     " EntryPriceRange_two ", EntryPriceRange_two, "\n",
-    //     " EntryPriceBA ", EntryPriceBA, "\n",
-    //     " IntradayDelivery ", IntradayDelivery, "\n",
-    //     " selectedTimeExit ", selectedTimeExit, "\n",
-    //     " selectedTimeNoTrade ", selectedTimeNoTrade, "\n",
-    //     " WiseTypeDropdown ", WiseTypeDropdown, "\n",
-    //     " target1 ", target1, "\n",
-    //     " stoploss ", stoploss, "\n",
-    //     " targetStoplossDropdown ", targetStoplossDropdown, "\n",
-    // )
-
-
-    //console.log("UserDetails ",UserDetails[0].client_key)
+ 
 
 
     const UserLocalDetails = JSON.parse(localStorage.getItem("user_details"));
 
-    //  console.log("get user details ",UserLocalDetails.token)
-    // console.log("CatagoryData ",CatagoryData.data)
     const [sockets, setSockets] = useState(null);
     const previousToken = useRef("")
     const liveToken = useRef("");
@@ -139,8 +113,6 @@ const Makecall = () => {
     let socket;
 
 
-
-    // console.log("aboveBelowRangData ", aboveBelowRangData)
     const styles = {
         container: {
             display: "flex",
@@ -397,7 +369,6 @@ const Makecall = () => {
     ]
 
     if (iscolumntPrice == true) {
-        console.log("iscolumntPrice", iscolumntPrice)
         columns = columns.filter(column => column.dataField !== "Price");
     }
 
@@ -419,8 +390,7 @@ const Makecall = () => {
 
     const handleOnSelectAll = (isSelect, rows) => {
         const ids = rows.map(r => r._id);
-        // console.log("isSelect ",isSelect)
-        // console.log("rows ",rows)
+  
         if (isSelect) {
             setSelected(ids);
             setSelected1(rows);
@@ -680,21 +650,14 @@ const Makecall = () => {
                                     source: "API"
                                 }
                                 setSockets(socket)
-                                // console.log("initCon",initCon)
                                 socket.send(JSON.stringify(initCon))
-                                // console.log("inside ",socket)
                                 socket.onmessage = async function (msg) {
                                     var response = JSON.parse(msg.data)
-                                    //  console.log("response ", response)
                                     if (response.tk) {
                                         if (response.lp != undefined) {
-                                            //console.log('response token', response.lp)
-                                            //   console.log("response -soket ", response);
-                                            // setLiveprice(response.lp);
                                             if (response.tk == liveToken.current) {
                                                 setLiveprice(response.lp);
                                                 if (response.pc != undefined) {
-                                                    //console.log('response.pc inside', response.pc)
                                                     if (parseFloat(response.pc) > 0) {
                                                         $('.liveprice' + response.tk).css({ "color": "green" });
 
@@ -728,7 +691,6 @@ const Makecall = () => {
                                         }
                                     }
                                     if (response.s === 'OK') {
-                                        console.log("response.s ", response.s)
                                         // var channel = await channelList;
                                         // let json = {
                                         //     k: channelList,
@@ -772,7 +734,6 @@ const Makecall = () => {
         await dispatch(GetBrokerDatas(data))
             .unwrap()
             .then(async (response) => {
-                //console.log("GetBrokerData ",response.data)
                 if (response.status) {
                     seUserDetails(response.data)
                 }
@@ -794,7 +755,6 @@ const Makecall = () => {
             .unwrap()
             .then((response) => {
 
-                // console.log("response ",response.data)
                 if (response.status) {
                     setStrategyDataAll({
                         loading: false,
@@ -824,7 +784,6 @@ const Makecall = () => {
             .unwrap()
             .then((response) => {
 
-                //console.log("response ", response.data)
                 if (response.status) {
                     setCatagoryData({
                         loading: false,
@@ -2236,7 +2195,7 @@ const Makecall = () => {
                                                                 <>
 
                                                                     <div className="row mt-2">
-                                                                        <div class="col-sm-6 col-lg-6">
+                                                                        <div className="col-sm-6 col-lg-6">
                                                                             <input type="number" name="FirstPrice" className="form-control"  onChange={(e) => {
                                                                                 selectPriceRange(e)
                                                                                // SetEntryPriceRange_one(e.target.value);
@@ -2244,7 +2203,7 @@ const Makecall = () => {
                                                                             }} value={EntryPriceRange_one} />
                                                                         </div>
 
-                                                                        <div class="col-sm-6 col-lg-6">
+                                                                        <div className="col-sm-6 col-lg-6">
                                                                             <input type="number" name="SecondPrice" className="form-control" onChange={(e) => {selectPriceRange(e)
                                                                                // SetEntryPriceRange_two(e.target.value);
                                                                                 SetEntryPriceRange_twoErr('')

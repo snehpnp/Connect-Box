@@ -21,14 +21,14 @@ class ActivityLogs {
             var findData = {}
 
             if (role == "SUBADMIN") {
-                findData = { $or: [{ role: role }, { role: "USER" }] }
+                findData = { $or: [{ role: role }] }
             } else if (role == "ADMIN") {
                 findData = { $or: [{ role: role }, { role: "SUBADMIN" }, { role: "RESEARCH" }] }
             } else {
                 findData = { role: role }
             }
 
-            const Activity_logs1 = await Activity_category.find(findData);
+            const Activity_logs1 = await Activity_category.find({ role: role });
 
             // IF DATA NOT EXIST
             if (Activity_logs1.length == 0) {
@@ -51,109 +51,58 @@ class ActivityLogs {
 
     async findActivity(req, res) {
         try {
-            const { id, category } = req.body;
+            const { id, category, endDate, fromDate } = req.body;
             const Activity_logs1 = await Activity_category.find({ activity: category });
-
-            // IF DATA NOT EXIST
-            if (Activity_logs1.length == 0) {
+    
+            if (Activity_logs1.length === 0) {
                 return res.send({ status: false, msg: "Category Not Found", data: [] });
             }
-
-            if (Activity_logs1[0].activity != "LOGIN" || Activity_logs1[0].activity != "TRADING_STATUS" || Activity_logs1[0].activity != "USER_LOGIN" || Activity_logs1[0].activity != "ADMIN_LOGIN" || Activity_logs1[0].activity != "RESEARCH_LOGIN" || Activity_logs1[0].activity != "EMPLOYEE_LOGIN" || Activity_logs1[0].activity != "RESEARCH_TRADING_STATUS" || Activity_logs1[0].activity != "USER_TRADING_STATUS" || Activity_logs1[0].activity != "TARGET-STOPLOSS-TIME") {
-
-                if (category == "TARGET-STOPLOSS-TIME") {
-         
-                    
-                    const Activity_logs_data = await Activity_logs.aggregate([
-                        {
-                            $match: { admin_Id: new ObjectId(id), category: category }
-                        },
-                        {
-                            $sort: { createdAt: -1 } 
-                        }
-
-                    ]);
-
-
-                    if (Activity_logs_data.length == 0) {
-                        return res.send({ status: false, msg: "Activity  Not Found", data: [] });
-                    }
-
-                    // DATA GET SUCCESSFULLY
-                    return res.send({
-                        status: true,
-                        msg: "Activity Name Find",
-                        data: Activity_logs_data,
-                    });
-
-
-
-
-                } else {
-                    const Activity_logs_data = await Activity_logs.aggregate([
-                        {
-                            $match: { admin_Id: new ObjectId(id), category: category }
-                        },
-                        {
-                            $lookup: {
-                                from: "users",
-                                localField: "user_Id",
-                                foreignField: "_id",
-                                as: "userData"
-                            }
-                        },
-                        {
-                            $unwind: "$userData" // Unwind the userData array
-                        },
-                        {
-                            $project: {
-                                "UserName": "$userData.UserName",
-                                "category": 1,
-                                "admin_Id": 1,
-                                "message": 1,
-                                "maker_role": 1,
-                                "device": 1,
-                                "system_ip": 1,
-                                "createdAt": 1,
-
-                                _id: 0
-                            }
-                        }
-                    ]);
-
-
-                    if (Activity_logs_data.length == 0) {
-                        return res.send({ status: false, msg: "Activity  Not Found", data: [] });
-                    }
-
-                    // DATA GET SUCCESSFULLY
-                    return res.send({
-                        status: true,
-                        msg: "Activity Name Find",
-                        data: Activity_logs_data,
-                    });
-
-
-
-
+    
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const StartDate = fromDate ? new Date(fromDate) : today;
+            const EndDate = endDate ? new Date(endDate) : today;
+    
+    
+            const matchConditions = {
+                admin_Id: new ObjectId(id),
+                category: category,
+                createdAt: {
+                    $gte: StartDate,
+                    $lt: new Date(EndDate.getTime() + 24 * 60 * 60 * 1000)
                 }
-
-
-
-
-
-
-
-
-
+            };
+    
+            const projectFields = {
+                "UserName": "$userData.UserName",
+                "category": 1,
+                "admin_Id": 1,
+                "message": 1,
+                "maker_role": 1,
+                "device": 1,
+                "system_ip": 1,
+                "createdAt": 1,
+                _id: 0
+            };
+    
+            if (category === "TARGET-STOPLOSS-TIME") {
+                const Activity_logs_data = await Activity_logs.aggregate([
+                    { $match: matchConditions },
+                    { $sort: { createdAt: -1 } }
+                ]);
+    
+                if (Activity_logs_data.length === 0) {
+                    return res.send({ status: false, msg: "Activity Not Found", data: [] });
+                }
+    
+                return res.send({
+                    status: true,
+                    msg: "Activity Name Found",
+                    data: Activity_logs_data,
+                });
             } else {
-
-
-
-                const user_logs_data = await user_logs.aggregate([
-                    {
-                        $match: { admin_Id: new ObjectId(id) }
-                    },
+                const Activity_logs_data = await Activity_logs.aggregate([
+                    { $match: matchConditions },
                     {
                         $lookup: {
                             from: "users",
@@ -162,52 +111,26 @@ class ActivityLogs {
                             as: "userData"
                         }
                     },
-                    {
-                        $unwind: "$userData" // Unwind the userData array
-                    },
-                    {
-                        $project: {
-                            "UserName": "$userData.UserName",
-                            "category": 1,
-                            "admin_Id": 1,
-                            "message": 1,
-                            "maker_role": 1,
-                            "device": 1,
-                            "system_ip": 1,
-                            "createdAt": 1,
-
-                            _id: 0
-                        }
-                    }
+                    { $unwind: "$userData" },
+                    { $project: projectFields }
                 ]);
-
-
-                if (user_logs_data.length == 0) {
-                    return res.send({ status: false, msg: "Activity  Not Found", data: [] });
+    
+                if (Activity_logs_data.length === 0) {
+                    return res.send({ status: false, msg: "Activity Not Found", data: [] });
                 }
-
-                // DATA GET SUCCESSFULLY
+    
                 return res.send({
                     status: true,
-                    msg: "Activity Name Find",
-                    data: user_logs_data,
+                    msg: "Activity Name Found",
+                    data: Activity_logs_data,
                 });
             }
-
-
-
-
-
-
-
-
-
-
-
         } catch (error) {
-            console.log("Error get UserInfo error -", error);
+            console.log("Error fetching activity data:", error);
+            return res.status(500).send({ status: false, msg: "Server Error", error: error.message });
         }
     }
+    
 
 
 

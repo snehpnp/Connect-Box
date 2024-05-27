@@ -113,18 +113,16 @@ const Signal = () => {
                     toast.error("Trading Off Error")
                 }
             }).catch((error) => {
-                console.log("Trading Off Error", error);
+                console.log("Error Trading Off", error);
             })
 
     }
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
 
         if (check) {
-            console.log("Trading On")
             loginWithApi(brokerid, UserDetails);
 
         } else {
-            console.log("Trading Off")
             handleTradingOff(user_id);
 
 

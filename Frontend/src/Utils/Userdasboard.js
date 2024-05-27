@@ -9,7 +9,7 @@ export const dashboardData = async (UserDetails) => {
             maxBodyLength: Infinity,
             url: 'https://ant.aliceblueonline.com/rest/AliceBlueAPIService/api/limits/getRmsLimits',
             headers: {
-                'Authorization': "Bearer " + UserDetails.demat_userid + " " + UserDetails.access_token,
+                'Authorization': `Bearer ${UserDetails.demat_userid} ${UserDetails.access_token}`,
                 'Content-Type': 'application/json',
             },
         };
@@ -19,39 +19,41 @@ export const dashboardData = async (UserDetails) => {
             maxBodyLength: Infinity,
             url: 'https://ant.aliceblueonline.com/rest/AliceBlueAPIService/api/positionAndHoldings/positionBook',
             headers: {
-                'Authorization': "Bearer " + UserDetails.demat_userid + " " + UserDetails.access_token,
+                'Authorization': `Bearer ${UserDetails.demat_userid} ${UserDetails.access_token}`,
                 'Content-Type': 'application/json',
             },
             data: {
-                "ret":"DAY"
+                "ret": "DAY"
             }
         };
 
         try {
             // First API call
             const response1 = await axios(config1);
-            if (response1.data[0].stat !== "Ok") {
-                throw new Error("Unexpected response status from limits API");
+            if (response1.data[0]?.stat !== "Ok") {
+                console.log("Unexpected response status from limits API");
+                return null;
             }
+
+            let unrealisedProfitLossSum = 0;
+            let realisedProfitLossSum = 0;
 
             // Second API call
             const response2 = await axios(config2);
-            if (response2.data[0].stat !== "Ok") {
-                throw new Error("Unexpected response status from position API");
+            if (response2.data.stat === "Ok") {
+                unrealisedProfitLossSum = response2.data.reduce((sum, item) => sum + parseFloat(item.unrealisedprofitloss), 0);
+                realisedProfitLossSum = response2.data.reduce((sum, item) => sum + parseFloat(item.realisedprofitloss), 0);
             }
-
-            const unrealisedProfitLossSum = response2.data.reduce((sum, item) => sum + parseFloat(item.unrealisedprofitloss), 0);
-            const realisedProfitLossSum = response2.data.reduce((sum, item) => sum + parseFloat(item.realisedprofitloss), 0);
 
             // Combine results
             return {
                 limitsData: response1.data[0].net,
-                positionData: response2.data,
-                unrealisedProfitLossSum:unrealisedProfitLossSum + realisedProfitLossSum
+                positionData: response2.data || [],
+                unrealisedProfitLossSum: (unrealisedProfitLossSum + realisedProfitLossSum) || 0,
             };
         } catch (error) {
             console.error("Error:", error);
-            throw error;  // Throw the error to be caught by the calling function
+            throw error; // Throw the error to be caught by the calling function
         }
     } else if (broker_id === "12" || broker_id === 12) {
         // Logic for broker 12

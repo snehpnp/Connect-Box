@@ -572,13 +572,13 @@ const DropDown = () => {
                   </li>
                   <li onClick={() => ProfilePage()}>
                     <Link className="dropdown-item dev">
-                      <i class="fa-solid fa-user p-2"></i>Profile
+                      <i className="fa-solid fa-user p-2"></i>Profile
                     </Link>
                   </li>
 
                   <li onClick={() => SettingPage()}>
                     <Link className="dropdown-item dev" to="/setting">
-                      <i class="fa-solid fa-gear p-2"></i>Settings
+                      <i className="fa-solid fa-gear p-2"></i>Settings
                     </Link>
                   </li>
 
@@ -587,7 +587,7 @@ const DropDown = () => {
                       className="dropdown-item dev"
                       onClick={(e) => LogoutUser(e)}
                     >
-                      <i class="fa-solid fa-right-to-bracket p-2"></i> Log out
+                      <i className="fa-solid fa-right-to-bracket p-2"></i> Log out
                     </a>
                   </li>
                 </ul>

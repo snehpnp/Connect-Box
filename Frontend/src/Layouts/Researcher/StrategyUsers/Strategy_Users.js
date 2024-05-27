@@ -27,6 +27,37 @@ const StrategyUsers = () => {
         AllUsers();
     }, []);
 
+    const headerStyles = {
+        height: '40px',
+        backgroundColor: '#f5f2f2',
+        marginTop: '1rem',
+        maxWidth: '100%',
+        display: 'flex',
+        alignItems: 'center'
+    };
+
+    const headerItemStyles = {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        marginRight: '15rem'
+    };
+
+    const colStyles = {
+        padding: '0.75rem 1.25rem'
+    };
+
+    const accordionItemStyles = {
+        marginBottom: '1rem'
+    };
+
+    const accordionButtonStyles = {
+        padding: '0.75rem 1.25rem'
+    };
+
+    const accordionBodyStyles = {
+        padding: '1rem 1.25rem'
+    };
 
     return (
         <div className="content container-fluid" data-aos="fade-left">
@@ -42,33 +73,44 @@ const StrategyUsers = () => {
                     </div>
                 </div>
 
-                <div className="d-flex align-items-center mx-3" style={{ height: "40px", backgroundColor: "#f5f2f2", marginTop: '1rem', maxWidth: '100%' }}>
-                    <h6 style={{ marginLeft: '1.5rem', marginRight: '2rem' }}><b>#</b></h6>
-                    <h6 style={{ marginRight: '15rem' }}><b>Strategy Name</b></h6>
-                    <h6 style={{ marginRight: '15rem' }}><b>Segment</b></h6>
-                    <h6 style={{ marginRight: '15rem' }}><b>Category</b></h6>
-                    <h6 style={{ marginRight: '10rem' }}><b>Created Date</b></h6>
+                <div style={headerStyles} className="mx-3">
+                    <h6 style={{ marginLeft: '1.5rem', marginRight: '2rem', ...headerItemStyles }}><b>#</b></h6>
+                    <h6 style={headerItemStyles}><b>Strategy Name</b></h6>
+                    <h6 style={headerItemStyles}><b>Segment</b></h6>
+                    <h6 style={headerItemStyles}><b>Category</b></h6>
+                    <h6 style={{ marginRight: '10rem', ...headerItemStyles }}><b>Created Date</b></h6>
                 </div>
 
                 <div className="mx-3 mb-5">
                     <div className="accordion" id="accordionExample">
                         {getUsers.map((item, index) => (
-                            < div className="accordion-item" key={`accordion-item-${index}`}>
+                            <div className="accordion-item" style={accordionItemStyles} key={`accordion-item-${index}`}>
                                 <h2 className="accordion-header" id={`heading${index}`}>
-                                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse-${index}`} aria-expanded="false" aria-controls={`collapse-${index}`}>
-                                        <div className="d-flex align-items-center" style={{ width: '100%' }}>
-                                            <h6 style={{ marginRight: '2rem' }}><b>{index + 1}</b></h6>
-                                            <h6 style={{ marginRight: '15rem' }}><b>{item.strategy_name}</b></h6>
-                                            <h6 style={{ marginRight: '15rem' }}><b>{item.strategy_segment}</b></h6>
-                                            <h6 style={{ marginRight: '15rem' }}><b>{item.strategy_category}</b></h6>
-                                            <h6 style={{ marginRight: '10rem' }}><b>{fDateTime(item.createdAt)}</b></h6>
+                                    <button
+                                        className="accordion-button collapsed"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target={`#collapse-${index}`}
+                                        aria-expanded="false"
+                                        aria-controls={`collapse-${index}`}
+                                        style={accordionButtonStyles}
+                                    >
+                                        <div className="row w-100">
+                                            <div className="col-1" style={colStyles}><b>{index + 1}</b></div>
+                                            <div className="col-3" style={colStyles}><b>{item.strategy_name}</b></div>
+                                            <div className="col-2" style={colStyles}><b>{item.strategy_segment}</b></div>
+                                            <div className="col-3" style={colStyles}><b>{item.strategy_category}</b></div>
+                                            <div className="col-3" style={colStyles}><b>{fDateTime(item.createdAt)}</b></div>
                                         </div>
                                     </button>
                                 </h2>
-                                <div id={`collapse-${index}`} className="accordion-collapse collapse" aria-labelledby={`heading${index}`} data-bs-parent="#accordionExample">
-                                    <div className="accordion-body">
-
-
+                                <div
+                                    id={`collapse-${index}`}
+                                    className="accordion-collapse collapse"
+                                    aria-labelledby={`heading${index}`}
+                                    data-bs-parent="#accordionExample"
+                                >
+                                    <div className="accordion-body" style={accordionBodyStyles}>
                                         <FullDataTable
                                             TableColumns={[
                                                 {
@@ -76,76 +118,48 @@ const StrategyUsers = () => {
                                                     text: "#",
                                                     formatter: (cell, row, rowIndex) => rowIndex + 1,
                                                 },
-
                                                 {
                                                     dataField: "Username",
                                                     text: "Username",
-                                                    formatter: (cell, row, rowIndex) => (
-                                                        <div>
-                                                            {row.Username}
-                                                        </div>
-                                                    ),
+                                                    formatter: (cell, row) => <div>{row.Username}</div>,
                                                 },
                                                 {
                                                     dataField: "purchase_type",
                                                     text: "Service Type",
-                                                    formatter: (cell, row, rowIndex) => (
-                                                        <div>
-                                                            {row.purchase_type == "monthlyPlan" ? "Monthly" : row.purchase_type}
-                                                        </div>
-                                                    ),
+                                                    formatter: (cell, row) => <div>{row.purchase_type === "monthlyPlan" ? "Monthly" : row.purchase_type}</div>,
                                                 },
                                                 {
                                                     dataField: "stg_count",
                                                     text: "Used Count",
-                                                    formatter: (cell, row, rowIndex) => (
-                                                        <div>
-                                                            {row.stg_count}
-                                                        </div>
-                                                    ),
+                                                    formatter: (cell, row) => <div>{row.stg_count}</div>,
                                                 },
                                                 {
-                                                    dataField: "stg_count",
+                                                    dataField: "Amount",
                                                     text: "Amount",
-                                                    formatter: (cell, row, rowIndex) => (
-                                                        <div>
-                                                            {row.Amount}
-                                                        </div>
-                                                    ),
+                                                    formatter: (cell, row) => <div>{row.Amount}</div>,
                                                 },
                                                 {
                                                     dataField: "createdAt",
-                                                    text: "createdAt",
-                                                    formatter: (cell, row, rowIndex) => (
-                                                        <div>
-                                                            {fDateTime(row.createdAt)}
-                                                        </div>
-                                                    ),
+                                                    text: "Created At",
+                                                    formatter: (cell, row) => <div>{fDateTime(row.createdAt)}</div>,
                                                 },
                                                 {
                                                     dataField: "End_Date",
                                                     text: "End Date",
-                                                    formatter: (cell, row, rowIndex) => (
-                                                        <div>
-                                                            {row.End_Date ? fDateTime(row.End_Date) : "-"}
-                                                        </div>
-                                                    ),
+                                                    formatter: (cell, row) => <div>{row.End_Date ? fDateTime(row.End_Date) : "-"}</div>,
                                                 },
                                             ]}
                                             tableData={item.strategy}
                                             pagination1={true}
                                         />
-
-
                                     </div>
                                 </div>
                             </div>
-
                         ))}
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }
 

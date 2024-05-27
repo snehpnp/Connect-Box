@@ -203,43 +203,44 @@ function System() {
                   </div>
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
-                      <p>
+                      <div>
                         Email{" "}
                         <span>
                           {getCompanyData && getCompanyData[0]?.email}
                         </span>
-                      </p>
-                      <p>
+                      </div>
+                      <div>
                         CC{" "}
                         <span>
                           {getCompanyData && getCompanyData[0]?.cc_mail}
                         </span>
-                      </p>
-                      <p>
+                      </div>
+                      <div>
                         BCC{" "}
                         <span>
                           {getCompanyData && getCompanyData[0]?.bcc_mail}
                         </span>
-                      </p>
-                      <p>
+                      </div>
+                      <div>
                         Password{" "}
                         <span>
                           {getCompanyData && getCompanyData[0]?.smtp_password}
                         </span>
-                      </p>
-                      <p>
+                      </div>
+                      <div>
                         SMTP Port{" "}
                         <span>
                           {getCompanyData && getCompanyData[0]?.smtpport}
                         </span>
-                      </p>
-                      <p>
+                      </div>
+                      <div>
                         SMTP Host{" "}
                         <span>
                           {getCompanyData && getCompanyData[0]?.smtphost}
                         </span>
-                      </p>
+                      </div>
                     </div>
+
                   </div>
                 </div>
                 {/* Tab panes */}

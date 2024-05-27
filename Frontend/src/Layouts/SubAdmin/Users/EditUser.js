@@ -680,7 +680,7 @@ const AddClient = () => {
               
               additional_field={
                 <>
-                  {serviceName.data.length > 0 ? <div class="input-block "> <label>All Group Service</label> </div> : ""}
+                  {serviceName.data.length > 0 ? <div className="input-block "> <label>All Group Service</label> </div> : ""}
                   <div className="row">
 
                     {serviceName &&
@@ -706,7 +706,7 @@ const AddClient = () => {
                     {/* STRATEGY CODE */}
                     {subadmin_service_type1 == 2 ?
                       (<div className="row mt-4">
-                        <div class="input-block ">
+                        <div className="input-block ">
                           <label>All Strategy</label>
                         </div>
                         {getAllStategy.data.map((strategy) => (
@@ -841,7 +841,7 @@ const AddClient = () => {
 
                       // Per Trade Code 
                       : formik.values.Service_Type ? (<div className="row mt-4">
-                        <div class="input-block ">
+                        <div className="input-block ">
                           <label>All Strategy</label>
                         </div>
                         {getAllStategy && getAllStategy.data.map((strategy) => (

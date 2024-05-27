@@ -40,7 +40,7 @@ function Payment() {
   };
 
 
-  const columns = [
+  let columns = [
     {
       field: 'id',
       headerName: '#',
@@ -58,7 +58,7 @@ function Payment() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {params.value}
+          {params.row.username ? params.row.username : params.row.UserName}
         </div>
       )
     },
@@ -93,7 +93,7 @@ function Payment() {
       width: 250,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
-        <div>{params.row.Mode ? <span className="text-success-light"> +<IndianRupee style={{ height: "15px" }} />{params.value || '-'}</span> : <span className="text-danger-light"> -<IndianRupee style={{ height: "15px" }} />{params.value || '-'}</span>}
+        <div>{params.row.Mode ? <span className="text-success-light"> +<IndianRupee style={{ height: "15px" }} />{params.row.Balance ? params.row.Balance : params.row.admin_charge || '-'}</span> : <span className="text-danger-light"> -<IndianRupee style={{ height: "15px" }} />{params.row.Balance ? params.row.Balance : params.row.admin_charge || '-'}</span>}
 
 
         </div>
@@ -151,19 +151,16 @@ function Payment() {
     }
   };
 
-
-
+  if (subadmin_service_type == 1) {
+    columns = columns.filter(column => column.field !== 'strategy_id');
+  }
 
 
   companyData.data && companyData.data.map((data) => {
-    if (!isNaN(data.Balance) && data.Balance !== null && data.Balance !== "" && data.Role=="USER") {
+    if (!isNaN(data.Balance) && data.Balance !== null && data.Balance !== "" && data.Role == "USER") {
       UsedBalance += parseInt(data.Balance);
     }
   })
-
-
-
-
 
 
   useEffect(() => {

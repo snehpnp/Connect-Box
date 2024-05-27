@@ -248,15 +248,16 @@ const Dashboards = () => {
               .catch(error => {
                 console.error("Error:", error);
               });
-          } else {
-            Swal.fire({
-              title: "Trading Is Off",
-              text: "Trading on ",
-              icon: "error",
-              timer: 1500,
-              timerProgressBar: true,
-            })
           }
+          //  else {
+          //   Swal.fire({
+          //     title: "Trading Is Off",
+          //     text: "Trading on ",
+          //     icon: "error",
+          //     timer: 1500,
+          //     timerProgressBar: true,
+          //   })
+          // }
 
         } else {
           console.log("response", response)
