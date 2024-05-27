@@ -818,17 +818,58 @@ class Makecall {
 
     try {
 
+      let ExstToken = []
+      for (let index = 0; index < req.body.token.length; index++) {
+        const val = req.body.token[index];
+         
+        let exch = "NFO"
 
+        if (val.Segment == "C") {
+          exch = "NSE"
+        }
+        else if (val.Segment == "MO" || val.Segment == "MF") {
+          exch = "MCX"
+        }
+        else if (val.Segment == "CO" || val.Segment == "CF") {
+          exch = "CDS"
+        }
+ 
+
+        const tokenExisst = await token_chain.findOne({ _id: val.token })
+      
+        if (tokenExisst != null) {
+            
+        } else {
+          ExstToken.push(val.token)
+          const filter = { _id: val.token };
+          const update = { $set: { _id: val.token, exch: exch } };
+          await token_chain.updateOne(filter, update, { upsert: true });
+        }
+    
+      }
+
+   
+
+
+      
       for (let id in req.body.row) {
         const updates = req.body.row[id];
 
-
+       // console.log("req.body.row",req.body.row)
         const filter = { _id: new ObjectId(id) };
         const update = { $set: updates };
 
         await makecallABR.updateOne(filter, update)
         // Perform any operation you need with the ID and updates
       }
+
+
+      if(ExstToken.length > 0){
+        Alice_Socket()
+      }
+
+
+
       return res.send({ status: true, msg: "Data Update Successfully...." });
 
 

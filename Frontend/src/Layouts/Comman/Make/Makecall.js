@@ -137,9 +137,6 @@ const Makecall = () => {
     const [refreshscreen, setRefreshscreen] = useState(false);
 
     let socket;
-
-
-
     // console.log("aboveBelowRangData ", aboveBelowRangData)
     const styles = {
         container: {
@@ -170,17 +167,22 @@ const Makecall = () => {
 
 
     const [updatedDataPriceTS, setUpdatedDataPriceTS] = useState({});
+    
+    const [updatedDataTokenArray, setUpdatedDataTokenArray] = useState([]);
  
 
 
     const inputChangeTargetStoplos = (e, type, row) => {
 
-
-           
-      
          let name = e.target.name;
          let value = e.target.value;
          let id = row._id;
+
+         setUpdatedDataTokenArray(oldValues => {
+            return oldValues.filter(item => item !== row.token)
+          })
+    
+         setUpdatedDataTokenArray((oldArray) => [row.token, ...oldArray]);
 
          if(type == "ExitTime" || type == "NoTradeTime"){
           value = (e.target.value).replace(":", "")

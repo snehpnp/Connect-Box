@@ -318,12 +318,15 @@ export default function AllEmployees() {
     }
 
     const [updatedDataPriceTS, setUpdatedDataPriceTS] = useState({});
-
+     
+    const [updatedDataTokenArray, setUpdatedDataTokenArray] = useState([]);
 
     const inputChangeTargetStoplos = (e, type, row) => {
 
 
+      // console.log("row ",row)
 
+       
 
         let name = e.target.name;
         let value = e.target.value;
@@ -341,6 +344,23 @@ export default function AllEmployees() {
 
             },
         }));
+
+
+       
+            let pre_tag = {
+            token : row.token,
+            Segment : row.Segment,
+           }
+    
+           setUpdatedDataTokenArray(oldValues => {
+            return oldValues.filter(item => item.token !== row.token)
+           })
+    
+           setUpdatedDataTokenArray((oldArray) => [pre_tag, ...oldArray]);
+
+
+
+
     };
 
     let columnsM = [
@@ -652,6 +672,9 @@ export default function AllEmployees() {
 
     const update_data = async (ABR) => {
 
+
+        console.log("updatedDataTokenArray ",updatedDataTokenArray)
+
         if (Object.keys(updatedDataPriceTS).length === 0) {
             // alert("please input any field");
             Swal.fire({
@@ -669,6 +692,7 @@ export default function AllEmployees() {
                 {
                     user_id: UserLocalDetails.user_id,
                     row: updatedDataPriceTS,
+                    token:updatedDataTokenArray
                 },
 
                 token: UserLocalDetails.token
