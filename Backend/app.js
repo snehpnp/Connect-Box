@@ -14,11 +14,6 @@ const socketIo = require("socket.io");
 
 
 
-
-
-
-
-
 const { createViewAlice } = require("./View/Alice_blue");
 
 // Setting up CORS options
