@@ -87,7 +87,7 @@ const TradeCharges = () => {
   };
 
   const totalUsedBalance = companyData.data.reduce((acc, item) => acc + (parseInt(item.user_charge) || 0), 0);
-console.log("companyData",companyData)
+
   return (
     <>
       {companyData.loading ? (
