@@ -263,13 +263,13 @@ class strategy {
       }
 
       function compareObjects(oldObj, newObj) {
-  
+
         if (oldObj.strategy_category != newObj.strategy_category) {
           const Activity_logsData = new Activity_logs({
             user_Id: maker_id,
             admin_Id: maker_id,
             category: "EDIT_STRATEGY",
-            message:"Strategy Category Update "+oldObj.strategy_category +" "+newObj.strategy_category,
+            message: "Strategy Category Update " + oldObj.strategy_category + " " + newObj.strategy_category,
             maker_role: "SUBADMIN",
             device: "web",
             system_ip: ""
@@ -282,7 +282,7 @@ class strategy {
 
       const changes = compareObjects(strategy_check, req.body);
 
-   
+
 
 
       const filter = { _id: _id };
@@ -402,16 +402,16 @@ class strategy {
       }
 
       if (key == 1) {
-        const getAllstrategy  = await strategy_model.find({
+        const getAllstrategy = await strategy_model.find({
           maker_id: id,
           $or: [
-              { security_fund_month: { $nin: [null, "", undefined] } },
-              { security_fund_quarterly: { $nin: [null, "", undefined] } },
-              { security_fund_half_early: { $nin: [null, "", undefined] } },
-              { security_fund_early: { $nin: [null, "", undefined] } }
+            { security_fund_month: { $nin: [null, "", undefined] } },
+            { security_fund_quarterly: { $nin: [null, "", undefined] } },
+            { security_fund_half_early: { $nin: [null, "", undefined] } },
+            { security_fund_early: { $nin: [null, "", undefined] } }
           ]
-      }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
-      
+        }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
+
 
         // IF DATA NOT EXIST
         if (getAllstrategy.length == 0) {
@@ -944,7 +944,14 @@ class strategy {
       }
     ]);
 
-    return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails })
+
+    const UserBalance = await User.findOne({
+      _id: new ObjectId(id)
+   
+    }).select("Balance")
+    console.log("UserBalance",UserBalance.Balance)
+
+    return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails, data1: UserBalance.Balance})
 
   }
 
