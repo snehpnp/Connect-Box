@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const { CommonEmail } = require('../../Helpers/CommonEmail')
-const { firstOptPass, disclaimer } = require("../../Helpers/Email_formate/first_login");
+const { firstOptPass, disclaimer,ForgotePasswords } = require("../../Helpers/Email_formate/first_login");
 
 const db = require('../../Models');
 const SignUpUser = db.SignUpUser;
@@ -290,13 +290,13 @@ class Auth {
             const userid = Buffer.from(JSON.stringify(EmailCheck._id)).toString('base64');
             const redirectUrl = `${CompanyInformation.domain_url_https}/#/updatepassword/${userid}`;
 
-
+            var ForgotePassword = await ForgotePasswords(redirectUrl);
 
             // Send email
             const toEmail = Email;
             const subjectEmail = "Forget Password";
             const htmlEmail = "URL - " + redirectUrl;
-            await CommonEmail(toEmail, subjectEmail, htmlEmail);
+            await CommonEmail(toEmail, subjectEmail, ForgotePassword);
 
             // Send success response
             return res.send({ status: true, msg: "Mail sent successfully", data: redirectUrl });

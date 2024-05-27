@@ -250,14 +250,6 @@ function Login() {
     });
   };
 
-
-
-
-
-
-
-
-
   const handleChange = (value) => {
     const numericValue = value.replace(/\D/g, '');
     setTypeOtp(numericValue);
@@ -303,8 +295,6 @@ function Login() {
                 <div className='col-md-6'>
                   <div className="login-right">
                     <div className="login-right-wrap">
-
-
                       <img
                         className="img-fluid logo-dark mb-2 "
                         src="/assets/img/pnp.png"

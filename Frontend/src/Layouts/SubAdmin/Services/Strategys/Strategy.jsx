@@ -20,6 +20,7 @@ function Strategy() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id
+    var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
 
     const [searchInput, setSearchInput] = useState("");
     const [showModal, setShowModal] = useState(false);
@@ -27,31 +28,12 @@ function Strategy() {
     const [deleteModal, setdeleteModal] = useState(false);
     const [getStgDescription, setStgDescription] = useState('');
     const [showError, setShowError] = useState(false);
-    const [GetAllSgments, setGetAllSgments] = useState({
-        loading: true,
-        data: [],
-    });
-
-
-
-
-
-
+    const [GetAllSgments, setGetAllSgments] = useState({ loading: true, data: [] });
+    const [ForGetCSV, setForGetCSV] = useState([])
+    const [allStategy, setAllStategy] = useState({ loading: false, data: [] });
     const [refresh, setrefresh] = useState(false);
-
     const [StrategyId, setStrategyId] = useState('')
 
-
-    var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
-
-
-
-    const [ForGetCSV, setForGetCSV] = useState([])
-
-    const [allStategy, setAllStategy] = useState({
-        loading: false,
-        data: [],
-    });
 
 
 
@@ -688,12 +670,12 @@ function Strategy() {
                                                     <span><i>Researcher :</i> {stg.researcher_id && stg.researcher_id.UserName}</span>
                                                 )}
                                                 <div>
-                                                    {stg.Service_Type === 1 ? "Service_type: PER TRADE" : stg.Service_Type === 2 ? "Service_type: PER TRADE FIXED" : ""}
+                                                    {stg.Service_Type == 1 ? "Service_type: PER TRADE" : stg.Service_Type == 2 ? "Service_type: PER TRADE FIXED" : ""}
                                                 </div>
                                                 <div className="text-dark"><b>{stg.strategy_description}</b></div>
                                                 <h6 style={{ marginBottom: '10px' }}>Strategy Plan</h6>
 
-                                                {subadmin_service_type === 1 && stg.Service_Type === 1 ? (
+                                                {subadmin_service_type == 1 && stg.Service_Type == 1 ? (
                                                     <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
                                                         <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
@@ -731,7 +713,7 @@ function Strategy() {
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year</span>
                                                         </li>
                                                     </ul>
-                                                ) : subadmin_service_type === 1 && stg.Service_Type === 2 ? (
+                                                ) : subadmin_service_type == 1 && stg.Service_Type == 2 ? (
                                                     <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
                                                         <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
@@ -769,7 +751,7 @@ function Strategy() {
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year , {stg.fixed_amount_per_trade_early}/per trade</span>
                                                         </li>
                                                     </ul>
-                                                ) : subadmin_service_type === 2 ? (
+                                                ) : subadmin_service_type == 2 ? (
                                                     <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
                                                         <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
