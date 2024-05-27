@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
 import { Eye } from 'lucide-react';
 
+
+
 const DashBoard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,6 +23,8 @@ const DashBoard = () => {
   var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
   const [selectedOption, setSelectedOption] = useState("Day");
   const storedTheme = localStorage.getItem("theme_mode");
+
+
 
 
   const [options, setOptions] = useState({
@@ -49,6 +53,10 @@ const DashBoard = () => {
 
   };
 
+
+
+
+
   const totalUserdata = async (options, user) => {
     var data = {
       user_ID: userDetails.user_id,
@@ -60,8 +68,6 @@ const DashBoard = () => {
         if (response.status) {
           const categories = response.data.categories;
           const data = response.data.userCounts;
-
-
 
           setOptions((prevOptions) => ({
             ...prevOptions,
@@ -82,6 +88,8 @@ const DashBoard = () => {
         console.log("Error", error);
       });
   };
+
+
 
   const totalSalesdata = async (options, user) => {
     var data = {
@@ -112,10 +120,15 @@ const DashBoard = () => {
       });
   };
 
+
+
+  
   const calculatePercentage = (count, total) =>
     count !== undefined && count !== null && total > 0
       ? (count / total) * 100
       : null;
+
+
 
   const cardDataList = [
     { key: "TotalUsercount", title: "Total Users", route: "/subadmin/users?filter=1" },

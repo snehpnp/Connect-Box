@@ -256,7 +256,7 @@ function Payment() {
   }
 
 
-  console.log("inputSearch :" , inputSearch)
+  // console.log("inputSearch :" , inputSearch)
   return (
     <>
       {companyData && companyData.loading ? (

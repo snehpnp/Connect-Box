@@ -68,16 +68,16 @@ export default function AllEmployees() {
         if (socketBackend) {
             const handleShkRec = (data) => {
 
-                console.log("Received Connect Type:", data.type);
+                // console.log("Received Connect Type:", data.type);
                 // console.log("currenPageStatusRef ", currenPageStatusRef.current)
                 // console.log("ABR TYPE ", currentTypeABRRef.current)
                 // console.log("currentClientKeyRef.current ", currentClientKeyRef.current)
 
 
                 if (data.type == "MAKECALL" && currenPageStatusRef.current == "pendingposition") {
-                    console.log("Received Connect data: makecall", data);
+                    // console.log("Received Connect data: makecall", data);
                     // alert("Okk")
-                    console.log("data. type_makecall ", data.type_makecall)
+                    // console.log("data. type_makecall ", data.type_makecall)
                     // TRADE MAKE CALL
                     if (data.type_makecall == "TRADE") {
                         if (data.data.Key == currentClientKeyRef.current) {
@@ -119,7 +119,7 @@ export default function AllEmployees() {
 
                     //NO TRADE TIME TRADE 
                     else if (data.type_makecall == "NO_TRADE") {
-                        console.log("data NoTRADE", data.data)
+                        // console.log("data NoTRADE", data.data)
                         const remainData = data.data.filter(item => item.Key == currentClientKeyRef.current);
                         if (remainData.length > 0) {
 
@@ -552,7 +552,7 @@ export default function AllEmployees() {
 
     const handleOnSelectM = (row, isSelect) => {
 
-        console.log(row, isSelect)
+        // console.log(row, isSelect)
         if (isSelect) {
             setSelectedM([...selectedM, row._id]);
             setSelected1M([...selected1M, row]);
@@ -586,7 +586,7 @@ export default function AllEmployees() {
 
     };
     
-    console.log("selected1",selected1M)
+    // console.log("selected1",selected1M)
     const delete_data = async (ABR) => {
 
         if (selected1M.length <= 0) {
@@ -1084,8 +1084,8 @@ export default function AllEmployees() {
     // ONE SELECT
     const handleOnSelect = (row, isSelect) => {
 
-        console.log("isSelect",isSelect)
-        console.log("row",row);
+        // console.log("isSelect",isSelect)
+        // console.log("row",row);
 
         if (isSelect) {
             setSelected([...selected, row._id]);
