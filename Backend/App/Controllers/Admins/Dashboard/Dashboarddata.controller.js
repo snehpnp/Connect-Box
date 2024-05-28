@@ -372,15 +372,32 @@ class Dashboard {
         name: user.name,
         percentage: (Math.round((user.totalBalance / overallTotal) * 10000) / 100)
 
-      })).slice(0, 5)
+      }))
 
-
+ 
+      // Starting ke 5 items ko nikal lo
+      const top5 = updatedResult.slice(0, 5);
+      
+      // Baaki items ko le lo jo 6th position se aage hain
+      const remaining = updatedResult.slice(5);
+      
+      // Calculate total percentage for "Other"
+      const otherPercentage = remaining.reduce((sum, item) => sum + item.percentage, 0);
+      
+      // Create "Other" object
+      const other = { name: 'Other', percentage: otherPercentage };
+      
+      // Final result
+      const finalResult = [...top5, other];
+      
+      console.log(finalResult);
+      
 
 
       return res.send({
         status: true,
         msg: "Get Subadmins",
-        data: updatedResult,
+        data: finalResult,
       });
     } catch (error) {
       return res.status(500).send({

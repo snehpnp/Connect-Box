@@ -405,16 +405,7 @@ const DropDown = () => {
             className="status-toggle "
             style={{ display: "flex", alignItems: "center" }}
           >
-            <span
-              className={
-                getLoginStatus
-                  ? "bg-success-light px-2"
-                  : "px-2 bg-danger-light"
-              }
-              style={{}}
-            >
-              Trading Status
-            </span>
+          
             <input
               id="1"
               className="check"
@@ -436,17 +427,6 @@ const DropDown = () => {
             ></label>
           </div>
         </li>)}
-
-
-
-
-
-
-
-
-
-
-
 
 
         {Role == "SUBADMIN" && (
@@ -492,7 +472,7 @@ const DropDown = () => {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <i className="fe fe-bell" /> {pipelineData && pipelineData.length > 0 ? <span className="badge rounded-pill" /> : " "}
+            <i className="fe fe-bell" /> {pipelineData && pipelineData.length > 0 ? <span className="badge rounded-pill" /> : getuserdata.length > 0 ? <span className="badge rounded-pill" /> :""}
           </a>
           <div className="dropdown-menu notifications">
 
