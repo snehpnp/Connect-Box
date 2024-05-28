@@ -949,7 +949,7 @@ class strategy {
       _id: new ObjectId(id)
    
     }).select("Balance")
-    console.log("UserBalance",UserBalance.Balance)
+    // console.log("UserBalance",UserBalance.Balance)
 
     return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails, data1: UserBalance.Balance})
 

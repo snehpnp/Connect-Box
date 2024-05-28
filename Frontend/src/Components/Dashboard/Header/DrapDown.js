@@ -14,12 +14,17 @@ import { fDateTime } from "../../../Utils/Date_formet";
 import useLogout from "../../../Utils/Logout";
 import io from "socket.io-client";
 import * as Config from "../../../Utils/Config";
+import { loginWithApi } from "../../../Utils/log_with_api";
+import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/Userinfo";
+
 
 const DropDown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const logout = useLogout();
 
+  const [getLoginStatus, setLoginStatus] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const [pipelineData, setPipelineData] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -46,7 +51,7 @@ const DropDown = () => {
   useEffect(() => {
     const newSocket = io.connect(Config.socket_Url);
     setSocket(newSocket);
-   
+
     if (user) {
       newSocket.on("logout", (data) => {
 
@@ -77,6 +82,11 @@ const DropDown = () => {
       if (response.status) {
         setProfileData(response.data);
         setProfileImage(response.data[0].profile_img);
+        if (response.data[0].TradingStatus == "on") {
+          setLoginStatus(true);
+        } else {
+          setLoginStatus(false);
+        }
       } else {
         if (response.msg === "Unauthorized!") {
           console.log("Dropdown", user_id, ip);
@@ -352,13 +362,93 @@ const DropDown = () => {
 
 
 
+  const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
+    if (check) {
+      loginWithApi(brokerid, UserDetails, ip);
+    } else {
+      handleTradingOff(user_id);
+    }
+  };
 
+  // LOGOUT TRADING
+  const handleTradingOff = async (id) => {
+    let data = { id: id, system_ip: ip };
+
+    await dispatch(Trading_Off_Btn(data))
+      .unwrap()
+      .then((response) => {
+        setRefresh(!refresh);
+        if (response.status) {
+          Swal.fire({
+            title: "Trading Off Successfully!",
+            icon: "success",
+            html: "Your trading has been successfully completed.",
+          });
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.log("Trading Off Error", error);
+      });
+  };
 
 
 
   return (
     <div className="mb-0 dropdown custom-dropdown">
       <ul className="nav nav-tabs user-menu">
+
+
+
+        {Role == "USER" && (<li className="toggle-li">
+          <div
+            className="status-toggle "
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <span
+              className={
+                getLoginStatus
+                  ? "bg-success-light px-2"
+                  : "px-2 bg-danger-light"
+              }
+              style={{}}
+            >
+              Trading Status
+            </span>
+            <input
+              id="1"
+              className="check"
+              type="checkbox"
+              onChange={(e) =>
+                LogIn_WIth_Api(
+                  e.target.checked,
+                  profileData && profileData[0].broker,
+                  profileData && profileData[0].TradingStatus,
+                  profileData && profileData[0]
+                )
+              }
+              checked={getLoginStatus}
+              style={{ marginRight: "5px" }}
+            />
+            <label
+              htmlFor="1"
+              className="checktoggle checkbox-bg"
+            ></label>
+          </div>
+        </li>)}
+
+
+
+
+
+
+
+
+
+
+
+
+
         {Role == "SUBADMIN" && (
           <li className="nav-item dropdown flag-nav dropdown-heads">
             {subadmin_service_type == 2 ? "STRATEGY WISE" : "PER TRADE"}
@@ -402,7 +492,7 @@ const DropDown = () => {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <i className="fe fe-bell" /> {pipelineData && pipelineData.length > 0 ?  <span className="badge rounded-pill" /> :" "}
+            <i className="fe fe-bell" /> {pipelineData && pipelineData.length > 0 ? <span className="badge rounded-pill" /> : " "}
           </a>
           <div className="dropdown-menu notifications">
 
