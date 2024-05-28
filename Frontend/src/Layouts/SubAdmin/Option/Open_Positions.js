@@ -1124,10 +1124,7 @@ export default function AllEmployees() {
                 else {
                     // return
                     await dispatch(
-                        Update_Signals({
-                            data: filteredArray2,
-                            // token: token,
-                        })
+                        Update_Signals({data: filteredArray2,id:user_id })
 
                     ).unwrap()
                         .then((response) => {

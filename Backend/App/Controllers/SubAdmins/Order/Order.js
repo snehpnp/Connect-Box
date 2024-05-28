@@ -453,6 +453,17 @@ class SignalController {
               },
             },
           },
+          {
+            $lookup: {
+              from: "strategies",
+              localField: "strategy",
+              foreignField: "strategy_name",
+              as: "StrategyData",
+            },
+          },
+          {
+            $unwind: "$StrategyData",
+          },
         ]);
 
         return res.send({
@@ -502,10 +513,12 @@ class SignalController {
           activityMessages.push(`${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`);
         }
 
+        console.log("signal.StrategyData", signal.StrategyData.researcher_id);
+
         if (activityMessages.length > 0) {
           for (const message of activityMessages) {
             const Activity_logsData = new Activity_logs({
-              admin_Id: signal.StrategyData.maker_id,
+              admin_Id: signal.StrategyData.researcher_id ? signal.StrategyData.researcher_id : signal.StrategyData.maker_id,
               category: "TARGET-STOPLOSS-TIME",
               message: message,
               maker_role: "SUBADMIN",
@@ -952,7 +965,7 @@ class SignalController {
             stg1 = strategy
           }
 
-   
+
 
           try {
 
