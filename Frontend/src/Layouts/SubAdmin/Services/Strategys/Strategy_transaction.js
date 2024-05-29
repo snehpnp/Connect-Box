@@ -174,6 +174,9 @@ function Payment() {
 
   if (subadmin_service_type == 1) {
     columns = columns.filter(column => column.field !== 'Admin_charge');
+    columns = columns.filter(column => column.field !== 'Research_charge');
+
+    
   }
 
   const getCompanyData = async () => {
@@ -267,7 +270,7 @@ function Payment() {
                 <div className="col">
                   <h5 className="card-title mb-0">
                     <i className="fe fe-users pe-2" ></i>
-                    Payment History</h5>
+                    Strategy Transaction</h5>
                 </div>
                 <div className="col-auto">
                   <div className="list-btn">

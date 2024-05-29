@@ -103,6 +103,18 @@ class Ordercreate {
             // Find the strategy by ID
             const findStg = await researcher_strategy.findOne({ _id: req.body.strategy_id });
 
+            // Get the current date
+            let currentDate = new Date();
+
+            // Add one month to the current date
+            let nextMonthDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+
+            // Format the date as needed (e.g., YYYY-MM-DD)
+            let formattedDate = nextMonthDate.toISOString().split('T')[0];
+
+            console.log(formattedDate);
+            console.log(formattedDate);
+
 
             // Create a new strategy document based on the found strategy
             const strategy_Data = new strategy_model({
@@ -120,7 +132,8 @@ class Ordercreate {
                 strategy_percentage: findStg.strategy_percentage || null,
                 researcher_id: findStg.maker_id,
                 purchase_type: req.body.type,
-                research_strategy_percentage:findStg.strategy_percentage || 0
+                research_strategy_percentage: findStg.strategy_percentage || 0,
+                End_Date: req.body.type == "monthlyPlan" ? formattedDate : null
             });
 
 

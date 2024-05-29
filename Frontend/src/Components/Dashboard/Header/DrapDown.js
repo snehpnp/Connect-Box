@@ -364,9 +364,12 @@ const DropDown = () => {
 
   const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
     if (check) {
-      loginWithApi(brokerid, UserDetails, ip);
+      // loginWithApi(brokerid, UserDetails, ip);
+      setLoginStatus(true)
     } else {
-      handleTradingOff(user_id);
+      // handleTradingOff(user_id);
+      setLoginStatus(false)
+
     }
   };
 
@@ -400,33 +403,64 @@ const DropDown = () => {
 
 
 
-        {Role == "USER" && (<li className="toggle-li">
-          <div
-            className="status-toggle "
-            style={{ display: "flex", alignItems: "center" }}
-          >
-          
-            <input
-              id="1"
-              className="check"
-              type="checkbox"
-              onChange={(e) =>
-                LogIn_WIth_Api(
-                  e.target.checked,
-                  profileData && profileData[0].broker,
-                  profileData && profileData[0].TradingStatus,
-                  profileData && profileData[0]
-                )
-              }
-              checked={getLoginStatus}
-              style={{ marginRight: "5px" }}
-            />
-            <label
-              htmlFor="1"
-              className="checktoggle checkbox-bg"
-            ></label>
-          </div>
-        </li>)}
+        {Role == "USER" && (
+          <li className="toggle-li">
+            <style>
+              {`
+             .checktoggle::after {
+               display: none !important;
+             }
+           `}
+            </style>
+            <div className="status-toggle" style={{ display: "flex", alignItems: "center" }}>
+              <input
+                id="1"
+                className="check"
+                type="checkbox"
+                onChange={(e) =>
+                  LogIn_WIth_Api(
+                    e.target.checked,
+                    profileData && profileData[0].broker,
+                    profileData && profileData[0].TradingStatus,
+                    profileData && profileData[0]
+                  )
+                }
+                defaultChecked={getLoginStatus}
+                style={{ display: "none" }}
+              />
+              <label
+                htmlFor="1"
+                className="checktoggle"
+                style={{
+                  position: "relative",
+                  width: "200px",  // Significantly increased width
+                  height: "40px",  // Increased height
+                  backgroundColor: getLoginStatus ? "green" : "red",
+                  borderRadius: "20px",
+                  cursor: "pointer",
+                  transition: "background-color 0.3s",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: getLoginStatus ? "flex-end" : "flex-start",
+                  padding: "0 10px",  // Padding to make space for the text
+                  color: "white",
+                  fontSize: "12px",  // Smaller text size
+                  fontWeight: "bold",
+                }}
+              >
+                {getLoginStatus ? "TRADING ON" : "TRADING OFF"}
+              </label>
+            </div>
+          </li>
+
+
+
+
+
+
+
+
+        )}
 
 
         {Role == "SUBADMIN" && (
@@ -472,7 +506,7 @@ const DropDown = () => {
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <i className="fe fe-bell" /> {pipelineData && pipelineData.length > 0 ? <span className="badge rounded-pill" /> : getuserdata.length > 0 ? <span className="badge rounded-pill" /> :""}
+            <i className="fe fe-bell" /> {pipelineData && pipelineData.length > 0 ? <span className="badge rounded-pill" /> : getuserdata.length > 0 ? <span className="badge rounded-pill" /> : ""}
           </a>
           <div className="dropdown-menu notifications">
 
