@@ -830,22 +830,66 @@ class Researcher {
             const { id } = req.body;
 
 
-            // Executing the aggregation pipeline
-            const GetAllColebra = await Stg_Collaborators.aggregate([
+            const pipeline = [
                 {
                     $match: { researcher_id: new ObjectId(id) }
                 },
                 {
                     $lookup: {
                         from: 'users',
-                        localField: 'Collaborators_id', 
-                        foreignField: '_id', 
-                        as: 'userDetails' 
+                        localField: 'Collaborators_id',
+                        foreignField: '_id',
+                        as: 'userDetails'
                     }
                 },
                 {
-                    $unwind: '$userDetails' 
+                    $unwind: '$userDetails'
                 },
+                {
+                    $lookup: {
+                        from: 'strategies',
+                        let: { researcherId: new ObjectId(id), makerId: '$Collaborators_id' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ['$researcher_id', '$$researcherId'] },
+                                            { $eq: ['$maker_id', '$$makerId'] }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: 'strategy_transactions',
+                                    let: { strategyId: '$_id', adminId: '$Collaborators_id' },
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $and: [
+                                                        { $eq: ['$strategy_id', '$$strategyId'] },
+                                                        // { $eq: ['$admin_id', '$$adminId'] }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    as: 'transactionDetails'
+                                }
+                            },
+                            {
+                                $addFields: {
+                                    transactionDetails: { $arrayElemAt: ['$transactionDetails', 0] }
+                                }
+                            }
+                        ],
+                        as: 'strategies'
+                    }
+                },
+
+
                 {
                     $project: {
                         _id: 1,
@@ -853,10 +897,27 @@ class Researcher {
                         researcher_id: 1,
                         total_amount: 1,
                         UserName: '$userDetails.UserName',
-                        createdAt: 1
+                        createdAt: 1,
+                        strategies: {
+                            $map: {
+                                input: '$strategies',
+                                as: 'strategy',
+                                in: {
+                                    strategy_name: '$$strategy.strategy_name',
+                                    Research_charges: '$$strategy.transactionDetails.Research_charge'
+                                }
+                            }
+                        }
                     }
                 }
-            ]);
+            ]
+
+
+
+            // Executing the aggregation pipeline
+            const GetAllColebra = await Stg_Collaborators.aggregate(pipeline);
+
+
 
 
             // IF DATA NOT EXIST
@@ -875,6 +936,49 @@ class Researcher {
         }
     }
 
+
+
+
+    async AddAmountInCollabra(req, res) {
+        try {
+            const { id, Balance } = req.body;
+    
+            // Validate request data
+            if (!id || !Balance) {
+                return res.status(400).send({ status: false, msg: "Invalid request data", data: [] });
+            }
+    
+            // Find the existing collaborator
+            const existingCollaborator = await Stg_Collaborators.findOne({ _id: new ObjectId(id) });
+    
+            // Check if the collaborator exists
+            if (!existingCollaborator) {
+                return res.status(404).send({ status: false, msg: "Collaborator not found", data: [] });
+            }
+    
+            // Calculate the new total amount
+            let Exist_amount = existingCollaborator.total_amount || 0;
+            Exist_amount += parseInt(Balance);
+    
+            // Update the collaborator record
+            const collaboratorUpdate = {
+                $set: { total_amount: Exist_amount }
+            };
+    
+            await Stg_Collaborators.updateOne({ _id: existingCollaborator._id }, collaboratorUpdate, { upsert: true });
+    
+            // Send success response
+            return res.send({
+                status: true,
+                msg: "Update Successfully",
+                data: [],
+            });
+        } catch (error) {
+            console.log("Error updating collaborator amount:", error);
+            return res.status(500).send({ status: false, msg: "Internal server error", data: [] });
+        }
+    }
+    
 
 }
 

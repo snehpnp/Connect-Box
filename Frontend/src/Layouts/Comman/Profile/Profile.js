@@ -115,8 +115,8 @@ const Profile = () => {
     "wolf (1).png",
   ];
 
-  // get employee by id
 
+  // get employee by id
   const Employeetable = async () => {
     const data = { id: user_id };
 
@@ -158,8 +158,8 @@ const Profile = () => {
     setOpen(false);
   };
 
-  ///  handler to handle form
 
+  ///  handler to handle form
   const handleAddInfo = () => {
     if (info && info.length > 0) {
       const latestInfo = info[0];
@@ -176,8 +176,8 @@ const Profile = () => {
     setEditbtn(!editbtn);
   };
 
-  // update profile data
 
+  // update profile data
   const Updateprofile = async () => {
     await dispatch(
       ProfileUpdatedata({
@@ -212,8 +212,8 @@ const Profile = () => {
       });
   };
 
-  //  profile information
 
+  //  profile information
   const profiledata = async () => {
     var data = { user_id: user_id };
     await dispatch(profiledatauserId(data))
@@ -229,13 +229,9 @@ const Profile = () => {
       });
   };
 
-  useEffect(() => {
-    profiledata();
-    Employeetable();
-  }, []);
+
 
   ///active status
-
   const profilestatus = async () => {
     var data = { _id: user_id, role: user.Role };
     await dispatch(ActiveProfile(data))
@@ -251,9 +247,6 @@ const Profile = () => {
       });
   };
 
-  useEffect(() => {
-    profilestatus();
-  }, []);
 
   // api for getting ProfileInfo
   const fetchData = async () => {
@@ -284,9 +277,6 @@ const Profile = () => {
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [refresh]);
 
   const FindParentType = async () => {
     try {
@@ -305,6 +295,7 @@ const Profile = () => {
     }
   };
 
+
   const fetchIP = async () => {
     try {
       const ip = await ipAddress();
@@ -314,10 +305,23 @@ const Profile = () => {
     }
   };
 
+
+
+
   useEffect(() => {
+    profiledata();
+    Employeetable();
+    profilestatus();
     FindParentType();
     fetchIP();
   }, []);
+
+    
+
+
+  useEffect(() => {
+    fetchData();
+  }, [refresh]);
 
   return (
     <div>

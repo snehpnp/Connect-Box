@@ -162,3 +162,17 @@ export async function COLLA_NAME(data){
         return await err
     }
 }
+
+
+
+export async function COLLA_ADD_BALANCE(data){
+    try{
+        const res = await axios.post(`${Config.base_url}colla/balance/add` , data , {
+            data: {}
+        })
+        return res?.data
+    }
+    catch(err){
+        return await err
+    }
+}
