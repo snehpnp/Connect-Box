@@ -148,3 +148,17 @@ export async function STRATEGY_USERS(data){
         return await err
     }
 }
+
+
+
+export async function COLLA_NAME(data){
+    try{
+        const res = await axios.post(`${Config.base_url}researcher/colla/name` , data , {
+            data: {}
+        })
+        return res?.data
+    }
+    catch(err){
+        return await err
+    }
+}

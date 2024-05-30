@@ -114,7 +114,8 @@ const AllResearcherStrategy = () => {
                                 strategy_id: response.data.strategy_id,
                                 order_status: "Success",
                                 User_data: JSON.stringify(response1),
-                                type: selectedOption
+                                type: selectedOption,
+                                Amount: Number(response.data.amount)
                             }
 
 
@@ -166,7 +167,7 @@ const AllResearcherStrategy = () => {
                                 <div className="row d-flex align-items-center justify-content-center">
 
                                     {allStrategy.data && allStrategy.data.map((stg) => {
-                                    return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3" >
+                                        return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3" >
                                             <div className="packages card" data-aos="fade-down">
                                                 <div className="package-header d-flex justify-content-between">
                                                     <div className="d-flex justify-content-between w-100">

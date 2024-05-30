@@ -578,6 +578,13 @@ export const research_header = [
         Icon: "fe fe-users",
         Data: []
     },
+    {
+        id: 12,
+        name: 'Collaborators',
+        route: "/research/collaborators",
+        Icon: "fe fe-users",
+        Data: []
+    },
 
     // {
     //     id: 10,

@@ -11,6 +11,7 @@ const count_licenses = db.count_licenses;
 const researcher_strategy = db.researcher_strategy;
 const client_service = db.client_service
 const strategy = db.Strategies
+const Stg_Collaborators = db.Stg_Collaborators;
 
 const { CommonEmail } = require("../../Helpers/CommonEmail");
 const { firstOptPass } = require("../../Helpers/Email_formate/first_login");
@@ -822,6 +823,57 @@ class Researcher {
         }
     }
 
+
+    // GET ALL STRATEGY USERS
+    async GetAllCollaNAme(req, res) {
+        try {
+            const { id } = req.body;
+
+
+            // Executing the aggregation pipeline
+            const GetAllColebra = await Stg_Collaborators.aggregate([
+                {
+                    $match: { researcher_id: new ObjectId(id) }
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'Collaborators_id', 
+                        foreignField: '_id', 
+                        as: 'userDetails' 
+                    }
+                },
+                {
+                    $unwind: '$userDetails' 
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        Collaborators_id: 1,
+                        researcher_id: 1,
+                        total_amount: 1,
+                        UserName: '$userDetails.UserName',
+                        createdAt: 1
+                    }
+                }
+            ]);
+
+
+            // IF DATA NOT EXIST
+            if (GetAllColebra.length == 0) {
+                res.send({ status: false, msg: "Empty data", data: GetAllColebra });
+                return;
+            }
+            // DATA GET SUCCESSFULLY
+            res.send({
+                status: true,
+                msg: "Get All Startegy",
+                data: GetAllColebra,
+            });
+        } catch (error) {
+            console.log("Error Get All Strategy Error-", error);
+        }
+    }
 
 
 }
