@@ -235,7 +235,7 @@ class Users {
           Service_Type: Service_Type,
           per_trade_value: per_trade_value,
           Balance: Balance || 0,
-          employee_id: SubadminCheck[0].Role == "SUBADMIN" ? null : SubadminCheck[0]._id
+          employee_id: employee_id ?employee_id :null
 
         },
 
