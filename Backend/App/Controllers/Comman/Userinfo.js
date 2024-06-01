@@ -33,9 +33,9 @@ class Userinfo {
 
 
         const ParentInfo = await User_model.findOne({ _id: UserInfo[0].parent_id }).select('Role parent_id broker api_secret TradingStatus app_id api_key app_key api_type demat_userid access_token')
-        
+
         UserInfo[0].api_key = ParentInfo.api_key
-        
+
 
         // DATA GET SUCCESSFULLY
         return res.send({
@@ -52,10 +52,6 @@ class Userinfo {
           data: UserInfo,
         });
       }
-
-
-
-
 
 
 

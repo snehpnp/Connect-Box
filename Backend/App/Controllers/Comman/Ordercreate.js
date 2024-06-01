@@ -117,26 +117,30 @@ class Ordercreate {
 
             // Update Collaborators collection
             // Find if a collaborator record already exists
-            const collaboratorFilter = { Collaborators_id: user_id, researcher_id: strategy.maker_id };
-            const existingCollaborator = await Stg_Collaborators.findOne(collaboratorFilter);
 
-            // Calculate the new total amount
-            let newTotalAmount = Amount;
-            if (existingCollaborator) {
-                newTotalAmount += existingCollaborator.total_amount;
-            }
+            if(type !== "monthlyPlan"){
 
-            // Update or insert the collaborator record
-            const collaboratorUpdate = {
-                $set: {
-                    researcher_id: strategy.maker_id,
-                    Collaborators_id: user_id,
-                    total_amount: type !== "monthlyPlan" ? newTotalAmount : 0
+                const collaboratorFilter = { Collaborators_id: user_id, researcher_id: strategy.maker_id };
+                const existingCollaborator = await Stg_Collaborators.findOne(collaboratorFilter);
+
+                // Calculate the new total amount
+                let newTotalAmount = Amount;
+                if (existingCollaborator) {
+                    newTotalAmount += existingCollaborator.total_amount;
                 }
-            };
-            await Stg_Collaborators.updateOne(collaboratorFilter, collaboratorUpdate, { upsert: true });
 
-            const updateCollaborator = await Stg_Collaborators.updateOne(collaboratorFilter, collaboratorUpdate, { upsert: true });
+                // Update or insert the collaborator record
+                const collaboratorUpdate = {
+                    $set: {
+                        researcher_id: strategy.maker_id,
+                        Collaborators_id: user_id,
+                        total_amount: type !== "monthlyPlan" ? newTotalAmount : 0
+                    }
+                };
+                await Stg_Collaborators.updateOne(collaboratorFilter, collaboratorUpdate, { upsert: true });
+
+                const updateCollaborator = await Stg_Collaborators.updateOne(collaboratorFilter, collaboratorUpdate, { upsert: true });
+            }
 
             // Create a new strategy document based on the found strategy
             const newStrategy = new strategy_model({

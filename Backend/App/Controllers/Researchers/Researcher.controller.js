@@ -259,7 +259,7 @@ class Researcher {
             });
         } catch (error) {
             console.error("Internal error:", error);
-            return res.status(500).send({ status: false, msg: "Internal server error" });
+            return res.send({ status: false, msg: "Internal server error" });
         }
     }
     async DeleteResearcher(req, res) {
@@ -623,14 +623,14 @@ class Researcher {
                     });
             } else {
                 return res
-                    .status(500)
+                    
                     .send({ status: false, msg: "Error deleting strategy", data: [] });
             }
         }
         catch (error) {
             console.log("Error Delete Strategy Error:", error);
             return res
-                .status(500)
+                
                 .send({ status: false, msg: "An error occurred", data: [] });
         }
     }
@@ -772,6 +772,7 @@ class Researcher {
                         strategy_segment: { $first: "$strategy_segment" },
                         strategy: {
                             $push: {
+                                stg_id: "$strategy._id",
                                 strategy_name: "$strategy.strategy_name",
                                 maker_id: "$strategy.maker_id",
                                 createdAt: "$strategy.createdAt",
@@ -855,7 +856,8 @@ class Researcher {
                                     $expr: {
                                         $and: [
                                             { $eq: ['$researcher_id', '$$researcherId'] },
-                                            { $eq: ['$maker_id', '$$makerId'] }
+                                            { $eq: ['$maker_id', '$$makerId'] },
+                                            { $ne: ['$purchase_type', "monthlyPlan"] }
                                         ]
                                     }
                                 }
@@ -870,7 +872,7 @@ class Researcher {
                                                 $expr: {
                                                     $and: [
                                                         { $eq: ['$strategy_id', '$$strategyId'] },
-                                                        // { $eq: ['$admin_id', '$$adminId'] }
+                                                        { $ne: ['$Research_charge', null] }
                                                     ]
                                                 }
                                             }
@@ -881,15 +883,24 @@ class Researcher {
                             },
                             {
                                 $addFields: {
-                                    transactionDetails: { $arrayElemAt: ['$transactionDetails', 0] }
+                                    totalResearchCharges: {
+                                        $reduce: {
+                                            input: '$transactionDetails',
+                                            initialValue: 0,
+                                            in: {
+                                                $add: [
+                                                    '$$value',
+                                                    { $toDouble: { $ifNull: ['$$this.Research_charge', 0] } }
+                                                ]
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         ],
                         as: 'strategies'
                     }
                 },
-
-
                 {
                     $project: {
                         _id: 1,
@@ -904,13 +915,14 @@ class Researcher {
                                 as: 'strategy',
                                 in: {
                                     strategy_name: '$$strategy.strategy_name',
-                                    Research_charges: '$$strategy.transactionDetails.Research_charge'
+                                    Research_charges: '$$strategy.totalResearchCharges'
                                 }
                             }
                         }
                     }
                 }
-            ]
+            ];
+
 
 
 
@@ -936,37 +948,34 @@ class Researcher {
         }
     }
 
-
-
-
     async AddAmountInCollabra(req, res) {
         try {
             const { id, Balance } = req.body;
-    
+
             // Validate request data
             if (!id || !Balance) {
-                return res.status(400).send({ status: false, msg: "Invalid request data", data: [] });
+                return res.send({ status: false, msg: "Invalid request data", data: [] });
             }
-    
+
             // Find the existing collaborator
             const existingCollaborator = await Stg_Collaborators.findOne({ _id: new ObjectId(id) });
-    
+
             // Check if the collaborator exists
             if (!existingCollaborator) {
                 return res.status(404).send({ status: false, msg: "Collaborator not found", data: [] });
             }
-    
+
             // Calculate the new total amount
             let Exist_amount = existingCollaborator.total_amount || 0;
             Exist_amount += parseInt(Balance);
-    
+
             // Update the collaborator record
             const collaboratorUpdate = {
                 $set: { total_amount: Exist_amount }
             };
-    
+
             await Stg_Collaborators.updateOne({ _id: existingCollaborator._id }, collaboratorUpdate, { upsert: true });
-    
+
             // Send success response
             return res.send({
                 status: true,
@@ -975,10 +984,40 @@ class Researcher {
             });
         } catch (error) {
             console.log("Error updating collaborator amount:", error);
-            return res.status(500).send({ status: false, msg: "Internal server error", data: [] });
+            return res.send({ status: false, msg: "Internal server error", data: [] });
         }
     }
-    
+
+
+    async UpdateStrategyStatus(req, res) {
+        try {
+            const { id, status } = req.body;
+
+            // Validate request data
+            if (!id || !status) {
+                return res.send({ status: false, msg: "Invalid request data", data: [] });
+            }
+
+
+            // Update the collaborator record
+            const collaboratorUpdate = {
+                $set: { ActiveStatus: status }
+            };
+
+            await strategy.updateOne({ _id: new ObjectId(id) }, collaboratorUpdate);
+
+            // Send success response
+            return res.send({
+                status: true,
+                msg: "Update Successfully",
+                data: [],
+            });
+        } catch (error) {
+            console.log("Error updating collaborator amount:", error);
+            return res.send({ status: false, msg: "Internal server error", data: [] });
+        }
+    }
+
 
 }
 

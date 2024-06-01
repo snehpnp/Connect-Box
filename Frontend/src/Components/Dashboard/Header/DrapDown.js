@@ -38,27 +38,20 @@ const DropDown = () => {
   const [getsubadmin, setGetsubadmin] = useState([]);
   const [socket, setSocket] = useState(null);
 
-
-
-  const user = JSON.parse(localStorage.getItem("user_details"));
-  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
-  var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
+  const user_details = JSON.parse(localStorage.getItem("user_details"));
   var Role = JSON.parse(localStorage.getItem("user_details")).Role;
   var token = JSON.parse(localStorage.getItem("user_details")).token;
 
-  const subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type;
 
   useEffect(() => {
     const newSocket = io.connect(Config.socket_Url);
     setSocket(newSocket);
 
-    if (user) {
+    if (user_details) {
       newSocket.on("logout", (data) => {
 
-        if (user_id == data.user_id && token != data.token) {
-          // logout(user_id, ip);
+        if (user_details.user_id == data.user_id && token != data.token) {
           LogoutUser()
-          // window.location.reload()
           return
         }
       });
@@ -77,7 +70,7 @@ const DropDown = () => {
   const fetchData = async () => {
     try {
       const ip = await ipAddress();
-      let data = { id: user_id };
+      let data = { id: user_details.user_id };
       const response = await dispatch(ProfileInfo({ req: data, token: token })).unwrap();
       if (response.status) {
         setProfileData(response.data);
@@ -89,8 +82,7 @@ const DropDown = () => {
         }
       } else {
         if (response.msg === "Unauthorized!") {
-          console.log("Dropdown", user_id, ip);
-          // logout(user_id, ip);
+          console.log("Dropdown", user_details.user_id, ip);
           LogoutUser()
 
         }
@@ -106,7 +98,7 @@ const DropDown = () => {
 
   const LogoutUser = async (e) => {
     const ip = await ipAddress();
-    const data = { userId: user_id, Device: "WEB", system_ip: ip }
+    const data = { userId: user_details.user_id, Device: "WEB", system_ip: ip }
 
     await dispatch(LogOut(data)).unwrap()
       .then((response) => {
@@ -134,6 +126,11 @@ const DropDown = () => {
             timer: 1500,
             timerProgressBar: true
           });
+          setTimeout(() => {
+            localStorage.removeItem("user_details")
+            localStorage.removeItem("user_role")
+            navigate("/login")
+          }, 1500)
 
         }
       })
@@ -196,7 +193,6 @@ const DropDown = () => {
 
   const walletmodal = () => {
     if (Role == "ADMIN") {
-      // navigate('/admin/wallet')
     } else if (Role == "SUBADMIN") {
       navigate("/subadmin/wallet");
     } else if (Role == "RESEARCH") {
@@ -272,7 +268,7 @@ const DropDown = () => {
   const getSubadminTableData = async () => {
     try {
 
-      const response = await dispatch(admin_Msg_Get({ ownerId: user_id, key: 3 })).unwrap();
+      const response = await dispatch(admin_Msg_Get({ ownerId: user_details.user_id, key: 3 })).unwrap();
       if (response.status) {
         setPipelineData(response.data);
       } else {
@@ -321,7 +317,7 @@ const DropDown = () => {
 
             const dataDate = data.createdAt.split('T')[0];
 
-            return data.prifix_key.substring(0, 3) === user.prifix_key && dataDate === today;
+            return data.prifix_key.substring(0, 3) === user_details.prifix_key && dataDate === today;
           });
 
 
@@ -364,10 +360,8 @@ const DropDown = () => {
 
   const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
     if (check) {
-      // loginWithApi(brokerid, UserDetails, ip);
       setLoginStatus(true)
     } else {
-      // handleTradingOff(user_id);
       setLoginStatus(false)
 
     }
@@ -452,20 +446,12 @@ const DropDown = () => {
               </label>
             </div>
           </li>
-
-
-
-
-
-
-
-
         )}
 
 
         {Role == "SUBADMIN" && (
           <li className="nav-item dropdown flag-nav dropdown-heads">
-            {subadmin_service_type == 2 ? "STRATEGY WISE" : "PER TRADE"}
+            {user_details.subadmin_service_type == 2 ? "STRATEGY WISE" : "PER TRADE"}
           </li>
         )}
         {!(Role === "EMPLOYEE") ? (
@@ -650,7 +636,7 @@ const DropDown = () => {
               </span>
               <span className="user-content">
                 <span className="user-name">
-                  <b>{UserNAme && UserNAme}</b>
+                  <b>{user_details && user_details.UserName}</b>
                 </span>
                 <span className="user-details">{Role}</span>
                 <span className="decorative-element"></span>

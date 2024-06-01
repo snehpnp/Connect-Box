@@ -11,7 +11,7 @@ const DetailsView = ({ showModal, setshowModal, row_data }) => {
 
     // Handle the toggle action
     const handleToggle = () => {
-        
+
         setIsOn(!isOn);
     };
 
@@ -46,13 +46,14 @@ const DetailsView = ({ showModal, setshowModal, row_data }) => {
             formatter: (cell, row, rowIndex) => (
 
                 <>
-              <label className="switch">
+             
+                    <label className="switch">
                         <input type="checkbox"
-                            checked={isOn ? true : false}
-                            // onChange={(e) => {
-                            //     activeUser(e, row);
-                            //     setSwitchButton(e.target.checked)
-                            // }}
+                            checked={true }
+                        // onChange={(e) => {
+                        //     activeUser(e, row);
+                        //     setSwitchButton(e.target.checked)
+                        // }}
                         />
                         <span className="slider round"></span>
                     </label>

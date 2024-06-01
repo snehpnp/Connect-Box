@@ -390,9 +390,7 @@ class Dashboard {
       // Final result
       const finalResult = [...top5, other];
       
-      console.log(finalResult);
       
-
 
       return res.send({
         status: true,
