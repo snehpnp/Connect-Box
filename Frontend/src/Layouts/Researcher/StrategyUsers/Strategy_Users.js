@@ -43,8 +43,7 @@ const StrategyUsers = () => {
             ...prevState,
             [row.stg_id]: checked,
         }));
-        console.log("Toggle status changed for row:", row, "Checked:", checked);
-        // Add your logic to handle the active status change here, such as an API call
+
     };
 
     const columns1 = [

@@ -5,7 +5,6 @@ import BasicDataTable from "../../../Components/ExtraComponents/Tables/DataTable
 
 const DetailsView = ({ showModal, setshowModal, row_data }) => {
 
-    console.log("row_data", row_data)
 
     const [isOn, setIsOn] = useState(false);
 

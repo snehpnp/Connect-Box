@@ -31,7 +31,6 @@ export const dashboardData = async (UserDetails) => {
             // First API call
             const response1 = await axios(config1);
             if (response1.data[0]?.stat !== "Ok") {
-                console.log("Unexpected response status from limits API");
                 return null;
             }
 

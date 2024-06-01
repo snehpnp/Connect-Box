@@ -385,7 +385,7 @@ const DropDown = () => {
         }
       })
       .catch((error) => {
-        console.log("Trading Off Error", error);
+     
       });
   };
 

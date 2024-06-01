@@ -221,9 +221,7 @@ const Dashboards = () => {
             })
           }
 
-        } else {
-          console.log("response", response)
-        }
+        } 
       })
       .catch((error) => {
         console.log("Error", error);
@@ -242,25 +240,16 @@ const Dashboards = () => {
           if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
             dashboardData(response.data[0])
               .then(response => {
-            //  console.log("SNEH JAUSWAL",response)
+            //  SNEH JAUSWAL
              SetUserBalance(response)
               })
               .catch(error => {
                 console.error("Error:", error);
               });
           }
-          //  else {
-          //   Swal.fire({
-          //     title: "Trading Is Off",
-          //     text: "Trading on ",
-          //     icon: "error",
-          //     timer: 1500,
-          //     timerProgressBar: true,
-          //   })
-          // }
+   
 
         } else {
-          console.log("response", response)
         }
       })
       .catch((error) => {
@@ -272,7 +261,6 @@ const Dashboards = () => {
 
 
   useEffect(() => {
-    // Check if the browser supports Geolocation
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         position => {

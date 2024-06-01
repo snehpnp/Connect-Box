@@ -259,7 +259,6 @@ function Payment() {
   }
 
 
-  console.log("inputSearch :" , inputSearch)
   return (
     <>
       {companyData && companyData.loading ? (

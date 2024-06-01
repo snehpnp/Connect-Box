@@ -153,12 +153,11 @@ const StrategyUsers = () => {
 
     const handleSubmit = async () => {
 
-        console.log("rowData",rowData)
+   
         var data = { id: rowData._id, Balance: balanceValue }
         await dispatch(COLLA_ADD_BALANCE_DATA(data))
           .unwrap()
           .then(async (response) => {
-            console.log("rowData",response)
     
             // if (response.status) {
             //   toast.success(response.msg);

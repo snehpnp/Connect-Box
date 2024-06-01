@@ -11,8 +11,8 @@ const useLogout = () => {
 
 
         setTimeout(async () => {
-            // console.log("sneh jaiswal")
-     
+            // Sneh jaiswal
+
             const data = { userId: user_id, Device: "WEB", system_ip: ip };
 
             try {
@@ -30,7 +30,7 @@ const useLogout = () => {
                         timerProgressBar: true
                     });
                     setTimeout(() => {
-                        // console.log("SNEH JAISWAL.......")
+                        // SNEH JAISWAL
                         localStorage.removeItem("user_details");
                         localStorage.removeItem("user_role");
                         navigate("/login");
@@ -50,7 +50,6 @@ const useLogout = () => {
                     });
                 }
             } catch (error) {
-                console.log("Error in logout user", error);
                 Swal.fire({
                     title: "Error!",
                     text: "An error occurred during logout.",
