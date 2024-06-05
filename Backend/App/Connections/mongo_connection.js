@@ -17,7 +17,6 @@ async function connectToMongoDB() {
     console.log("Connected to MongoDB");
   } catch (error) {
     console.error("MongoDB Connection Error:", error);
-    process.exit(1); // Exit with error status code
   }
 }
 
@@ -29,15 +28,3 @@ connection.on("error", (error) => {
 
 // Call the connection function
 connectToMongoDB();
-
-// Optional: Handle graceful shutdown
-process.on("SIGINT", async () => {
-  try {
-    await mongoose.connection.close();
-    console.log("MongoDB connection closed due to application termination");
-    process.exit(0);
-  } catch (error) {
-    console.error("Error during MongoDB connection close:", error);
-    process.exit(1); // Exit with error status code
-  }
-});

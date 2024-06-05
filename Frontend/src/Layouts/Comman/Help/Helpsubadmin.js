@@ -236,7 +236,7 @@ const Helpsubadmin = () => {
             setHelp({ Message: "", Category: "" });
             setRefresh(!refresh);
             if (result.dismiss === Swal.DismissReason.timer) {
-              console.log("I was closed by the timer");
+            
             }
           });
         }

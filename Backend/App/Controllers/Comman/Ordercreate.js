@@ -12,6 +12,8 @@ const SubAdminCompanyInfo = db.SubAdminCompanyInfo
 const strategy_client = db.strategy_client
 const strategy_transaction = db.strategy_transaction;
 const Activity_logs = db.Activity_logs;
+const Stg_Collaborators = db.Stg_Collaborators;
+
 
 
 
@@ -96,52 +98,84 @@ class Ordercreate {
     }
 
 
-    // UPDATE ORDER
     async UpdateOrder(req, res) {
         try {
+            const { strategy_id, user_id, type, id } = req.body;
 
             // Find the strategy by ID
-            const findStg = await researcher_strategy.findOne({ _id: req.body.strategy_id });
+            const strategy = await researcher_strategy.findOne({ _id: strategy_id });
 
+            // Get the current date
+            const currentDate = new Date();
+
+            // Add one month to the current date
+            const nextMonthDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+
+            // Format the date as needed (e.g., YYYY-MM-DD)
+            const formattedDate = nextMonthDate.toISOString().split('T')[0];
+            var Amount = req.body.Amount
+
+            // Update Collaborators collection
+            // Find if a collaborator record already exists
+
+            if(type !== "monthlyPlan"){
+
+                const collaboratorFilter = { Collaborators_id: user_id, researcher_id: strategy.maker_id };
+                const existingCollaborator = await Stg_Collaborators.findOne(collaboratorFilter);
+
+                // Calculate the new total amount
+                let newTotalAmount = Amount;
+                if (existingCollaborator) {
+                    newTotalAmount += existingCollaborator.total_amount;
+                }
+
+                // Update or insert the collaborator record
+                const collaboratorUpdate = {
+                    $set: {
+                        researcher_id: strategy.maker_id,
+                        Collaborators_id: user_id,
+                        total_amount: type !== "monthlyPlan" ? newTotalAmount : 0
+                    }
+                };
+                await Stg_Collaborators.updateOne(collaboratorFilter, collaboratorUpdate, { upsert: true });
+
+                const updateCollaborator = await Stg_Collaborators.updateOne(collaboratorFilter, collaboratorUpdate, { upsert: true });
+            }
 
             // Create a new strategy document based on the found strategy
-            const strategy_Data = new strategy_model({
-                stgname_adminid: findStg.strategy_name + "_" + req.body.user_id,
-                strategy_name: findStg.strategy_name,
-                strategy_description: findStg.strategy_description,
-                strategy_demo_days: findStg.strategy_demo_days,
-                strategy_category: findStg.strategy_category,
-                strategy_segment: findStg.strategy_segment,
-                strategy_indicator: findStg.strategy_indicator,
-                strategy_tester: findStg.strategy_tester,
-                strategy_image: findStg.strategy_image,
-                maker_id: req.body.user_id,
-                max_trade: findStg.max_trade || null,
-                strategy_percentage: findStg.strategy_percentage || null,
-                researcher_id: findStg.maker_id,
-                purchase_type: req.body.type,
-                research_strategy_percentage:findStg.strategy_percentage || 0
+            const newStrategy = new strategy_model({
+                stgname_adminid: `${strategy.strategy_name}_${user_id}`,
+                strategy_name: strategy.strategy_name,
+                strategy_description: strategy.strategy_description,
+                strategy_demo_days: strategy.strategy_demo_days,
+                strategy_category: strategy.strategy_category,
+                strategy_segment: strategy.strategy_segment,
+                strategy_indicator: strategy.strategy_indicator,
+                strategy_tester: strategy.strategy_tester,
+                strategy_image: strategy.strategy_image,
+                maker_id: user_id,
+                max_trade: strategy.max_trade || null,
+                strategy_percentage: strategy.strategy_percentage || null,
+                researcher_id: strategy.maker_id,
+                purchase_type: type,
+                research_strategy_percentage: strategy.strategy_percentage || 0,
+                End_Date: type === "monthlyPlan" ? formattedDate : null
             });
 
-
             // Save the new strategy document
-            await strategy_Data.save();
+            await newStrategy.save();
 
-            // Update researcher_strategy collection to add collaboration_id
-            const filter1 = { _id: findStg._id };
-            const update1 = {
-                $push: { collaboration_id: req.body.user_id }
-            };
-            const update_token1 = await researcher_strategy.updateOne(filter1, update1);
-
+            // Update collaboration_id in researcher_strategy collection
+            const strategyFilter = { _id: strategy._id };
+            const strategyUpdate = { $push: { collaboration_id: user_id } };
+            const updateStrategy = await researcher_strategy.updateOne(strategyFilter, strategyUpdate);
 
             // Update strategy_Order_modal collection
-            const filter = { _id: req.body.id };
-            const update = { $set: req.body };
-            const update_token = await strategy_Order_modal.updateOne(filter, update, { upsert: true });
+            const orderFilter = { _id: id };
+            const orderUpdate = { $set: req.body };
+            const updateOrder = await strategy_Order_modal.updateOne(orderFilter, orderUpdate, { upsert: true });
 
-
-            res.send({ status: true, data: update_token, msg: "Update successful" });
+            res.send({ status: true, data: updateOrder, msg: "Update successful" });
         } catch (error) {
             console.error('Error updating order:', error);
             res.status(500).send({ status: false, data: error, msg: "Update failed" });

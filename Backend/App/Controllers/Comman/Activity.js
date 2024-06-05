@@ -23,12 +23,14 @@ class ActivityLogs {
             if (role == "SUBADMIN") {
                 findData = { $or: [{ role: role }] }
             } else if (role == "ADMIN") {
-                findData = { $or: [{ role: role }, { role: "SUBADMIN" }, { role: "RESEARCH" }] }
+                findData = { $or: [{ role: role },  { role: "RESEARCH" }] }
+            } else if (role == "RESEARCH") {
+                findData = { $or: [{ role: role },  { role: "SUBADMIN" }] }
             } else {
                 findData = { role: role }
             }
 
-            const Activity_logs1 = await Activity_category.find({ role: role });
+            const Activity_logs1 = await Activity_category.find(findData);
 
             // IF DATA NOT EXIST
             if (Activity_logs1.length == 0) {

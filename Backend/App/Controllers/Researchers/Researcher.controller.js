@@ -11,6 +11,7 @@ const count_licenses = db.count_licenses;
 const researcher_strategy = db.researcher_strategy;
 const client_service = db.client_service
 const strategy = db.Strategies
+const Stg_Collaborators = db.Stg_Collaborators;
 
 const { CommonEmail } = require("../../Helpers/CommonEmail");
 const { firstOptPass } = require("../../Helpers/Email_formate/first_login");
@@ -258,7 +259,7 @@ class Researcher {
             });
         } catch (error) {
             console.error("Internal error:", error);
-            return res.status(500).send({ status: false, msg: "Internal server error" });
+            return res.send({ status: false, msg: "Internal server error" });
         }
     }
     async DeleteResearcher(req, res) {
@@ -622,14 +623,14 @@ class Researcher {
                     });
             } else {
                 return res
-                    .status(500)
+                    
                     .send({ status: false, msg: "Error deleting strategy", data: [] });
             }
         }
         catch (error) {
             console.log("Error Delete Strategy Error:", error);
             return res
-                .status(500)
+                
                 .send({ status: false, msg: "An error occurred", data: [] });
         }
     }
@@ -771,6 +772,7 @@ class Researcher {
                         strategy_segment: { $first: "$strategy_segment" },
                         strategy: {
                             $push: {
+                                stg_id: "$strategy._id",
                                 strategy_name: "$strategy.strategy_name",
                                 maker_id: "$strategy.maker_id",
                                 createdAt: "$strategy.createdAt",
@@ -822,6 +824,199 @@ class Researcher {
         }
     }
 
+
+    // GET ALL STRATEGY USERS
+    async GetAllCollaNAme(req, res) {
+        try {
+            const { id } = req.body;
+
+
+            const pipeline = [
+                {
+                    $match: { researcher_id: new ObjectId(id) }
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'Collaborators_id',
+                        foreignField: '_id',
+                        as: 'userDetails'
+                    }
+                },
+                {
+                    $unwind: '$userDetails'
+                },
+                {
+                    $lookup: {
+                        from: 'strategies',
+                        let: { researcherId: new ObjectId(id), makerId: '$Collaborators_id' },
+                        pipeline: [
+                            {
+                                $match: {
+                                    $expr: {
+                                        $and: [
+                                            { $eq: ['$researcher_id', '$$researcherId'] },
+                                            { $eq: ['$maker_id', '$$makerId'] },
+                                            { $ne: ['$purchase_type', "monthlyPlan"] }
+                                        ]
+                                    }
+                                }
+                            },
+                            {
+                                $lookup: {
+                                    from: 'strategy_transactions',
+                                    let: { strategyId: '$_id', adminId: '$Collaborators_id' },
+                                    pipeline: [
+                                        {
+                                            $match: {
+                                                $expr: {
+                                                    $and: [
+                                                        { $eq: ['$strategy_id', '$$strategyId'] },
+                                                        { $ne: ['$Research_charge', null] }
+                                                    ]
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    as: 'transactionDetails'
+                                }
+                            },
+                            {
+                                $addFields: {
+                                    totalResearchCharges: {
+                                        $reduce: {
+                                            input: '$transactionDetails',
+                                            initialValue: 0,
+                                            in: {
+                                                $add: [
+                                                    '$$value',
+                                                    { $toDouble: { $ifNull: ['$$this.Research_charge', 0] } }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        ],
+                        as: 'strategies'
+                    }
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        Collaborators_id: 1,
+                        researcher_id: 1,
+                        total_amount: 1,
+                        UserName: '$userDetails.UserName',
+                        createdAt: 1,
+                        strategies: {
+                            $map: {
+                                input: '$strategies',
+                                as: 'strategy',
+                                in: {
+                                    strategy_name: '$$strategy.strategy_name',
+                                    Research_charges: '$$strategy.totalResearchCharges'
+                                }
+                            }
+                        }
+                    }
+                }
+            ];
+
+
+
+
+            // Executing the aggregation pipeline
+            const GetAllColebra = await Stg_Collaborators.aggregate(pipeline);
+
+
+
+
+            // IF DATA NOT EXIST
+            if (GetAllColebra.length == 0) {
+                res.send({ status: false, msg: "Empty data", data: GetAllColebra });
+                return;
+            }
+            // DATA GET SUCCESSFULLY
+            res.send({
+                status: true,
+                msg: "Get All Startegy",
+                data: GetAllColebra,
+            });
+        } catch (error) {
+            console.log("Error Get All Strategy Error-", error);
+        }
+    }
+
+    async AddAmountInCollabra(req, res) {
+        try {
+            const { id, Balance } = req.body;
+
+            // Validate request data
+            if (!id || !Balance) {
+                return res.send({ status: false, msg: "Invalid request data", data: [] });
+            }
+
+            // Find the existing collaborator
+            const existingCollaborator = await Stg_Collaborators.findOne({ _id: new ObjectId(id) });
+
+            // Check if the collaborator exists
+            if (!existingCollaborator) {
+                return res.status(404).send({ status: false, msg: "Collaborator not found", data: [] });
+            }
+
+            // Calculate the new total amount
+            let Exist_amount = existingCollaborator.total_amount || 0;
+            Exist_amount += parseInt(Balance);
+
+            // Update the collaborator record
+            const collaboratorUpdate = {
+                $set: { total_amount: Exist_amount }
+            };
+
+            await Stg_Collaborators.updateOne({ _id: existingCollaborator._id }, collaboratorUpdate, { upsert: true });
+
+            // Send success response
+            return res.send({
+                status: true,
+                msg: "Update Successfully",
+                data: [],
+            });
+        } catch (error) {
+            console.log("Error updating collaborator amount:", error);
+            return res.send({ status: false, msg: "Internal server error", data: [] });
+        }
+    }
+
+
+    async UpdateStrategyStatus(req, res) {
+        try {
+            const { id, status } = req.body;
+
+            // Validate request data
+            if (!id || !status) {
+                return res.send({ status: false, msg: "Invalid request data", data: [] });
+            }
+
+
+            // Update the collaborator record
+            const collaboratorUpdate = {
+                $set: { ActiveStatus: status }
+            };
+
+            await strategy.updateOne({ _id: new ObjectId(id) }, collaboratorUpdate);
+
+            // Send success response
+            return res.send({
+                status: true,
+                msg: "Update Successfully",
+                data: [],
+            });
+        } catch (error) {
+            console.log("Error updating collaborator amount:", error);
+            return res.send({ status: false, msg: "Internal server error", data: [] });
+        }
+    }
 
 
 }

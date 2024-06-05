@@ -81,7 +81,7 @@ const Dashboards = () => {
     {
       field: "createdAt",
       headerName: "Signal Time",
-      width: 260,
+      width: 200,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -93,7 +93,7 @@ const Dashboards = () => {
     {
       field: "type",
       headerName: "Type",
-      width: 110,
+      width: 60,
       headerClassName: styles.boldHeader,
 
     },
@@ -101,14 +101,14 @@ const Dashboards = () => {
     {
       field: "trade_symbol",
       headerName: "Trade Symbol",
-      width: 320,
+      width: 270,
       headerClassName: styles.boldHeader,
 
     },
     {
       field: "price",
       headerName: "Price ",
-      width: 160,
+      width: 110,
       headerClassName: styles.boldHeader,
 
     },
@@ -121,9 +121,9 @@ const Dashboards = () => {
 
     },
     {
-      field: "qty_percent",
-      headerName: "qty_percent ",
-      width: 160,
+      field: "lot_size",
+      headerName: "Quantity",
+      width: 100,
       headerClassName: styles.boldHeader,
 
     },
@@ -221,9 +221,7 @@ const Dashboards = () => {
             })
           }
 
-        } else {
-          console.log("response", response)
-        }
+        } 
       })
       .catch((error) => {
         console.log("Error", error);
@@ -242,25 +240,16 @@ const Dashboards = () => {
           if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
             dashboardData(response.data[0])
               .then(response => {
-            //  console.log("SNEH JAUSWAL",response)
+            //  SNEH JAUSWAL
              SetUserBalance(response)
               })
               .catch(error => {
                 console.error("Error:", error);
               });
           }
-          //  else {
-          //   Swal.fire({
-          //     title: "Trading Is Off",
-          //     text: "Trading on ",
-          //     icon: "error",
-          //     timer: 1500,
-          //     timerProgressBar: true,
-          //   })
-          // }
+   
 
         } else {
-          console.log("response", response)
         }
       })
       .catch((error) => {
@@ -272,7 +261,6 @@ const Dashboards = () => {
 
 
   useEffect(() => {
-    // Check if the browser supports Geolocation
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         position => {

@@ -14,7 +14,7 @@ const Header = () => {
   const [activeLink, setActiveLink] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const roles = JSON.parse(localStorage.getItem("user_role"));
   const user_details = JSON.parse(localStorage.getItem("user_details"));
 
@@ -32,7 +32,7 @@ const Header = () => {
         window.location.reload();
       }
     };
-    
+
     clearSession();
   }, [navigate, user_details]);
 
@@ -73,6 +73,22 @@ const Header = () => {
     document.body.classList.remove("slide-nav");
   };
 
+
+  const toggleNav = (data) => {
+    if (data.Data.length == 0) {
+      document.body.classList.remove("slide-nav");
+    }
+  };
+
+
+  const toggleNav1 = (item) => {
+    document.body.classList.remove('slide-nav');
+  };
+  
+  const handleLinkClick = (id) => {
+    setActiveLink(id);
+  };
+
   return (
     <div className="sidebar" id="sidebar">
       <div className="sidebar-inner slimscroll">
@@ -85,17 +101,22 @@ const Header = () => {
                   key={data.id}
                   onMouseEnter={() => toggleSubMenu(data.id)}
                   onMouseLeave={() => setOpenSubMenu("")}
-                  style={{padding:"5px"}}
+                  style={{ padding: "5px" }}
                 >
                   <Link
                     to={data.route}
                     className={`${openSubMenu === data.id ? "subdrop" : ""} ${activeLink === data.route ? "active" : ""}`}
                     style={{ textDecoration: "none", color: "inherit" }}
-                    onClick={closeNav}
+
+                    onClick={() => {
+                      handleLinkClick(data.id);
+                      toggleNav(data);
+                      // closeNav()
+                    }}
                   >
                     <i className={data.Icon} id="animated-icon"></i>
                     <span>{data.name}</span>
-                    {data.Data.length > 0 && <span  className="menu-arrow"></span>}
+                    {data.Data.length > 0 && <span className="menu-arrow"></span>}
                   </Link>
                   {data.Data.length > 0 && (
                     <ul style={{ display: openSubMenu === data.id ? "block" : "none" }}>
@@ -105,7 +126,11 @@ const Header = () => {
                             to={item.route}
                             className={activeLink === item.route ? "active" : ""}
                             style={{ textDecoration: "none", color: "inherit" }}
-                            onClick={closeNav}
+
+                            onClick={() => {
+                              toggleNav1(item);
+                              // closeNav()
+                            }}
                           >
                             <i className={item.Icon} id="animated1-icon"></i>
                             <span>{item.name}</span>

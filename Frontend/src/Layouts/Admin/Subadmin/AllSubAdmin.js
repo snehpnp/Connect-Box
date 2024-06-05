@@ -47,7 +47,6 @@ export default function Help() {
   var dashboard_filter = location.search.split("=")[1];
 
 
-  // console.log("dashboard_filter :", dashboard_filter)
 
 
   const styles = {
@@ -556,9 +555,7 @@ export default function Help() {
           </div>
         </div>
 
-      )
-
-      }
+      )}
     </>
   );
 }

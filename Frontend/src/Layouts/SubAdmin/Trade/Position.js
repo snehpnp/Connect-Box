@@ -148,7 +148,7 @@ export default function AllEmployees() {
         return false;
       }
     } else {
-      console.log("Trading Off");
+  
       handleTradingOff(user_id);
     }
   };

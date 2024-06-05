@@ -410,7 +410,6 @@ const MakecallABRCloseExpiry = async () => {
               { _id: { $in: ids } },
               { $set: { status: 1 } }
          );
-         console.log("UpdateData" ,UpdateData)
     }
   
     return

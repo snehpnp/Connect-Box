@@ -362,7 +362,7 @@ function Clientservice() {
               <div className="col-auto">
                 <div className="list-btn">
                   <ul className="filter-list mb-0">
-                    <li className="toggle-li">
+                    {/* <li className="toggle-li">
                       <div
                         className="status-toggle "
                         style={{ display: "flex", alignItems: "center" }}
@@ -397,7 +397,7 @@ function Clientservice() {
                           className="checktoggle checkbox-bg"
                         ></label>
                       </div>
-                    </li>
+                    </li> */}
 
                     <li className="">
                       <p

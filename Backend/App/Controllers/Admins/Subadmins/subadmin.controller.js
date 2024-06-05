@@ -6,6 +6,7 @@ const Role_model = db.role;
 const SubAdminCompanyInfo = db.SubAdminCompanyInfo;
 const strategy_transaction = db.strategy_transaction;
 const tradeCharge_Modal = db.tradeCharge;
+const Strategies = db.Strategies;
 
 const { CommonEmail } = require("../../../Helpers/CommonEmail");
 const { firstOptPass } = require("../../../Helpers/Email_formate/first_login");
@@ -444,207 +445,17 @@ class Subadmin {
         },
       ]);
 
-      const TotalBalance = await User_model.find({ _id: id }).select('Balance')
-
-      if (subadmin_service_type == 2) {
-
-
-        const getAllClients = await strategy_transaction.aggregate([
-          {
-            $match: AdminMatch
-          },
-          {
-            $lookup: {
-              from: 'users',
-              localField: 'user_id',
-              foreignField: '_id',
-              as: 'userData'
-            }
-          },
-          {
-            $lookup: {
-              from: 'strategies',
-              localField: 'strategy_id',
-              foreignField: '_id',
-              as: 'strategyData'
-            }
-          },
-          {
-            $addFields: {
-              username: { $arrayElemAt: ['$userData.UserName', 0] },
-              strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] },
-              Balance: "$Admin_charge" // Renaming Admin_charge to Balance
-            }
-          },
-          {
-            $project: {
-              _id: 1,
-              username: 1,
-              strategy_id: 1,
-              stg_charge: 1,
-              Balance: 1, // Including Balance instead of Admin_charge
-              plan_id: 1,
-              Start_Date: 1,
-              End_Date: 1,
-              createdAt: 1,
-              Role: "USER"
-            }
-          }
-        ]);
-
-
-        const UsedBalance = await strategy_transaction.aggregate([
-          {
-            $match: AdminMatch
-          },
-          {
-            $lookup: {
-              from: 'users',
-              localField: 'user_id',
-              foreignField: '_id',
-              as: 'userData'
-            }
-          },
-          {
-            $lookup: {
-              from: 'strategies',
-              localField: 'strategy_id',
-              foreignField: '_id',
-              as: 'strategyData'
-            }
-          },
-          {
-            $addFields: {
-              username: { $arrayElemAt: ['$userData.UserName', 0] },
-              strategy_id: { $arrayElemAt: ['$strategyData.strategy_name', 0] },
-              Balance: { $toDouble: "$Admin_charge" } // Convert Admin_charge to number
-            }
-          },
-          {
-            $project: {
-              _id: 1,
-              username: 1,
-              strategy_id: 1,
-              stg_charge: 1,
-              Balance: 1, // Including Balance instead of Admin_charge
-              plan_id: 1,
-              Start_Date: 1,
-              End_Date: 1,
-              createdAt: 1,
-            }
-          },
-          {
-            $group: {
-              _id: null,
-              totalBalance: { $sum: "$Balance" } // Calculate the sum of Balance
-            }
-          }
-        ]);
+      const TotalBalance = await User_model.find({ _id: id }).select('Balance Strategy_percentage_to_researcher')
+      const StrategiesData = await Strategies.find({researcher_id:new ObjectId(id),purchase_type:"monthlyPlan"}).select('Balance Strategy_percentage_to_researcher')
 
 
 
 
 
-        let mergedArray = [...getAllClients, ...rechargeDetails];
 
-        mergedArray.sort((a, b) => {
-          return new Date(b.createdAt) - new Date(a.createdAt);
-        });
-
-        let UsedBalanceData = 0
-
-        getAllClients && getAllClients.map((data) => {
-          if (!isNaN(data.Balance) && data.Balance !== null && data.Balance !== "" && data.Role == "USER") {
-            UsedBalanceData += parseInt(data.Balance);
-          }
-        })
+cnsole.log("recharge/id/get",TotalBalance)
 
 
-
-        var Count = {
-          TotalBalance: TotalBalance[0].Balance || 0,
-          UsedBalance: UsedBalanceData,
-          RemainingBalance: Number(TotalBalance[0].Balance || 0) - Number(UsedBalanceData || 0)
-        }
-
-
-        return res.send({
-          status: true,
-          msg: "Recharge details fetched successfully",
-          data: mergedArray,
-          Count: Count
-        });
-
-
-
-
-
-      } else if (subadmin_service_type == 1) {
-
-        var TradechargesWithUserDetails = await tradeCharge_Modal.aggregate([
-          {
-            $lookup: {
-              from: "users",
-              localField: "user_id",
-              foreignField: "_id",
-              as: "user_details"
-            }
-          },
-          {
-            $unwind: "$user_details"
-          },
-          {
-            $match: {
-              "user_details.parent_id": id
-            }
-          },
-          {
-            $project: {
-              "UserName": "$user_details.UserName",
-              "parent_id": "$user_details.parent_id",
-              order_id: 1,
-              user_charge: 1,
-              admin_charge: 1,
-              createdAt: 1,
-              user_id: 1
-            }
-          },
-          {
-            $sort: {
-              createdAt: -1
-            }
-          }
-
-        ]);
-
-        var UsedBalanceData =0
-
-        TradechargesWithUserDetails && TradechargesWithUserDetails.map((data) => {
-          if (!isNaN(data.admin_charge) && data.admin_charge !== null && data.admin_charge !== "" ) {
-            UsedBalanceData += parseInt(data.admin_charge);
-          }
-        })
-
-
-
-        let mergedArray = [...TradechargesWithUserDetails, ...rechargeDetails];
-
-        mergedArray.sort((a, b) => {
-          return new Date(b.createdAt) - new Date(a.createdAt);
-        });
-
-        var Count = {
-          TotalBalance: TotalBalance[0].Balance,
-          UsedBalance: UsedBalanceData,
-          RemainingBalance: Number(TotalBalance[0].Balance || 0) - Number(UsedBalanceData)
-        }
-        return res.send({
-          status: true,
-          msg: "Recharge details fetched successfully",
-          data: mergedArray,
-          Count: Count
-        });
-      } else if (subadmin_service_type == 0) {
 
         return res.send({
           status: true,
@@ -652,7 +463,7 @@ class Subadmin {
           data: rechargeDetails,
           // Count: Count
         });
-      }
+      
 
 
     } catch (error) {

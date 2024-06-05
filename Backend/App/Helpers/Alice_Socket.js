@@ -157,10 +157,7 @@ const Alice_Socket = async () => {
 
 
                             } else {
-                                // console.log("Error Socket -- event.wasClean ELSE")
-                                // await socketRestart()
-                                // connect
-                                // alert('[close] Connection died');
+                            
                             }
                         };
 
