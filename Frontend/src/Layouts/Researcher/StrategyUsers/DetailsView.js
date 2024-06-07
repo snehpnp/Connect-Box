@@ -53,6 +53,7 @@ const DetailsView = ({ showModal, setshowModal, row_data }) => {
                         //     activeUser(e, row);
                         //     setSwitchButton(e.target.checked)
                         // }}
+                        
                         />
                         <span className="slider round"></span>
                     </label>

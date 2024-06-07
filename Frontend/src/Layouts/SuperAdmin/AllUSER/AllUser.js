@@ -33,17 +33,25 @@ const AllUser = () => {
     Email: "",
   });
 
+
+
   const [getAllUsers, setAllUsers] = useState({
     loading: true,
     data: [],
     data1: [],
   });
 
+
+
+
   const handleRefresh = () => {
     getsubadminDetail();
     setRefresh(!refresh);
     setInputSearch("");
   };
+
+
+
 
   // get subadmin table
   const getsubadminDetail = async () => {
@@ -65,6 +73,7 @@ const AllUser = () => {
         console.log("Error", error);
       });
   };
+
 
 
   // update user
@@ -106,6 +115,9 @@ const AllUser = () => {
     }
   };
 
+
+
+
   // handler to manage id
   const handleEdit = (_id) => {
     const userToEdit = getAllUsers.data.find((user) => user._id === _id);
@@ -124,6 +136,8 @@ const AllUser = () => {
     setSelectedUserId(_id);
     setEditbtn((prevEditBtn) => !prevEditBtn);
   };
+
+
 
   // get user data
   const getUsersData = async () => {
@@ -171,10 +185,14 @@ const AllUser = () => {
       });
   };
 
+
+
   useEffect(() => {
     getUsersData();
     getsubadminDetail();
   }, [refresh, selectId, inputSearch]);
+
+
 
   // delete user
   const DeleteUserdata = async (_id) => {
@@ -210,7 +228,9 @@ const AllUser = () => {
     });
   };
 
-  // handler fo rdelete user
+
+
+  // handler fo delete user
   const handleDelete = (_id) => {
     const userToDelete = getAllUsers.data.find((user) => user._id === _id);
 
@@ -358,7 +378,7 @@ const AllUser = () => {
                               {getsubadmin &&
                                 getsubadmin.map((data, index) => (
                                   <option key={index} value={data._id}>
-                                    {data.FullName}
+                                    {data.UserName}
                                   </option>
                                 ))}
                             </select>

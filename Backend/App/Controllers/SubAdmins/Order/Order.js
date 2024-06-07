@@ -361,6 +361,7 @@ class SignalController {
         });
       }
 
+      // console.log("resultUser",resultUser)
       var today = new Date();
       var formattedDate =
         today.getFullYear() +
@@ -455,7 +456,7 @@ class SignalController {
           },
           {
             $lookup: {
-              from: "strategies",
+              from: "researcher_strategies",
               localField: "strategy",
               foreignField: "strategy_name",
               as: "StrategyData",

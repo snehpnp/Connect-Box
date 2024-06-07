@@ -777,8 +777,8 @@ export default function AllEmployees() {
             text: "Strategy",
         },
         {
-            dataField: "entry_qty_percent",
-            text: "Entry Qty %",
+            dataField: "lot_size",
+            text: "Entry Qty",
             formatter: (cell, row, rowIndex) => (
                 <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>
             ),

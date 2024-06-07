@@ -132,6 +132,8 @@ export default function AllEmployees() {
       });
   };
 
+
+
   // LOGIN DEMAT WITH API
   const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
     if (check) {
@@ -140,19 +142,25 @@ export default function AllEmployees() {
       } else {
         Swal.fire({
           title: "Error !",
-          text: "Api Key Is Null",
+          text: "Please complete API process",
           icon: "error",
           timer: 1500,
           timerProgressBar: true,
         });
+       
         return false;
       }
     } else {
-  
+     
       handleTradingOff(user_id);
     }
   };
 
+
+
+
+
+  
   const columns = [
     {
       dataField: "index",
@@ -777,6 +785,8 @@ export default function AllEmployees() {
         });
     }
   };
+
+
 
   // CALCULATE PNL
   const calcultateRPL = (row, livePrice, pre_row) => {

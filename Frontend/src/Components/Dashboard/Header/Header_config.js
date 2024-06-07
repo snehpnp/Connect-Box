@@ -523,7 +523,7 @@ export const research_header = [
     },
     {
         id: 7,
-        name: 'Positions',
+        name: 'Trade History',
         route: "/research/position",
         Icon: "fe fe-credit-card",
         Data: []

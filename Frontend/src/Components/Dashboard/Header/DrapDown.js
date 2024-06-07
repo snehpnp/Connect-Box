@@ -422,15 +422,16 @@ const DropDown = () => {
                 defaultChecked={getLoginStatus}
                 style={{ display: "none" }}
               />
+
               <label
                 htmlFor="1"
                 className="checktoggle"
                 style={{
                   position: "relative",
-                  width: "200px",  // Significantly increased width
+                  width: "150px",  // Significantly increased width
                   height: "40px",  // Increased height
                   backgroundColor: getLoginStatus ? "green" : "red",
-                  borderRadius: "20px",
+                  borderRadius: "15px",
                   cursor: "pointer",
                   transition: "background-color 0.3s",
                   display: "flex",
@@ -443,6 +444,8 @@ const DropDown = () => {
                 }}
               >
                 {getLoginStatus ? "TRADING ON" : "TRADING OFF"}
+
+                
               </label>
             </div>
           </li>
