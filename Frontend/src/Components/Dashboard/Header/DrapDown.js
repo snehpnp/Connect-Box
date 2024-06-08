@@ -2,26 +2,36 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IndianRupee } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { ProfileInfo, userdataforhelp, getsubadmintable } from "../../../ReduxStore/Slice/Admin/System";
-import { LogOut } from '../../../ReduxStore/Slice/Auth/AuthSlice'
+import {
+  ProfileInfo,
+  userdataforhelp,
+  getsubadmintable,
+} from "../../../ReduxStore/Slice/Admin/System";
+import { LogOut } from "../../../ReduxStore/Slice/Auth/AuthSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { Minimize } from "lucide-react";
-import Swal from 'sweetalert2';
-import { ipAddress } from '../../../Utils/Ipaddress';
+import Swal from "sweetalert2";
+import { ipAddress } from "../../../Utils/Ipaddress";
 import { admin_Msg_Get } from "../../../ReduxStore/Slice/Admin/MessageData";
 import { fDateTime } from "../../../Utils/Date_formet";
 import useLogout from "../../../Utils/Logout";
 import io from "socket.io-client";
 import * as Config from "../../../Utils/Config";
 import { loginWithApi } from "../../../Utils/log_with_api";
-import { Userinfo, Trading_Off_Btn } from "../../../ReduxStore/Slice/Comman/Userinfo";
+import {
+  Userinfo,
+  Trading_Off_Btn,
+} from "../../../ReduxStore/Slice/Comman/Userinfo";
 
+import useGetCompany from "../../../Utils/ConnectSocket";
 
 const DropDown = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const logout = useLogout();
+
+  const getCompany = useGetCompany();
 
   const [getLoginStatus, setLoginStatus] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -43,35 +53,46 @@ const DropDown = () => {
   var token = JSON.parse(localStorage.getItem("user_details")).token;
 
 
-  useEffect(() => {
-    const newSocket = io.connect(Config.socket_Url);
-    setSocket(newSocket);
+  useEffect(async () => {
 
-    if (user_details) {
-      newSocket.on("logout", (data) => {
+    const companyData = await getCompany();
+    
+    if (companyData[0].BackendSocketurl) {
+      const newSocket = io.connect(Config.socket_Url);
+      setSocket(newSocket);
 
-        if (user_details.user_id == data.user_id && token != data.token) {
-          LogoutUser()
-          return
-        }
-      });
-    } else {
-      window.location.reload()
-      return
+      if (user_details) {
+        newSocket.on("logout", (data) => {
+          if (user_details.user_id == data.user_id && token != data.token) {
+            LogoutUser();
+            return;
+          }
+        });
+      } else {
+        window.location.reload();
+        return;
+      }
+
+      return () => {
+        newSocket.off("logout");
+        newSocket.close();
+      };
     }
-
-    return () => {
-      newSocket.off("logout");
-      newSocket.close();
-    };
   }, []);
 
 
+
+
+
+  
+  
   const fetchData = async () => {
     try {
       const ip = await ipAddress();
       let data = { id: user_details.user_id };
-      const response = await dispatch(ProfileInfo({ req: data, token: token })).unwrap();
+      const response = await dispatch(
+        ProfileInfo({ req: data, token: token })
+      ).unwrap();
       if (response.status) {
         setProfileData(response.data);
         setProfileImage(response.data[0].profile_img);
@@ -83,8 +104,7 @@ const DropDown = () => {
       } else {
         if (response.msg === "Unauthorized!") {
           console.log("Dropdown", user_details.user_id, ip);
-          LogoutUser()
-
+          LogoutUser();
         }
       }
     } catch (error) {
@@ -93,14 +113,12 @@ const DropDown = () => {
     }
   };
 
-
-
-
   const LogoutUser = async (e) => {
     const ip = await ipAddress();
-    const data = { userId: user_details.user_id, Device: "WEB", system_ip: ip }
+    const data = { userId: user_details.user_id, Device: "WEB", system_ip: ip };
 
-    await dispatch(LogOut(data)).unwrap()
+    await dispatch(LogOut(data))
+      .unwrap()
       .then((response) => {
         if (response.status) {
           Swal.fire({
@@ -108,49 +126,41 @@ const DropDown = () => {
             text: response.msg,
             icon: "success",
             timer: 1500,
-            timerProgressBar: true
-          })
+            timerProgressBar: true,
+          });
           setTimeout(() => {
-            localStorage.removeItem("user_details")
-            localStorage.removeItem("user_role")
-            navigate("/login")
-          }, 1500)
-
-
-        }
-        else {
+            localStorage.removeItem("user_details");
+            localStorage.removeItem("user_role");
+            navigate("/login");
+          }, 1500);
+        } else {
           Swal.fire({
             title: "Error!",
             text: response.msg,
             icon: "error",
             timer: 1500,
-            timerProgressBar: true
+            timerProgressBar: true,
           });
           setTimeout(() => {
-            localStorage.removeItem("user_details")
-            localStorage.removeItem("user_role")
-            navigate("/login")
-          }, 1500)
-
+            localStorage.removeItem("user_details");
+            localStorage.removeItem("user_role");
+            navigate("/login");
+          }, 1500);
         }
       })
       .catch((error) => {
-        console.log("Error in logout user", error)
-      })
-
-
-  }
+        console.log("Error in logout user", error);
+      });
+  };
 
   const fetchIP = async () => {
     try {
       const ip = await ipAddress();
       setIp(ip);
     } catch (error) {
-      console.error('Failed to fetch IP address:', error);
+      console.error("Failed to fetch IP address:", error);
     }
   };
-
-
 
   // Define toggleTheme function
   const toggleTheme = () => {
@@ -161,7 +171,6 @@ const DropDown = () => {
     htmlElement.setAttribute("data-layout-mode", newThemeMode);
     htmlElement.setAttribute("data-topbar", newThemeMode);
     localStorage.setItem("theme_mode", newThemeMode);
-
   };
 
   const toggleFullScreen = () => {
@@ -189,7 +198,6 @@ const DropDown = () => {
     }
     setIsFullScreen(!isFullScreen);
   };
-
 
   const walletmodal = () => {
     if (Role == "ADMIN") {
@@ -233,9 +241,6 @@ const DropDown = () => {
     walletmodal();
   };
 
-
-
-
   function formatNumber(value) {
     if (value < 1000) {
       return value.toString();
@@ -267,8 +272,9 @@ const DropDown = () => {
   // ADMIN NOTIFICATION NOTIFICATION
   const getSubadminTableData = async () => {
     try {
-
-      const response = await dispatch(admin_Msg_Get({ ownerId: user_details.user_id, key: 3 })).unwrap();
+      const response = await dispatch(
+        admin_Msg_Get({ ownerId: user_details.user_id, key: 3 })
+      ).unwrap();
       if (response.status) {
         setPipelineData(response.data);
       } else {
@@ -282,18 +288,16 @@ const DropDown = () => {
   // subadmin help notification for admin page
   const gettable = async () => {
     try {
-      const today = new Date().toISOString().split('T')[0];  // Format YYYY-MM-DD
+      const today = new Date().toISOString().split("T")[0]; // Format YYYY-MM-DD
       const response = await dispatch(getsubadmintable({})).unwrap();
 
       if (response.status) {
         if (response.data.length > 0) {
           var filterData = response.data.filter((data) => {
-
-            const dataDate = data.createdAt.split('T')[0];
+            const dataDate = data.createdAt.split("T")[0];
 
             return dataDate === today;
           });
-
 
           setGetsubadmin(filterData);
         } else {
@@ -305,21 +309,22 @@ const DropDown = () => {
     }
   };
 
-  // USER NOTIFICATION  
+  // USER NOTIFICATION
   const getusertable = async () => {
     try {
       const response = await dispatch(userdataforhelp({})).unwrap();
-      const today = new Date().toISOString().split('T')[0];
+      const today = new Date().toISOString().split("T")[0];
 
       if (response.status) {
         if (response.data.length > 0) {
           var filterData = response.data.filter((data) => {
+            const dataDate = data.createdAt.split("T")[0];
 
-            const dataDate = data.createdAt.split('T')[0];
-
-            return data.prifix_key.substring(0, 3) === user_details.prifix_key && dataDate === today;
+            return (
+              data.prifix_key.substring(0, 3) === user_details.prifix_key &&
+              dataDate === today
+            );
           });
-
 
           setGetuserdata(filterData);
         } else {
@@ -331,17 +336,13 @@ const DropDown = () => {
     }
   };
 
-
   useEffect(() => {
-
     fetchData();
     fetchIP();
     getSubadminTableData();
-    getusertable()
-    gettable()
+    getusertable();
+    gettable();
   }, []);
-
-
 
   useEffect(() => {
     const storedThemeMode = localStorage.getItem("theme_mode");
@@ -349,21 +350,25 @@ const DropDown = () => {
       setThemeMode(storedThemeMode);
     }
     const htmlElement = document.querySelector("html");
-    htmlElement.setAttribute("data-sidebar", storedThemeMode ? storedThemeMode : "light");
-    htmlElement.setAttribute("data-layout-mode", storedThemeMode ? storedThemeMode : "light");
-    htmlElement.setAttribute("data-topbar", storedThemeMode ? storedThemeMode : "light");
+    htmlElement.setAttribute(
+      "data-sidebar",
+      storedThemeMode ? storedThemeMode : "light"
+    );
+    htmlElement.setAttribute(
+      "data-layout-mode",
+      storedThemeMode ? storedThemeMode : "light"
+    );
+    htmlElement.setAttribute(
+      "data-topbar",
+      storedThemeMode ? storedThemeMode : "light"
+    );
   }, [themeMode]);
-
-
-
-
 
   const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
     if (check) {
-      setLoginStatus(true)
+      setLoginStatus(true);
     } else {
-      setLoginStatus(false)
-
+      setLoginStatus(false);
     }
   };
 
@@ -384,19 +389,12 @@ const DropDown = () => {
         } else {
         }
       })
-      .catch((error) => {
-     
-      });
+      .catch((error) => {});
   };
-
-
 
   return (
     <div className="mb-0 dropdown custom-dropdown">
       <ul className="nav nav-tabs user-menu">
-
-
-
         {Role == "USER" && (
           <li className="toggle-li">
             <style>
@@ -406,7 +404,10 @@ const DropDown = () => {
              }
            `}
             </style>
-            <div className="status-toggle" style={{ display: "flex", alignItems: "center" }}>
+            <div
+              className="status-toggle"
+              style={{ display: "flex", alignItems: "center" }}
+            >
               <input
                 id="1"
                 className="check"
@@ -428,8 +429,8 @@ const DropDown = () => {
                 className="checktoggle"
                 style={{
                   position: "relative",
-                  width: "150px",  // Significantly increased width
-                  height: "40px",  // Increased height
+                  width: "150px", // Significantly increased width
+                  height: "40px", // Increased height
                   backgroundColor: getLoginStatus ? "green" : "red",
                   borderRadius: "15px",
                   cursor: "pointer",
@@ -437,24 +438,23 @@ const DropDown = () => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: getLoginStatus ? "flex-end" : "flex-start",
-                  padding: "0 10px",  // Padding to make space for the text
+                  padding: "0 10px", // Padding to make space for the text
                   color: "white",
-                  fontSize: "12px",  // Smaller text size
+                  fontSize: "12px", // Smaller text size
                   fontWeight: "bold",
                 }}
               >
                 {getLoginStatus ? "TRADING ON" : "TRADING OFF"}
-
-                
               </label>
             </div>
           </li>
         )}
 
-
         {Role == "SUBADMIN" && (
           <li className="nav-item dropdown flag-nav dropdown-heads">
-            {user_details.subadmin_service_type == 2 ? "STRATEGY WISE" : "PER TRADE"}
+            {user_details.subadmin_service_type == 2
+              ? "STRATEGY WISE"
+              : "PER TRADE"}
           </li>
         )}
         {!(Role === "EMPLOYEE") ? (
@@ -486,123 +486,152 @@ const DropDown = () => {
           </li>
         ) : null}
 
-
-
-
         <li className="nav-item dropdown  flag-nav dropdown-heads">
           <a
             className="nav-link iconclass"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <i className="fe fe-bell" /> {pipelineData && pipelineData.length > 0 ? <span className="badge rounded-pill" /> : getuserdata.length > 0 ? <span className="badge rounded-pill" /> : ""}
+            <i className="fe fe-bell" />{" "}
+            {pipelineData && pipelineData.length > 0 ? (
+              <span className="badge rounded-pill" />
+            ) : getuserdata.length > 0 ? (
+              <span className="badge rounded-pill" />
+            ) : (
+              ""
+            )}
           </a>
           <div className="dropdown-menu notifications">
-
             <div className="topnav-dropdown-header">
               <div className="notification-title">Notifications</div>
-
             </div>
 
             <div className="noti-content">
               <ul className="notification-list">
-
-
-                {pipelineData && Role == "SUBADMIN" && pipelineData.map((data, index) => (
-                  <li className="notification-message" key={`pipeline-${index}`}>
-                    <a href="/#/subadmin/message-broadcast">
-                      <div className="d-flex">
-                        <div className="media-body">
-                          <div className="d-flex justify-content-between">
-                            <p className="noti-details">
-                              <span className="noti-title">{data.UserName}</span>
-                            </p>
-                            <p className="noti-time">
-                              <span className="notification-time">{fDateTime(data.createdAt)}</span>
-                            </p>
-                          </div>
-                          <div className="d-flex justify-content-between">
-                            <span style={{
-                              maxWidth: "18rem",
-                              display: "inline-block",
-                              wordWrap: "break-word",
-                              whiteSpace: "normal",
-
-                            }}>
-                              {truncateText(data.messageTitle)}
-                            </span>
-                            <span>Admin</span>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                ))}
-
-                {Role === "SUBADMIN" ? getuserdata && getuserdata.map((data, index) => (
-                  <li className="notification-message" key={`getuserdata-${index}`}>
-                    <a href="/#/subadmin/help">
-                      <div className="d-flex">
-                        <div className="media-body">
-                          <div className="d-flex justify-content-between">
-                            <p className="noti-details">
-                              <span className="noti-title">{data.UserName}</span>
-                            </p>
-                            <p className="noti-time">
-                              <span className="notification-time">{fDateTime(data.createdAt)}</span>
-                            </p>
-                          </div>
-                          <div className="d-flex justify-content-between">
-                            <span style={{
-                              maxWidth: "18rem",
-                              display: "inline-block",
-                              wordWrap: "break-word",
-                              whiteSpace: "normal",
-
-                            }}>
-                              {truncateText(data.Message)}
-                            </span>
-                            <span>Help</span>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                )) :
-                  Role === "ADMIN" ? getsubadmin && getsubadmin.map((data, index) => (
-                    <li className="notification-message" key={`getuserdata-${index}`}>
-                      <a href="/#/admin/help">
+                {pipelineData &&
+                  Role == "SUBADMIN" &&
+                  pipelineData.map((data, index) => (
+                    <li
+                      className="notification-message"
+                      key={`pipeline-${index}`}
+                    >
+                      <a href="/#/subadmin/message-broadcast">
                         <div className="d-flex">
                           <div className="media-body">
                             <div className="d-flex justify-content-between">
                               <p className="noti-details">
-                                <span className="noti-title">{data.UserName}</span>
+                                <span className="noti-title">
+                                  {data.UserName}
+                                </span>
                               </p>
                               <p className="noti-time">
-                                <span className="notification-time">{fDateTime(data.createdAt)}</span>
+                                <span className="notification-time">
+                                  {fDateTime(data.createdAt)}
+                                </span>
                               </p>
                             </div>
                             <div className="d-flex justify-content-between">
-                              <span style={{
-                                maxWidth: "18rem",
-                                display: "inline-block",
-                                wordWrap: "break-word",
-                                whiteSpace: "normal",
-
-                              }}>
-                                {truncateText(data.Message)}
+                              <span
+                                style={{
+                                  maxWidth: "18rem",
+                                  display: "inline-block",
+                                  wordWrap: "break-word",
+                                  whiteSpace: "normal",
+                                }}
+                              >
+                                {truncateText(data.messageTitle)}
                               </span>
-                              <span>Help</span>
+                              <span>Admin</span>
                             </div>
                           </div>
                         </div>
                       </a>
                     </li>
-                  )) : ""}
+                  ))}
+
+                {Role === "SUBADMIN"
+                  ? getuserdata &&
+                    getuserdata.map((data, index) => (
+                      <li
+                        className="notification-message"
+                        key={`getuserdata-${index}`}
+                      >
+                        <a href="/#/subadmin/help">
+                          <div className="d-flex">
+                            <div className="media-body">
+                              <div className="d-flex justify-content-between">
+                                <p className="noti-details">
+                                  <span className="noti-title">
+                                    {data.UserName}
+                                  </span>
+                                </p>
+                                <p className="noti-time">
+                                  <span className="notification-time">
+                                    {fDateTime(data.createdAt)}
+                                  </span>
+                                </p>
+                              </div>
+                              <div className="d-flex justify-content-between">
+                                <span
+                                  style={{
+                                    maxWidth: "18rem",
+                                    display: "inline-block",
+                                    wordWrap: "break-word",
+                                    whiteSpace: "normal",
+                                  }}
+                                >
+                                  {truncateText(data.Message)}
+                                </span>
+                                <span>Help</span>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    ))
+                  : Role === "ADMIN"
+                  ? getsubadmin &&
+                    getsubadmin.map((data, index) => (
+                      <li
+                        className="notification-message"
+                        key={`getuserdata-${index}`}
+                      >
+                        <a href="/#/admin/help">
+                          <div className="d-flex">
+                            <div className="media-body">
+                              <div className="d-flex justify-content-between">
+                                <p className="noti-details">
+                                  <span className="noti-title">
+                                    {data.UserName}
+                                  </span>
+                                </p>
+                                <p className="noti-time">
+                                  <span className="notification-time">
+                                    {fDateTime(data.createdAt)}
+                                  </span>
+                                </p>
+                              </div>
+                              <div className="d-flex justify-content-between">
+                                <span
+                                  style={{
+                                    maxWidth: "18rem",
+                                    display: "inline-block",
+                                    wordWrap: "break-word",
+                                    whiteSpace: "normal",
+                                  }}
+                                >
+                                  {truncateText(data.Message)}
+                                </span>
+                                <span>Help</span>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    ))
+                  : ""}
               </ul>
             </div>
-
-
           </div>
         </li>
 
@@ -680,7 +709,8 @@ const DropDown = () => {
                       className="dropdown-item dev"
                       onClick={(e) => LogoutUser(e)}
                     >
-                      <i className="fa-solid fa-right-to-bracket p-2"></i> Log out
+                      <i className="fa-solid fa-right-to-bracket p-2"></i> Log
+                      out
                     </a>
                   </li>
                 </ul>

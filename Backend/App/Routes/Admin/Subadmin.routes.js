@@ -23,7 +23,7 @@ router.post('/subadmin/getall', getallSubadmin);
 router.post('/subadmin/name/getall', getallSubadminName);
 
 router.post('/subadmin/clients/getall', getallSubadminClients);
-router.post('/subadmin/get',verifyToken, getOneSubadmin);
+router.post('/subadmin/get', getOneSubadmin);
 
 router.post('/recharge/get', GetAllRechargeDetails);
 router.post('/recharge/id/get', GetAllRechargeDetailsById);

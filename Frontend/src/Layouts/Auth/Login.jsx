@@ -13,8 +13,13 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import io from "socket.io-client";
 import * as Config from "../../Utils/Config";
 
+import useGetCompany from '../../Utils/ConnectSocket';
+
+
 
 function Login() {
+
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate()
@@ -30,6 +35,10 @@ function Login() {
   const [ip, setIp] = useState(null);
   const [isVerified, setIsVerified] = useState(false);
   const [socket, setSocket] = useState(null);
+
+   
+  const getCompany = useGetCompany();
+
 
   // GOOGLE CAPTCH
   var sitekey = "6LeLC88pAAAAAM8P1WFYgAHJOwwlZ3MLfV9hyStu"
@@ -47,11 +56,17 @@ function Login() {
     }
   };
 
-  useEffect(() => {
+
+
+
+  useEffect(async () => {
     
     fetchIpAddress();
   
-    // Initialize socket connection
+    const companyData = await getCompany();
+
+    if(companyData[0].BackendSocketurl){
+       // Initialize socket connection
     const newSocket = io.connect(Config.socket_Url);
     setSocket(newSocket);
   
@@ -61,6 +76,9 @@ function Login() {
         newSocket.disconnect();
       }
     };
+
+    }
+
   }, []); // The empty array means this effect runs once, similar to componentDidMount
   
 

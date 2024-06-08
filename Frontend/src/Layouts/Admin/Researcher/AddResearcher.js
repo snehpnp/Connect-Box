@@ -28,15 +28,15 @@ const AddResearcher = () => {
     validate: (values) => {
       let errors = {}
       if (!values.fullName) {
-        errors.fullName = "Please Enter fullName"
+        errors.fullName = "Please Enter Full Name"
       }
       if (!values.userName) {
-        errors.userName = "Please Enter userName"
+        errors.userName = "Please Enter User name"
       }
       if (!values.email) {
         errors.email = "Please Enter Email Address";
       } else if (!/^\S+@\S+\.\S+$/.test(values.email)) {
-        errors.email = "Please enter a valid email address.";
+        errors.email = "Please Enter a valid Email address.";
       }
       if (!values.PhoneNo) {
         errors.PhoneNo = "Please Enter Phone Number";
@@ -44,10 +44,10 @@ const AddResearcher = () => {
         errors.PhoneNo = "Please enter a valid 10-digit phone number.";
       }
       if (!values.password) {
-        errors.password = "Please Enter password"
+        errors.password = "Please Enter Password"
       }
       if (!values.strategy_percentage) {
-        errors.strategy_percentage = "Please Enter strategy percentage"
+        errors.strategy_percentage = "Please Enter Revenue Percentage"
       }
       // if (!values.prifix_key) {
       //   errors.prifix_key = "Please Enter Unique Prifx key"

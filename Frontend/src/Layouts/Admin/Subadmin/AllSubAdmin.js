@@ -313,7 +313,7 @@ export default function Help() {
 
             const filterData = formattedData2.filter(item => {
               const inputSearchMatch =
-                inputSearch === '' ||
+                inputSearch === ''||
                 item.UserName.toLowerCase().includes(inputSearch.toLowerCase()) ||
                 item.FullName.toLowerCase().includes(inputSearch.toLowerCase()) ||
                 item.PhoneNo.toLowerCase().includes(inputSearch.toLowerCase()) ||

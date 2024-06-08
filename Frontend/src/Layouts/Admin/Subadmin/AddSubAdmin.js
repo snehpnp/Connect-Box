@@ -88,7 +88,7 @@ const AddClient = () => {
       }
 
       if (values.subadmin_servic_type==0) {
-        errors.subadmin_servic_type = "Select At service type";
+        errors.subadmin_servic_type = "Please Select Subadmin Service Type";
       }
       return errors;
     },
