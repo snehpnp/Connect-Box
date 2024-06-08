@@ -52,17 +52,28 @@ const DropDown = () => {
   var Role = JSON.parse(localStorage.getItem("user_details")).Role;
   var token = JSON.parse(localStorage.getItem("user_details")).token;
 
-
-  useEffect(async () => {
-
+  const RunSocketUrl = async () => {
     const companyData = await getCompany();
-    
-    if (companyData[0].BackendSocketurl) {
-      const newSocket = io.connect(Config.socket_Url);
-      setSocket(newSocket);
 
+    if (companyData[0].BackendSocketurl) {
+      const newSocket = io(companyData[0].BackendSocketurl);
+      setSocket(newSocket);
+      return () => {
+        newSocket.disconnect();
+      };
+    }
+  };
+
+  useEffect(() => {
+    RunSocketUrl();
+  }, []);
+
+
+
+  const RunLogoutSocket = () => {
+    if (socket != null) {
       if (user_details) {
-        newSocket.on("logout", (data) => {
+        socket.on("logout", (data) => {
           if (user_details.user_id == data.user_id && token != data.token) {
             LogoutUser();
             return;
@@ -72,19 +83,16 @@ const DropDown = () => {
         window.location.reload();
         return;
       }
-
-      return () => {
-        newSocket.off("logout");
-        newSocket.close();
-      };
     }
-  }, []);
+  };
 
 
 
+  useEffect(() => {
+    RunLogoutSocket();
+  }, [socket]);
 
 
-  
   
   const fetchData = async () => {
     try {

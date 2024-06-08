@@ -59,27 +59,27 @@ function Login() {
 
 
 
-  useEffect(async () => {
-    
-    fetchIpAddress();
-  
+  const RunSocketUrl = async () => {
     const companyData = await getCompany();
+        
+        if(companyData[0].BackendSocketurl){
+            const newSocket = io(companyData[0].BackendSocketurl);
+            setSocket(newSocket);
+            return () => {
+                newSocket.disconnect();
+            };
 
-    if(companyData[0].BackendSocketurl){
-       // Initialize socket connection
-    const newSocket = io.connect(Config.socket_Url);
-    setSocket(newSocket);
-  
-    // Cleanup function to disconnect socket when component unmounts
-    return () => {
-      if (newSocket) {
-        newSocket.disconnect();
-      }
-    };
+        }
+   }
 
-    }
+    useEffect(() => {
+        fetchIpAddress()
+        RunSocketUrl()
+    }, []); 
 
-  }, []); // The empty array means this effect runs once, similar to componentDidMount
+
+
+
   
 
 
