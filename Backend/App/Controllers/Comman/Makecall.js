@@ -72,6 +72,7 @@ class Makecall {
   async GetServiceByCatagory(req, res) {
 
 
+    
     if (req.body.category_id == '' || req.body.category_id == null) {
       return res.send({ status: false, msg: "Category not fount service", data: [] })
     }
@@ -168,16 +169,11 @@ class Makecall {
 
     }
 
-
-
-
-
   }
 
 
   //get expiry
   async Getgetexpirymanualtrade(req, res) {
-
 
 
     try {
@@ -728,7 +724,6 @@ class Makecall {
           return res.send({ status: true, msg: "Data Add Successfully....", data: result });
 
         } else {
-          //  console.log("tokenExisst else",tokenExisst)
           const filter = { _id: token };
           const update = { $set: { _id: token, exch: exch } };
           await token_chain.updateOne(filter, update, { upsert: true });
@@ -942,7 +937,6 @@ async function run() {
     const makecallabrView_excute_run = async () => {
       try {
 
-        // console.log("makecall")
         let rr = true
         if (rr) {
           // if (holidays.isHoliday(currentDate) && weekday != 'Sunday' && weekday != 'Saturday') {
@@ -950,8 +944,7 @@ async function run() {
           // const viewName = 'open_position_excute';
           var makecallabrView_excute_result = await makecallabrView_excute_view.find().toArray();
 
-          //console.log("makecallabrView_excute_result ",makecallabrView_excute_result)
-
+     
           if (makecallabrView_excute_result.length > 0) {
 
 
@@ -1040,7 +1033,6 @@ async function run() {
               );
 
 
-              // console.log("req makecall abr -",req)
               let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
@@ -1061,7 +1053,7 @@ async function run() {
                 })
                 .catch((error) => {
 
-                  console.log(" error makecall abr ", error)
+                  console.log("Error makecall abr ", error)
                 });
 
 
@@ -1212,7 +1204,7 @@ async function run() {
 }
 
 
- //run().catch(console.error);
+ run().catch(console.error);
 
 
 //////////////////----- makecallabrView_excute_run --//////////////////////////////

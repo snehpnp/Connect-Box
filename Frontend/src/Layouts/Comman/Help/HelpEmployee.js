@@ -66,6 +66,9 @@ const HelpEmployee = () => {
     },
   };
 
+
+
+
   const columns = [
     {
       field: "index",
@@ -108,6 +111,9 @@ const HelpEmployee = () => {
     },
   ];
 
+
+
+  // post help to subadmin 
   const postSubadminhelp = async (e) => {
     e.preventDefault();
     if (!help.UserName || !help.Email || !help.mobile || !help.Message) {
@@ -149,16 +155,21 @@ const HelpEmployee = () => {
           }).then((result) => {
             /* Read more about handling dismissals below */
             if (result.dismiss === Swal.DismissReason.timer) {
-              console.log("I was closed by the timer");
+            
             }
           });
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Error", error);
       });
   };
 
+
+
+
+
+    // get employee table
   const gettable = async () => {
     await dispatch(getemployee({}))
       .unwrap()
@@ -179,7 +190,7 @@ const HelpEmployee = () => {
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Error", error);
       });
   };
 
@@ -188,6 +199,11 @@ const HelpEmployee = () => {
     gettable();
   }, [value]);
 
+
+
+
+
+  
   return (
     <>
       <div data-aos="fade-left">
@@ -310,6 +326,7 @@ const HelpEmployee = () => {
                                       className="modal-footer mt-2"
                                       style={{
                                         justifyContent: "center !important",
+                                      
                                       }}
                                     >
                                       <button
@@ -317,6 +334,7 @@ const HelpEmployee = () => {
                                         data-bs-dismiss="modal"
                                         className="btn btn-primary paid-continue-btn"
                                         onClick={postSubadminhelp}
+                                        style={{marginTop:"20px"}}
                                       >
                                         Send
                                       </button>

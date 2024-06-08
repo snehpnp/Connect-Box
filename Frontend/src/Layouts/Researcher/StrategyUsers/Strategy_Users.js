@@ -3,140 +3,196 @@ import FullDataTable from '../../../Components/ExtraComponents/Tables/DataTable'
 import { Strategy_Users } from '../../../ReduxStore/Slice/Researcher/ResearcherSlice';
 import { useDispatch } from 'react-redux';
 import { fDateTime } from '../../../Utils/Date_formet';
+import { Eye } from "lucide-react";
+import Loader from '../../../Utils/Loader';
+import Modal from '../../../Components/ExtraComponents/Modal';
+import BasicDataTable from "../../../Components/ExtraComponents/Tables/DataTable";
 
 const StrategyUsers = () => {
     const dispatch = useDispatch();
-    const [getUsers, setAllUsers] = useState([]);
+    const [getUsers, setAllUsers] = useState({ loading: false, data: [] });
     const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+    const [showModal, setshowModal] = useState(false);
+    const [rowData, setRowData] = useState([]);
+    const [switchStates, setSwitchStates] = useState({});
 
     const AllUsers = async () => {
         const data = { id: user_id };
         try {
             const response = await dispatch(Strategy_Users(data)).unwrap();
             if (response.status) {
-                setAllUsers(response.data);
+                setAllUsers({ loading: true, data: response.data });
+                const initialSwitchStates = {};
+                response.data.forEach(user => {
+                    user.strategy.forEach(strategy => {
+                        initialSwitchStates[strategy.stg_id] = strategy.ActiveStatus === 1;
+                    });
+                });
+                setSwitchStates(initialSwitchStates);
             } else {
-                setAllUsers([]);
+                setAllUsers({ loading: true, data: [] });
             }
         } catch (error) {
             console.log("Error fetching users:", error);
         }
     };
 
+    const handleToggle = (e, row) => {
+        const { checked } = e.target;
+        setSwitchStates((prevState) => ({
+            ...prevState,
+            [row.stg_id]: checked,
+        }));
+
+    };
+
+    const columns1 = [
+        {
+            dataField: "index",
+            text: "S.No.",
+            formatter: (cell, row, rowIndex) => rowIndex + 1,
+        },
+        {
+            dataField: "strategy_name",
+            text: "Strategy Name",
+            formatter: (cell, row, rowIndex) => (
+                <span className="text">{cell !== "" ? cell : "-"}</span>
+            ),
+        },
+        {
+            dataField: "strategy_segment",
+            text: "Segment",
+            formatter: (cell, row, rowIndex) => (
+                <span className="text">{cell !== "" ? cell : "-"}</span>
+            ),
+        },
+        {
+            dataField: "strategy_category",
+            text: "Category",
+            formatter: (cell, row, rowIndex) => (
+                <span className="text">{cell !== "" ? cell : "-"}</span>
+            ),
+        },
+        {
+            dataField: "createdAt",
+            text: "Created Date",
+            formatter: (cell, row, rowIndex) => (
+                <span className="text">{cell !== "" ? fDateTime(cell) : "-"}</span>
+            ),
+        },
+        {
+            dataField: "",
+            text: "Details View",
+            formatter: (cell, row, rowIndex) => (
+                <div>
+                    <Eye
+                        className="mx-2"
+                        onClick={() => {
+                            setRowData(row.strategy);
+                            setshowModal(true);
+                        }}
+                    />
+                </div>
+            ),
+        },
+    ];
+
+    const columns2 = [
+        {
+            dataField: 'index',
+            text: 'S.No.',
+            formatter: (cell, row, rowIndex) => rowIndex + 1,
+        },
+        {
+            dataField: 'Username',
+            text: 'SubAdmin'
+        },
+        {
+            dataField: 'purchase_type',
+            text: 'Service Type'
+        },
+        {
+            dataField: 'stg_count',
+            text: 'Used Count'
+        },
+        {
+            dataField: 'Amount',
+            text: 'Amount',
+        },
+        {
+            dataField: 'ActiveStatus',
+            text: 'Status',
+            formatter: (cell, row, rowIndex) => (
+                <div className="form-check form-switch">
+                    <input
+                        className="form-check-input"
+                        type="checkbox"
+                        role="switch"
+                        id={`flexSwitchCheckDefault-${row.stg_id}`}
+                        defaultChecked={switchStates[row.stg_id] !== undefined ? switchStates[row.stg_id] : (cell === 1)}
+                        onChange={(e) => handleToggle(e, row)}
+                    />
+                </div>
+            ),
+        },
+        {
+            dataField: 'createdAt',
+            text: 'Created At',
+            formatter: (cell, row, rowIndex) => (
+                <span className="text">{cell !== "" ? fDateTime(cell) : "-"}</span>
+            ),
+        },
+        {
+            dataField: 'End_Date',
+            text: 'End Date',
+            formatter: (cell, row, rowIndex) => (
+                <span className="text">{cell !== "" ? fDateTime(cell) : "-"}</span>
+            ),
+        },
+    ];
+
     useEffect(() => {
         AllUsers();
     }, []);
 
-
     return (
-        <div className="content container-fluid" data-aos="fade-left">
-            <div className="card">
-                <div className="card-header">
-                    <div className="row align-items-center">
-                        <div className="col">
-                            <h5 className="card-title mb-0">
-                                <i className="pe-2 fa-solid fa-users"></i>
-                                Strategy Users
-                            </h5>
+        <>
+            {getUsers.loading ? (
+                <div className="content container-fluid" data-aos="fade-left">
+                    <div className="card">
+                        <div className="card-header">
+                            <div className="row align-items-center">
+                                <div className="col">
+                                    <h5 className="card-title mb-0">
+                                        <i className="pe-2 fa-solid fa-users"></i>
+                                        Strategy Users
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='Main table'>
+                            <FullDataTable
+                                TableColumns={columns1}
+                                tableData={getUsers.data}
+                                pagination1={true}
+                            />
+                            <div>
+                                <Modal isOpen={showModal} size="xl" title="Subadmins" hideBtn={true}
+                                    handleClose={() => setshowModal(false)}
+                                >
+                                    <div className="card-body table-responsive">
+                                        <BasicDataTable TableColumns={columns2} tableData={rowData} />
+                                    </div>
+                                </Modal>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div className="d-flex align-items-center mx-3" style={{ height: "40px", backgroundColor: "#f5f2f2", marginTop: '1rem', maxWidth: '100%' }}>
-                    <h6 style={{ marginLeft: '1.5rem', marginRight: '2rem' }}><b>#</b></h6>
-                    <h6 style={{ marginRight: '15rem' }}><b>Strategy Name</b></h6>
-                    <h6 style={{ marginRight: '15rem' }}><b>Segment</b></h6>
-                    <h6 style={{ marginRight: '15rem' }}><b>Category</b></h6>
-                    <h6 style={{ marginRight: '10rem' }}><b>Created Date</b></h6>
-                </div>
-
-                <div className="mx-3 mb-5">
-                    <div className="accordion" id="accordionExample">
-                        {getUsers.map((item, index) => (
-                            < div className="accordion-item" key={`accordion-item-${index}`}>
-                                <h2 className="accordion-header" id={`heading${index}`}>
-                                    <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse-${index}`} aria-expanded="false" aria-controls={`collapse-${index}`}>
-                                        <div className="d-flex align-items-center" style={{ width: '100%' }}>
-                                            <h6 style={{ marginRight: '2rem' }}><b>{index + 1}</b></h6>
-                                            <h6 style={{ marginRight: '15rem' }}><b>{item.strategy_name}</b></h6>
-                                            <h6 style={{ marginRight: '15rem' }}><b>{item.strategy_segment}</b></h6>
-                                            <h6 style={{ marginRight: '15rem' }}><b>{item.strategy_category}</b></h6>
-                                            <h6 style={{ marginRight: '10rem' }}><b>{fDateTime(item.createdAt)}</b></h6>
-                                        </div>
-                                    </button>
-                                </h2>
-                                <div id={`collapse-${index}`} className="accordion-collapse collapse" aria-labelledby={`heading${index}`} data-bs-parent="#accordionExample">
-                                    <div className="accordion-body">
-
-
-                                        <FullDataTable
-                                            TableColumns={[
-                                                {
-                                                    dataField: "index",
-                                                    text: "#",
-                                                    formatter: (cell, row, rowIndex) => rowIndex + 1,
-                                                },
-
-                                                {
-                                                    dataField: "Username",
-                                                    text: "Username",
-                                                    formatter: (cell, row, rowIndex) => (
-                                                        <div>
-                                                            {row.Username}
-                                                        </div>
-                                                    ),
-                                                },
-                                                {
-                                                    dataField: "purchase_type",
-                                                    text: "Service Type",
-                                                    formatter: (cell, row, rowIndex) => (
-                                                        <div>
-                                                            {row.purchase_type}
-                                                        </div>
-                                                    ),
-                                                },
-                                                {
-                                                    dataField: "stg_count",
-                                                    text: "Used Count",
-                                                    formatter: (cell, row, rowIndex) => (
-                                                        <div>
-                                                            {row.stg_count}
-                                                        </div>
-                                                    ),
-                                                },
-                                                {
-                                                    dataField: "createdAt",
-                                                    text: "createdAt",
-                                                    formatter: (cell, row, rowIndex) => (
-                                                        <div>
-                                                            {fDateTime(row.createdAt)}
-                                                        </div>
-                                                    ),
-                                                },
-                                                {
-                                                    dataField: "End_Date",
-                                                    text: "End Date",
-                                                    formatter: (cell, row, rowIndex) => (
-                                                        <div>
-                                                            {row.End_Date ? fDateTime(row.End_Date) : "-"}
-                                                        </div>
-                                                    ),
-                                                },
-                                            ]}
-                                            tableData={item.strategy}
-                                            pagination1={true}
-                                        />
-
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </div >
+            ) : (
+                <Loader />
+            )}
+        </>
     );
 }
 

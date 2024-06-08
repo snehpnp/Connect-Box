@@ -104,7 +104,7 @@ const GetAllBrokerResponse1 = async (user_id, res) => {
                             );
                         }
                     } catch (error) {
-                        // console.log("Error processing broker response:", error);
+                        console.log("Error processing broker response:", error);
                     }
                 }
             } 

@@ -2,6 +2,7 @@ import axios from "axios";
 
 // import Files
 import * as Config from "../../../Utils/Config";
+import { header } from "../../../Utils/ApiHeader";
 
 
 
@@ -10,6 +11,8 @@ export async function getOrders_data(data, token) {
     try {
         const res = await axios.post(`${Config.base_url}orders/data`, data, {
             data: {},
+            headers: header(token),
+
         })
         return await res?.data;
     }

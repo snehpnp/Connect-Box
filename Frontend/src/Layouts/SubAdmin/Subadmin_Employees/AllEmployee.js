@@ -142,21 +142,21 @@ export default function AllEmployees() {
     {
       field: "fullName",
       headerName: "FullName",
-      width: 160,
+      width: 180,
       headerClassName: styles.boldHeader,
 
     },
     {
       field: "userName",
       headerName: "UserName",
-      width: 160,
+      width: 180,
       headerClassName: styles.boldHeader,
 
     },
     {
       field: "email",
       headerName: "Email Id",
-      width: 220,
+      width: 250,
       headerClassName: styles.boldHeader,
 
     },
@@ -167,13 +167,7 @@ export default function AllEmployees() {
       headerClassName: styles.boldHeader,
 
     },
-    {
-      field: "clientKey",
-      headerName: "Client Key",
-      width: 200,
-      headerClassName: styles.boldHeader,
 
-    },
     {
       field: "activeStatus",
       headerName: "Status",

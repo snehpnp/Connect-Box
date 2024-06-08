@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getActivity, findstatus } from "../../../../ReduxStore/Slice/Comman/Setting";
-import { Form, Row, Col, Card } from 'react-bootstrap';
+import { Form, Row, Col, Card, Spinner } from 'react-bootstrap';
 import FullDataTable from "../../../../Components/ExtraComponents/Tables/FullDataTable";
 import { fDateTime } from "../../../../Utils/Date_formet";
 
@@ -12,14 +12,11 @@ const Trackpanel = () => {
   const [selectedToDate, setSelectedToDate] = useState("");
   const [activityData, setActivityData] = useState([]);
   const [findData, setFindData] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("user_details"));
-  const userId = JSON.parse(localStorage.getItem("user_details")).user_id;
-
-  const handleDateChange = (e) => {
-    // Handle date change
-  };
+  const userId = user?.user_id;
 
   const handleDropdownSelect = async (selectedActivity) => {
     setSelectedCategory(selectedActivity);
@@ -33,21 +30,30 @@ const Trackpanel = () => {
     getActivityData();
   }, []);
 
+  useEffect(() => {
+    if (selectedCategory) {
+      findActivity(selectedCategory);
+    }
+  }, [selectedFromDate, selectedToDate, selectedCategory]);
+
   const getActivityData = async () => {
-    const data = { role: user.Role };
+    const data = { role: user?.Role };
+    setLoading(true);
     try {
       const response = await dispatch(getActivity(data)).unwrap();
       if (response.status) {
         setActivityData(response.data);
       }
     } catch (error) {
-      console.log("Error fetching activity data:", error);
+      console.error("Error fetching activity data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-
   const findActivity = async (activity) => {
-    const data = { id: userId, category: activity };
+    const data = { id: userId, category: activity, fromDate: selectedFromDate, endDate: selectedToDate };
+    setLoading(true);
     try {
       const response = await dispatch(findstatus(data)).unwrap();
       if (response.status) {
@@ -56,7 +62,9 @@ const Trackpanel = () => {
         setFindData([]);
       }
     } catch (error) {
-      console.log("Error finding activity:", error);
+      console.error("Error finding activity:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -66,7 +74,7 @@ const Trackpanel = () => {
       headerName: "ID",
       width: 60,
       renderCell: (params) => (
-        <div> <b>{params.value + 1}</b></div>
+        <div><b>{params.value + 1}</b></div>
       ),
     },
     { field: "UserName", headerName: "UserName", width: 150 },
@@ -81,8 +89,7 @@ const Trackpanel = () => {
   ];
 
   if (selectedCategory === "TARGET-STOPLOSS-TIME") {
-    columns = columns.filter(column => column.field !== 'UserName');
-    columns = columns.filter(column => column.field !== 'maker_role');
+    columns = columns.filter(column => column.field !== 'UserName' && column.field !== 'maker_role');
   }
 
   return (
@@ -122,7 +129,6 @@ const Trackpanel = () => {
               type="date"
               value={selectedToDate}
               onChange={(e) => setSelectedToDate(e.target.value)}
-
             />
           </Form.Group>
         </Col>
@@ -132,7 +138,14 @@ const Trackpanel = () => {
         <Row>
           <Col>
             <Card.Title>{selectedCategory}</Card.Title>
-            <FullDataTable columns={columns} rows={findData} />
+            {loading ? (
+              <div className="d-flex justify-content-center align-items-center">
+                <Spinner animation="border" />
+                <span className="ml-2">Loading...</span>
+              </div>
+            ) : (
+              <FullDataTable columns={columns} rows={findData} />
+            )}
           </Col>
         </Row>
       )}

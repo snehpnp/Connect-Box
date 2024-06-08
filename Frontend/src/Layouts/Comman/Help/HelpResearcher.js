@@ -103,6 +103,9 @@ const HelpResearcher = () => {
     },
   ];
 
+
+
+  // post for researcher 
   const postResearcher = async (e) => {
     e.preventDefault();
     if (!help.UserName || !help.Email || !help.mobile || !help.Message) {
@@ -153,6 +156,9 @@ const HelpResearcher = () => {
       });
   };
 
+
+
+  // get table for researcher 
   const gettable = async () => {
     await dispatch(getResearch({}))
       .unwrap()
@@ -181,6 +187,9 @@ const HelpResearcher = () => {
     gettable();
   }, [value]);
 
+
+
+  
   return (
     <>
       <div data-aos="fade-left">
@@ -310,6 +319,7 @@ const HelpResearcher = () => {
                                         data-bs-dismiss="modal"
                                         className="btn btn-primary paid-continue-btn"
                                         onClick={postResearcher}
+                                        style={{marginTop:"20px"}}
                                       >
                                         Send
                                       </button>

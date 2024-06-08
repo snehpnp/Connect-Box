@@ -47,7 +47,6 @@ export default function Help() {
   var dashboard_filter = location.search.split("=")[1];
 
 
-  // console.log("dashboard_filter :", dashboard_filter)
 
 
   const styles = {
@@ -314,7 +313,7 @@ export default function Help() {
 
             const filterData = formattedData2.filter(item => {
               const inputSearchMatch =
-                inputSearch === '' ||
+                inputSearch === ''||
                 item.UserName.toLowerCase().includes(inputSearch.toLowerCase()) ||
                 item.FullName.toLowerCase().includes(inputSearch.toLowerCase()) ||
                 item.PhoneNo.toLowerCase().includes(inputSearch.toLowerCase()) ||
@@ -395,7 +394,7 @@ export default function Help() {
                 <div className="row align-items-center">
                   <div className="col">
                     <h5 className="card-title mb-0">
-                      <i class="fe fe-users pe-2" ></i>
+                      <i className="fe fe-users pe-2" ></i>
                       All Sub-Admins</h5>
                   </div>
                   <div className="col-auto">
@@ -556,9 +555,7 @@ export default function Help() {
           </div>
         </div>
 
-      )
-
-      }
+      )}
     </>
   );
 }

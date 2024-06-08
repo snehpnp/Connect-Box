@@ -6,11 +6,11 @@ import { getOrders_data, getTrade_data, UpdateTrade ,Tradehistory_data,UserTrade
 
 
 // SIGNAL (ORDER) GET DATA
-export const Orders_Details = createAsyncThunk(
-  "orders/data",
-  async (data) => {
+export const Orders_Details = createAsyncThunk("orders/data",async (data) => {
     try {
-      const res = await getOrders_data(data);
+      const {req,token} = data
+
+      const res = await getOrders_data(req,token);
       return res;
     } catch (err) {
       throw err;

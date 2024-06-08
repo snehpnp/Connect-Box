@@ -181,31 +181,24 @@ function System() {
                   </div>
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
-                      <p>
-                        Company Name{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].panel_name}
-                        </span>
-                      </p>
-                      <p>
-                        Panel Key{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].panel_key}
-                        </span>
-                      </p>
-                      <p>
-                        Company Short Name{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].panel_short_name}
-                        </span>
-                      </p>
-                      <p>
-                        Version{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].version}
-                        </span>
-                      </p>
+                      <div>
+                        <strong>Company Name: </strong>
+                        <span>{getCompanyData && getCompanyData[0].panel_name}</span>
+                      </div>
+                      <div>
+                        <strong>Panel Key: </strong>
+                        <span>{getCompanyData && getCompanyData[0].panel_key}</span>
+                      </div>
+                      <div>
+                        <strong>Company Short Name: </strong>
+                        <span>{getCompanyData && getCompanyData[0].panel_short_name}</span>
+                      </div>
+                      <div>
+                        <strong>Version: </strong>
+                        <span>{getCompanyData && getCompanyData[0].version}</span>
+                      </div>
                     </div>
+
                   </div>
                 </div>
                 {/* Tab panes */}
@@ -226,42 +219,33 @@ function System() {
                   </div>
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
-                      <p>
-                        Email{" "}
+                      <div>
+                        <strong>Email: </strong>
                         <span>{getCompanyData && getCompanyData[0].email}</span>
-                      </p>
-                      <p>
-                        CC{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].cc_mail}
-                        </span>
-                      </p>
-                      <p>
-                        BCC{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].bcc_mail}
-                        </span>
-                      </p>
-                      <p>
-                        Password{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].smtp_password}
-                        </span>
-                      </p>
-                      <p>
-                        SMTP Port{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].smtpport}
-                        </span>
-                      </p>
-                      <p>
-                        SMTP Host{" "}
-                        <span>
-                          {getCompanyData && getCompanyData[0].smtphost}
-                        </span>
-                      </p>
+                      </div>
+                      <div>
+                        <strong>CC: </strong>
+                        <span>{getCompanyData && getCompanyData[0].cc_mail}</span>
+                      </div>
+                      <div>
+                        <strong>BCC: </strong>
+                        <span>{getCompanyData && getCompanyData[0].bcc_mail}</span>
+                      </div>
+                      <div>
+                        <strong>Password: </strong>
+                        <span>{getCompanyData && getCompanyData[0].smtp_password}</span>
+                      </div>
+                      <div>
+                        <strong>SMTP Port: </strong>
+                        <span>{getCompanyData && getCompanyData[0].smtpport}</span>
+                      </div>
+                      <div>
+                        <strong>SMTP Host: </strong>
+                        <span>{getCompanyData && getCompanyData[0].smtphost}</span>
+                      </div>
                     </div>
                   </div>
+
                 </div>
                 {/* Tab panes */}
                 <div className="tab-pane" id="solid-tab3">
@@ -281,32 +265,33 @@ function System() {
                   </div>
                   <div className="invoice-total-box px-3 border">
                     <div className="invoice-total-inner">
-                      <p>
-                        Favicon{" "}
+                      <div>
+                        <strong>Favicon: </strong>
                         <img
                           src={getCompanyData && getCompanyData[0].favicon}
                           alt="favicon"
                           style={{ height: "80px", width: "80px" }}
                         />
-                      </p>
-                      <p>
-                        Logo{" "}
+                      </div>
+                      <div>
+                        <strong>Logo: </strong>
                         <img
                           src={getCompanyData && getCompanyData[0].logo}
                           alt="Logo"
                           style={{ height: "80px", width: "80px" }}
                         />
-                      </p>
-                      <p>
-                        Login Image{" "}
+                      </div>
+                      <div>
+                        <strong>Login Image: </strong>
                         <img
                           src={getCompanyData && getCompanyData[0].loginimage}
                           alt="Login Image"
                           style={{ height: "80px", width: "80px" }}
                         />
-                      </p>
+                      </div>
                     </div>
                   </div>
+
                 </div>
               </div>
             </div>

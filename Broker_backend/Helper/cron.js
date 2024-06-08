@@ -136,7 +136,6 @@ module.exports = function (app) {
             output.on('finish', () => {
                 // Clean up the downloaded gzip file
                 fs.unlinkSync(gzipFilePath);
-                console.log('Download and extraction completed successfully');
             });
         } catch (err) {
             console.error('Error:', err);
@@ -185,7 +184,7 @@ module.exports = function (app) {
                     response.data.pipe(fs.createWriteStream(filePath));
     
                     response.data.on('end', function () {
-                        console.log(`File downloaded to ${filePath}`);
+                     
                     });
                 })
                 .catch(function (error) {

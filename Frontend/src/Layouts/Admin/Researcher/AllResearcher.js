@@ -91,7 +91,7 @@ const AllResearcher = () => {
     {
       field: "PhoneNo",
       headerName: "Phone Number",
-      width: 200,
+      width: 180,
       headerClassName: styles.boldHeader,
     },
     {
@@ -401,7 +401,7 @@ const AllResearcher = () => {
             <div className="row align-items-center">
               <div className="col">
                 <h5 className="card-title mb-0">
-                  <i class="fe fe-users pe-2"></i>All Researcher
+                  <i className="fe fe-users pe-2"></i>All Researcher
                 </h5>
               </div>
               <div className="col-auto">

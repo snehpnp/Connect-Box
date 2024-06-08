@@ -551,7 +551,7 @@ const AddEmployee = () => {
                   <div className={`col-lg-2 mt-2`} key={strategy._id}>
                     <div className="row ">
                       <div className="col-lg-12 ">
-                        <div class="form-check custom-checkbox ">
+                        <div className="form-check custom-checkbox ">
                           <input
                             type="checkbox"
                             className="form-check-input"
@@ -591,7 +591,7 @@ const AddEmployee = () => {
                   <div className={`col-lg-2 mt-2`} key={strategy._id}>
                     <div className="row ">
                       <div className="col-lg-12 ">
-                        <div class="form-check custom-checkbox ">
+                        <div className="form-check custom-checkbox ">
                           <input
                             type="checkbox"
                             className="form-check-input"

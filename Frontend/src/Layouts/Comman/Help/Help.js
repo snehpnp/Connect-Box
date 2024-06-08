@@ -88,6 +88,8 @@ function System() {
     "Login with api",
   ];
 
+
+
   const styles = {
     container: {
       display: "flex",
@@ -105,6 +107,9 @@ function System() {
       marginRight: 8,
     },
   };
+
+
+
 
 
   const columns = [
@@ -149,6 +154,11 @@ function System() {
       renderCell: (params) => <div>{fDateTime(params.value || "")}</div>,
     },
   ];
+
+
+
+
+
 
   const columns1 = [
     {
@@ -199,6 +209,10 @@ function System() {
     },
   ];
 
+
+
+
+
   //get subadmin table
   const gettable = async () => {
     await dispatch(getsubadmintable({}))
@@ -245,9 +259,11 @@ function System() {
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Error", error);
       });
   };
+
+
 
   // // get user help data
   const getusertable = async () => {
@@ -284,9 +300,13 @@ function System() {
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Error", error);
       });
   };
+
+
+
+
 
   // get Research
   const getResearcher = async () => {
@@ -317,24 +337,33 @@ function System() {
         }
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("Error", error);
       });
   };
+
+
+
 
   // fetch data by using local storage
   useEffect(() => {
     gettable();
   }, [value == 0, category,inputSearch]);
 
+
+
   useEffect(() => {
     getusertable();
   }, [value == 1,inputSearch]);
+
+
 
   useEffect(() => {
     getResearcher();
   }, [value == 2,inputSearch]);
 
-  console.log("filterData", getsubadmin);
+
+
+  
 
   return (
     <>
@@ -344,7 +373,7 @@ function System() {
             <div className="row align-items-center">
               <div className="col">
                 <h5 className="card-title mb-0">
-                  <i class="fe fe-users pe-2"></i>
+                  <i className="fe fe-users pe-2"></i>
                   Help
                 </h5>
               </div>
@@ -408,7 +437,6 @@ function System() {
                       >
                         <ExportToExcel
                           className="btn btn-primary "
-                          // apiData={ForGetCSV}
                           fileName={"Payment Details"}
                         />
                       </div>

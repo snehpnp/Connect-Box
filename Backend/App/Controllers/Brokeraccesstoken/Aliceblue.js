@@ -61,7 +61,10 @@ class AliceBlue {
                         } else if (Get_User[0].Role == "USER") {
                             redirect_uri = `https://${redirect}/#/user/stock`
 
-                        } else {
+                        } else if (Get_User[0].Role == "RESEARCH") {
+                            redirect_uri = `https://${redirect}/#/research/position`
+
+                        }  else {
                             redirect_uri = `https://${redirect}/#/`
 
                         }
@@ -441,7 +444,7 @@ const GetAllBrokerResponse = async (user_id, res) => {
                         if (response.data[0]) {
 
                             const message = (JSON.stringify(response.data[0]));
-                            console.log("message", message)
+                 
                             let result = await BrokerResponse.findByIdAndUpdate(
                                 { _id: data1._id },
                                 {
@@ -456,7 +459,6 @@ const GetAllBrokerResponse = async (user_id, res) => {
 
 
                         } else {
-                            console.log("response", response.data)
                         }
                     })
                     .catch(async (error) => {

@@ -96,7 +96,6 @@ const Panel = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          console.log("subadmin",response.data)
         
           setGetsubadmin(response.data);
           setGetid(response.data[0]._id)
@@ -114,7 +113,6 @@ const Panel = () => {
     await dispatch(GetAllUsers(data))
       .unwrap()
       .then((response) => {
-         console.log("aaaa",response.data)
         if (response.status) {
           const formattedData = response.data && response.data.map((row, index) => ({
             ...row,
@@ -149,19 +147,6 @@ const Panel = () => {
 
   
 
-  // const getUser = async () => {
-  //   await dispatch(getuserdata({}))
-  //     .unwrap()
-  //     .then(async (response) => {
-  //       if (response.status) {
-  //         console.log("user", response.data);
-  //         setUserdata(response.data)
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log("error", error);
-  //     });
-  // };
 
   useEffect(() => {
     getsubadminDetail();

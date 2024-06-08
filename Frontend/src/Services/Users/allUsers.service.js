@@ -1,5 +1,7 @@
 import axios from "axios";
 import * as Config from "../../Utils/Config";
+import { header } from "../../Utils/ApiHeader";
+
 
 
 // CLIENT ALL SERVICE
@@ -53,8 +55,11 @@ export async function BROKER_RESPONSE(data,token){
  export async function GET_USER_DASHBOARD(data,token){
     try{
         const res = await axios.post(`${Config.base_url}user/dashboard`, data, {
-            data: {}
+            data: {},
+            headers: header(token),
+
         })
+
         return await res?.data
 
     }
@@ -123,3 +128,36 @@ export async function BROKER_RESPONSE(data,token){
     }
  }
  
+
+
+
+
+//  USER STRATEGY PURCHASE ORDER CREATE API
+export async function  OrderCreateStg(data){
+    try{
+        const res= await axios.post(`${Config.base_url}user/strategy/order/create`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch(err){
+        
+        return await err
+    }
+ }
+
+
+
+ //  USER STRATEGY PURCHASE ORDER UPDATE  API
+export async function  OrderUpdateStg(data){
+    try{
+        const res= await axios.post(`${Config.base_url}user/strategy/order/update`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch(err){
+        
+        return await err
+    }
+ }

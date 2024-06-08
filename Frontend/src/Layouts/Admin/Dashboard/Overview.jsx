@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
-import {
-  Dashboard_admin,
-  Dashboard_admin1,
-  SubadminsNamesData,
-  top_Subadmin_dashData
-} from "../../../ReduxStore/Slice/Admin/Subadmins";
+import { Dashboard_admin, Dashboard_admin1, SubadminsNamesData, top_Subadmin_dashData } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
 import { Eye } from 'lucide-react';
 
-import Loader from "../../../Utils/Loader";
 
 const Overview = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
+
   const [options, setOptions] = useState({
     chart: {
       id: "basic-bar",
@@ -32,27 +31,25 @@ const Overview = () => {
 
   const [subadminName, setsubadminName] = useState([]);
   const [subadminsData, SetSubadminsData] = useState([]);
-
-
   const [chart, setchart] = useState(false);
-
   const [colors] = useState(["#7539FF"]);
   const [adminData, setAdminData] = useState("");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [selectedSubadmin, setSelectedSubadmin] = useState("ALL");
   const [selectedSubadminid, setSelectedSubadminid] = useState("");
   const [selectedOption, setSelectedOption] = useState("Day");
   const [selectedOption1, setSelectedOption1] = useState("Monthly");
 
 
+
   const handleSelect = (id) => {
     setSelectedSubadminid(id);
   };
 
+
   const handleSelect1 = (event) => {
     setSelectedOption(event.target.textContent);
   };
+
   const handleSelect2 = (event) => {
     setSelectedOption1(event.target.textContent);
   };
@@ -81,21 +78,17 @@ const Overview = () => {
   });
 
   const cardsData = [
-    formatCardData("Total Subadmins", Totalcount, calculatePercentage(Totalcount, Totalcount),'/admin/allsubadmin?filter=1'),
+    formatCardData("Total Subadmins", Totalcount, calculatePercentage(Totalcount, Totalcount), '/admin/allsubadmin?filter=1'),
     formatCardData("Active Subadmins", TotalActivecount, calculatePercentage(TotalActivecount, Totalcount,), '/admin/allsubadmin?filter=2'),
     formatCardData("Inactive Subadmins", TotalInActivecount, calculatePercentage(TotalInActivecount, Totalcount), '/admin/allsubadmin?filter=3'),
-    formatCardData("Total Researcher", TotalUsercount, calculatePercentage(TotalUsercount, TotalUsercount) ,'/admin/allresearch?filter=4' ),
-    formatCardData("Active Researcher", TotalActiveUsercount, calculatePercentage(TotalActiveUsercount, TotalUsercount) , '/admin/allresearch?filter=5'),
-    formatCardData("Inactive Researcher", TotalInActiveUsercount, calculatePercentage(TotalInActiveUsercount, TotalUsercount) , '/admin/allresearch?filter=6'),
+    formatCardData("Total Researcher", TotalUsercount, calculatePercentage(TotalUsercount, TotalUsercount), '/admin/allresearch?filter=4'),
+    formatCardData("Active Researcher", TotalActiveUsercount, calculatePercentage(TotalActiveUsercount, TotalUsercount), '/admin/allresearch?filter=5'),
+    formatCardData("Inactive Researcher", TotalInActiveUsercount, calculatePercentage(TotalInActiveUsercount, TotalUsercount), '/admin/allresearch?filter=6'),
   ];
 
   const handleChange = (route) => {
-      navigate(route)
+    navigate(route)
   }
-
-
-
-  console.log("admin/allresearch :" , cardsData)
 
 
   const dashData = async () => {
@@ -113,9 +106,8 @@ const Overview = () => {
       });
   };
 
+
   const dashData1 = async () => {
-
-
     var data = {
       SUBADMINS: selectedSubadminid,
       selectedOption: selectedOption,
@@ -165,6 +157,7 @@ const Overview = () => {
       });
   };
 
+
   useEffect(() => {
     SubadminName();
     dashData();
@@ -173,8 +166,6 @@ const Overview = () => {
   useEffect(() => {
     dashData1();
   }, [selectedOption, selectedSubadmin]);
-
-  var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
 
 
   const topdashData = async (data) => {
@@ -212,15 +203,18 @@ const Overview = () => {
           <div className="row">
             <div className="col-md-4 col-lg-3">
               <div className="card">
+            
                 <div className="col card-header">
                   <h5 className="card-title">Admin Dashboard</h5>
                 </div>
+              
                 <div
                   data-aos="fade-down"
                   className="gif-div "
                   style={{ height: "300px" }}
                 >
                   <iframe src="https://lottie.host/embed/1bc48686-c5b0-401d-ae40-9b241c697e31/qa4LRQq6FD.json"></iframe>
+
                 </div>
               </div>
             </div>
@@ -347,7 +341,6 @@ const Overview = () => {
                           className="dropdown-menu"
                           aria-labelledby="planDropdownButton"
                         >
-                          {/* subadminName.map((data, index) => ( */}
                           {dropdown.map((data, index) => (
                             <li key={index}>
                               <a
@@ -411,7 +404,6 @@ const Overview = () => {
                         className="dropdown-menu"
                         aria-labelledby="planDropdownButton"
                       >
-                        {/* subadminName.map((data, index) => ( */}
                         {dropdown.map((data, index) => (
                           <li key={index}>
                             <a

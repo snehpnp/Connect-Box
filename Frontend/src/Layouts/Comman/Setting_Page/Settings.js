@@ -53,15 +53,29 @@ const Settings = () => {
                       role="tablist"
                       aria-orientation="vertical"
                     >
+
+                      <a
+                        className="nav-link active mb-1"
+                        id="v-pills-changepass-tab"
+                        data-bs-toggle="pill"
+                        href="#v-pills-changepass"
+                        role="tab"
+                        aria-controls="v-pills-changepass"
+
+                        aria-selected="true"
+                      >
+                        Change Password
+                      </a>
+
                       {(Role === "ADMIN") && (
                         <a
-                          className="nav-link active mb-1"
+                          className="nav-link mb-1"
                           id="v-pills-company-tab"
                           data-bs-toggle="pill"
                           href="#v-pills-company"
                           role="tab"
                           aria-controls="v-pills-company"
-                          aria-selected="true"
+
                           style={{ color: "black" }}
                         >
                           Company Settings
@@ -129,17 +143,6 @@ const Settings = () => {
 
                       <a
                         className="nav-link mb-1"
-                        id="v-pills-changepass-tab"
-                        data-bs-toggle="pill"
-                        href="#v-pills-changepass"
-                        role="tab"
-                        aria-controls="v-pills-changepass"
-                        aria-selected="false"
-                      >
-                        Change Password
-                      </a>
-                      <a
-                        className="nav-link mb-1"
                         id="v-pills-api-tab"
                         data-bs-toggle="pill"
                         href="#v-pills-api"
@@ -180,9 +183,38 @@ const Settings = () => {
                     <div className="card-body">
 
                       <div className="tab-content ">
-                        {/* Company Settings */}
+
+
+
+
+                        {/* CHANGE PASSWORD */}
                         <div
                           className="tab-pane active"
+                          id="v-pills-changepass"
+                          role="tabpanel"
+                          aria-labelledby="v-pills-changepass-tab"
+                        >
+                          <div className="col-xl-12 col-md-12">
+                            <div className="page-header">
+
+
+                              <div className="page-content">
+                                <div className="mainDiv">
+                                  <PasswordChange />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+
+
+
+                        {/* Company Settings */}
+                        <div
+                          className="tab-pane"
                           id="v-pills-company"
                           role="tabpanel"
                           aria-labelledby="v-pills-company-tab"
@@ -257,28 +289,7 @@ const Settings = () => {
                           <Trackpanel />
                         </div>
 
-                        {/* CHANGE PASSWORD */}
-                        <div
-                          className="tab-pane fade"
-                          id="v-pills-changepass"
-                          role="tabpanel"
-                          aria-labelledby="v-pills-changepass-tab"
-                        >
-                          <div className="col-xl-12 col-md-12">
-                            <div className="page-header">
-                              {/* <div className="content-page-header">
-                                                    <h5>Change Password</h5>
 
-                                                </div> */}
-
-                              <div className="page-content">
-                                <div className="mainDiv">
-                                  <PasswordChange />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
 
                         {/* API CREATE INFORMATION */}
                         <div

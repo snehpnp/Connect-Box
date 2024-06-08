@@ -2,6 +2,7 @@
 "use strict"
 
 const router = require("express").Router()
+const { verifyToken } = require('../../Middlewares/autt.middleware')
 
 const { AddSubadmin,EditSubadmin,getallSubadmin,getallSubadminClients,getOneSubadmin,GetAllRechargeDetails,UpdateActiveStatusSubadmin,AddBalanceSubadmin,getallSubadminName,GetAllRechargeDetailsById,UpdateBrokerInfo,GetBrokerInfo} = require('../../Controllers/Admins/Subadmins/subadmin.controller')
 

@@ -50,7 +50,7 @@ const Main_Header = () => {
               <img
                 src="assets/img/pnp.png"
                 className="img-fluid logo-small"
-                alt="Logo"
+                alt="Logo" 
               />
             </Link>
           </div>

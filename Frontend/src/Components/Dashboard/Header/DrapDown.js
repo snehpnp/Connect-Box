@@ -2,81 +2,131 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IndianRupee } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
-import { LogOut } from '../../../ReduxStore/Slice/Auth/AuthSlice'
+import {
+  ProfileInfo,
+  userdataforhelp,
+  getsubadmintable,
+} from "../../../ReduxStore/Slice/Admin/System";
+import { LogOut } from "../../../ReduxStore/Slice/Auth/AuthSlice";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { Minimize } from "lucide-react";
-import Swal from 'sweetalert2';
-import { ipAddress } from '../../../Utils/Ipaddress';
+import Swal from "sweetalert2";
+import { ipAddress } from "../../../Utils/Ipaddress";
+import { admin_Msg_Get } from "../../../ReduxStore/Slice/Admin/MessageData";
+import { fDateTime } from "../../../Utils/Date_formet";
+import useLogout from "../../../Utils/Logout";
+import io from "socket.io-client";
+import * as Config from "../../../Utils/Config";
+import { loginWithApi } from "../../../Utils/log_with_api";
+import {
+  Userinfo,
+  Trading_Off_Btn,
+} from "../../../ReduxStore/Slice/Comman/Userinfo";
+
+import useGetCompany from "../../../Utils/ConnectSocket";
 
 const DropDown = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const logout = useLogout();
 
+  const getCompany = useGetCompany();
+
+  const [getLoginStatus, setLoginStatus] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+  const [pipelineData, setPipelineData] = useState([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [showFunds, setShowFunds] = useState(false);
   const [themeMode, setThemeMode] = useState("light");
   const [ip, setIp] = useState(null);
-
-  const dispatch = useDispatch();
-
   const [profileData, setProfileData] = useState([]);
   const [error, setError] = useState(null);
+  const [getuserdata, setGetuserdata] = useState([]);
   const [profileImage, setProfileImage] = useState("");
-  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
-  const subadmin_service_type = JSON.parse(
-    localStorage.getItem("user_details")
-  ).subadmin_service_type;
-  var Role = JSON.parse(localStorage.getItem("user_details")).Role;
-  var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
+  const [getsubadmin, setGetsubadmin] = useState([]);
+  const [socket, setSocket] = useState(null);
 
+  const user_details = JSON.parse(localStorage.getItem("user_details"));
+  var Role = JSON.parse(localStorage.getItem("user_details")).Role;
+  var token = JSON.parse(localStorage.getItem("user_details")).token;
+
+  const RunSocketUrl = async () => {
+    const companyData = await getCompany();
+
+    if (companyData[0].BackendSocketurl) {
+      const newSocket = io(companyData[0].BackendSocketurl);
+      setSocket(newSocket);
+      return () => {
+        newSocket.disconnect();
+      };
+    }
+  };
+
+  useEffect(() => {
+    RunSocketUrl();
+  }, []);
+
+
+
+  const RunLogoutSocket = () => {
+    if (socket != null) {
+      if (user_details) {
+        socket.on("logout", (data) => {
+          if (user_details.user_id == data.user_id && token != data.token) {
+            LogoutUser();
+            return;
+          }
+        });
+      } else {
+        window.location.reload();
+        return;
+      }
+    }
+  };
+
+
+
+  useEffect(() => {
+    RunLogoutSocket();
+  }, [socket]);
+
+
+  
   const fetchData = async () => {
     try {
-      let data = { id: user_id };
-      await dispatch(ProfileInfo(data))
-        .unwrap()
-        .then(async (response) => {
-          if (response.status) {
-            setProfileData(response.data);
-            setProfileImage(response.data[0].profile_img);
-          } else {
-            toast.error(response.msg);
-          }
-        })
-        .catch((error) => {
-          console.log("Error", error);
-        });
+      const ip = await ipAddress();
+      let data = { id: user_details.user_id };
+      const response = await dispatch(
+        ProfileInfo({ req: data, token: token })
+      ).unwrap();
+      if (response.status) {
+        setProfileData(response.data);
+        setProfileImage(response.data[0].profile_img);
+        if (response.data[0].TradingStatus == "on") {
+          setLoginStatus(true);
+        } else {
+          setLoginStatus(false);
+        }
+      } else {
+        if (response.msg === "Unauthorized!") {
+          console.log("Dropdown", user_details.user_id, ip);
+          LogoutUser();
+        }
+      }
     } catch (error) {
+      console.log("Error", error);
       setError(error.message);
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-
-
-  const fetchIP = async () => {
-    try {
-      const ip = await ipAddress();
-      setIp(ip);
-    } catch (error) {
-      console.error('Failed to fetch IP address:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchIP();
-  }, []);
-
-
-
   const LogoutUser = async (e) => {
-    const data = { userId: user_id, Device: "WEB", system_ip: ip }
+    const ip = await ipAddress();
+    const data = { userId: user_details.user_id, Device: "WEB", system_ip: ip };
 
-    await dispatch(LogOut(data)).unwrap()
+    await dispatch(LogOut(data))
+      .unwrap()
       .then((response) => {
         if (response.status) {
           Swal.fire({
@@ -84,33 +134,41 @@ const DropDown = () => {
             text: response.msg,
             icon: "success",
             timer: 1500,
-            timerProgressBar: true
-          })
+            timerProgressBar: true,
+          });
           setTimeout(() => {
-            localStorage.removeItem("user_details")
-            localStorage.removeItem("user_role")
-            navigate("/login")
-          }, 1500)
-
-
-        }
-        else {
+            localStorage.removeItem("user_details");
+            localStorage.removeItem("user_role");
+            navigate("/login");
+          }, 1500);
+        } else {
           Swal.fire({
             title: "Error!",
             text: response.msg,
             icon: "error",
             timer: 1500,
-            timerProgressBar: true
+            timerProgressBar: true,
           });
-
+          setTimeout(() => {
+            localStorage.removeItem("user_details");
+            localStorage.removeItem("user_role");
+            navigate("/login");
+          }, 1500);
         }
       })
       .catch((error) => {
-        console.log("Error in logout user", error)
-      })
+        console.log("Error in logout user", error);
+      });
+  };
 
-
-  }
+  const fetchIP = async () => {
+    try {
+      const ip = await ipAddress();
+      setIp(ip);
+    } catch (error) {
+      console.error("Failed to fetch IP address:", error);
+    }
+  };
 
   // Define toggleTheme function
   const toggleTheme = () => {
@@ -121,10 +179,6 @@ const DropDown = () => {
     htmlElement.setAttribute("data-layout-mode", newThemeMode);
     htmlElement.setAttribute("data-topbar", newThemeMode);
     localStorage.setItem("theme_mode", newThemeMode);
-
-    // setTimeout(() => {
-    //     window.location.reload();
-    // }, 200);
   };
 
   const toggleFullScreen = () => {
@@ -155,12 +209,11 @@ const DropDown = () => {
 
   const walletmodal = () => {
     if (Role == "ADMIN") {
-      // navigate('/admin/wallet')
     } else if (Role == "SUBADMIN") {
       navigate("/subadmin/wallet");
     } else if (Role == "RESEARCH") {
       navigate("/research/wallet");
-    } 
+    }
   };
 
   const ProfilePage = () => {
@@ -196,22 +249,6 @@ const DropDown = () => {
     walletmodal();
   };
 
-  // Apply theme based on localStorage value on page load
-  useEffect(() => {
-    const storedThemeMode = localStorage.getItem("theme_mode");
-    if (storedThemeMode) {
-      setThemeMode(storedThemeMode);
-    }
-  }, []);
-
-  // Update theme-related attributes on HTML element
-  useEffect(() => {
-    const htmlElement = document.querySelector("html");
-    htmlElement.setAttribute("data-sidebar", themeMode);
-    htmlElement.setAttribute("data-layout-mode", themeMode);
-    htmlElement.setAttribute("data-topbar", themeMode);
-  }, [themeMode]);
-
   function formatNumber(value) {
     if (value < 1000) {
       return value.toString();
@@ -240,14 +277,192 @@ const DropDown = () => {
       : text;
   };
 
+  // ADMIN NOTIFICATION NOTIFICATION
+  const getSubadminTableData = async () => {
+    try {
+      const response = await dispatch(
+        admin_Msg_Get({ ownerId: user_details.user_id, key: 3 })
+      ).unwrap();
+      if (response.status) {
+        setPipelineData(response.data);
+      } else {
+      }
+    } catch (error) {
+      console.log("Error", error);
+    } finally {
+    }
+  };
 
+  // subadmin help notification for admin page
+  const gettable = async () => {
+    try {
+      const today = new Date().toISOString().split("T")[0]; // Format YYYY-MM-DD
+      const response = await dispatch(getsubadmintable({})).unwrap();
+
+      if (response.status) {
+        if (response.data.length > 0) {
+          var filterData = response.data.filter((data) => {
+            const dataDate = data.createdAt.split("T")[0];
+
+            return dataDate === today;
+          });
+
+          setGetsubadmin(filterData);
+        } else {
+          setGetsubadmin([]);
+        }
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  // USER NOTIFICATION
+  const getusertable = async () => {
+    try {
+      const response = await dispatch(userdataforhelp({})).unwrap();
+      const today = new Date().toISOString().split("T")[0];
+
+      if (response.status) {
+        if (response.data.length > 0) {
+          var filterData = response.data.filter((data) => {
+            const dataDate = data.createdAt.split("T")[0];
+
+            return (
+              data.prifix_key.substring(0, 3) === user_details.prifix_key &&
+              dataDate === today
+            );
+          });
+
+          setGetuserdata(filterData);
+        } else {
+          setGetuserdata([]);
+        }
+      }
+    } catch (error) {
+      console.error("Error in getusertable:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    fetchIP();
+    getSubadminTableData();
+    getusertable();
+    gettable();
+  }, []);
+
+  useEffect(() => {
+    const storedThemeMode = localStorage.getItem("theme_mode");
+    if (storedThemeMode) {
+      setThemeMode(storedThemeMode);
+    }
+    const htmlElement = document.querySelector("html");
+    htmlElement.setAttribute(
+      "data-sidebar",
+      storedThemeMode ? storedThemeMode : "light"
+    );
+    htmlElement.setAttribute(
+      "data-layout-mode",
+      storedThemeMode ? storedThemeMode : "light"
+    );
+    htmlElement.setAttribute(
+      "data-topbar",
+      storedThemeMode ? storedThemeMode : "light"
+    );
+  }, [themeMode]);
+
+  const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
+    if (check) {
+      setLoginStatus(true);
+    } else {
+      setLoginStatus(false);
+    }
+  };
+
+  // LOGOUT TRADING
+  const handleTradingOff = async (id) => {
+    let data = { id: id, system_ip: ip };
+
+    await dispatch(Trading_Off_Btn(data))
+      .unwrap()
+      .then((response) => {
+        setRefresh(!refresh);
+        if (response.status) {
+          Swal.fire({
+            title: "Trading Off Successfully!",
+            icon: "success",
+            html: "Your trading has been successfully completed.",
+          });
+        } else {
+        }
+      })
+      .catch((error) => {});
+  };
 
   return (
     <div className="mb-0 dropdown custom-dropdown">
       <ul className="nav nav-tabs user-menu">
+        {Role == "USER" && (
+          <li className="toggle-li">
+            <style>
+              {`
+             .checktoggle::after {
+               display: none !important;
+             }
+           `}
+            </style>
+            <div
+              className="status-toggle"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <input
+                id="1"
+                className="check"
+                type="checkbox"
+                onChange={(e) =>
+                  LogIn_WIth_Api(
+                    e.target.checked,
+                    profileData && profileData[0].broker,
+                    profileData && profileData[0].TradingStatus,
+                    profileData && profileData[0]
+                  )
+                }
+                defaultChecked={getLoginStatus}
+                style={{ display: "none" }}
+              />
+
+              <label
+                htmlFor="1"
+                className="checktoggle"
+                style={{
+                  position: "relative",
+                  width: "150px", // Significantly increased width
+                  height: "40px", // Increased height
+                  backgroundColor: getLoginStatus ? "green" : "red",
+                  borderRadius: "15px",
+                  cursor: "pointer",
+                  transition: "background-color 0.3s",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: getLoginStatus ? "flex-end" : "flex-start",
+                  padding: "0 10px", // Padding to make space for the text
+                  color: "white",
+                  fontSize: "12px", // Smaller text size
+                  fontWeight: "bold",
+                }}
+              >
+                {getLoginStatus ? "TRADING ON" : "TRADING OFF"}
+              </label>
+            </div>
+          </li>
+        )}
+
         {Role == "SUBADMIN" && (
           <li className="nav-item dropdown flag-nav dropdown-heads">
-            {subadmin_service_type == 2 ? "STRATEGY WISE" : "PER TRADE"}
+            {user_details.subadmin_service_type == 2
+              ? "STRATEGY WISE"
+              : "PER TRADE"}
           </li>
         )}
         {!(Role === "EMPLOYEE") ? (
@@ -279,85 +494,151 @@ const DropDown = () => {
           </li>
         ) : null}
 
-
-
-
         <li className="nav-item dropdown  flag-nav dropdown-heads">
           <a
             className="nav-link iconclass"
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            <i className="fe fe-bell" /> <span className="badge rounded-pill" />
+            <i className="fe fe-bell" />{" "}
+            {pipelineData && pipelineData.length > 0 ? (
+              <span className="badge rounded-pill" />
+            ) : getuserdata.length > 0 ? (
+              <span className="badge rounded-pill" />
+            ) : (
+              ""
+            )}
           </a>
           <div className="dropdown-menu notifications">
             <div className="topnav-dropdown-header">
               <div className="notification-title">Notifications</div>
-              <a
-                href="javascript:void(0)"
-                className="clear-noti d-flex align-items-center"
-              >
-                Mark all as read <i className="fe fe-check-circle" />
-              </a>
             </div>
+
             <div className="noti-content">
               <ul className="notification-list">
-                <li className="notification-message">
-                  <a href="profile.html">
-                    <div className="d-flex">
-                      <div className="media-body">
-                        <div className="d-flex justify-content-between">
-                          <p className="noti-details">
-                            <span className="noti-title">Chandra Prakash</span>
-                          </p>
-                          <p className="noti-time">
-                            <span className="notification-time">
-                              30-04-2024 11:15 AM
-                            </span>
-                          </p>
+                {pipelineData &&
+                  Role == "SUBADMIN" &&
+                  pipelineData.map((data, index) => (
+                    <li
+                      className="notification-message"
+                      key={`pipeline-${index}`}
+                    >
+                      <a href="/#/subadmin/message-broadcast">
+                        <div className="d-flex">
+                          <div className="media-body">
+                            <div className="d-flex justify-content-between">
+                              <p className="noti-details">
+                                <span className="noti-title">
+                                  {data.UserName}
+                                </span>
+                              </p>
+                              <p className="noti-time">
+                                <span className="notification-time">
+                                  {fDateTime(data.createdAt)}
+                                </span>
+                              </p>
+                            </div>
+                            <div className="d-flex justify-content-between">
+                              <span
+                                style={{
+                                  maxWidth: "18rem",
+                                  display: "inline-block",
+                                  wordWrap: "break-word",
+                                  whiteSpace: "normal",
+                                }}
+                              >
+                                {truncateText(data.messageTitle)}
+                              </span>
+                              <span>Admin</span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="d-flex justify-content-between">
-                          <span style={{ maxWidth: "18rem" }}>
-                            {truncateText("Alice Broker Some Issue Today", 80)}
-                          </span>
-                          <span>Admin{""}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </a>
-                </li>
+                      </a>
+                    </li>
+                  ))}
 
-                <li className="notification-message">
-                  <a href="profile.html">
-                    <div className="d-flex">
-                      <div className="media-body">
-                        <div className="d-flex justify-content-between">
-                          <p className="noti-details">
-                            <span className="noti-title">Sneh Jaiswal</span>
-                          </p>
-                          <p className="noti-time">
-                            <span className="notification-time">
-                              30-04-2024 11:15 AM
-                            </span>
-                          </p>
-                        </div>
-                        <div className="d-flex justify-content-between">
-                          <span style={{ maxWidth: "18rem" }}>
-                            {truncateText(
-                              "I Have issue in Kotak New Please Resoleve my probleam",
-                              80
-                            )}
-                          </span>
-                          <span>Help </span>
-                        </div>
-                      </div>
-                    </div>
-                  </a>
-                </li>
+                {Role === "SUBADMIN"
+                  ? getuserdata &&
+                    getuserdata.map((data, index) => (
+                      <li
+                        className="notification-message"
+                        key={`getuserdata-${index}`}
+                      >
+                        <a href="/#/subadmin/help">
+                          <div className="d-flex">
+                            <div className="media-body">
+                              <div className="d-flex justify-content-between">
+                                <p className="noti-details">
+                                  <span className="noti-title">
+                                    {data.UserName}
+                                  </span>
+                                </p>
+                                <p className="noti-time">
+                                  <span className="notification-time">
+                                    {fDateTime(data.createdAt)}
+                                  </span>
+                                </p>
+                              </div>
+                              <div className="d-flex justify-content-between">
+                                <span
+                                  style={{
+                                    maxWidth: "18rem",
+                                    display: "inline-block",
+                                    wordWrap: "break-word",
+                                    whiteSpace: "normal",
+                                  }}
+                                >
+                                  {truncateText(data.Message)}
+                                </span>
+                                <span>Help</span>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    ))
+                  : Role === "ADMIN"
+                  ? getsubadmin &&
+                    getsubadmin.map((data, index) => (
+                      <li
+                        className="notification-message"
+                        key={`getuserdata-${index}`}
+                      >
+                        <a href="/#/admin/help">
+                          <div className="d-flex">
+                            <div className="media-body">
+                              <div className="d-flex justify-content-between">
+                                <p className="noti-details">
+                                  <span className="noti-title">
+                                    {data.UserName}
+                                  </span>
+                                </p>
+                                <p className="noti-time">
+                                  <span className="notification-time">
+                                    {fDateTime(data.createdAt)}
+                                  </span>
+                                </p>
+                              </div>
+                              <div className="d-flex justify-content-between">
+                                <span
+                                  style={{
+                                    maxWidth: "18rem",
+                                    display: "inline-block",
+                                    wordWrap: "break-word",
+                                    whiteSpace: "normal",
+                                  }}
+                                >
+                                  {truncateText(data.Message)}
+                                </span>
+                                <span>Help</span>
+                              </div>
+                            </div>
+                          </div>
+                        </a>
+                      </li>
+                    ))
+                  : ""}
               </ul>
-            </div>
-            <div className="topnav-dropdown-footer">
-              <a href="#">Clear All</a>
             </div>
           </div>
         </li>
@@ -395,7 +676,7 @@ const DropDown = () => {
               </span>
               <span className="user-content">
                 <span className="user-name">
-                  <b>{UserNAme && UserNAme}</b>
+                  <b>{user_details && user_details.UserName}</b>
                 </span>
                 <span className="user-details">{Role}</span>
                 <span className="decorative-element"></span>
@@ -421,18 +702,13 @@ const DropDown = () => {
                   </li>
                   <li onClick={() => ProfilePage()}>
                     <Link className="dropdown-item dev">
-                      <i class="fa-solid fa-user p-2"></i>Profile
+                      <i className="fa-solid fa-user p-2"></i>Profile
                     </Link>
                   </li>
-                  {/* {Role == "ADMIN" || Role === "SUBADMIN" ?
-                                        <li>
-                                            <Link className="dropdown-item dev" to={Role === "ADMIN" ? "/admin/system" : "/subadmin/system"}>
-                                                <i class="fa-solid fa-gear p-2"></i> System
-                                            </Link>
-                                        </li> : ''} */}
+
                   <li onClick={() => SettingPage()}>
                     <Link className="dropdown-item dev" to="/setting">
-                      <i class="fa-solid fa-gear p-2"></i>Settings
+                      <i className="fa-solid fa-gear p-2"></i>Settings
                     </Link>
                   </li>
 
@@ -441,7 +717,8 @@ const DropDown = () => {
                       className="dropdown-item dev"
                       onClick={(e) => LogoutUser(e)}
                     >
-                      <i class="fa-solid fa-right-to-bracket p-2"></i> Log out
+                      <i className="fa-solid fa-right-to-bracket p-2"></i> Log
+                      out
                     </a>
                   </li>
                 </ul>

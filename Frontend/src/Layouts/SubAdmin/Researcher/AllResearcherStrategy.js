@@ -114,7 +114,8 @@ const AllResearcherStrategy = () => {
                                 strategy_id: response.data.strategy_id,
                                 order_status: "Success",
                                 User_data: JSON.stringify(response1),
-                                type: selectedOption
+                                type: selectedOption,
+                                Amount: Number(response.data.amount)
                             }
 
 
@@ -156,7 +157,7 @@ const AllResearcherStrategy = () => {
                 {/* PAGE HEADER */}
                 <div className="card">
                     <div className="card-header mb-0">
-                        <h5 className='card-title mb-0'><i class="fe fe-target "> </i>Researcher Strategy</h5>
+                        <h5 className='card-title mb-0'><i className="fe fe-target "> </i>Researcher Strategy</h5>
                     </div>
 
                     <div className='card-body'>
@@ -166,7 +167,7 @@ const AllResearcherStrategy = () => {
                                 <div className="row d-flex align-items-center justify-content-center">
 
                                     {allStrategy.data && allStrategy.data.map((stg) => {
-                                    return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3" >
+                                        return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3" >
                                             <div className="packages card" data-aos="fade-down">
                                                 <div className="package-header d-flex justify-content-between">
                                                     <div className="d-flex justify-content-between w-100">

@@ -627,8 +627,6 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
 
 const ExitPlaceOrder = async (item, filePath, possition_qty, signals, signal_req) => {
 
-    // console.log("INSIDE EXIT FUNCTION")
-    // console.log("INSIDE EXIT FUNCTION possition_qty",possition_qty)
 
     // var dt = splitArray[0]
     // var input_symbol = splitArray[1]
@@ -712,7 +710,6 @@ const ExitPlaceOrder = async (item, filePath, possition_qty, signals, signal_req
 
                 })
                     .then((BrokerResponseCreate) => {
-                        // console.log('User created and saved:', BrokerResponseCreate._id)
                     })
                     .catch((err) => {
                         try {
@@ -742,7 +739,7 @@ const ExitPlaceOrder = async (item, filePath, possition_qty, signals, signal_req
 
                 })
                     .then((BrokerResponseCreate) => {
-                        // console.log('User created and saved:', BrokerResponseCreate._id)
+              
                     })
                     .catch((err) => {
                         try {
@@ -784,7 +781,7 @@ const ExitPlaceOrder = async (item, filePath, possition_qty, signals, signal_req
                             reject_reason: message,
                         })
                             .then((BrokerResponseCreate) => {
-                                // console.log('User created and saved:', BrokerResponseCreate._id)
+                     
                             })
                             .catch((err) => {
                                 try {
@@ -812,7 +809,7 @@ const ExitPlaceOrder = async (item, filePath, possition_qty, signals, signal_req
                             reject_reason: message,
                         })
                             .then((BrokerResponseCreate) => {
-                                // console.log('User created and saved:', BrokerResponseCreate._id)
+    
                             })
                             .catch((err) => {
                                 try {

@@ -256,6 +256,8 @@ export const subamdin_header = [
     {
         id: 25,
         name: 'More',
+        Icon: "fa fa-crosshairs",
+
         Data: [
             {
                 id: 10,
@@ -361,6 +363,13 @@ export const User_header = [
         name: 'Help',
         route: "/user/help",
         Icon: "fa-solid fa-circle-info",
+        Data: []
+    },
+    {
+        id: 10,
+        name: 'Message Broadcast',
+        route: "/user/broadcast",
+        Icon: "fe fe-message-circle",
         Data: []
     },
     {
@@ -514,7 +523,7 @@ export const research_header = [
     },
     {
         id: 7,
-        name: 'Positions',
+        name: 'Trade History',
         route: "/research/position",
         Icon: "fe fe-credit-card",
         Data: []
@@ -566,6 +575,13 @@ export const research_header = [
         id: 12,
         name: 'Strategy User',
         route: "/research/strategy/user",
+        Icon: "fe fe-users",
+        Data: []
+    },
+    {
+        id: 12,
+        name: 'Collaborators',
+        route: "/research/collaborators",
         Icon: "fe fe-users",
         Data: []
     },

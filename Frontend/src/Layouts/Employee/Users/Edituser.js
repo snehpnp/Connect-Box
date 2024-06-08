@@ -593,7 +593,7 @@ const EditClient = () => {
                 additional_field={
                     <>
 
-                        {serviceName.data.length > 0 ? <div class="input-block "> <label>All Group Service</label> </div> : ""}
+                        {serviceName.data.length > 0 ? <div className="input-block "> <label>All Group Service</label> </div> : ""}
                         <div className="row">
 
                             {serviceName &&
@@ -614,7 +614,7 @@ const EditClient = () => {
 
                         {additionalData && additionalData.Update_Api_Key != 1 ? subadmin_service_type1 == 2 ?
                             (<div className="row mt-4">
-                                <div class="input-block ">
+                                <div className="input-block ">
                                     <label>All Strategies</label>
                                 </div>
                                 {getPermission.strategyName.map((strategy) => (
@@ -747,7 +747,7 @@ const EditClient = () => {
                             </div>)
                             :
                             (<div className="row mt-4">
-                                <div class="input-block ">
+                                <div className="input-block ">
                                     <label>All Strategy</label>
                                 </div>
                                 {getPermission.strategyName.map((strategy) => (

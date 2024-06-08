@@ -2,6 +2,7 @@ import axios from "axios";
 
 // import Files
 import * as Config from "../../Utils/Config";
+import { header } from "../../Utils/ApiHeader";
 
 
 // LOGIN-USER
@@ -36,9 +37,11 @@ export async function EditCompanyInfo(data, token) {
 
 
 export async function ProfileData(data, token) {
+
     try {
         const res = await axios.post(`${Config.base_url}subadmin/get`, data, {  
             data: {},
+            headers: header(token),
         })
         return await res?.data;
     }

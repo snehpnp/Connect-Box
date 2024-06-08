@@ -87,6 +87,14 @@ const AddClient = () => {
       parent_role: null,
       demat_userid: null,
       api_key: null,
+
+      app_key: null,
+      api_type: null,
+      client_code: null,
+      app_id: null,
+      api_secret: null,
+
+
       Service_Type: 0,
       balance: 0,
       per_trade_value: null,
@@ -145,6 +153,15 @@ const AddClient = () => {
         parent_id: user_id,
         parent_role: Role || "SUBADMIN",
         demat_userid: values.demat_userid,
+        api_key: values.api_key,
+
+        app_key: values.app_key,
+        api_type: values.api_type,
+        client_code: values.client_code,
+        app_id: values.app_id,
+        api_secret: values.api_secret,
+
+
         group_service: values.groupservice,
         broker: values.broker,
         Per_trade: null,
@@ -341,16 +358,15 @@ const AddClient = () => {
     },
     {
       name: 'demat_userid',
-      label: formik.values.broker == 9 ? 'User Id' : '', type: 'text',
-      showWhen: values => values.broker === '9',
+      label: formik.values.broker == 9 ? 'User Id' :  formik.values.broker == 2 ? 'Demat UserId' :"", type: 'text',
+      showWhen: values => values.broker === '9' || values.broker === '2',
       label_size: 12, col_size: 6, disable: false
     },
     {
       name: 'app_id',
-      label: formik.values.broker == 21 ? 'MPIN' :formik.values.broker == 1 ? 'Verification Code' : formik.values.broker == 5 ? 'Password' : formik.values.broker == 7 ? 'Demat Password' : formik.values.broker == 11 ? 'Password' : formik.values.broker == 2 ? 'Demat UserId' : formik.values.broker == 13 ? 'App Id' : formik.values.broker == 9 ? 'Password' : formik.values.broker == 14 ? 'User Id ' : 'App Id', type: 'text',
+      label: formik.values.broker == 21 ? 'MPIN' :formik.values.broker == 1 ? 'Verification Code' : formik.values.broker == 5 ? 'Password' : formik.values.broker == 7 ? 'Demat Password' : formik.values.broker == 11 ? 'Password' : formik.values.broker == 13 ? 'App Id' : formik.values.broker == 9 ? 'Password' : formik.values.broker == 14 ? 'User Id ' : 'App Id', type: 'text',
       showWhen: values =>
-        //  values.broker === '2' ||
-        values.broker === '1' || values.broker === '2' || values.broker === "3" || values.broker === '5' || values.broker === '7' || values.broker === '9' || values.broker === '11' || values.broker === '13' || values.broker === '14' || values.broker == '21',
+        values.broker === '1'  || values.broker === "3" || values.broker === '5' || values.broker === '7' || values.broker === '9' || values.broker === '11' || values.broker === '13' || values.broker === '14' || values.broker == '21',
       label_size: 12, col_size: 6, disable: false
     },
     {
@@ -439,6 +455,15 @@ const AddClient = () => {
     formik.setFieldValue('per_trade_value', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].per_trade_value);
     formik.setFieldValue('balance', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].Balance);
     formik.setFieldValue('demat_userid', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].demat_userid);
+    formik.setFieldValue('api_key', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].api_key);
+
+    formik.setFieldValue('app_key', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].app_key);
+    formik.setFieldValue('api_type', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].api_type);
+    formik.setFieldValue('client_code', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].client_code);
+    formik.setFieldValue('app_id', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].app_id);
+    formik.setFieldValue('api_secret', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].api_secret);
+
+
     formik.setFieldValue('Employees', getOneUsers.getClients !== undefined && getOneUsers.getClients[0].employee_id);
     
 
@@ -654,7 +679,7 @@ const AddClient = () => {
               
               additional_field={
                 <>
-                  {serviceName.data.length > 0 ? <div class="input-block "> <label>All Group Service</label> </div> : ""}
+                  {serviceName.data.length > 0 ? <div className="input-block "> <label>All Group Service</label> </div> : ""}
                   <div className="row">
 
                     {serviceName &&
@@ -680,7 +705,7 @@ const AddClient = () => {
                     {/* STRATEGY CODE */}
                     {subadmin_service_type1 == 2 ?
                       (<div className="row mt-4">
-                        <div class="input-block ">
+                        <div className="input-block ">
                           <label>All Strategy</label>
                         </div>
                         {getAllStategy.data.map((strategy) => (
@@ -815,7 +840,7 @@ const AddClient = () => {
 
                       // Per Trade Code 
                       : formik.values.Service_Type ? (<div className="row mt-4">
-                        <div class="input-block ">
+                        <div className="input-block ">
                           <label>All Strategy</label>
                         </div>
                         {getAllStategy && getAllStategy.data.map((strategy) => (

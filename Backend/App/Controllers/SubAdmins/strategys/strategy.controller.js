@@ -6,6 +6,7 @@ const researcher_strategy = db.researcher_strategy;
 const User = db.user;
 const strategy_client_model = db.strategy_client;
 const tradeCharge_Modal = db.tradeCharge;
+const Activity_logs = db.Activity_logs;
 
 const mongoose = require("mongoose");
 
@@ -148,7 +149,7 @@ class strategy {
             });
         })
         .catch((err) => {
-          console.log(" Error Add Time Error-", err);
+          console.log("Error Add Time Error-", err);
           if (err.keyValue) {
             return res.send({
               status: false,
@@ -249,16 +250,7 @@ class strategy {
             data: [],
           });
         }
-        // if (
-        //   maker_id_find.prifix_key !=
-        //   strategy_name.substring(0, 3).toUpperCase()
-        // ) {
-        //   return res.send({
-        //     status: false,
-        //     msg: "Please Enter Strategy starting 3 leter is your priPrefix Key fix letter",
-        //     data: [],
-        //   });
-        // }
+
         return true;
       }
 
@@ -269,6 +261,27 @@ class strategy {
           data: [],
         });
       }
+
+      function compareObjects(oldObj, newObj) {
+
+        if (oldObj.strategy_category != newObj.strategy_category) {
+          const Activity_logsData = new Activity_logs({
+            user_Id: maker_id,
+            admin_Id: maker_id,
+            category: "EDIT_STRATEGY",
+            message: "Strategy Category Update " + oldObj.strategy_category + " " + newObj.strategy_category,
+            maker_role: "SUBADMIN",
+            device: "web",
+            system_ip: ""
+          });
+          Activity_logsData.save();
+        }
+
+      }
+
+
+      const changes = compareObjects(strategy_check, req.body);
+
 
 
 
@@ -392,15 +405,12 @@ class strategy {
         const getAllstrategy = await strategy_model.find({
           maker_id: id,
           $or: [
-            { security_fund_month: { $ne: null, $ne: NaN, $ne: "" } },
-            { security_fund_quarterly: { $ne: null, $ne: NaN, $ne: "" } },
-            { security_fund_half_early: { $ne: null, $ne: NaN, $ne: "" } },
-            { security_fund_early: { $ne: null, $ne: NaN, $ne: "" } }
-
+            { security_fund_month: { $nin: [null, "", undefined] } },
+            { security_fund_quarterly: { $nin: [null, "", undefined] } },
+            { security_fund_half_early: { $nin: [null, "", undefined] } },
+            { security_fund_early: { $nin: [null, "", undefined] } }
           ]
         }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
-
-
 
 
         // IF DATA NOT EXIST
@@ -846,10 +856,10 @@ class strategy {
 
 
 
-  
+
   async subadminTradeCharges(req, res) {
 
-  const { id } = req.body
+    const { id } = req.body
     var TradechargesWithUserDetails = await tradeCharge_Modal.aggregate([
       {
         $lookup: {
@@ -880,10 +890,10 @@ class strategy {
       },
       {
         $sort: {
-          createdAt: -1 
+          createdAt: -1
         }
       }
-      
+
     ]);
 
     return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails })
@@ -899,6 +909,11 @@ class strategy {
 
     var TradechargesWithUserDetails = await tradeCharge_Modal.aggregate([
       {
+        $match: {
+          user_id: new ObjectId(id)
+        }
+      },
+      {
         $lookup: {
           from: "users",
           localField: "user_id",
@@ -909,11 +924,12 @@ class strategy {
       {
         $unwind: "$user_details"
       },
-     
+
       {
         $project: {
           "UserName": "$user_details.UserName",
           "parent_id": "$user_details.parent_id",
+          "Balance": "$user_details.Balance",
           order_id: 1,
           user_charge: 1,
           admin_charge: 1,
@@ -923,12 +939,18 @@ class strategy {
       },
       {
         $sort: {
-          createdAt: -1 
+          createdAt: -1
         }
       }
     ]);
 
-    return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails })
+
+    const UserBalance = await User.findOne({
+      _id: new ObjectId(id)
+   
+    }).select("Balance")
+
+    return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails, data1: UserBalance.Balance})
 
   }
 

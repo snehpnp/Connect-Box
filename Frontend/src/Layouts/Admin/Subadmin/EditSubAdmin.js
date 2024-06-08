@@ -18,11 +18,16 @@ const EditClient = () => {
   const [rowData, setRowData] = useState();
   const { id } = useParams();
 
+
+
   const GetSubadminDataById = async () => {
-    await dispatch(getSubAdminById({ id: id }))
+    
+    await dispatch(getSubAdminById({ id:id }))
+       
       .unwrap()
       .then(async (response) => {
         if (response.status) {
+        
           setRowData(response.data);
         } else {
           toast.error(response.msg);
@@ -80,6 +85,7 @@ const EditClient = () => {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
+            
             Swal.fire({
               title: "Subadmin Added!",
               text: "subadmin added successfully",

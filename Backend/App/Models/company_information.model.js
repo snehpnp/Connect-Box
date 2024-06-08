@@ -88,6 +88,10 @@ const CompanySchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    BackendSocketurl: {
+        type: String,
+        default: ""
     }
 }, {
     // This enables Mongoose to handle the _id field automatically

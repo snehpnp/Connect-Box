@@ -25,12 +25,16 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import Swal from "sweetalert2";
 
+
+
 const Helpsubadmin = () => {
   const dispatch = useDispatch();
   const user = JSON.parse(localStorage.getItem("user_details"));
   const userdataprifix_key = JSON.parse(
     localStorage.getItem("user_details")
   ).prifix_key;
+
+
 
   const [refresh, setRefresh] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -45,6 +49,8 @@ const Helpsubadmin = () => {
     Category: "",
   });
 
+
+
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState("0");
   const [getemployeedata, setGetemployeedata] = useState([]);
@@ -52,9 +58,12 @@ const Helpsubadmin = () => {
 
 
 
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+
 
   const styles = {
     container: {
@@ -73,6 +82,8 @@ const Helpsubadmin = () => {
       marginRight: 8,
     },
   };
+
+
 
   const columns = [
     {
@@ -115,6 +126,10 @@ const Helpsubadmin = () => {
       renderCell: (params) => <div>{fDateTime(params.value || "")}</div>,
     },
   ];
+
+
+
+
 
   const columns1 = [
     {
@@ -221,7 +236,7 @@ const Helpsubadmin = () => {
             setHelp({ Message: "", Category: "" });
             setRefresh(!refresh);
             if (result.dismiss === Swal.DismissReason.timer) {
-              console.log("I was closed by the timer");
+            
             }
           });
         }
@@ -230,6 +245,7 @@ const Helpsubadmin = () => {
         console.log("error", error);
       });
   };
+
 
 
 
@@ -319,7 +335,7 @@ const Helpsubadmin = () => {
 
 
 
-
+// delete subadmin data
   const deletesubadmindata = async (userId) => {
     var data = { id: userId };
     await dispatch(deletesubadminhelpdata(data))
@@ -347,7 +363,7 @@ const Helpsubadmin = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          toast.success("Message is deleted");
+          toast.success("getting");
           setRefresh(!refresh);
           gettable();
         }
@@ -357,6 +373,9 @@ const Helpsubadmin = () => {
       });
   };
 
+
+
+  
   useEffect(() => {
     setHelp(user);
     gettable();
@@ -373,6 +392,7 @@ const Helpsubadmin = () => {
     "Employee Panel",
     "Broker Response",
     "Login with api",
+    "Other"
   ];
 
 
@@ -536,6 +556,7 @@ const Helpsubadmin = () => {
                                         data-bs-dismiss="modal"
                                         className="btn btn-primary paid-continue-btn"
                                         onClick={postSubadminhelp}
+                                        style={{marginTop:"20px"}}
                                       >
                                         Send
                                       </button>

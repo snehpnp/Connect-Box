@@ -254,7 +254,6 @@ async function createViewUpstox() {
       }
     ];
    
-    console.log("pipeline",pipeline)
     // Create the view
     await db.createCollection('upstoxView', { viewOn: 'users', pipeline });
 

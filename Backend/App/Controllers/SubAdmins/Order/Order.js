@@ -327,7 +327,7 @@ class SignalController {
 
     } catch (error) {
       console.log("Error retrieving data:", error);
-      res.status(500).send({
+      res.send({
         status: false,
         msg: "Internal Server Error",
       });
@@ -361,6 +361,7 @@ class SignalController {
         });
       }
 
+      // console.log("resultUser",resultUser)
       var today = new Date();
       var formattedDate =
         today.getFullYear() +
@@ -453,6 +454,17 @@ class SignalController {
               },
             },
           },
+          {
+            $lookup: {
+              from: "researcher_strategies",
+              localField: "strategy",
+              foreignField: "strategy_name",
+              as: "StrategyData",
+            },
+          },
+          {
+            $unwind: "$StrategyData",
+          },
         ]);
 
         return res.send({
@@ -463,7 +475,7 @@ class SignalController {
       }
     } catch (error) {
       console.log("Error retrieving data:", error);
-      res.status(500).send({
+      res.send({
         status: false,
         msg: "Internal Server Error",
       });
@@ -502,10 +514,11 @@ class SignalController {
           activityMessages.push(`${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`);
         }
 
+
         if (activityMessages.length > 0) {
           for (const message of activityMessages) {
             const Activity_logsData = new Activity_logs({
-              admin_Id: signal.StrategyData.maker_id,
+              admin_Id: signal.StrategyData.researcher_id ? signal.StrategyData.researcher_id : signal.StrategyData.maker_id,
               category: "TARGET-STOPLOSS-TIME",
               message: message,
               maker_role: "SUBADMIN",
@@ -523,10 +536,10 @@ class SignalController {
         }
       }
 
-      return res.status(200).send({ status: true, msg: "Update Successful", data: null });
+      return res.send({ status: true, msg: "Update Successful", data: null });
     } catch (error) {
       console.error("Error in update_stop_loss:", error);
-      return res.status(500).send({ status: false, msg: "Internal server error", data: error.message });
+      return res.send({ status: false, msg: "Internal server error", data: error.message });
     }
   }
 
@@ -846,7 +859,7 @@ class SignalController {
       });
     } catch (error) {
       console.log("Error retrieving data:", error);
-      res.status(500).send({
+      res.send({
         status: false,
         msg: "Internal Server Error",
       });
@@ -952,7 +965,7 @@ class SignalController {
             stg1 = strategy
           }
 
-   
+
 
           try {
 
@@ -1022,7 +1035,7 @@ class SignalController {
       }
     } catch (error) {
       console.log("Error retrieving data:", error);
-      res.status(500).send({
+      res.send({
         status: false,
         msg: "Internal Server Error",
       });
@@ -1096,7 +1109,7 @@ class SignalController {
       });
     } catch (error) {
       console.log("Error retrieving data:", error);
-      res.status(500).send({
+      res.send({
         status: false,
         msg: "Internal Server Error",
       });

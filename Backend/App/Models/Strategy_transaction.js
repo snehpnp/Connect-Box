@@ -39,6 +39,10 @@ const strategy_transactionSchema = Schema({
         type: String,
         default: '0'
     },
+    Research_charge: {
+        type: String,
+        default: '0'
+    },
     createdAt: {
         type: Date,
         default: Date.now

@@ -9,10 +9,17 @@ import Swal from 'sweetalert2';
 import { ipAddress } from '../../Utils/Ipaddress';
 import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
-
 import ReCAPTCHA from 'react-google-recaptcha';
+import io from "socket.io-client";
+import * as Config from "../../Utils/Config";
+
+import useGetCompany from '../../Utils/ConnectSocket';
+
+
 
 function Login() {
+
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate()
@@ -27,14 +34,53 @@ function Login() {
   const [password, setPassword] = useState('');
   const [ip, setIp] = useState(null);
   const [isVerified, setIsVerified] = useState(false);
+  const [socket, setSocket] = useState(null);
+
+   
+  const getCompany = useGetCompany();
 
 
+  // GOOGLE CAPTCH
   var sitekey = "6LeLC88pAAAAAM8P1WFYgAHJOwwlZ3MLfV9hyStu"
 
-  
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
   };
+
+  const fetchIpAddress = async () => {
+    try {
+      const ip = await ipAddress();
+      setIp(ip);
+    } catch (error) {
+      console.error('Failed to fetch IP address:', error);
+    }
+  };
+
+
+
+
+  const RunSocketUrl = async () => {
+    const companyData = await getCompany();
+        
+        if(companyData[0].BackendSocketurl){
+            const newSocket = io(companyData[0].BackendSocketurl);
+            setSocket(newSocket);
+            return () => {
+                newSocket.disconnect();
+            };
+
+        }
+   }
+
+    useEffect(() => {
+        fetchIpAddress()
+        RunSocketUrl()
+    }, []); 
+
+
+
+
+  
 
 
 
@@ -42,7 +88,8 @@ function Login() {
     setIsVerified(!!value);
   };
 
-  const verifyOTP = () => {
+
+  const verifyOTP = async () => {
     var Otp = getData && getData.mobile.slice(-4);
 
     if (typeOtp.length !== 4) {
@@ -50,49 +97,52 @@ function Login() {
         icon: 'error',
         title: 'Fill OTP',
         showConfirmButton: false,
-        timer: 800 
+        timer: 800
       });
-      
+
 
     } else if (Otp !== typeOtp) {
       Swal.fire({
         icon: 'error',
         title: 'Otp Is Incorrect',
         showConfirmButton: false,
-        timer: 800 
+        timer: 800
       });
-      
+
     } else {
-      
+      var newMessage = { user_id: getData.user_id, token: getData.token }
+
+
       localStorage.setItem("user_details", JSON.stringify(getData));
       localStorage.setItem("user_role", JSON.stringify(getData.Role));
       setIsLoggedIn(true);
       setIsLoading(true);
       setShowModal(false);
 
+      await socket.emit("login", newMessage);
 
       if (getData.Role === "ADMIN") {
         setTimeout(() => {
           navigate("/admin/dashboard");
-        }, 3300);
+        }, 2200);
       } else if (getData.Role === "SUBADMIN") {
         setTimeout(() => {
           navigate("/subadmin/dashboard");
-        }, 3300);
+        }, 2200);
       } else if (getData.Role === "EMPLOYEE") {
 
         setTimeout(() => {
           navigate("/employee/dashboard");
-        }, 3300);
+        }, 2200);
       } else if (getData.Role === "RESEARCH") {
 
         setTimeout(() => {
           navigate("/research/dashboard");
-        }, 3300);
+        }, 2200);
       } else {
         setTimeout(() => {
           navigate("/user/dashboard");
-        }, 3300);
+        }, 2200);
       }
     }
 
@@ -112,7 +162,7 @@ function Login() {
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
 
-    if (!trimmedEmail ||!trimmedPassword) {
+    if (!trimmedEmail || !trimmedPassword) {
       Swal.fire({
         title: 'Error',
         text: 'Enter the credentials to login.',
@@ -134,7 +184,6 @@ function Login() {
 
     if (isVerified) {
       // Proceed with login or form submission
-      console.log('reCAPTCHA verified. Submitting form...');
     } else {
       Swal.fire({
         title: 'Oops!',
@@ -144,7 +193,7 @@ function Login() {
       });
       return;
     }
-    
+
 
 
     const req = {
@@ -166,7 +215,7 @@ function Login() {
             showErrorModal("Incorrect Password", "Enter the correct password.");
             break;
           case "please contact admin you are inactive.":
-            showInactiveAccountModal("please contact admin you are inactive.","please contact admin you are inactive.");
+            showInactiveAccountModal("please contact admin you are inactive.", "please contact admin you are inactive.");
             break;
           case "User Not exists":
             showErrorModal("User Not Exists", "The user you are trying to access does not exist.");
@@ -219,45 +268,22 @@ function Login() {
     });
   };
 
-
-
-
-
-
-
-
-
   const handleChange = (value) => {
     const numericValue = value.replace(/\D/g, '');
     setTypeOtp(numericValue);
   };
 
   useEffect(() => {
-     
+
     const htmlElement = document.querySelector("html");
-    htmlElement.setAttribute("data-sidebar", theme_mode);
-    htmlElement.setAttribute("data-layout-mode", theme_mode);
-    htmlElement.setAttribute("data-topbar", theme_mode);
-    if (isLoggedIn) {
-      setTimeout(() => {
-        navigate(`/${getData.Role.toLowerCase()}/dashboard`);
-      }, 9000);
-    }
+    htmlElement.setAttribute("data-sidebar", theme_mode ? theme_mode : "light");
+    htmlElement.setAttribute("data-layout-mode", theme_mode ? theme_mode : "light");
+    htmlElement.setAttribute("data-topbar", theme_mode ? theme_mode : "light");
+ 
   }, [isLoggedIn, getData.Role, navigate]);
 
 
-  const fetchIP = async () => {
-    try {
-      const ip = await ipAddress();
-      setIp(ip);
-    } catch (error) {
-      console.error('Failed to fetch IP address:', error);
-    }
-  };
 
-  useEffect(() => {
-    fetchIP();
-  }, []);
 
 
   const handleKeyPress = (event) => {
@@ -287,8 +313,6 @@ function Login() {
                 <div className='col-md-6'>
                   <div className="login-right">
                     <div className="login-right-wrap">
-
-
                       <img
                         className="img-fluid logo-dark mb-2 "
                         src="/assets/img/pnp.png"
@@ -325,10 +349,10 @@ function Login() {
 
                         <ReCAPTCHA
                           sitekey={sitekey}
-                        onChange={handleRecaptchaChange}
+                          onChange={handleRecaptchaChange}
                         />
 
-                        <div class="add-customer-btns d-flex justify-content-between text-end mt-3">
+                        <div className="add-customer-btns d-flex justify-content-between text-end mt-3">
                           <button className="btn customer-btn-save" onClick={handleSubmit} onKeyPress={handleKeyPress} >
                             Login
                           </button>
@@ -339,19 +363,6 @@ function Login() {
                         <span className="or-line" />
                         <span className="span-or">or</span>
                       </div>
-
-                      {/* <div className="social-login ">
-                        <span >Login with</span>
-                        <div className='mt-2'>
-                          <a href="/" className="facebook">
-                            <i className="fab fa-facebook-f" />
-                          </a>
-                          <a href="/" className="google">
-                            <i className="fab fa-google" />
-                          </a>
-                        </div>
-                      </div> */}
-
 
                       <div className="text-center dont-have">
                         Don't have an account yet?{" "}
@@ -386,11 +397,7 @@ function Login() {
                 btn_name="Verify"
                 btn_name1="Verify1"
                 Submit_Function={verifyOTP}
-
               >
-
-
-
                 <section onSubmit={verifyOTP} className='section1'>
                   <svg
                     width={250}
@@ -522,11 +529,11 @@ function Login() {
         {isLoggedIn && (
           <div className="overlay">
             <div className="overlay-content">
-              <div class="first-intro">
-                <div class="intro-fill">
-                  <span class="tf-user-welcome welcome-1">Hi `{getData.UserName}!`</span>
-                  <span class="tf-user-welcome welcome-2">Welcome to Connect Box</span>
-                  {/* <span class="tf-user-welcome welcome-3">We’re delighted to be at your Service</span> */}
+              <div className="first-intro">
+                <div className="intro-fill">
+                  <span className="tf-user-welcome welcome-1">Hi `{getData.UserName}!`</span>
+                  <span className="tf-user-welcome welcome-2">Welcome to Connect Box</span>
+                  {/* <span className="tf-user-welcome welcome-3">We’re delighted to be at your Service</span> */}
                 </div>
               </div>
 

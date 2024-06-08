@@ -10,6 +10,8 @@ import { useNavigate } from "react-router-dom";
 import Chart from "react-apexcharts";
 import { Eye } from 'lucide-react';
 
+
+
 const DashBoard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,6 +23,8 @@ const DashBoard = () => {
   var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
   const [selectedOption, setSelectedOption] = useState("Day");
   const storedTheme = localStorage.getItem("theme_mode");
+
+
 
 
   const [options, setOptions] = useState({
@@ -49,10 +53,14 @@ const DashBoard = () => {
 
   };
 
+
+
+
+
   const totalUserdata = async (options, user) => {
     var data = {
       user_ID: userDetails.user_id,
-      selectedOption: selectedOption,
+      selectedOption: options,
     };
     await dispatch(Subadmin_DashChartdata(data))
       .unwrap()
@@ -60,8 +68,6 @@ const DashBoard = () => {
         if (response.status) {
           const categories = response.data.categories;
           const data = response.data.userCounts;
-
-       
 
           setOptions((prevOptions) => ({
             ...prevOptions,
@@ -82,6 +88,8 @@ const DashBoard = () => {
         console.log("Error", error);
       });
   };
+
+
 
   const totalSalesdata = async (options, user) => {
     var data = {
@@ -112,10 +120,15 @@ const DashBoard = () => {
       });
   };
 
+
+
+  
   const calculatePercentage = (count, total) =>
     count !== undefined && count !== null && total > 0
       ? (count / total) * 100
       : null;
+
+
 
   const cardDataList = [
     { key: "TotalUsercount", title: "Total Users", route: "/subadmin/users?filter=1" },
@@ -174,7 +187,7 @@ const DashBoard = () => {
     };
   });
 
- 
+
 
 
 
@@ -293,44 +306,7 @@ const DashBoard = () => {
                       <div className="d-flex justify-content-between align-items-center">
                         <h5 className="card-title">Sales Analytics</h5>
                         <div className="d-flex">
-                          <div className="dropdown main me-3">
-                            <button
-                              className="btn btn-white btn-sm dropdown-toggle"
-                              type="button"
-                              id="subadminDropdownButton"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              {selectedUser}
-                            </button>
-                            <ul
-                              className="dropdown-menu"
-                              aria-labelledby="subadminDropdownButton"
-                            >
-                              <li>
-                                <a
-                                  className="dropdown-item"
-                                  onClick={(e) => {
-                                    handleUserSales(e);
-                                    totalUserdata(selectedOption, "USERS");
-                                  }}
-                                >
-                                  USERS
-                                </a>
-                              </li>
-                              <li>
-                                {/* <a
-                                  className="dropdown-item"
-                                  onClick={(e) => {
-                                    handleUserSales(e);
-                                    totalSalesdata(selectedOption, selectedUser);
-                                  }}
-                                >
-                                  SALES
-                                </a> */}
-                              </li>
-                            </ul>
-                          </div>
+                       
 
                           <div className="dropdown main">
                             <button
@@ -342,15 +318,16 @@ const DashBoard = () => {
                             >
                               {selectedOption}
                             </button>
-                            <ul
-                              className="dropdown-menu"
-                              aria-labelledby="planDropdownButton"
-                            >
+                            <ul className="dropdown-menu" aria-labelledby="planDropdownButton">
                               {dropdown.map((data, index) => (
                                 <li key={index}>
                                   <a
                                     className="dropdown-item"
-                                    onClick={() => handleSelect1(data)}
+                                    onClick={(e) => {
+                                      handleSelect1(data);
+                                      handleUserSales(e);
+                                      totalUserdata(data, "USERS");
+                                    }}
                                   >
                                     {data}
                                   </a>
@@ -366,22 +343,20 @@ const DashBoard = () => {
                       <div id="invoice_chart" />
                       <div className="text-center text-muted">
                         <div className="row">
-                          {chart && chart ? (
+                          {chart ? (
                             <div className="mixed-chart">
                               <Chart
                                 colors={colors}
                                 options={{
                                   ...options,
-
                                   theme: {
                                     monochrome: {
                                       enabled: true,
                                       color: '#255aee',
                                       shadeTo: 'light',
-                                      shadeIntensity: 0.65
-                                    }
-                                  }
-
+                                      shadeIntensity: 0.65,
+                                    },
+                                  },
                                 }}
                                 series={series}
                                 type="bar"
@@ -389,7 +364,7 @@ const DashBoard = () => {
                               />
                             </div>
                           ) : (
-                            <div className="loding" style={{ color: "white" }}>
+                            <div className="loading" style={{ color: "white" }}>
                               Loading...
                             </div>
                           )}
@@ -398,8 +373,6 @@ const DashBoard = () => {
                     </div>
                   </div>
                 </div>
-
-
 
 
                 {/* <div className="col-xl-4 d-flex">
@@ -477,7 +450,6 @@ const DashBoard = () => {
                     </div>
                   </div>
                 </div> */}
-
 
               </div>
             </div>

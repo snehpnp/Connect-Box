@@ -3,6 +3,10 @@
 activity.log
 BACKEND\activity.log
 activity
-
+app.log
 /Logs
 
+Broker_backend\app.log
+
+Broker_backend\AllPanelTextFile
+AllPanelTextFile

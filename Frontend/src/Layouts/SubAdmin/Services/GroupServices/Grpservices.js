@@ -308,7 +308,7 @@ function GroupStrategy() {
                    
                     <div className="row align-items-center">
                         <div className="col">
-                        <h5 className="card-title mb-0"><i class="pe-2 fa-solid fa-gears" ></i>Group Services</h5>
+                        <h5 className="card-title mb-0"><i className="pe-2 fa-solid fa-gears" ></i>Group Services</h5>
                         </div>
                         <div className="col-auto"> <div className="list-btn">
                                 <ul className="mb-0 filter-list justify-content-lg-end">
@@ -380,13 +380,11 @@ function GroupStrategy() {
                         {
                             allGroupService.loading ? (
                                 <>
-
-
                                     <div className="content container-fluid pb-0">
                                         <div className="row d-flex align-items-center justify-content-center">
 
                                             {allGroupService.data.map((stg) => {
-                                                return <div className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                                                return <div key={stg._id} className="col-sm-12 col-md-6 col-lg-6 col-xl-3">
                                                     <div className="packages card" data-aos="fade-down">
                                                         <div className="package-header  ">
                                                             <div className="d-flex w-100">

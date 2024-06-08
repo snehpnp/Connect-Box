@@ -6,32 +6,32 @@ import { Link } from "react-router-dom"
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
 import { OrderBook } from "../../../Utils/Orderbook";
+import { dashboardData } from "../../../Utils/Userdasboard";
+
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import Swal from 'sweetalert2';
-import ExportToExcel from '../../../Utils/ExportCSV'
+// import useLogout  from '../../../Utils/Logout'
 
 
 const Dashboards = () => {
-
+  // const logout = useLogout();
   const dispatch = useDispatch()
+  const images = ["assets/img/companies/company-01.svg", "assets/img/companies/company-02.svg", "assets/img/companies/company-03.svg"];
+
 
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
   var user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   var Role = JSON.parse(localStorage.getItem("user_details")).Role;
+  var token = JSON.parse(localStorage.getItem("user_details")).token;
+
+  const [getUserBalance, SetUserBalance] = useState(null);
 
   const [ForGetCSV, setForGetCSV] = useState([])
-
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
-  const [getDashboardData, setDashboardData] = useState({
-    loading: false,
-    data: []
-  });
+  const [getDashboardData, setDashboardData] = useState({ loading: false,data: []});
+  const [tableData, setTableData] = useState({loading: false,data: []});
 
-  const [tableData, setTableData] = useState({
-    loading: false,
-    data: [],
-  });
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
   const styles = {
@@ -81,7 +81,7 @@ const Dashboards = () => {
     {
       field: "createdAt",
       headerName: "Signal Time",
-      width: 260,
+      width: 200,
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
@@ -93,7 +93,7 @@ const Dashboards = () => {
     {
       field: "type",
       headerName: "Type",
-      width: 110,
+      width: 60,
       headerClassName: styles.boldHeader,
 
     },
@@ -101,14 +101,14 @@ const Dashboards = () => {
     {
       field: "trade_symbol",
       headerName: "Trade Symbol",
-      width: 320,
+      width: 270,
       headerClassName: styles.boldHeader,
 
     },
     {
       field: "price",
       headerName: "Price ",
-      width: 160,
+      width: 110,
       headerClassName: styles.boldHeader,
 
     },
@@ -121,9 +121,9 @@ const Dashboards = () => {
 
     },
     {
-      field: "qty_percent",
-      headerName: "qty_percent ",
-      width: 160,
+      field: "lot_size",
+      headerName: "Quantity",
+      width: 100,
       headerClassName: styles.boldHeader,
 
     },
@@ -140,37 +140,17 @@ const Dashboards = () => {
 
   const { greeting, icon } = getGreetingMessage();
 
-  useEffect(() => {
-    // Check if the browser supports Geolocation
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const latitude = position.coords.latitude;
-          const longitude = position.coords.longitude;
-          setLocation({ latitude, longitude });
-        },
-        error => {
-          setError(error.message);
-        }
-      );
-    } else {
-      setError("Geolocation is not supported by this browser.");
-    }
-  }, []);
-
-
-
-
-
+ 
 
   const userDataRes = async () => {
-    await dispatch(Orders_Details({ subadminId: user_id, Role: Role }))
+    await dispatch(Orders_Details({ req: { subadminId: user_id, Role: Role }, token: token }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
           setTableData({ loading: true, data: response.data });
         } else {
           setTableData({ loading: true, data: [] });
+          
 
         }
       })
@@ -179,15 +159,12 @@ const Dashboards = () => {
       });
   };
 
-  useEffect(() => {
-    userDataRes()
-  }, [])
 
 
   const UserdashboardDATA = async () => {
 
     var data = { "id": user_id };
-    await dispatch(GetUserDashboardData(data)).unwrap()
+    await dispatch(GetUserDashboardData({ req: data, token: token })).unwrap()
       .then((response) => {
 
         if (response.status) {
@@ -210,12 +187,8 @@ const Dashboards = () => {
 
   }
 
-  useState(() => {
-    UserdashboardDATA();
-  }, []);
+  
 
-
-  const images = ["assets/img/companies/company-01.svg", "assets/img/companies/company-02.svg", "assets/img/companies/company-03.svg"];
 
   const getRandomImage = () => {
     const randomIndex = Math.floor(Math.random() * images.length);
@@ -223,11 +196,9 @@ const Dashboards = () => {
   };
 
 
-
   const DawnloadOrderBook = async (e) => {
-
     let data = { id: user_id };
-    await dispatch(ProfileInfo(data))
+    await dispatch(ProfileInfo({ req: data, token: token }))
       .unwrap()
       .then(async (response) => {
         if (response.status) {
@@ -250,8 +221,35 @@ const Dashboards = () => {
             })
           }
 
-        } else {
+        } 
+      })
+      .catch((error) => {
+        console.log("Error", error);
+      });
 
+
+  }
+
+
+  const UserdasboardData = async (e) => {
+    let data = { id: user_id };
+    await dispatch(ProfileInfo({ req: data, token: token }))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
+            dashboardData(response.data[0])
+              .then(response => {
+            //  SNEH JAUSWAL
+             SetUserBalance(response)
+              })
+              .catch(error => {
+                console.error("Error:", error);
+              });
+          }
+   
+
+        } else {
         }
       })
       .catch((error) => {
@@ -261,15 +259,36 @@ const Dashboards = () => {
 
   }
 
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          setLocation({ latitude, longitude });
+        },
+        error => {
+          setError(error.message);
+        }
+      );
+    } else {
+      setError("Geolocation is not supported by this browser.");
+    }
+  }, []);
+
+
+  useEffect(() => {
+    UserdasboardData()
+    userDataRes()
+    UserdashboardDATA();
+  }, [])
+
+
   return (
     <div>
       <div className="content container-fluid pb-0">
-        <div className="page-header">
-          <div className="content-page-header">
-            <h5>User Dashboard</h5>
-
-          </div>
-        </div>
+   
         <div className="super-admin-dashboard">
           <div className="row">
             <div className="col-xl-5 d-flex">
@@ -286,26 +305,25 @@ const Dashboards = () => {
                 ) : (
                   <p>Loading...</p>
                 )}
-                <hr style={{color:"white",width:"450px" ,height:"10px"}}/>
-                <div className="dash-btns gap-5 mt-5" style={{ display: "flex" }}>
-                  <div style={{ marginBottom: "10px" }}>
-                    <h3 style={{ color: "white" }}>Balance</h3>
-                    <p>10000</p>
+                <hr style={{ backgroundColor: "white", height: "5px", border: "none", width: "18rem" }} />
+
+                <div className="dash-btns gap-3 mt-5" style={{ display: "flex", color: "white" }}>
+                  <div>
+                    <h4>Balance</h4>
+                    <p>{getUserBalance && getUserBalance.limitsData || "-"}</p>
                   </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <h3 style={{ color: "white" }}>M2M</h3>
-                    <p>7860</p>
+                  <div >
+                    <h4>M2M</h4>
+                    <p>{getUserBalance && getUserBalance.unrealisedProfitLossSum|| "-"}</p>
                   </div>
-                  <div style={{ marginBottom: "10px" }}>
-                    <h3 style={{ color: "white" }}>Dawnload</h3>
+                  <div >
+                    <h4>Dawnload</h4><br />
                     <a className="btn view-company-btn" onClick={(e) => DawnloadOrderBook(e)}>
                       Order Book
                     </a>
                   </div>
 
                 </div>
-
-
 
                 <div className="dash-img">
                   <img src="assets/img/dashboard-card-img.png" alt="" />
@@ -488,13 +506,14 @@ const Dashboards = () => {
                   </div>
                 </div>
 
-                <div className="card-body p-0 mr-2" style={{ maxHeight: "300px", overflowY: "auto" }}>
+                <div className="card-body p-0 mr-0" style={{ maxHeight: "400px", overflowY: "auto" }}>
                   <div className="table-responsive">
                     <FullDataTable
                       styles={styles}
                       label={label}
                       columns={columns}
                       rows={tableData.data}
+                      pginationSize={10}
                     />
                   </div>
                 </div>

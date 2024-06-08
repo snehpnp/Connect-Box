@@ -126,6 +126,18 @@ function Payment() {
       )
     },
     {
+      field: 'Research_charge',
+      headerName: 'Researcher Charges',
+      width: 180,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+         {params.value? <span className="text-success-light">  <IndianRupee style={{ height: "19px" }} />{params.value || '-'}</span> : "-"}
+        </div>
+      )
+    },
+    
+    {
       field: 'createdAt',
       headerName: 'Created At',
       width: 220,
@@ -162,6 +174,9 @@ function Payment() {
 
   if (subadmin_service_type == 1) {
     columns = columns.filter(column => column.field !== 'Admin_charge');
+    columns = columns.filter(column => column.field !== 'Research_charge');
+
+    
   }
 
   const getCompanyData = async () => {
@@ -192,7 +207,6 @@ function Payment() {
 
 
           const filterData = formattedData.filter((item)=>{
-            console.log("formattedData :", item.user_id)
 
             const searchMatch = 
             inputSearch=='' || 
@@ -245,7 +259,6 @@ function Payment() {
   }
 
 
-  console.log("inputSearch :" , inputSearch)
   return (
     <>
       {companyData && companyData.loading ? (
@@ -255,8 +268,8 @@ function Payment() {
               <div className="row align-items-center">
                 <div className="col">
                   <h5 className="card-title mb-0">
-                    <i class="fe fe-users pe-2" ></i>
-                    Payment History</h5>
+                    <i className="fe fe-users pe-2" ></i>
+                    Strategy Transaction</h5>
                 </div>
                 <div className="col-auto">
                   <div className="list-btn">
@@ -317,8 +330,6 @@ function Payment() {
                 : ""
 
               }
-
-
 
               <FullDataTable
                 styles={styles}

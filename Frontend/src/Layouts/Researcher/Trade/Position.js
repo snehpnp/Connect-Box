@@ -22,6 +22,7 @@ import { ShowColor1 } from "../../../Utils/ShowTradeColor";
 import { Eye } from "lucide-react";
 import { Get_All_Strategy_for_Client } from '../../../ReduxStore/Slice/Subadmin/OptionChainSlice'
 import DetailsView from "./DetailsView";
+import Swal from "sweetalert2";
 
 import { GetBrokerLiveDatas } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
@@ -142,16 +143,33 @@ export default function AllEmployees() {
       });
   };
 
+
+  
   // LOGIN DEMAT WITH API
   const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
     if (check) {
-      console.log("Trading On");
-      loginWithApi(brokerid, UserDetails);
+      if (UserDetails.api_key) {
+        loginWithApi(brokerid, UserDetails);
+      } else {
+        Swal.fire({
+          title: "Error !",
+          text: "Please complete API process",
+          icon: "error",
+          timer: 1500,
+          timerProgressBar: true,
+        });
+        
+        return false;
+      }
     } else {
-      console.log("Trading Off");
+     
       handleTradingOff(user_id);
     }
   };
+
+
+
+
 
   const columns = [
     {
@@ -673,12 +691,11 @@ export default function AllEmployees() {
                                 LogIn_WIth_Api(
                                   e.target.checked,
                                   profileData && profileData.data[0].broker,
-                                  profileData &&
                                   profileData.data[0].TradingStatus,
                                   profileData && profileData.data[0]
                                 )
                               }
-                              defaultChecked={getLoginStatus}
+                              checked={getLoginStatus}
                               style={{ marginRight: "5px" }}
                             />
                             <label
@@ -757,11 +774,11 @@ export default function AllEmployees() {
                   </div>
 
                   <div className="input-block col-lg-2 mt-3 mb-3">
-                    <label for="select" class="form-label">
+                    <label for="select" className="form-label">
                       Strategy
                     </label>
                     <select
-                      class="default-select wide form-control"
+                      className="default-select wide form-control"
                       aria-label="Default select example"
                       id="select"
                       onChange={(e) => setSelectStrategy(e.target.value)}

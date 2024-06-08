@@ -4,6 +4,7 @@ import {
   deleteMsgById,
   editMsgData,
   addMessage,
+  getUserbroadcast,
 } from "../../../Services/Admin/Subadmins.service";
 //AllApi Belogns To Msg BroadCast
 
@@ -52,11 +53,26 @@ export const admin_Msg_Edit = createAsyncThunk(
   }
 );
 
+// get broadcast message for user 
+export const Get_UserBroadcast = createAsyncThunk(
+  "/getbroadcastMsg",
+  async (data) => {
+    try {
+      const res = await getUserbroadcast(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
+
 const SubAdminSlice = createSlice({
   name: "SubAdminSlice",
   initialState: {
     isLoading: false,
     isError: false,
+    Get_UserBroadcast:null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -104,6 +120,17 @@ const SubAdminSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(add_message.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(Get_UserBroadcast.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(Get_UserBroadcast.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(Get_UserBroadcast.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       });

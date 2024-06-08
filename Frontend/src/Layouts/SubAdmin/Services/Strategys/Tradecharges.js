@@ -230,7 +230,7 @@ function Tradecharges() {
               <div className="row align-items-center">
                 <div className="col">
                   <h5 className="card-title mb-0">
-                    <i class="fe fe-users pe-2"></i>
+                    <i className="fe fe-users pe-2"></i>
                     Trade charges
                   </h5>
                 </div>

@@ -290,6 +290,11 @@ class Clientservice {
                         createdAt: "$strategies.createdAt",
                         max_trade: "$strategies.max_trade",
                         strategy_percentage: "$strategies.strategy_percentage",
+                        month: "$strategies.security_fund_month",
+                        quarterly: "$strategies.security_fund_quarterly",
+                        half_early: "$strategies.security_fund_half_early",
+                        yearly: "$strategies.security_fund_early",
+
                         stg_status: {
                             $cond: { if: { $in: ["$strategies._id", UserStgIds] }, then: 1, else: 0 }
                         }
@@ -389,12 +394,12 @@ class Clientservice {
             const result = await client_services.updateMany(filter, updateOperation);
       
             if (result.nModified === 0) {
-                return res.send({ status: false, msg: "No data was updated", data: [] });
+                return res.send({ status: false, msg: "status is Deactivated", data: [] });
             }
       
             return res.send({
                 status: true,
-                msg: "Data Updated",
+                msg: "Status is Activated",
                 data: result
             });
         } catch (error) {

@@ -22,9 +22,6 @@ export const OrderBook = async (UserDetails) => {
         return new Promise((resolve, reject) => {
             axios(config)
                 .then(response => {
-                    console.log("response==>", response.data);
-
-
 
                     const fileType =
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
@@ -47,6 +44,8 @@ export const OrderBook = async (UserDetails) => {
                     reject(error); // Reject the promise with error
                 });
         });
+
+
     } else if (broker_id === "12" || broker_id === 12) {
         // Logic for broker 12
     }

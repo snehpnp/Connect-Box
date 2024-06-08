@@ -6,6 +6,8 @@ const FAQs = () => {
   const [activeIndex, setActiveIndex] = useState(null);
   const [snakePosition, setSnakePosition] = useState({ x: 0, y: 0 });
 
+  
+
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
@@ -35,9 +37,8 @@ const FAQs = () => {
                 {faqData.map((faq, index) => (
                   <div className="faq-item" key={index}>
                     <div
-                      className={`question ${
-                        activeIndex === index ? "active" : ""
-                      }`}
+                      className={`question ${activeIndex === index ? "active" : ""
+                        }`}
                       onClick={() => toggleAccordion(index)}
                     >
                       <span className="question-text">{faq.question}</span>
@@ -46,9 +47,8 @@ const FAQs = () => {
                       </span>
                     </div>
                     <div
-                      className={`answer ${
-                        activeIndex === index ? "show" : ""
-                      }`}
+                      className={`answer ${activeIndex === index ? "show" : ""
+                        }`}
                     >
                       <p>
                         <b>{faq.answer}</b>
@@ -61,7 +61,7 @@ const FAQs = () => {
             </div>
           </div>
 
-         
+
         </div>
 
       </div>

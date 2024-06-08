@@ -13,7 +13,7 @@ const newMessage = new mongoose.Schema({
 
   },
   brokerId: {
-    type: ObjectId,
+    type: String,
     ref: "api_create_infos",
     default:null
   },

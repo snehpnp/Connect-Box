@@ -87,7 +87,7 @@ function Clientservice() {
       if (response.status) {
         if (e.checked) {
           Swal.fire({
-            title: "Trading On",
+            title: "Trading On",  
             icon: "success",
             html: "Your trading has been successfully activated.",
           });
@@ -362,7 +362,7 @@ function Clientservice() {
               <div className="col-auto">
                 <div className="list-btn">
                   <ul className="filter-list mb-0">
-                    <li className="toggle-li">
+                    {/* <li className="toggle-li">
                       <div
                         className="status-toggle "
                         style={{ display: "flex", alignItems: "center" }}
@@ -397,7 +397,7 @@ function Clientservice() {
                           className="checktoggle checkbox-bg"
                         ></label>
                       </div>
-                    </li>
+                    </li> */}
 
                     <li className="">
                       <p
@@ -642,7 +642,7 @@ function Clientservice() {
                         Select Strategy
                       </button>
                       {showstrategy && (
-                        <div id="myDropdown" class="dropdown-content">
+                        <div id="myDropdown"className="dropdown-content">
                           {getAllClientStrategy.data.strategy.map(
                             (data1, index) => {
                               return (
