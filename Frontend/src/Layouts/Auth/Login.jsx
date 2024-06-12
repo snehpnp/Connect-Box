@@ -393,7 +393,7 @@ function Login() {
                 backdrop="static"
                 className="custom-modal-class"
                 size="md"
-                title="Verify OTP"
+                title="Last 4 Digit Mobile NO"
                 btn_name="Verify"
                 btn_name1="Verify1"
                 Submit_Function={verifyOTP}

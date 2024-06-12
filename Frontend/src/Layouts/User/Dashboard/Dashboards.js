@@ -317,7 +317,7 @@ const Dashboards = () => {
                     <p>{getUserBalance && getUserBalance.unrealisedProfitLossSum|| "-"}</p>
                   </div>
                   <div >
-                    <h4>Dawnload</h4><br />
+                    <h4>Download</h4><br />
                     <a className="btn view-company-btn" onClick={(e) => DawnloadOrderBook(e)}>
                       Order Book
                     </a>

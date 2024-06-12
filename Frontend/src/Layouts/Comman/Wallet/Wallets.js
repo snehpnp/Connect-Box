@@ -9,7 +9,10 @@ import CompanyChange from '../../../Components/ExtraComponents/Models/CompanyCha
 import { IndianRupee } from 'lucide-react';
 
 function Payment() {
+  
   const dispatch = useDispatch();
+
+
   var subadmin_service_type = JSON.parse(localStorage.getItem("user_details")).subadmin_service_type
   const admin_id = JSON.parse(localStorage.getItem("user_details")).user_id
 
@@ -110,6 +113,8 @@ function Payment() {
   ];
 
 
+
+
   const getCompanyData = async () => {
     try {
       var data = { id: admin_id, subadmin_service_type: subadmin_service_type || 0 }
@@ -138,10 +143,6 @@ function Payment() {
       }
 
 
-
-
-
-
     } catch (error) {
       console.log("Error", error);
       setCompanyData({
@@ -150,6 +151,8 @@ function Payment() {
       });
     }
   };
+
+
 
   if (subadmin_service_type == 1) {
     columns = columns.filter(column => column.field !== 'strategy_id');
