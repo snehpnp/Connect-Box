@@ -241,7 +241,7 @@ const Strategies = () => {
                         {item.stg_status == 0 ? (
                           <a className="btn btn-primary" onClick={(e) => { setShowModal(true); setSelectStrategy(item) }}>BUY</a>
                         ) : (
-                          <a className="btn btn-primary">SUBSCRIBE</a>
+                          <a className="btn btn-primary">SUBSCRIBED</a>
                         )}
                       </div>
                     </div>
