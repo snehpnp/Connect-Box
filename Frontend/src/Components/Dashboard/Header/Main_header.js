@@ -55,7 +55,7 @@ const Main_Header = () => {
             </Link>
           </div>
         </div>
-        {/* Toggle theme switch */}
+   
 
         <div className="nav-item  has-arrow dropdown-heads ">
           <DrapDown />
