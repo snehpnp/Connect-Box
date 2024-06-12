@@ -665,7 +665,6 @@ function Option_Chain() {
                 method: 'post',
                 maxBodyLength: Infinity,
                 url: Config.broker_backend,
-
                 headers: {
                     'Content-Type': 'text/plain'
                 },
