@@ -68,8 +68,6 @@ const DropDown = () => {
     RunSocketUrl();
   }, []);
 
-
-
   const RunLogoutSocket = () => {
     if (socket != null) {
       if (user_details) {
@@ -86,14 +84,10 @@ const DropDown = () => {
     }
   };
 
-
-
   useEffect(() => {
     RunLogoutSocket();
   }, [socket]);
 
-
-  
   const fetchData = async () => {
     try {
       const ip = await ipAddress();
@@ -372,14 +366,6 @@ const DropDown = () => {
     );
   }, [themeMode]);
 
-  const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
-    if (check) {
-      setLoginStatus(true);
-    } else {
-      setLoginStatus(false);
-    }
-  };
-
   // LOGOUT TRADING
   const handleTradingOff = async (id) => {
     let data = { id: id, system_ip: ip };
@@ -399,6 +385,19 @@ const DropDown = () => {
       })
       .catch((error) => {});
   };
+
+
+  
+  const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
+    if (check) {
+      loginWithApi(brokerid, UserDetails);
+    } else {
+      handleTradingOff(UserDetails._id);
+      
+    }
+  };
+
+
 
   return (
     <div className="mb-0 dropdown custom-dropdown">
@@ -420,15 +419,15 @@ const DropDown = () => {
                 id="1"
                 className="check"
                 type="checkbox"
-                onChange={(e) =>
+                onChange={(e) => {
                   LogIn_WIth_Api(
                     e.target.checked,
                     profileData && profileData[0].broker,
                     profileData && profileData[0].TradingStatus,
                     profileData && profileData[0]
-                  )
-                }
-                defaultChecked={getLoginStatus}
+                  );
+                }}
+                checked={getLoginStatus}
                 style={{ display: "none" }}
               />
 
@@ -437,22 +436,36 @@ const DropDown = () => {
                 className="checktoggle"
                 style={{
                   position: "relative",
-                  width: "150px", // Significantly increased width
-                  height: "40px", // Increased height
-                  backgroundColor: getLoginStatus ? "green" : "red",
-                  borderRadius: "15px",
+                  width: "140px", // Increased width for better click/touch area
+                  height: "46px", // Increased height for better visibility
+                  backgroundColor: "#6610f2",
+                  borderRadius: "10px", // Slightly increased border radius for smoother corners
                   cursor: "pointer",
                   transition: "background-color 0.3s",
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: getLoginStatus ? "flex-end" : "flex-start",
+                  justifyContent: "center", // Centered content horizontally
                   padding: "0 10px", // Padding to make space for the text
                   color: "white",
-                  fontSize: "12px", // Smaller text size
+                  fontSize: "14px", // Adjusted text size for better readability
                   fontWeight: "bold",
+                  marginRight: "8px",
+                  marginTop: "5px",
+                  border: "2px solid #6610f2", // Border properties
+                  boxSizing: "border-box", // Ensures padding and border are included in width and height
                 }}
               >
-                {getLoginStatus ? "TRADING ON" : "TRADING OFF"}
+                TRADING
+                <span
+                  style={{
+                    padding: "2px", // Padding inside the span element
+                    border: "1px solid #ffffff", // Border properties for the text
+                    borderRadius: "5px", // Border radius for the text border
+                    backgroundColor: getLoginStatus ? "green" : "red",
+                  }}
+                >
+                  {getLoginStatus ? "ON" : "OFF"}
+                </span>
               </label>
             </div>
           </li>

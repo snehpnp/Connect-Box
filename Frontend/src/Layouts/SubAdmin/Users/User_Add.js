@@ -196,7 +196,6 @@ const AddClient = () => {
 
 
 
-
   // 0 = 2 days 1= Demo 2 =Live
   const fields = [
     {
