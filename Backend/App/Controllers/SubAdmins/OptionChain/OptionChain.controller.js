@@ -50,24 +50,16 @@ class OptionChain {
 
     // GET SYMBOLL EXPIRY
     async Get_Option_Symbol_Expiry(req, res) {
-
         try {
             const symbol = req.body.symbol;
-
+    
             if (!symbol) {
                 return res.status(400).json({ status: false, msg: 'Symbol is required.', data: [] });
             }
-
-            const date = new Date(); // Month is 0-based, so 10 represents November
-
+    
             const currentDate = new Date();
-            const previousDate = new Date(currentDate);
-            previousDate.setDate(currentDate.getDate() - 1);
-            //  const date = new Date(); // Month is 0-based, so 10 represents November
-
-            const formattedDate = previousDate.toISOString();
-
-
+            currentDate.setHours(0, 0, 0, 0);
+    
             const pipeline = [
                 {
                     $match: { symbol: symbol }
@@ -91,7 +83,11 @@ class OptionChain {
                         }
                     }
                 },
-
+                {
+                    $match: {
+                        expiryDate: { $gte: currentDate }
+                    }
+                },
                 {
                     $addFields: {
                         formattedExpiryDate: {
@@ -108,23 +104,22 @@ class OptionChain {
                 {
                     $limit: 4
                 }
-
-
-            ]
-
+            ];
+    
             const result = await Alice_token.aggregate(pipeline);
-
+    
             if (result.length === 0) {
                 return res.json({ status: false, msg: 'Symbol not found.', data: [] });
             }
+    
             return res.json({ status: true, msg: 'Data found', data: result });
-
+    
         } catch (error) {
             console.log("Error:", error);
             return res.status(500).json({ status: false, msg: 'Server error', data: [] });
         }
-
     }
+    
 
     // Upadte Stock option status
     async update_option_symbols_status(req, res) {

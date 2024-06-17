@@ -11,7 +11,10 @@ const Overview = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const theme = localStorage.getItem("theme_mode");
+
   var dropdown = ["Day", "Monthly", "Quarterly", "Half-Yearly", "Yearly"];
+ 
 
   const [options, setOptions] = useState({
     chart: {
@@ -191,9 +194,12 @@ const Overview = () => {
 
 
   const options1 = {
-    labels: subadminsData && subadminsData.map(subadmin => subadmin.name),
+    labels:  subadminsData && subadminsData.map(subadmin => subadmin.name) ,
+   
   };
 
+
+ 
 
 
   return (
@@ -423,8 +429,8 @@ const Overview = () => {
                   <div id="invoice_chart" />
                   <div className="text-center text-muted">
                     <div className="row">
-                      <div className="donut">
-                        <Chart options={options1} series={subadminsData.map(subadmin => subadmin.percentage)} type="donut" width="380" />
+                      <div className="donut" >
+                        <Chart options={options1} series={subadminsData.map(subadmin => subadmin.percentage)}  type="donut" width="380" />
                       </div>
                     </div>
                     <div className="top-subadmins" style={{ marginTop: '20px' }}>

@@ -701,11 +701,12 @@ const AddClient = () => {
                       ))}
                   </div>
 
-                  <div className="row mt-4">
+                  <div className="row mt-3">
                     {/* STRATEGY CODE */}
+
                     {subadmin_service_type1 == 2 ?
                       (<div className="row mt-4">
-                        <div className="input-block ">
+                        <div className="input-block " >
                           <label>All Strategy</label>
                         </div>
                         {getAllStategy.data.map((strategy) => (
@@ -742,10 +743,11 @@ const AddClient = () => {
                                             display: "flex",
                                             flexDirection: "column",
                                             alignItems: "center",
+                                            
                                           }}
                                         >
-                                          <div className="form-group d-flex justify-content-between m-3 border rounded p-2">
-                                            <div className="d-flex align-items-center">
+                                          <div className="form-group d-flex justify-content-between m-3 border rounded p-2 ">
+                                            <div className="d-flex align-items-center" >
                                               <input
                                                 type="radio"
                                                 name={`option_${strategy._id}`}
@@ -833,13 +835,9 @@ const AddClient = () => {
 
 
 
-
-
-
-
-
                       // Per Trade Code 
-                      : formik.values.Service_Type ? (<div className="row mt-4">
+                      : formik.values.Service_Type ?
+                       (<div className="row mt-4">
                         <div className="input-block ">
                           <label>All Strategy</label>
                         </div>
@@ -877,6 +875,7 @@ const AddClient = () => {
                                               display: "flex",
                                               flexDirection: "column",
                                               alignItems: "center",
+                                             
                                             }}
                                           >
                                             <div className="form-group d-flex justify-content-between m-3 border rounded p-2">

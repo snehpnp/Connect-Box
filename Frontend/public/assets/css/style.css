@@ -35060,3 +35060,11 @@ input:disabled {
 }
 
 
+
+[data-layout-mode=dark] body span.apexcharts-legend-text {
+    color: #fff !important;
+} 
+
+[data-layout-mode=dark] body .apexcharts-text tspan {
+    fill: #fff !important;
+} 

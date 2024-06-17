@@ -882,8 +882,11 @@ function Option_Chain() {
                                         >
                                             <option value="" >Select Expiry</option>
                                             {All_Symbols_Expiry.data && All_Symbols_Expiry.data.map((item) => {
+                                                
                                                 return <option value={item.uniqueExpiryValues}>{get_three_digit_month(item.expiryDate)}</option>
+                                               
                                             })}
+                                            
                                         </select>
                                     </div>
                                     <div className="col-md-2 input-block ">
