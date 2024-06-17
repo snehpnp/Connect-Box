@@ -18,30 +18,34 @@ const ObjectId = mongoose.Types.ObjectId;
 
 class mandotsecurities {
 
+
     async GetAccessTokenmandotsecurities(req, res) {
         try {
-            const { id } = req.body;
+            const { _id } = req.body;
 
-            const userData = await User.findOne({ _id: new ObjectId(id) }).select('TradingStatus client_code app_id api_key');
-            console.log("userData", userData)
+            if (!_id) {
+                return res.send({ status: false, data: [], msg: "User ID is required" });
+            }
+
+            const userData = await User.findOne({ _id: new ObjectId(_id) }).select('TradingStatus api_secret api_key');
+            console.log("userData", userData);
 
             if (!userData) {
-                return res.send({ status: false, data: [], msg: "User Not Exist" });
+                return res.status(404).send({ status: false, data: [], msg: "User does not exist" });
             }
 
             if (userData.TradingStatus === "on") {
-                return res.send({ status: false, data: [], msg: "Already Trading is On" });
+                return res.send({ status: false, data: [], msg: "Trading is already on" });
             }
 
-            if (!userData.api_key) {
-                return res.send({ status: false, data: [], msg: "ApI Key Is Empty" });
+            if (!userData.api_key || !userData.api_secret) {
+                return res.send({ status: false, data: [], msg: "API Key or Secret is missing" });
             }
 
-
-            var data = JSON.stringify({
-                "secretKey": userData.api_secret,
-                "appKey": userData.api_key,
-                "source": "WebAPI"
+            const data = JSON.stringify({
+                secretKey: userData.api_secret,
+                appKey: userData.api_key,
+                source: "WebAPI"
             });
 
             const config = {
@@ -55,80 +59,44 @@ class mandotsecurities {
             };
 
             const response = await axios.request(config);
+            console.log("API Response:", response.data);
 
-            if (response.data.status) {
-                const refreshToken = response.data.data.refreshToken;
-                const jwtToken = response.data.data.jwtToken;
-
-                const data = { refreshToken };
-
-                const config = {
-                    method: 'post',
-                    maxBodyLength: Infinity,
-                    url: 'https://apiconnect.angelbroking.com/rest/auth/angelbroking/jwt/v1/generateTokens',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-UserType': 'USER',
-                        'X-SourceID': 'WEB',
-                        'X-ClientLocalIP': 'CLIENT_LOCAL_IP',
-                        'X-ClientPublicIP': 'CLIENT_PUBLIC_IP',
-                        'X-MACAddress': 'MAC_ADDRESS',
-                        'X-PrivateKey': userData.api_key,
-                        'Authorization': 'Bearer ' + jwtToken
+            if (response.data.type == "success") {
+                const result = await User.findByIdAndUpdate(
+                    { _id: new ObjectId(id) },
+                    {
+                        access_token: response.data.result.token,
+                        TradingStatus: "on"
                     },
-                    data: JSON.stringify(data)
-                };
+                    { new: true }
+                );
 
-                const response = await axios.request(config);
+                const user_logs1 = new user_logs({
+                    user_Id: userData._id,
+                    trading_status: "Trading On",
+                    role: "USER",
+                    device: "WEB",
+                    system_ip: system_ip
+                });
+                await user_logs1.save();
 
-                console.log("response", response)
-                if (response.data.type == "success") {
-                    const result = await User.findByIdAndUpdate(
-                        { _id: new ObjectId(id) },
-                        {
-                            access_token: response.data.result.token,
-                            TradingStatus: "on"
-                        },
-                        { new: true }
-                    );
-
-                    const user_logs1 = new user_logs({
-                        user_Id: userData._id,
-                        trading_status: "Trading On",
-                        role: "USER",
-                        device: "WEB",
-                        system_ip: system_ip
-                    });
-                    await user_logs1.save();
-
-                    return res.send({ status: true, data: [], msg: "Trading On Successfully" });
-                } else {
-                    const user_logs1 = new user_logs({
-                        user_Id: userData._id,
-                        trading_status: response.data.message,
-                        role: "USER",
-                        device: "WEB",
-                        system_ip: system_ip
-                    });
-                    await user_logs1.save();
-
-                    return res.send({ status: true, data: [], msg: response.data.message });
-                }
+                return res.send({ status: true, data: [], msg: "Trading On Successfully" });
             } else {
-                const user_logs_data = new user_logs({
+                const user_logs1 = new user_logs({
                     user_Id: userData._id,
                     trading_status: response.data.message,
                     role: "USER",
                     device: "WEB",
                     system_ip: system_ip
                 });
-                await user_logs_data.save();
-                return res.send({ status: false, data: response.data.message, msg: "Error in Totp" });
+                await user_logs1.save();
+
+                return res.send({ status: true, data: [], msg: response.data.message });
             }
+
         } catch (error) {
-            console.log("Error Totp Catch-", error);
-            return res.send({ status: false, data: error, msg: "Error Catch" });
+            console.error("Error Catch -", error.response ? error.response.data : error.message);
+            return res.send({ status: false, data: error.response ? error.response.data : error.message, msg: "Error occurred while retrieving access token" });
         }
     }
 

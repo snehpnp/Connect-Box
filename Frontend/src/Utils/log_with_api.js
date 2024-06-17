@@ -36,11 +36,29 @@ export const loginWithApi = async (broker_id, UserDetails, ip) => {
         axios({
             url: `${Config.base_url}mandotsecurities/access_token`,
             method: "post",
-            data: {
-                State: UserDetails,
-            },
+            data:UserDetails
         }).then((res) => {
-            console.log("res", res);
+            if (res.data.status) {
+                Swal.fire({
+                    title: "Trading On",
+                    icon: "success",
+                    html: "Your trading has On successfully .",
+                    timer: 1500,
+                    timerProgressBar: true,
+                });
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1200);
+            } else {
+
+                Swal.fire({
+                    title: "Error In credentials!",
+                    text: res.data.data.description,
+                    icon: "Error",
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            }
 
 
         });
