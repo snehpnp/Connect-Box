@@ -821,7 +821,7 @@ function Option_Chain() {
 
 
 
-
+// console.log("ExecuteTradeData.data",ExecuteTradeData.data)
 
     return (
         <>
@@ -979,10 +979,11 @@ function Option_Chain() {
                                     text: "Price",
                                     formatter: (cell, row, rowIndex) => (
                                         <div>
-                                            {row.type === "BUY" ?
+                                            {/* {row.type === "BUY" ?
                                                 <span className={`BP1_Put_Price_${row.token} `}></span>
                                                 : <span className={`SP1_Call_Price_${row.token}`}></span>
-                                            }
+                                            } */}
+                                            {cell}
                                         </div>
                                     ),
 

@@ -88,6 +88,8 @@ const DropDown = () => {
     RunLogoutSocket();
   }, [socket]);
 
+
+
   const fetchData = async () => {
     try {
       const ip = await ipAddress();
@@ -105,7 +107,7 @@ const DropDown = () => {
         }
       } else {
         if (response.msg === "Unauthorized!") {
-          console.log("Dropdown", user_details.user_id, ip);
+          // console.log("Dropdown", user_details.user_id, ip);
           LogoutUser();
         }
       }
@@ -114,6 +116,9 @@ const DropDown = () => {
       setError(error.message);
     }
   };
+
+
+
 
   const LogoutUser = async (e) => {
     const ip = await ipAddress();
@@ -155,6 +160,8 @@ const DropDown = () => {
       });
   };
 
+
+
   const fetchIP = async () => {
     try {
       const ip = await ipAddress();
@@ -164,6 +171,8 @@ const DropDown = () => {
     }
   };
 
+
+  
   // Define toggleTheme function
   const toggleTheme = () => {
     const newThemeMode = themeMode === "light" ? "dark" : "light";
@@ -200,6 +209,8 @@ const DropDown = () => {
     }
     setIsFullScreen(!isFullScreen);
   };
+
+
 
   const walletmodal = () => {
     if (Role == "ADMIN") {
@@ -242,6 +253,7 @@ const DropDown = () => {
     setShowFunds(!showFunds);
     walletmodal();
   };
+
 
   function formatNumber(value) {
     if (value < 1000) {
@@ -287,6 +299,8 @@ const DropDown = () => {
     }
   };
 
+
+
   // subadmin help notification for admin page
   const gettable = async () => {
     try {
@@ -310,6 +324,9 @@ const DropDown = () => {
       console.log("error", error);
     }
   };
+
+
+
 
   // USER NOTIFICATION
   const getusertable = async () => {
@@ -337,6 +354,7 @@ const DropDown = () => {
       console.error("Error in getusertable:", error);
     }
   };
+
 
   useEffect(() => {
     fetchData();
@@ -366,6 +384,10 @@ const DropDown = () => {
     );
   }, [themeMode]);
 
+
+
+
+  
   // LOGOUT TRADING
   const handleTradingOff = async (id) => {
     let data = { id: id, system_ip: ip };
