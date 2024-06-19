@@ -21,7 +21,8 @@ const Main_Header = () => {
       $('#favicondata').attr('href', companyData[0].favicon);
       $('.img-fluid.logo-blue').attr('src', `data:image/png;base64,${companyData[0].favicon}`);
       $('.img-fluid.logo-small').attr('src', `data:image/png;base64,${companyData[0].favicon}`);
-      
+
+
 
     }
   };

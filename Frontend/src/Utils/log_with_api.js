@@ -5,9 +5,9 @@ import * as Config from "./Config";
 import Swal from 'sweetalert2';
 import axios from "axios";
 
-export const loginWithApi = async (broker_id, UserDetails,ip) => {
- 
-    
+export const loginWithApi = async (broker_id, UserDetails, ip) => {
+
+
     if (broker_id === "2" || broker_id === 2) {
         window.location.href = `https://ant.aliceblueonline.com/?appcode=${UserDetails.api_key}`;
 
@@ -32,7 +32,36 @@ export const loginWithApi = async (broker_id, UserDetails,ip) => {
         alert("broker-7")
     }
     if (broker_id === "8" || broker_id === 8) {
-        alert("broker-8")
+        console.log("mandot")
+        axios({
+            url: `${Config.base_url}mandotsecurities/access_token`,
+            method: "post",
+            data:UserDetails
+        }).then((res) => {
+            if (res.data.status) {
+                Swal.fire({
+                    title: "Trading On",
+                    icon: "success",
+                    html: "Your trading has On successfully .",
+                    timer: 1500,
+                    timerProgressBar: true,
+                });
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1200);
+            } else {
+
+                Swal.fire({
+                    title: "Error In credentials!",
+                    text: res.data.data.description,
+                    icon: "Error",
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            }
+
+
+        });
     }
     else if (broker_id === "9" || broker_id === 9) {
         alert("broker-9")
@@ -45,7 +74,7 @@ export const loginWithApi = async (broker_id, UserDetails,ip) => {
     }
 
     else if (broker_id === "12" || broker_id === 12) {
-    
+
         axios({
             url: `${Config.base_url}angel`,
             method: "post",

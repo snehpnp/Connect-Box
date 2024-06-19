@@ -104,7 +104,7 @@ const ConnectSocket = async (EXCHANGE, instrument_token) => {
   var channel_List = `${EXCHANGE}|${instrument_token}`
 
   var broker_infor = await live_price.findOne({ broker_name: "ALICE_BLUE", trading_status: "on" });
- 
+
   if (broker_infor) {
 
     var aliceBaseUrl = "https://ant.aliceblueonline.com/rest/AliceBlueAPIService/api/"
@@ -234,10 +234,10 @@ const ConnectSocket = async (EXCHANGE, instrument_token) => {
 app.get('/r', (req, res) => {
 
   const { trade_charge } = require("./Helper/trade_charge");
-  let data = {order_id : "14552645565",user_id:"65feb434ce02a722ac3b997d"}
+  let data = { order_id: "14552645565", user_id: "65feb434ce02a722ac3b997d" }
   trade_charge(data)
   // Request on Socket Server 1
-//  ConnectSocket()
+  ConnectSocket()
   res.send('Request sent to Socket Server 2');
 });
 
@@ -257,6 +257,9 @@ const upstox = require('./Broker/upstox')
 const dhan = require('./Broker/dhan')
 const fyers = require('./Broker/fyers')
 const markethub = require('./Broker/markethub')
+
+const mandotsecurities = require('./Broker/mandotsecurities')
+
 
 
 // BROKER SIGNAL
@@ -323,7 +326,7 @@ app.post('/broker-signals', async (req, res) => {
 
       fs.appendFile(filePath, '\nNEW TRADE TIME ' + new Date() + '\nRECEIVED_SIGNALS ' + splitArray + '\n', function (err) {
         if (err) {
-          return console.log("Error",err);
+          return console.log("Error", err);
         }
       });
 
@@ -353,7 +356,7 @@ app.post('/broker-signals', async (req, res) => {
 
       var expiry = signals.Expiry
       if (signals.Expiry == undefined || signals.Expiry == '') {
-          expiry = '01012050'
+        expiry = '01012050'
       }
 
       var strategy = signals.Strategy;
@@ -365,11 +368,11 @@ app.post('/broker-signals', async (req, res) => {
 
       let ft_time = ''
 
-      if(signals.ExitStatus != undefined){
+      if (signals.ExitStatus != undefined) {
         ExitStatus = signals.ExitStatus
-      } 
+      }
 
-     
+
       var sl_status = 0;
       if (signals.sl_status != undefined) {
         sl_status = signals.sl_status;
@@ -387,7 +390,7 @@ app.post('/broker-signals', async (req, res) => {
 
       var ExitTime = 0;
       if (signals.ExitTime != undefined) {
-       // ExitTime = signals.ExitTime.replace(/-/g, ':');
+        // ExitTime = signals.ExitTime.replace(/-/g, ':');
         ExitTime = signals.ExitTime;
       }
 
@@ -555,7 +558,7 @@ app.post('/broker-signals', async (req, res) => {
 
           fs.appendFile(filePath, 'TIME ' + new Date() + ' RECEIVED_SIGNALS_TOKEN ' + instrument_token + '\n', function (err) {
             if (err) {
-              return console.log("Error",err);
+              return console.log("Error", err);
             }
           });
 
@@ -574,8 +577,8 @@ app.post('/broker-signals', async (req, res) => {
               } else {
                 price = signals.Price
               }
-            }else{
-              if(price_live_second.length > 0){
+            } else {
+              if (price_live_second.length > 0) {
                 ft_time = price_live_second[0].ft
               }
             }
@@ -588,7 +591,7 @@ app.post('/broker-signals', async (req, res) => {
           }
 
 
-    
+
 
           // HIT TRADE IN BROKER SERVER
           if (client_key_array.includes(client_key)) {
@@ -602,7 +605,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE ALL CLIENT LENGTH ' + AliceBluedocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -625,7 +628,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE ALL CLIENT LENGTH ' + angelBluedocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -648,7 +651,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE ALL CLIENT LENGTH ' + fivepaisaBluedocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -672,7 +675,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE ALL CLIENT LENGTH ' + zerodhaBluedocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -697,7 +700,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' UPSTOX ALL CLIENT LENGTH ' + upstoxdocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -723,7 +726,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' dhan ALL CLIENT LENGTH ' + dhandocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -748,7 +751,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' fyers ALL CLIENT LENGTH ' + fyersdocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -773,7 +776,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' markethub ALL CLIENT LENGTH ' + markethubdocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -790,6 +793,46 @@ app.post('/broker-signals', async (req, res) => {
 
 
 
+            //Process mandotsecurities admin client
+            try {
+              const mandotsecuritiesCollection = db1.collection('mandotsecuritiesView');
+              const mandotsecuritiesdocuments = await mandotsecuritiesCollection.find({ "strategys.strategy_name": strategy, "service.name": input_symbol, "category.segment": segment, web_url: "1" }).toArray();
+
+
+              fs.appendFile(filePath, 'TIME ' + new Date() + ' mandotsecurities ALL CLIENT LENGTH ' + mandotsecuritiesdocuments.length + '\n', function (err) {
+                if (err) {
+                  return console.log("Error", err);
+                }
+              });
+
+
+
+              if (mandotsecuritiesdocuments.length > 0) {
+                mandotsecurities.place_order(mandotsecuritiesdocuments, signals, token, filePath, signal_req);
+              }
+
+            } catch (error) {
+              console.log("Error Get mandotsecurities Client In view", error);
+            }
+            //End Process mandotsecurities admin client
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           } else {
 
@@ -800,7 +843,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ALICE BLUE TRADING VIEW CLIENT LENGTH ' + AliceBluedocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -822,7 +865,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' ANGEL TRADING VIEW CLIENT LENGTH ' + angeldocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -845,7 +888,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' fivepaisa TRADING VIEW CLIENT LENGTH ' + fivepaisadocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -867,7 +910,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' zerodha TRADING VIEW CLIENT LENGTH ' + zerodhadocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -890,7 +933,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' UPSTOX TRADING VIEW CLIENT LENGTH ' + upstoxdocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -912,7 +955,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' dhan TRADING VIEW CLIENT LENGTH ' + dhandocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -934,7 +977,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' fyers TRADING VIEW CLIENT LENGTH ' + fyersdocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -957,7 +1000,7 @@ app.post('/broker-signals', async (req, res) => {
 
               fs.appendFile(filePath, 'TIME ' + new Date() + ' markethub TRADING VIEW CLIENT LENGTH ' + markethubdocuments.length + '\n', function (err) {
                 if (err) {
-                  return console.log("Error",err);
+                  return console.log("Error", err);
                 }
               });
 
@@ -970,6 +1013,33 @@ app.post('/broker-signals', async (req, res) => {
               console.log("Error Get markethub Client In view", error);
             }
             //End Process Tading View Client markethub 
+
+
+
+
+
+
+
+            //Process Tading View Client mandotsecurities
+            try {
+              const mandotsecuritiesCollection = db1.collection('mandotsecuritiesView');
+              const mandotsecuritiesdocuments = await mandotsecuritiesCollection.find({ "strategys.strategy_name": strategy, "service.name": input_symbol, "category.segment": segment, client_key: client_key, web_url: "2" }).toArray();
+
+              fs.appendFile(filePath, 'TIME ' + new Date() + ' mandotsecurities TRADING VIEW CLIENT LENGTH ' + mandotsecuritiesdocuments.length + '\n', function (err) {
+                if (err) {
+                  return console.log("Error", err);
+                }
+              });
+
+
+              if (mandotsecuritiesdocuments.length > 0) {
+                mandotsecurities.place_order(mandotsecuritiesdocuments, signals, token, filePath, signal_req);
+              }
+
+            } catch (error) {
+              console.log("Error Get mandotsecurities Client In view", error);
+            }
+            //End Process Tading View Client mandotsecurities 
 
 
 
@@ -1032,8 +1102,8 @@ app.post('/broker-signals', async (req, res) => {
               token: instrument_token,
               lot_size: find_lot_size,
               MakeStartegyName: MakeStartegyName,
-              exit_status:ExitStatus,
-              ft_time:ft_time
+              exit_status: ExitStatus,
+              ft_time: ft_time
             }
 
             let Signal_req1 = new Signals(Signal_req)
@@ -1053,40 +1123,40 @@ app.post('/broker-signals', async (req, res) => {
             // MainSignals FIND IN COLLECTION
             // if (findMainSignals.length == 0) {
 
-              var Entry_MainSignals_req = {
-                symbol: input_symbol,
-                entry_type: type,
-                exit_type: "",
-                entry_price: parseFloat(price),
-                exit_price: "",
-                entry_qty_percent: parseFloat(qty_percent),
-                entry_qty: Number(find_lot_size) * (Math.ceil(Number(qty_percent) / 100)),
-                exit_qty: 0,
-                exit_qty_percent: "",
-                entry_dt_date: current_date,
-                exit_dt_date: "",
-                dt: Math.round(+new Date() / 1000),
-                dt_date: dt_date,
-                exchange: EXCHANGE,
-                strategy: strategy,
-                option_type: option_type,
-                strike: strike,
-                expiry: expiry,
-                segment: segment,
-                trade_symbol: trade_symbol + "[" + segment1 + "]",
-                client_persnal_key: client_persnal_key,
-                TradeType: TradeType,
-                signals_id: SignalSave._id,
-                token: instrument_token,
-                lot_size: find_lot_size,
-                target: Target,
-                stop_loss: StopLoss,
-                exit_time: ExitTime,
-                exit_time1: 0,
-                complete_trade: 0,
-                sl_status: sl_status,
-                MakeStartegyName: MakeStartegyName,
-              
+            var Entry_MainSignals_req = {
+              symbol: input_symbol,
+              entry_type: type,
+              exit_type: "",
+              entry_price: parseFloat(price),
+              exit_price: "",
+              entry_qty_percent: parseFloat(qty_percent),
+              entry_qty: Number(find_lot_size) * (Math.ceil(Number(qty_percent) / 100)),
+              exit_qty: 0,
+              exit_qty_percent: "",
+              entry_dt_date: current_date,
+              exit_dt_date: "",
+              dt: Math.round(+new Date() / 1000),
+              dt_date: dt_date,
+              exchange: EXCHANGE,
+              strategy: strategy,
+              option_type: option_type,
+              strike: strike,
+              expiry: expiry,
+              segment: segment,
+              trade_symbol: trade_symbol + "[" + segment1 + "]",
+              client_persnal_key: client_persnal_key,
+              TradeType: TradeType,
+              signals_id: SignalSave._id,
+              token: instrument_token,
+              lot_size: find_lot_size,
+              target: Target,
+              stop_loss: StopLoss,
+              exit_time: ExitTime,
+              exit_time1: 0,
+              complete_trade: 0,
+              sl_status: sl_status,
+              MakeStartegyName: MakeStartegyName,
+
 
             }
             const Entry_MainSignals = new MainSignals(Entry_MainSignals_req)
@@ -1156,7 +1226,7 @@ app.post('/broker-signals', async (req, res) => {
                   exit_qty_percent: exit_qty_percent1,
                   exit_qty: result,
                   exit_dt_date: current_date,
-                  exit_status:ExitStatus
+                  exit_status: ExitStatus
                 }
                 updatedData.$addToSet = { signals_id: SignalSave._id };
 
@@ -1177,7 +1247,7 @@ app.post('/broker-signals', async (req, res) => {
                     exit_qty_percent: (parseFloat(qty_percent) + (isNaN(ExitMainSignals[0].exit_qty_percent) || ExitMainSignals[0].exit_qty_percent === "" ? 0 : parseFloat(ExitMainSignals[0].exit_qty_percent))),
                     exit_qty: result,
                     exit_dt_date: current_date,
-                    exit_status:ExitStatus
+                    exit_status: ExitStatus
                   }
                   updatedData.$addToSet = { signals_id: SignalSave._id };
 
