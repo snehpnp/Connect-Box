@@ -67,7 +67,6 @@ class Subadmin {
 
 
 
-
       if (prifix_key.length > 3) {
         return res.send({ status: false, msg: "prifix_key Omly 3 Digits" });
       }
@@ -181,8 +180,6 @@ class Subadmin {
       return res.send({ msg: "Internal server error", error });
     }
   }
-
-
 
 
 
@@ -334,7 +331,7 @@ class Subadmin {
     }
   }
 
-  async GetAllRechargeDetails(req, res) {
+  async   GetAllRechargeDetails(req, res) {
     try {
       let { Role } = req.body;
 

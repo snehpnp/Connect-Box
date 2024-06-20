@@ -18,6 +18,7 @@ function Payment() {
     try {
       const response = await dispatch(infocompany({ id: user_Id })).unwrap();
       if (response.status) {
+        
         setCompanyData(response.data[0]);
       } else {
       }
@@ -35,6 +36,9 @@ function Payment() {
         razor_payment_secretKey: razor_payment_secretKey || getCompanyData.razor_payment_secretKey,
       }
     };
+
+
+
 
     await dispatch(SubadminDetail(updatedData))
       .unwrap()

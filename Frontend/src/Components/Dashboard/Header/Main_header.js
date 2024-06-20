@@ -72,7 +72,7 @@ const Main_Header = () => {
               />
             </Link>
             <Link to="/admin/dashboard">
-              <img
+              <imgdsssssx
                 src={logodata && logodata}
                 className="img-fluid logo-small"
                 alt="Logo"

@@ -48,7 +48,6 @@ class Helpmessage {
   async getsubadmindelete(req, res) {
     const { id } = req.body;
 
-
     try {
       // Assuming the message ID is passed as a route parameter
       const messagedata = await help.findByIdAndDelete(id)
@@ -65,6 +64,8 @@ class Helpmessage {
       console.error("internal error:", error);
     }
   }
+
+
 
 
   // post user help data
@@ -88,6 +89,7 @@ class Helpmessage {
 
 
 
+
   /// getting user help data
   async getuserhelpdata(req, res) {
     try {
@@ -106,6 +108,8 @@ class Helpmessage {
       console.error("internal error:", error);
     }
   }
+
+
 
 
   // for comapre to prefic compare   userdataByPrefix
@@ -137,6 +141,7 @@ class Helpmessage {
 
 
 
+
   // delete id by user data 
   async getuserdelete(req, res) {
     const { id } = req.body;
@@ -157,6 +162,8 @@ class Helpmessage {
       console.error("internal error:", error);
     }
   }
+
+
 
 
 
@@ -205,7 +212,6 @@ class Helpmessage {
 
 
 
-
   //get employee table
 
   async getEmployee(req, res) {
@@ -225,6 +231,8 @@ class Helpmessage {
       console.error("internal error:", error);
     }
   }
+
+
 
 
 // for  getting employee 
@@ -252,7 +260,10 @@ class Helpmessage {
   }
 
 
+
 }
+
+
 
 
 

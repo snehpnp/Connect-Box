@@ -532,6 +532,8 @@ const AddClient = () => {
     }
   }
 
+
+
   // GET ALL STRATEGY
   const GetAllStrategy = async () => {
     var data = { id: user_id ,key:"1"}
@@ -555,6 +557,7 @@ const AddClient = () => {
         console.log("Error Stategy finding Error", error)
       })
   }
+
 
   // GET ALL BROKER
   const AllBroker = async () => {
@@ -590,6 +593,7 @@ const AddClient = () => {
       ));
     }
   };
+
 
 
 
@@ -695,10 +699,9 @@ const AddClient = () => {
                             >{`${item.serviceName}[${item.categoryName}]`}</label>
 
                           </div>
-
                         </>
-
                       ))}
+
                   </div>
 
                   <div className="row mt-3">
@@ -760,6 +763,7 @@ const AddClient = () => {
                                                 style={{
                                                   margin: "0 10px 0 5px",
                                                   fontSize: "1rem",
+                                                  
                                                 }}
                                               >
                                                 Monthly
@@ -825,7 +829,9 @@ const AddClient = () => {
                                         </div>
                                       </>
                                     )
-                                    : ""}
+                                    :
+                                     ""}
+
                                 </div>
                               </div>
                             </div>
@@ -956,7 +962,6 @@ const AddClient = () => {
                                                 </label>
                                               </div>
                                             </div>
-
 
                                           </div>
                                         </>

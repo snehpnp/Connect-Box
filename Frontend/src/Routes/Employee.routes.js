@@ -16,9 +16,9 @@ import Edituser from '../Layouts/Employee/Users/Edituser'
 import Help from '../Layouts/Comman/Help/HelpEmployee.js';
 import Signal  from "../Layouts/Employee/Signal/Signal.js";
 import TradeHistory from '../Layouts/Employee/TradeHistory/TradeHistory.js' 
+import Settings from '../Layouts/Comman/Setting_Page/Settings.js';
 
 
-// strategydesc
 
 const Employee_Routing = () => {
 
@@ -34,6 +34,8 @@ const Employee_Routing = () => {
                     <Route exact path="/allusers" element={<AllUsers />} />
                     <Route exact path="/user/add" element={<AddUser />} />
                     <Route exact path="/user/edit/:id" element={<Edituser />} />
+                    <Route exact path="/setting" element={<Settings />} />
+
      
                     
                     <Route exact path="/faqs" element={<Faqs />} />
