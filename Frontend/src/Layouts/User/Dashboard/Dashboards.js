@@ -209,7 +209,13 @@ const Dashboards = () => {
 
               })
               .catch(error => {
-                console.error("Error:", error);
+                Swal.fire({
+                  title: "Empty",
+                  text: "Data Not Found",
+                  icon: "error",
+                  timer: 1500,
+                  timerProgressBar: true,
+                })
               });
           } else {
             Swal.fire({

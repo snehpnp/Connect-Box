@@ -38,9 +38,29 @@ class AliceBlue {
 
                 var hosts = req.headers.host;
 
-                var redirect = hosts.split(':')[0];
-                var redirect_uri = '';
-                redirect_uri = `https://${redirect}/#/subadmin/position`
+                // var redirect = hosts.split(':')[0];
+                // var redirect_uri = '';
+                // redirect_uri = `https://${redirect}/#/subadmin/position`
+
+
+                if (hosts) {
+
+                    var redirect;
+
+                    var redirect_uri = '';
+            
+                    if (hosts.startsWith('http://') || hosts.startsWith('https://')) {
+                        redirect = hosts.split('://')[1].split('/')[0];
+
+                    } else {
+
+                        redirect = hosts.split(':')[0];
+                    }
+                
+                    redirect_uri = `https://${redirect}/#/subadmin/position`;
+                   
+                }
+
 
                 if (Get_User.length > 0) {
 
@@ -309,6 +329,8 @@ class AliceBlue {
         }
     }
 
+
+    
     // CANCEL ORDER API  
     async Cancel_order(req, res) {
 

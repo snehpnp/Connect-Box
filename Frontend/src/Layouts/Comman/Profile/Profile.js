@@ -73,6 +73,10 @@ const Profile = () => {
   const [selectedCountry, setSelectedCountry] = useState(update.Country || "");
   const [selectedState, setSelectedState] = useState(update.State || "");
 
+
+  const [clientkey,setClientkey] = useState("")
+ 
+
   const currentDate = new Date();
   currentDate.setFullYear(currentDate.getFullYear() - 12);
   const currentDateISOString = currentDate.toISOString().split("T")[0];
@@ -119,7 +123,7 @@ const Profile = () => {
   // get employee by id
   const Employeetable = async () => {
     const data = { id: user_id };
-
+   
     await dispatch(Employeedatabyid(data))
       .unwrap()
       .then(async (response) => {
@@ -132,6 +136,10 @@ const Profile = () => {
         console.log("Error", error);
       });
   };
+
+
+
+
 
   // function to update profile
   const handleAvatarClick = async (avatarUrl) => {
@@ -159,6 +167,8 @@ const Profile = () => {
   };
 
 
+
+
   ///  handler to handle form
   const handleAddInfo = () => {
     if (info && info.length > 0) {
@@ -175,6 +185,9 @@ const Profile = () => {
     }
     setEditbtn(!editbtn);
   };
+
+
+
 
 
   // update profile data
@@ -213,6 +226,9 @@ const Profile = () => {
   };
 
 
+
+
+
   //  profile information
   const profiledata = async () => {
     var data = { user_id: user_id };
@@ -228,6 +244,8 @@ const Profile = () => {
         console.log("Error", error);
       });
   };
+
+
 
 
 
@@ -248,6 +266,8 @@ const Profile = () => {
   };
 
 
+
+
   // api for getting ProfileInfo
   const fetchData = async () => {
     try {
@@ -256,8 +276,10 @@ const Profile = () => {
         .unwrap()
         .then(async (response) => {
           if (response.status) {
+          
             setProfileData(response.data);
             setProfileImage(response.data[0].profile_img);
+            setClientkey(response.data[0].client_key)
             setLoading(true);
           } else {
             if (response.msg == "Unauthorized!") {
@@ -278,6 +300,9 @@ const Profile = () => {
   };
 
 
+
+
+
   const FindParentType = async () => {
     try {
       const data = { id: user_id, Role: Role };
@@ -294,6 +319,8 @@ const Profile = () => {
       console.log("Error in fatching in Parent Type", error);
     }
   };
+
+
 
 
   const fetchIP = async () => {
@@ -325,6 +352,7 @@ const Profile = () => {
 
   return (
     <div>
+
       {loading ? (
         <div className="content container-fluid pb-0">
           <div className="row justify-content-lg-center">
@@ -664,6 +692,13 @@ const Profile = () => {
                       {info &&
                         info.map((item, index) => (
                           <ul key={index} className="list-unstyled mb-0">
+                          <li className="pb-0">
+                              <h6>
+                                <span>
+                                  <b>Client Key</b> : {clientkey && clientkey}{" "}
+                                </span>
+                              </h6>
+                            </li>
                             <li className="pb-0">
                               <h6>
                                 <span>

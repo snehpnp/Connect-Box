@@ -101,7 +101,9 @@ export default function AllEmployees() {
     }, []);
 
 
+
     const handleTradingOff = async (id) => {
+        
         let data = { id: id };
 
         await dispatch(Trading_Off_Btn(data)).unwrap()
@@ -118,6 +120,9 @@ export default function AllEmployees() {
             })
 
     }
+
+
+
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
 
         if (check) {

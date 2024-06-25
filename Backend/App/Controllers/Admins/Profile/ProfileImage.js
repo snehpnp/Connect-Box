@@ -131,6 +131,9 @@ class profile {
     }
   }
 
+
+
+  
   async GetParentType(req , res){
     try{
       const {id , Role} = req.body;

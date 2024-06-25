@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER ,STRATEGY_TRANSACTION_DETAILS ,  ADD_RESEARCHER_STRATEGY, EDIT_RESEARCHER_STRATEGY, GET_ONE_RESEARCHER_STRATEGY, GET_ALL_RESEARCHER_STRATEGY , UPDATE_RESEARCHER , Delete_Strategy , STRATEGY_USERS,COLLA_NAME,COLLA_ADD_BALANCE} from '../../../Services/Researcher/researcher.service'
+import { ADD_RESEARCHER, GET_ALL_RESEARCHER, UPDATE_BALANCE, DELETE_RESEARCHER ,STRATEGY_TRANSACTION_DETAILS ,  ADD_RESEARCHER_STRATEGY, EDIT_RESEARCHER_STRATEGY, GET_ONE_RESEARCHER_STRATEGY, GET_ALL_RESEARCHER_STRATEGY , UPDATE_RESEARCHER , Delete_Strategy , STRATEGY_USERS,COLLA_NAME,COLLA_ADD_BALANCE,updateFreePlan} from '../../../Services/Researcher/researcher.service'
 
 
 export const Add_Researcher = createAsyncThunk("researcher/add",
@@ -173,6 +173,24 @@ export const COLLA_ADD_BALANCE_DATA = createAsyncThunk("colla/balance/add",
 );
 
 
+
+//  for free plan
+export const getFreePlan = createAsyncThunk("strategy/order/freePlan",
+  
+  async (data) => {
+      
+      try {
+          const res = await updateFreePlan(data);
+          
+          return res;
+      } catch (err) {
+          throw err;
+      }
+  }
+);
+
+
+
 const ResearcherSlice = createSlice({
   name: "ResearcherSlice",
   initialState: {
@@ -190,7 +208,7 @@ const ResearcherSlice = createSlice({
     strategy_transation_details:null,
     delete_strategy :null,
     strategy_users :null,
-    
+    getFreePlan:null,
 
 
   },
@@ -258,6 +276,9 @@ const ResearcherSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(COLLA_ADD_BALANCE_DATA.fulfilled, (state, action) => {
+        state.isLoading = false;
+      })
+      .addCase(getFreePlan.fulfilled, (state, action) => {
         state.isLoading = false;
       })
   },

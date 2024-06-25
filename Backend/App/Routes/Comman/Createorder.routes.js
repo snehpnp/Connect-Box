@@ -2,7 +2,7 @@
 
 const router = require("express").Router()
 
-const { CreateOder,UpdateOrder,GetResearcheOrder,CreateOderStg,UpdateOrderstg} = require('../../Controllers/Comman/Ordercreate')
+const { CreateOder,UpdateOrder,GetResearcheOrder,CreateOderStg,UpdateOrderstg,Createorderfreepal} = require('../../Controllers/Comman/Ordercreate')
 
 
 
@@ -10,6 +10,7 @@ const { CreateOder,UpdateOrder,GetResearcheOrder,CreateOderStg,UpdateOrderstg} =
 router.post('/strategy/order/create', CreateOder);
 router.post('/strategy/order/update', UpdateOrder);
 router.post('/strategy/order/get', GetResearcheOrder);
+router.post('/strategy/order/freePlan', Createorderfreepal);
 
 
 

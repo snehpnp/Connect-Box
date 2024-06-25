@@ -233,7 +233,7 @@ class Subadmin {
     try {
       // GET LOGIN CLIENTS
       const getAllSubAdmins = await User_model.find({ Role: "SUBADMIN" })
-        .select("profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key subadmin_service_type strategy_Percentage Per_trade Create_Date").sort({ Create_Date: -1 });
+        .select("profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key client_key subadmin_service_type strategy_Percentage Per_trade Create_Date").sort({ Create_Date: -1 });
 
       const totalCount = getAllSubAdmins.length;
       const ActiveCount = getAllSubAdmins.filter(

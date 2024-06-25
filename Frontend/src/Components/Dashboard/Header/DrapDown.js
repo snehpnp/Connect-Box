@@ -90,6 +90,7 @@ const DropDown = () => {
 
 
 
+
   const fetchData = async () => {
     try {
       const ip = await ipAddress();
@@ -102,6 +103,7 @@ const DropDown = () => {
         setProfileImage(response.data[0].profile_img);
         if (response.data[0].TradingStatus == "on") {
           setLoginStatus(true);
+           
         } else {
           setLoginStatus(false);
         }
@@ -116,7 +118,6 @@ const DropDown = () => {
       setError(error.message);
     }
   };
-
 
 
 
@@ -171,8 +172,6 @@ const DropDown = () => {
     }
   };
 
-
-  
   // Define toggleTheme function
   const toggleTheme = () => {
     const newThemeMode = themeMode === "light" ? "dark" : "light";
@@ -254,7 +253,6 @@ const DropDown = () => {
     walletmodal();
   };
 
-
   function formatNumber(value) {
     if (value < 1000) {
       return value.toString();
@@ -301,6 +299,7 @@ const DropDown = () => {
 
 
 
+
   // subadmin help notification for admin page
   const gettable = async () => {
     try {
@@ -327,6 +326,8 @@ const DropDown = () => {
 
 
 
+ 
+  
 
   // USER NOTIFICATION
   const getusertable = async () => {
@@ -356,6 +357,8 @@ const DropDown = () => {
   };
 
 
+
+
   useEffect(() => {
     fetchData();
     fetchIP();
@@ -364,7 +367,11 @@ const DropDown = () => {
     gettable();
   }, []);
 
-  useEffect(() => {
+
+
+
+
+ useEffect(() => {
     const storedThemeMode = localStorage.getItem("theme_mode");
     if (storedThemeMode) {
       setThemeMode(storedThemeMode);
@@ -386,38 +393,58 @@ const DropDown = () => {
 
 
 
-
   
+
   // LOGOUT TRADING
   const handleTradingOff = async (id) => {
-    let data = { id: id, system_ip: ip };
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to turn off trading?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, turn it off !",
+      cancelButtonText: "Cancel",
+    });
 
+    if (!result.isConfirmed) {
+      return;
+    }
+
+    let data = { id: id, system_ip: ip };
     await dispatch(Trading_Off_Btn(data))
       .unwrap()
       .then((response) => {
         setRefresh(!refresh);
-        if (response.status) {
+        if (response.status){
           Swal.fire({
             title: "Trading Off Successfully!",
             icon: "success",
             html: "Your trading has been successfully completed.",
           });
-        } else {
+          fetchData();
         }
+       
       })
-      .catch((error) => {});
+      .catch((error) => {
+        // Handle error (optional)
+      });
   };
 
 
-  
+
+
+
   const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
     if (check) {
       loginWithApi(brokerid, UserDetails);
     } else {
       handleTradingOff(UserDetails._id);
-      
     }
   };
+
+
 
 
 

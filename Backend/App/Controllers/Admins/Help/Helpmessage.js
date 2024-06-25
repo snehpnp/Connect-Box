@@ -241,18 +241,20 @@ class Helpmessage {
        const {id} = req.body
     
       let messagedata = await user.find({_id: id});
-
-      let messagedata1 = await user.find({_id: messagedata[0].parent_id});
+     
+    let messagedata1 = await user.find({_id:messagedata[0].parent_id});
 
       if (!messagedata) {
         return res.send({ status: false, msg: "message not getting", data: [] });
       }
+
 
       return res.send({
         status: true,
         msg: "getting message  Successfully.",
         data: messagedata,
         subadmin:messagedata1[0].UserName
+       
       });
     } catch (error) {
       console.error("internal error:", error);
@@ -260,6 +262,8 @@ class Helpmessage {
   }
 
 
+
+ 
 
 }
 
