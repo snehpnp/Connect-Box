@@ -4,6 +4,8 @@ var path = require('path');
 const { exec } = require('child_process');
 const fs = require('fs');
 // const db = require('../../BACKEND/App/Models');
+const db = require('../../Backend/App/Models');
+
 const services = db.services;
 const Alice_token = db.Alice_token;
 const Signals = db.Signals;

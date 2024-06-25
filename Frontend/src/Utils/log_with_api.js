@@ -13,27 +13,27 @@ export const loginWithApi = async (broker_id, UserDetails, ip) => {
   if (broker_id === "2" || broker_id === 2) {
 
     if (UserDetails.Role === "USER") {
-        const data = { parent_id: UserDetails.parent_id };
-    
-        axios({
-            url: `${Config.base_url}subadmin/company/GetApi_key`,
-            method: "post",
-            data: data,
+      const data = { parent_id: UserDetails.parent_id };
 
-        }).then((res) => {
-            if (res.data && res.data.data && res.data.data.api_key) {
+      axios({
+        url: `${Config.base_url}subadmin/company/GetApi_key`,
+        method: "post",
+        data: data,
 
-                window.location.href = `https://ant.aliceblueonline.com/?appcode=${res.data.data.api_key}`;
-            }
+      }).then((res) => {
+        if (res.data && res.data.data && res.data.data.api_key) {
 
-        }).catch((error) => {
-            console.error("Error", error);
-        });
+          window.location.href = `https://ant.aliceblueonline.com/?appcode=${res.data.data.api_key}`;
+        }
+
+      }).catch((error) => {
+        console.error("Error", error);
+      });
     } else {
-        window.location.href = `https://ant.aliceblueonline.com/?appcode=${UserDetails.api_key}`;
+      window.location.href = `https://ant.aliceblueonline.com/?appcode=${UserDetails.api_key}`;
     }
-    
- 
+
+
   } else if (broker_id === "1" || broker_id === 1) {
   } else if (broker_id === "3" || broker_id === 3) {
     alert("broker-3");
@@ -51,7 +51,7 @@ export const loginWithApi = async (broker_id, UserDetails, ip) => {
     axios({
       url: `${Config.base_url}mandotsecurities/access_token`,
       method: "post",
-      data: UserDetails,
+      data: { _id: UserDetails._id, system_ip: ip },
     }).then((res) => {
       if (res.data.status) {
         Swal.fire({

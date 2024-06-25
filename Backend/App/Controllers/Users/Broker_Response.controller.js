@@ -26,18 +26,18 @@ class BrokerResponses {
             }
             const currentDate = new Date();
             currentDate.setHours(0, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to 0 for the start of the day
-            
+
             const nextDate = new Date(currentDate);
             nextDate.setDate(nextDate.getDate() + 1); // Get the next date to include data up to the end of the day
-            
-            const findResponse = await BrokerResponse.find({ 
+
+            const findResponse = await BrokerResponse.find({
                 user_id: id,
-                createdAt: { 
+                createdAt: {
                     $gte: currentDate, // Greater than or equal to the start of the current day
                     $lt: nextDate // Less than the start of the next day
                 }
             }).sort({ createdAt: -1 });
-            
+
 
 
             GetAllBrokerResponse1(id, res)
@@ -107,7 +107,7 @@ const GetAllBrokerResponse1 = async (user_id, res) => {
                         console.log("Error processing broker response:", error);
                     }
                 }
-            } 
+            }
         } else if (FindUserAccessToken.broker == 12) {
 
             if (FindUserBrokerResponse.length > 0) {
@@ -189,7 +189,62 @@ const GetAllBrokerResponse1 = async (user_id, res) => {
                 })
                 res.send({ status: true, msg: "broker response updated successfully" })
 
-            } 
+            }
+        } if (FindUserAccessToken.broker == 8) {
+            if (FindUserBrokerResponse.length > 0) {
+                for (const data1 of FindUserBrokerResponse) {
+                    if (data1.order_id) {
+                        try {
+
+                            var config = {
+                                method: 'get',
+                                // url: 'https://webtrade.mandotsecurities.com/interactive/orders?appOrderID=' + data1.order_id,
+                                url: 'https://webtrade.mandotsecurities.com/interactive/orders',
+
+                                headers: {
+                                    'Authorization': FindUserAccessToken.access_token,
+                                    'Content-Type': 'application/json'
+                                },
+                            };
+
+                            const response = await axios(config);
+                            console.log("lastObject", response.data)
+                            if (response.data.type == "success") {
+
+                                if (response.data.result.length > 0) {
+                                    const order_data = response.data.result.find(item1 => item1.AppOrderID == data1.order_id);
+                                    console.log("order_data", order_data)
+                                    if (order_data) {
+
+                                        const message = JSON.stringify(order_data);
+
+                                        const result = await BrokerResponse.findByIdAndUpdate(
+                                            { _id: data1._id },
+                                            {
+                                                order_view_date: message,
+                                                order_view_status: '1',
+                                                order_view_response: order_data.OrderStatus,
+                                                reject_reason: order_data.CancelRejectReason
+                                            },
+                                            { new: true }
+                                        );
+                                    }
+
+                                } else {
+                                    console.log("EMPTY POSTION")
+                                }
+
+
+                            } else {
+
+                            }
+                        } catch (error) {
+                            console.log("Error processing broker response:", error.response.data);
+                        }
+                    }
+
+                }
+            }
         }
 
 
