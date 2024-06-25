@@ -95,7 +95,7 @@ export default function AllEmployees() {
               data: response.data,
             });
             if (response.data[0].TradingStatus == "on") {
-              setLoginStatus(true);
+              setLoginStatus(true); 
             } else {
               setLoginStatus(false);
             }
@@ -112,6 +112,9 @@ export default function AllEmployees() {
   useEffect(() => {
     fetchData();
   }, []);
+
+
+
 
   // LOGOUT TRADING
   const handleTradingOff = async (id) => {

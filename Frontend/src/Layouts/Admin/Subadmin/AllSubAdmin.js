@@ -64,7 +64,6 @@ export default function Help() {
       fontWeight: 800,
 
 
-
     },
     headerButton: {
       marginRight: 8,
@@ -72,6 +71,8 @@ export default function Help() {
     },
 
   };
+
+
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
   const columns = [
@@ -104,9 +105,9 @@ export default function Help() {
       headerClassName: styles.boldHeader,
     },
     {
-      field: "prifix_key",
-      headerName: "Prefix Key",
-      width: 120,
+      field: "client_key",
+      headerName: "Client Key",
+      width: 185,
       headerClassName: styles.boldHeader,
     },
 
@@ -188,7 +189,6 @@ export default function Help() {
         </div>
       ),
     },
-
 
     {
       field: "Create_Date",

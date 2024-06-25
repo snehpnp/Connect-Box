@@ -704,7 +704,7 @@ const AddClient = () => {
 
                   </div>
 
-                  <div className="row mt-3">
+                  <div className="row mt-3" >
                     {/* STRATEGY CODE */}
 
                     {subadmin_service_type1 == 2 ?
@@ -884,7 +884,7 @@ const AddClient = () => {
                                              
                                             }}
                                           >
-                                            <div className="form-group d-flex justify-content-between m-3 border rounded p-2">
+                                            <div className="form-group d-flex justify-content-between m-3 border rounded p-2" >
                                               <div className="d-flex align-items-center">
                                                 <input
                                                   type="radio"

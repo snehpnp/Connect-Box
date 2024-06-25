@@ -25,6 +25,10 @@ export const RechargeDetailsGets = createAsyncThunk(
         }
     }
 );
+
+
+
+
 export const BalanceGetbyId = createAsyncThunk(
     "recharge/id/get",
     async (data, thunkAPI) => {
@@ -36,6 +40,8 @@ export const BalanceGetbyId = createAsyncThunk(
         }
     }
 );
+
+
 
 export const SubadminDetail = createAsyncThunk(
     "subadmin/company/edit",
@@ -50,6 +56,8 @@ export const SubadminDetail = createAsyncThunk(
 );
 
 
+
+
 const subAdminSystemSlice = createSlice({
     name: "subAdminSystem",
     initialState: {
@@ -60,6 +68,7 @@ const subAdminSystemSlice = createSlice({
         RechargeInfo1: null,
 
         SubDetalInfo: null,
+       
 
 
     },
@@ -114,6 +123,8 @@ const subAdminSystemSlice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
             });
+            
+
     },
 });
 

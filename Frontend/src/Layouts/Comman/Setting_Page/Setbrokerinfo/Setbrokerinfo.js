@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 import { update_broker_Data, Get_broker_Data } from "../../../../ReduxStore/Slice/Subadmin/System";
-
 import { useDispatch } from "react-redux";
 import Swal from 'sweetalert2';
 
@@ -23,7 +22,12 @@ function BrokerInfoForm() {
     event.preventDefault();
 
     if (!apiKey || !secretKey || !dematUserId) {
-      alert("Please field the box");
+      Swal.fire({
+        title: "Please Field The Box!",
+        icon: "error",
+        timer: 1000,
+        timerProgressBar: true
+      });
       return;
     }
 
@@ -92,6 +96,8 @@ function BrokerInfoForm() {
     gettable()
   }, []);
 
+
+  
   return (
     <div className="container ">
       <div className="row justify-content-center">

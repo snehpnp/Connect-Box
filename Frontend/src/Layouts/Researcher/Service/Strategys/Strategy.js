@@ -197,9 +197,9 @@ const Strategy = () => {
             if (!values.strategy_percentage) {
                 errors.strategy_percentage = "Please enter strategy percentage";
             }
-            if (!values.monthly_charges) {
-                errors.monthly_charges = "Please enter monthly charges";
-            }
+            // if (!values.monthly_charges) {
+            //     errors.monthly_charges = "Please enter monthly charges";
+            // }
             if (!values.security_fund) {
                 errors.security_fund = "Please enter security fund";
             }
@@ -328,6 +328,9 @@ const Strategy = () => {
     const handleEditPackage = (id) => {
         navigate(`/research/edit/strategies/${id.id}`, { state: { allStategy } });
     };
+
+
+
 
     const handleDelete = async (id) => {
 
