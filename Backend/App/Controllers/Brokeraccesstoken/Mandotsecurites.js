@@ -21,7 +21,7 @@ class mandotsecurities {
 
     async GetAccessTokenmandotsecurities(req, res) {
         try {
-            const { _id } = req.body;
+            const { _id ,system_ip} = req.body;
 
             if (!_id) {
                 return res.send({ status: false, data: [], msg: "User ID is required" });
@@ -63,7 +63,7 @@ class mandotsecurities {
 
             if (response.data.type == "success") {
                 const result = await User.findByIdAndUpdate(
-                    { _id: new ObjectId(id) },
+                    { _id: userData._id},
                     {
                         access_token: response.data.result.token,
                         TradingStatus: "on"
@@ -76,7 +76,7 @@ class mandotsecurities {
                     trading_status: "Trading On",
                     role: "USER",
                     device: "WEB",
-                    system_ip: system_ip
+                    system_ip: system_ip ?system_ip :""
                 });
                 await user_logs1.save();
 
@@ -87,7 +87,7 @@ class mandotsecurities {
                     trading_status: response.data.message,
                     role: "USER",
                     device: "WEB",
-                    system_ip: system_ip
+                    system_ip: system_ip?system_ip:""
                 });
                 await user_logs1.save();
 

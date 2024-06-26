@@ -112,16 +112,10 @@ async function createViewMandotsecurities() {
           postdata:
           {
 
-           
-            dhanClientId : "$client_code",
-
-            transactionType : "BUY",
-
-           
             exchangeSegment: {
               $cond: {
                 if: { $eq: ['$category.segment', 'C'] }, // Your condition here
-                then: 'NSE_EQ',
+                then: 'NSECM',
                 else: {
                   $cond: {
                     if: {
@@ -131,7 +125,7 @@ async function createViewMandotsecurities() {
                         { $eq: ['$category.segment', 'FO'] }
                       ]
                     },
-                    then: 'NSE_FNO',
+                    then: 'NSEFO',
                     else: {
 
                       $cond: {
@@ -141,7 +135,7 @@ async function createViewMandotsecurities() {
                             { $eq: ['$category.segment', 'MO'] }
                           ]
                         },
-                        then: 'MCX_COMM',
+                        then: 'NSEMO',
                         else: {
 
                           $cond: {
@@ -151,10 +145,9 @@ async function createViewMandotsecurities() {
                                 { $eq: ['$category.segment', 'CO'] }
                               ]
                             },
-                            then: 'NSE_CURRENCY',
+                            then: 'NSECD',
 
-                            // all not exist condition 
-                            else: "NFO"
+                            else: "NSEFO"
 
                           }
 
@@ -172,7 +165,6 @@ async function createViewMandotsecurities() {
               }
             },
 
-           
             productType: {
               $cond: {
                 if: {
@@ -197,7 +189,7 @@ async function createViewMandotsecurities() {
                           { $eq: ['$client_services.product_type', '2'] },
                         ]
                     },
-                    then: 'INTRADAY',
+                    then: 'MIS',
                     else: {
                       $cond: {
                         if: {
@@ -216,7 +208,7 @@ async function createViewMandotsecurities() {
                                 ]
                             },
                             then: 'CO',
-                            else: "CNC"
+                            else: "MIS"
 
                           }
 
@@ -233,8 +225,6 @@ async function createViewMandotsecurities() {
 
 
             },
-
-
 
             orderType: {
               $cond: {
@@ -244,7 +234,7 @@ async function createViewMandotsecurities() {
                       { $eq: ['$client_services.order_type', '1'] },
                     ]
                 },
-                then: 'MARKET',
+                then: 'Market',
                 else: {
                   $cond: {
                     if: {
@@ -253,7 +243,7 @@ async function createViewMandotsecurities() {
                           { $eq: ['$client_services.order_type', '2'] },
                         ]
                     },
-                    then: 'LIMIT',
+                    then: 'Limit',
                     else: {
                       $cond: {
                         if: {
@@ -262,7 +252,7 @@ async function createViewMandotsecurities() {
                               { $eq: ['$client_services.order_type', '3'] },
                             ]
                         },
-                        then: 'STOP_LOSS',
+                        then: 'StopLimit',
                         else: {
                           $cond: {
                             if: {
@@ -271,10 +261,10 @@ async function createViewMandotsecurities() {
                                   { $eq: ['$client_services.order_type', '4'] },
                                 ]
                             },
-                            then: 'STOP_LOSS_MARKET',
+                            then: 'StopMarket',
 
                             //All condition exist
-                            else: "MARKET"
+                            else: "Market"
 
                           }
 
@@ -291,47 +281,24 @@ async function createViewMandotsecurities() {
 
             },
 
-            validity : "DAY",
+            orderSide: "BUY",
 
-            securityId: {
-              $cond: {
-                if: {
-                  $and:
-                    [
-                      { $eq: ['$category.segment', 'C'] },
-                    ]
-                },
-                then: "$service.instrument_token",
-                else: ""
+            timeInForce: "DAY",
 
-              }
-            },
+            disclosedQuantity:0,
+            limitPrice:0,
 
-           
+            orderQuantity: { "$toInt": "$client_services.quantity" },
 
-            quantity: { "$toInt": "$client_services.quantity" },
-           
-            // product code condition here
-           
+            stopPrice:0,
 
-          
-            price: 0,
-            
-            triggerPrice :0,
-
-            afterMarketOrder : false ,
-
-            amoTime : "OPEN" ,
-
-            boProfitValue : 0 ,
-
-            boStopLossValue : 0
+            orderUniqueIdentifier:"123abc",
 
           }
         }
       }
     ];
-   
+
     // Create the view
     await db.createCollection('mandotsecuritiesView', { viewOn: 'users', pipeline });
 

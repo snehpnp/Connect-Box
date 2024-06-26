@@ -16,7 +16,14 @@ verifyToken = (req, res, next) => {
 
             var UserToken = await User_model.find({ _id: decoded.id }).select('web_login_token app_login_token')
 
-            if (UserToken[0].web_login_token != token) {
+
+            if (UserToken && UserToken[0].web_login_token != token) {
+                return res.send({
+                    status: false,
+                    msg: "Unauthorized!",
+                    data: [],
+                });
+            }else{
                 return res.send({
                     status: false,
                     msg: "Unauthorized!",
