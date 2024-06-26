@@ -53,6 +53,7 @@ const DropDown = () => {
   var token = JSON.parse(localStorage.getItem("user_details")).token;
 
   const RunSocketUrl = async () => {
+    
     const companyData = await getCompany();
 
     if (companyData[0].BackendSocketurl) {
@@ -69,6 +70,7 @@ const DropDown = () => {
   }, []);
 
   const RunLogoutSocket = () => {
+
     if (socket != null) {
       if (user_details) {
         socket.on("logout", (data) => {
@@ -87,6 +89,8 @@ const DropDown = () => {
   useEffect(() => {
     RunLogoutSocket();
   }, [socket]);
+
+
 
 
 

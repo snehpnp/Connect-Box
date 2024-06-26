@@ -52,7 +52,10 @@ function Login() {
       const ip = await ipAddress();
       setIp(ip);
     } catch (error) {
+
+
       console.error('Failed to fetch IP address:', error);
+
     }
   };
 
@@ -63,6 +66,7 @@ function Login() {
     const companyData = await getCompany();
         
         if(companyData[0].BackendSocketurl){
+      
             const newSocket = io(companyData[0].BackendSocketurl);
             setSocket(newSocket);
             return () => {
@@ -81,8 +85,6 @@ function Login() {
 
 
   
-
-
 
   const handleRecaptchaChange = (value) => {
     setIsVerified(!!value);

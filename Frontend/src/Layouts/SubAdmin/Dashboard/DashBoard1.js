@@ -26,6 +26,8 @@ const DashBoard = () => {
 
 
 
+  
+
 
   const [options, setOptions] = useState({
     chart: {
@@ -457,6 +459,7 @@ const DashBoard = () => {
         </div >
       </div >
     </div>
+    
   );
 };
 
