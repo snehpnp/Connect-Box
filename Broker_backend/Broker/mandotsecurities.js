@@ -55,7 +55,6 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                         }
 
 
-
                         if (item.client_services.order_type == "2" || item.client_services.order_type == "3") {
                             item.postdata.limitPrice = limitPrice
                         }
@@ -104,7 +103,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
             }
 
             else if (type == 'SX' || type == 'LX') {
-                console.log("trade exit")
+                // console.log("trade exit")
 
                 const requestPromises = AllClientData.map(async (item) => {
 
@@ -326,12 +325,6 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
 
 
 
-
-
-
-
-
-
                 });
                 // Send all requests concurrently using Promise.all
                 Promise.all(requestPromises)
@@ -448,7 +441,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
 
     axios(config)
         .then(async (response) => {
-            console.log("respose ENTRY", response.data)
+            // console.log("respose ENTRY", response.data)
             fs.appendFile(filePath, 'TIME ' + new Date() + ' MANDOT AFTER PLACE ORDER USER ENTRY - ' + item.UserName + ' RESPONSE -' + JSON.stringify(response.data) + '\n', function (err) {
                 if (err) {
                     return console.log(err);
@@ -523,7 +516,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
                 }
             });
 
-            console.log("error.response.data==", error.response.data.result.errors)
+            // console.log("error.response.data==", error.response.data.result.errors)
 
             try {
 

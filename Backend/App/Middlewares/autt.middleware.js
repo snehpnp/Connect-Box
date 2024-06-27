@@ -16,7 +16,7 @@ verifyToken = async (req, res, next) => {
     const user = await User_model.findById(decoded.id).select("web_login_token app_login_token");
 
     if (!user || user.web_login_token !== token) {
-      return res.status(401).send({
+      return res.send({
         status: false,
         msg: "Unauthorized!",
         data: [],
@@ -26,7 +26,7 @@ verifyToken = async (req, res, next) => {
     req.userId = decoded.id;
     next();
   } catch (err) {
-    return res.status(401).send({
+    return res.send({
       status: false,
       msg: "Unauthorized!",
       data: [],

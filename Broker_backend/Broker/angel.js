@@ -143,7 +143,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                 });
 
         } else if (type == 'SX' || type == 'LX') {
-            console.log("trade exit")
+            // console.log("trade exit")
 
 
 
@@ -242,7 +242,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
 
                                         } else {
 
-                                            console.log("possition_qty Cash trade", possition_qty);
+                                            // console.log("possition_qty Cash trade", possition_qty);
                                             if (possition_qty > 0 && type == 'LX') {
                                                 ExitPlaceOrder(item, filePath, possition_qty, signals, signal_req)
                                             } else if (possition_qty < 0 && type == 'SX') {

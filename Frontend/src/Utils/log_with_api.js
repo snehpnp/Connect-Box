@@ -47,7 +47,7 @@ export const loginWithApi = async (broker_id, UserDetails, ip) => {
     alert("broker-7");
   }
   if (broker_id === "8" || broker_id === 8) {
-    console.log("mandot");
+    // console.log("mandot");
     axios({
       url: `${Config.base_url}mandotsecurities/access_token`,
       method: "post",

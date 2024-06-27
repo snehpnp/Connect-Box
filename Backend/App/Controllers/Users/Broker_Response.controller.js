@@ -208,12 +208,12 @@ const GetAllBrokerResponse1 = async (user_id, res) => {
                             };
 
                             const response = await axios(config);
-                            console.log("lastObject", response.data)
+                            // console.log("lastObject", response.data)
                             if (response.data.type == "success") {
 
                                 if (response.data.result.length > 0) {
                                     const order_data = response.data.result.find(item1 => item1.AppOrderID == data1.order_id);
-                                    console.log("order_data", order_data)
+                                    // console.log("order_data", order_data)
                                     if (order_data) {
 
                                         const message = JSON.stringify(order_data);

@@ -14,7 +14,7 @@ const db = client.db(process.env.DB_NAME); // Replace with your actual database 
 
 async function createViewKotakNeo() {
 
-console.log("111")
+// console.log("111")
   // All Client Trading on view
   try {
 
@@ -324,7 +324,7 @@ console.log("111")
       }
     ];
    
-    console.log("pipeline",pipeline)
+    // console.log("pipeline",pipeline)
     // Create the view
     await db.createCollection('kotakneoView', { viewOn: 'users', pipeline });
 

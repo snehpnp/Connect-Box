@@ -475,7 +475,7 @@ const TruncateTableTokenChain = async () => {
 
 const TruncateTable_live_token_price = async() => {
 
-    const drop = await db_main.collection("live_price_token").deleteMany({});
+    const drop = await db_main.collection(live_price_token).deleteMany({});
 
 }
  

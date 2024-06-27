@@ -28,7 +28,7 @@ class mandotsecurities {
             }
 
             const userData = await User.findOne({ _id: new ObjectId(_id) }).select('TradingStatus api_secret api_key');
-            console.log("userData", userData);
+           
 
             if (!userData) {
                 return res.status(404).send({ status: false, data: [], msg: "User does not exist" });
@@ -59,7 +59,7 @@ class mandotsecurities {
             };
 
             const response = await axios.request(config);
-            console.log("API Response:", response.data);
+            // console.log("API Response:", response.data);
 
             if (response.data.type == "success") {
                 const result = await User.findByIdAndUpdate(

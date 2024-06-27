@@ -33,6 +33,7 @@ export default function AllEmployees() {
   const userDetails = JSON.parse(localStorage.getItem("user_details"));
 
   const [showModal, setshowModal] = useState(false);
+
   const [SelectService, setSelectService] = useState("null");
   const [profileData, setProfileData] = useState([]);
   const [refresh, setrefresh] = useState(false);
@@ -117,23 +118,62 @@ export default function AllEmployees() {
 
 
   // LOGOUT TRADING
-  const handleTradingOff = async (id) => {
-    let data = { id: id, system_ip: ip };
+  // const handleTradingOff = async (id) => {
+  //   let data = { id: id, system_ip: ip };
 
+  //   await dispatch(Trading_Off_Btn(data))
+  //     .unwrap()
+  //     .then((response) => {
+  //       if (response.status) {
+  //         toast.success("Trading off successfully");
+  //         setrefresh(!refresh);
+  //       } else {
+  //         toast.error("Trading Off Error");
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       console.log("Trading Off Error", error);
+  //     });
+  // };
+
+
+
+  const handleTradingOff = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "Do you really want to turn off trading?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, turn it off !",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) {
+      return;
+    }
+
+    let data = { id: id, system_ip: ip };
     await dispatch(Trading_Off_Btn(data))
       .unwrap()
       .then((response) => {
-        if (response.status) {
-          toast.success("Trading off successfully");
-          setrefresh(!refresh);
-        } else {
-          toast.error("Trading Off Error");
+        setrefresh(!refresh);
+        if (response.status){
+          Swal.fire({
+            title: "Trading Off Successfully!",
+            icon: "success",
+            html: "Your trading has been successfully completed.",
+          });
+          fetchData();
         }
+       
       })
       .catch((error) => {
-        console.log("Trading Off Error", error);
+        // Handle error (optional)
       });
   };
+
 
 
 
@@ -163,7 +203,6 @@ export default function AllEmployees() {
 
 
 
-  
   const columns = [
     {
       dataField: "index",
@@ -420,6 +459,9 @@ export default function AllEmployees() {
         }
       }
     });
+
+
+
 
   //  SHOW lIVE PRICE
   const ShowLivePrice = async () => {
@@ -839,6 +881,8 @@ export default function AllEmployees() {
     }
   };
 
+
+  
   useEffect(() => {
     ShowLivePrice();
   }, [tradeHistoryData.data, SocketState, livePriceDataDetails]);
@@ -856,10 +900,13 @@ export default function AllEmployees() {
     fetchIP();
   }, []);
 
+
+
+
   // FATCH STRATEGYS
   const fetchStrategies = async () => {
     try {
-      const data = { id: user_id };
+      const data = {id: user_id };
       await dispatch(allStrategy_subAd(data))
         .unwrap()
         .then((response) => {
@@ -899,6 +946,8 @@ export default function AllEmployees() {
       });
     }
   };
+
+
 
   useEffect(() => {
     fetchStrategies();
