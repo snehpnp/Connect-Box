@@ -3,8 +3,8 @@ var qs = require('qs');
 var path = require('path');
 const { exec } = require('child_process');
 const fs = require('fs');
-// const db = require('../../BACKEND/App/Models');
-const db = require('../../Backend/App/Models');
+const db = require('../../BACKEND/App/Models');
+// const db = require('../../Backend/App/Models');
 
 const services = db.services;
 const Alice_token = db.Alice_token;
@@ -16,7 +16,7 @@ var dateTime = require('node-datetime');
 
 const place_order = async (AllClientData, signals, token, filePath, signal_req) => {
 
-   try {
+    try {
 
         var dt = signals.DTime;
         var input_symbol = signals.Symbol;
@@ -36,69 +36,36 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
         var client_key = signals.Key;
         var demo = signals.Demo;
 
-
+        console.log(limitPrice)
         if (token != 0) {
 
             if (type == 'LE' || type == 'SE') {
 
 
-                if (segment.toUpperCase() != "C") {
+                const requestPromises = AllClientData.map(async (item) => {
 
-                    const requestPromises = AllClientData.map(async (item) => {
+                    item.postdata.exchangeInstrumentID = parseInt(token[0].instrument_token);
 
-                        item.postdata.securityId = token[0].instrument_token;
+                    if (type == 'LE' || type == 'SX') {
+                        item.postdata.orderSide = 'BUY';
+                    } else if (type == 'SE' || type == 'LX') {
+                        item.postdata.orderSide = 'SELL';
+                    }
 
-                        if (type == 'LE' || type == 'SX') {
-                            item.postdata.orderSide = 'BUY';
-                        } else if (type == 'SE' || type == 'LX') {
-                            item.postdata.orderSide = 'SELL';
-                        }
+                    item.postdata.limitPrice = parseInt(limitPrice)
 
+                    EntryPlaceOrder(item, filePath, signals, signal_req);
 
-                        if (item.client_services.order_type == "2" || item.client_services.order_type == "3") {
-                            item.postdata.limitPrice = limitPrice
-                        }
+                });
 
-                        EntryPlaceOrder(item, filePath, signals, signal_req);
-
+                Promise.all(requestPromises)
+                    .then(responses => { })
+                    .catch(errors => {
+                        console.log("errors:", errors);
                     });
-                   
-                    Promise.all(requestPromises)
-                        .then(responses => {  })
-                        .catch(errors => {
-                            console.log("errors:", errors);
-                        });
 
 
-                } else {
 
-
-                    const requestPromises = AllClientData.map(async (item) => {
-
-                        if (type == 'LE' || type == 'SX') {
-                            item.postdata.orderSide = 'BUY';
-                        } else if (type == 'SE' || type == 'LX') {
-                            item.postdata.orderSide = 'SELL';
-                        }
-                        item.postdata.exchangeInstrumentID = token[0].instrument_token;
-
-
-                        if (item.client_services.order_type == "2" || item.client_services.order_type == "3") {
-                            item.postdata.limitPrice = limitPrice
-                        }
-
-                        EntryPlaceOrder(item, filePath, signals, signal_req);
-
-                    });
-                  
-                    Promise.all(requestPromises)
-                        .then(responses => {})
-                        .catch(errors => {
-                            console.log("errors:", errors);
-                        });
-
-
-                }
 
             }
 
@@ -107,9 +74,8 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
 
                 const requestPromises = AllClientData.map(async (item) => {
 
-                    if (segment.toUpperCase() != "C") {
-                        item.postdata.securityId = token[0].instrument_token;
-                    }
+                        item.postdata.exchangeInstrumentID = parseInt(token[0].instrument_token);
+                  
 
 
                     if (type == 'LE' || type == 'SX') {
@@ -118,9 +84,8 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                         item.postdata.orderSide = 'SELL';
                     }
 
-                    if (item.client_services.order_type == "2" || item.client_services.order_type == "3") {
-                        item.postdata.limitPrice = limitPrice
-                    }
+                    item.postdata.limitPrice = parseInt(limitPrice)
+
 
 
 
@@ -136,23 +101,61 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                     };
                     axios(config)
                         .then(async (response) => {
-                          
+
                             if (response.data.type == "success") {
 
                                 fs.appendFile(filePath, 'TIME ' + new Date() + ' MANDOT POSITION DATA - ' + item.UserName + ' LENGTH = ' + JSON.stringify(response.data.length) + '\n', function (err) {
-                                    if (err) {  }
+                                    if (err) { }
                                 });
                                 if (response.data.result.positionList.length > 0) {
 
+                                    const Exist_entry_order = response.data.result.positionList.find(item1 => item1.ExchangeInstrumentId == parseInt(token[0].instrument_token));
 
-                                const Exist_entry_order =response.data.result.positionList.find(item1 => item1.ExchangeInstrumentId == exchangeInstrumentID);
+                                    if (Exist_entry_order != undefined) {
 
-                                if (Exist_entry_order != undefined) {
+                                        const possition_qty = parseInt(Exist_entry_order.OpenBuyQuantity) - parseInt(Exist_entry_order.OpenSellQuantity);
+                                       
 
-                                    const possition_qty = parseInt(Exist_entry_order.OpenBuyQuantity) - parseInt(Exist_entry_order.OpenSellQuantity);
+                                        if (possition_qty == 0) {
+
+                                            BrokerResponse.create({
+                                                user_id: item._id,
+                                                receive_signal: signal_req,
+                                                strategy: strategy,
+                                                type: type,
+                                                symbol: input_symbol,
+                                                order_status: "Entry Not Exist",
+                                                reject_reason: "This Script position Empty ",
+                                                broker_name: "MANDOT",
+                                                send_request: send_rr,
+                                                open_possition_qty: possition_qty,
+
+                                            })
+                                                .then((BrokerResponseCreate) => { })
+                                                .catch((err) => {
+                                                    try {
+                                                        console.log('Error creating and saving user:', err);
+                                                    } catch (e) {
+                                                        console.log("duplicate key")
+                                                    }
+
+                                                });
+
+
+                                        } else {
                                   
-                                    if (possition_qty == 0) {
-                                      
+
+                                            if (possition_qty > 0 && type == 'LX') {
+                                                ExitPlaceOrder(item, filePath, possition_qty, signals, signal_req)
+                                            } else if (possition_qty < 0 && type == 'SX') {
+                                                ExitPlaceOrder(item, filePath, possition_qty, signals, signal_req)
+                                            }
+                                        }
+
+
+
+                                    } else {
+
                                         BrokerResponse.create({
                                             user_id: item._id,
                                             receive_signal: signal_req,
@@ -160,10 +163,11 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                                             type: type,
                                             symbol: input_symbol,
                                             order_status: "Entry Not Exist",
-                                            reject_reason: "This Script position Empty ",
+                                            order_id: "",
+                                            trading_symbol: "",
                                             broker_name: "MANDOT",
                                             send_request: send_rr,
-                                            open_possition_qty: possition_qty,
+                                            reject_reason: "position Not Exist",
 
                                         })
                                             .then((BrokerResponseCreate) => { })
@@ -176,48 +180,8 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
 
                                             });
 
-
-                                    } else {
-
-                                        if (possition_qty > 0 && type == 'LX') {
-                                            ExitPlaceOrder(item, filePath, possition_qty, signals, signal_req)
-                                        } else if (possition_qty < 0 && type == 'SX') {
-                                            ExitPlaceOrder(item, filePath, possition_qty, signals, signal_req)
-                                        }
                                     }
-
-
-
-                                } else {
-
-                                    BrokerResponse.create({
-                                        user_id: item._id,
-                                        receive_signal: signal_req,
-                                        strategy: strategy,
-                                        type: type,
-                                        symbol: input_symbol,
-                                        order_status: "Entry Not Exist",
-                                        order_id: "",
-                                        trading_symbol: "",
-                                        broker_name: "MANDOT",
-                                        send_request: send_rr,
-                                        reject_reason: "position Not Exist",
-
-                                    })
-                                        .then((BrokerResponseCreate) => {
-                                            // console.log('User created and saved:', BrokerResponseCreate._id)
-                                        })
-                                        .catch((err) => {
-                                            try {
-                                                console.log('Error creating and saving user:', err);
-                                            } catch (e) {
-                                                console.log("duplicate key")
-                                            }
-
-                                        });
-
                                 }
-                            }
 
                             } else {
 
@@ -235,9 +199,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                                     reject_reason: "All position Empty",
 
                                 })
-                                    .then((BrokerResponseCreate) => {
-                                        // console.log('User created and saved:', BrokerResponseCreate._id)
-                                    })
+                                    .then((BrokerResponseCreate) => { })
                                     .catch((err) => {
                                         try {
                                             console.log('Error creating and saving user:', err);
@@ -261,7 +223,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                                 }
                             });
 
-                            if (error) {
+                            if (error.response.data) {
                                 const message = (JSON.stringify(error.response.data)).replace(/["',]/g, '');
                                 BrokerResponse.create({
                                     user_id: item._id,
@@ -277,9 +239,7 @@ const place_order = async (AllClientData, signals, token, filePath, signal_req) 
                                     reject_reason: message,
 
                                 })
-                                    .then((BrokerResponseCreate) => {
-                                        // console.log('User created and saved:', BrokerResponseCreate._id)
-                                    })
+                                    .then((BrokerResponseCreate) => { })
                                     .catch((err) => {
                                         try {
                                             console.log('Error creating and saving user:', err);
@@ -437,7 +397,10 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
             'Content-Type': 'application/json'
         },
         data: JSON.stringify(item.postdata)
+      
     };
+
+
 
     axios(config)
         .then(async (response) => {
@@ -516,9 +479,9 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
                 }
             });
 
-            // console.log("error.response.data==", error.response.data.result.errors)
 
             try {
+                console.log("error.response.data", error.response.data)
 
                 if (error) {
                     if (error.response.data.result.errors) {
@@ -731,7 +694,7 @@ const ExitPlaceOrder = async (item, filePath, possition_qty, signals, signal_req
                             send_request: send_rr,
                             reject_reason: message,
                         })
-                            .then((BrokerResponseCreate) => {  })
+                            .then((BrokerResponseCreate) => { })
                             .catch((err) => {
                                 try {
                                     console.log('Error creating and saving user:', err);
@@ -757,7 +720,7 @@ const ExitPlaceOrder = async (item, filePath, possition_qty, signals, signal_req
                             send_request: send_rr,
                             reject_reason: message,
                         })
-                            .then((BrokerResponseCreate) => {  })
+                            .then((BrokerResponseCreate) => { })
                             .catch((err) => {
                                 try {
                                     console.log('Error creating and saving user:', err);
