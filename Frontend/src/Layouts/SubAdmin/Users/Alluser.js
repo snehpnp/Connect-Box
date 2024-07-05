@@ -173,7 +173,12 @@ export default function AllUsers() {
         </div>
       ),
     },
-
+    // {
+    //   field: "TradingStatus",
+    //   headerName: "Active/Deactive",
+    //   width: 180,
+    //   headerClassName: styles.boldHeader,
+    // },
     {
       field: "actions",
       headerName: "Actions",
@@ -229,7 +234,7 @@ export default function AllUsers() {
       showCancelButton: true,
       confirmButtonText: "Save",
       cancelButtonText: "Cancel",
-      allowOutsideClick: false, // Prevents closing modal by clicking outside or pressing Esc key
+      allowOutsideClick: false, 
     });
 
     if (result.isConfirmed) {
@@ -243,7 +248,7 @@ export default function AllUsers() {
             timerProgressBar: true
           });
           setTimeout(() => {
-            Swal.close(); // Close the modal
+            Swal.close(); 
             setrefresh(!refresh);
           }, 1000);
         } else {
@@ -291,6 +296,8 @@ export default function AllUsers() {
     setLicenceType('null')
     setrefresh(!refresh)
   }
+
+
 
   const forCSVdata = () => {
     let csvArr = []
@@ -370,7 +377,7 @@ export default function AllUsers() {
     await dispatch(GetAllUsers(data))
       .unwrap()
       .then((response) => {
-
+          
         if (response.status) {
           const formattedData = response.data && response.data.map((row, index) => ({
             ...row,
