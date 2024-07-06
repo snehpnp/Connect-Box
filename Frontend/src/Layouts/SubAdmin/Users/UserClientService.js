@@ -1,20 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { GetAllclientDetails, UPDATE_CLIENT_SERVICE_DATA, statusUpdate} from "../../../ReduxStore/Slice/Users/ClientServiceSlice";
+import {
+  GetAllclientDetails,
+  UPDATE_CLIENT_SERVICE_DATA,
+  statusUpdate,
+} from "../../../ReduxStore/Slice/Users/ClientServiceSlice";
 import { SquarePen } from "lucide-react";
 import Swal from "sweetalert2";
-import { Userinfo,Trading_Off_Btn} from "../../../ReduxStore/Slice/Comman/Userinfo";
+import {
+  Userinfo,
+  Trading_Off_Btn,
+} from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { ipAddress } from "../../../Utils/Ipaddress";
+import { useParams, Link } from "react-router-dom";
 
-
-function Clientservice() {
+export default function UserClientService() {
   const dispatch = useDispatch();
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   const [getAllClientService, setAllClientService] = useState({
     loading: false,
     data: [],
   });
+
+  const { id } = useParams();
 
   const [getAllClientStrategy, setAllClientStrategy] = useState({
     loading: false,
@@ -41,11 +50,9 @@ function Clientservice() {
     serviceName: "",
   });
 
-
-
   const fetchData = async () => {
     try {
-      let data = { id: user_id };
+      let data = { id: id };
 
       await dispatch(Userinfo(data))
         .unwrap()
@@ -66,7 +73,7 @@ function Clientservice() {
         .catch((error) => {
           console.log("Error", error);
         });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -74,80 +81,31 @@ function Clientservice() {
   }, [refresh]);
 
   // status update active
-  // const ActiveStatus = async (item, e) => {
-  //   try {
-  //     let data = {
-  //       user_id: user_id,
-  //       service_id: item.service._id,
-  //       active_status: e.checked ? "1" : "0",
-  //     };
-
-  //     const response = await dispatch(statusUpdate(data)).unwrap();
-
-  //     if (response.status) {
-  //       if (e.checked) {
-  //         Swal.fire({
-  //           title: "Trading On",  
-  //           icon: "success",
-  //           html: "Your trading has been successfully activated.",
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           title: "Trading Off",
-  //           icon: "success",
-  //           html: "Your trading has been successfully deactivated.",
-  //         });
-  //       }
-
-  //       setRefresh(!refresh);
-  //     } else {
-  //       Swal.fire({
-  //         title: "Error",
-  //         icon: "error",
-  //         html: "Failed to update trading status.",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log("Error:", error);
-  //   }
-  // };
-
-
-
-  // active status
-
   const ActiveStatus = async (item, e) => {
     try {
-      const status = e.checked ? "On" : "off";
-      const result = await Swal.fire({
-        title: "Are you sure?",
-        text: `Do you want to ${status} the trading?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes",
-        cancelButtonText: "No"
-      });
-  
-      if (result.isDismissed) {
-        e.checked = !e.checked;
-        return;
-      }
-  
       let data = {
-        user_id: user_id,
+        user_id: id,
         service_id: item.service._id,
         active_status: e.checked ? "1" : "0",
       };
-  
+
       const response = await dispatch(statusUpdate(data)).unwrap();
-  
+
       if (response.status) {
-        Swal.fire({
-          title: e.checked ? "Trading On" : "Trading Off",
-          icon: "success",
-          html: `Your trading has been successfully ${e.checked ? "activated" : "deactivated"}.`,
-        });
-  
+        if (e.checked) {
+          Swal.fire({
+            title: "Trading On",
+            icon: "success",
+            html: "Your trading has been successfully activated.",
+          });
+        } else {
+          Swal.fire({
+            title: "Trading Off",
+            icon: "success",
+            html: "Your trading has been successfully deactivated.",
+          });
+        }
+
         setRefresh(!refresh);
       } else {
         Swal.fire({
@@ -160,14 +118,12 @@ function Clientservice() {
       console.log("Error:", error);
     }
   };
-  
-
 
   const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
     if (check) {
-      loginWithApi(brokerid, UserDetails,ip);
+      loginWithApi(brokerid, UserDetails, ip);
     } else {
-      handleTradingOff(user_id);
+      handleTradingOff(id);
     }
   };
 
@@ -193,8 +149,6 @@ function Clientservice() {
       });
   };
 
-
-  
   const handleInputChange = (key, value) => {
     setData((prevData) => {
       if (key === "strategyId") {
@@ -236,7 +190,7 @@ function Clientservice() {
   };
 
   const GetAllClientServiceDetails = async () => {
-    var data = { user_Id: user_id };
+    var data = { user_Id: id };
     await dispatch(GetAllclientDetails(data))
       .unwrap()
       .then((response) => {
@@ -281,7 +235,7 @@ function Clientservice() {
       maxQty: data.maxQty,
       orderType: data.orderType,
       productType: data.productType,
-      userId: user_id,
+      userId: id,
       id: data && data.id,
       seriveId: data && data.seriveId,
     };
@@ -396,7 +350,7 @@ function Clientservice() {
     fetchIP();
 
     // Clean up function
-    return () => { };
+    return () => {};
   }, [refresh]);
 
   return (
@@ -408,7 +362,7 @@ function Clientservice() {
             <div className="row align-center">
               <div className="col">
                 <h5 className="card-title mb-0">
-                  <i className="pe-2 fa-solid fa-users"></i>All Users
+                  <i className="pe-2 fa-solid fa-users"></i>User Service
                 </h5>
               </div>
               <div className="col-auto">
@@ -476,6 +430,15 @@ function Clientservice() {
                           value={searchInput}
                         />
                       </div>
+                    </li>
+                    <li>
+                      <Link
+                        to={"/subadmin/users"}
+                        className="btn btn-primary"
+                        style={{ width: "120px" }}
+                      >
+                        Back
+                      </Link>
                     </li>
 
                     {/* <li className="btn btn-primary">
@@ -581,12 +544,12 @@ function Clientservice() {
                                     {item.order_type == 1
                                       ? "MARKET"
                                       : item.order_type == 2
-                                        ? "LIMIT"
-                                        : item.order_type == 3
-                                          ? "STOPLOSS LIMIT"
-                                          : item.order_type == 4
-                                            ? "STOPLOSS MARKET"
-                                            : "MARKET"}
+                                      ? "LIMIT"
+                                      : item.order_type == 3
+                                      ? "STOPLOSS LIMIT"
+                                      : item.order_type == 4
+                                      ? "STOPLOSS MARKET"
+                                      : "MARKET"}
                                   </p>
                                 </div>
                               </li>
@@ -597,12 +560,12 @@ function Clientservice() {
                                     {item.product_type == 1
                                       ? "CNC"
                                       : item.product_type == 2
-                                        ? "MIS"
-                                        : item.product_type == 3
-                                          ? "BO"
-                                          : item.product_type == 4
-                                            ? "CO"
-                                            : "CNC"}
+                                      ? "MIS"
+                                      : item.product_type == 3
+                                      ? "BO"
+                                      : item.product_type == 4
+                                      ? "CO"
+                                      : "CNC"}
                                   </p>
                                 </div>
                               </li>
@@ -616,6 +579,7 @@ function Clientservice() {
                                   defaultChecked={
                                     item.active_status == 1 ? true : false
                                   }
+                                  disabled={true}
                                 />
                               </div>
                             </div>
@@ -694,7 +658,7 @@ function Clientservice() {
                         Select Strategy
                       </button>
                       {showstrategy && (
-                        <div id="myDropdown"className="dropdown-content">
+                        <div id="myDropdown" className="dropdown-content">
                           {getAllClientStrategy.data.strategy.map(
                             (data1, index) => {
                               return (
@@ -761,7 +725,7 @@ function Clientservice() {
                     </div>
                   </div>
                 </div>
-                <div className="modal-footer">
+                {/* <div className="modal-footer">
                   <button
                     type="button"
                     data-bs-dismiss="modal"
@@ -781,7 +745,7 @@ function Clientservice() {
                   >
                     Update
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -790,5 +754,3 @@ function Clientservice() {
     </>
   );
 }
-
-export default Clientservice;

@@ -8,14 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../Components/Dashboard/Models/Model";
 import { Eye } from "lucide-react";
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-export default function BrokerResponse() {
-  const user_Id = JSON.parse(localStorage.getItem("user_details")).user_id;
+export default function UserBrokerResponse() {
+//   const user_Id = JSON.parse(localStorage.getItem("user_details")).user_id;
 
-
-
+  const {id} = useParams()
   const dispatch = useDispatch();
+
+
+
 
   const [refresh, setrefresh] = useState(false);
   const [searchInput,setSearchInput] = useState("")
@@ -27,8 +29,7 @@ export default function BrokerResponse() {
 
   const [borkerData, setBrokerData] = useState();
 
-  //  for Add Licence
-  const [showAddLicenceModal, setshowAddLicenceModal] = useState(false);
+  
 
   const styles = {
     container: {
@@ -132,7 +133,7 @@ export default function BrokerResponse() {
   
   // GET BROKER RESPONSE ALL DATA
   const BrokerResponse = async (e) => {
-    const data = { id: user_Id };
+    const data = { id: id };
     await dispatch(Broker_Response(data))
       .unwrap()
       .then((response) => {
@@ -170,6 +171,9 @@ export default function BrokerResponse() {
     setrefresh(!refresh);
   };
 
+
+
+
   return (
     <>
       <div className="content container-fluid" data-aos="fade-left">
@@ -198,8 +202,10 @@ export default function BrokerResponse() {
                         </span>
                       </p>
                     </li>
+                    
                     <li className="serach-li">
                       <div className="input-group input-block">
+                        
                         <input
                           type="text"
                           className="form-control"
@@ -224,6 +230,15 @@ export default function BrokerResponse() {
                               fileName={'All Strategy'} />
                            */}
                       </div>
+                      <li>
+                          <Link
+                            to={"/subadmin/users"}
+                            className="btn btn-primary"
+                            style={{width:"120px"}}
+                          >
+                            Back
+                          </Link>
+                        </li>
                     </li>
                   </ul>
                 </div>
@@ -306,3 +321,7 @@ export default function BrokerResponse() {
     </>
   );
 }
+
+
+
+

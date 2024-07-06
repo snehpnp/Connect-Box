@@ -164,3 +164,18 @@ export async function GET_ALL_SUBADMIN_USERS(data) {
 }
 
 
+// for user logs
+
+
+export async function GET_ALL_Userlogs(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}user/getuselogs`, data, {
+            data: {}
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err
+    }
+}
+

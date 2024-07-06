@@ -21,6 +21,7 @@ const count_licenses = db.count_licenses;
 const strategy = db.strategy;
 const serviceGroupName = db.serviceGroupName;
 const Client_group_Service = db.group_services;
+const User_logs = db.user_activity_logs
 
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
@@ -2143,6 +2144,44 @@ class Users {
       });
     }
   }
+
+
+
+
+  async getuselogs(req,res){
+      try {
+
+        const {user_ID} = req.body
+
+        const response = await User_logs.find({user_Id : user_ID ,role:"USER"})
+         
+        if(!response ||  response.length === 0){
+         return res.send({
+         status: false,
+         msg: "User Not Found",
+           data: [],})
+        }
+
+        return res.send({
+          status: true,
+          msg: "Getting user Logs", 
+          data: response,
+  
+        });
+
+
+      } catch (error) {
+         return res.send({
+          status: false,
+          msg: "User not Found", 
+          data: [],
+  
+        });
+      }
+  }
+
+
+
 
 
 }
