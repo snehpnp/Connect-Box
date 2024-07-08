@@ -127,6 +127,9 @@ export default function UserClientService() {
     }
   };
 
+
+
+
   // LOGOUT TRADING
   const handleTradingOff = async (id) => {
     let data = { id: id, system_ip: ip };
@@ -149,6 +152,9 @@ export default function UserClientService() {
       });
   };
 
+
+
+  
   const handleInputChange = (key, value) => {
     setData((prevData) => {
       if (key === "strategyId") {
@@ -228,6 +234,9 @@ export default function UserClientService() {
   useEffect(() => {
     GetAllClientServiceDetails();
   }, [refresh, searchInput]);
+
+
+
 
   const handleOnSubmit = async () => {
     const req = {
@@ -336,6 +345,9 @@ export default function UserClientService() {
     "crimson",
   ];
 
+
+
+
   // FIND IP ADDRESS
   useEffect(() => {
     const fetchIP = async () => {
@@ -352,6 +364,8 @@ export default function UserClientService() {
     // Clean up function
     return () => {};
   }, [refresh]);
+
+
 
   return (
     <>
