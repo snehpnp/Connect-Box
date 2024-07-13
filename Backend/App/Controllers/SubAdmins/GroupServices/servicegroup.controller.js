@@ -24,8 +24,6 @@ class GroupService {
       const { maker_id, groupdetails, services_id } = req.body
 
 
-
-
       if (!maker_id || maker_id == "" || maker_id == null) {
         return res.send({ status: false, msg: 'Please Enter Maker Id', data: [] });
       }

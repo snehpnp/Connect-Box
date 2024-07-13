@@ -5,6 +5,9 @@ const ProfileInfo = db.ProfileInfo;
 const user_logs = db.user_activity_logs;
 
 class profile {
+
+
+
   async ProfileImagedata(req, res) {
     try {
       const { user_id, profile_img } = req.body;
@@ -39,6 +42,8 @@ class profile {
     }
   }
 
+
+
   /// aadition information
 
   async updateProfile(req, res) {
@@ -53,6 +58,7 @@ class profile {
       });
 
       if (!result) {
+        
         return res.send({ status: false, msg: "data not Updated", data: [] });
       }
 
@@ -65,6 +71,8 @@ class profile {
       console.error("internal error:", error);
     }
   }
+
+
 
   ///  match profile id for additional info
 
@@ -97,6 +105,11 @@ class profile {
     }
   }
 
+
+
+
+
+
   // active status
 
   async Profilestatus(req, res) {
@@ -119,7 +132,7 @@ class profile {
 
       return res.send({
         status: true,
-        msg: " DATA FOUND .",
+        msg: "DATA FOUND .",
         data: messagedata,
       }); cd
 
@@ -130,6 +143,7 @@ class profile {
         .send({ status: false, msg: "Internal server error" });
     }
   }
+
 
 
 
@@ -161,5 +175,11 @@ class profile {
 
   }
 }
+
+
+
+
+
+
 
 module.exports = new profile();

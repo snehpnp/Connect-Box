@@ -40,7 +40,4 @@ module.exports = {
     User_strategy_Order: require('./User_Strategy_order.model'),
     Stg_Collaborators: require('./Strategy_Collaborators'),
 
-
-    
-
 };

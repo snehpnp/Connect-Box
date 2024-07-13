@@ -142,7 +142,6 @@ class OptionChain {
 
 
 
-
             const filter = { symbol: { $in: symbol } };
             const updateOperation = {
                 $set: { token: "1" },

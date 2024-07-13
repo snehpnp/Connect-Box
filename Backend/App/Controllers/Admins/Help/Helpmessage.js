@@ -24,6 +24,10 @@ class Helpmessage {
     }
   }
 
+
+
+
+
   // getting subadmin help  data
   async getsubadminhelpmessage(req, res) {
     try {
@@ -42,6 +46,9 @@ class Helpmessage {
       console.error("internal error:", error);
     }
   }
+
+
+
 
 
   /// delete subadmin help data
@@ -112,6 +119,8 @@ class Helpmessage {
 
 
 
+
+
   // for comapre to prefic compare   userdataByPrefix
   async userdataByPrefix(req, res) {
     try {
@@ -132,6 +141,7 @@ class Helpmessage {
         msg: "Messages retrieved successfully.",
         data: messagedata,
       });
+      
     } catch (error) {
       console.error("Internal error:", error);
       return res.status(500).send({ status: false, msg: "Internal server error" });

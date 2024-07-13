@@ -80,6 +80,8 @@ export default function UserClientService() {
     fetchData();
   }, [refresh]);
 
+  
+
   // status update active
   const ActiveStatus = async (item, e) => {
     try {
@@ -181,6 +183,9 @@ export default function UserClientService() {
     });
   };
 
+
+
+
   const emptyState = () => {
     setData({
       maxQty: "",
@@ -194,6 +199,10 @@ export default function UserClientService() {
     });
     setRefresh(!refresh);
   };
+
+
+
+
 
   const GetAllClientServiceDetails = async () => {
     var data = { user_Id: id };
