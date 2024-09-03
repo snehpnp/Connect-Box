@@ -194,3 +194,19 @@ export async function Addbalanceforuser(data) {
         return await err
     }
 }
+
+
+// get user balance
+
+
+export async function Get_user_balance(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}getwalletbalance`, data, {
+            data: {}
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err
+    }
+}

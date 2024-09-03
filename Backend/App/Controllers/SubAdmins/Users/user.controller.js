@@ -2151,7 +2151,6 @@ class Users {
 
       });
     } catch (error) {
-      console.log("Error fetching clients:", error);
       return res.send({
         status: false,
         msg: "Error fetching clients",
@@ -2204,6 +2203,28 @@ class Users {
     }
   }
   
+
+  // get balance data 
+
+  async  getwalletbalance(req,res){
+    try {
+       const {id} = req.body
+       const getdetail = await User_Wallet.find({admin_id:id}).sort({createdAt:-1})
+
+       if(!getdetail){
+          return res.json({status:false , message:"not found", data:[]})
+       }
+        
+       return res.json({status:true , message:"found ", data: getdetail})
+
+    } catch (error) {
+
+      return res.json({status:false , message:"interna error", data: []})
+      
+    }
+  }
+
+ 
 
 
 
