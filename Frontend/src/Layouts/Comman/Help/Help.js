@@ -31,6 +31,9 @@ function System() {
   const [loading, setLoading] = useState(true);
   const [value, setValue] = React.useState(0);
 
+
+
+
   function CustomTabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -51,6 +54,9 @@ function System() {
     );
   }
 
+
+
+
   CustomTabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
@@ -68,6 +74,9 @@ function System() {
     setValue(newValue);
   };
 
+
+
+  
   const handleRefresh = () => {
     setInputSearch("");
     setCategory("")

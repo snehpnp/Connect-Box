@@ -164,3 +164,18 @@ export async function GET_ALL_SUBADMIN_USERS(data) {
 }
 
 
+
+// add fund for user
+
+
+export async function Addbalanceforuser(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}adduserbalance`, data, {
+            data: {}
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err
+    }
+}

@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const { Schema, model } = require('mongoose');
+
 const strategy_transactionSchema = Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,

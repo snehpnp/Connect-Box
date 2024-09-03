@@ -12,7 +12,8 @@ import { update_Balance } from "../../../ReduxStore/Slice/Admin/Subadmins";
 import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
 import { GetAllUsers, Get_All_Broker, Show_Status, DeleteUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
-
+import { IndianRupee } from 'lucide-react';
+import { AddBalance } from "../../../ReduxStore/Slice/Subadmin/allServices";
 
 
 export default function AllUsers() {
@@ -35,6 +36,9 @@ export default function AllUsers() {
   const [getAllBroker, setAllBroker] = useState([]);
   const [licenceType, setLicenceType] = useState('null');
   const [BrokerType, setBrokerType] = useState('null');
+
+  const [initialRowData, setInitialRowData] = useState({});
+  const [balanceValue, setBalanceValue] = useState("");
 
 
 
@@ -173,7 +177,39 @@ export default function AllUsers() {
         </div>
       ),
     },
+    {
+      field: "Balance",
+      headerName: "Add Balance",
+      width: 150,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div
+          style={{
+            backgroundColor: '#E1FFED', // Green
+            border: 'none',
+            color: '#33B469',
+            // width: "150px",
+            padding: '6px 10px', // Adjusted padding
+            textAlign: 'center',
+            textDecoration: 'none',
+            display: 'inline-block',
+            fontSize: '13px',
+            // margin: '4px 2px',
+            cursor: 'pointer',
+            borderRadius: '10px', // Rounded border radius
+            transition: 'background-color 0.3s ease',
+          }}
+          onClick={() => { setmodal(true); setInitialRowData(params.row); }}
+        >
+          <span style={{ fontWeight: 'bold', verticalAlign: 'middle' }}> +
+            <IndianRupee style={{ height: "16px", marginBottom: '-4px', marginRight: '0px', padding: "0" }} />
+            {params.value || '-'}
+          </span>
+        </div>
 
+
+      ),
+    },
     {
       field: "actions",
       headerName: "Actions",
@@ -218,6 +254,49 @@ export default function AllUsers() {
     navigate('/subadmin/user/edit/' + row._id);
 
   };
+
+
+
+  //  add balance for user
+
+
+  const AddUserBalance = async () => {
+    const data = { id: initialRowData._id, balance: balanceValue,admin_id:admin_id ,status:1};
+    await dispatch(AddBalance(data))
+      .unwrap()
+      .then(async (response) => {
+        if (response.status) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: response.msg,
+            confirmButtonText: 'OK',
+          });
+          setrefresh(!refresh);
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: response.msg,
+            confirmButtonText: 'OK',
+          });
+        }
+      })
+      .catch((error) => {
+        console.log('Error', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'An unexpected error occurred. Please try again later.',
+          confirmButtonText: 'OK',
+        });
+      });
+
+    setBalanceValue('');
+    setmodal(false);
+  };
+
+
 
 
 
@@ -291,6 +370,8 @@ export default function AllUsers() {
     setLicenceType('null')
     setrefresh(!refresh)
   }
+
+
 
   const forCSVdata = () => {
     let csvArr = []
@@ -494,7 +575,7 @@ export default function AllUsers() {
     getUsersData();
   }, [refresh, searchInput, licenceType, BrokerType]);
 
-  
+
 
   return (
     <>
@@ -613,6 +694,70 @@ export default function AllUsers() {
         </>
       ) : (
         <Loader />
+      )}
+
+      {modal && (
+        <div className="modal custom-modal d-block" id="add_vendor" role="dialog">
+          <div className="modal-dialog modal-dialog-centered modal-md">
+            <div className="modal-content">
+              <div className="modal-header border-0 pb-0">
+                <div className="form-header modal-header-title text-start mb-0">
+                  <h4 className="mb-0">Add Fund</h4>
+                </div>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  onClick={() => setmodal(false)}
+                ></button>
+              </div>
+              <div>
+                <div className="modal-body">
+                  <div className="row">
+                    <div className="col-lg-12 col-sm-12">
+                      <div className="input-block mb-3">
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Fund"
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            const newValue = value.replace(/\D/g, '');
+                            e.target.value = newValue;
+                            setBalanceValue(e.target.value)
+                          }}
+                          value={balanceValue}
+
+                        />
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    data-bs-dismiss="modal"
+                    className="btn btn-back cancel-btn me-2"
+                    onClick={() => setmodal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    data-bs-dismiss="modal"
+                    className="btn btn-primary paid-continue-btn"
+                    onClick={AddUserBalance}
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       )}
 
     </>

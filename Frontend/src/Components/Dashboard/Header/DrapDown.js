@@ -269,23 +269,66 @@ const DropDown = () => {
       : text;
   };
 
+
+
+
   // ADMIN NOTIFICATION NOTIFICATION
+ 
   const getSubadminTableData = async () => {
     try {
+      const today = new Date().toISOString().split("T")[0]; 
+  
       const response = await dispatch(
         admin_Msg_Get({ ownerId: user_details.user_id, key: 3 })
       ).unwrap();
+  
       if (response.status) {
-        setPipelineData(response.data);
+        const filteredData = response.data.filter((data) => {
+          const dataDate = data.createdAt.split("T")[0]; 
+          return dataDate === today; 
+        });
+  
+        setPipelineData(filteredData); 
       } else {
+        setPipelineData([]); 
       }
     } catch (error) {
       console.log("Error", error);
     } finally {
+     
+      
     }
   };
+  
 
+
+
+  // const getSubadminTableData = async () => {
+  //   try {
+  //     const response = await dispatch(
+  //       admin_Msg_Get({ ownerId: user_details.user_id, key: 3 })
+  //     ).unwrap();
+  //     if (response.status) {
+  //       setPipelineData(response.data);
+  //     } else {
+  //     }
+  //   } catch (error) {
+  //     console.log("Error", error);
+  //   } finally {
+  //   }
+  // };
+
+
+
+
+
+
+
+  
   // subadmin help notification for admin page
+  
+  
+  
   const gettable = async () => {
     try {
       const today = new Date().toISOString().split("T")[0]; // Format YYYY-MM-DD
@@ -298,7 +341,8 @@ const DropDown = () => {
 
             return dataDate === today;
           });
-
+         
+          // console.log("filterData",filterData)
           setGetsubadmin(filterData);
         } else {
           setGetsubadmin([]);
@@ -308,6 +352,10 @@ const DropDown = () => {
       console.log("error", error);
     }
   };
+
+
+
+
 
   // USER NOTIFICATION
   const getusertable = async () => {
@@ -325,7 +373,9 @@ const DropDown = () => {
               dataDate === today
             );
           });
-
+           
+          
+          // console.log("filterData",filterData)
           setGetuserdata(filterData);
         } else {
           setGetuserdata([]);
@@ -343,6 +393,8 @@ const DropDown = () => {
     getusertable();
     gettable();
   }, []);
+
+
 
   useEffect(() => {
     const storedThemeMode = localStorage.getItem("theme_mode");
@@ -395,7 +447,7 @@ const DropDown = () => {
   return (
     <div className="mb-0 dropdown custom-dropdown">
       <ul className="nav nav-tabs user-menu">
-        {Role == "USER" && (
+        {Role === "USER" && (
           <li className="toggle-li">
             <style>
               {`
@@ -450,7 +502,7 @@ const DropDown = () => {
           </li>
         )}
 
-        {Role == "SUBADMIN" && (
+        {Role === "SUBADMIN" && (
           <li className="nav-item dropdown flag-nav dropdown-heads">
             {user_details.subadmin_service_type == 2
               ? "STRATEGY WISE"
@@ -509,7 +561,7 @@ const DropDown = () => {
             <div className="noti-content">
               <ul className="notification-list">
                 {pipelineData &&
-                  Role == "SUBADMIN" &&
+                  Role === "SUBADMIN" &&
                   pipelineData.map((data, index) => (
                     <li
                       className="notification-message"
@@ -549,7 +601,7 @@ const DropDown = () => {
                     </li>
                   ))}
 
-                {Role === "SUBADMIN"
+                { Role === "SUBADMIN"
                   ? getuserdata &&
                     getuserdata.map((data, index) => (
                       <li
@@ -589,7 +641,9 @@ const DropDown = () => {
                         </a>
                       </li>
                     ))
-                  : Role === "ADMIN"
+
+                  : 
+                  Role === "ADMIN"
                   ? getsubadmin &&
                     getsubadmin.map((data, index) => (
                       <li

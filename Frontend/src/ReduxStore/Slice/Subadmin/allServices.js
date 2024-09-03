@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_SERVICS ,GET_ALL_Catagory} from "../../../Services/Subadmin/all.service";
+import { GET_ALL_SERVICS ,GET_ALL_Catagory , Addbalanceforuser} from "../../../Services/Subadmin/all.service";
 
 export const getAllServices = createAsyncThunk(
   "ServiceByCatagory",
@@ -12,6 +12,9 @@ export const getAllServices = createAsyncThunk(
     }
   }
 );
+
+
+
 export const getCatogries = createAsyncThunk(
     "AllService/get",
     async (data) => {
@@ -24,7 +27,21 @@ export const getCatogries = createAsyncThunk(
     }
   );
 
- 
+
+  export const AddBalance = createAsyncThunk(
+    "adduserbalance",
+    async (data) => {
+      try {
+        const res = await Addbalanceforuser(data);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
+  
+
+
 
 
 const GrouoServicesSlice = createSlice({
@@ -34,6 +51,7 @@ const GrouoServicesSlice = createSlice({
     isError: false,
     AllgroupService: null,
     Allcategaory: null,
+    AddBalance:null,
    
 
   },
@@ -63,6 +81,18 @@ const GrouoServicesSlice = createSlice({
         state.Allcategaory = action.payload;
       })
       .addCase(getCatogries.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(AddBalance.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(AddBalance.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.AddBalance = action.payload;
+      })
+      .addCase(AddBalance.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       })

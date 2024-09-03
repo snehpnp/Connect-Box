@@ -21,11 +21,16 @@ const count_licenses = db.count_licenses;
 const strategy = db.strategy;
 const serviceGroupName = db.serviceGroupName;
 const Client_group_Service = db.group_services;
+const User_Wallet = db.User_Wallet
 
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
 
+
+
+
 class Users {
+
 
   // USER ADD
   async AddUser(req, res) {
@@ -235,7 +240,7 @@ class Users {
           Service_Type: Service_Type,
           per_trade_value: per_trade_value,
           Balance: Balance || 0,
-          employee_id: employee_id ?employee_id :null
+          employee_id: employee_id ? employee_id : null
 
         },
 
@@ -1255,7 +1260,7 @@ class Users {
               const Admin_charge1 = Admin_charge_percentage * Number(price_stg);
 
 
-           
+
 
               const strategy_transactionData = new strategy_transaction({
                 strategy_id: matchedStrategy._id,
@@ -1558,6 +1563,8 @@ class Users {
     }
   }
 
+
+
   // GET ALL SUBADMIN USERS
   async GetAllSubadminUser(req, res) {
 
@@ -1698,6 +1705,9 @@ class Users {
     }
   }
 
+
+
+
   async UpdateUserStatus(req, res) {
     try {
       const { id, user_active_status } = req.body;
@@ -1729,6 +1739,8 @@ class Users {
       console.log("Error trading status Error-", error);
     }
   }
+
+
 
 
   // GET ALL GetAllClients
@@ -1834,6 +1846,9 @@ class Users {
     }
   }
 
+
+
+
   // GET ALL GetAllClients USER
   async GetAllUserStrategyTransactionUser(req, res) {
     try {
@@ -1935,6 +1950,8 @@ class Users {
       });
     }
   }
+
+
 
 
   async GetAllUserStrategyhistory(req, res) {
@@ -2143,6 +2160,57 @@ class Users {
       });
     }
   }
+
+
+
+
+  async addUserBalance(req, res) {
+    try {
+      const { id, balance ,admin_id,status} = req.body;
+
+      const balanceToAdd = Number(balance);
+
+      const userDetail = await User_model.findOne({ _id: id });
+
+      if (!userDetail) {
+        return res.json({ status: false, message: "User not found", data: [] });
+      }
+
+
+      userDetail.Balance = Number(userDetail.Balance) + balanceToAdd;
+      await userDetail.save();
+
+
+      const userWallet = new User_Wallet({
+        user_id: id,
+        admin_id,
+        balance: balanceToAdd,
+        status,
+        type: "CREDIT",
+        UserName: userDetail.UserName
+      });
+
+      await userWallet.save();
+
+      return res.json({
+        status: true,
+        message: "Balance updated successfully",
+        data: userDetail,
+      });
+
+    } catch (error) {
+      return res.json({
+        status: false,
+        error: error.message,
+        data:[]
+      });
+    }
+  }
+
+
+
+
+
 
 
 }
