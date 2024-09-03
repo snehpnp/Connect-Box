@@ -14,6 +14,9 @@ import Loader from "../../../Utils/Loader";
 import { GetAllUsers, Get_All_Broker, Show_Status, DeleteUser } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
 import { IndianRupee } from 'lucide-react';
 import { AddBalance } from "../../../ReduxStore/Slice/Subadmin/allServices";
+import { Radio, RadioTower, UserRoundCog } from "lucide-react";
+import { GetUserLogs } from "../../../ReduxStore/Slice/Subadmin/UsersSlice";
+
 
 
 export default function AllUsers() {
@@ -290,6 +293,23 @@ export default function AllUsers() {
       renderCell: (params) => <div>{fDateTime(params.value)}</div>,
     },
   ];
+
+
+
+  const UserActivity_logs = async (_id) => {
+    const data = { user_ID: _id };
+    await dispatch(GetUserLogs(data))
+      .unwrap()
+      .then((response) => {
+        if (response.status) {
+          setUserlogs(response.data);
+        }
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
 
 
   

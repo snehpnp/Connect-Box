@@ -157,6 +157,18 @@ export const subamdin_header = [
                 route: "/subadmin/servicesAll",
 
             },
+            {
+
+                'id': 54,
+
+                name: 'Payment Request',
+
+                Icon: "fe fe-list",
+
+                route: "/subadmin/pay/request",
+
+
+            },
         ]
     },
     {
@@ -280,6 +292,8 @@ export const subamdin_header = [
                 Icon: "fe fe-help-circle",
                 Data: []
             },
+
+
 
         ]
     },

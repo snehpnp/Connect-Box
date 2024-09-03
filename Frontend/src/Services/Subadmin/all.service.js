@@ -165,6 +165,21 @@ export async function GET_ALL_SUBADMIN_USERS(data) {
 
 
 
+
+
+export async function GET_ALL_Userlogs(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}user/getuselogs`, data, {
+            data: {}
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err
+    }
+}
+
+
 // add fund for user
 
 

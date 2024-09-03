@@ -130,3 +130,17 @@ export async function UpdateUserBrokerInfo(data, token) {
     }
 
 }
+
+export async function UserWalletData(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}user/wallet`, data, {
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+
+}

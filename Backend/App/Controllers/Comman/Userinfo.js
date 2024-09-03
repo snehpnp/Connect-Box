@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const user_logs = db.user_activity_logs;
 const subadmin_logs = db.subadmin_activity_logs;
+const strategy_transaction = db.strategy_transaction;
 
 
 // Product CLASS
@@ -185,7 +186,44 @@ class Userinfo {
   }
 
 
+  async Get_User_Wallet(req, res) {
+    try {
+      const data = req.body.req;
+      
+      const { id } = data;
+      // console.log("id", id);
+      var subid = new ObjectId(id);
 
+      if (id == "" || id == null) {
+        return res.send({ status: false, msg: "Please Enter Id", data: [] });
+      }
+
+      let UserInfo = await User_model.find({ _id: subid }).select("Balance");
+
+      let UserTransection = await strategy_transaction.find({ user_id: subid });
+      let UsedBalance = 0;
+      UserTransection.map((item) => {
+        UsedBalance += parseFloat(item.stg_charge);
+      });
+
+ 
+      if (UserInfo.length == 0) {
+        return res.send({ status: false, msg: "Empty data", data: [] });
+      }
+
+      return res.send({
+        status: true,
+        msg: "Get User",
+  
+        TotalBalance: UserInfo[0].Balance,
+        UsedBalance:UsedBalance,
+        RemaingBalance: UserInfo[0].Balance - UsedBalance,
+        UserTransection: UserTransection,
+      });
+    } catch (error) {
+      console.log("Error get UserInfo error -", error);
+    }
+  }
 
 
 }

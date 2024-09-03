@@ -21,6 +21,7 @@ import BroadCastMessage from '../Layouts/User/BroadCastMessage/BroadCastMessage'
 
 
 
+import Userwallet from '../Layouts/Comman/Wallet/Userwallet';
 
 
 // strategydesc
@@ -52,6 +53,7 @@ const User_Routing = () => {
                     <Route exact path="/broadcast" element={<BroadCastMessage/>} />
                    
 
+                    <Route exact path="/wallet" element={<Userwallet/>} />
 
 
                 </Routes>

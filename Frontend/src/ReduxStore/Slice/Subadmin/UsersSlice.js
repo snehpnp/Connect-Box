@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_USERS, ADD_USERS, UPDATE_USERS,GET_ALL_SUBADMIN_USERS,  GET_ALL_BROKER, active_Status, GET_ONE_USER, DELETE_USER , GET_ALL_Userlogs} from "../../../Services/Subadmin/all.service";
+import { GET_ALL_USERS, ADD_USERS, UPDATE_USERS,GET_ALL_SUBADMIN_USERS,  GET_ALL_BROKER, active_Status, GET_ONE_USER, DELETE_USER ,GET_ALL_Userlogs} from "../../../Services/Subadmin/all.service";
 
 
 export const GetAllUsers = createAsyncThunk("user/getAll",
@@ -109,6 +109,8 @@ export const GetUserLogs = createAsyncThunk('user/getuselogs',
             throw err;
         }
     })
+
+
 
 
 const StrategySlice = createSlice({

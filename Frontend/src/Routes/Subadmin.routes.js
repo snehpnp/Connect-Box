@@ -39,6 +39,7 @@ import Test from '../Layouts/SubAdmin/MessageBroadCast/test.js'
 import Tradecharges from '../Layouts/SubAdmin/Services/Strategys/Tradecharges.js'
 
 import UserBrokerResponse from "../Layouts/SubAdmin/Users/UserBrokerResponse.js";
+import Paymentrequest from '../Layouts/SubAdmin/Services/Paymentrequest/Paymentreq.js'
 
 
 
@@ -91,6 +92,7 @@ const SubAdmin_Routing = () => {
 
 
           <Route exact path="/trade/charges" element={<Tradecharges/>} /> 
+          <Route exact path="/pay/request" element={<Paymentrequest/>} /> 
 
 
 

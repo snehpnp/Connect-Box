@@ -221,6 +221,8 @@ const DropDown = () => {
       navigate("/subadmin/wallet");
     } else if (Role == "RESEARCH") {
       navigate("/research/wallet");
+    } if (Role == "USER") {
+      navigate("/user/wallet");
     }
   };
 

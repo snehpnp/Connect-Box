@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { GetBrokerData } from "../../../Services/Comman/Optionchain";
 
-import { GetUserInfo, TRADING_OFF_BTN ,ProfileData,updateprofiledata,ProfileuserId,ProfileActive,UpdateUserBrokerInfo} from "../../../Services/Comman/comman";
+import { GetUserInfo, TRADING_OFF_BTN ,ProfileData,updateprofiledata,ProfileuserId,ProfileActive,UpdateUserBrokerInfo,UserWalletData} from "../../../Services/Comman/comman";
 
 export const Userinfo = createAsyncThunk(
     "get/userinfo",
@@ -124,7 +124,18 @@ export const UpdateUserBrokerInfoData = createAsyncThunk(
     }
 );
 
-
+export const UserWalletApiData = createAsyncThunk(
+    "user/wallet",
+    async (data) => {
+        
+        try {
+            const res = await UserWalletData(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
 
 const Userinfo1Slice = createSlice({
     name: "UserinfoSlice",
@@ -137,6 +148,8 @@ const Userinfo1Slice = createSlice({
         ProfileUpdatedata:null,
         profiledatauserId:null,
         ActiveProfile:null,
+        userwallet:[]
+
 
     },
     reducers: {},
@@ -219,6 +232,19 @@ const Userinfo1Slice = createSlice({
                 state.isLoading = false;
                 state.isError = true;
             }).addCase(UpdateUserBrokerInfoData.rejected, (state, action) => {
+
+                state.isLoading = false;
+                state.isError = true;
+            })
+            .addCase(UserWalletApiData.pending, (state, action) => {
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(UserWalletApiData.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.userwallet = action.payload
+            })
+            .addCase(UserWalletApiData.rejected, (state, action) => {
 
                 state.isLoading = false;
                 state.isError = true;
