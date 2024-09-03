@@ -821,7 +821,7 @@ function Option_Chain() {
 
 
 
-
+// console.log("ExecuteTradeData.data",ExecuteTradeData.data)
 
     return (
         <>
@@ -882,8 +882,11 @@ function Option_Chain() {
                                         >
                                             <option value="" >Select Expiry</option>
                                             {All_Symbols_Expiry.data && All_Symbols_Expiry.data.map((item) => {
+                                                
                                                 return <option value={item.uniqueExpiryValues}>{get_three_digit_month(item.expiryDate)}</option>
+                                               
                                             })}
+                                            
                                         </select>
                                     </div>
                                     <div className="col-md-2 input-block ">
@@ -976,10 +979,11 @@ function Option_Chain() {
                                     text: "Price",
                                     formatter: (cell, row, rowIndex) => (
                                         <div>
-                                            {row.type === "BUY" ?
+                                            {/* {row.type === "BUY" ?
                                                 <span className={`BP1_Put_Price_${row.token} `}></span>
                                                 : <span className={`SP1_Call_Price_${row.token}`}></span>
-                                            }
+                                            } */}
+                                            {cell}
                                         </div>
                                     ),
 

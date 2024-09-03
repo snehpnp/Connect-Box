@@ -52,35 +52,36 @@ function Login() {
       const ip = await ipAddress();
       setIp(ip);
     } catch (error) {
+
+
       console.error('Failed to fetch IP address:', error);
+
     }
   };
 
 
 
 
-  useEffect(async () => {
-    
-    fetchIpAddress();
-  
+  const RunSocketUrl = async () => {
     const companyData = await getCompany();
+        
+        if(companyData[0].BackendSocketurl){
+      
+            const newSocket = io(companyData[0].BackendSocketurl);
+            setSocket(newSocket);
+            return () => {
+                newSocket.disconnect();
+            };
 
-    if(companyData[0].BackendSocketurl){
-       // Initialize socket connection
-    const newSocket = io.connect(Config.socket_Url);
-    setSocket(newSocket);
-  
-    // Cleanup function to disconnect socket when component unmounts
-    return () => {
-      if (newSocket) {
-        newSocket.disconnect();
-      }
-    };
+        }
+   }
 
-    }
+    useEffect(() => {
+        fetchIpAddress()
+        RunSocketUrl()
+    }, []); 
 
-  }, []); // The empty array means this effect runs once, similar to componentDidMount
-  
+
 
 
 
@@ -89,6 +90,7 @@ function Login() {
   };
 
 
+  
   const verifyOTP = async () => {
     var Otp = getData && getData.mobile.slice(-4);
 
@@ -393,7 +395,7 @@ function Login() {
                 backdrop="static"
                 className="custom-modal-class"
                 size="md"
-                title="Verify OTP"
+                title="Last 4 Digit Mobile NO"
                 btn_name="Verify"
                 btn_name1="Verify1"
                 Submit_Function={verifyOTP}

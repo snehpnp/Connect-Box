@@ -334,52 +334,52 @@ function Strategy() {
         validate: (values) => {
             let errors = {};
             if (!values.strategy_name) {
-                errors.strategy_name = "strategy name is required";
+                errors.strategy_name = "Please Enter Strategy Name";
             }
             if (!values.strategy_demo_days) {
-                errors.strategy_demo_days = "strategy demo day is required";
+                errors.strategy_demo_days = "Please Enter Strategy Demo Days";
             }
             if (!values.strategy_category) {
-                errors.strategy_category = "strategy category is required";
+                errors.strategy_category = "Please Select Strategy Catagory";
             }
             if (!values.strategy_segment) {
-                errors.strategy_segment = "strategy segment is required";
+                errors.strategy_segment = "Please Select Strategy Segment";
             }
             if (!values.max_trade) {
                 errors.max_trade = "Please enter maximum trade";
             }
 
             if (!values.security_fund_month) {
-                errors.security_fund_month = "amount is required";
+                errors.security_fund_month = "Please Enter Amount";
             }
             if (!values.security_fund_quarterly) {
-                errors.security_fund_quarterly = "amount is required";
+                errors.security_fund_quarterly = "Please Enter Amount";
             }
             if (!values.security_fund_half_early) {
-                errors.security_fund_half_early = "amount is required";
+                errors.security_fund_half_early = "Please Enter Amount";
             }
 
             if (!values.security_fund_early) {
-                errors.security_fund_early = "amount is required";
+                errors.security_fund_early = "Please Enter Amount";
             }
 
             if (!values.security_fund_early) {
-                errors.security_fund_early = "amount is required";
+                errors.security_fund_early = "Please Enter Amount";
             }
 
 
 
             if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_month) {
-                errors.fixed_amount_per_trade_month = "amount is required ";
+                errors.fixed_amount_per_trade_month = "Please Enter Amount";
             }
             if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_quarterly) {
-                errors.fixed_amount_per_trade_quarterly = "amount is required";
+                errors.fixed_amount_per_trade_quarterly = "Please Enter Amount";
             }
             if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_early) {
-                errors.fixed_amount_per_trade_early = "amount is required";
+                errors.fixed_amount_per_trade_early = "Please Enter Amount";
             }
             if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_half_early) {
-                errors.fixed_amount_per_trade_half_early = "amount is required";
+                errors.fixed_amount_per_trade_half_early = "Please Enter Amount";
             }
             if (subadmin_service_type == 1 && !values.Service_Type) {
                 errors.Service_Type = "Please Select Service Type";
@@ -607,7 +607,6 @@ function Strategy() {
 
                                             </div>
                                         </li>
-
 
                                         <li>
                                             <div

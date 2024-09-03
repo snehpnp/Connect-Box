@@ -209,7 +209,13 @@ const Dashboards = () => {
 
               })
               .catch(error => {
-                console.error("Error:", error);
+                Swal.fire({
+                  title: "Empty",
+                  text: "Data Not Found",
+                  icon: "error",
+                  timer: 1500,
+                  timerProgressBar: true,
+                })
               });
           } else {
             Swal.fire({
@@ -317,7 +323,7 @@ const Dashboards = () => {
                     <p>{getUserBalance && getUserBalance.unrealisedProfitLossSum|| "-"}</p>
                   </div>
                   <div >
-                    <h4>Dawnload</h4><br />
+                    <h4>Download</h4><br />
                     <a className="btn view-company-btn" onClick={(e) => DawnloadOrderBook(e)}>
                       Order Book
                     </a>

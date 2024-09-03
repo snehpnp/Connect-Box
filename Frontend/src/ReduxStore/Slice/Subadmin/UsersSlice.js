@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_USERS, ADD_USERS, UPDATE_USERS,GET_ALL_SUBADMIN_USERS,  GET_ALL_BROKER, active_Status, GET_ONE_USER, DELETE_USER } from "../../../Services/Subadmin/all.service";
+import { GET_ALL_USERS, ADD_USERS, UPDATE_USERS,GET_ALL_SUBADMIN_USERS,  GET_ALL_BROKER, active_Status, GET_ONE_USER, DELETE_USER , GET_ALL_Userlogs} from "../../../Services/Subadmin/all.service";
 
 
 export const GetAllUsers = createAsyncThunk("user/getAll",
@@ -96,7 +96,19 @@ export const DeleteUser = createAsyncThunk('user/delete',
         }
     })
 
+// user logs 
 
+
+export const GetUserLogs = createAsyncThunk('user/getuselogs',
+    async (data) => {
+        try {
+            const res = await GET_ALL_Userlogs(data);
+            return res;
+        }
+        catch (err) {
+            throw err;
+        }
+    })
 
 
 const StrategySlice = createSlice({
@@ -111,6 +123,7 @@ const StrategySlice = createSlice({
         findone_user: null,
         delete_user: null,
         getallsubadminusers:null,
+        GetUserLogs:null,
 
 
     },
@@ -170,6 +183,10 @@ const StrategySlice = createSlice({
             .addCase(GetAllSubadminUsers.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.getallsubadminusers = action.payload;
+            })
+            .addCase(GetUserLogs.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.GetUserLogs = action.payload;
             })
     },
 });

@@ -176,3 +176,17 @@ export async function COLLA_ADD_BALANCE(data){
         return await err
     }
 }
+
+
+
+export async function updateFreePlan(data){
+    try{
+        const res = await axios.post(`${Config.base_url}strategy/order/freePlan` , data , {
+            data: {}
+        })
+        return res?.data
+    }
+    catch(err){
+        return await err
+    }
+}

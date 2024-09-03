@@ -21,7 +21,6 @@ const count_licenses = db.count_licenses;
 const strategy = db.strategy;
 const serviceGroupName = db.serviceGroupName;
 const Client_group_Service = db.group_services;
-const User_Wallet = db.User_Wallet
 
 var dateTime = require("node-datetime");
 var dt = dateTime.create();
@@ -2160,57 +2159,6 @@ class Users {
       });
     }
   }
-
-
-
-
-  async addUserBalance(req, res) {
-    try {
-      const { id, balance ,admin_id,status} = req.body;
-
-      const balanceToAdd = Number(balance);
-
-      const userDetail = await User_model.findOne({ _id: id });
-
-      if (!userDetail) {
-        return res.json({ status: false, message: "User not found", data: [] });
-      }
-
-
-      userDetail.Balance = Number(userDetail.Balance) + balanceToAdd;
-      await userDetail.save();
-
-
-      const userWallet = new User_Wallet({
-        user_id: id,
-        admin_id,
-        balance: balanceToAdd,
-        status,
-        type: "CREDIT",
-        UserName: userDetail.UserName
-      });
-
-      await userWallet.save();
-
-      return res.json({
-        status: true,
-        message: "Balance updated successfully",
-        data: userDetail,
-      });
-
-    } catch (error) {
-      return res.json({
-        status: false,
-        error: error.message,
-        data:[]
-      });
-    }
-  }
-
-
-
-
-
 
 
 }

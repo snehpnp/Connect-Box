@@ -26,7 +26,8 @@ class Helpmessage {
 
 
 
-  
+
+
   // getting subadmin help  data
   async getsubadminhelpmessage(req, res) {
     try {
@@ -47,10 +48,12 @@ class Helpmessage {
   }
 
 
+
+
+
   /// delete subadmin help data
   async getsubadmindelete(req, res) {
     const { id } = req.body;
-
 
     try {
       // Assuming the message ID is passed as a route parameter
@@ -68,6 +71,8 @@ class Helpmessage {
       console.error("internal error:", error);
     }
   }
+
+
 
 
   // post user help data
@@ -91,6 +96,7 @@ class Helpmessage {
 
 
 
+
   /// getting user help data
   async getuserhelpdata(req, res) {
     try {
@@ -109,6 +115,10 @@ class Helpmessage {
       console.error("internal error:", error);
     }
   }
+
+
+
+
 
 
   // for comapre to prefic compare   userdataByPrefix
@@ -131,11 +141,13 @@ class Helpmessage {
         msg: "Messages retrieved successfully.",
         data: messagedata,
       });
+      
     } catch (error) {
       console.error("Internal error:", error);
       return res.status(500).send({ status: false, msg: "Internal server error" });
     }
   }
+
 
 
 
@@ -160,6 +172,8 @@ class Helpmessage {
       console.error("internal error:", error);
     }
   }
+
+
 
 
 
@@ -208,7 +222,6 @@ class Helpmessage {
 
 
 
-
   //get employee table
 
   async getEmployee(req, res) {
@@ -230,24 +243,28 @@ class Helpmessage {
   }
 
 
+
+
 // for  getting employee 
   async getEmployeebyid(req, res) {
     try {
        const {id} = req.body
     
       let messagedata = await user.find({_id: id});
-
-      let messagedata1 = await user.find({_id: messagedata[0].parent_id});
+     
+    let messagedata1 = await user.find({_id:messagedata[0].parent_id});
 
       if (!messagedata) {
         return res.send({ status: false, msg: "message not getting", data: [] });
       }
+
 
       return res.send({
         status: true,
         msg: "getting message  Successfully.",
         data: messagedata,
         subadmin:messagedata1[0].UserName
+       
       });
     } catch (error) {
       console.error("internal error:", error);
@@ -255,7 +272,12 @@ class Helpmessage {
   }
 
 
+
+ 
+
 }
+
+
 
 
 

@@ -14,6 +14,9 @@ const { GetAccessToken, GetOrderFullInformationAll } = require('../../Controller
 const { GetAccessTokenAngel, GetOrderFullInformationAngel, UpdateTotp } = require('../../Controllers/Brokeraccesstoken/Angel')
 
 
+const {GetAccessTokenmandotsecurities } = require('../../Controllers/Brokeraccesstoken/Mandotsecurites')
+
+
 // BROKER REDIRECT
 const GetOrderFullInformationAll_broker = async (req, res) => {
 
@@ -89,6 +92,10 @@ router.get('/AliceBlue', GetAccessToken);
 
 router.post('/angel', GetAccessTokenAngel);
 router.post('/update/angel/totp', UpdateTotp);
+
+
+
+router.post('/mandotsecurities/access_token', GetAccessTokenmandotsecurities);
 
 
 

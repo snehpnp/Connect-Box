@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 const Forget = () => {
   const dispatch = useDispatch();
   
-  // State for storing email input
+
   const [email, setEmail] = useState("");
 
   const handleForget = async (e) => {

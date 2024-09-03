@@ -95,9 +95,9 @@ const AllResearcher = () => {
       headerClassName: styles.boldHeader,
     },
     {
-      field: "prifix_key",
-      headerName: "Prefix Key",
-      width: 120,
+      field: "client_key",
+      headerName: "Client Key",
+      width: 180,
       headerClassName: styles.boldHeader,
     },
     {

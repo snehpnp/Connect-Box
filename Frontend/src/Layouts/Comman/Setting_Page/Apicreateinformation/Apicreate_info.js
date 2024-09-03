@@ -23,20 +23,15 @@ function Apicreate_info() {
       .unwrap()
       .then((response) => {
         if (response.status) {
+          var formattedData1;
 
-          var formattedData1
-
-          if(Role == "USER"){
-             formattedData1 = response.data.filter((item) =>  item.broker_id == broker)
-          }else{
-            formattedData1 = response.data
-
+          if (Role == "USER") {
+            formattedData1 = response.data.filter(
+              (item) => item.broker_id == broker
+            );
+          } else {
+            formattedData1 = response.data;
           }
-
-
-
-          console.log("formattedData", formattedData1)
-
 
           setUserDetails({
             loading: false,
@@ -48,9 +43,6 @@ function Apicreate_info() {
   useEffect(() => {
     data();
   }, []);
-
-
-
 
   const Data = [
     {
@@ -439,7 +431,6 @@ function Apicreate_info() {
     },
   ];
 
-
   const handleOpenModel = (title) => {
     const selectedItem = Data.find(
       (item) =>
@@ -451,14 +442,11 @@ function Apicreate_info() {
     }
   };
 
-
-
   return (
     <>
       <div className="row">
         {UserDetails.data &&
           UserDetails.data.map((item) => {
-
             return (
               <section
                 key={item.id}
@@ -486,12 +474,10 @@ function Apicreate_info() {
                 </div>
               </section>
             );
-
           })}
       </div>
       {model && selectedItem && (
         <>
-
           <div className="modal custom-modal d-block kk" role="dialog">
             <div className="modal-dialog modal-dialog-centered modal-lg">
               <div className="modal-content">
@@ -500,11 +486,16 @@ function Apicreate_info() {
                     <h4 className="mb-0">Information</h4>
                   </div>
                   <div className="form-header modal-header-title text-start mb-0 ">
-                    <a className="btn btn-primary mb-2 ms-2" onClick={() => setModel(false)}><i className="fa-solid fa-xmark"></i></a>
+                    <a
+                      className="btn btn-primary mb-2 ms-2"
+                      onClick={() => setModel(false)}
+                    >
+                      <i className="fa-solid fa-xmark"></i>
+                    </a>
                   </div>
                 </div>
                 <div className="your-model-class">
-                  <h2 className="text-center" >{selectedItem.HeadingTitle}</h2>
+                  <h2 className="text-center">{selectedItem.HeadingTitle}</h2>
                   <p className="ms-3">{selectedItem.describtion}</p>
                   <p className="ms-3">
                     <a href={selectedItem.LinkOne}>
@@ -516,14 +507,21 @@ function Apicreate_info() {
                       Link Two :{selectedItem.LinkTwo}
                     </a>
                   </p>
-                  {selectedItem.img1 && <img src={selectedItem.img1} alt="Image 1" />}
+                  {selectedItem.img1 && (
+                    <img src={selectedItem.img1} alt="Image 1" />
+                  )}
                   <div>
                     {selectedItem.img2 && (
                       <img src={selectedItem.img2} alt="Image 2" />
                     )}
                   </div>
 
-                  <button className="btn btn-primary mb-2 ms-2" onClick={() => setModel(false)}>Close</button>
+                  <button
+                    className="btn btn-primary mb-2 ms-2"
+                    onClick={() => setModel(false)}
+                  >
+                    Close
+                  </button>
                 </div>
               </div>
             </div>

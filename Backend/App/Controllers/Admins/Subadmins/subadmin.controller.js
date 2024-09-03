@@ -67,7 +67,6 @@ class Subadmin {
 
 
 
-
       if (prifix_key.length > 3) {
         return res.send({ status: false, msg: "prifix_key Omly 3 Digits" });
       }
@@ -184,8 +183,6 @@ class Subadmin {
 
 
 
-
-
   // EDIT SUBADMIN
   async EditSubadmin(req, res) {
     try {
@@ -236,7 +233,7 @@ class Subadmin {
     try {
       // GET LOGIN CLIENTS
       const getAllSubAdmins = await User_model.find({ Role: "SUBADMIN" })
-        .select("profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key subadmin_service_type strategy_Percentage Per_trade Create_Date").sort({ Create_Date: -1 });
+        .select("profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key client_key subadmin_service_type strategy_Percentage Per_trade Create_Date").sort({ Create_Date: -1 });
 
       const totalCount = getAllSubAdmins.length;
       const ActiveCount = getAllSubAdmins.filter(
@@ -334,7 +331,7 @@ class Subadmin {
     }
   }
 
-  async GetAllRechargeDetails(req, res) {
+  async   GetAllRechargeDetails(req, res) {
     try {
       let { Role } = req.body;
 
@@ -453,7 +450,7 @@ class Subadmin {
 
 
 
-cnsole.log("recharge/id/get",TotalBalance)
+// cnsole.log("recharge/id/get",TotalBalance)
 
 
 

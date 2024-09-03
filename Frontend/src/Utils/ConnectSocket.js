@@ -24,4 +24,6 @@ const useGetCompany = () => {
     return getCompany;
 };
 
+
+
 export default useGetCompany;

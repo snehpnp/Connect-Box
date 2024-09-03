@@ -1,5 +1,6 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import { Box, Typography } from "@mui/material";
 
 const FullDataTable = ({
   styles,
@@ -9,8 +10,7 @@ const FullDataTable = ({
   keyField,
   rowStyle,
   checkboxSelection,
-  pginationSize,
-
+  paginationSize,
 }) => {
   const themeMode = localStorage.getItem("theme_mode") || "light";
 
@@ -20,8 +20,11 @@ const FullDataTable = ({
   const color = themeMode === "light" ? "black" : "white";
 
   return (
-    <>
-      <div style={{ height: pginationSize ? "400px" : "100%", width: "100%", position: "relative" }}>
+
+
+    <Box sx={{ height: paginationSize ? "400px" : "100%", width: "100%", position: "relative" }}>
+    
+      {rows.length > 0 ? (
         <DataGrid
           rows={rowsWithIds}
           columns={columns}
@@ -34,7 +37,7 @@ const FullDataTable = ({
           disableColumnMenu={true}
           initialState={{
             pagination: {
-              paginationModel: { page: 0, pageSize: pginationSize ? pginationSize : 10 },
+              paginationModel: { page: 0, pageSize: paginationSize ? paginationSize : 10 },
             },
           }}
           pageSizeOptions={[10, 50, 100]}
@@ -47,10 +50,28 @@ const FullDataTable = ({
             backgroundColor: backgroundColor,
             color: color,
           }}
-          headerClassName="custom-header" // Apply custom header class
+          headerClassName="custom-header" 
         />
-      </div>
-    </>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            backgroundColor: backgroundColor,
+            color: color,
+          }}
+        >
+          <Typography>
+          <div style={{width:"50%",height:"50%", marginLeft:"30%",marginTop:"5%"}}>
+          <img src="assets/img/icons/Empty.jpg" alt="No data available"/>
+          </div>
+
+          </Typography>
+        </Box>
+      )}
+    </Box>
   );
 };
 

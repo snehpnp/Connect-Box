@@ -238,6 +238,7 @@ const userModel = Schema({
         type: String,
         default: null
     },
+    
   
 },
     {

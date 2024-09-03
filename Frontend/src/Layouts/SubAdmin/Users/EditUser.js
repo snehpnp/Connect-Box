@@ -283,7 +283,7 @@ const AddClient = () => {
 
     {
       name: "licence",
-      label: "Lincense Type",
+      label: "License Type ",
       type: "select",
       options: getOneUsers.getClients && getOneUsers.getClients[0].license_type == 1 ?
         [
@@ -358,7 +358,7 @@ const AddClient = () => {
     },
     {
       name: 'demat_userid',
-      label: formik.values.broker == 9 ? 'User Id' :  formik.values.broker == 2 ? 'Demat UserId' :"", type: 'text',
+      label: formik.values.broker == 9 ? 'User Id' :  formik.values.broker == 2 ? 'Demat User ID' :"", type: 'text',
       showWhen: values => values.broker === '9' || values.broker === '2',
       label_size: 12, col_size: 6, disable: false
     },
@@ -532,6 +532,8 @@ const AddClient = () => {
     }
   }
 
+
+
   // GET ALL STRATEGY
   const GetAllStrategy = async () => {
     var data = { id: user_id ,key:"1"}
@@ -555,6 +557,7 @@ const AddClient = () => {
         console.log("Error Stategy finding Error", error)
       })
   }
+
 
   // GET ALL BROKER
   const AllBroker = async () => {
@@ -590,6 +593,7 @@ const AddClient = () => {
       ));
     }
   };
+
 
 
 
@@ -671,7 +675,7 @@ const AddClient = () => {
           <>
             <AddForm
               fields={fields.filter(field => !field.showWhen || field.showWhen(formik.values))}
-              page_title="Edit User"
+              page_title="Update User"
               btn_name="Update User"
               btn_name1="Cancel"
               formik={formik}
@@ -695,17 +699,17 @@ const AddClient = () => {
                             >{`${item.serviceName}[${item.categoryName}]`}</label>
 
                           </div>
-
                         </>
-
                       ))}
+
                   </div>
 
-                  <div className="row mt-4">
+                  <div className="row mt-3" >
                     {/* STRATEGY CODE */}
+
                     {subadmin_service_type1 == 2 ?
                       (<div className="row mt-4">
-                        <div className="input-block ">
+                        <div className="input-block " >
                           <label>All Strategy</label>
                         </div>
                         {getAllStategy.data.map((strategy) => (
@@ -742,10 +746,11 @@ const AddClient = () => {
                                             display: "flex",
                                             flexDirection: "column",
                                             alignItems: "center",
+                                            
                                           }}
                                         >
-                                          <div className="form-group d-flex justify-content-between m-3 border rounded p-2">
-                                            <div className="d-flex align-items-center">
+                                          <div className="form-group d-flex justify-content-between m-3 border rounded p-2 ">
+                                            <div className="d-flex align-items-center" >
                                               <input
                                                 type="radio"
                                                 name={`option_${strategy._id}`}
@@ -758,6 +763,7 @@ const AddClient = () => {
                                                 style={{
                                                   margin: "0 10px 0 5px",
                                                   fontSize: "1rem",
+                                                  
                                                 }}
                                               >
                                                 Monthly
@@ -823,7 +829,9 @@ const AddClient = () => {
                                         </div>
                                       </>
                                     )
-                                    : ""}
+                                    :
+                                     ""}
+
                                 </div>
                               </div>
                             </div>
@@ -833,13 +841,9 @@ const AddClient = () => {
 
 
 
-
-
-
-
-
                       // Per Trade Code 
-                      : formik.values.Service_Type ? (<div className="row mt-4">
+                      : formik.values.Service_Type ?
+                       (<div className="row mt-4">
                         <div className="input-block ">
                           <label>All Strategy</label>
                         </div>
@@ -877,9 +881,10 @@ const AddClient = () => {
                                               display: "flex",
                                               flexDirection: "column",
                                               alignItems: "center",
+                                             
                                             }}
                                           >
-                                            <div className="form-group d-flex justify-content-between m-3 border rounded p-2">
+                                            <div className="form-group d-flex justify-content-between m-3 border rounded p-2" >
                                               <div className="d-flex align-items-center">
                                                 <input
                                                   type="radio"
@@ -957,7 +962,6 @@ const AddClient = () => {
                                                 </label>
                                               </div>
                                             </div>
-
 
                                           </div>
                                         </>

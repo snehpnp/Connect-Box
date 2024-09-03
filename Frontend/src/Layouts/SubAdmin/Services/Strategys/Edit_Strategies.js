@@ -278,7 +278,7 @@ function Edit_Strategies() {
     validate: (values) => {
       let errors = {};
       if (!values.strategy_name) {
-        errors.strategy_name = "strategy name is required";
+        errors.strategy_name = "Please Enter Strategy Name";
       }
       if (!values.strategy_demo_days) {
         errors.strategy_demo_days = "strategy demo day is required";

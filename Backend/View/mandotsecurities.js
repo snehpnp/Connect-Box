@@ -11,10 +11,8 @@ client.connect();
 const db = client.db(process.env.DB_NAME); // Replace with your actual database name
 
 
+async function createViewMandotsecurities() {
 
-async function createViewKotakNeo() {
-
-// console.log("111")
   // All Client Trading on view
   try {
 
@@ -24,10 +22,10 @@ async function createViewKotakNeo() {
     const pipeline = [
       {
         $match: {
-          broker: "7",
+          broker: "8",
           TradingStatus: 'on',// Condition from the user collection
           $or: [
-            { EndDate: { $gte: new Date() } }, // EndDate is today or in the future
+            { EndDate: { $gte: currentDate } }, // EndDate is today or in the future
             { EndDate: null } // EndDate is not set
           ]
         }
@@ -113,16 +111,11 @@ async function createViewKotakNeo() {
         $addFields: {
           postdata:
           {
-            
 
-
-            am : "NO",
-            dq : "0",
-
-            es: {
+            exchangeSegment: {
               $cond: {
                 if: { $eq: ['$category.segment', 'C'] }, // Your condition here
-                then: 'nse_cm',
+                then: 'NSECM',
                 else: {
                   $cond: {
                     if: {
@@ -132,7 +125,7 @@ async function createViewKotakNeo() {
                         { $eq: ['$category.segment', 'FO'] }
                       ]
                     },
-                    then: 'nse_fo',
+                    then: 'NSEFO',
                     else: {
 
                       $cond: {
@@ -142,7 +135,7 @@ async function createViewKotakNeo() {
                             { $eq: ['$category.segment', 'MO'] }
                           ]
                         },
-                        then: 'mcx_fo',
+                        then: 'NSEMO',
                         else: {
 
                           $cond: {
@@ -152,10 +145,9 @@ async function createViewKotakNeo() {
                                 { $eq: ['$category.segment', 'CO'] }
                               ]
                             },
-                            then: 'cde_fo',
+                            then: 'NSECD',
 
-                            // all not exist condition 
-                            else: "nse_fo"
+                            else: "NSEFO"
 
                           }
 
@@ -173,10 +165,7 @@ async function createViewKotakNeo() {
               }
             },
 
-            mp: "0",
-
-            // product code condition here
-            pc: {
+            productType: {
               $cond: {
                 if: {
                   $and:
@@ -191,7 +180,7 @@ async function createViewKotakNeo() {
                       },
                     ]
                 },
-                then: 'NRML',
+                then: 'CNC',
                 else: {
                   $cond: {
                     if: {
@@ -219,7 +208,7 @@ async function createViewKotakNeo() {
                                 ]
                             },
                             then: 'CO',
-                            else: "CNC"
+                            else: "MIS"
 
                           }
 
@@ -236,13 +225,8 @@ async function createViewKotakNeo() {
 
 
             },
-             
-            pf : "N",
 
-            pr : "0",
-            
-
-            pt: {
+            orderType: {
               $cond: {
                 if: {
                   $and:
@@ -250,7 +234,7 @@ async function createViewKotakNeo() {
                       { $eq: ['$client_services.order_type', '1'] },
                     ]
                 },
-                then: 'MKT',
+                then: 'Market',
                 else: {
                   $cond: {
                     if: {
@@ -259,7 +243,7 @@ async function createViewKotakNeo() {
                           { $eq: ['$client_services.order_type', '2'] },
                         ]
                     },
-                    then: 'L',
+                    then: 'Limit',
                     else: {
                       $cond: {
                         if: {
@@ -268,7 +252,7 @@ async function createViewKotakNeo() {
                               { $eq: ['$client_services.order_type', '3'] },
                             ]
                         },
-                        then: 'SL',
+                        then: 'StopLimit',
                         else: {
                           $cond: {
                             if: {
@@ -277,10 +261,10 @@ async function createViewKotakNeo() {
                                   { $eq: ['$client_services.order_type', '4'] },
                                 ]
                             },
-                            then: ' SL-M',
+                            then: 'StopMarket',
 
                             //All condition exist
-                            else: "MKT"
+                            else: "Market"
 
                           }
 
@@ -297,38 +281,27 @@ async function createViewKotakNeo() {
 
             },
 
-            qt : "$client_services.quantity",
+            orderSide: "BUY",
 
-            rt : "DAY",
+            timeInForce: "DAY",
 
-            tp : "0" ,
+            disclosedQuantity:0,
+            limitPrice:0,
 
-            ts: {
-              $cond: {
-                if: {
-                  $and:
-                    [
-                      { $eq: ['$category.segment', 'C'] },
-                    ]
-                },
-                then: "$service.zebu_token",
-                else: ""
+            orderQuantity: { "$toInt": "$client_services.quantity" },
 
-              }
-            },
+            stopPrice:0,
 
-            tt : "B",
-           
+            orderUniqueIdentifier:"123abc",
+
           }
         }
       }
     ];
-   
-    // console.log("pipeline",pipeline)
-    // Create the view
-    await db.createCollection('kotakneoView', { viewOn: 'users', pipeline });
 
-    console.log('View dhanView created successfully.');
+    // Create the view
+    await db.createCollection('mandotsecuritiesView', { viewOn: 'users', pipeline });
+
   } catch (error) {
     console.log('Error:', error);
   } finally {
@@ -337,5 +310,5 @@ async function createViewKotakNeo() {
 }
 
 
-module.exports = { createViewKotakNeo }
+module.exports = { createViewMandotsecurities }
 

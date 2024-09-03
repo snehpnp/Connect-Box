@@ -19,6 +19,7 @@ const UserMakeStrategy = db.UserMakeStrategy;
 const Get_Option_Chain_modal = db.get_option_chain_symbols;
 const MainSignals_modal = db.MainSignals
 const makecallABR = db.makecallABR
+const live_price_token = db.live_price_token
 
 
 
@@ -103,6 +104,12 @@ cron.schedule('30 6 * * *', () => {
     TruncateTableTokenChain();
 });
 
+
+// delet live_token _price
+
+cron.schedule('0 0 * * *', async () => {
+    await  TruncateTable_live_token_price();
+})
 
 
 
@@ -434,6 +441,8 @@ const TruncateTableTokenChainAdd_fiveMinute = async () => {
 
 }
 
+
+
 const TruncateTableTokenChainAdd = async () => {
 
 
@@ -462,6 +471,16 @@ const TruncateTableTokenChain = async () => {
 
 
 }
+
+
+const TruncateTable_live_token_price = async() => {
+
+    const drop = await db_main.collection(live_price_token).deleteMany({});
+
+}
+ 
+
+
 
 const Get_Option_All_Token_Chain = async () => {
 

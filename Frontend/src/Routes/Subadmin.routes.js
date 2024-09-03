@@ -31,13 +31,14 @@ import AllEmployees from '../Layouts/SubAdmin/Subadmin_Employees/AllEmployee'
 import AddEmployee from '../Layouts/SubAdmin/Subadmin_Employees/AddEmployee'
 import Edit_Employee from '../Layouts/SubAdmin/Subadmin_Employees/Update_Employee'
 import AllResearcherStrategy from '../Layouts/SubAdmin/Researcher/AllResearcherStrategy.js'
+import UserClientService from "../Layouts/SubAdmin/Users/UserClientService.js";
 
 import Test from '../Layouts/SubAdmin/MessageBroadCast/test.js'
 
 
 import Tradecharges from '../Layouts/SubAdmin/Services/Strategys/Tradecharges.js'
 
-
+import UserBrokerResponse from "../Layouts/SubAdmin/Users/UserBrokerResponse.js";
 
 
 
@@ -69,6 +70,8 @@ const SubAdmin_Routing = () => {
           <Route exact path="/strategys/transaction" element={<Strategytransaction />} />
           <Route exact path="/group-service/edit/:id" element={<Edit_Group_Service />} />
           <Route exact path="/user/edit/:id" element={<Edit_User />} />
+          <Route exact path="/user/UserBrokerResponse/:id" element={<UserBrokerResponse />} />
+          <Route exact path="/user/UserClientService/:id" element={<UserClientService />} />
           <Route exact path="/wallet" element={<Wallets />} />
           <Route exact path="/strategys/history" element={<Strategyhistory />} />
           <Route exact path="/profile" element={<Profile />} />
@@ -76,9 +79,10 @@ const SubAdmin_Routing = () => {
           <Route exact path="/position" element={<Position />} />
           <Route exact path="/open-position" element={<Openposition />} />
           <Route exact path="/client/orders" element={<Client_Orders/>}/>
-           <Route exact path="/employees" element={<AllEmployees/>}/>
-           <Route exact path="/employee/add" element={<AddEmployee/>}/>
-           <Route exact path="/employee/edit/:id" element={<Edit_Employee/>}/>
+          <Route exact path="/employees" element={<AllEmployees/>}/>
+          <Route exact path="/employee/add" element={<AddEmployee/>}/>
+          <Route exact path="/employee/edit/:id" element={<Edit_Employee/>}/>
+           
 
           <Route exact path="/faqs" element={<Faqs />} />
           <Route exact path="/setting" element={<Settings />} />

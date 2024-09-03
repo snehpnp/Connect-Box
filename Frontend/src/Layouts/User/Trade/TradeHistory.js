@@ -95,7 +95,10 @@ export default function AllEmployees() {
   const [UserDetails, seUserDetails] = useState("");
   const [livePriceDataDetails, setLivePriceDataDetails] = useState("");
   const [userIdSocketRun, setUserIdSocketRun] = useState("none");
-  const [GetAllStrategy, setAllStrategy] = useState();
+  const [GetAllStrategy, setAllStrategy] = useState([]);
+
+
+
 
   const fetchData = async () => {
     try {
@@ -863,12 +866,15 @@ export default function AllEmployees() {
     fetchStrategies();
   }, []);
 
+
+
   const Get_AllStrategy = async () => {
     const data = { id: user_id };
     await dispatch(Get_All_Strategy(data))
       .unwrap()
       .then((response) => {
         if (response.status) {
+          
           setAllStrategy({
             loading: false,
             data: response.data,
@@ -881,6 +887,8 @@ export default function AllEmployees() {
         }
       });
   };
+
+
 
   useEffect(() => {
     Get_AllStrategy();

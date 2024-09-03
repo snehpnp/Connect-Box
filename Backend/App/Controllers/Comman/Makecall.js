@@ -601,11 +601,11 @@ class Makecall {
       } else {
         // result = await live_price_token.findOne({demate_user_id:req.body.exist_user}).limit(1).select('demate_user_id access_token');
 
-        result = await live_price_token.findOne({
-          _id: { $gt: req.body.exist_user_details._id } // Assuming result is the previously found document
-        }).select('demate_user_id access_token trading_status').limit(1);
+        // result = await live_price_token.findOne({
+        //   _id: { $gt: req.body.exist_user_details._id } // Assuming result is the previously found document
+        // }).select('demate_user_id access_token trading_status').limit(1);
 
-
+        result = await live_price_token.findOne().limit(1).select('demate_user_id access_token trading_status');
       }
 
 
