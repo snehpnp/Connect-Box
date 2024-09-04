@@ -23,6 +23,9 @@ function Payment() {
 
 
 
+    useEffect(() => {
+        getuser_balance();
+    }, []);
 
 
 
@@ -55,15 +58,12 @@ function Payment() {
             });
     };
 
-    useEffect(() => {
-        getuser_balance();
-    }, []);
 
 
 
 
     const handleStatusChange = async (id, newStatus) => {
-        const data = { id: id._id, status: newStatus ,balance : id.balance};
+        const data = { id: id._id, status: newStatus, balance: id.balance };
         try {
             const response = await dispatch(Update_status_balance(data)).unwrap();
             if (response.status) {
@@ -74,6 +74,7 @@ function Payment() {
                     timer: 1500,
                     showConfirmButton: false
                 });
+                getuser_balance();
             } else {
                 Swal.fire({
                     title: 'Error!',
@@ -93,7 +94,7 @@ function Payment() {
             });
         }
     };
-    
+
 
 
 
@@ -268,7 +269,7 @@ function Payment() {
                                 columns={columns}
                                 rows={filteredRows}
                                 checkboxSelection={false}
-                                
+
                             />
                         </div>
                     </>

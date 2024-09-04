@@ -14,6 +14,9 @@ var dateTime = require("node-datetime");
 var dt = dateTime.create();
 
 class Admin {
+
+
+
   // USER ADD
   async AddAdmin(req, res) {
     try {
@@ -73,6 +76,9 @@ class Admin {
         });
       }
 
+
+
+
       // IF USER ALEARDY EXIST
       const existingUser = await User_model.findOne({
         $or: [{ UserName: UserName }, { Email: Email }, { PhoneNo: PhoneNo }],
@@ -116,6 +122,7 @@ class Admin {
         salt
       );
 
+
       // Panel Prifix key Find
       var Panel_key = await Company_info.find(
         {},
@@ -129,6 +136,8 @@ class Admin {
         });
       }
 
+
+      
       const mins = 1;
       const maxs = 1000000;
       const rands = mins + Math.random() * (maxs - mins);

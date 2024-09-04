@@ -2108,8 +2108,6 @@ class Users {
       }
 
       return res.json({ status: true, message: "found ", data: getdetail })
-
-      return res.json({ status: true, message: "found ", data: getdetail });
     } catch (error) {
 
       return res.json({ status: false, message: "interna error", data: [] })
@@ -2125,6 +2123,7 @@ class Users {
       const { id, status, balance } = req.body;
   
       const finddata = await User_Wallet.findOne({ _id: id });
+
       if (!finddata) {
         return res.json({ status: false, message: 'User wallet not found', data: [] });
       }
@@ -2133,11 +2132,6 @@ class Users {
   
       if (status == 1) {
         const userDetail = await User_model.findOne({ _id: finddata.user_id });
-        
-        if (!userDetail) {
-          return res.json({ status: false, message: 'User not found', data: [] });
-        }
-  
         userDetail.Balance = Number(userDetail.Balance) + balanceToAdd;
         await userDetail.save();
   
