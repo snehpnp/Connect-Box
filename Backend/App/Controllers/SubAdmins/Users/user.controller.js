@@ -2056,12 +2056,12 @@ class Users {
     }
   }
 
-
   async UserBalanceAddReq(req, res) {
     try {
-      const { id, balance, status } = req.body;
+      const { id, balance, status, actionType } = req.body;
 
       const balanceToAdd = Number(balance);
+
 
       const userDetail = await User_model.findOne({ _id: id });
 
@@ -2073,11 +2073,10 @@ class Users {
         user_id: id,
         admin_id: userDetail.parent_id,
         balance: balanceToAdd,
-        type: "CREDIT",
+        type: actionType == "add" ? "CREDIT" : "DEBIT",
         status,
-        UserName: userDetail.UserName
+        UserName: userDetail.UserName,
       });
-
 
       await userWallet.save();
 
@@ -2095,9 +2094,7 @@ class Users {
     }
   }
 
-
-
-
+  
 
   // get balance data 
 
@@ -2112,6 +2109,7 @@ class Users {
 
       return res.json({ status: true, message: "found ", data: getdetail })
 
+      return res.json({ status: true, message: "found ", data: getdetail });
     } catch (error) {
 
       return res.json({ status: false, message: "interna error", data: [] })
@@ -2119,6 +2117,8 @@ class Users {
     }
   }
 
+
+  // update paymenet status
 
   async update_payment_status(req, res) {
     try {
