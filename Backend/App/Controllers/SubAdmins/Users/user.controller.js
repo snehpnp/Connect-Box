@@ -2071,7 +2071,7 @@ class Users {
 
       const userWallet = new User_Wallet({
         user_id: id,
-        admin_id,
+        admin_id:userDetail.parent_id,
         balance: balanceToAdd,
         type: "CREDIT",
         status,

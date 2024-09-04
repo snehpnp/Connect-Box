@@ -289,6 +289,14 @@ class Ordercreate {
       receipt,
     } = req.body;
 
+    console.log(req.body);
+
+    const userDetail = await User_model.findOne({ _id: user_id });
+
+    console.log(userDetail);
+
+    return;
+
     const companyInformation = await SubAdminCompanyInfo.aggregate([
       {
         $match: { maker_id: new ObjectId(admin_id) },
@@ -496,41 +504,41 @@ class Ordercreate {
       // Update Collaborators collection
       // Find if a collaborator record already exists
 
-    //   if (type !== "monthlyPlan") {
-    //     const collaboratorFilter = {
-    //       Collaborators_id: user_id,
-    //       researcher_id: strategy.maker_id,
-    //     };
-    //     const existingCollaborator = await Stg_Collaborators.findOne(
-    //       collaboratorFilter
-    //     );
+      //   if (type !== "monthlyPlan") {
+      //     const collaboratorFilter = {
+      //       Collaborators_id: user_id,
+      //       researcher_id: strategy.maker_id,
+      //     };
+      //     const existingCollaborator = await Stg_Collaborators.findOne(
+      //       collaboratorFilter
+      //     );
 
-    //     // Calculate the new total amount
-    //     let newTotalAmount = Amount;
-    //     if (existingCollaborator) {
-    //       newTotalAmount += existingCollaborator.total_amount;
-    //     }
+      //     // Calculate the new total amount
+      //     let newTotalAmount = Amount;
+      //     if (existingCollaborator) {
+      //       newTotalAmount += existingCollaborator.total_amount;
+      //     }
 
-    //     // Update or insert the collaborator record
-    //     const collaboratorUpdate = {
-    //       $set: {
-    //         researcher_id: strategy.maker_id,
-    //         Collaborators_id: user_id,
-    //         total_amount: type !== "monthlyPlan" ? newTotalAmount : 0,
-    //       },
-    //     };
-    //     await Stg_Collaborators.updateOne(
-    //       collaboratorFilter,
-    //       collaboratorUpdate,
-    //       { upsert: true }
-    //     );
+      //     // Update or insert the collaborator record
+      //     const collaboratorUpdate = {
+      //       $set: {
+      //         researcher_id: strategy.maker_id,
+      //         Collaborators_id: user_id,
+      //         total_amount: type !== "monthlyPlan" ? newTotalAmount : 0,
+      //       },
+      //     };
+      //     await Stg_Collaborators.updateOne(
+      //       collaboratorFilter,
+      //       collaboratorUpdate,
+      //       { upsert: true }
+      //     );
 
-    //     const updateCollaborator = await Stg_Collaborators.updateOne(
-    //       collaboratorFilter,
-    //       collaboratorUpdate,
-    //       { upsert: true }
-    //     );
-    //   }
+      //     const updateCollaborator = await Stg_Collaborators.updateOne(
+      //       collaboratorFilter,
+      //       collaboratorUpdate,
+      //       { upsert: true }
+      //     );
+      //   }
 
       // Create a new strategy document based on the found strategy
       const newStrategy = new strategy_model({
