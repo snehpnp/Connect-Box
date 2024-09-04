@@ -24,6 +24,7 @@ function FundModal({ show, handleClose, handleSubmit, actionType, cardData }) {
               type="number"
               value={amount}
               onChange={(e) => {
+              if(actionType != "add"){
                 if (e.target.value < 0) {
                   setAmount(0);
                 } else if (e.target.value > cardData.RemainingBalance) {
@@ -31,13 +32,13 @@ function FundModal({ show, handleClose, handleSubmit, actionType, cardData }) {
                 } else {
                   setAmount(e.target.value);
                 }
+              }else{
+                setAmount(e.target.value);
+
+              }
               }}
               placeholder="Enter amount"
-              max={
-                actionType !== "add"
-                  ? cardData.RemainingBalance
-                  : cardData.RemainingBalance
-              }
+           
             />
             {actionType != "add" ? ( 
                 <Form.Text className="text-muted" style={{fontWeight:"bold"}}>
@@ -50,7 +51,7 @@ function FundModal({ show, handleClose, handleSubmit, actionType, cardData }) {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" onClick={(e)=>{handleClose();setAmount("")}}>
           Close
         </Button>
         <Button variant="primary" onClick={onSubmit}>

@@ -3,7 +3,7 @@
 const router = require("express").Router()
 const { verifyToken } = require('../../Middlewares/autt.middleware')
 
-const { AddUser,UpdateUser,GetAllUser ,GetUser,GetAllUserStrategyTransaction,UpdateUserStatus, DeleteUser,GetAllUserStrategyhistory,GetAllUserStrategyTransactionUser,GetAllEmaployeeName , GetAllSubadminUser ,addUserBalance , getwalletbalance } = require('../../Controllers/SubAdmins/Users/user.controller')
+const { AddUser,UpdateUser,GetAllUser ,GetUser,GetAllUserStrategyTransaction,UpdateUserStatus, DeleteUser,GetAllUserStrategyhistory,GetAllUserStrategyTransactionUser,GetAllEmaployeeName , GetAllSubadminUser ,addUserBalance,UserBalanceAddReq} = require('../../Controllers/SubAdmins/Users/user.controller')
 
 
 
@@ -19,6 +19,7 @@ router.post('/user/status_update', UpdateUserStatus);
 router.post('/user/delete', DeleteUser);
 
 
+router.post('/user/add/balance', UserBalanceAddReq);
 
 
 
