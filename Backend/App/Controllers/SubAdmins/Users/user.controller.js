@@ -2204,6 +2204,9 @@ class Users {
   }
   
 
+
+  
+
   // get balance data 
 
   async  getwalletbalance(req,res){
