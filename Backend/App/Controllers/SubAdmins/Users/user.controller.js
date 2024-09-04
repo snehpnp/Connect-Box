@@ -2056,6 +2056,45 @@ class Users {
       });
     }
   }
+
+
+  async UserBalanceAddReq(req, res) {
+    try {
+      const { id, balance, status } = req.body;
+
+      const balanceToAdd = Number(balance);
+
+      const userDetail = await User_model.findOne({ _id: id });
+
+      if (!userDetail) {
+        return res.json({ status: false, message: "User not found", data: [] });
+      }
+
+      const userWallet = new User_Wallet({
+        user_id: id,
+        admin_id,
+        balance: balanceToAdd,
+        type: "CREDIT",
+        status,
+        UserName: userDetail.UserName
+      });
+  
+
+      await userWallet.save();
+
+      return res.json({
+        status: true,
+        message: "Balance updated successfully",
+        data: userDetail,
+      });
+    } catch (error) {
+      return res.json({
+        status: false,
+        error: error.message,
+        data: [],
+      });
+    }
+  }
 }
 
 module.exports = new Users();
