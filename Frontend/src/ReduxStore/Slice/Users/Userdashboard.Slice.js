@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_USER_DASHBOARD, OrderCreateStg, OrderUpdateStg } from "../../../Services/Users/allUsers.service";
+import { GET_USER_DASHBOARD, OrderCreateStg, OrderUpdateStg ,UserBalanceAddReq} from "../../../Services/Users/allUsers.service";
 
 export const GetUserDashboardData = createAsyncThunk("user/dashboard",
   async (data) => {
@@ -36,7 +36,16 @@ export const OrderUpdateStgUser = createAsyncThunk("user/strategy/order/update",
   }
 );
 
-
+export const UserBalanceAddReqApi = createAsyncThunk("user/add/balance",
+  async (data) => {
+    try {
+      const res = await UserBalanceAddReq(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
 
 const DashboardSlice = createSlice({
   name: "ClientServiceSlice",
@@ -45,6 +54,7 @@ const DashboardSlice = createSlice({
     isError: false,
     userdashboard: null,
     stgOrder: null,
+    balaneReq:[],
 
 
   },
@@ -77,6 +87,18 @@ const DashboardSlice = createSlice({
       })
       .addCase(OrderUpdateStgUser.fulfilled, (state, action) => {
         state.isLoading = false;
+      })
+      .addCase(UserBalanceAddReqApi.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(UserBalanceAddReqApi.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.balaneReq = action.payload;
+      })
+      .addCase(UserBalanceAddReqApi.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
       })
 
   },

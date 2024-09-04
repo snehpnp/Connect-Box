@@ -6,9 +6,9 @@ import { fDateTime } from "../../../Utils/Date_formet";
 import { IndianRupee } from "lucide-react";
 import { UserWalletApiData } from "../../../ReduxStore/Slice/Comman/Userinfo";
 import FundModal from "./FundModal"; // Import the modal component
-import { AddBalance } from "../../../ReduxStore/Slice/Subadmin/allServices";
 import Swal from "sweetalert2";
 
+import { UserBalanceAddReqApi } from "../../../ReduxStore/Slice/Users/Userdashboard.Slice";
 
 
 function Payment() {
@@ -141,7 +141,7 @@ function Payment() {
 
 
 
-      await dispatch(AddBalance(data))
+      await dispatch(UserBalanceAddReqApi(data))
         .unwrap()
         .then(async (response) => {
           if (response.status) {

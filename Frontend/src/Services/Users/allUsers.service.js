@@ -161,3 +161,17 @@ export async function  OrderUpdateStg(data){
         return await err
     }
  }
+
+
+ export async function  UserBalanceAddReq(data){
+    try{
+        const res= await axios.post(`${Config.base_url}user/add/balance`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch(err){
+        
+        return await err
+    }
+ }
