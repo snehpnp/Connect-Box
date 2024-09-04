@@ -6,6 +6,10 @@ import { fDateTime } from "../../../Utils/Date_formet";
 import { IndianRupee } from "lucide-react";
 import { UserWalletApiData } from "../../../ReduxStore/Slice/Comman/Userinfo";
 import FundModal from "./FundModal"; // Import the modal component
+import { AddBalance } from "../../../ReduxStore/Slice/Subadmin/allServices";
+import Swal from "sweetalert2";
+
+
 
 function Payment() {
   const dispatch = useDispatch();
@@ -37,13 +41,7 @@ function Payment() {
         headerClassName: styles.boldHeader,
         renderCell: (params) => <b>{params.value + 1}</b>,
       },
-      {
-        field: "username",
-        headerName: "User Name",
-        width: 210,
-        headerClassName: styles.boldHeader,
-        renderCell: (params) => <div>{params.row.username || params.row.UserName}</div>,
-      },
+    
       {
         field: "Mode",
         headerName: "Mode",
@@ -54,15 +52,27 @@ function Payment() {
         ),
       },
       {
+        field: "typeT",
+        headerName: "Type",
+        width: 250,
+        headerClassName: styles.boldHeader,
+        renderCell: (params) => (
+          params.value === "Debit" ?
+          <span className="badge bg-danger-light">{params.value.toUpperCase() || "-"}</span>
+          :
+          <span className="badge bg-success-light">{params.value.toUpperCase() || "-"}</span>
+        ),
+      },
+      {
         field: "Balance",
         headerName: "Balance",
         width: 250,
         headerClassName: styles.boldHeader,
         renderCell: (params) => {
-          const { stg_charge, Mode, admin_charge } = params.row;
-          const amount = stg_charge || admin_charge || "-";
-          const textColor = Mode ? "text-success-light" : "text-danger-light";
-          const sign = Mode ? "+" : "-";
+          const { balance, Mode, admin_charge,typeT } = params.row;
+          const amount = balance || admin_charge || "-";
+          const textColor = typeT != "Debit" ? "text-success-light" : "text-danger-light";
+          const sign = typeT != "Debit" ? "+" : "-";
           return (
             <span className={textColor}>
               {sign}
@@ -81,15 +91,7 @@ function Payment() {
       },
     ];
 
-    if (user_details.subadmin_service_type !== 1) {
-      baseColumns.splice(2, 0, {
-        field: "strategy_id",
-        headerName: "Strategy Name",
-        width: 250,
-        headerClassName: styles.boldHeader,
-        renderCell: (params) => <div>{params.value || "-"}</div>,
-      });
-    }
+ 
 
     return baseColumns;
   }, [user_details.subadmin_service_type]);
@@ -131,11 +133,46 @@ function Payment() {
     setShowModal(true);
   };
 
-  const handleModalSubmit = (amount, actionType) => {
+  const handleModalSubmit = async(amount, actionType) => {
 
     console.log("Amount:", amount, "Action Type:", actionType);
 
+      const data = { id: user_details.user_id, balance: amount ,status:0};
 
+
+
+      await dispatch(AddBalance(data))
+        .unwrap()
+        .then(async (response) => {
+          if (response.status) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: response.msg,
+              confirmButtonText: 'OK',
+            });
+         
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: response.msg,
+              confirmButtonText: 'OK',
+            });
+          }
+        })
+        .catch((error) => {
+          console.log('Error', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An unexpected error occurred. Please try again later.',
+            confirmButtonText: 'OK',
+          });
+        });
+  
+
+  
     
  
   };
