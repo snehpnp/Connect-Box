@@ -8,33 +8,23 @@ import {
 } from "../../../ReduxStore/Slice/Users/Userdashboard.Slice";
 import { Modal, Button, Form } from "react-bootstrap";
 import { loadScript } from "../../../Utils/payment";
-import Swal from 'sweetalert2';
-
+import Swal from "sweetalert2";
 
 import Loader from "../../../Utils/Loader";
 
 const Strategies = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
 
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
   const [getAllStrategy, setAllStrategy] = useState({
     loading: true,
     data: [],
   });
   const [showModal, setShowModal] = useState(false);
-
   const handleClose = () => setShowModal(false);
-
   const [selectStrategy, setSelectStrategy] = useState({});
-
   const [selectedOption, setSelectedOption] = useState("monthlyPlan");
-
-
-
   const handleOptionChange = (e) => setSelectedOption(e.target.value);
-
-
 
   const GetAllStrategy = async () => {
     let data = { id: user_id };
@@ -87,8 +77,6 @@ const Strategies = () => {
         receipt = "Buy Subscription";
     }
 
-
-
     var req = {
       user_id: user_id,
       admin_id: selectStrategy.maker_id,
@@ -100,91 +88,55 @@ const Strategies = () => {
       receipt: receipt,
     };
 
-    
-
     await dispatch(OrderCreateStgUser(req))
-    
       .unwrap()
       .then(async (response) => {
-       
-        if(response.message === "Request failed with status code 500"){
+        if (response.message === "Request failed with status code 500") {
           Swal.fire({
             title: "Error!",
             text: "Unable to Payment Process",
             icon: "error",
             timer: 1200,
-            timerProgressBar: true
+            timerProgressBar: true,
           });
-          return
-
+          return;
         }
         if (response.status) {
-          await loadScript("https://checkout.razorpay.com/v1/checkout.js");
-
-          const options = {
-            key: response.data1.key,
-            amount: Number(response.data.amount) * 100,
-            currency: "INR",
-            name: response.data1.name,
-            description: response.data.receipt,
-            order_id: response.data.order_id,
-
-            handler: async function (response1) {
-              var req = {
-                razorpay_order_id: response1.razorpay_order_id,
-                razorpay_payment_id: response1.razorpay_payment_id,
-                razorpay_signature: response1.razorpay_signature,
-                id: response.data._id,
-                user_id: response.data.user_id,
-                strategy_id: response.data.strategy_id,
-                order_status: "Success",
-                User_data: JSON.stringify(response1),
-                type: selectedOption,
-              };
-
-              await dispatch(OrderUpdateStgUser(req))
-                .unwrap()
-                .then(async (response_order) => {
-                  if (response_order.status) {
-                    window.location.reload();
-                  }
-                });
-            },
-            prefill: {},
-            theme: {
-              color: "#F37254",
-            },
-          };
-
-          const rzp = new window.Razorpay(options);
-          rzp.open();
+          console.log("response", response);
+          Swal.fire({
+            title: "Success!",
+            text: "Payment Successfull",
+            icon: "success",
+            timer: 1200,
+            timerProgressBar: true,
+          });
+          GetAllStrategy();
+          handleClose();
         } else {
         }
       });
   };
 
-
-
-
-
   const handleBuyClick = (item) => {
-    if (item.month == null || item.quarterly == null || item.half_early  == null || 
-      item.yearly ==null){
+    if (
+      item.month == null ||
+      item.quarterly == null ||
+      item.half_early == null ||
+      item.yearly == null
+    ) {
       Swal.fire({
-          title: "Error!",
-          text: "The Charges are Not Define",
-          icon: "error",
-          timer: 1200,
-          timerProgressBar: true
-        });
+        title: "Error!",
+        text: "The Charges are Not Define",
+        icon: "error",
+        timer: 1200,
+        timerProgressBar: true,
+      });
     } else {
       setShowModal(true);
       setSelectStrategy(item);
     }
   };
 
-
-  
   return (
     <div>
       <div className="content container-fluid pb-0">
@@ -256,7 +208,7 @@ const Strategies = () => {
                             onClick={(e) => {
                               // setShowModal(true);
                               // setSelectStrategy(item);
-                              handleBuyClick(item)
+                              handleBuyClick(item);
                             }}
                           >
                             BUY

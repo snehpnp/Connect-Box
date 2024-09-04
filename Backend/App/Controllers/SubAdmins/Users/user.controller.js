@@ -2056,12 +2056,12 @@ class Users {
     }
   }
 
-
   async UserBalanceAddReq(req, res) {
     try {
-      const { id, balance, status } = req.body;
+      const { id, balance, status, actionType } = req.body;
 
       const balanceToAdd = Number(balance);
+
 
       const userDetail = await User_model.findOne({ _id: id });
 
@@ -2071,13 +2071,12 @@ class Users {
 
       const userWallet = new User_Wallet({
         user_id: id,
-        admin_id:userDetail.parent_id,
+        admin_id: userDetail.parent_id,
         balance: balanceToAdd,
-        type: "CREDIT",
+        type: actionType == "add" ? "CREDIT" : "DEBIT",
         status,
-        UserName: userDetail.UserName
+        UserName: userDetail.UserName,
       });
-  
 
       await userWallet.save();
 
@@ -2094,35 +2093,25 @@ class Users {
       });
     }
   }
-  
 
+  // get balance data
 
-  
-
-  // get balance data 
-
-  async  getwalletbalance(req,res){
+  async getwalletbalance(req, res) {
     try {
-       const {id} = req.body
-       const getdetail = await User_Wallet.find({admin_id:id}).sort({createdAt:-1})
+      const { id } = req.body;
+      const getdetail = await User_Wallet.find({ admin_id: id }).sort({
+        createdAt: -1,
+      });
 
-       if(!getdetail){
-          return res.json({status:false , message:"not found", data:[]})
-       }
-        
-       return res.json({status:true , message:"found ", data: getdetail})
+      if (!getdetail) {
+        return res.json({ status: false, message: "not found", data: [] });
+      }
 
+      return res.json({ status: true, message: "found ", data: getdetail });
     } catch (error) {
-
-      return res.json({status:false , message:"interna error", data: []})
-      
+      return res.json({ status: false, message: "interna error", data: [] });
     }
   }
-
- 
-
-
-
 }
 
 module.exports = new Users();

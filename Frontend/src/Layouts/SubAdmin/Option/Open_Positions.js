@@ -1081,10 +1081,8 @@ export default function AllEmployees() {
     setSearchInput("");
   };
 
-  // UPDATE TARGET AND STOPLOSS PRICE AND TIME
+  
   const SetStopLostPrice = async (event, name, row, qty_persent, symbol) => {
-    // alert(name)
-    // alert(event.target.value)
 
     let value = event.target.value;
     if (name == "exit_time") {
