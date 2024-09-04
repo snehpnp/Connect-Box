@@ -1,11 +1,13 @@
 import React, { useState, useMemo, useEffect } from "react";
 import FullDataTable from "../../../../Components/ExtraComponents/Tables/FullDataTable";
 import Content from "../../../../Components/Dashboard/Content/Content";
-import { IndianRupee } from "lucide-react";
+import { IndianRupee, Timer } from "lucide-react";
 import { Tabs, Tab, Badge, Button, Dropdown } from "react-bootstrap";
 import { Get_User_Balance } from "../../../../ReduxStore/Slice/Subadmin/allServices";
 import { useDispatch } from "react-redux";
 import { fDateTime } from "../../../../Utils/Date_formet";
+import { Update_status_balance } from "../../../../ReduxStore/Slice/Subadmin/allServices";
+import Swal from 'sweetalert2'
 
 function Payment() {
     const [activeTab, setActiveTab] = useState("deposit");
@@ -18,6 +20,11 @@ function Payment() {
 
     const userDetail = JSON.parse(localStorage.getItem("user_details"));
     const userid = userDetail?.user_id;
+
+
+
+
+
 
     const getuser_balance = async () => {
         const data = { id: userid };
@@ -52,23 +59,43 @@ function Payment() {
         getuser_balance();
     }, []);
 
-    // Function to handle status change
-    const handleStatusChange = (id, newStatus) => {
-        const updatedData = { ...transactionData };
-        const targetArray = activeTab === "deposit" ? updatedData.deposits : updatedData.withdrawals;
 
-        const updatedArray = targetArray.map((item) => {
-            if (item.id === id) {
-                return { ...item, status: newStatus };
+
+
+    const handleStatusChange = async (id, newStatus) => {
+        const data = { id: id._id, status: newStatus ,balance : id.balance};
+        try {
+            const response = await dispatch(Update_status_balance(data)).unwrap();
+            if (response.status) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Status updated successfully.',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to update status.',
+                    icon: 'error',
+                    timer: 1500,
+                    showConfirmButton: false
+                });
             }
-            return item;
-        });
-
-        setTransactionData({
-            ...transactionData,
-            [activeTab === "deposit" ? "deposits" : "withdrawals"]: updatedArray,
-        });
+        } catch (error) {
+            Swal.fire({
+                title: 'Error!',
+                text: 'An error occurred while updating status.',
+                icon: 'error',
+                timer: 1500,
+                showConfirmButton: false
+            });
+        }
     };
+    
+
+
 
     // Styles
     const styles = {
@@ -80,8 +107,8 @@ function Payment() {
             borderRadius: "8px",
             padding: "15px",
             boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-            overflow: "auto", 
-            maxHeight: "800px", 
+            overflow: "auto",
+            maxHeight: "800px",
         },
         buttonGroup: {
             display: "flex",
@@ -162,16 +189,16 @@ function Payment() {
                 width: 150,
                 headerClassName: styles.boldHeader,
                 renderCell: (params) =>
-                    params.row.status === "pending" ? ( 
+                    params.row.status === "pending" ? (
                         <Dropdown
-                            onSelect={(eventKey) => handleStatusChange(params.row.id, eventKey)}
-                            container={document.body} 
+                            onSelect={(eventKey) => handleStatusChange(params.row, eventKey)}
                         >
                             <Dropdown.Toggle variant="secondary" id={`dropdown-basic-${params.row.id}`}>
                                 {params.row.status}
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
+                                <Dropdown.Item eventKey="0">Pending</Dropdown.Item>
                                 <Dropdown.Item eventKey="1">Complete</Dropdown.Item>
                                 <Dropdown.Item eventKey="2">Reject</Dropdown.Item>
                             </Dropdown.Menu>
@@ -181,15 +208,20 @@ function Payment() {
                     ),
             },
         ],
-        [transactionData] 
+        [transactionData, activeTab]
     );
+
 
     const filteredRows = useMemo(() => {
         const data = activeTab === "deposit" ? transactionData.deposits : transactionData.withdrawals;
         return data.filter((transaction) => transaction.status === activeStatus);
     }, [activeTab, activeStatus, transactionData]);
 
+
+
+
     return (
+
         <div data-aos="fade-left">
             <Content
                 Card_title="Payment Request"
@@ -236,7 +268,7 @@ function Payment() {
                                 columns={columns}
                                 rows={filteredRows}
                                 checkboxSelection={false}
-                                autoHeight // Ensures the table height adjusts to its content
+                                
                             />
                         </div>
                     </>

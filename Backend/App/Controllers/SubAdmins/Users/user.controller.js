@@ -486,7 +486,7 @@ class Users {
             }
 
             // Use insertMany to insert the documents in a single database call
-            client_services.insertMany(clientServicesData).then((result) => {});
+            client_services.insertMany(clientServicesData).then((result) => { });
 
             // I USER IF 2 DAYS CLICNT
             if (license_type == "0") {
@@ -511,8 +511,8 @@ class Users {
                 license_type == 2
                   ? "Live Account"
                   : license_type == 0
-                  ? "2 Days Free Live Account"
-                  : "Free Demo Account",
+                    ? "2 Days Free Live Account"
+                    : "Free Demo Account",
             };
 
             if (existingUser) {
@@ -2071,13 +2071,13 @@ class Users {
 
       const userWallet = new User_Wallet({
         user_id: id,
-        admin_id:userDetail.parent_id,
+        admin_id: userDetail.parent_id,
         balance: balanceToAdd,
         type: "CREDIT",
         status,
         UserName: userDetail.UserName
       });
-  
+
 
       await userWallet.save();
 
@@ -2094,32 +2094,75 @@ class Users {
       });
     }
   }
-  
 
 
-  
+
+
 
   // get balance data 
 
-  async  getwalletbalance(req,res){
+  async getwalletbalance(req, res) {
     try {
-       const {id} = req.body
-       const getdetail = await User_Wallet.find({admin_id:id}).sort({createdAt:-1})
+      const { id } = req.body
+      const getdetail = await User_Wallet.find({ admin_id: id }).sort({ createdAt: -1 })
 
-       if(!getdetail){
-          return res.json({status:false , message:"not found", data:[]})
-       }
-        
-       return res.json({status:true , message:"found ", data: getdetail})
+      if (!getdetail) {
+        return res.json({ status: false, message: "not found", data: [] })
+      }
+
+      return res.json({ status: true, message: "found ", data: getdetail })
 
     } catch (error) {
 
-      return res.json({status:false , message:"interna error", data: []})
-      
+      return res.json({ status: false, message: "interna error", data: [] })
+
     }
   }
 
- 
+
+  async update_payment_status(req, res) {
+    try {
+      const { id, status, balance } = req.body;
+  
+      const finddata = await User_Wallet.findOne({ _id: id });
+      if (!finddata) {
+        return res.json({ status: false, message: 'User wallet not found', data: [] });
+      }
+  
+      const balanceToAdd = Number(balance);
+  
+      if (status == 1) {
+        const userDetail = await User_model.findOne({ _id: finddata.user_id });
+        
+        if (!userDetail) {
+          return res.json({ status: false, message: 'User not found', data: [] });
+        }
+  
+        userDetail.Balance = Number(userDetail.Balance) + balanceToAdd;
+        await userDetail.save();
+  
+        const userWallet = new count_licenses({
+          user_id: finddata.user_id,
+          Balance: balanceToAdd,
+          admin_id: userDetail.parent_id,
+          Role: "USER",
+          Mode: "CASH",
+        });
+  
+        await userWallet.save();
+      }
+  
+      finddata.status = status;
+      await finddata.save();
+      return res.json({ status: true, message: 'Payment status updated successfully', data: [] });
+      
+    } catch (error) {
+      return res.json({ status: false, message: 'Internal server error', error: error.message });
+    }
+  }
+  
+
+
 
 
 

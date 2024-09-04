@@ -35068,3 +35068,7 @@ input:disabled {
 [data-layout-mode=dark] body .apexcharts-text tspan {
     fill: #fff !important;
 } 
+.MuiDataGrid-cell {
+    overflow: visible !important;
+   
+}
