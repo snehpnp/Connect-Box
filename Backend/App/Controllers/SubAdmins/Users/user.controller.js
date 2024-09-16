@@ -1532,7 +1532,7 @@ class Users {
         ) {
           AdminMatch = { Role: "USER", employee_id: user_ID };
         } else {
-          AdminMatch = { Role: "USER", parent_id: parent_role[0].parent_id };
+          AdminMatch = { Role: "USER", employee_id: parent_role[0]._id };
         }
       }
 
