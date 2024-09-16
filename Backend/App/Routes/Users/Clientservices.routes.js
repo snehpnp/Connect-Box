@@ -6,7 +6,7 @@ const {  } = require('../../Middlewares/autt.middleware')
 const { getClientServices,updateClientServices , GetAllStrategy,FindAllStrategy,statusUpadate} = require('../../Controllers/Users/Clientservices')
 
 const { GetUserTradeSignals } = require('../../Controllers/Users/Signals')
-const { UserDashboardData } = require('../../Controllers/Users/Dashboard')
+const { UserDashboardData ,GetTradePermission,UpdateTradePermission} = require('../../Controllers/Users/Dashboard')
 
 
 
@@ -22,6 +22,9 @@ router.post('/statusUpadate',statusUpadate);
 
 
 
+
+router.post('/gettrade/permission',GetTradePermission);
+router.post('/updatetrade/permission',UpdateTradePermission);
 
 
 

@@ -175,3 +175,29 @@ export async function  OrderUpdateStg(data){
         return await err
     }
  }
+
+ export async function  GetTradePermission(data){
+    try{
+        const res= await axios.post(`${Config.base_url}gettrade/permission`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch(err){
+        
+        return await err
+    }
+ }
+
+ export async function  UpdateTradePermission(data){
+    try{
+        const res= await axios.post(`${Config.base_url}updatetrade/permission`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch(err){
+        
+        return await err
+    }
+ }

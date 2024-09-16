@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_USER_DASHBOARD, OrderCreateStg, OrderUpdateStg ,UserBalanceAddReq} from "../../../Services/Users/allUsers.service";
+import { GET_USER_DASHBOARD, OrderCreateStg, OrderUpdateStg ,UserBalanceAddReq,GetTradePermission,UpdateTradePermission} from "../../../Services/Users/allUsers.service";
 
 export const GetUserDashboardData = createAsyncThunk("user/dashboard",
   async (data) => {
@@ -47,6 +47,28 @@ export const UserBalanceAddReqApi = createAsyncThunk("user/add/balance",
   }
 );
 
+export const GetTradePermissionApi = createAsyncThunk("gettrade/permission",
+  async (data) => {
+    try {
+      const res = await GetTradePermission(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
+export const UpdateTradePermissionApi = createAsyncThunk("updatetrade/permission",
+  async (data) => {
+    try {
+      const res = await UpdateTradePermission(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
 const DashboardSlice = createSlice({
   name: "ClientServiceSlice",
   initialState: {
@@ -55,6 +77,8 @@ const DashboardSlice = createSlice({
     userdashboard: null,
     stgOrder: null,
     balaneReq:[],
+    tradePermission:[],
+    updateTradePermission:[]
 
 
   },
@@ -100,7 +124,30 @@ const DashboardSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
       })
-
+      .addCase(GetTradePermissionApi.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(GetTradePermissionApi.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.tradePermission = action.payload;
+      })
+      .addCase(GetTradePermissionApi.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(UpdateTradePermissionApi.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(UpdateTradePermissionApi.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.updateTradePermission = action.payload;
+      })
+      .addCase(UpdateTradePermissionApi.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
   },
 });
 

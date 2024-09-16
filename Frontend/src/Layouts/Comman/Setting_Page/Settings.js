@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Trackpanel from "./Logs/Trackpanel";
 import System from "../../../Layouts/SubAdmin/Systems/System";
 import AdminSystem from "../../../Layouts/Admin/System/System";
@@ -9,16 +9,55 @@ import Payment from "../../../Layouts/Comman/Setting_Page/Payment";
 import Apicreate_info from "./Apicreateinformation/Apicreate_info";
 import PasswordChange from "./PasswordChange";
 import Usersetbrokerinfo from "../../../Layouts/Comman/Setting_Page/Setbrokerinfo/Usersetbrokerinfo";
-import { X, AlignJustify } from 'lucide-react';
+import { useDispatch } from "react-redux";
+import {
+  GetTradePermissionApi,
+  UpdateTradePermissionApi,
+} from "../../../ReduxStore/Slice/Users/Userdashboard.Slice";
 
 const Settings = () => {
+  const dispatch = useDispatch();
+  const [selectedOption, setSelectedOption] = useState(0);
   const [isSidebarOpen, setSidebarOpen] = useState(true);
-  // const [isSidebarOpen, setSidebarOpen] = useState(false);
-  let Role = JSON.parse(localStorage.getItem("user_details")).Role;
 
-  // const toggleSidebar = () => {
-  //   setSidebarOpen(!isSidebarOpen);
-  // };
+  let Role = JSON.parse(localStorage.getItem("user_details")).Role;
+  let user_details = JSON.parse(localStorage.getItem("user_details"));
+
+  const handleOptionChange = (e) => {
+    setSelectedOption(parseInt(e.target.value)); 
+  };
+  const handleSubmit = async () => {
+   
+    const response = await dispatch(
+      UpdateTradePermissionApi({
+        id: user_details.user_id,
+        permission: selectedOption,
+      })
+    ).unwrap();
+
+    if (response.status) {
+      fetchCompanyData();
+    }
+  };
+
+  const fetchCompanyData = async () => {
+    try {
+      const response = await dispatch(
+        GetTradePermissionApi({ id: user_details.user_id })
+      ).unwrap();
+      if (response.status) {
+        setSelectedOption(response.data);
+     
+      } 
+    } catch (error) {
+     
+    }
+  };
+
+  useEffect(() => {
+    fetchCompanyData();
+  }, []);
+
 
   return (
     <>
@@ -31,14 +70,7 @@ const Settings = () => {
           </div>
           <div className="card-body">
             <div className="row">
-
-              {/* <button  className="toggle-sidebarsetting" onClick={toggleSidebar}style={{ width: "3rem", height: "3rem", position: isSidebarOpen ? "absolute" : "fixed", left: isSidebarOpen ? "15.6rem" : "3rem", zIndex: "999",
-          marginTop: isSidebarOpen ? "0.9rem" : "1rem"
-         }}>
-          {isSidebarOpen ?  <X /> :  <AlignJustify />}
-        </button>
-          {isSidebarOpen && ( */}
-              <div className="col-sm-3 left-side" >
+              <div className="col-sm-3 left-side">
                 <div
                   className="nav flex-column nav-pills nav-pills-tab"
                   id="v-pills-tab"
@@ -46,14 +78,12 @@ const Settings = () => {
                   aria-orientation="vertical"
                 >
                   <div className="col-sm-12 left-side">
-
                     <div
                       className="nav flex-column nav-pills nav-pills-tab"
                       id="v-pills-tab"
                       role="tablist"
                       aria-orientation="vertical"
                     >
-
                       <a
                         className="nav-link active mb-1"
                         id="v-pills-changepass-tab"
@@ -61,13 +91,12 @@ const Settings = () => {
                         href="#v-pills-changepass"
                         role="tab"
                         aria-controls="v-pills-changepass"
-
                         aria-selected="true"
                       >
                         Change Password
                       </a>
 
-                      {(Role === "ADMIN") && (
+                      {Role === "ADMIN" && (
                         <a
                           className="nav-link mb-1"
                           id="v-pills-company-tab"
@@ -75,12 +104,10 @@ const Settings = () => {
                           href="#v-pills-company"
                           role="tab"
                           aria-controls="v-pills-company"
-
                           style={{ color: "black" }}
                         >
                           Company Settings
                         </a>
-
                       )}
 
                       {Role == "ADMIN" && (
@@ -101,19 +128,19 @@ const Settings = () => {
                       {(Role == "ADMIN" ||
                         Role === "SUBADMIN" ||
                         Role === "RESEARCH") && (
-                          <a
-                            className="nav-link mb-1"
-                            id="v-pills-payment-tab"
-                            data-bs-toggle="pill"
-                            href="#v-pills-payment"
-                            role="tab"
-                            aria-controls="v-pills-payment"
-                            aria-selected="false"
-                            style={{ color: "black" }}
-                          >
-                            Payment Methods
-                          </a>
-                        )}
+                        <a
+                          className="nav-link mb-1"
+                          id="v-pills-payment-tab"
+                          data-bs-toggle="pill"
+                          href="#v-pills-payment"
+                          role="tab"
+                          aria-controls="v-pills-payment"
+                          aria-selected="false"
+                          style={{ color: "black" }}
+                        >
+                          Payment Methods
+                        </a>
+                      )}
                       {Role == "ADMIN" && (
                         <a
                           className="nav-link mb-1"
@@ -157,19 +184,34 @@ const Settings = () => {
                       {(Role === "SUBADMIN" ||
                         Role === "USER" ||
                         Role === "RESEARCH") && (
-                          <a
-                            className="nav-link mb-1"
-                            id="v-pills-Broker-info-tab"
-                            data-bs-toggle="pill"
-                            href="#v-pills-Broker-info"
-                            role="tab"
-                            aria-controls="v-pills-Broker-info"
-                            aria-selected="false"
-                            style={{ color: "black" }}
-                          >
-                            Set Broker Information
-                          </a>
-                        )}
+                        <a
+                          className="nav-link mb-1"
+                          id="v-pills-Broker-info-tab"
+                          data-bs-toggle="pill"
+                          href="#v-pills-Broker-info"
+                          role="tab"
+                          aria-controls="v-pills-Broker-info"
+                          aria-selected="false"
+                          style={{ color: "black" }}
+                        >
+                          Set Broker Information
+                        </a>
+                      )}
+
+                      {Role === "USER" && (
+                        <a
+                          className="nav-link mb-1"
+                          id="v-trade-permission-tab"
+                          data-bs-toggle="pill"
+                          href="#v-trade-permission"
+                          role="tab"
+                          aria-controls="v-trade-permission"
+                          aria-selected="false"
+                          style={{ color: "black" }}
+                        >
+                          Trade Permission
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -177,16 +219,10 @@ const Settings = () => {
               {/* )} */}
               {/* <div className={isSidebarOpen ? "col-sm-7" : "col-sm-12"}> */}
               <div className="col-sm-9 ">
-                <div className="tab-content"  >
-                  <div   >
-
+                <div className="tab-content">
+                  <div>
                     <div className="card-body">
-
                       <div className="tab-content ">
-
-
-
-
                         {/* CHANGE PASSWORD */}
                         <div
                           className="tab-pane active"
@@ -196,8 +232,6 @@ const Settings = () => {
                         >
                           <div className="col-xl-12 col-md-12">
                             <div className="page-header">
-
-
                               <div className="page-content">
                                 <div className="mainDiv">
                                   <PasswordChange />
@@ -206,11 +240,6 @@ const Settings = () => {
                             </div>
                           </div>
                         </div>
-
-
-
-
-
 
                         {/* Company Settings */}
                         <div
@@ -281,15 +310,12 @@ const Settings = () => {
                             <div className="page-header">
                               <div className="content-page-header">
                                 <h5>Activity</h5>
-
                               </div>
                             </div>
                           </div>
 
                           <Trackpanel />
                         </div>
-
-
 
                         {/* API CREATE INFORMATION */}
                         <div
@@ -329,9 +355,95 @@ const Settings = () => {
                           ) : null}
                         </div>
 
+                        {/* TRADE PERMISSION */}
+                        <div
+                          className="tab-pane fade"
+                          id="v-trade-permission"
+                          role="tabpanel"
+                          aria-labelledby="v-trade-permission-tab"
+                        >
+                          <div className="col-xl-12 col-md-12">
+                            <div className="page-header">
+                              <div className="content-page-header">
+                                <h5>Trade Permission</h5>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="card p-4 shadow-sm">
+                            <div className="row">
+                              <h5 className="mb-4">Update Trade Permission</h5>
+
+                              {/* Radio Buttons */}
+                              <div className="d-flex gap-5">
+                                {/* Full Auto */}
+                                <div className="form-check">
+                                  <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="tradePermission"
+                                    id="tradePermission1"
+                                    value={0}
+                                    checked={selectedOption == 0}
+                                    onChange={handleOptionChange}
+                                  />
+                                  <label
+                                    className="form-check-label ms-2"
+                                    htmlFor="tradePermission1"
+                                  >
+                                    Full Auto
+                                  </label>
+                                </div>
+
+                                {/* Semi Auto */}
+                                <div className="form-check">
+                                  <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    name="tradePermission"
+                                    id="tradePermission2"
+                                    value={1}
+                                    checked={selectedOption == 1}
+                                    onChange={handleOptionChange}
+                                  />
+                                  <label
+                                    className="form-check-label ms-2"
+                                    htmlFor="tradePermission2"
+                                  >
+                                    Semi Auto
+                                  </label>
+                                </div>
+                              </div>
+
+                              {/* Submit Button */}
+                              <div className="d-flex justify-content-start mt-4">
+                                <button
+                                  className="btn btn-primary px-4"
+                                  onClick={handleSubmit}
+                                >
+                                  Update Trade Permission
+                                </button>
+                              </div>
+
+                              {/* Note Section */}
+                              <div className="note-section mt-3">
+                                <p
+                                  style={{
+                                    color: "#6c757d",
+                                    fontSize: "0.9rem",
+                                    marginTop: "10px",
+                                  }}
+                                >
+                                  <strong>Note:</strong> Full Auto executes
+                                  trades automatically, Semi Auto allows manual
+                                  confirmation.
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-
                   </div>
                 </div>
               </div>
