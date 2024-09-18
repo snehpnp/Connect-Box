@@ -201,3 +201,30 @@ export async function  OrderUpdateStg(data){
         return await err
     }
  }
+
+ export async function  GetPermissionLogs(data){
+    try{
+        const res= await axios.post(`${Config.base_url}gettrade/permissionLogs`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch(err){
+        
+        return await err
+    }
+ }
+
+
+ export async function  GetSemiSingals(data){
+    try{
+        const res= await axios.post(`${Config.base_url}get/semi/signals`, data, {
+            data: {}
+        })
+        return await res?.data
+    }
+    catch(err){
+        
+        return await err
+    }
+ }

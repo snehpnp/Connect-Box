@@ -13,21 +13,24 @@ import { useDispatch } from "react-redux";
 import {
   GetTradePermissionApi,
   UpdateTradePermissionApi,
+  GetPermissionLogsApi,
 } from "../../../ReduxStore/Slice/Users/Userdashboard.Slice";
+import Swal from "sweetalert2";
+import {fDateTime} from "../../../Utils/Date_formet";
 
 const Settings = () => {
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState(0);
-  const [isSidebarOpen, setSidebarOpen] = useState(true);
+  const [tradeLogs, settradeLogs] = useState([]);
+  const [showLogs, setShowLogs] = useState(false);
 
   let Role = JSON.parse(localStorage.getItem("user_details")).Role;
   let user_details = JSON.parse(localStorage.getItem("user_details"));
 
   const handleOptionChange = (e) => {
-    setSelectedOption(parseInt(e.target.value)); 
+    setSelectedOption(parseInt(e.target.value));
   };
   const handleSubmit = async () => {
-   
     const response = await dispatch(
       UpdateTradePermissionApi({
         id: user_details.user_id,
@@ -36,7 +39,11 @@ const Settings = () => {
     ).unwrap();
 
     if (response.status) {
-      fetchCompanyData();
+      // fetchCompanyData();
+      Swal.fire({
+        icon: "success",
+        title: "Trade Permission Updated Successfully",
+      });
     }
   };
 
@@ -47,17 +54,38 @@ const Settings = () => {
       ).unwrap();
       if (response.status) {
         setSelectedOption(response.data);
-     
-      } 
+      }
+    } catch (error) {}
+  };
+
+  const GetTradePermissionLogs = async () => {
+    try {
+      const response = await dispatch(
+        GetPermissionLogsApi({ id: user_details.user_id })
+      ).unwrap();
+      if (response.status) {
+        console.log(response.data);
+        settradeLogs(response.data);
+      }
     } catch (error) {
-     
+      console.log(error);
     }
   };
 
   useEffect(() => {
+    GetTradePermissionLogs();
     fetchCompanyData();
   }, []);
 
+
+  const handleShowModal = () => {
+    setShowLogs(true);
+  };
+
+  // Function to close modal
+  const handleCloseModal = () => {
+    setShowLogs(false);
+  };
 
   return (
     <>
@@ -374,9 +402,7 @@ const Settings = () => {
                             <div className="row">
                               <h5 className="mb-4">Update Trade Permission</h5>
 
-                              {/* Radio Buttons */}
                               <div className="d-flex gap-5">
-                                {/* Full Auto */}
                                 <div className="form-check">
                                   <input
                                     className="form-check-input"
@@ -395,7 +421,6 @@ const Settings = () => {
                                   </label>
                                 </div>
 
-                                {/* Semi Auto */}
                                 <div className="form-check">
                                   <input
                                     className="form-check-input"
@@ -415,7 +440,6 @@ const Settings = () => {
                                 </div>
                               </div>
 
-                              {/* Submit Button */}
                               <div className="d-flex justify-content-start mt-4">
                                 <button
                                   className="btn btn-primary px-4"
@@ -423,9 +447,15 @@ const Settings = () => {
                                 >
                                   Update Trade Permission
                                 </button>
+
+                                <button
+                                  className="btn btn-secondary px-4 ms-2"
+                                  onClick={(e) => setShowLogs(!showLogs)}
+                                >
+                                  Show Logs
+                                </button>
                               </div>
 
-                              {/* Note Section */}
                               <div className="note-section mt-3">
                                 <p
                                   style={{
@@ -451,6 +481,60 @@ const Settings = () => {
           </div>
         </div>
       </div>
+
+    
+
+      {showLogs && (
+        <div className="modal show d-block" tabIndex="-1" role="dialog">
+          <div className="modal-dialog modal-lg" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title">
+                  <i className="fa fa-gear pe-2"></i>Trade Permission Logs
+                </h5>
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={handleCloseModal}
+                ></button>
+              </div>
+              <div className="modal-body">
+                <div className="table-responsive">
+                  <table className="table table-hover table-center mb-0">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Permission Msg</th>
+                        <th>Updated At</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {tradeLogs.map((log, index) => (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{log.msg}</td>
+                          <td>{fDateTime(log.createdAt)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={handleCloseModal}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+    
     </>
   );
 };

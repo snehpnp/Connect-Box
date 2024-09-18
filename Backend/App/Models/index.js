@@ -39,7 +39,11 @@ module.exports = {
     tradeCharge: require('./trade_charge.model'),
     User_strategy_Order: require('./User_Strategy_order.model'),
     Stg_Collaborators: require('./Strategy_Collaborators'),
-    User_Wallet:require("./userwallet.model")
+    User_Wallet:require("./userwallet.model"),
+    TradePermissionLogs:require("./Tradepermission.model"),
+    semiautoModel:require("./Semiautoreq.model"),
+
+
 
     
 

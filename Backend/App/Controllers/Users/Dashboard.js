@@ -6,6 +6,7 @@ const Strategies = db.Strategies;
 const user_modal = db.user;
 
 const strategy_client = db.strategy_client;
+const TradePermissionLogs = db.TradePermissionLogs;
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -138,6 +139,16 @@ class Dashboard {
       }
       user.tradepermission = permission;
       await user.save();
+
+      // Save the log
+      const log = new TradePermissionLogs({
+        user_id: id,
+        msg: `Trade permission updated to ${
+          permission == 1 ? "Semi Auto" : "Full Auto"
+        }`,
+      });
+      await log.save();
+
       return res.json({ status: true, msg: "Trade permission updated" });
     } catch (error) {
       console.log("Error:", error);
@@ -147,7 +158,19 @@ class Dashboard {
     }
   }
 
-
+  async GetTradePermissionLogs(req, res) {
+    try {
+      const { id } = req.body;
+      console.log("GetTradePermissionLogs",req.body);
+      const logs = await TradePermissionLogs.find({user_id:id}).sort({ createdAt: -1 });
+      return res.json({ status: true, data: logs, msg: "Done" });
+    } catch (error) {
+      console.log("Error:", error);
+      return res
+        .status(500)
+        .json({ status: false, msg: "Internal server error" });
+    }
+  }
 }
 
 module.exports = new Dashboard();

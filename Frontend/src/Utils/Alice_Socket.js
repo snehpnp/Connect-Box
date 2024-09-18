@@ -3,7 +3,9 @@ import * as Config from "../Utils/Config";
 import axios from "axios";
 var CryptoJS = require("crypto-js");
 
+// var aliceBaseUrl = "https://ant.aliceblueonline.com/rest/AliceBlueAPIService/api/"
 var aliceBaseUrl = "https://ant.aliceblueonline.com/rest/AliceBlueAPIService/api/"
+
 
 
 var userId1 = "1229188";
@@ -30,6 +32,11 @@ export async function GetAccessToken(data) {
 
 export async function CreateSocketSession(type, userid, userSession1) {
       try {
+console.log("userSession1",userSession1)
+console.log("userid",userid)
+console.log("type",type)
+console.log("aliceBaseUrl",aliceBaseUrl)
+
         
         return axios.post(`${aliceBaseUrl}ws/createSocketSess`, type, {
             headers: {
@@ -43,9 +50,11 @@ export async function CreateSocketSession(type, userid, userSession1) {
     
            })
             .then(res => {
+                console.log(res.data)
                 return res;
             })
             .catch(error => {
+                console.log(error.response.data)
                 return error.response
             })
         

@@ -531,6 +531,7 @@ function Option_Chain() {
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
             const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
+console.log("res",res)
 
             if (res.data.stat) {
                 const handleResponse = async (response, socket) => {
@@ -664,7 +665,8 @@ function Option_Chain() {
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: Config.broker_backend,
+                // url: Config.broker_backend,
+                url:"http://localhost:8000/broker-signals",
 
                 headers: {
                     'Content-Type': 'text/plain'

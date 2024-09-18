@@ -13,7 +13,7 @@ const { Server } = require("socket.io");
 const socketIo = require("socket.io");
 
 
-const { createViewMandotsecurities } = require("./View/mandotsecurities");
+const { createViewAlice } = require("./View/Alice_blue");
 
 // Setting up CORS options
 const corsOpts = {
@@ -97,7 +97,7 @@ require("./App/Routes")(app);
 
 
 app.get('/aliceblue/view', (req, res) => {
-  createViewMandotsecurities()
+  createViewAlice()
   res.send("done")
 })
 

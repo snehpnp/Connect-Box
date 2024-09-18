@@ -106,7 +106,8 @@ async function createViewKotakNeo() {
           api_type: 1,
           demat_userid: 1,
           client_key: 1,
-          web_url: 1
+          web_url: 1,
+          tradepermission: 1
         }
       },
       {

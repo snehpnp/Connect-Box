@@ -1,10 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_USER_DASHBOARD, OrderCreateStg, OrderUpdateStg ,UserBalanceAddReq,GetTradePermission,UpdateTradePermission} from "../../../Services/Users/allUsers.service";
+import {
+  GET_USER_DASHBOARD,
+  OrderCreateStg,
+  OrderUpdateStg,
+  UserBalanceAddReq,
+  GetTradePermission,
+  UpdateTradePermission,
+  GetPermissionLogs,
+  GetSemiSingals
+} from "../../../Services/Users/allUsers.service";
 
-export const GetUserDashboardData = createAsyncThunk("user/dashboard",
+export const GetUserDashboardData = createAsyncThunk(
+  "user/dashboard",
   async (data) => {
     try {
-      const { req, token } = data
+      const { req, token } = data;
       const res = await GET_USER_DASHBOARD(req, token);
       return res;
     } catch (err) {
@@ -13,8 +23,8 @@ export const GetUserDashboardData = createAsyncThunk("user/dashboard",
   }
 );
 
-
-export const OrderCreateStgUser = createAsyncThunk("user/strategy/order/create",
+export const OrderCreateStgUser = createAsyncThunk(
+  "user/strategy/order/create",
   async (data) => {
     try {
       const res = await OrderCreateStg(data);
@@ -25,7 +35,8 @@ export const OrderCreateStgUser = createAsyncThunk("user/strategy/order/create",
   }
 );
 
-export const OrderUpdateStgUser = createAsyncThunk("user/strategy/order/update",
+export const OrderUpdateStgUser = createAsyncThunk(
+  "user/strategy/order/update",
   async (data) => {
     try {
       const res = await OrderUpdateStg(data);
@@ -36,7 +47,8 @@ export const OrderUpdateStgUser = createAsyncThunk("user/strategy/order/update",
   }
 );
 
-export const UserBalanceAddReqApi = createAsyncThunk("user/add/balance",
+export const UserBalanceAddReqApi = createAsyncThunk(
+  "user/add/balance",
   async (data) => {
     try {
       const res = await UserBalanceAddReq(data);
@@ -47,7 +59,8 @@ export const UserBalanceAddReqApi = createAsyncThunk("user/add/balance",
   }
 );
 
-export const GetTradePermissionApi = createAsyncThunk("gettrade/permission",
+export const GetTradePermissionApi = createAsyncThunk(
+  "gettrade/permission",
   async (data) => {
     try {
       const res = await GetTradePermission(data);
@@ -58,10 +71,35 @@ export const GetTradePermissionApi = createAsyncThunk("gettrade/permission",
   }
 );
 
-export const UpdateTradePermissionApi = createAsyncThunk("updatetrade/permission",
+export const UpdateTradePermissionApi = createAsyncThunk(
+  "updatetrade/permission",
   async (data) => {
     try {
       const res = await UpdateTradePermission(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
+export const GetPermissionLogsApi = createAsyncThunk(
+  "gettrade/permissionLogs",
+  async (data) => {
+    try {
+      const res = await GetPermissionLogs(data);
+      return res;
+    } catch (err) {
+      throw err;
+    }
+  }
+);
+
+export const GetSemiSingalsApi = createAsyncThunk(
+  "get/semi/signals",
+  async (data) => {
+    try {
+      const res = await GetSemiSingals(data);
       return res;
     } catch (err) {
       throw err;
@@ -76,11 +114,11 @@ const DashboardSlice = createSlice({
     isError: false,
     userdashboard: null,
     stgOrder: null,
-    balaneReq:[],
-    tradePermission:[],
-    updateTradePermission:[]
-
-
+    balaneReq: [],
+    tradePermission: [],
+    updateTradePermission: [],
+    permissionLogs: [],
+    semisignals: []
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -145,6 +183,30 @@ const DashboardSlice = createSlice({
         state.updateTradePermission = action.payload;
       })
       .addCase(UpdateTradePermissionApi.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(GetPermissionLogsApi.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(GetPermissionLogsApi.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.permissionLogs = action.payload;
+      })
+      .addCase(GetPermissionLogsApi.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(GetSemiSingalsApi.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(GetSemiSingalsApi.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.semisignals = action.payload;
+      })
+      .addCase(GetSemiSingalsApi.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       })

@@ -23,6 +23,9 @@ import BroadCastMessage from '../Layouts/User/BroadCastMessage/BroadCastMessage'
 
 import Userwallet from '../Layouts/Comman/Wallet/Userwallet';
 
+import Orderrequest from '../Layouts/User/Trade/Orderrequest';
+
+
 
 // strategydesc
 const User_Routing = () => {
@@ -54,6 +57,8 @@ const User_Routing = () => {
                    
 
                     <Route exact path="/wallet" element={<Userwallet/>} />
+                    <Route exact path="/orders/request" element={<Orderrequest/>} />
+
 
 
                 </Routes>

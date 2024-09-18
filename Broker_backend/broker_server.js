@@ -6,7 +6,7 @@ require('dotenv').config();
 // const db = require('../BACKEND/App/Models');
 
 require('../Backend/App/Connections/mongo_connection')
-const db = require('../Backend/App/Models');
+const db = require('./../Backend/App/Models');
 
 
 const express = require("express");

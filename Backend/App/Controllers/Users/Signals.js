@@ -4,7 +4,7 @@ const Signals_modal = db.Signals
 const client_services = db.client_service
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-
+const semiautoModel = db.semiautoModel;
 
 class Signals {
 
@@ -113,6 +113,27 @@ class Signals {
         }
     }
 
+    async GetSemiSignals(req, res) {
+        try {
+            const { user_id } = req.body;
+            const objectId = new ObjectId(user_id);
+
+            const GetAllClientServices = await semiautoModel.find({ user_id: objectId });
+            console.log("GetAllClientServices", GetAllClientServices);
+            
+            if (!GetAllClientServices || GetAllClientServices.length==0 ) {
+                return res.send({ status: false, data: [], msg: "Data Empty" });
+            }
+
+            if (GetAllClientServices.length > 0) {
+                return res.send({ status: true, data: GetAllClientServices, msg: "Get Signals" });
+            } else {
+                return res.send({ status: false, data: [], msg: "Data Empty" });
+            }
+        } catch (error) {
+            console.log("Error Signals  error -", error);
+        }
+    }
 
 }
 

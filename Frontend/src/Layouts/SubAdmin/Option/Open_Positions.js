@@ -44,8 +44,8 @@ import {
 
 import useGetCompany from "../../../Utils/ConnectSocket";
 
-//const SOCKET_SERVER_URL = "http://185.209.75.6:7700";
-const SOCKET_SERVER_URL = Config.socket_Url;
+const SOCKET_SERVER_URL = "http://185.209.75.6:7700";
+// const SOCKET_SERVER_URL = Config.socket_Url;
 
 export default function AllEmployees() {
   const [UserDetails, seUserDetails] = useState("");
