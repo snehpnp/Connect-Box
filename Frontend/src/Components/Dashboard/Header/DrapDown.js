@@ -319,34 +319,6 @@ const DropDown = () => {
   };
   
 
-
-
-  // const getSubadminTableData = async () => {
-  //   try {
-  //     const response = await dispatch(
-  //       admin_Msg_Get({ ownerId: user_details.user_id, key: 3 })
-  //     ).unwrap();
-  //     if (response.status) {
-  //       setPipelineData(response.data);
-  //     } else {
-  //     }
-  //   } catch (error) {
-  //     console.log("Error", error);
-  //   } finally {
-  //   }
-  // };
-
-
-
-
-
-
-
-  
-  // subadmin help notification for admin page
-  
-  
-  
   const gettable = async () => {
     try {
       const today = new Date().toISOString().split("T")[0]; // Format YYYY-MM-DD

@@ -125,7 +125,8 @@ async function createViewAlice() {
           demat_userid: 1,
           client_key: 1,
           web_url: 1,
-          parent_id: 1
+          parent_id: 1,
+          tradepermission: 1,
         }
       },
       {

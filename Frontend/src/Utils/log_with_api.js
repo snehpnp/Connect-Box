@@ -1,6 +1,4 @@
-//  1= Master Trust, 2=  'Alice Blue, 3= Master Trust , 4 = Motilal Oswal, 5=Zebull ,
-//  6=IIFl , 7=Kotak , 8=Mandot , 9=Choice, 10=Anand Rathi, 11=B2C, 13=Angel,
-// 13 =Fyers , 14 = 5-Paisa , 15 Zerodha ,
+//  1= Master Trust, 2=  'Alice Blue, 3= Master Trust , 4 = Motilal Oswal, 5=Zebull , 6=IIFl , 7=Kotak , 8=Mandot , 9=Choice, 10=Anand Rathi, 11=B2C, 13=Angel,13 =Fyers , 14 = 5-Paisa , 15 Zerodha ,
 import * as Config from "./Config";
 import Swal from "sweetalert2";
 import axios from "axios";
@@ -27,7 +25,7 @@ export const loginWithApi = async (broker_id, UserDetails, ip) => {
         }
 
       }).catch((error) => {
-        console.error("Error", error);
+     
       });
     } else {
       window.location.href = `https://ant.aliceblueonline.com/?appcode=${UserDetails.api_key}`;

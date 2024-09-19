@@ -238,6 +238,12 @@ const userModel = Schema({
         type: String,
         default: null
     },
+
+    tradepermission: {
+        type: String,
+        enum: ['0','1'], // 0= Full auto , 1= Semi auto
+        default: '0'
+    },
     
   
 },
