@@ -571,7 +571,6 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
   var client_key = signals.Key;
   var demo = signals.Demo;
 
-console.log("item", item, filePath, signals, signal_req)
 
 
   var send_rr = Buffer.from(qs.stringify(item.postdata)).toString("base64");
@@ -1022,13 +1021,14 @@ const EntryPlaceOrderSemiAuto = async (item, filePath, signals, signal_req) => {
   );
 
   const data = new semiautoModel({
-    postdata: item,
+    postdata: item.postdata,
     filePath: filePath,
     signals: signals,
     user_id: new mongoose.Types.ObjectId(item._id),
     createDate: new Date(),
     instrument_token: item.postdata.symbol_id,
     signal_req: signal_req,
+    status:"0"
   });
 
   data

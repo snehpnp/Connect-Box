@@ -41,6 +41,7 @@ const dataSchema = Schema(
     },
     instrument_token: { type: String, default: null },
     signal_req: { type: String, default: null },
+    status: { type: String, default: '0' },
     user_id: { type: mongoose.Schema.Types.ObjectId, default: null },
     createDate: { type: Date, default: Date.now },
     createdAt: {

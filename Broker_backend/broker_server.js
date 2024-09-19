@@ -1744,7 +1744,7 @@ app.post("/userorder", async (req, res) => {
 
     if (AliceBluedocuments.length > 0) {
       aliceblue.EntryPlaceOrder(
-        AliceBluedocuments,
+        AliceBluedocuments[0],
         req.body.data.filePath,
         req.body.data.signals,
         req.body.data.signal_req
