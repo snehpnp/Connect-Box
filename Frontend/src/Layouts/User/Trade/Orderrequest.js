@@ -5,6 +5,7 @@ import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
 import { fDateTime } from "../../../Utils/Date_formet";
 import { GetSemiSingalsApi } from "../../../ReduxStore/Slice/Users/Userdashboard.Slice";
+import axios from "axios";
 
 export default function AllEmployees() {
   const dispatch = useDispatch();
@@ -16,7 +17,9 @@ export default function AllEmployees() {
     data: [],
   });
   const label = { inputProps: { "aria-label": "Switch demo" } };
-
+  useEffect(() => {
+    userDataRes();
+  }, []);
   const styles = {
     container: {
       display: "flex",
@@ -147,6 +150,9 @@ export default function AllEmployees() {
                 ? "btn btn-primary"
                 : "btn btn-danger"
             }
+            onClick={() => {
+              UserCreateOrder(params.row);
+            }}
           >
             {params.row.postdata.transtype == "BUY" ? "BUY" : "SELL"}
           </button>
@@ -176,9 +182,23 @@ export default function AllEmployees() {
       });
   };
 
-  useEffect(() => {
-    userDataRes();
-  }, []);
+  let UserCreateOrder = (data) => {
+    console.log("44444",data);
+    // create post request using axios
+    axios
+      .post("http://localhost:8000/userorder", {
+        data: data,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.status) {
+          userDataRes();
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <>
@@ -209,7 +229,6 @@ export default function AllEmployees() {
                             />
                           </div>
                         </li>
-                        
                       </ul>
                     </div>
                   </div>

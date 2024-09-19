@@ -17,6 +17,8 @@ const mongoose = require("mongoose");
 
 const { trade_charge } = require("../Helper/trade_charge");
 
+
+
 const place_order = async (
   AllClientData,
   signals,
@@ -1017,11 +1019,12 @@ const EntryPlaceOrderSemiAuto = async (item, filePath, signals, signal_req) => {
   );
 
   const data = new semiautoModel({
-    postdata: item.postdata,
+    postdata: item,
     filePath: filePath,
     signals: signals,
     user_id: new mongoose.Types.ObjectId(item._id),
     createDate: new Date(),
+    instrument_token: item.postdata.symbol_id,
   });
 
   data
@@ -1034,4 +1037,12 @@ const EntryPlaceOrderSemiAuto = async (item, filePath, signals, signal_req) => {
     });
 };
 
-module.exports = { place_order };
+
+
+
+
+
+
+
+
+module.exports = { place_order ,EntryPlaceOrder};

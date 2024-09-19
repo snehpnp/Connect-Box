@@ -39,6 +39,7 @@ const dataSchema = Schema(
       ExitStatus: { type: String, default: null },
       Demo: { type: String, default: null },
     },
+    instrument_token: { type: String, default: null },
     user_id: { type: mongoose.Schema.Types.ObjectId, default: null },
     createDate: { type: Date, default: Date.now },
     createdAt: {
