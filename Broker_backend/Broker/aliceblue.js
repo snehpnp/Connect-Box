@@ -571,6 +571,9 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
   var client_key = signals.Key;
   var demo = signals.Demo;
 
+console.log("item", item, filePath, signals, signal_req)
+
+
   var send_rr = Buffer.from(qs.stringify(item.postdata)).toString("base64");
 
   fs.appendFile(
