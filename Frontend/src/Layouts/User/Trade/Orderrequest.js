@@ -144,7 +144,8 @@ export default function AllEmployees() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          <button
+        
+        {params.row.status == "0" &&   <button
             className={
               params.row.postdata.transtype == "BUY"
                 ? "btn btn-primary"
@@ -155,7 +156,7 @@ export default function AllEmployees() {
             }}
           >
             {params.row.postdata.transtype == "BUY" ? "BUY" : "SELL"}
-          </button>
+          </button>}
         </div>
       ),
     },

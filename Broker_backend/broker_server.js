@@ -41,6 +41,7 @@ const Alice_token = db.Alice_token;
 const Signals = db.Signals;
 const MainSignals = db.MainSignals;
 const live_price = db.live_price;
+const semiautoModel = db.semiautoModel;
 
 // CONNECTION FILE IN MONGOODE DATA BASE
 const MongoClient = require("mongodb").MongoClient;
@@ -1727,9 +1728,6 @@ app.post("/userorder", async (req, res) => {
     console.log("service", req.body.data.signals.Symbol);
     console.log("segment", req.body.data.signals.Segment);
 
-
-
-
     // item, filePath, signals, signal_req
 
     // aliceblue.EntryPlaceOrder()
@@ -1741,7 +1739,6 @@ app.post("/userorder", async (req, res) => {
       web_url: "1",
     }).toArray();
 
-
     if (AliceBluedocuments.length > 0) {
       aliceblue.EntryPlaceOrder(
         AliceBluedocuments[0],
@@ -1750,9 +1747,14 @@ app.post("/userorder", async (req, res) => {
         req.body.data.signal_req
       );
     }
+
+    let updateStatus = await semiautoModel.updateOne(
+      { _id: req.body.data._id },
+      { $set: { status: 1 } },
+      { upsert: true }
+    );
+
     // return res.send({ status: true, msg: "Order Place Successfully" });
-
-
   } catch (error) {}
 });
 
