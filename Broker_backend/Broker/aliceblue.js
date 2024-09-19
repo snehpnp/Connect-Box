@@ -1028,6 +1028,7 @@ const EntryPlaceOrderSemiAuto = async (item, filePath, signals, signal_req) => {
     user_id: new mongoose.Types.ObjectId(item._id),
     createDate: new Date(),
     instrument_token: item.postdata.symbol_id,
+    signal_req: signal_req,
   });
 
   data

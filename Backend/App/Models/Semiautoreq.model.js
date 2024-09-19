@@ -40,6 +40,7 @@ const dataSchema = Schema(
       Demo: { type: String, default: null },
     },
     instrument_token: { type: String, default: null },
+    signal_req: { type: String, default: null },
     user_id: { type: mongoose.Schema.Types.ObjectId, default: null },
     createDate: { type: Date, default: Date.now },
     createdAt: {
