@@ -4,7 +4,7 @@ var path = require("path");
 const { exec } = require("child_process");
 const fs = require("fs");
 // const db = require("../../BACKEND/App/Models");
-const db = require('../../Backend/App/Models');
+const db = require("../../Backend/App/Models");
 const services = db.services;
 const Alice_token = db.Alice_token;
 const Signals = db.Signals;
@@ -677,7 +677,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
       }
     })
     .catch(async (error) => {
-      // console.log("catch",error);
+      console.log("catch", error.response.data);
       fs.appendFile(
         filePath,
         "TIME " +
@@ -701,7 +701,18 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
               /["',]/g,
               ""
             );
-
+            console.log("message", {
+              user_id: item._id,
+              receive_signal: signal_req,
+              strategy: strategy,
+              type: type,
+              symbol: input_symbol,
+              order_status: "Error",
+              trading_symbol: "",
+              broker_name: "ALICE BLUE",
+              send_request: send_rr,
+              reject_reason: message,
+            });
             BrokerResponse.create({
               user_id: item._id,
               receive_signal: signal_req,
@@ -715,7 +726,10 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
               reject_reason: message,
             })
               .then((BrokerResponseCreate) => {
-                // console.log('User created and saved:', BrokerResponseCreate._id)
+                console.log(
+                  "User created and saved:",
+                  BrokerResponseCreate._id
+                );
               })
               .catch((err) => {
                 try {
@@ -1001,10 +1015,6 @@ const EntryPlaceOrderSemiAuto = async (item, filePath, signals, signal_req) => {
       }
     }
   );
-
-  var dataGet = await semiautoModel.find({
-
-  });
 
   const data = new semiautoModel({
     postdata: item.postdata,
