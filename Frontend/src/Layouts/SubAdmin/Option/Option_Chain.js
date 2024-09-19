@@ -124,7 +124,16 @@ function Option_Chain() {
             .unwrap()
             .then(async (response) => {
                 if (response.status) {
+                    console.log("response", response)
                     setLivePriceDataDetails(response.data)
+                }else{
+                    Swal.fire({
+                        title: "Error",
+                        text: response.msg,
+                        icon: "error",
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
                 }
             });
     };
@@ -527,6 +536,8 @@ function Option_Chain() {
     const ShowLivePrice = async () => {
         let type = { loginType: "API" };
         let channelList = TokenSymbolChain && TokenSymbolChain;
+
+        console.log("livePriceDataDetails", livePriceDataDetails)
 
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
