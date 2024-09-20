@@ -1723,14 +1723,7 @@ app.post("/broker-signals", async (req, res) => {
 
 app.post("/userorder", async (req, res) => {
   try {
-    // console.log("req.body", req.body.data.signals);
-    console.log("strategys", req.body.data.signals.Strategy);
-    console.log("service", req.body.data.signals.Symbol);
-    console.log("segment", req.body.data.signals.Segment);
-
-    // item, filePath, signals, signal_req
-
-    // aliceblue.EntryPlaceOrder()
+  
     const AliceBlueCollection = db1.collection("aliceblueView");
     const AliceBluedocuments = await AliceBlueCollection.find({
       "strategys.strategy_name": req.body.data.signals.Strategy,
@@ -1754,7 +1747,7 @@ app.post("/userorder", async (req, res) => {
       { upsert: true }
     );
 
-    // return res.send({ status: true, msg: "Order Place Successfully" });
+    return res.send({ status: true, msg: "Order Place Successfully" });
   } catch (error) {}
 });
 

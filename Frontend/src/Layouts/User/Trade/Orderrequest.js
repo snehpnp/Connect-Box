@@ -6,6 +6,7 @@ import ExportToExcel from "../../../Utils/ExportCSV";
 import { fDateTime } from "../../../Utils/Date_formet";
 import { GetSemiSingalsApi } from "../../../ReduxStore/Slice/Users/Userdashboard.Slice";
 import axios from "axios";
+import * as Config from "../../../Utils/Config";
 
 export default function AllEmployees() {
   const dispatch = useDispatch();
@@ -144,19 +145,20 @@ export default function AllEmployees() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-        
-        {params.row.status == "0" &&   <button
-            className={
-              params.row.postdata.transtype == "BUY"
-                ? "btn btn-primary"
-                : "btn btn-danger"
-            }
-            onClick={() => {
-              UserCreateOrder(params.row);
-            }}
-          >
-            {params.row.postdata.transtype == "BUY" ? "BUY" : "SELL"}
-          </button>}
+          {params.row.status == "0" && (
+            <button
+              className={
+                params.row.postdata.transtype == "BUY"
+                  ? "btn btn-primary"
+                  : "btn btn-danger"
+              }
+              onClick={() => {
+                UserCreateOrder(params.row);
+              }}
+            >
+              {params.row.postdata.transtype == "BUY" ? "BUY" : "SELL"}
+            </button>
+          )}
         </div>
       ),
     },
@@ -184,19 +186,23 @@ export default function AllEmployees() {
   };
 
   let UserCreateOrder = (data) => {
-    console.log("44444",data);
-    // create post request using axios
+    // let url = Config.react_domain + "signal/userorder";
+    let url = "http://localhost:8000/userorder";
+
     axios
-      .post("http://localhost:8000/userorder", {
+      .post(url, {
         data: data,
       })
       .then((response) => {
-        console.log(response);
         if (response.data.status) {
+          userDataRes();
+        } else {
           userDataRes();
         }
       })
       .catch((error) => {
+        userDataRes();
+
         console.log(error);
       });
   };

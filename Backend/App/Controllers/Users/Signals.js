@@ -119,7 +119,7 @@ class Signals {
             const objectId = new ObjectId(user_id);
 
             const GetAllClientServices = await semiautoModel.find({ user_id: objectId });
-            console.log("GetAllClientServices", GetAllClientServices);
+            
             
             if (!GetAllClientServices || GetAllClientServices.length==0 ) {
                 return res.send({ status: false, data: [], msg: "Data Empty" });
