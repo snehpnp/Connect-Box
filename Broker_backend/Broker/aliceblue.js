@@ -255,6 +255,36 @@ const place_order = async (
             "base64"
           );
 
+          const startOfDay = new Date();
+          startOfDay.setHours(0, 0, 0, 0); 
+          const endOfDay = new Date();
+          endOfDay.setHours(23, 59, 59, 999); 
+
+          var SemiAutoFind = await semiautoModel.find({
+            user_id: item._id.toString(),
+            createdAt: { $gte: startOfDay, $lte: endOfDay },
+            instrument_token: item.postdata.symbol_id,
+            status: "0",
+            "signals.Strategy": signals.Strategy, 
+          });
+          console.log("SemiAutoFind", SemiAutoFind.length);
+
+          if (SemiAutoFind && SemiAutoFind.length > 0) {
+            await semiautoModel.updateMany(
+              {
+                user_id: item._id.toString(),
+                createdAt: { $gte: startOfDay, $lte: endOfDay },
+                instrument_token: item.postdata.symbol_id,
+                status: "0",
+                "signals.Strategy": signals.Strategy,
+              },
+              { $set: { status: "1" } } // Update status to 1
+            );
+            console.log("Status updated successfully");
+          } else {
+            console.log("No matching data found");
+          }
+
           var data_possition = {
             ret: "NET",
           };
@@ -503,7 +533,7 @@ const place_order = async (
               }
             });
         });
-        // Send all requests concurrently using Promise.all
+   
         Promise.all(requestPromises)
           .then((responses) => {})
           .catch((errors) => {

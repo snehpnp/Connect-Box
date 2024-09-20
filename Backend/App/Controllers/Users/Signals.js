@@ -117,24 +117,30 @@ class Signals {
         try {
             const { user_id } = req.body;
             const objectId = new ObjectId(user_id);
-
-            const GetAllClientServices = await semiautoModel.find({ user_id: objectId });
-            
-            
-            if (!GetAllClientServices || GetAllClientServices.length==0 ) {
+    
+            // Get the start and end of the current day
+            const startOfDay = new Date();
+            startOfDay.setHours(0, 0, 0, 0); // set to midnight
+            const endOfDay = new Date();
+            endOfDay.setHours(23, 59, 59, 999); // set to just before midnight
+    
+            // Assuming your records have a 'createdAt' field
+            const GetAllClientServices = await semiautoModel.find({
+                user_id: objectId,
+                createdAt: { $gte: startOfDay, $lte: endOfDay } // filter for today's date
+            });
+    
+            if (!GetAllClientServices || GetAllClientServices.length === 0) {
                 return res.send({ status: false, data: [], msg: "Data Empty" });
             }
-
-            if (GetAllClientServices.length > 0) {
-                return res.send({ status: true, data: GetAllClientServices, msg: "Get Signals" });
-            } else {
-                return res.send({ status: false, data: [], msg: "Data Empty" });
-            }
+    
+            return res.send({ status: true, data: GetAllClientServices, msg: "Get Signals" });
+    
         } catch (error) {
-            console.log("Error Signals  error -", error);
+            console.log("Error Signals error -", error);
+            return res.status(500).send({ status: false, msg: "Server Error" });
         }
     }
-
 }
 
 
