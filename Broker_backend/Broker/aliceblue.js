@@ -267,7 +267,7 @@ const place_order = async (
             status: "0",
             "signals.Strategy": signals.Strategy, 
           });
-          console.log("SemiAutoFind", SemiAutoFind.length);
+         
 
           if (SemiAutoFind && SemiAutoFind.length > 0) {
             await semiautoModel.updateMany(
@@ -285,9 +285,12 @@ const place_order = async (
             console.log("No matching data found");
           }
 
+
+          
           var data_possition = {
             ret: "NET",
           };
+
           var config = {
             method: "post",
             url: "https://ant.aliceblueonline.com/rest/AliceBlueAPIService/api/positionAndHoldings/positionBook",
