@@ -184,8 +184,10 @@ export default function AllEmployees() {
   };
 
   let UserCreateOrder = (data) => {
-    // let url = Config.react_domain + "signal/userorder";
-    let url = "http://localhost:8000/userorder";
+    let url = Config.react_domain + "signal/userorder";
+
+    
+    // let url = "http://localhost:8000/userorder";
 
     axios
       .post(url, {
