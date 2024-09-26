@@ -63,7 +63,7 @@ function Payment() {
 
 
     const handleStatusChange = async (id, newStatus) => {
-        const data = { id: id._id, status: newStatus, balance: id.balance };
+        const data = { id: id._id, status: newStatus, balance: id.balance ,type:activeTab};
         try {
             const response = await dispatch(Update_status_balance(data)).unwrap();
             if (response.status) {
