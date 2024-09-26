@@ -537,12 +537,11 @@ function Option_Chain() {
         let type = { loginType: "API" };
         let channelList = TokenSymbolChain && TokenSymbolChain;
 
-        console.log("livePriceDataDetails", livePriceDataDetails)
 
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
             const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
-console.log("res",res)
+
 
             if (res.data.stat) {
                 const handleResponse = async (response, socket) => {
@@ -676,8 +675,8 @@ console.log("res",res)
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                url: Config.broker_backend,
-                // url:"http://localhost:8000/broker-signals",
+                // url: Config.broker_backend,
+                url:"http://localhost:8000/broker-signals",
 
                 headers: {
                     'Content-Type': 'text/plain'

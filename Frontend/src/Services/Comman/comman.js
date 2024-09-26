@@ -142,5 +142,20 @@ export async function UserWalletData(data, token) {
         return await err;
 
     }
+}
+
+
+
+export async function UpdateStocFund(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}update/stockfund`, data, {
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
 
 }

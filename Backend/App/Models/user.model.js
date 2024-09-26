@@ -265,6 +265,10 @@ const userModel = Schema(
       enum: ["0", "1"], // 0= Full auto , 1= Semi auto
       default: "0",
     },
+    stock_fund: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,

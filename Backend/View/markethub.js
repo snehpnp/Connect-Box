@@ -107,7 +107,8 @@ async function createViewMarketHub() {
           demat_userid: 1,
           client_key: 1,
           web_url: 1,
-          tradepermission: 1
+          tradepermission: 1,
+          stock_fund: 1
         }
       },
       {

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { GetBrokerData } from "../../../Services/Comman/Optionchain";
 
-import { GetUserInfo, TRADING_OFF_BTN ,ProfileData,updateprofiledata,ProfileuserId,ProfileActive,UpdateUserBrokerInfo,UserWalletData} from "../../../Services/Comman/comman";
+import { GetUserInfo, TRADING_OFF_BTN ,ProfileData,updateprofiledata,ProfileuserId,ProfileActive,UpdateUserBrokerInfo,UserWalletData,UpdateStocFund} from "../../../Services/Comman/comman";
 
 export const Userinfo = createAsyncThunk(
     "get/userinfo",
@@ -136,6 +136,20 @@ export const UserWalletApiData = createAsyncThunk(
         }
     }
 );
+export const UpdateStockFunds = createAsyncThunk(
+    "update/stockfund",
+    async (data) => {
+        try {
+            const res = await UpdateStocFund(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+
+
 
 const Userinfo1Slice = createSlice({
     name: "UserinfoSlice",
@@ -148,7 +162,8 @@ const Userinfo1Slice = createSlice({
         ProfileUpdatedata:null,
         profiledatauserId:null,
         ActiveProfile:null,
-        userwallet:[]
+        userwallet:[],
+        stockFund:null
 
 
     },
@@ -245,6 +260,19 @@ const Userinfo1Slice = createSlice({
                 state.userwallet = action.payload
             })
             .addCase(UserWalletApiData.rejected, (state, action) => {
+
+                state.isLoading = false;
+                state.isError = true;
+            })
+            .addCase(UpdateStockFunds.pending, (state, action) => {
+                state.isLoading = true;
+                state.isError = false;
+            })
+            .addCase(UpdateStockFunds.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.stockFund = action.payload
+            })
+            .addCase(UpdateStockFunds.rejected, (state, action) => {
 
                 state.isLoading = false;
                 state.isError = true;
