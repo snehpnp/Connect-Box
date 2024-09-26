@@ -676,8 +676,8 @@ console.log("res",res)
             let config = {
                 method: 'post',
                 maxBodyLength: Infinity,
-                // url: Config.broker_backend,
-                url:"http://localhost:8000/broker-signals",
+                url: Config.broker_backend,
+                // url:"http://localhost:8000/broker-signals",
 
                 headers: {
                     'Content-Type': 'text/plain'

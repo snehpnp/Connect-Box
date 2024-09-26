@@ -7,7 +7,7 @@ const { verifyToken } = require('../../Middlewares/autt.middleware')
 const { AddSubadmin,EditSubadmin,getallSubadmin,getallSubadminClients,getOneSubadmin,GetAllRechargeDetails,UpdateActiveStatusSubadmin,AddBalanceSubadmin,getallSubadminName,GetAllRechargeDetailsById,UpdateBrokerInfo,GetBrokerInfo} = require('../../Controllers/Admins/Subadmins/subadmin.controller')
 
 const {DashboardChartData,DashboardBalanceData} =require('../../Controllers/SubAdmins/DashBoardData/DashboardData')
-const {ProfileImagedata,updateProfile,profileId,Profilestatus, GetParentType }=require("../../Controllers//Admins/Profile/ProfileImage")
+const {ProfileImagedata,updateProfile,profileId,Profilestatus, GetParentType }=require("../../Controllers/Admins/Profile/ProfileImage")
 
 
 
