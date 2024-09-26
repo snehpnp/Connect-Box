@@ -216,6 +216,7 @@ const SystemSlice = createSlice({
         getemployee: null,
         Employeedatabyid: null,
         get_parent_type: null,
+       
     },
     reducers: {},
     extraReducers: (builder) => {

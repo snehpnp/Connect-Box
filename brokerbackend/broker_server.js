@@ -38,7 +38,6 @@ const Alice_token = db.Alice_token;
 const Signals = db.Signals;
 const MainSignals = db.MainSignals;
 const live_price = db.live_price;
-const semiautoModel = db.semiautoModel;
 
 // CONNECTION FILE IN MONGOODE DATA BASE
 const MongoClient = require("mongodb").MongoClient;
@@ -1750,6 +1749,14 @@ app.post("/broker-signals", async (req, res) => {
 
 app.post("/userorder", async (req, res) => {
   try {
+    // console.log("req.body", req.body.data.signals);
+    console.log("strategys", req.body.data.signals.Strategy);
+    console.log("service", req.body.data.signals.Symbol);
+    console.log("segment", req.body.data.signals.Segment);
+
+    // item, filePath, signals, signal_req
+
+    // aliceblue.EntryPlaceOrder()
     const AliceBlueCollection = db1.collection("aliceblueView");
     const AliceBluedocuments = await AliceBlueCollection.find({
       "strategys.strategy_name": req.body.data.signals.Strategy,
@@ -1757,6 +1764,7 @@ app.post("/userorder", async (req, res) => {
       "category.segment": req.body.data.signals.Segment,
       web_url: "1",
     }).toArray();
+
 
     if (AliceBluedocuments.length > 0) {
       aliceblue.EntryPlaceOrder(
@@ -1766,14 +1774,10 @@ app.post("/userorder", async (req, res) => {
         req.body.data.signal_req
       );
     }
+    // return res.send({ status: true, msg: "Order Place Successfully" });
 
-    let updateStatus = await semiautoModel.updateOne(
-      { _id: req.body.data._id },
-      { $set: { status: 1 } },
-      { upsert: true }
-    );
 
-    return res.send({ status: true, msg: "Order Place Successfully" });
+    // return res.send({ status: true, msg: "Order Place Successfully" });
   } catch (error) {}
 });
 

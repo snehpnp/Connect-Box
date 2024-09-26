@@ -110,8 +110,6 @@ class Auth {
             })
             await user_login.save();
 
-
-
             try {
                 return res.send({ status: true, msg: "Login Succesfully", data: msg })
             } catch (error) {

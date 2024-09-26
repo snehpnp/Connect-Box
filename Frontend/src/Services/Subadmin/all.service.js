@@ -210,3 +210,19 @@ export async function Get_user_balance(data) {
         return await err
     }
 }
+
+
+// update status 
+
+
+export async function UpdateStatus(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}update_payment_status`, data, {
+            data: {}
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err
+    }
+}

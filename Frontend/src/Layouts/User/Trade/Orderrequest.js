@@ -145,20 +145,18 @@ export default function AllEmployees() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-          {params.row.status == "0" && (
-            <button
-              className={
-                params.row.postdata.transtype == "BUY"
-                  ? "btn btn-primary"
-                  : "btn btn-danger"
-              }
-              onClick={() => {
-                UserCreateOrder(params.row);
-              }}
-            >
-              {params.row.postdata.transtype == "BUY" ? "BUY" : "SELL"}
-            </button>
-          )}
+          <button
+            className={
+              params.row.postdata.transtype == "BUY"
+                ? "btn btn-primary"
+                : "btn btn-danger"
+            }
+            onClick={() => {
+              UserCreateOrder(params.row);
+            }}
+          >
+            {params.row.postdata.transtype == "BUY" ? "BUY" : "SELL"}
+          </button>
         </div>
       ),
     },

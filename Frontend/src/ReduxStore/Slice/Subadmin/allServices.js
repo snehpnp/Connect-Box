@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_SERVICS ,GET_ALL_Catagory , Addbalanceforuser ,Get_user_balance} from "../../../Services/Subadmin/all.service";
+import { GET_ALL_SERVICS ,GET_ALL_Catagory , Addbalanceforuser ,Get_user_balance , UpdateStatus} from "../../../Services/Subadmin/all.service";
 
 export const getAllServices = createAsyncThunk(
   "ServiceByCatagory",
@@ -59,6 +59,22 @@ export const getCatogries = createAsyncThunk(
 
 
 
+  // update statsu for balance
+
+  export const Update_status_balance = createAsyncThunk(
+    "update_payment_status",
+    async (data) => {
+      try {
+        const res = await UpdateStatus(data);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
+
+
+
 
 
 const GrouoServicesSlice = createSlice({
@@ -70,8 +86,8 @@ const GrouoServicesSlice = createSlice({
     Allcategaory: null,
     AddBalance:null,
     Get_User_Balance:null,
-   
-
+    Update_status_balance:null,
+  
   },
 
 
@@ -123,6 +139,18 @@ const GrouoServicesSlice = createSlice({
         state.Get_User_Balance = action.payload;
       })
       .addCase(Get_User_Balance.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(Update_status_balance.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(Update_status_balance.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.Update_status_balance = action.payload;
+      })
+      .addCase(Update_status_balance.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       })
