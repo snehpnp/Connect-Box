@@ -22,7 +22,7 @@ class Userinfo {
       }
 
       let UserInfo = await User_model.find({ _id: subid }).select(
-        "Role parent_id broker api_secret TradingStatus app_id api_key app_key api_type demat_userid access_token"
+        "Role parent_id broker api_secret TradingStatus app_id api_key app_key api_type demat_userid access_token stock_fund"
       );
 
       // IF DATA NOT EXIST
@@ -34,7 +34,7 @@ class Userinfo {
         const ParentInfo = await User_model.findOne({
           _id: UserInfo[0].parent_id,
         }).select(
-          "Role parent_id broker api_secret TradingStatus app_id api_key app_key api_type demat_userid access_token"
+          "Role parent_id broker api_secret TradingStatus app_id api_key app_key api_type demat_userid access_token stock_fund"
         );
 
         UserInfo[0].api_key = ParentInfo.api_key;
@@ -151,7 +151,7 @@ class Userinfo {
       const data = req.body.req;
 
       const { id } = data;
-   
+
       var subid = new ObjectId(id);
 
       if (id == "" || id == null) {
@@ -164,20 +164,17 @@ class Userinfo {
 
       let combinedData = [...UserTransection, ...User_Wallet_data];
       combinedData.sort(
-        (a, b) => new Date(b.createdAt) -new Date(a.createdAt) 
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
       );
-
 
       combinedData = combinedData.map((item) => {
         return {
           createdAt: item.createdAt,
           balance: item.stg_charge || item.Balance,
           user_id: item.user_id,
-          typeT:item.stg_charge ? "Debit" : "Credit"
+          typeT: item.stg_charge ? "Debit" : "Credit",
         };
       });
-
-
 
       let UsedBalance = 0;
       UserTransection.map((item) => {
@@ -198,6 +195,64 @@ class Userinfo {
       });
     } catch (error) {
       console.log("Error get UserInfo error -", error);
+    }
+  }
+  async Update_Stock_Fund(req, res) {
+    try {
+      const { userId, stock_fund } = req.body;
+      const cache = {};
+      const subid = new ObjectId(userId);
+  
+      if (!userId) {
+        return res.send({ status: false, msg: "Please Enter Id", data: [] });
+      }
+  
+      // Check cache first
+      if (cache[subid]) {
+        console.log("Cache hit for userId:", userId);
+        cache[subid].stock_fund = stock_fund; // Update the cached value
+        return res.send({
+          status: true,
+          msg: "Stock Fund Updated in Cache",
+          data: cache[subid],
+        });
+      }
+  
+      // Fetch user info from the database
+      const UserInfo = await User_model.findOne({ _id: subid }).select("stock_fund");
+  
+      if (!UserInfo) {
+        return res.send({ status: false, msg: "Empty data", data: [] });
+      }
+  
+      // Update stock fund
+      UserInfo.stock_fund = stock_fund;
+  
+      // Save to the database
+      const result = await User_model.updateOne(
+        { _id: subid },
+        { stock_fund: stock_fund }
+      );
+  
+      // Update cache with the new stock fund
+      cache[subid] = UserInfo;
+  
+      if (result) {
+        return res.send({
+          status: true,
+          msg: "Stock Fund Updated Successfully",
+          data: UserInfo,
+        });
+      } else {
+        return res.send({
+          status: false,
+          msg: "Stock Fund Not Updated",
+          data: [],
+        });
+      }
+    } catch (error) {
+      console.log("Error in updating stock fund -", error);
+      return res.send({ status: false, msg: "Internal Server Error", data: [] });
     }
   }
 }

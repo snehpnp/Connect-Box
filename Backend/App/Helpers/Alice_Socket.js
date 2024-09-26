@@ -2,9 +2,8 @@ var axios = require('axios');
 const WebSocket = require('ws');
 var CryptoJS = require("crypto-js");
 
-const db = require('../Models');
+const db = require('../Models/index.js');
 
-// const { ALice_View_data } = require('./ALice_View_data');
 
 const live_price = db.live_price;
 const live_price_token = db.live_price_token;
@@ -44,7 +43,6 @@ const Alice_Socket = async () => {
             }
         })
     }
-    // Display fetched documents
 
     var alltokenchannellist = channelstr.substring(0, channelstr.length - 1);
 

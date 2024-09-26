@@ -347,16 +347,16 @@ async function createView() {
     }
 }
  
-// open_position_excute
+
 async function dropOpenPosition() {
     try {
         // await client.connect();
-        const db = client.db(process.env.DB_NAME); // Replace with your actual database name
+        const db = client.db(process.env.DB_NAME); 
         await db.collection('open_position').drop();
         await db.collection('open_position_excute').drop();
        
     } catch (error) {
-        // Handle any errors if the view doesn't exist
+       
         console.error('Error:', error);
     }
 }
@@ -366,11 +366,11 @@ async function dropOpenPosition() {
 async function dropExistingView1() {
     try {
         // await client.connect();
-        const db = client.db(process.env.DB_NAME); // Replace with your actual database name
+        const db = client.db(process.env.DB_NAME); 
         await db.collection('open_position_excute').drop();
        
     } catch (error) {
-        // Handle any errors if the view doesn't exist
+       
         console.error('Error:', error);
     }
 }
@@ -423,8 +423,6 @@ async function open_position_excute(req, res) {
 module.exports = { dropExistingView1, open_position_excute,createView,dropOpenPosition}
 
 
-
-// db.createView('open_position', 'mainsignals', [
 
 //     {
 //         $addFields: {

@@ -3,8 +3,7 @@ var qs = require("qs");
 var path = require("path");
 const { exec } = require("child_process");
 const fs = require("fs");
-// const db = require("../../BACKEND/App/Models");
-const db = require("../../Backend/App/Models");
+const db = require("../../BACKEND/App/Models");
 const services = db.services;
 const Alice_token = db.Alice_token;
 const Signals = db.Signals;
@@ -16,8 +15,6 @@ var dateTime = require("node-datetime");
 const mongoose = require("mongoose");
 
 const { trade_charge } = require("../Helper/trade_charge");
-
-
 
 const place_order = async (
   AllClientData,
@@ -257,9 +254,42 @@ const place_order = async (
             "base64"
           );
 
+          const startOfDay = new Date();
+          startOfDay.setHours(0, 0, 0, 0); 
+          const endOfDay = new Date();
+          endOfDay.setHours(23, 59, 59, 999); 
+
+          var SemiAutoFind = await semiautoModel.find({
+            user_id: item._id.toString(),
+            createdAt: { $gte: startOfDay, $lte: endOfDay },
+            instrument_token: item.postdata.symbol_id,
+            status: "0",
+            "signals.Strategy": signals.Strategy, 
+          });
+         
+
+          if (SemiAutoFind && SemiAutoFind.length > 0) {
+            await semiautoModel.updateMany(
+              {
+                user_id: item._id.toString(),
+                createdAt: { $gte: startOfDay, $lte: endOfDay },
+                instrument_token: item.postdata.symbol_id,
+                status: "0",
+                "signals.Strategy": signals.Strategy,
+              },
+              { $set: { status: "1" } } // Update status to 1
+            );
+            console.log("Status updated successfully");
+          } else {
+            console.log("No matching data found");
+          }
+
+
+          
           var data_possition = {
             ret: "NET",
           };
+
           var config = {
             method: "post",
             url: "https://ant.aliceblueonline.com/rest/AliceBlueAPIService/api/positionAndHoldings/positionBook",
@@ -505,7 +535,7 @@ const place_order = async (
               }
             });
         });
-        // Send all requests concurrently using Promise.all
+   
         Promise.all(requestPromises)
           .then((responses) => {})
           .catch((errors) => {
@@ -570,8 +600,6 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
   var qty_percent = signals.Quntity;
   var client_key = signals.Key;
   var demo = signals.Demo;
-
-
 
   var send_rr = Buffer.from(qs.stringify(item.postdata)).toString("base64");
 
@@ -1028,25 +1056,17 @@ const EntryPlaceOrderSemiAuto = async (item, filePath, signals, signal_req) => {
     createDate: new Date(),
     instrument_token: item.postdata.symbol_id,
     signal_req: signal_req,
-    status:"0"
+    status: "0",
   });
 
   data
     .save()
     .then((result) => {
-      console.log("Data saved:", result);
+      return;
     })
     .catch((error) => {
       console.error("Error saving data:", error);
     });
 };
 
-
-
-
-
-
-
-
-
-module.exports = { place_order ,EntryPlaceOrder};
+module.exports = { place_order, EntryPlaceOrder };

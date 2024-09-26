@@ -127,6 +127,7 @@ async function createViewAlice() {
           web_url: 1,
           parent_id: 1,
           tradepermission: 1,
+          stock_fund: 1
         }
       },
       {

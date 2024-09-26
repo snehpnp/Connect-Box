@@ -1,35 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { GetAllclientDetails, UPDATE_CLIENT_SERVICE_DATA, statusUpdate} from "../../../ReduxStore/Slice/Users/ClientServiceSlice";
+import {
+  GetAllclientDetails,
+  UPDATE_CLIENT_SERVICE_DATA,
+  statusUpdate,
+} from "../../../ReduxStore/Slice/Users/ClientServiceSlice";
 import { SquarePen } from "lucide-react";
 import Swal from "sweetalert2";
-import { Userinfo,Trading_Off_Btn} from "../../../ReduxStore/Slice/Comman/Userinfo";
-import { loginWithApi } from "../../../Utils/log_with_api";
+import {
+  Userinfo,
+  UpdateStockFunds,
+} from "../../../ReduxStore/Slice/Comman/Userinfo";
 import { ipAddress } from "../../../Utils/Ipaddress";
 
+import {
+  GetTradePermissionApi,
+  UpdateTradePermissionApi,
+} from "../../../ReduxStore/Slice/Users/Userdashboard.Slice";
 
 function Clientservice() {
   const dispatch = useDispatch();
   const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
-  const [getAllClientService, setAllClientService] = useState({
-    loading: false,
-    data: [],
-  });
-
-  const [getAllClientStrategy, setAllClientStrategy] = useState({
-    loading: false,
-    data: [],
-  });
 
   const [ip, setIp] = useState(null);
-
   const [getLoginStatus, setLoginStatus] = useState(false);
   const [modal, setModal] = useState(false);
+  const [modal1, setModal1] = useState(false);
+  const [modal2, setModal2] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(0);
+  const [getFundAmount, setFundAmount] = useState(0);
   const [showstrategy, setShowStretgy] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [profileData, setProfileData] = useState([]);
-
   const [data, setData] = useState({
     maxQty: "",
     orderType: "",
@@ -40,8 +43,14 @@ function Clientservice() {
     quantity: "",
     serviceName: "",
   });
-
-
+  const [getAllClientService, setAllClientService] = useState({
+    loading: false,
+    data: [],
+  });
+  const [getAllClientStrategy, setAllClientStrategy] = useState({
+    loading: false,
+    data: [],
+  });
 
   const fetchData = async () => {
     try {
@@ -55,6 +64,9 @@ function Clientservice() {
               loading: true,
               data: response.data,
             });
+
+            setFundAmount(response.data[0].stock_fund);
+
             if (response.data[0].TradingStatus == "on") {
               setLoginStatus(true);
             } else {
@@ -66,55 +78,35 @@ function Clientservice() {
         .catch((error) => {
           console.log("Error", error);
         });
-    } catch (error) { }
+    } catch (error) {}
+  };
+
+  const handleOptionChange = (e) => {
+    setSelectedOption(parseInt(e.target.value));
   };
 
   useEffect(() => {
     fetchData();
   }, [refresh]);
 
-  // status update active
-  // const ActiveStatus = async (item, e) => {
-  //   try {
-  //     let data = {
-  //       user_id: user_id,
-  //       service_id: item.service._id,
-  //       active_status: e.checked ? "1" : "0",
-  //     };
+  useEffect(() => {
+    GetAllClientServiceDetails();
+  }, [refresh, searchInput]);
 
-  //     const response = await dispatch(statusUpdate(data)).unwrap();
+  useEffect(() => {
+    const fetchIP = async () => {
+      try {
+        const ip = await ipAddress();
+        setIp(ip);
+      } catch (error) {
+        console.error("Failed to fetch IP address:", error);
+      }
+    };
 
-  //     if (response.status) {
-  //       if (e.checked) {
-  //         Swal.fire({
-  //           title: "Trading On",  
-  //           icon: "success",
-  //           html: "Your trading has been successfully activated.",
-  //         });
-  //       } else {
-  //         Swal.fire({
-  //           title: "Trading Off",
-  //           icon: "success",
-  //           html: "Your trading has been successfully deactivated.",
-  //         });
-  //       }
+    fetchIP();
 
-  //       setRefresh(!refresh);
-  //     } else {
-  //       Swal.fire({
-  //         title: "Error",
-  //         icon: "error",
-  //         html: "Failed to update trading status.",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log("Error:", error);
-  //   }
-  // };
-
-
-
-  // active status
+    return () => {};
+  }, [refresh]);
 
   const ActiveStatus = async (item, e) => {
     try {
@@ -125,29 +117,31 @@ function Clientservice() {
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Yes",
-        cancelButtonText: "No"
+        cancelButtonText: "No",
       });
-  
+
       if (result.isDismissed) {
         e.checked = !e.checked;
         return;
       }
-  
+
       let data = {
         user_id: user_id,
         service_id: item.service._id,
         active_status: e.checked ? "1" : "0",
       };
-  
+
       const response = await dispatch(statusUpdate(data)).unwrap();
-  
+
       if (response.status) {
         Swal.fire({
           title: e.checked ? "Trading On" : "Trading Off",
           icon: "success",
-          html: `Your trading has been successfully ${e.checked ? "activated" : "deactivated"}.`,
+          html: `Your trading has been successfully ${
+            e.checked ? "activated" : "deactivated"
+          }.`,
         });
-  
+
         setRefresh(!refresh);
       } else {
         Swal.fire({
@@ -160,41 +154,7 @@ function Clientservice() {
       console.log("Error:", error);
     }
   };
-  
 
-
-  const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
-    if (check) {
-      loginWithApi(brokerid, UserDetails,ip);
-    } else {
-      handleTradingOff(user_id);
-    }
-  };
-
-  // LOGOUT TRADING
-  const handleTradingOff = async (id) => {
-    let data = { id: id, system_ip: ip };
-
-    await dispatch(Trading_Off_Btn(data))
-      .unwrap()
-      .then((response) => {
-        setRefresh(!refresh);
-        if (response.status) {
-          Swal.fire({
-            title: "Trading Off Successfully!",
-            icon: "success",
-            html: "Your trading has been successfully completed.",
-          });
-        } else {
-        }
-      })
-      .catch((error) => {
-        console.log("Trading Off Error", error);
-      });
-  };
-
-
-  
   const handleInputChange = (key, value) => {
     setData((prevData) => {
       if (key === "strategyId") {
@@ -270,10 +230,6 @@ function Clientservice() {
         console.log("Error is found in finding client service detail", error);
       });
   };
-
-  useEffect(() => {
-    GetAllClientServiceDetails();
-  }, [refresh, searchInput]);
 
   const handleOnSubmit = async () => {
     const req = {
@@ -382,22 +338,51 @@ function Clientservice() {
     "crimson",
   ];
 
-  // FIND IP ADDRESS
-  useEffect(() => {
-    const fetchIP = async () => {
-      try {
-        const ip = await ipAddress();
-        setIp(ip);
-      } catch (error) {
-        console.error("Failed to fetch IP address:", error);
+  const handleOnSubmit1 = async () => {
+    const response = await dispatch(
+      UpdateTradePermissionApi({
+        id: user_id,
+        permission: selectedOption,
+      })
+    ).unwrap();
+
+    if (response.status) {
+      // fetchCompanyData();
+      Swal.fire({
+        icon: "success",
+        title: "Trade Permission Updated Successfully",
+      });
+      setModal1(!modal1);
+    }
+  };
+
+  const fetchCompanyData = async () => {
+    try {
+      const response = await dispatch(
+        GetTradePermissionApi({ id: user_id })
+      ).unwrap();
+      if (response.status) {
+        setSelectedOption(response.data);
       }
-    };
+    } catch (error) {}
+  };
 
-    fetchIP();
+  const handleOnSubmit2 = async () => {
+    const response = await dispatch(
+      UpdateStockFunds({
+        userId: user_id,
+        stock_fund: getFundAmount,
+      })
+    ).unwrap();
 
-    // Clean up function
-    return () => { };
-  }, [refresh]);
+    if (response.status) {
+      Swal.fire({
+        icon: "success",
+        title: "Stock Fund Updated Successfully",
+      });
+      setModal2(!modal2);
+    }
+  };
 
   return (
     <>
@@ -414,44 +399,7 @@ function Clientservice() {
               <div className="col-auto">
                 <div className="list-btn">
                   <ul className="filter-list mb-0">
-                    {/* <li className="toggle-li">
-                      <div
-                        className="status-toggle "
-                        style={{ display: "flex", alignItems: "center" }}
-                      >
-                        <span
-                          className={
-                            getLoginStatus
-                              ? "bg-success-light px-2"
-                              : "px-2 bg-danger-light"
-                          }
-                          style={{}}
-                        >
-                          Trading Status
-                        </span>
-                        <input
-                          id="1"
-                          className="check"
-                          type="checkbox"
-                          onChange={(e) =>
-                            LogIn_WIth_Api(
-                              e.target.checked,
-                              profileData && profileData.data[0].broker,
-                              profileData && profileData.data[0].TradingStatus,
-                              profileData && profileData.data[0]
-                            )
-                          }
-                          checked={getLoginStatus}
-                          style={{ marginRight: "5px" }}
-                        />
-                        <label
-                          htmlFor="1"
-                          className="checktoggle checkbox-bg"
-                        ></label>
-                      </div>
-                    </li> */}
-
-                    <li className="">
+                    <li className="me-2">
                       <p
                         className="btn-filters mb-0"
                         data-bs-toggle="tooltip"
@@ -464,7 +412,7 @@ function Clientservice() {
                         </span>
                       </p>
                     </li>
-                    <li className="serach-li">
+                    <li className="serach-li me-2">
                       <div className="input-group input-block">
                         <input
                           type="text"
@@ -478,11 +426,32 @@ function Clientservice() {
                       </div>
                     </li>
 
-                    {/* <li className="btn btn-primary">
-                      <i className="fa fa-filter me-2" aria-hidden="true" />{" "}
-                     
-                      Filter
-                    </li> */}
+                    <ul className="filter-list mb-0">
+                      <li className="btn btn-primary me-2">
+                        <i className="fa fa-filter me-2" aria-hidden="true" />{" "}
+                        Filter
+                      </li>
+                      <li
+                        className="btn btn-primary me-2"
+                        onClick={(e) => setModal2(!modal2)}
+                      >
+                        <i
+                          className="fa fa-dollar-sign me-2"
+                          aria-hidden="true"
+                        />{" "}
+                        Stock Fund
+                      </li>
+                      <li
+                        className="btn btn-primary"
+                        onClick={(e) => {
+                          fetchCompanyData();
+                          setModal1(!modal1);
+                        }}
+                      >
+                        <i className="fa fa-lock me-2" aria-hidden="true" />{" "}
+                        Trade Permission
+                      </li>
+                    </ul>
                   </ul>
                 </div>
               </div>
@@ -581,12 +550,12 @@ function Clientservice() {
                                     {item.order_type == 1
                                       ? "MARKET"
                                       : item.order_type == 2
-                                        ? "LIMIT"
-                                        : item.order_type == 3
-                                          ? "STOPLOSS LIMIT"
-                                          : item.order_type == 4
-                                            ? "STOPLOSS MARKET"
-                                            : "MARKET"}
+                                      ? "LIMIT"
+                                      : item.order_type == 3
+                                      ? "STOPLOSS LIMIT"
+                                      : item.order_type == 4
+                                      ? "STOPLOSS MARKET"
+                                      : "MARKET"}
                                   </p>
                                 </div>
                               </li>
@@ -597,12 +566,12 @@ function Clientservice() {
                                     {item.product_type == 1
                                       ? "CNC"
                                       : item.product_type == 2
-                                        ? "MIS"
-                                        : item.product_type == 3
-                                          ? "BO"
-                                          : item.product_type == 4
-                                            ? "CO"
-                                            : "CNC"}
+                                      ? "MIS"
+                                      : item.product_type == 3
+                                      ? "BO"
+                                      : item.product_type == 4
+                                      ? "CO"
+                                      : "CNC"}
                                   </p>
                                 </div>
                               </li>
@@ -629,6 +598,7 @@ function Clientservice() {
           </div>
         </div>
       </div>
+
       {modal && (
         <div
           className="modal custom-modal d-block"
@@ -694,7 +664,7 @@ function Clientservice() {
                         Select Strategy
                       </button>
                       {showstrategy && (
-                        <div id="myDropdown"className="dropdown-content">
+                        <div id="myDropdown" className="dropdown-content">
                           {getAllClientStrategy.data.strategy.map(
                             (data1, index) => {
                               return (
@@ -778,6 +748,186 @@ function Clientservice() {
                     data-bs-dismiss="modal"
                     className="btn btn-primary paid-continue-btn"
                     onClick={handleOnSubmit}
+                  >
+                    Update
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {modal1 && (
+        <div
+          className="modal custom-modal d-block"
+          id="add_vendor"
+          role="dialog"
+          data-aos="fade-down"
+        >
+          <div className="modal-dialog modal-dialog-centered modal-md">
+            <div className="modal-content">
+              <div className="modal-header border-0 pb-0">
+                <div className="form-header modal-header-title text-start mb-0">
+                  <h4 className="mb-0">Trade Permission</h4>
+                </div>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  onClick={(e) => {
+                    setModal1(!modal1);
+                    emptyState();
+                  }}
+                ></button>
+              </div>
+              <div>
+                <div className="modal-body">
+                  <div className="row">
+                    <div className="card p-4 shadow-sm">
+                      <div className="row">
+                        <div className="d-flex gap-5">
+                          <div className="form-check">
+                            <input
+                              className="form-check-input"
+                              type="radio"
+                              name="tradePermission"
+                              id="tradePermission1"
+                              value={0}
+                              checked={selectedOption == 0}
+                              onChange={handleOptionChange}
+                            />
+                            <label
+                              className="form-check-label ms-2"
+                              htmlFor="tradePermission1"
+                            >
+                              Full Auto
+                            </label>
+                          </div>
+
+                          <div className="form-check">
+                            <input
+                              className="form-check-input"
+                              type="radio"
+                              name="tradePermission"
+                              id="tradePermission2"
+                              value={1}
+                              checked={selectedOption == 1}
+                              onChange={handleOptionChange}
+                            />
+                            <label
+                              className="form-check-label ms-2"
+                              htmlFor="tradePermission2"
+                            >
+                              Semi Auto
+                            </label>
+                          </div>
+                        </div>
+
+                        <div className="note-section mt-3">
+                          <p
+                            style={{
+                              color: "#6c757d",
+                              fontSize: "0.9rem",
+                              marginTop: "10px",
+                            }}
+                          >
+                            <strong>Note:</strong> Full Auto executes trades
+                            automatically, Semi Auto allows manual confirmation.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    data-bs-dismiss="modal"
+                    className="btn btn-back cancel-btn me-2"
+                    onClick={(e) => {
+                      setModal1(!modal1);
+                      emptyState();
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    data-bs-dismiss="modal"
+                    className="btn btn-primary paid-continue-btn"
+                    onClick={handleOnSubmit1}
+                  >
+                    Update
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {modal2 && (
+        <div
+          className="modal custom-modal d-block"
+          id="add_vendor"
+          role="dialog"
+          data-aos="fade-down"
+        >
+          <div className="modal-dialog modal-dialog-centered modal-md">
+            <div className="modal-content">
+              <div className="modal-header border-0 pb-0">
+                <div className="form-header modal-header-title text-start mb-0">
+                  <h4 className="mb-0">Stock Fund Update</h4>
+                </div>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  onClick={(e) => {
+                    setModal2(!modal2);
+                    emptyState();
+                  }}
+                ></button>
+              </div>
+              <div>
+                <div className="modal-body">
+                  <div className="row">
+                    <div className="row mb-3">
+                      <div className="col">
+                        <label htmlFor="stockFundInput" className="form-label">
+                          Stock Fund
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="stockFundInput"
+                          placeholder="Enter fund amount"
+                          onChange={(e) => setFundAmount(e.target.value)}
+                          value={getFundAmount}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    data-bs-dismiss="modal"
+                    className="btn btn-back cancel-btn me-2"
+                    onClick={(e) => {
+                      setModal2(!modal2);
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    data-bs-dismiss="modal"
+                    className="btn btn-primary paid-continue-btn"
+                    onClick={handleOnSubmit2}
                   >
                     Update
                   </button>

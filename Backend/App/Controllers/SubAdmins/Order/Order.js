@@ -12,8 +12,6 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
 class SignalController {
-
-
   // ORDER DATA
   async Signal_data(req, res) {
     try {
@@ -22,7 +20,6 @@ class SignalController {
 
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-
 
       if (Role == "SUBADMIN") {
         const resultUser = await Strategies.find({
@@ -46,7 +43,7 @@ class SignalController {
               createdAt: {
                 $gte: today,
                 $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
-              }
+              },
             },
           },
           {
@@ -107,7 +104,7 @@ class SignalController {
               createdAt: {
                 $gte: today,
                 $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
-              }
+              },
             },
           },
           {
@@ -138,6 +135,90 @@ class SignalController {
 
         const results = await signals.aggregate(pipeline);
         res.send({
+          status: true,
+          msg: "Data Retrieved Successfully",
+          data: results,
+        });
+      } else if (Role == "EMPLOYEE") {
+        let subadminStgFind = await Subadmin_Permission.aggregate([
+          {
+            $match: { user_id: ObjSubAdminId },
+          },
+          {
+            $unwind: "$strategy",
+          },
+          {
+            $lookup: {
+              from: "strategies",
+              localField: "strategy",
+              foreignField: "_id",
+              as: "strategyInfo",
+            },
+          },
+          {
+            $unwind: "$strategyInfo",
+          },
+          {
+            $group: {
+              _id: "$_id",
+              strategyInfo: { $push: "$strategyInfo.strategy_name" },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              strategyInfo: 1,
+            },
+          },
+        ]);
+
+        if (!subadminStgFind[0].strategyInfo) {
+          return res.status(404).send({
+            status: false,
+            msg: "User not found",
+          });
+        }
+
+        const pipeline = [
+          {
+            $match: {
+              strategy: { $in: subadminStgFind[0].strategyInfo },
+              createdAt: {
+                $gte: today,
+                $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+              },
+            },
+          },
+          {
+            $project: {
+              _id: 0,
+              trade_symbol: 1,
+              qty_percent: 1,
+              strategy: 1,
+              symbol: 1,
+              TradeType: 1,
+              tr_price: 1,
+              createdAt: 1,
+              type: 1,
+              price: 1,
+              option_type: 1,
+              strike: 1,
+              expiry: 1,
+              segment: 1,
+              client_persnal_key: 1,
+              token: 1,
+              lot_size: 1,
+              exit_status: 1,
+              ft_time: 1,
+            },
+          },
+          {
+            $sort: { createdAt: -1 },
+          },
+        ];
+
+        const results = await signals.aggregate(pipeline);
+        return res.send({
           status: true,
           msg: "Data Retrieved Successfully",
           data: results,
@@ -183,7 +264,6 @@ class SignalController {
               let: {
                 service_name: "$service.name",
                 strategy_name: "$strategys.strategy_name",
-
               },
               pipeline: [
                 {
@@ -192,8 +272,13 @@ class SignalController {
                       $and: [
                         { $eq: ["$symbol", "$$service_name"] },
                         { $eq: ["$strategy", "$$strategy_name"] },
-                        { $gte: ['$createdAt', today] },
-                        { $lte: ['$createdAt', new Date(today.getTime() + 24 * 60 * 60 * 1000)] },
+                        { $gte: ["$createdAt", today] },
+                        {
+                          $lte: [
+                            "$createdAt",
+                            new Date(today.getTime() + 24 * 60 * 60 * 1000),
+                          ],
+                        },
                       ],
                     },
                   },
@@ -208,11 +293,58 @@ class SignalController {
             },
           },
           {
-            $group: {
-              _id: null,
-              allSignals: { $push: "$signals" },
+            $lookup: {
+              from: "signals",
+              let: {
+                service_name: "$service.name",
+                strategy_name: "$strategys.strategy_name",
+              },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      $and: [
+                        {
+                          $cond: {
+                            if: { $eq: ["$$service_name", "CASH#"] },
+                            then: true,
+                            else: false,
+                          },
+                        },
+                        { $eq: ["$segment", "C"] },
+                        { $eq: ["$strategy", "$$strategy_name"] },
+                        { $gte: ["$createdAt", today] },
+                        {
+                          $lte: [
+                            "$createdAt",
+                            new Date(today.getTime() + 24 * 60 * 60 * 1000),
+                          ],
+                        },
+                      ],
+                    },
+                  },
+                },
+                {
+                  $sort: {
+                    createdAt: -1,
+                  },
+                },
+              ],
+              as: "additional_signals",
             },
           },
+
+          {
+            $group: {
+              _id: null,
+              allSignals: {
+                $push: {
+                  $concatArrays: ["$signals", "$additional_signals"],
+                },
+              },
+            },
+          },
+
           {
             $project: {
               _id: 0,
@@ -222,6 +354,7 @@ class SignalController {
         ];
 
         const GetAllClientServices = await client_service.aggregate(pipeline);
+
 
         if (GetAllClientServices[0].allSignals.flat().length > 0) {
           const sortedAndFilteredArray = GetAllClientServices[0].allSignals
@@ -236,95 +369,7 @@ class SignalController {
         } else {
           return res.send({ status: false, data: [], msg: "Data Empty" });
         }
-      } else if (Role == "EMPLOYEE") {
-        let subadminStgFind = await Subadmin_Permission.aggregate([
-          {
-            $match: { user_id: ObjSubAdminId },
-          },
-          {
-            $unwind: "$strategy",
-          },
-          {
-            $lookup: {
-              from: "strategies",
-              localField: "strategy",
-              foreignField: "_id",
-              as: "strategyInfo",
-            },
-          },
-          {
-            $unwind: "$strategyInfo",
-          },
-          {
-            $group: {
-              _id: "$_id",
-              strategyInfo: { $push: "$strategyInfo.strategy_name" },
-            },
-          },
-          {
-            $project: {
-              _id: 0,
-              strategyInfo: 1,
-            },
-          },
-        ]);
-
-
-
-        if (!subadminStgFind[0].strategyInfo) {
-          return res.status(404).send({
-            status: false,
-            msg: "User not found",
-          });
-        }
-
-
-        const pipeline = [
-          {
-            $match: {
-              strategy: { $in: subadminStgFind[0].strategyInfo },
-              createdAt: {
-                $gte: today,
-                $lt: new Date(today.getTime() + 24 * 60 * 60 * 1000),
-              }
-            },
-          },
-          {
-            $project: {
-              _id: 0,
-              trade_symbol: 1,
-              qty_percent: 1,
-              strategy: 1,
-              symbol: 1,
-              TradeType: 1,
-              tr_price: 1,
-              createdAt: 1,
-              type: 1,
-              price: 1,
-              option_type: 1,
-              strike: 1,
-              expiry: 1,
-              segment: 1,
-              client_persnal_key: 1,
-              token: 1,
-              lot_size: 1,
-              exit_status: 1,
-              ft_time: 1,
-            },
-          },
-          {
-            $sort: { createdAt: -1 },
-          },
-        ];
-
-        const results = await signals.aggregate(pipeline);
-        return res.send({
-          status: true,
-          msg: "Data Retrieved Successfully",
-          data: results,
-        });
       }
-
     } catch (error) {
       console.log("Error retrieving data:", error);
       res.send({
@@ -333,16 +378,6 @@ class SignalController {
       });
     }
   }
-
-
-
-
-
-
-
-
-
-
 
   // GET ALL TRADE HOSTORY DATA
   async MainSignal_data(req, res) {
@@ -422,7 +457,6 @@ class SignalController {
           data: results,
         });
       } else if (resultUser.Role == "RESEARCH") {
-
         var results = await Mainsignals.aggregate([
           {
             $match: { client_persnal_key: resultUser.client_key },
@@ -482,18 +516,20 @@ class SignalController {
     }
   }
 
-
-
   // UPDATE STOPLOASS
   async update_stop_loss(req, res) {
     try {
       const { data } = req.body;
 
       for (const signal of data) {
-        const ExistfindSignal = await Mainsignals.findOne({ _id: signal._id }).select('target stop_loss exit_time');
+        const ExistfindSignal = await Mainsignals.findOne({
+          _id: signal._id,
+        }).select("target stop_loss exit_time");
 
         if (!ExistfindSignal) {
-          return res.status(404).send({ status: false, msg: "Signal not found", data: null });
+          return res
+            .status(404)
+            .send({ status: false, msg: "Signal not found", data: null });
         }
 
         let updateFields = {};
@@ -501,29 +537,36 @@ class SignalController {
 
         if (ExistfindSignal.target !== signal.target) {
           updateFields.target = signal.target;
-          activityMessages.push(`${signal.trade_symbol} Update Target price to ${signal.target}`);
+          activityMessages.push(
+            `${signal.trade_symbol} Update Target price to ${signal.target}`
+          );
         }
 
         if (ExistfindSignal.stop_loss !== signal.stop_loss) {
           updateFields.stop_loss = signal.stop_loss;
-          activityMessages.push(`${signal.trade_symbol} Update Stop Loss price to ${signal.stop_loss}`);
+          activityMessages.push(
+            `${signal.trade_symbol} Update Stop Loss price to ${signal.stop_loss}`
+          );
         }
 
         if (ExistfindSignal.exit_time !== signal.exit_time) {
           updateFields.exit_time = signal.exit_time;
-          activityMessages.push(`${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`);
+          activityMessages.push(
+            `${signal.trade_symbol} Update Exit Time to ${signal.exit_time}`
+          );
         }
-
 
         if (activityMessages.length > 0) {
           for (const message of activityMessages) {
             const Activity_logsData = new Activity_logs({
-              admin_Id: signal.StrategyData.researcher_id ? signal.StrategyData.researcher_id : signal.StrategyData.maker_id,
+              admin_Id: signal.StrategyData.researcher_id
+                ? signal.StrategyData.researcher_id
+                : signal.StrategyData.maker_id,
               category: "TARGET-STOPLOSS-TIME",
               message: message,
               maker_role: "SUBADMIN",
               device: "web",
-              system_ip: ""
+              system_ip: "",
             });
             await Activity_logsData.save();
           }
@@ -539,33 +582,49 @@ class SignalController {
       return res.send({ status: true, msg: "Update Successful", data: null });
     } catch (error) {
       console.error("Error in update_stop_loss:", error);
-      return res.send({ status: false, msg: "Internal server error", data: error.message });
+      return res.send({
+        status: false,
+        msg: "Internal server error",
+        data: error.message,
+      });
     }
   }
-
-
-
 
   // SUBADMIN TRADE HISTORY DATA
   async Tradehistory_data(req, res) {
     try {
-
       const { Role, subadminId, startDate, endDate, strategy, service, type } =
         req.body;
 
       const ObjSubAdminId = new ObjectId(subadminId);
       let resultUser;
-      let strategyNames
-      let Stg_col_name
-
+      let strategyNames;
+      let Stg_col_name;
 
       if (Role == "SUBADMIN") {
-        Stg_col_name = "strategies"
+        Stg_col_name = "strategies";
 
         resultUser = await Strategies.find({
           maker_id: ObjSubAdminId,
         }).select("strategy_name");
 
+        if (!resultUser) {
+          return res.status(404).send({
+            status: false,
+            msg: "User not found",
+          });
+        }
+
+        // Extracting strategy names from resultUser array
+        strategyNames = resultUser.map((user) => user.strategy_name);
+      }
+      if (Role == "RESEARCH") {
+        Stg_col_name = "researcher_strategies";
+        resultUser = await researcher_strategy
+          .find({
+            maker_id: ObjSubAdminId,
+          })
+          .select("strategy_name");
 
         if (!resultUser) {
           return res.status(404).send({
@@ -576,27 +635,8 @@ class SignalController {
 
         // Extracting strategy names from resultUser array
         strategyNames = resultUser.map((user) => user.strategy_name);
-
-      } if (Role == "RESEARCH") {
-        Stg_col_name = "researcher_strategies"
-        resultUser = await researcher_strategy.find({
-          maker_id: ObjSubAdminId,
-        }).select("strategy_name");
-
-
-        if (!resultUser) {
-          return res.status(404).send({
-            status: false,
-            msg: "User not found",
-          });
-        }
-
-        // Extracting strategy names from resultUser array
-        strategyNames = resultUser.map((user) => user.strategy_name);
-
-
       } else if (Role === "EMPLOYEE") {
-        Stg_col_name = "strategies"
+        Stg_col_name = "strategies";
 
         let subadminStgFind = await Subadmin_Permission.aggregate([
           {
@@ -632,7 +672,6 @@ class SignalController {
 
         resultUser = subadminStgFind[0].strategyInfo;
 
-
         if (!resultUser) {
           return res.status(404).send({
             status: false,
@@ -641,18 +680,13 @@ class SignalController {
         }
 
         // Extracting strategy names from resultUser array
-        strategyNames = resultUser
-
-
+        strategyNames = resultUser;
       } else {
-        Stg_col_name = "strategies"
+        Stg_col_name = "strategies";
 
         resultUser = await Strategies.find({
           maker_id: ObjSubAdminId,
         }).select("strategy_name");
-
-
-
 
         if (!resultUser) {
           return res.status(404).send({
@@ -665,22 +699,19 @@ class SignalController {
         strategyNames = resultUser.map((user) => user.strategy_name);
       }
 
-
       let startDateObj = new Date(startDate);
 
       let endDateObj = new Date(endDate);
       endDateObj.setDate(endDateObj.getDate() + 1);
 
-
       let stg1;
       let ser1;
       //  For Strategy
       if (strategy === "null" || strategy === "") {
-        stg1 = { $in: strategyNames }
+        stg1 = { $in: strategyNames };
       } else {
         stg1 = strategy;
       }
-
 
       //  For Service
       if (service === "null") {
@@ -697,7 +728,7 @@ class SignalController {
               $lte: endDateObj,
             },
             trade_symbol: ser1,
-            strategy: stg1
+            strategy: stg1,
           },
         },
         {
@@ -866,16 +897,12 @@ class SignalController {
     }
   }
 
-
-
   async UserTradehistory_data(req, res) {
     try {
       const { subadminId, startDate, endDate, strategy, service, type } =
         req.body;
 
       const objectId = new ObjectId(subadminId);
-
-
 
       const today = new Date();
       today.setHours(0, 0, 0, 0);
@@ -884,8 +911,7 @@ class SignalController {
       let stg1;
       let ser1;
 
-      let stgArr = []
-
+      let stgArr = [];
 
       //  For Service
       if (service === "null") {
@@ -947,67 +973,113 @@ class SignalController {
 
       let GetAllClientServices = await client_service.aggregate(pipeline);
 
-
       GetAllClientServices.map((data) => {
-        stgArr.push(data.strategys.strategy_name)
-      })
-
+        stgArr.push(data.strategys.strategy_name);
+      });
 
       var abc = [];
 
       if (GetAllClientServices.length > 0) {
         for (const item of GetAllClientServices) {
-
           //  For Strategy
           if (strategy === "null" || strategy === "" || strategy.length == 0) {
-            stg1 = { $in: stgArr }
+            stg1 = { $in: stgArr };
           } else {
-            stg1 = strategy
+            stg1 = strategy;
           }
 
-
-
           try {
+            if (item.service.name == "CASH#") {
+              var data = await Mainsignals.aggregate([
+                {
+                  $match: {
+                    segment: "C",
+                    strategy: stg1,
+                    createdAt: {
+                      $gte: today,
+                      $lte: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+                    },
+                  },
+                },
+                {
+                  $lookup: {
+                    from: "signals",
+                    localField: "signals_id",
+                    foreignField: "_id",
+                    as: "result",
+                  },
+                },
+                {
+                  $sort: {
+                    _id: -1, // Sort in ascending order. Use -1 for descending.
+                  },
+                },
+              ]);
+            } else {
+              var data = await Mainsignals.aggregate([
+                {
+                  $match: {
+                    symbol: item.service.name,
+                    strategy: stg1,
+                    createdAt: {
+                      $gte: today,
+                      $lte: new Date(today.getTime() + 24 * 60 * 60 * 1000),
+                    },
+                  },
+                },
+                {
+                  $lookup: {
+                    from: "signals",
+                    localField: "signals_id",
+                    foreignField: "_id",
+                    as: "result",
+                  },
+                },
+                {
+                  $sort: {
+                    _id: -1, // Sort in ascending order. Use -1 for descending.
+                  },
+                },
+              ]);
+            }
 
-            var data = await Mainsignals.aggregate([
-              {
-                $match: {
-                  symbol: item.service.name,
-                  strategy: stg1,
-                  createdAt: {
-                    $gte: today,
-                    $lte: new Date(today.getTime() + 24 * 60 * 60 * 1000),
-                  }
-                },
-              },
-              {
-                $lookup: {
-                  from: "signals",
-                  localField: "signals_id",
-                  foreignField: "_id",
-                  as: "result",
-                },
-              },
-              {
-                $sort: {
-                  _id: -1, // Sort in ascending order. Use -1 for descending.
-                },
-              },
-            ]);
-
+            var servicename = item.service.name;
 
             if (data.length > 0) {
               data.forEach(function (item) {
-                var findstg = GetAllClientServices.find((data1) => data1.service.name == item.symbol &&
-                  data1.strategys.strategy_name == item.strategy
-                );
+                var findstg;
+
+                if (servicename == "CASH#") {
+                  findstg = GetAllClientServices.find(
+                    (data1) =>
+                      data1.service.name == "CASH#" &&
+                      data1.strategys.strategy_name == item.strategy
+                  );
+                } else {
+                  findstg = GetAllClientServices.find(
+                    (data1) =>
+                      data1.service.name == item.symbol &&
+                      data1.strategys.strategy_name == item.strategy
+                  );
+                }
 
                 item.result.forEach(function (signal) {
-                  signal.qty_percent = findstg.quantity * (Math.ceil(Number(signal.qty_percent || 100) / 100) * 100) * 0.01;
+                  signal.qty_percent =
+                    findstg.quantity *
+                    (Math.ceil(Number(signal.qty_percent || 100) / 100) * 100) *
+                    0.01;
                 });
 
-                (item.entry_qty_percent = findstg.quantity * (Math.ceil(Number(item.entry_qty_percent || 100) / 100) * 100) * 0.01),
-                  (item.exit_qty_percent = findstg.quantity * (Math.ceil(Number(item.exit_qty_percent || 100) / 100) * 100) * 0.01);
+                (item.entry_qty_percent =
+                  findstg.quantity *
+                  (Math.ceil(Number(item.entry_qty_percent || 100) / 100) *
+                    100) *
+                  0.01),
+                  (item.exit_qty_percent =
+                    findstg.quantity *
+                    (Math.ceil(Number(item.exit_qty_percent || 100) / 100) *
+                      100) *
+                    0.01);
               });
 
               abc.push(data);
@@ -1016,12 +1088,8 @@ class SignalController {
             console.error("Error fetching data:", error);
           }
         }
-
-
-
-
       } else {
-        res.send({
+        return res.send({
           status: false,
           data: GetAllClientServices,
           msg: "Data Empty",
@@ -1041,12 +1109,6 @@ class SignalController {
       });
     }
   }
-
-
-
-
-
-
 
   // GETALL USER SIGNAL ON TRADING VIEW
   async getAllSignalByPrefix(req, res) {
@@ -1115,10 +1177,6 @@ class SignalController {
       });
     }
   }
-
-
-
-
 }
 
 module.exports = new SignalController();

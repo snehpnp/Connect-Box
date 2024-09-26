@@ -537,12 +537,11 @@ function Option_Chain() {
         let type = { loginType: "API" };
         let channelList = TokenSymbolChain && TokenSymbolChain;
 
-        console.log("livePriceDataDetails", livePriceDataDetails)
 
         if (livePriceDataDetails && livePriceDataDetails.demate_user_id !== undefined && livePriceDataDetails.access_token !== undefined && livePriceDataDetails.trading_status == "on") {
 
             const res = await CreateSocketSession(type, livePriceDataDetails.demate_user_id, livePriceDataDetails.access_token);
-console.log("res",res)
+
 
             if (res.data.stat) {
                 const handleResponse = async (response, socket) => {

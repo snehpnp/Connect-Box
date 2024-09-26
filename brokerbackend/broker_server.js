@@ -1,11 +1,8 @@
 "use strict";
 require("dotenv").config();
 
-// require('../BACKEND/App/Connections/mongo_connection')
-// const db = require('../BACKEND/App/Models');
-
-require("../Backend/App/Connections/mongo_connection");
-const db = require("./../Backend/App/Models");
+require("../BACKEND/App/Connections/mongo_connection");
+const db = require("../BACKEND/App/Models");
 
 const express = require("express");
 const app = express();
@@ -708,18 +705,48 @@ app.post("/broker-signals", async (req, res) => {
             price = signals.Price;
           }
 
+
+
+          var reqFindUSer =  {
+            "strategys.strategy_name": strategy,
+            "service.name": input_symbol,
+            "category.segment": segment,
+            web_url: "1",
+          }
+
+
+          if (segment == "C" || segment == "c") {
+            reqFindUSer = {
+              $or: [
+                {
+                  "strategys.strategy_name": strategy,
+                  "service.name": input_symbol,
+                  "category.segment": segment,
+                  web_url: "1",
+                },
+                {
+                  "strategys.strategy_name": strategy,
+                  "service.name": "CASH#",
+                  "category.segment": "C",
+                  web_url: "1",
+                },
+              ],
+            };
+          }
+
+
+
+
+
           // HIT TRADE IN BROKER SERVER
           if (client_key_array.includes(client_key)) {
+        
             //Process Alice Blue admin client
             try {
               const AliceBlueCollection = db1.collection("aliceblueView");
-              const AliceBluedocuments = await AliceBlueCollection.find({
-                "strategys.strategy_name": strategy,
-                "service.name": input_symbol,
-                "category.segment": segment,
-                web_url: "1",
-              }).toArray();
 
+                var AliceBluedocuments = await AliceBlueCollection.find(reqFindUSer).toArray();
+             
               fs.appendFile(
                 filePath,
                 "TIME " +
@@ -1722,17 +1749,6 @@ app.post("/broker-signals", async (req, res) => {
 
 app.post("/userorder", async (req, res) => {
   try {
-    // console.log("req.body", req.body.data.signals);
-    console.log("strategys", req.body.data.signals.Strategy);
-    console.log("service", req.body.data.signals.Symbol);
-    console.log("segment", req.body.data.signals.Segment);
-
-
-
-
-    // item, filePath, signals, signal_req
-
-    // aliceblue.EntryPlaceOrder()
     const AliceBlueCollection = db1.collection("aliceblueView");
     const AliceBluedocuments = await AliceBlueCollection.find({
       "strategys.strategy_name": req.body.data.signals.Strategy,
@@ -1750,9 +1766,14 @@ app.post("/userorder", async (req, res) => {
         req.body.data.signal_req
       );
     }
-    // return res.send({ status: true, msg: "Order Place Successfully" });
 
+    let updateStatus = await semiautoModel.updateOne(
+      { _id: req.body.data._id },
+      { $set: { status: 1 } },
+      { upsert: true }
+    );
 
+    return res.send({ status: true, msg: "Order Place Successfully" });
   } catch (error) {}
 });
 

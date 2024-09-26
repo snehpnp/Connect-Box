@@ -287,36 +287,7 @@ class OptionChain {
             var today = new Date();
             var formattedDate = today.getFullYear() + '/' + (today.getMonth() + 1).toString() + '/' + today.getDate().toString();
 
-            // var GetTrade = await MainSignals_modal.aggregate([
-            //     {
-            //         $addFields: {
-            //             entry_qty_percent_int: { $toInt: "$entry_qty_percent" },
-            //             exit_qty_percent_int: {
-            //                 $cond: {
-            //                     if: {
-            //                         $or: [
-            //                             { $eq: ["$exit_qty_percent", ""] },
-            //                             { $eq: ["$exit_qty_percent", null] },
-            //                         ],
-            //                     },
-            //                     then: 0,
-            //                     else: { $toInt: "$exit_qty_percent" },
-            //                 },
-            //             },
-            //         },
-            //     },
-            //     {
-            //         $match: {
-            //             $expr: {
-            //                 $and: [
-            //                     { $gt: ["$entry_qty_percent_int", "$exit_qty_percent_int"] },
-            //                     { $eq: ["$dt_date", formattedDate] }
-            //                 ]
-            //             }
-            //         }
-            //     }
-
-            // ]);
+          
 
             var GetTrade = await MainSignals_modal.aggregate([
 

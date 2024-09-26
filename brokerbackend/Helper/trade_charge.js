@@ -1,7 +1,6 @@
 var axios = require('axios');
 
 const db = require('../../BACKEND/App/Models');
-// const db = require('../../Backend/App/Models');
 
 
 const TradeChargeModel = db.tradeCharge;
