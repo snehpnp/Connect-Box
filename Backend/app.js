@@ -9,13 +9,10 @@ const fs = require('fs');
 const cors = require('cors');
 const bodyparser = require('body-parser');
 const { Server } = require("socket.io");
-
 const socketIo = require("socket.io");
-
-
 const { createViewAlice } = require("./View/Alice_blue");
+const { setIO, getIO } = require('./App/Helpers/BackendSocketIo');
 
-// Setting up CORS options
 const corsOpts = {
   origin: '*',
   methods: ['GET', 'POST'],
@@ -25,8 +22,6 @@ const corsOpts = {
   ],
 };
 app.use(cors(corsOpts));
-
-// Body-parser middleware setup
 app.use(bodyparser.urlencoded({ extended: true }));
 app.use(bodyparser.json({ limit: '10mb', extended: true }));
 
@@ -36,14 +31,12 @@ app.use(bodyparser.json({ limit: '10mb', extended: true }));
 // var credentials = { key: privateKey, cert: certificate };
 // const httpsserver = https.createServer(credentials, app);
 
-
+// LOCAL CODE --------
 const server = http.createServer(app);
 
 
 
-const { setIO, getIO } = require('./App/Helpers/BackendSocketIo');
-
-//socket.io
+// LOCAL CODE --------
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -52,6 +45,7 @@ const io = new Server(server, {
   },
 });
 
+// LIVE CODE --------
 // const io = socketIo(httpsserver, {
 //   cors: {
 //       origin: "*",

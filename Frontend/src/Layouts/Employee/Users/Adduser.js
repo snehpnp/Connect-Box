@@ -137,7 +137,7 @@ const AddClient = () => {
         broker: values.broker,
         Service_Type: values.Service_Type,
         per_trade_value: values.per_trade_value || null,
-        employee_id: values.Employees || null
+        employee_id: user_id
       };
 
       await dispatch(AddUsers(req))
