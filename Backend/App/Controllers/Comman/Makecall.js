@@ -1145,10 +1145,8 @@ async function run() {
     }
 
 
-    // Run the function initially
     await makecallabrView_excute_run();
 
-    // Use a while loop with setTimeout for a delay
     while (true) {
       // Delay for 1000 milliseconds (1 second)
       await new Promise(resolve => setTimeout(resolve, 500));
@@ -1157,7 +1155,7 @@ async function run() {
       await noTradeTimeExcuteSetStatus()
     }
   } finally {
-    // Close the client when you're done
+
   }
 
 }
@@ -1166,10 +1164,6 @@ async function run() {
  run().catch(console.error);
 
 
-//////////////////----- makecallabrView_excute_run --//////////////////////////////
-
-
-//////////////////----- makecallabrView_excute_run --/////////////////////////
 
 
 module.exports = new Makecall();

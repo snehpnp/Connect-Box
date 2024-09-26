@@ -1,11 +1,9 @@
 "use strict";
 require("dotenv").config();
 
-// require('../BACKEND/App/Connections/mongo_connection')
-// const db = require('../BACKEND/App/Models');
+require('../BACKEND/App/Connections/mongo_connection')
+const db = require('../BACKEND/App/Models');
 
-require("../Backend/App/Connections/mongo_connection");
-const db = require("./../Backend/App/Models");
 
 const express = require("express");
 const app = express();
