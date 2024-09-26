@@ -71,7 +71,6 @@ app.use(cors(corsOpts));
 
 require("./Helper/cron")(app);
 
-// =======================SOCKET CONNECT AND ADD PRICE =====================
 
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -218,7 +217,6 @@ app.get("/r", (req, res) => {
   res.send("Request sent to Socket Server 2");
 });
 
-// ==================================================================================================
 // MT_4 , OPTION_CHAIN , MAKE_STG, SQUARE_OFF
 
 // BROKER REQUIRES
