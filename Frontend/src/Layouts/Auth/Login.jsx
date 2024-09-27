@@ -121,7 +121,6 @@ function Login() {
       setIsLoading(true);
       setShowModal(false);
 
-      await socket.emit("login", newMessage);
 
       if (getData.Role === "ADMIN") {
         setTimeout(() => {
@@ -146,6 +145,9 @@ function Login() {
           navigate("/user/dashboard");
         }, 2200);
       }
+      await socket.emit("login", newMessage);
+
+
     }
 
   };

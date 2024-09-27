@@ -587,7 +587,7 @@ function Option_Chain() {
         livePriceDataDetails.access_token
       );
 
-      if (res.data.stat) {
+      if (res.data && res.data.stat) {
         const handleResponse = async (response, socket) => {
           socket.onclose = async function (event) {
             if (event.wasClean) {

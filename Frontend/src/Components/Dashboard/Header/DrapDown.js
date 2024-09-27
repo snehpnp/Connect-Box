@@ -65,9 +65,44 @@ const DropDown = () => {
     }
   };
 
+
+
   useEffect(() => {
+    fetchData();
+    fetchIP();
+    getSubadminTableData();
+    getusertable();
+    gettable();
     RunSocketUrl();
   }, []);
+
+
+
+  useEffect(() => {
+    const storedThemeMode = localStorage.getItem("theme_mode");
+    if (storedThemeMode) {
+      setThemeMode(storedThemeMode);
+    }
+    const htmlElement = document.querySelector("html");
+    htmlElement.setAttribute(
+      "data-sidebar",
+      storedThemeMode ? storedThemeMode : "light"
+    );
+    htmlElement.setAttribute(
+      "data-layout-mode",
+      storedThemeMode ? storedThemeMode : "light"
+    );
+    htmlElement.setAttribute(
+      "data-topbar",
+      storedThemeMode ? storedThemeMode : "light"
+    );
+  }, [themeMode]);
+
+
+  useEffect(() => {
+    RunLogoutSocket();
+  }, [socket]);
+
 
   const RunLogoutSocket = () => {
 
@@ -86,18 +121,11 @@ const DropDown = () => {
     }
   };
 
-  useEffect(() => {
-    RunLogoutSocket();
-  }, [socket]);
-
-
-
-
 
 
   const fetchData = async () => {
     try {
-      const ip = await ipAddress();
+    
       let data = { id: user_details.user_id };
       const response = await dispatch(
         ProfileInfo({ req: data, token: token })
@@ -213,8 +241,6 @@ const DropDown = () => {
     setIsFullScreen(!isFullScreen);
   };
 
-
-
   const walletmodal = () => {
     if (Role == "ADMIN") {
     } else if (Role == "SUBADMIN") {
@@ -288,10 +314,7 @@ const DropDown = () => {
   };
 
 
-
-
   // ADMIN NOTIFICATION NOTIFICATION
- 
   const getSubadminTableData = async () => {
     try {
       const today = new Date().toISOString().split("T")[0]; 
@@ -344,8 +367,6 @@ const DropDown = () => {
   };
 
 
-
-
   // USER NOTIFICATION
   const getusertable = async () => {
     try {
@@ -374,43 +395,6 @@ const DropDown = () => {
       console.error("Error in getusertable:", error);
     }
   };
-
-
-
-
-  useEffect(() => {
-    fetchData();
-    fetchIP();
-    getSubadminTableData();
-    getusertable();
-    gettable();
-  }, []);
-
-
-
-  useEffect(() => {
-    const storedThemeMode = localStorage.getItem("theme_mode");
-    if (storedThemeMode) {
-      setThemeMode(storedThemeMode);
-    }
-    const htmlElement = document.querySelector("html");
-    htmlElement.setAttribute(
-      "data-sidebar",
-      storedThemeMode ? storedThemeMode : "light"
-    );
-    htmlElement.setAttribute(
-      "data-layout-mode",
-      storedThemeMode ? storedThemeMode : "light"
-    );
-    htmlElement.setAttribute(
-      "data-topbar",
-      storedThemeMode ? storedThemeMode : "light"
-    );
-  }, [themeMode]);
-
-
-
-  
 
   // LOGOUT TRADING
   const handleTradingOff = async (id) => {
@@ -450,9 +434,6 @@ const DropDown = () => {
   };
 
 
-
-
-
   const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
     if (check) {
       loginWithApi(brokerid, UserDetails);
@@ -461,14 +442,12 @@ const DropDown = () => {
     }
   };
 
-
-
-
+console.log("profileData",profileData && profileData[0])
 
   return (
     <div className="mb-0 dropdown custom-dropdown">
       <ul className="nav nav-tabs user-menu">
-        {Role === "USER" && (
+        {(Role === "USER" && profileData && profileData[0]?.license_type== 2) && (
           <li className="toggle-li">
             <style>
               {`

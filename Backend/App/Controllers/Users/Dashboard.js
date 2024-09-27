@@ -8,6 +8,8 @@ const user_modal = db.user;
 const strategy_client = db.strategy_client;
 const TradePermissionLogs = db.TradePermissionLogs;
 
+const MainSignals = db.MainSignals;
+
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -84,6 +86,153 @@ class Dashboard {
         },
       ]);
 
+      const monthlyResult = await MainSignals.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: new Date(new Date().setDate(new Date().getDate() - 30)), // Last 30 days
+            },
+            entry_type: { $nin: [null, "", undefined] },
+            exit_type: { $nin: [null, "", undefined] },
+          },
+        },
+        {
+          $group: {
+            _id: "$strategy",
+            totalSignals: { $sum: 1 },
+            totalEntryPrice: {
+              $sum: { $toDouble: "$entry_price" },
+            },
+            totalExitPrice: {
+              $sum: { $toDouble: "$exit_price" },
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            totalSignals: 1,
+            totalEntryPrice: 1,
+            totalExitPrice: 1,
+            totalDifference: {
+              $subtract: ["$totalExitPrice", "$totalEntryPrice"],
+            },
+          },
+        },
+        {
+          $sort: { totalDifference: -1 },
+        },
+        {
+          $limit: 3,
+        },
+      ]);
+
+      const weeklyResult = await MainSignals.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: new Date(new Date().setDate(new Date().getDate() - 7)), // Last 7 days
+            },
+            entry_type: { $nin: [null, "", undefined] },
+            exit_type: { $nin: [null, "", undefined] },
+          },
+        },
+        {
+          $group: {
+            _id: "$strategy",
+            totalSignals: { $sum: 1 },
+            totalEntryPrice: {
+              $sum: { $toDouble: "$entry_price" },
+            },
+            totalExitPrice: {
+              $sum: { $toDouble: "$exit_price" },
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            totalSignals: 1,
+            totalEntryPrice: 1,
+            totalExitPrice: 1,
+            totalDifference: {
+              $subtract: ["$totalExitPrice", "$totalEntryPrice"],
+            },
+          },
+        },
+        {
+          $sort: { totalDifference: -1 },
+        },
+        {
+          $limit: 3,
+        },
+      ]);
+
+      const today = new Date();
+      let yesterdayStart;
+
+      // Check if today is Sunday (0) or Saturday (6)
+      if (today.getDay() === 0) {
+        // If today is Sunday, set to last Friday
+        yesterdayStart = new Date();
+        yesterdayStart.setDate(today.getDate() - 2); // Move back to Friday
+      } else if (today.getDay() === 6) {
+        // If today is Saturday, set to last Friday
+        yesterdayStart = new Date();
+        yesterdayStart.setDate(today.getDate() - 1); // Move back to Friday
+      } else {
+        // Otherwise, just set to yesterday
+        yesterdayStart = new Date();
+        yesterdayStart.setDate(today.getDate() - 1);
+      }
+
+      yesterdayStart.setHours(0, 0, 0, 0); // Set to midnight
+
+      const todayStart = new Date();
+      todayStart.setHours(0, 0, 0, 0); // Start of today (midnight)
+
+      const dailyResult = await MainSignals.aggregate([
+        {
+          $match: {
+            createdAt: {
+              $gte: yesterdayStart, // Start of Friday (if weekend) or yesterday
+              $lt: todayStart, // Start of today (exclusive)
+            },
+            entry_type: { $nin: [null, "", undefined] },
+            exit_type: { $nin: [null, "", undefined] },
+          },
+        },
+        {
+          $group: {
+            _id: "$strategy",
+            totalSignals: { $sum: 1 },
+            totalEntryPrice: {
+              $sum: { $toDouble: "$entry_price" },
+            },
+            totalExitPrice: {
+              $sum: { $toDouble: "$exit_price" },
+            },
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            totalSignals: 1,
+            totalEntryPrice: 1,
+            totalExitPrice: 1,
+            totalDifference: {
+              $subtract: ["$totalExitPrice", "$totalEntryPrice"],
+            },
+          },
+        },
+        {
+          $sort: { totalDifference: -1 },
+        },
+        {
+          $limit: 3,
+        },
+      ]);
+
       const mostOrderedStrategy =
         mostOrderedStrategyResult.length > 0
           ? mostOrderedStrategyResult[0]
@@ -99,6 +248,9 @@ class Dashboard {
         },
         Latest_Strategies,
         mostOrderedStrategy,
+        monthlyResult,
+        weeklyResult,
+        dailyResult,
       };
 
       return res.json({ status: true, data, msg: "Done" });
@@ -161,8 +313,10 @@ class Dashboard {
   async GetTradePermissionLogs(req, res) {
     try {
       const { id } = req.body;
-      console.log("GetTradePermissionLogs",req.body);
-      const logs = await TradePermissionLogs.find({user_id:id}).sort({ createdAt: -1 });
+      console.log("GetTradePermissionLogs", req.body);
+      const logs = await TradePermissionLogs.find({ user_id: id }).sort({
+        createdAt: -1,
+      });
       return res.json({ status: true, data: logs, msg: "Done" });
     } catch (error) {
       console.log("Error:", error);

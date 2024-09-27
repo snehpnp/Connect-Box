@@ -25,10 +25,6 @@ const Header = () => {
         const currentTime = Math.floor(Date.now() / 1000);
 
         if (decodedToken.exp && decodedToken.exp < currentTime) {
-console.log("Token Expired",currentTime)
-console.log("decodedToken.exp",decodedToken.exp)
-
-
 
           localStorage.clear();
           setTimeout(() => navigate("/"), 1000);

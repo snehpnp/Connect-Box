@@ -1,23 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { GetUserDashboardData } from '../../../ReduxStore/Slice/Users/Userdashboard.Slice'
+import { GetUserDashboardData } from "../../../ReduxStore/Slice/Users/Userdashboard.Slice";
 import { fDateTime } from "../../../Utils/Date_formet";
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
 import { Orders_Details } from "../../../ReduxStore/Slice/Comman/Trades";
 import { OrderBook } from "../../../Utils/Orderbook";
 import { dashboardData } from "../../../Utils/Userdasboard";
 
 import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 // import useLogout  from '../../../Utils/Logout'
-
 
 const Dashboards = () => {
   // const logout = useLogout();
-  const dispatch = useDispatch()
-  const images = ["assets/img/companies/company-01.svg", "assets/img/companies/company-02.svg", "assets/img/companies/company-03.svg"];
-
+  const dispatch = useDispatch();
+  const images = [
+    "assets/img/companies/company-01.svg",
+    "assets/img/companies/company-02.svg",
+    "assets/img/companies/company-03.svg",
+  ];
 
   var UserNAme = JSON.parse(localStorage.getItem("user_details")).UserName;
   var user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
@@ -26,11 +28,14 @@ const Dashboards = () => {
 
   const [getUserBalance, SetUserBalance] = useState(null);
 
-  const [ForGetCSV, setForGetCSV] = useState([])
+  const [ForGetCSV, setForGetCSV] = useState([]);
   const [location, setLocation] = useState(null);
   const [error, setError] = useState(null);
-  const [getDashboardData, setDashboardData] = useState({ loading: false,data: []});
-  const [tableData, setTableData] = useState({loading: false,data: []});
+  const [getDashboardData, setDashboardData] = useState({
+    loading: false,
+    data: [],
+  });
+  const [tableData, setTableData] = useState({ loading: false, data: [] });
 
   const label = { inputProps: { "aria-label": "Switch demo" } };
 
@@ -51,7 +56,6 @@ const Dashboards = () => {
       marginRight: 8,
     },
   };
-
 
   const getGreetingMessage = () => {
     const currentTime = new Date().getHours();
@@ -95,7 +99,6 @@ const Dashboards = () => {
       headerName: "Type",
       width: 60,
       headerClassName: styles.boldHeader,
-
     },
 
     {
@@ -103,14 +106,12 @@ const Dashboards = () => {
       headerName: "Trade Symbol",
       width: 270,
       headerClassName: styles.boldHeader,
-
     },
     {
       field: "price",
       headerName: "Price ",
       width: 110,
       headerClassName: styles.boldHeader,
-
     },
 
     {
@@ -118,40 +119,33 @@ const Dashboards = () => {
       headerName: "strategy ",
       width: 160,
       headerClassName: styles.boldHeader,
-
     },
     {
       field: "lot_size",
       headerName: "Quantity",
       width: 100,
       headerClassName: styles.boldHeader,
-
     },
     {
       field: "TradeType",
       headerName: "Trade Type ",
       width: 160,
       headerClassName: styles.boldHeader,
-
     },
-
   ];
-
 
   const { greeting, icon } = getGreetingMessage();
 
- 
-
   const userDataRes = async () => {
-    await dispatch(Orders_Details({ req: { subadminId: user_id, Role: Role }, token: token }))
+    await dispatch(
+      Orders_Details({ req: { subadminId: user_id, Role: Role }, token: token })
+    )
       .unwrap()
       .then(async (response) => {
         if (response.status) {
           setTableData({ loading: true, data: response.data });
         } else {
           setTableData({ loading: true, data: [] });
-          
-
         }
       })
       .catch((error) => {
@@ -159,42 +153,32 @@ const Dashboards = () => {
       });
   };
 
-
-
   const UserdashboardDATA = async () => {
-
-    var data = { "id": user_id };
-    await dispatch(GetUserDashboardData({ req: data, token: token })).unwrap()
+    var data = { id: user_id };
+    await dispatch(GetUserDashboardData({ req: data, token: token }))
+      .unwrap()
       .then((response) => {
-
         if (response.status) {
           setDashboardData({
             loading: true,
-            data: response.data
-          })
-        }
-        else {
+            data: response.data,
+          });
+        } else {
           setDashboardData({
             loading: false,
-            data: []
-          })
-
+            data: [],
+          });
         }
       })
       .catch((error) => {
-        console.log("Error is found in finding client service detail", error)
-      })
-
-  }
-
-  
-
+        console.log("Error is found in finding client service detail", error);
+      });
+  };
 
   const getRandomImage = () => {
     const randomIndex = Math.floor(Math.random() * images.length);
     return images[randomIndex];
   };
-
 
   const DawnloadOrderBook = async (e) => {
     let data = { id: user_id };
@@ -202,20 +186,23 @@ const Dashboards = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
+          if (
+            response.data[0].TradingStatus == "on" &&
+            response.data[0].access_token != "" &&
+            response.data[0].access_token != null
+          ) {
             OrderBook(response.data[0])
-              .then(response => {
-                setForGetCSV(response)
-
+              .then((response) => {
+                setForGetCSV(response);
               })
-              .catch(error => {
+              .catch((error) => {
                 Swal.fire({
                   title: "Empty",
                   text: "Data Not Found",
                   icon: "error",
                   timer: 1500,
                   timerProgressBar: true,
-                })
+                });
               });
           } else {
             Swal.fire({
@@ -224,18 +211,14 @@ const Dashboards = () => {
               icon: "error",
               timer: 1500,
               timerProgressBar: true,
-            })
+            });
           }
-
-        } 
+        }
       })
       .catch((error) => {
         console.log("Error", error);
       });
-
-
-  }
-
+  };
 
   const UserdasboardData = async (e) => {
     let data = { id: user_id };
@@ -243,38 +226,37 @@ const Dashboards = () => {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          if (response.data[0].TradingStatus == "on" && response.data[0].access_token != '' && response.data[0].access_token != null) {
+          if (
+            response.data[0].TradingStatus == "on" &&
+            response.data[0].access_token != "" &&
+            response.data[0].access_token != null
+          ) {
             dashboardData(response.data[0])
-              .then(response => {
-            //  SNEH JAUSWAL
-             SetUserBalance(response)
+              .then((response) => {
+                //  SNEH JAUSWAL
+                SetUserBalance(response);
               })
-              .catch(error => {
+              .catch((error) => {
                 console.error("Error:", error);
               });
           }
-   
-
         } else {
         }
       })
       .catch((error) => {
         console.log("Error", error);
       });
-
-
-  }
-
+  };
 
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           const latitude = position.coords.latitude;
           const longitude = position.coords.longitude;
           setLocation({ latitude, longitude });
         },
-        error => {
+        (error) => {
           setError(error.message);
         }
       );
@@ -283,18 +265,37 @@ const Dashboards = () => {
     }
   }, []);
 
-
   useEffect(() => {
-    UserdasboardData()
-    userDataRes()
+    UserdasboardData();
+    userDataRes();
     UserdashboardDATA();
-  }, [])
+  }, []);
 
+  const getDashboardData1 = {
+    data: {
+      monthlyTopStrategies: [
+        { strategy_name: "Strategy A", count: 50, plan: "Plan A" },
+        { strategy_name: "Strategy B", count: 30, plan: "Plan B" },
+        { strategy_name: "Strategy C", count: 20, plan: "Plan C" },
+      ],
+      weeklyTopStrategies: [
+        { strategy_name: "Strategy D", count: 15, plan: "Plan D" },
+        { strategy_name: "Strategy E", count: 10, plan: "Plan E" },
+        { strategy_name: "Strategy F", count: 5, plan: "Plan F" },
+      ],
+      dailyTopStrategies: [
+        { strategy_name: "Strategy G", count: 2, plan: "Plan G" },
+        { strategy_name: "Strategy H", count: 1, plan: "Plan H" },
+        { strategy_name: "Strategy I", count: 1, plan: "Plan I" },
+      ],
+    },
+  };
+
+  console.log("getDashboardData", getDashboardData.data);
 
   return (
     <div>
       <div className="content container-fluid pb-0">
-   
         <div className="super-admin-dashboard">
           <div className="row">
             <div className="col-xl-5 d-flex">
@@ -305,30 +306,52 @@ const Dashboards = () => {
                 </h4>
 
                 {location ? (
-                  <p>Latitude: {location.latitude}, Longitude: {location.longitude}</p>
+                  <p>
+                    Latitude: {location.latitude}, Longitude:{" "}
+                    {location.longitude}
+                  </p>
                 ) : error ? (
                   <p>{error}</p>
                 ) : (
                   <p>Loading...</p>
                 )}
-                <hr style={{ backgroundColor: "white", height: "5px", border: "none", width: "18rem" }} />
+                <hr
+                  style={{
+                    backgroundColor: "white",
+                    height: "5px",
+                    border: "none",
+                    width: "18rem",
+                  }}
+                />
 
-                <div className="dash-btns gap-3 mt-5" style={{ display: "flex", color: "white" }}>
+                <div
+                  className="dash-btns gap-3 mt-5"
+                  style={{ display: "flex", color: "white" }}
+                >
                   <div>
                     <h4>Balance</h4>
-                    <p>{getUserBalance && getUserBalance.limitsData || "-"}</p>
+                    <p>
+                      {(getUserBalance && getUserBalance.limitsData) || "-"}
+                    </p>
                   </div>
-                  <div >
+                  <div>
                     <h4>M2M</h4>
-                    <p>{getUserBalance && getUserBalance.unrealisedProfitLossSum|| "-"}</p>
+                    <p>
+                      {(getUserBalance &&
+                        getUserBalance.unrealisedProfitLossSum) ||
+                        "-"}
+                    </p>
                   </div>
-                  <div >
-                    <h4>Download</h4><br />
-                    <a className="btn view-company-btn" onClick={(e) => DawnloadOrderBook(e)}>
+                  <div>
+                    <h4>Download</h4>
+                    <br />
+                    <a
+                      className="btn view-company-btn"
+                      onClick={(e) => DawnloadOrderBook(e)}
+                    >
                       Order Book
                     </a>
                   </div>
-
                 </div>
 
                 <div className="dash-img">
@@ -339,7 +362,6 @@ const Dashboards = () => {
 
             <div className="col-xl-7 d-flex p-0">
               <div className="row dash-company-row w-100 m-0">
-
                 <div className="col-lg-3 col-sm-6 d-flex">
                   <div className="company-detail-card bg-success-light w-100">
                     <div className="company-icon">
@@ -350,7 +372,11 @@ const Dashboards = () => {
                     </div>
                     <div className="dash-comapny-info">
                       <h6>Total Strategies </h6>
-                      <h5>{getDashboardData.data.StrategyCount && getDashboardData.data.StrategyCount.TotalStrategyCount}</h5>
+                      <h5>
+                        {getDashboardData.data.StrategyCount &&
+                          getDashboardData.data.StrategyCount
+                            .TotalStrategyCount}
+                      </h5>
                       <p>
                         <span>
                           6% <i className="fe fe-chevrons-up" />
@@ -371,7 +397,10 @@ const Dashboards = () => {
                     </div>
                     <div className="dash-comapny-info">
                       <h6>Your Strategies</h6>
-                      <h5>{getDashboardData.data.StrategyCount && getDashboardData.data.StrategyCount.YourStrategies}</h5>
+                      <h5>
+                        {getDashboardData.data.StrategyCount &&
+                          getDashboardData.data.StrategyCount.YourStrategies}
+                      </h5>
                       <p>
                         <span>
                           1% <i className="fe fe-chevrons-up" />
@@ -392,7 +421,11 @@ const Dashboards = () => {
                     </div>
                     <div className="dash-comapny-info">
                       <h6>Active Strategies</h6>
-                      <h5>{getDashboardData.data.StrategyCount && getDashboardData.data.StrategyCount.YourActiveStrategies}</h5>
+                      <h5>
+                        {getDashboardData.data.StrategyCount &&
+                          getDashboardData.data.StrategyCount
+                            .YourActiveStrategies}
+                      </h5>
                       <p>
                         <span>
                           2% <i className="fe fe-chevrons-up" />
@@ -413,7 +446,11 @@ const Dashboards = () => {
                     </div>
                     <div className="dash-comapny-info">
                       <h6>Inactive Strategies </h6>
-                      <h5>{getDashboardData.data.StrategyCount && getDashboardData.data.StrategyCount.YourInActiveStrategies}</h5>
+                      <h5>
+                        {getDashboardData.data.StrategyCount &&
+                          getDashboardData.data.StrategyCount
+                            .YourInActiveStrategies}
+                      </h5>
                       <p>
                         <span>
                           6% <i className="fe fe-chevrons-up" />
@@ -425,7 +462,6 @@ const Dashboards = () => {
                 </div>
               </div>
             </div>
-
 
             <div className="col-xl-5 d-flex">
               <div className="card super-admin-dash-card">
@@ -450,43 +486,48 @@ const Dashboards = () => {
                   <div className="table-responsive">
                     <table className="table table-stripped table-hover">
                       <tbody>
-
-                        {getDashboardData.data.Latest_Strategies && getDashboardData.data.Latest_Strategies.map((data1, index) => {
-                          return <tr key={index} >
-                            <td>
-                              <h2 className="table-avatar">
-                                <a
-                                  href="profile.html"
-                                  className="company-avatar avatar-md me-2 companies company-icon"
-                                >
-                                  <img
-                                    className="avatar-img rounded-circle company"
-                                    src={data1.strategy_image ? data1.strategy_image : getRandomImage()}
-                                    alt="Company Image"
-                                  />
-                                </a>
-                                <a href="companies.html">
-                                  {data1.strategy_name}{" "}
-                                  <span className="plane-type">
-                                    {data1.strategy_segment}
-                                  </span>
-                                </a>
-                              </h2>
-                            </td>
-                            <td>{fDateTime(data1.createdAt)}</td>
-                            <td className="text-end">
-                              <Link
-                                to="/user/strategy"
-                                className="view-companies btn"
-                              >
-                                View
-                              </Link>
-                            </td>
-                          </tr>
-                        })}
-
-
-
+                        {getDashboardData.data.Latest_Strategies &&
+                          getDashboardData.data.Latest_Strategies.map(
+                            (data1, index) => {
+                              return (
+                                <tr key={index}>
+                                  <td>
+                                    <h2 className="table-avatar">
+                                      <a
+                                        href="profile.html"
+                                        className="company-avatar avatar-md me-2 companies company-icon"
+                                      >
+                                        <img
+                                          className="avatar-img rounded-circle company"
+                                          src={
+                                            data1.strategy_image
+                                              ? data1.strategy_image
+                                              : getRandomImage()
+                                          }
+                                          alt="Company Image"
+                                        />
+                                      </a>
+                                      <a href="companies.html">
+                                        {data1.strategy_name}{" "}
+                                        <span className="plane-type">
+                                          {data1.strategy_segment}
+                                        </span>
+                                      </a>
+                                    </h2>
+                                  </td>
+                                  <td>{fDateTime(data1.createdAt)}</td>
+                                  <td className="text-end">
+                                    <Link
+                                      to="/user/strategy"
+                                      className="view-companies btn"
+                                    >
+                                      View
+                                    </Link>
+                                  </td>
+                                </tr>
+                              );
+                            }
+                          )}
                       </tbody>
                     </table>
                   </div>
@@ -507,12 +548,14 @@ const Dashboards = () => {
                           View All
                         </Link>
                       </div>
-
                     </div>
                   </div>
                 </div>
 
-                <div className="card-body p-0 mr-0" style={{ maxHeight: "400px", overflowY: "auto" }}>
+                <div
+                  className="card-body p-0 mr-0"
+                  style={{ maxHeight: "400px", overflowY: "auto" }}
+                >
                   <div className="table-responsive">
                     <FullDataTable
                       styles={styles}
@@ -523,13 +566,10 @@ const Dashboards = () => {
                     />
                   </div>
                 </div>
-
-
-
               </div>
             </div>
 
-            <div className="col-xl-4 d-flex">
+            {/* <div className="col-xl-4 d-flex">
               <div className="card super-admin-dash-card flex-fill">
                 <div className="card-header">
                   <div className="d-flex justify-content-between align-items-center">
@@ -595,10 +635,156 @@ const Dashboards = () => {
                       </span>
                       <div className="plane-name">
                         <span>{getDashboardData.data.mostOrderedStrategy && getDashboardData.data.mostOrderedStrategy.strategy_name}</span>
-                        {/* <h6>sk.example.com</h6> */}
+             
                       </div>
                     </div>
                     <span className="plane-rate">10 Trade Per Day</span>
+                  </div>
+                </div>
+              </div>
+            </div>  */}
+
+            <div className="col-xl-12 d-flex flex-column">
+              {/* <h2 className="text-center mb-4">
+                Top Three Profitable Trading Strategies
+              </h2> */}
+
+              <div className="row justify-content-center">
+                <div className="col-xl-4 d-flex mb-4">
+                  <div className="card super-admin-dash-card flex-fill shadow border-light">
+                    <div className="card-header bg-primary text-white text-center">
+                      <h5 className="card-title">Top Strategies (Month)</h5>
+                    </div>
+                    <div className="card-body">
+                      <div className="row dash-plane-list">
+                        {getDashboardData.data &&
+                          getDashboardData.data?.monthlyResult?.map(
+                            (strategy, index) => (
+                              <div
+                                className="plane-info col-12 mb-3"
+                                key={index}
+                              >
+                                <span className="icon-plane me-3">
+                                  <img
+                                    src="assets/img/icons/dashboard-plane-icon.svg"
+                                    alt={`Month Strategy ${index + 1}`}
+                                  />
+                                </span>
+                                <div className="d-flex justify-content-between align-items-center w-100">
+                                  <span className="plane-name fw-bold">
+                                    {strategy._id}
+                                  </span>
+                                  <span
+                                    className={`plane-profit fw-bold ${
+                                      strategy.totalDifference >= 0
+                                        ? "text-success"
+                                        : "text-danger"
+                                    }`}
+                                  >
+                                    {strategy.totalDifference >= 0
+                                      ? `+${strategy.totalDifference.toFixed(
+                                          3
+                                        )}`
+                                      : strategy.totalDifference.toFixed(3)}
+                                  </span>
+                                </div>
+                              </div>
+                            )
+                          )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-xl-4 d-flex mb-4">
+                  <div className="card super-admin-dash-card flex-fill shadow border-light">
+                    <div className="card-header bg-success text-white text-center">
+                      <h5 className="card-title">Top Strategies (Week)</h5>
+                    </div>
+                    <div className="card-body">
+                      <div className="row dash-plane-list">
+                        {getDashboardData.data &&
+                          getDashboardData.data?.weeklyResult?.map(
+                            (strategy, index) => (
+                              <div
+                                className="plane-info col-12 mb-3"
+                                key={index}
+                              >
+                                <span className="icon-company me-3">
+                                  <img
+                                    src="assets/img/companies/company-01.svg"
+                                    alt={`Week Strategy ${index + 1}`}
+                                  />
+                                </span>
+                                <div className="d-flex justify-content-between align-items-center w-100">
+                                  <span className="plane-name fw-bold">
+                                    {strategy._id}
+                                  </span>
+                                  <span
+                                    className={`plane-profit fw-bold ${
+                                      strategy.totalDifference >= 0
+                                        ? "text-success"
+                                        : "text-danger"
+                                    }`}
+                                  >
+                                    {strategy.totalDifference >= 0
+                                      ? `+${strategy.totalDifference.toFixed(
+                                          3
+                                        )}`
+                                      : strategy.totalDifference.toFixed(3)}
+                                  </span>
+                                </div>
+                              </div>
+                            )
+                          )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-xl-4 d-flex mb-4">
+                  <div className="card super-admin-dash-card flex-fill shadow border-light">
+                    <div className="card-header bg-danger text-white text-center">
+                      <h5 className="card-title">Top Strategies (Last Day)</h5>
+                    </div>
+                    <div className="card-body">
+                      <div className="row dash-plane-list">
+                        {getDashboardData.data &&
+                          getDashboardData.data?.dailyResult?.map(
+                            (strategy, index) => (
+                              <div
+                                className="plane-info col-12 mb-3"
+                                key={index}
+                              >
+                                <span className="icon-company me-3">
+                                  <img
+                                    src="assets/img/companies/company-04.svg"
+                                    alt={`Day Strategy ${index + 1}`}
+                                  />
+                                </span>
+                                <div className="d-flex justify-content-between align-items-center w-100">
+                                  <span className="plane-name fw-bold">
+                                    {strategy._id}
+                                  </span>
+                                  <span
+                                    className={`plane-profit fw-bold ${
+                                      strategy.totalDifference >= 0
+                                        ? "text-success"
+                                        : "text-danger"
+                                    }`}
+                                  >
+                                    {strategy.totalDifference >= 0
+                                      ? `+${strategy.totalDifference.toFixed(
+                                          3
+                                        )}`
+                                      : strategy.totalDifference.toFixed(3)}
+                                  </span>
+                                </div>
+                              </div>
+                            )
+                          )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -608,7 +794,6 @@ const Dashboards = () => {
       </div>
     </div>
   );
-
 };
 
 export default Dashboards;

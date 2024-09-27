@@ -29,7 +29,7 @@ class Employee {
       const pipeline = [
         {
           $match: {
-            parent_id: userId,
+            parent_id: new ObjectId(userId),
             Role: "EMPLOYEE",
           },
         },
