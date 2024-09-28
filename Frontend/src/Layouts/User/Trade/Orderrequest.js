@@ -85,7 +85,7 @@ export default function AllEmployees() {
       renderCell: (params) => (
         <div>
           {" "}
-          <b>{params.row.postdata.trading_symbol}</b>
+          <b>{params.row.postdata.trading_symbol == "CASH-EQ" ? params.row.signals.Symbol :params.row.postdata.trading_symbol}</b>
         </div>
       ),
     },
@@ -114,18 +114,18 @@ export default function AllEmployees() {
         </div>
       ),
     },
-    {
-      field: "qty",
-      headerName: "qty",
-      width: 160,
-      headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div>
-          {" "}
-          <b>{params.row.postdata.qty}</b>
-        </div>
-      ),
-    },
+    // {
+    //   field: "qty",
+    //   headerName: "qty",
+    //   width: 160,
+    //   headerClassName: styles.boldHeader,
+    //   renderCell: (params) => (
+    //     <div>
+    //       {" "}
+    //       <b>{params.row.postdata.qty}</b>
+    //     </div>
+    //   ),
+    // },
     {
       field: "TradeType",
       headerName: "Trade Type ",
@@ -145,18 +145,19 @@ export default function AllEmployees() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
+       {params.row.status == 0 &&
           <button
-            className={
-              params.row.postdata.transtype == "BUY"
-                ? "btn btn-primary"
-                : "btn btn-danger"
-            }
-            onClick={() => {
-              UserCreateOrder(params.row);
-            }}
-          >
-            {params.row.postdata.transtype == "BUY" ? "BUY" : "SELL"}
-          </button>
+          className={
+            params.row.postdata.transtype == "BUY"
+              ? "btn btn-primary"
+              : "btn btn-danger"
+          }
+          onClick={() => {
+            UserCreateOrder(params.row);
+          }}
+        >
+          {params.row.postdata.transtype == "BUY" ? "BUY" : "SELL"}
+        </button>}
         </div>
       ),
     },
@@ -184,10 +185,10 @@ export default function AllEmployees() {
   };
 
   let UserCreateOrder = (data) => {
-    // let url = Config.react_domain + "signal/userorder";
+    let url = Config.react_domain + "/signal/userorder";
     // console.log("data", url);
 
-    let url = "http://localhost:8000/userorder";
+    // let url = "http://localhost:8000/userorder";
 
     axios
       .post(url, {

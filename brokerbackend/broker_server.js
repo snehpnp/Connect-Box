@@ -1,5 +1,6 @@
 "use strict";
 require("dotenv").config();
+const mongoose = require("mongoose");
 
 require("../BACKEND/App/Connections/mongo_connection");
 const db = require("../BACKEND/App/Models");
@@ -38,6 +39,8 @@ const Alice_token = db.Alice_token;
 const Signals = db.Signals;
 const MainSignals = db.MainSignals;
 const live_price = db.live_price;
+const semiautoModel = db.semiautoModel;
+
 
 // CONNECTION FILE IN MONGOODE DATA BASE
 const MongoClient = require("mongodb").MongoClient;
@@ -70,7 +73,6 @@ const corsOpts = {
 app.use(cors(corsOpts));
 
 require("./Helper/cron")(app);
-
 
 const server = http.createServer(app);
 const io = socketIo(server);
@@ -221,7 +223,6 @@ app.get("/r", (req, res) => {
 
 // BROKER REQUIRES
 const aliceblue = require("./Broker/aliceblue");
-
 const angel = require("./Broker/angel");
 const fivepaisa = require("./Broker/fivepaisa");
 const zerodha = require("./Broker/zerodha");
@@ -229,7 +230,6 @@ const upstox = require("./Broker/upstox");
 const dhan = require("./Broker/dhan");
 const fyers = require("./Broker/fyers");
 const markethub = require("./Broker/markethub");
-
 const mandotsecurities = require("./Broker/mandotsecurities");
 
 // BROKER SIGNAL
@@ -703,15 +703,12 @@ app.post("/broker-signals", async (req, res) => {
             price = signals.Price;
           }
 
-
-
-          var reqFindUSer =  {
+          var reqFindUSer = {
             "strategys.strategy_name": strategy,
             "service.name": input_symbol,
             "category.segment": segment,
             web_url: "1",
-          }
-
+          };
 
           if (segment == "C" || segment == "c") {
             reqFindUSer = {
@@ -732,19 +729,16 @@ app.post("/broker-signals", async (req, res) => {
             };
           }
 
-
-
-
-
           // HIT TRADE IN BROKER SERVER
           if (client_key_array.includes(client_key)) {
-        
             //Process Alice Blue admin client
             try {
               const AliceBlueCollection = db1.collection("aliceblueView");
 
-                var AliceBluedocuments = await AliceBlueCollection.find(reqFindUSer).toArray();
-             
+              var AliceBluedocuments = await AliceBlueCollection.find(
+                reqFindUSer
+              ).toArray();
+
               fs.appendFile(
                 filePath,
                 "TIME " +
@@ -1747,36 +1741,82 @@ app.post("/broker-signals", async (req, res) => {
 
 app.post("/userorder", async (req, res) => {
   try {
-    // console.log("req.body", req.body.data.signals);
-    console.log("strategys", req.body.data.signals.Strategy);
-    console.log("service", req.body.data.signals.Symbol);
-    console.log("segment", req.body.data.signals.Segment);
+    let Strategy = req.body.data.signals.Strategy;
+    let Symbol = req.body.data.signals.Symbol;
+    let Segment = req.body.data.signals.Segment;
+    let trading_symbol = req.body.data.postdata.trading_symbol;
+    let token;
+    if (trading_symbol == "CASH-EQ") {
+      Symbol = "CASH#";
 
-    // item, filePath, signals, signal_req
+      token = await services
+        .find({ name: req.body.data.signals.Symbol })
+        .maxTimeMS(20000)
+        .exec();
+    }
 
-    // aliceblue.EntryPlaceOrder()
+
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
     const AliceBlueCollection = db1.collection("aliceblueView");
-    const AliceBluedocuments = await AliceBlueCollection.find({
-      "strategys.strategy_name": req.body.data.signals.Strategy,
-      "service.name": req.body.data.signals.Symbol,
-      "category.segment": req.body.data.signals.Segment,
+    let AliceBluedocuments = await AliceBlueCollection.find({
+      "strategys.strategy_name": Strategy,
+      "service.name": Symbol,
+      "category.segment": Segment,
       web_url: "1",
     }).toArray();
 
-
     if (AliceBluedocuments.length > 0) {
+      if (trading_symbol == "CASH-EQ") {
+        AliceBluedocuments[0].postdata.trading_symbol = token[0].zebu_token;
+        AliceBluedocuments[0].postdata.symbol_id = token[0].instrument_token;
+      }
+      await semiautoModel.updateMany(
+        {
+          user_id:  new mongoose.Types.ObjectId(req.body.data.user_id),
+          createdAt: { $gte: startOfDay, $lte: endOfDay },
+          instrument_token: req.body.data.postdata.symbol_id,
+          status: "0",
+          "signals.Strategy": Strategy
+        },
+        { $set: { status: "1" } } // Update status to 1
+      );
+
+
+      console.log("AliceBluedocuments",   {
+        user_id:  new mongoose.Types.ObjectId(req.body.data.user_id),
+        createdAt: { $gte: startOfDay, $lte: endOfDay },
+        instrument_token: req.body.data.postdata.symbol_id,
+        status: "0",
+        "signals.Strategy": Strategy
+      });
+
+
+
       aliceblue.EntryPlaceOrder(
         AliceBluedocuments[0],
         req.body.data.filePath,
         req.body.data.signals,
         req.body.data.signal_req
       );
+
+      return res.send({
+        status: true,
+        msg: "Order Placed Successfully",
+        data: AliceBluedocuments[0],
+      });
+    } else {
+      return res.send({ status: false, msg: "User Access Token invalid" });
     }
-    // return res.send({ status: true, msg: "Order Place Successfully" });
-
-
-    // return res.send({ status: true, msg: "Order Place Successfully" });
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error:", error);
+    return res
+      .status(500)
+      .send({ status: false, msg: "Internal Server Error" });
+  }
 });
 
 // Server start

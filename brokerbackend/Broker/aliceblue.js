@@ -158,7 +158,6 @@ const place_order = async (
                 ) {
                   item.postdata.price = price;
                 }
-                console.log("item", item.tradepermission);
 
                 if (item.tradepermission == "1") {
                   EntryPlaceOrderSemiAuto(item, filePath, signals, signal_req);
@@ -255,18 +254,17 @@ const place_order = async (
           );
 
           const startOfDay = new Date();
-          startOfDay.setHours(0, 0, 0, 0); 
+          startOfDay.setHours(0, 0, 0, 0);
           const endOfDay = new Date();
-          endOfDay.setHours(23, 59, 59, 999); 
+          endOfDay.setHours(23, 59, 59, 999);
 
           var SemiAutoFind = await semiautoModel.find({
             user_id: item._id.toString(),
             createdAt: { $gte: startOfDay, $lte: endOfDay },
             instrument_token: item.postdata.symbol_id,
             status: "0",
-            "signals.Strategy": signals.Strategy, 
+            "signals.Strategy": signals.Strategy,
           });
-         
 
           if (SemiAutoFind && SemiAutoFind.length > 0) {
             await semiautoModel.updateMany(
@@ -284,8 +282,6 @@ const place_order = async (
             console.log("No matching data found");
           }
 
-
-          
           var data_possition = {
             ret: "NET",
           };
@@ -535,7 +531,7 @@ const place_order = async (
               }
             });
         });
-   
+
         Promise.all(requestPromises)
           .then((responses) => {})
           .catch((errors) => {
@@ -600,7 +596,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
   var qty_percent = signals.Quntity;
   var client_key = signals.Key;
   var demo = signals.Demo;
-
+  console.log("item", item.postdata);
   var send_rr = Buffer.from(qs.stringify(item.postdata)).toString("base64");
 
   fs.appendFile(
@@ -649,7 +645,6 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
       );
 
       if (response.data[0].stat == "Ok") {
-        console.log("SNEH JAISWAL");
         let tradeChargeData = {
           order_id: response.data[0].NOrdNo,
           user_id: item._id,
@@ -696,9 +691,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
           send_request: send_rr,
           reject_reason: message,
         })
-          .then((BrokerResponseCreate) => {
-            // console.log('User created and saved:', BrokerResponseCreate._id)
-          })
+          .then((BrokerResponseCreate) => {})
           .catch((err) => {
             try {
               console.log("Error creating and saving user:", err);
@@ -709,7 +702,6 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
       }
     })
     .catch(async (error) => {
-      console.log("catch", error.response.data);
       fs.appendFile(
         filePath,
         "TIME " +
@@ -733,18 +725,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
               /["',]/g,
               ""
             );
-            console.log("message", {
-              user_id: item._id,
-              receive_signal: signal_req,
-              strategy: strategy,
-              type: type,
-              symbol: input_symbol,
-              order_status: "Error",
-              trading_symbol: "",
-              broker_name: "ALICE BLUE",
-              send_request: send_rr,
-              reject_reason: message,
-            });
+
             BrokerResponse.create({
               user_id: item._id,
               receive_signal: signal_req,
@@ -757,12 +738,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
               send_request: send_rr,
               reject_reason: message,
             })
-              .then((BrokerResponseCreate) => {
-                console.log(
-                  "User created and saved:",
-                  BrokerResponseCreate._id
-                );
-              })
+              .then((BrokerResponseCreate) => {})
               .catch((err) => {
                 try {
                   console.log("Error creating and saving user:", err);
@@ -785,21 +761,14 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
               send_request: send_rr,
               reject_reason: message,
             })
-              .then((BrokerResponseCreate) => {
-                // console.log('User created and saved:', BrokerResponseCreate._id)
-              })
+              .then((BrokerResponseCreate) => {})
               .catch((err) => {
                 try {
-                  console.log("Error creating and saving user:", err);
-                } catch (e) {
-                  console.log("duplicate key");
-                }
+                } catch (e) {}
               });
           }
         }
-      } catch (e) {
-        console.log("error 1", e);
-      }
+      } catch (e) {}
     });
 };
 

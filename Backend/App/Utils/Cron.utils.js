@@ -89,7 +89,7 @@ cron.schedule('5 23 * * *', () => {
 
 
 // GET LIVE PRICE IN ECEL TO COLLECTION
-cron.schedule('*/30 * * * *', () => {
+cron.schedule('* * * * *', () => {
     GetStrickPriceFromSheet();
 });
 
@@ -1605,7 +1605,8 @@ const GetStrickPriceFromSheet = async () => {
                     await Promise.all(sheet_Data.map(async (data) => {
                         const result = await Get_Option_Chain_modal.updateOne(
                             { symbol: data.SYMBOL },
-                            { $set: { price: data.CPrice } }
+                            { $set: { price: data.CPrice } },
+                            { upsert: true }
                         );
                     }));
 
