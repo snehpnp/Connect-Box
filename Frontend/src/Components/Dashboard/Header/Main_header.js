@@ -13,8 +13,7 @@ const Main_Header = () => {
 
   const getCompanyData = async () => {
     const companyData = await getCompany();
-    // console.log("companyData",companyData)
-
+    
     if (companyData.length > 0) {
       setLogodata(companyData[0].logo)
       $('#titlecontent').html(companyData[0].panel_name);

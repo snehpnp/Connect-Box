@@ -679,8 +679,6 @@ const AddClient = () => {
           
            setBalanace(response.data[0].Balance)
 
-      } else {
-         console.log("err")
       }
 
     } catch (error) {

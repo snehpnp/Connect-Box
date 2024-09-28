@@ -135,7 +135,6 @@ function Payment() {
 
   const handleModalSubmit = async(amount, actionType) => {
 
-    console.log("Amount:", amount, "Action Type:", actionType);
 
       const data = { id: user_details.user_id, balance: amount ,status:0,actionType:actionType};
 

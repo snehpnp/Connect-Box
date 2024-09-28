@@ -33,7 +33,6 @@
 // var currentDateOrder = new Date().toISOString().split(".")[0] + '.000Z';
 // let checksumcode = sha256(currentDateOrder + JSON.stringify(data) + item.api_secret);
 
-// // console.log("currentDateOrder",currentDateOrder)
 
 // let config = {
 //     method: 'post',
@@ -50,10 +49,10 @@
 
 // axios(config)
 //     .then(function (response) {
-//         console.log(JSON.stringify(response.data));
+//      
 //     })
 //     .catch(function (error) {
-//         console.log(error);
+
 //     });
 
 
@@ -102,7 +101,7 @@ const headers = {
 // Axios request
 axios.post(apiUrl, orderData, { headers })
     .then(response => {
-        console.log('Order placed successfully:', response.data);
+       
     })
     .catch(error => {
         console.error('Error placing order:', error.response ? error.response.data : error.message);

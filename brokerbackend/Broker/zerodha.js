@@ -600,7 +600,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
                             reject_reason: message,
                         })
                             .then((BrokerResponseCreate) => {
-                                // console.log('User created and saved:', BrokerResponseCreate._id)
+                             
                             })
                             .catch((err) => {
                                 try {
@@ -684,7 +684,7 @@ const ExitPlaceOrder = async (item, filePath, possition_qty, signals, signal_req
 
     axios(config)
         .then(async (response) => {
-            // console.log("respose Exit", response.data)
+          
 
             fs.appendFile(filePath, 'TIME ' + new Date() + ' ZERODHA AFTER PLACE ORDER USER EXIT- ' + item.UserName + ' RESPONSE -' + JSON.stringify(response.data) + '\n', function (err) {
                 if (err) {

@@ -200,7 +200,7 @@ function GroupStrategy() {
                 });
             }
         } catch (error) {
-            console.log("Error", error);
+        
             setAllGroupService({
                 loading: false,
                 data: [],

@@ -64,11 +64,11 @@ const Settings = () => {
         GetPermissionLogsApi({ id: user_details.user_id })
       ).unwrap();
       if (response.status) {
-        console.log(response.data);
+      
         settradeLogs(response.data);
       }
     } catch (error) {
-      console.log(error);
+     
     }
   };
 

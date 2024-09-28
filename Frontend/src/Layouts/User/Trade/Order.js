@@ -75,9 +75,7 @@ export default function AllEmployees() {
                 else {
                     toast.error("Trading Off Error")
                 }
-            }).catch((error) => {
-                console.log("Trading Off Error", error);
-            })
+            }).catch((error) => {  })
 
     }
     const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {

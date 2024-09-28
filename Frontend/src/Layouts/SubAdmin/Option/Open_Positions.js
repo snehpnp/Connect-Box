@@ -846,13 +846,13 @@ export default function AllEmployees() {
         <div>{cell !== "" ? parseFloat(cell).toFixed(2) : "-"}</div>
       ),
     },
-    {
-      dataField: "exit_price",
-      text: "Exit Price",
-      formatter: (cell, row, rowIndex) => (
-        <div>{cell !== "" ? parseFloat(cell).toFixed(2) : "-"}</div>
-      ),
-    },
+    // {
+    //   dataField: "exit_price",
+    //   text: "Exit Price",
+    //   formatter: (cell, row, rowIndex) => (
+    //     <div>{cell !== "" ? parseFloat(cell).toFixed(2) : "-"}</div>
+    //   ),
+    // },
     {
       dataField: "exit_time",
       text: "Exit Time",
@@ -1629,7 +1629,7 @@ export default function AllEmployees() {
       {!tradeHistoryData.loading ? (
         <>
           <div className="content container-fluid" data-aos="fade-left">
-            {/* Open position start */}
+         
 
             <div className="card-body table-responsive">
               <div

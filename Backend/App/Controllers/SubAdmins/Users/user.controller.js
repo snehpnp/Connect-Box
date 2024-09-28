@@ -2128,7 +2128,7 @@ class Users {
 
       const balanceToAdd = Number(balance);
 
-      if (status === 1) {
+      if (status == 1) {
         console.log("Payment Type:", type);
 
         const userDetail = await User_model.findOne({ _id: finddata.user_id });

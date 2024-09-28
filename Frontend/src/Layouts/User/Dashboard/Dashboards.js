@@ -271,27 +271,8 @@ const Dashboards = () => {
     UserdashboardDATA();
   }, []);
 
-  const getDashboardData1 = {
-    data: {
-      monthlyTopStrategies: [
-        { strategy_name: "Strategy A", count: 50, plan: "Plan A" },
-        { strategy_name: "Strategy B", count: 30, plan: "Plan B" },
-        { strategy_name: "Strategy C", count: 20, plan: "Plan C" },
-      ],
-      weeklyTopStrategies: [
-        { strategy_name: "Strategy D", count: 15, plan: "Plan D" },
-        { strategy_name: "Strategy E", count: 10, plan: "Plan E" },
-        { strategy_name: "Strategy F", count: 5, plan: "Plan F" },
-      ],
-      dailyTopStrategies: [
-        { strategy_name: "Strategy G", count: 2, plan: "Plan G" },
-        { strategy_name: "Strategy H", count: 1, plan: "Plan H" },
-        { strategy_name: "Strategy I", count: 1, plan: "Plan I" },
-      ],
-    },
-  };
 
-  console.log("getDashboardData", getDashboardData.data);
+
 
   return (
     <div>

@@ -897,7 +897,6 @@ function Option_Chain() {
     setCreateSignalRequest([]);
   }, [strategy, expiry]);
 
-  // console.log("ExecuteTradeData.data",ExecuteTradeData.data)
 
   return (
     <>

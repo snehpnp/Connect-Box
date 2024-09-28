@@ -102,7 +102,7 @@ const Strategies = () => {
           return;
         }
         if (response.status) {
-          console.log("response", response);
+    
           Swal.fire({
             title: "Success!",
             text: "Payment Successfull",

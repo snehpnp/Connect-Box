@@ -9,7 +9,7 @@ async function connectToMongoDB() {
     await mongoose.connect(db_connect, {
       dbName: dbName,
     });
-    console.log("Successfully connected to MongoDB");
+    
   } catch (error) {
     console.error("MongoDB Connection Error:", error);
     process.exit(1); // Exit if there's a connection error
@@ -28,6 +28,4 @@ connectToMongoDB();
 // Ensure the connection is open before accessing the database
 connection.once('open', () => {
   console.log('Database connection is open');
-  
-
 });

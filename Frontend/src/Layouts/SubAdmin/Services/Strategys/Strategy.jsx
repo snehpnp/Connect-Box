@@ -458,7 +458,7 @@ function Strategy() {
 
                     })
                     .catch((error) => {
-                        console.log("Error", error);
+                       
                         setStgDescription('')
                     });
 
@@ -516,7 +516,7 @@ function Strategy() {
                 });
             }
         } catch (error) {
-            console.log("Error", error);
+       
             setAllStategy({
                 loading: false,
                 data: [],

@@ -464,11 +464,7 @@ export default function UserClientService() {
                       </Link>
                     </li>
 
-                    {/* <li className="btn btn-primary">
-                      <i className="fa fa-filter me-2" aria-hidden="true" />{" "}
-                     
-                      Filter
-                    </li> */}
+                   
                   </ul>
                 </div>
               </div>

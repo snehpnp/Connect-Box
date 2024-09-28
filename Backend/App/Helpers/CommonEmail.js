@@ -29,24 +29,24 @@ const CommonEmail = async (toEmail, subjectEmail, htmlEmail, textEmail, res) => 
 
             transport.verify((error, success) => {
                 if (error) {
-                    console.error("Error verifying transport:", error);
+                    // console.error("Error verifying transport:", error);
                 } else {
-                    console.log("Server is ready to take our messages");
+                    // console.log("Server is ready to take our messages");
                 }
             });
 
             transport.sendMail(mailOptions, (err, info) => {
                 if (err) {
-                    console.error("Error sending email:", err);
+                    // console.error("Error sending email:", err);
                     // return res.send({ status: 'Failed!!!' });
                 } else {
-                    console.log("Email has been sent:", info.response);
+                    // console.log("Email has been sent:", info.response);
                     // return res.send({ status: 'success', msg: "Mail send successfully", data: info.response });
                 }
             });
         }
     } catch (error) {
-        console.error("Error in CommonEmail function:", error);
+        // console.error("Error in CommonEmail function:", error);
         // return res.status(500).send({ status: 'error', msg: 'Internal server error' });
     }
 };

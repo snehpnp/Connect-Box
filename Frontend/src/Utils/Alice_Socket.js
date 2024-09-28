@@ -24,10 +24,7 @@ export async function GetAccessToken(data) {
 
 export async function CreateSocketSession(type, userid, userSession1) {
   try {
-    console.log("userSession1", userSession1);
-    console.log("userid", userid);
-    console.log("type", type);
-    console.log("aliceBaseUrl", aliceBaseUrl);
+
 
     return axios
       .post(`${aliceBaseUrl}ws/createSocketSess`, type, {
@@ -41,15 +38,15 @@ export async function CreateSocketSession(type, userid, userSession1) {
         },
       })
       .then((res) => {
-        console.log(res.data);
+      
         return res;
       })
       .catch((error) => {
         if (error.response) {
-          console.log(error.response.data);
+          
           return error.response;
         } else {
-          console.log(error);
+      
           return error;
         }
       });

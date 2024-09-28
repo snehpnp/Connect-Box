@@ -95,7 +95,7 @@ const AllResearcherStrategy = () => {
       await dispatch(getFreePlan(req))
         .unwrap()
         .then(async (response) => {
-          console.log(response);
+       
           if (response.status) {
             Swal.fire({
               title: "Success",

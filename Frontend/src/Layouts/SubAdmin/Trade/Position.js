@@ -116,28 +116,6 @@ export default function AllEmployees() {
 
 
 
-
-  // LOGOUT TRADING
-  // const handleTradingOff = async (id) => {
-  //   let data = { id: id, system_ip: ip };
-
-  //   await dispatch(Trading_Off_Btn(data))
-  //     .unwrap()
-  //     .then((response) => {
-  //       if (response.status) {
-  //         toast.success("Trading off successfully");
-  //         setrefresh(!refresh);
-  //       } else {
-  //         toast.error("Trading Off Error");
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.log("Trading Off Error", error);
-  //     });
-  // };
-
-
-
   const handleTradingOff = async (id) => {
     const result = await Swal.fire({
       title: "Are you sure?",

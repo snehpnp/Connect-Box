@@ -278,7 +278,7 @@ export default function AllEmployees() {
           });
         }
       } catch (error) {
-        console.log("Error:", error);
+      
         toast.error("Error fetching user data");
         setAllUsers({
           loading: true,

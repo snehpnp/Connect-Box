@@ -200,7 +200,7 @@ class Admin {
           CommonEmail(toEmail, subjectEmail, EmailData);
         })
         .catch((err) => {
-          console.log("Error  Add Time Error-", err);
+         
           if (err.keyValue) {
             return res.send({
               status: false,

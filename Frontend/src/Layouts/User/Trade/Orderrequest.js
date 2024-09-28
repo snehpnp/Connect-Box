@@ -203,7 +203,6 @@ export default function AllEmployees() {
       .catch((error) => {
         userDataRes();
 
-        console.log(error);
       });
   };
 

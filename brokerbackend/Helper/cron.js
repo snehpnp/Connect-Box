@@ -6,13 +6,13 @@ module.exports = function (app) {
     var path = require('path');
     // 1. LOGOUT AND TRADING OFF ALL USER 
     cron.schedule('* 1 * * *', () => {
-        console.log('Run First Time');
+       
         downloadAlicetoken();
         downloadFyerstoken();
     });
     
     cron.schedule('10 7 * * *', () => {
-        console.log('Run First Time');
+        
         downloadZerodhatoken()
         downloadAndExtractUpstox()
     });

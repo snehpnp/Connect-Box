@@ -68,7 +68,7 @@ function BrokerInfoForm() {
         }
       })
       .catch((error) => {
-        console.log("Error", error);
+     
       });
   };
 
@@ -86,7 +86,7 @@ function BrokerInfoForm() {
         }
       })
       .catch((error) => {
-        console.log("Error", error);
+     
       });
   };
 

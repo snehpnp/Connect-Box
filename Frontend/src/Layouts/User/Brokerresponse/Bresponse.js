@@ -278,7 +278,7 @@ export default function BrokerResponse() {
                   <tr>
                     <td>Signal</td>
                     <td>
-                      {atob(
+                      {borkerData.send_request && atob(
                         borkerData.send_request ? borkerData.send_request : "-"
                       )}
                     </td>

@@ -141,12 +141,12 @@ const DropDown = () => {
         }
       } else {
         if (response.msg === "Unauthorized!") {
-          // console.log("Dropdown", user_details.user_id, ip);
+          
           LogoutUser();
         }
       }
     } catch (error) {
-      console.log("Error", error);
+    
       setError(error.message);
     }
   };
@@ -355,14 +355,13 @@ const DropDown = () => {
             return dataDate === today;
           });
          
-          // console.log("filterData",filterData)
           setGetsubadmin(filterData);
         } else {
           setGetsubadmin([]);
         }
       }
     } catch (error) {
-      console.log("error", error);
+  
     }
   };
 
@@ -385,7 +384,6 @@ const DropDown = () => {
           });
            
           
-          // console.log("filterData",filterData)
           setGetuserdata(filterData);
         } else {
           setGetuserdata([]);
@@ -442,7 +440,6 @@ const DropDown = () => {
     }
   };
 
-console.log("profileData",profileData && profileData[0])
 
   return (
     <div className="mb-0 dropdown custom-dropdown">
