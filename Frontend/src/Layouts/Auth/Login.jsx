@@ -85,9 +85,9 @@ function Login() {
 
 
 
-  const handleRecaptchaChange = (value) => {
-    setIsVerified(!!value);
-  };
+  // const handleRecaptchaChange = (value) => {
+  //   setIsVerified(!!value);
+  // };
 
 
   
@@ -186,17 +186,17 @@ function Login() {
       return;
     }
 
-    if (isVerified) {
-      // Proceed with login or form submission
-    } else {
-      Swal.fire({
-        title: 'Oops!',
-        text: 'Please verify that you are not a robot.',
-        icon: 'error',
-        confirmButtonText: 'OK'
-      });
-      return;
-    }
+    // if (isVerified) {
+    //   // Proceed with login or form submission
+    // } else {
+    //   Swal.fire({
+    //     title: 'Oops!',
+    //     text: 'Please verify that you are not a robot.',
+    //     icon: 'error',
+    //     confirmButtonText: 'OK'
+    //   });
+    //   return;
+    // }
 
 
 
@@ -351,10 +351,10 @@ function Login() {
                           </div>
                         </div>
 
-                        <ReCAPTCHA
+                      {/*   <ReCAPTCHA
                           sitekey={sitekey}
                           onChange={handleRecaptchaChange}
-                        />
+                        /> */}
 
                         <div className="add-customer-btns d-flex justify-content-between text-end mt-3">
                           <button className="btn customer-btn-save" onClick={handleSubmit} onKeyPress={handleKeyPress} >
