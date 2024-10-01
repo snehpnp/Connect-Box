@@ -1,22 +1,12 @@
 const mongoose = require("mongoose");
 const { Schema, model } = require('mongoose');
-// Define the schema for signals and postdata
+
 const dataSchema = Schema(
   {
-    postdata: {
-      complexty: { type: String, default: null },
-      discqty: { type: String, default: null },
-      exch: { type: String, default: null },
-      pCode: { type: String, default: null },
-      prctyp: { type: String, default: null },
-      price: { type: String, default: null },
-      qty: { type: String, default: null },
-      ret: { type: String, default: null },
-      symbol_id: { type: String, default: null },
-      trading_symbol: { type: String, default: null },
-      transtype: { type: String, default: null },
-      trigPrice: { type: String, default: null },
-      orderTag: { type: String, default: null },
+    postdata: { 
+      type: Map, 
+      of: String, 
+      default: {} 
     },
     filePath: { type: String, default: null },
     signals: {

@@ -11,6 +11,8 @@ const MainSignals = db.MainSignals;
 const AliceViewModel = db.AliceViewModel;
 const BrokerResponse = db.BrokerResponse;
 const semiautoModel = db.semiautoModel;
+const get_option_chain_symbols = db.get_option_chain_symbols;
+
 var dateTime = require("node-datetime");
 const mongoose = require("mongoose");
 
@@ -596,7 +598,17 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
   var qty_percent = signals.Quntity;
   var client_key = signals.Key;
   var demo = signals.Demo;
-  console.log("item", item.postdata);
+  let findCashprice = await get_option_chain_symbols.find({symbol: input_symbol.split("#")[0]});
+   
+
+
+  if (segment.toUpperCase() == "C") {
+   
+    let qtyCreate = Number(item.stock_fund) / Number(findCashprice[0]?.price);
+    item.postdata.qty = Math.floor(qtyCreate) ? Math.floor(qtyCreate) : 1;
+
+  }
+
   var send_rr = Buffer.from(qs.stringify(item.postdata)).toString("base64");
 
   fs.appendFile(

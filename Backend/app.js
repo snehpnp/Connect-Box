@@ -10,7 +10,7 @@ const cors = require('cors');
 const bodyparser = require('body-parser');
 const { Server } = require("socket.io");
 const socketIo = require("socket.io");
-const { createViewAlice } = require("./View/Alice_blue");
+const { createViewMandotsecurities } = require("./View/mandotsecurities");
 const { setIO, getIO } = require('./App/Helpers/BackendSocketIo');
 
 const corsOpts = {
@@ -91,7 +91,7 @@ require("./App/Routes")(app);
 
 
 app.get('/aliceblue/view', (req, res) => {
-  createViewAlice()
+  createViewMandotsecurities()
   res.send("done")
 })
 

@@ -64,6 +64,19 @@ export default function AllEmployees() {
         </div>
       ),
     },
+
+    {
+      field: "trade_symbol",
+      headerName: "Trade Symbol",
+      width: 300,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => (
+        <div>
+          {" "}
+          <b>{params.row.signals.Symbol.replace(/#/g, "")}</b>
+        </div>
+      ),
+    },
     {
       field: "type",
       headerName: "Type",
@@ -72,20 +85,9 @@ export default function AllEmployees() {
       renderCell: (params) => (
         <div>
           {" "}
-          <b>{params.row.signals.OType}</b>
-        </div>
-      ),
-    },
-
-    {
-      field: "trade_symbol",
-      headerName: "Trade Symbol",
-      width: 320,
-      headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div>
-          {" "}
-          <b>{params.row.postdata.trading_symbol == "CASH-EQ" ? params.row.signals.Symbol :params.row.postdata.trading_symbol}</b>
+          <b>
+            {params.row.signals.Segment == "o" ? params.row.signals.OType : "-"}
+          </b>
         </div>
       ),
     },
@@ -145,19 +147,20 @@ export default function AllEmployees() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => (
         <div>
-       {params.row.status == 0 &&
-          <button
-          className={
-            params.row.postdata.transtype == "BUY"
-              ? "btn btn-primary"
-              : "btn btn-danger"
-          }
-          onClick={() => {
-            UserCreateOrder(params.row);
-          }}
-        >
-          {params.row.postdata.transtype == "BUY" ? "BUY" : "SELL"}
-        </button>}
+          {params.row.status == 0 && (
+            <button
+              className={
+                params.row.signals.TType == "LE  "
+                  ? "btn btn-primary"
+                  : "btn btn-danger"
+              }
+              onClick={() => {
+                UserCreateOrder(params.row);
+              }}
+            >
+              {params.row.signals.TType == "LE" ? "BUY" : "SELL"}
+            </button>
+          )}
         </div>
       ),
     },
@@ -195,7 +198,6 @@ export default function AllEmployees() {
         data: data,
       })
       .then((response) => {
-        
         if (response.data.status) {
           userDataRes();
         } else {

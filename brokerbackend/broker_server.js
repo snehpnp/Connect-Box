@@ -1053,12 +1053,7 @@ app.post("/broker-signals", async (req, res) => {
                 "mandotsecuritiesView"
               );
               const mandotsecuritiesdocuments = await mandotsecuritiesCollection
-                .find({
-                  "strategys.strategy_name": strategy,
-                  "service.name": input_symbol,
-                  "category.segment": segment,
-                  web_url: "1",
-                })
+                .find(reqFindUSer)
                 .toArray();
 
               fs.appendFile(
@@ -1754,6 +1749,9 @@ app.post("/userorder", async (req, res) => {
         .maxTimeMS(20000)
         .exec();
     }
+    let getUserInfo = await Users.find({_id: new mongoose.Types.ObjectId(req.body.data.user_id)})
+
+    console.log("getUserInfo", getUserInfo)
 
 
     const startOfDay = new Date();
@@ -1785,23 +1783,17 @@ app.post("/userorder", async (req, res) => {
         { $set: { status: "1" } } // Update status to 1
       );
 
-
-      console.log("AliceBluedocuments",   {
-        user_id:  new mongoose.Types.ObjectId(req.body.data.user_id),
-        createdAt: { $gte: startOfDay, $lte: endOfDay },
-        instrument_token: req.body.data.postdata.symbol_id,
-        status: "0",
-        "signals.Strategy": Strategy
-      });
-
-
-
       aliceblue.EntryPlaceOrder(
         AliceBluedocuments[0],
         req.body.data.filePath,
         req.body.data.signals,
         req.body.data.signal_req
       );
+
+
+
+
+
 
       return res.send({
         status: true,

@@ -1177,6 +1177,146 @@ class SignalController {
       });
     }
   }
+
+
+
+  async HoldingSignal_data(req, res) {
+    try {
+      const { subadminId } = req.body;
+      const ObjSubAdminId = new ObjectId(subadminId);
+
+      const resultUser = await User_model.findOne({
+        _id: ObjSubAdminId,
+      }).select("client_key Role");
+
+      if (!resultUser) {
+        return res.status(404).send({
+          status: false,
+          msg: "User not found",
+        });
+      }
+
+      // console.log("resultUser",resultUser)
+      var today = new Date();
+      var formattedDate =
+        today.getFullYear() +
+        "/" +
+        (today.getMonth() + 1).toString() +
+        "/" +
+        today.getDate().toString();
+
+      if (resultUser.Role == "SUBADMIN") {
+        var results = await Mainsignals.aggregate([
+          {
+            $match: { client_persnal_key: resultUser.client_key },
+          },
+          {
+            $addFields: {
+              entry_qty_percent_int: { $toInt: "$entry_qty_percent" },
+              exit_qty_percent_int: {
+                $cond: {
+                  if: {
+                    $or: [
+                      { $eq: ["$exit_qty_percent", ""] },
+                      { $eq: ["$exit_qty_percent", null] },
+                    ],
+                  },
+                  then: 0,
+                  else: { $toInt: "$exit_qty_percent" },
+                },
+              },
+            },
+          },
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $gt: ["$entry_qty_percent_int", "$exit_qty_percent_int"] },
+                  { $eq: ["$dt_date", formattedDate] },
+                ],
+              },
+            },
+          },
+
+          {
+            $lookup: {
+              from: "strategies",
+              localField: "strategy",
+              foreignField: "strategy_name",
+              as: "StrategyData",
+            },
+          },
+          {
+            $unwind: "$StrategyData",
+          },
+        ]);
+
+        return res.send({
+          status: true,
+          msg: "Data Retrieved Successfully",
+          data: results,
+        });
+      } else if (resultUser.Role == "RESEARCH") {
+        var results = await Mainsignals.aggregate([
+          {
+            $match: { client_persnal_key: resultUser.client_key },
+          },
+          {
+            $addFields: {
+              entry_qty_percent_int: { $toInt: "$entry_qty_percent" },
+              exit_qty_percent_int: {
+                $cond: {
+                  if: {
+                    $or: [
+                      { $eq: ["$exit_qty_percent", ""] },
+                      { $eq: ["$exit_qty_percent", null] },
+                    ],
+                  },
+                  then: 0,
+                  else: { $toInt: "$exit_qty_percent" },
+                },
+              },
+            },
+          },
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $gt: ["$entry_qty_percent_int", "$exit_qty_percent_int"] },
+                  { $eq: ["$dt_date", formattedDate] },
+                ],
+              },
+            },
+          },
+          {
+            $lookup: {
+              from: "researcher_strategies",
+              localField: "strategy",
+              foreignField: "strategy_name",
+              as: "StrategyData",
+            },
+          },
+          {
+            $unwind: "$StrategyData",
+          },
+        ]);
+
+        return res.send({
+          status: true,
+          msg: "Data Retrieved Successfully",
+          data: results,
+        });
+      }
+    } catch (error) {
+      console.log("Error retrieving data:", error);
+      res.send({
+        status: false,
+        msg: "Internal Server Error",
+      });
+    }
+  }
+
+
 }
 
 module.exports = new SignalController();

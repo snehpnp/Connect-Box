@@ -20,7 +20,9 @@ import {
 
 function Clientservice() {
   const dispatch = useDispatch();
-  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+  const user_id = JSON.parse(localStorage.getItem("user_details"))?.user_id;
+  const license_type = JSON.parse(localStorage.getItem("user_details"))?.license_type;
+
 
   const [ip, setIp] = useState(null);
   const [getLoginStatus, setLoginStatus] = useState(false);
@@ -384,6 +386,7 @@ function Clientservice() {
     }
   };
 
+
   return (
     <>
       <div className="content container-fluid" data-aos="fade-left">
@@ -426,7 +429,7 @@ function Clientservice() {
                       </div>
                     </li>
 
-                    <ul className="filter-list mb-0">
+                    {license_type == 2 && <ul className="filter-list mb-0">
                       <li className="btn btn-primary me-2">
                         <i className="fa fa-filter me-2" aria-hidden="true" />{" "}
                         Filter
@@ -451,7 +454,8 @@ function Clientservice() {
                         <i className="fa fa-lock me-2" aria-hidden="true" />{" "}
                         Trade Permission
                       </li>
-                    </ul>
+                    </ul>}
+
                   </ul>
                 </div>
               </div>

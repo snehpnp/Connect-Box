@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import toast from "react-hot-toast";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/DataTable";
-
 import { useDispatch } from "react-redux";
 import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
@@ -30,12 +29,6 @@ import axios from "axios";
 import io from "socket.io-client";
 
 import {
-  getAllServices,
-  getCatogries,
-  getexpirymanualtrade,
-  getAllStrikePriceApi,
-  getStrategyData,
-  gettokenbysocket,
   GetBrokerLiveDatas,
   GetDataAboveBelowRange,
   DeleteDataMakeCall,
@@ -59,6 +52,47 @@ export default function AllEmployees() {
   const [socketBackend, setSocketBackend] = useState(null);
 
   const getCompany = useGetCompany();
+
+  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
+  const token = JSON.parse(localStorage.getItem("user_details")).token;
+  const [ButtonDisabled, setButtonDisabled] = useState(false);
+  const UserLocalDetails = JSON.parse(localStorage.getItem("user_details"));
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [refresh, setrefresh] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [ForGetCSV, setForGetCSV] = useState([]);
+  const [profileData, setProfileData] = useState([]);
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [showModal, setshowModal] = useState(false);
+  const [CreateSignalRequest, setCreateSignalRequest] = useState([]);
+  const [SocketState, setSocketState] = useState("null");
+  const [tradeHistoryData, setTradeHistoryData] = useState({
+    loading: true,
+    data: [],
+  });
+  const [tradeHistoryAllData, setTradeHistoryAllData] = useState({
+    loading: true,
+    data: [],
+  });
+  const [selected, setSelected] = useState([]);
+  const [selected1, setSelected1] = useState([]);
+  const [disabled, setDisabled] = useState(false);
+  const [getLoginStatus, setLoginStatus] = useState({
+    loading: false,
+    data: [],
+  });
+  const [tableData, setTableData] = useState({
+    loading: false,
+    data: [],
+  });
+
+  const [livePriceDataDetails, setLivePriceDataDetails] = useState("");
+  const [userIdSocketRun, setUserIdSocketRun] = useState("none");
+
+
+
 
   const RunSocketUrl = async () => {
     const companyData = await getCompany();
@@ -237,46 +271,8 @@ export default function AllEmployees() {
     }
   }, [socketBackend]); // Runs whenever the socket changes
 
-  const user_id = JSON.parse(localStorage.getItem("user_details")).user_id;
-  const token = JSON.parse(localStorage.getItem("user_details")).token;
 
-  const [ButtonDisabled, setButtonDisabled] = useState(false);
 
-  const UserLocalDetails = JSON.parse(localStorage.getItem("user_details"));
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [refresh, setrefresh] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
-  const [ForGetCSV, setForGetCSV] = useState([]);
-  const [profileData, setProfileData] = useState([]);
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
-  const [showModal, setshowModal] = useState(false);
-  const [CreateSignalRequest, setCreateSignalRequest] = useState([]);
-  const [SocketState, setSocketState] = useState("null");
-  const [tradeHistoryData, setTradeHistoryData] = useState({
-    loading: true,
-    data: [],
-  });
-  const [tradeHistoryAllData, setTradeHistoryAllData] = useState({
-    loading: true,
-    data: [],
-  });
-  const [selected, setSelected] = useState([]);
-  const [selected1, setSelected1] = useState([]);
-  const [disabled, setDisabled] = useState(false);
-  const [getLoginStatus, setLoginStatus] = useState({
-    loading: false,
-    data: [],
-  });
-  const [tableData, setTableData] = useState({
-    loading: false,
-    data: [],
-  });
-
-  const [livePriceDataDetails, setLivePriceDataDetails] = useState("");
-  const [userIdSocketRun, setUserIdSocketRun] = useState("none");
 
   const GetBrokerData = async () => {
     var data = { id: user_id };
@@ -1081,9 +1077,7 @@ export default function AllEmployees() {
     setSearchInput("");
   };
 
-  
   const SetStopLostPrice = async (event, name, row, qty_persent, symbol) => {
-
     let value = event.target.value;
     if (name == "exit_time") {
       value = event.target.value.replace(":", "");
@@ -1621,6 +1615,8 @@ export default function AllEmployees() {
       currenPageStatusRef.current = "openposition";
     } else if (value == "pendingposition") {
       currenPageStatusRef.current = "pendingposition";
+    } else if (value == "holdingopenposition") {
+      currenPageStatusRef.current = "holdingopenposition";
     }
   };
 
@@ -1629,8 +1625,6 @@ export default function AllEmployees() {
       {!tradeHistoryData.loading ? (
         <>
           <div className="content container-fluid" data-aos="fade-left">
-         
-
             <div className="card-body table-responsive">
               <div
                 className="col-lg-12 col-md-12 mb-2 postiontab"
@@ -1657,6 +1651,17 @@ export default function AllEmployees() {
                     >
                       <i className="fa-solid fa-envelope pe-2"></i>
                       Pending Position
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="#solid-tab6"
+                      data-bs-toggle="tab"
+                      onClick={() => selectPageStatus("holdingopenposition")}
+                    >
+                      <i className="fa-solid fa-landmark pe-2"></i>
+                      Holdings Position
                     </a>
                   </li>
                 </ul>
@@ -2042,6 +2047,143 @@ export default function AllEmployees() {
                               </div>
                             </div>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="tab-pane" id="solid-tab6">
+                      <div className="card">
+                        <div className="card-header">
+                          <div className="row align-center">
+                            <div className="col">
+                              <h5 className="card-title mb-0">
+                                <i className="pe-2 far fa-clock"></i>Holdings Open Position
+                              </h5>
+                            </div>
+                            <div className="col-auto">
+                              <div className="list-btn">
+                                <ul className="filter-list mb-0">
+                                  <li className="">
+                                    <p
+                                      className=" mb-0 btn-filters"
+                                      data-bs-toggle="tooltip"
+                                      data-bs-placement="bottom"
+                                      title="Refresh"
+                                    >
+                                      <span>
+                                        <i className="fe fe-refresh-ccw" />
+                                      </span>
+                                    </p>
+                                  </li>
+                                  <li className="serach-li">
+                                    <div className="input-group input-block">
+                                      <input
+                                        type="text"
+                                        className="form-control"
+                                        placeholder="Search..."
+                                        aria-label="Search"
+                                        aria-describedby="search-addon"
+                                      />
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <ExportToExcel
+                                      className="btn btn-primary "
+                                      apiData={ForGetCSV}
+                                      fileName={"Order "}
+                                    />
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="card-body table-responsive">
+                        
+                          <button
+                            className="btn btn-primary mb-4 ms-auto"
+                            onClick={(e) => SquareOfAll()}
+                          >
+                            Square Off
+                          </button>
+                          <FullDataTable
+                            keyField="_id"
+                            TableColumns={columns}
+                            tableData={tradeHistoryData.data}
+                            pagination1={true}
+                            selectRow={selectRow}
+                          />
+
+                          {showModal ? (
+                            <>
+                              <Modal
+                                isOpen={showModal}
+                                size="xl"
+                                title="Request Confirmation"
+                                cancel_btn={true}
+                            
+                                btn_name="Confirm"                   
+                                Submit_Function={Done_For_Trade}
+                                Submit_Cancel_Function={Cancel_Request}
+                                handleClose={() => setshowModal(false)}
+                              >
+                                <FullDataTable
+                                  TableColumns={[
+                                    {
+                                      dataField: "index",
+                                      text: "SR. No.",
+                                      formatter: (cell, row, rowIndex) =>
+                                        rowIndex + 1,
+                                    },
+                                    {
+                                      dataField: "trade_symbol",
+                                      text: "Symbol",
+                                    },
+                                    {
+                                      dataField: "price",
+                                      text: "Price",
+                                      formatter: (cell, row, rowIndex) => (
+                                        <div>
+                                          {row.type === "BUY" ? (
+                                            <span
+                                              className={`BP1_Put_Price_${row.token}`}
+                                            ></span>
+                                          ) : (
+                                            <span
+                                              className={`SP1_Call_Price_${row.token}`}
+                                            ></span>
+                                          )}
+                                        </div>
+                                      ),
+                                    },
+                                    {
+                                      dataField: "type",
+                                      text: "Trade Type",
+                                    },
+                                    {
+                                      dataField: "old_qty_persent",
+                                      text: "Remaining Qty Persent",
+                                    },
+
+                                    {
+                                      dataField: "option_type",
+                                      text: "Call Type",
+                                    },
+                                    {
+                                      dataField: "strategy",
+                                      text: "Strategy",
+                                    },
+                                  ]}
+                                  tableData={
+                                    CreateSignalRequest && CreateSignalRequest
+                                  }
+                                />
+                              </Modal>
+                            </>
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
                     </div>

@@ -5,7 +5,6 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 const dbName = process.env.DB_NAME;
 
 
-// OPEN POSITION
 async function makecallabrView() {
     try {
         await client.connect();

@@ -118,16 +118,16 @@ class Signals {
             const { user_id } = req.body;
             const objectId = new ObjectId(user_id);
     
-            // Get the start and end of the current day
             const startOfDay = new Date();
-            startOfDay.setHours(0, 0, 0, 0); // set to midnight
+            startOfDay.setHours(0, 0, 0, 0); 
             const endOfDay = new Date();
-            endOfDay.setHours(23, 59, 59, 999); // set to just before midnight
+            endOfDay.setHours(23, 59, 59, 999); 
     
-            // Assuming your records have a 'createdAt' field
+           
             const GetAllClientServices = await semiautoModel.find({
                 user_id: objectId,
-                createdAt: { $gte: startOfDay, $lte: endOfDay } // filter for today's date
+                status: "0",
+                createdAt: { $gte: startOfDay, $lte: endOfDay } 
             });
     
             if (!GetAllClientServices || GetAllClientServices.length === 0) {
