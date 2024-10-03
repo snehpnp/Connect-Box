@@ -404,12 +404,12 @@ class strategy {
       if (key == 1) {
         const getAllstrategy = await strategy_model.find({
           maker_id: id,
-          $or: [
-            { security_fund_month: { $nin: [null, "", undefined] } },
-            { security_fund_quarterly: { $nin: [null, "", undefined] } },
-            { security_fund_half_early: { $nin: [null, "", undefined] } },
-            { security_fund_early: { $nin: [null, "", undefined] } }
-          ]
+          // $or: [
+          //   { security_fund_month: { $nin: [null, "", undefined] } },
+          //   { security_fund_quarterly: { $nin: [null, "", undefined] } },
+          //   { security_fund_half_early: { $nin: [null, "", undefined] } },
+          //   { security_fund_early: { $nin: [null, "", undefined] } }
+          // ]
         }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
 
 

@@ -53,13 +53,13 @@ export const admin_header = [
     //     Icon: "fe fe-credit-card",
     //     Data: []
     // },
-    {
-        id: 6,
-        name: 'Payment History',
-        route: "/admin/payment",
-        Icon: "fa-solid fa-clock-rotate-left",
-        Data: []
-    },
+    // {
+    //     id: 6,
+    //     name: 'Payment History',
+    //     route: "/admin/payment",
+    //     Icon: "fa-solid fa-clock-rotate-left",
+    //     Data: []
+    // },
     {
         id: 7,
         name: 'Message Broadcast',
@@ -157,18 +157,18 @@ export const subamdin_header = [
                 route: "/subadmin/servicesAll",
 
             },
-            {
+            // {
 
-                'id': 54,
+            //     'id': 54,
 
-                name: 'Payment Request',
+            //     name: 'Payment Request',
 
-                Icon: "fe fe-list",
+            //     Icon: "fe fe-list",
 
-                route: "/subadmin/pay/request",
+            //     route: "/subadmin/pay/request",
 
 
-            },
+            // },
         ]
     },
     {
@@ -206,20 +206,20 @@ export const subamdin_header = [
     //     Icon: "fa-solid fa-clock-rotate-left",
     //     Data: []
     // },
-    {
-        id: 8,
-        name: 'Trade Charges',
-        route: "/subadmin/trade/charges",
-        Icon: "fa-solid fa-clock-rotate-left",
-        Data: []
-    },
-    {
-        id: 17,
-        name: 'Strategy Transaction',
-        route: "/subadmin/strategys/transaction",
-        Icon: "fe fe-credit-card",
-        Data: []
-    },
+    // {
+    //     id: 8,
+    //     name: 'Trade Charges',
+    //     route: "/subadmin/trade/charges",
+    //     Icon: "fa-solid fa-clock-rotate-left",
+    //     Data: []
+    // },
+    // {
+    //     id: 17,
+    //     name: 'Strategy Transaction',
+    //     route: "/subadmin/strategys/transaction",
+    //     Icon: "fe fe-credit-card",
+    //     Data: []
+    // },
 
     {
         id: 9,
@@ -351,20 +351,20 @@ export const User_header = [
             }
         ]
     },
-    {
-        id: 50,
-        name: 'Trade Charges',
-        route: "/user/tradecharge",
-        Icon: "fa-solid fa-clock-rotate-left",
-        Data: []
-    },
-    {
-        id: 4,
-        name: 'Subscription ',
-        route: "/user/subscription",
-        Icon: "fe fe-credit-card",
-        Data: []
-    },
+    // {
+    //     id: 50,
+    //     name: 'Trade Charges',
+    //     route: "/user/tradecharge",
+    //     Icon: "fa-solid fa-clock-rotate-left",
+    //     Data: []
+    // },
+    // {
+    //     id: 4,
+    //     name: 'Subscription ',
+    //     route: "/user/subscription",
+    //     Icon: "fe fe-credit-card",
+    //     Data: []
+    // },
     {
         id: 7,
         name: 'Broker Response',
@@ -549,13 +549,13 @@ export const research_header = [
         Icon: "fe fe-credit-card",
         Data: []
     },
-    {
-        id: 17,
-        name: 'Strategy Transaction',
-        route: "/research/strategys/transaction",
-        Icon: "fe fe-credit-card",
-        Data: []
-    },
+    // {
+    //     id: 17,
+    //     name: 'Strategy Transaction',
+    //     route: "/research/strategys/transaction",
+    //     Icon: "fe fe-credit-card",
+    //     Data: []
+    // },
 
     {
         id: 9,

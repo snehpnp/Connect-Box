@@ -205,29 +205,29 @@ const Panel = () => {
       width: 180,
       headerClassName: styles.boldHeader,
     },
-    {
-      field: "Balance",
-      headerName: "Balance",
-      width: 190,
-      headerClassName: styles.boldHeader,
-    },
-    {
-      field: "actions",
-      headerName: "Add Balance",
-      width: 130,
-      renderCell: (params) => (
-        <div>
-          <IconButton
-            aria-label="Add"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {" "}
-            <Plus />
-          </IconButton>
-        </div>
-      ),
-    },
+    // {
+    //   field: "Balance",
+    //   headerName: "Balance",
+    //   width: 190,
+    //   headerClassName: styles.boldHeader,
+    // },
+    // {
+    //   field: "actions",
+    //   headerName: "Add Balance",
+    //   width: 130,
+    //   renderCell: (params) => (
+    //     <div>
+    //       <IconButton
+    //         aria-label="Add"
+    //         size="small"
+    //         onClick={() => setOpen(!open)}
+    //       >
+    //         {" "}
+    //         <Plus />
+    //       </IconButton>
+    //     </div>
+    //   ),
+    // },
   ];
 
   return (

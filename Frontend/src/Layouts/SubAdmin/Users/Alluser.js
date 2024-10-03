@@ -176,39 +176,39 @@ export default function AllUsers() {
         </div>
       ),
     },
-    {
-      field: "Balance",
-      headerName: "Add Balance",
-      width: 150,
-      headerClassName: styles.boldHeader,
-      renderCell: (params) => (
-        <div
-          style={{
-            backgroundColor: '#E1FFED', // Green
-            border: 'none',
-            color: '#33B469',
-            // width: "150px",
-            padding: '6px 10px', // Adjusted padding
-            textAlign: 'center',
-            textDecoration: 'none',
-            display: 'inline-block',
-            fontSize: '13px',
-            // margin: '4px 2px',
-            cursor: 'pointer',
-            borderRadius: '10px', // Rounded border radius
-            transition: 'background-color 0.3s ease',
-          }}
-          onClick={() => { setmodal(true); setInitialRowData(params.row); }}
-        >
-          <span style={{ fontWeight: 'bold', verticalAlign: 'middle' }}> +
-            <IndianRupee style={{ height: "16px", marginBottom: '-4px', marginRight: '0px', padding: "0" }} />
-            {params.value || '-'}
-          </span>
-        </div>
+    // {
+    //   field: "Balance",
+    //   headerName: "Add Balance",
+    //   width: 150,
+    //   headerClassName: styles.boldHeader,
+    //   renderCell: (params) => (
+    //     <div
+    //       style={{
+    //         backgroundColor: '#E1FFED', // Green
+    //         border: 'none',
+    //         color: '#33B469',
+    //         // width: "150px",
+    //         padding: '6px 10px', // Adjusted padding
+    //         textAlign: 'center',
+    //         textDecoration: 'none',
+    //         display: 'inline-block',
+    //         fontSize: '13px',
+    //         // margin: '4px 2px',
+    //         cursor: 'pointer',
+    //         borderRadius: '10px', // Rounded border radius
+    //         transition: 'background-color 0.3s ease',
+    //       }}
+    //       onClick={() => { setmodal(true); setInitialRowData(params.row); }}
+    //     >
+    //       <span style={{ fontWeight: 'bold', verticalAlign: 'middle' }}> +
+    //         <IndianRupee style={{ height: "16px", marginBottom: '-4px', marginRight: '0px', padding: "0" }} />
+    //         {params.value || '-'}
+    //       </span>
+    //     </div>
 
 
-      ),
-    },
+    //   ),
+    // },
     {
       field: "actions",
       headerName: "Actions",

@@ -27,12 +27,12 @@ const Sidebar = () => {
                                     <i className="fe fe-layers" /> <span>Invoice Templates</span>
                                 </a>
                             </li>
-                            <li className="nav-item">
+                            {/* <li className="nav-item">
                                 <a href="payment-settings.html" className="nav-link">
                                     <i className="fe fe-credit-card" />{" "}
                                     <span>Payment Methods</span>
                                 </a>
-                            </li>
+                            </li> */}
 
 
                             <li className="nav-item">

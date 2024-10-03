@@ -84,34 +84,34 @@ const StrategyUsers = () => {
             },
         },
 
-        {
-            dataField: "total_amount",
-            text: "Add Balance",
-            formatter: (cell, row, rowIndex) => (
-                <div
-                    style={{
-                        backgroundColor: '#E1FFED',
-                        border: 'none',
-                        color: '#33B469',
-                        padding: '6px 10px',
-                        textAlign: 'center',
-                        textDecoration: 'none',
-                        display: 'inline-block',
-                        fontSize: '13px',
-                        cursor: 'pointer',
-                        borderRadius: '10px',
-                        transition: 'background-color 0.3s ease',
-                    }}
-                    onClick={() => { setmodal(true);setRowData(row); }}
-                >
-                    <span style={{ fontWeight: 'bold', verticalAlign: 'middle' }}> +
-                        <IndianRupee style={{ height: "16px", marginBottom: '-4px', marginRight: '0px', padding: "0" }} />
-                        {cell || '-'}
-                    </span>
-                </div>
+        // {
+        //     dataField: "total_amount",
+        //     text: "Add Balance",
+        //     formatter: (cell, row, rowIndex) => (
+        //         <div
+        //             style={{
+        //                 backgroundColor: '#E1FFED',
+        //                 border: 'none',
+        //                 color: '#33B469',
+        //                 padding: '6px 10px',
+        //                 textAlign: 'center',
+        //                 textDecoration: 'none',
+        //                 display: 'inline-block',
+        //                 fontSize: '13px',
+        //                 cursor: 'pointer',
+        //                 borderRadius: '10px',
+        //                 transition: 'background-color 0.3s ease',
+        //             }}
+        //             onClick={() => { setmodal(true);setRowData(row); }}
+        //         >
+        //             <span style={{ fontWeight: 'bold', verticalAlign: 'middle' }}> +
+        //                 <IndianRupee style={{ height: "16px", marginBottom: '-4px', marginRight: '0px', padding: "0" }} />
+        //                 {cell || '-'}
+        //             </span>
+        //         </div>
 
-            ),
-        },
+        //     ),
+        // },
         {
             dataField: "",
             text: "Strategy View",

@@ -25,6 +25,8 @@ const Strategies = () => {
   const [selectStrategy, setSelectStrategy] = useState({});
   const [selectedOption, setSelectedOption] = useState("monthlyPlan");
   const handleOptionChange = (e) => setSelectedOption(e.target.value);
+  const [showModal1, setShowModal1] = useState(false);
+const [showModal2, setShowModal2] = useState([]);
 
   const GetAllStrategy = async () => {
     let data = { id: user_id };
@@ -102,7 +104,6 @@ const Strategies = () => {
           return;
         }
         if (response.status) {
-    
           Swal.fire({
             title: "Success!",
             text: "Payment Successfull",
@@ -184,7 +185,7 @@ const Strategies = () => {
                           strategy categories :{item.strategy_segment}
                         </li>
 
-                        <li>
+                        {/* <li>
                           <i className="fa-solid fa-circle-check" />
                           Monthly charges :{item.month}
                         </li>
@@ -199,15 +200,14 @@ const Strategies = () => {
                         <li>
                           <i className="fa-solid fa-circle-check" />
                           Yearly charges :{item.yearly}
-                        </li>
+                        </li> */}
                       </ul>
                       <div className="d-flex justify-content-center package-edit">
-                        {item.stg_status == 0 ? (
+                        {/* {item.stg_status == 0 ? (
                           <a
                             className="btn btn-primary"
                             onClick={(e) => {
-                              // setShowModal(true);
-                              // setSelectStrategy(item);
+                          
                               handleBuyClick(item);
                             }}
                           >
@@ -215,7 +215,13 @@ const Strategies = () => {
                           </a>
                         ) : (
                           <a className="btn btn-primary">SUBSCRIBED</a>
-                        )}
+                        )} */}
+                        <a
+                          className="btn btn-primary"
+                          onClick={(e) =>{ setShowModal1(!showModal1);setShowModal2(item)}}
+                        >
+                          View
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -330,6 +336,74 @@ const Strategies = () => {
                 Submit
               </Button>
             </Modal.Footer>
+          </Modal>
+        )}
+
+        {showModal1 && (
+          <Modal
+            show={showModal1}
+            onHide={() => setShowModal1(!showModal1)}
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>Strategy Details</Modal.Title>
+            </Modal.Header>
+            {showModal2 && 
+            <Modal.Body>
+              <div className="row">
+               {/* I AMCREATING VIEW CARD ONLY VEO ALL ETEAILS */}
+
+               <div className="col-sm-12 ">
+                <div className="packages card">
+                  <div className="package-header">
+                    <div className="d-flex justify-content-between w-100">
+                      <div className="">
+                        <h4>{showModal2.strategy_name}</h4>
+                      </div>
+                      <span className="icon-frame d-flex align-items-center justify-content-center">
+                        <img
+                          src="assets/img/icons/price-01.svg"
+                          alt="img"
+                        />
+                      </span>
+                    </div>
+                    <p>{showModal2.strategy_description}</p>
+
+                      <h6>What’s included</h6>
+                      <ul>
+                        <li>
+                          <i className="fa-solid fa-circle-check" />
+                          Maximum Trade :{showModal2.max_trade}
+                        </li>
+                        <li>
+                          <i className="fa-solid fa-circle-check" />
+                          strategy categories :{showModal2.strategy_segment}
+                        </li>
+
+                        {/* <li>
+                          <i className="fa-solid fa-circle-check" />
+                          Monthly charges :{showModal2.month}
+                        </li>
+                        <li>
+                          <i className="fa-solid fa-circle-check" />
+                          Quarterly charges :{showModal2.quarterly}
+                        </li>
+                        <li>
+                          <i className="fa-solid fa-circle-check" />
+                          Half Yearly charges :{showModal2.half_early}
+                        </li>
+                        <li>
+                          <i className="fa-solid fa-circle-check" />
+                          Yearly charges :{showModal2.yearly}
+                        </li> */}
+
+                      </ul>
+                   
+                   </div>
+                   </div></div>
+                        
+              </div>
+            </Modal.Body>}
           </Modal>
         )}
       </div>

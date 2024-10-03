@@ -16,13 +16,17 @@ import {
   GetPermissionLogsApi,
 } from "../../../ReduxStore/Slice/Users/Userdashboard.Slice";
 import Swal from "sweetalert2";
-import {fDateTime} from "../../../Utils/Date_formet";
+import { fDateTime } from "../../../Utils/Date_formet";
+
+import {Update_Broker_Url} from '../../../ReduxStore/Slice/Subadmin/allServices'
 
 const Settings = () => {
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState(0);
   const [tradeLogs, settradeLogs] = useState([]);
   const [showLogs, setShowLogs] = useState(false);
+
+  const [brokerUrl, setBrokerUrl] = useState("");
 
   let Role = JSON.parse(localStorage.getItem("user_details")).Role;
   let user_details = JSON.parse(localStorage.getItem("user_details"));
@@ -64,19 +68,16 @@ const Settings = () => {
         GetPermissionLogsApi({ id: user_details.user_id })
       ).unwrap();
       if (response.status) {
-      
         settradeLogs(response.data);
       }
-    } catch (error) {
-     
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
     GetTradePermissionLogs();
     fetchCompanyData();
+    UpdateBrokerUrl("get")
   }, []);
-
 
   const handleShowModal = () => {
     setShowLogs(true);
@@ -86,6 +87,32 @@ const Settings = () => {
   const handleCloseModal = () => {
     setShowLogs(false);
   };
+  const UpdateBrokerUrl = async (type) => {
+    try {
+      // Dispatch the action to update or get the broker URL
+      const response = await dispatch(Update_Broker_Url({
+        id: user_details.user_id,
+        brokerUrl: brokerUrl,
+        type: type,
+      }));
+      console.log(response.payload.data.length > 0 && response.payload.data[0]?.broker_url);
+  
+      // If the type is 'get', set the broker URL to the response data
+      if (type === "get") {
+        setBrokerUrl(response.payload.data.length > 0 && response.payload.data[0]?.broker_url); // Assuming `response.payload.data` has the data you need
+      } else {
+        // Show success notification for update
+        Swal.fire({
+          icon: "success",
+          title: "Broker URL Updated Successfully"
+        });
+      }
+    } catch (error) {
+      console.error("Error updating broker URL:", error);
+    }
+  };
+  
+  console.log("00000",brokerUrl);
 
   return (
     <>
@@ -153,7 +180,7 @@ const Settings = () => {
                         </a>
                       )}
 
-                      {(Role == "ADMIN" ||
+                      {/* {(Role == "ADMIN" ||
                         Role === "SUBADMIN" ||
                         Role === "RESEARCH") && (
                         <a
@@ -168,7 +195,7 @@ const Settings = () => {
                         >
                           Payment Methods
                         </a>
-                      )}
+                      )} */}
                       {Role == "ADMIN" && (
                         <a
                           className="nav-link mb-1"
@@ -240,6 +267,21 @@ const Settings = () => {
                           Trade Permission
                         </a>
                       )}
+
+                      {Role === "SUBADMIN" && (
+                        <a
+                          className="nav-link mb-1"
+                          id="v-pills-Broker-url-tab"
+                          data-bs-toggle="pill"
+                          href="#v-pills-Broker-url"
+                          role="tab"
+                          aria-controls="v-pills-Broker-url"
+                          aria-selected="false"
+                          style={{ color: "black" }}
+                        >
+                          Set Broker Url
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -308,14 +350,14 @@ const Settings = () => {
                         </div>
 
                         {/* Payment Settings */}
-                        <div
+                        {/* <div
                           className="tab-pane fade"
                           id="v-pills-payment"
                           role="tabpanel"
                           aria-labelledby="v-pills-payment-tab"
                         >
                           <Payment />
-                        </div>
+                        </div> */}
 
                         {/* Email Templates */}
                         <div
@@ -472,6 +514,48 @@ const Settings = () => {
                             </div>
                           </div>
                         </div>
+
+                        <div
+                          className="tab-pane fade"
+                          id="v-pills-Broker-url"
+                          role="tabpanel"
+                          aria-labelledby="v-pills-Broker-url-tab"
+                        >
+                          <div className="col-xl-12 col-md-12">
+                            <div className="page-header">
+                              <div className="content-page-header">
+                                <h5>Set Broker Url</h5>
+                              </div>
+                            </div>
+
+                            <div className="card p-4 shadow-sm">
+                              <div className="row">
+                                <div className="col-md-6">
+                                  <div className="form-group">
+                                    <label>Broker Url</label>
+                                    <input
+                                      type="text"
+                                      className="form-control"
+                                      placeholder="Enter Broker Url"
+                                      value={brokerUrl}
+                                      onChange={(e) =>
+                                        setBrokerUrl(e.target.value)
+                                      }
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div className="d-flex justify-content-start mt-4">
+                                <button
+                                  className="btn btn-primary px-4"
+                                  onClick={(e) => UpdateBrokerUrl("update")}
+                                >
+                                  Update Broker Url
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -481,8 +565,6 @@ const Settings = () => {
           </div>
         </div>
       </div>
-
-    
 
       {showLogs && (
         <div className="modal show d-block" tabIndex="-1" role="dialog">
@@ -533,8 +615,6 @@ const Settings = () => {
           </div>
         </div>
       )}
-
-    
     </>
   );
 };

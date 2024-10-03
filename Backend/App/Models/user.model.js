@@ -269,6 +269,10 @@ const userModel = Schema(
       type: String,
       default: null,
     },
+    broker_url: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GET_ALL_SERVICS ,GET_ALL_Catagory , Addbalanceforuser ,Get_user_balance , UpdateStatus} from "../../../Services/Subadmin/all.service";
+import { GET_ALL_SERVICS ,GET_ALL_Catagory , Addbalanceforuser ,Get_user_balance , UpdateStatus,UPDATE_BROKER_URL} from "../../../Services/Subadmin/all.service";
 
 export const getAllServices = createAsyncThunk(
   "ServiceByCatagory",
@@ -74,6 +74,17 @@ export const getCatogries = createAsyncThunk(
   );
 
 
+  export const Update_Broker_Url = createAsyncThunk(
+    "brokerurl/update",
+    async (data) => {
+      try {
+        const res = await UPDATE_BROKER_URL(data);
+        return res;
+      } catch (err) {
+        throw err;
+      }
+    }
+  );
 
 
 
@@ -87,6 +98,7 @@ const GrouoServicesSlice = createSlice({
     AddBalance:null,
     Get_User_Balance:null,
     Update_status_balance:null,
+    Update_Broker_Url:null
   
   },
 
@@ -151,6 +163,18 @@ const GrouoServicesSlice = createSlice({
         state.Update_status_balance = action.payload;
       })
       .addCase(Update_status_balance.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+      })
+      .addCase(Update_Broker_Url.pending, (state, action) => {
+        state.isLoading = true;
+        state.isError = false;
+      })
+      .addCase(Update_Broker_Url.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.Update_Broker_Url = action.payload;
+      })
+      .addCase(Update_Broker_Url.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
       })

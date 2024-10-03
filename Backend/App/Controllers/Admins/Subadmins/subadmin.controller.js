@@ -41,17 +41,18 @@ class Subadmin {
 
       const Role = "SUBADMIN";
 
-
       async function generateUniquePrefix() {
-        const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        let prefix = '';
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let prefix = "";
 
         // Retrieve all existing prefix keys from the database
-        const existingPrefixKeys = (await User_model.find().select('prefix_key')).map(user => user.prefix_key);
+        const existingPrefixKeys = (
+          await User_model.find().select("prefix_key")
+        ).map((user) => user.prefix_key);
 
         // Generate a new prefix key until it's unique
         do {
-          prefix = '';
+          prefix = "";
           for (let i = 0; i < 3; i++) {
             const randomIndex = Math.floor(Math.random() * alphabet.length);
             prefix += alphabet[randomIndex];
@@ -63,9 +64,6 @@ class Subadmin {
 
       // Example usage:
       const prifix_key = await generateUniquePrefix();
-
-
-
 
       if (prifix_key.length > 3) {
         return res.send({ status: false, msg: "prifix_key Omly 3 Digits" });
@@ -136,7 +134,7 @@ class Subadmin {
         Per_trade,
         Balance,
         broker: 2,
-        employee_id: parent_id
+        employee_id: parent_id,
       });
 
       // Save new user and count licenses
@@ -146,7 +144,7 @@ class Subadmin {
         Role: "SUBADMIN",
         admin_id: parent_id,
         Balance,
-        Mode: "CASH"
+        Mode: "CASH",
       });
       await count_licenses_add.save();
 
@@ -161,8 +159,6 @@ class Subadmin {
         msg: "Successfully added!",
         data: { UserId: savedUser.user_id },
       });
-
-
 
       var toEmail = Email;
       var subjectEmail = "User ID and Password";
@@ -181,8 +177,6 @@ class Subadmin {
     }
   }
 
-
-
   // EDIT SUBADMIN
   async EditSubadmin(req, res) {
     try {
@@ -200,8 +194,6 @@ class Subadmin {
         parent_role,
         Balance,
       } = req.body;
-
-
 
       const existingUsername = await User_model.findOne({ _id: id });
       if (!existingUsername) {
@@ -225,15 +217,14 @@ class Subadmin {
     }
   }
 
-
-
-
-
   async getallSubadmin(req, res) {
     try {
       // GET LOGIN CLIENTS
       const getAllSubAdmins = await User_model.find({ Role: "SUBADMIN" })
-        .select("profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key client_key subadmin_service_type strategy_Percentage Per_trade Create_Date").sort({ Create_Date: -1 });
+        .select(
+          "profile_img FullName UserName Email PhoneNo ActiveStatus Balance prifix_key client_key subadmin_service_type strategy_Percentage Per_trade Create_Date"
+        )
+        .sort({ Create_Date: -1 });
 
       const totalCount = getAllSubAdmins.length;
       const ActiveCount = getAllSubAdmins.filter(
@@ -288,11 +279,16 @@ class Subadmin {
         return res.send({ status: false, msg: "Empty data", data: [] });
       }
 
+      
+      const getAllSubAdmins1 = await User_model.find({ _id: getAllSubAdmins[0].parent_id });
+      
+
       // DATA GET SUCCESSFULLY
       return res.send({
         status: true,
         msg: "Get User",
         data: getAllSubAdmins,
+        data2:getAllSubAdmins1[0].broker_url
       });
     } catch (error) {
       console.log("Error get Subadmin error -", error);
@@ -331,7 +327,7 @@ class Subadmin {
     }
   }
 
-  async   GetAllRechargeDetails(req, res) {
+  async GetAllRechargeDetails(req, res) {
     try {
       let { Role } = req.body;
 
@@ -379,12 +375,11 @@ class Subadmin {
             createdAt: 1,
             username: "$user.UserName",
             subadmin_service_type: "$user.subadmin_service_type",
-
           },
         },
         {
-          $sort: { createdAt: -1 } // Sort by createdAt field in descending order
-        }
+          $sort: { createdAt: -1 }, // Sort by createdAt field in descending order
+        },
       ]);
 
       res.send({
@@ -397,7 +392,6 @@ class Subadmin {
       res.send({ status: false, msg: "Internal Server Error" });
     }
   }
-
 
   async GetAllRechargeDetailsById(req, res) {
     try {
@@ -442,33 +436,32 @@ class Subadmin {
         },
       ]);
 
-      const TotalBalance = await User_model.find({ _id: id }).select('Balance Strategy_percentage_to_researcher')
-      const StrategiesData = await Strategies.find({researcher_id:new ObjectId(id),purchase_type:"monthlyPlan"}).select('Balance Strategy_percentage_to_researcher')
+      const TotalBalance = await User_model.find({ _id: id }).select(
+        "Balance Strategy_percentage_to_researcher"
+      );
+      const StrategiesData = await Strategies.find({
+        researcher_id: new ObjectId(id),
+        purchase_type: "monthlyPlan",
+      }).select("Balance Strategy_percentage_to_researcher");
 
+      // cnsole.log("recharge/id/get",TotalBalance)
 
-
-
-
-
-// cnsole.log("recharge/id/get",TotalBalance)
-
-
-
-        return res.send({
-          status: true,
-          msg: "Recharge details fetched successfully",
-          data: rechargeDetails,
-          // Count: Count
-        });
-      
-
-
+      return res.send({
+        status: true,
+        msg: "Recharge details fetched successfully",
+        data: rechargeDetails,
+        // Count: Count
+      });
     } catch (error) {
       console.error("Error while fetching recharge details:", error);
-      return res.send({ status: false, msg: "Internal Server Error", data: [], Count: "" });
+      return res.send({
+        status: false,
+        msg: "Internal Server Error",
+        data: [],
+        Count: "",
+      });
     }
   }
-
 
   async UpdateActiveStatusSubadmin(req, res) {
     try {
@@ -526,7 +519,6 @@ class Subadmin {
         $set: { Balance: updatedBalance },
       };
 
-
       const result = await User_model.updateOne(filter, updateOperation);
 
       if (result) {
@@ -535,7 +527,7 @@ class Subadmin {
           Role: "SUBADMIN",
           admin_id: parent_id,
           Balance: Balance,
-          Mode: "CASH"
+          Mode: "CASH",
         });
         await count_licenses_add.save();
 
@@ -550,16 +542,12 @@ class Subadmin {
     }
   }
 
-
   async getallSubadminName(req, res) {
     try {
       // GET LOGIN CLIENTS
       const getAllSubAdmins = await User_model.find({
         Role: "SUBADMIN",
-      }).select(
-        "UserName"
-      );
-
+      }).select("UserName");
 
       // IF DATA NOT EXIST
       if (getAllSubAdmins.length == 0) {
@@ -575,51 +563,36 @@ class Subadmin {
         status: true,
         msg: "Get All Subadmins",
         data: getAllSubAdmins,
-
       });
     } catch (error) {
       console.log("Error getallSubadmin error -", error);
     }
   }
 
-
-
-
-
   async GetBrokerInfo(req, res) {
     try {
-      const {
-        id,
-        api_secret,
-        demat_userid,
+      const { id, api_secret, demat_userid } = req.body;
 
-      } = req.body;
-
-
-
-      const existingUsername = await User_model.find({ _id: id }).select('api_secret demat_userid api_key')
+      const existingUsername = await User_model.find({ _id: id }).select(
+        "api_secret demat_userid api_key"
+      );
       if (!existingUsername) {
         return res.send({ status: false, msg: "User Not exists", data: [] });
       }
 
-
-      return res.send({ status: true, msg: "successfully Get Broker Data!", data: existingUsername });
+      return res.send({
+        status: true,
+        msg: "successfully Get Broker Data!",
+        data: existingUsername,
+      });
     } catch (error) {
       res.send({ msg: "Error=>", error });
     }
   }
 
-
   async UpdateBrokerInfo(req, res) {
     try {
-      const {
-        id,
-        api_secret,
-        demat_userid,
-        api_key
-      } = req.body;
-
-
+      const { id, api_secret, demat_userid, api_key } = req.body;
 
       const existingUsername = await User_model.findOne({ _id: id });
       if (!existingUsername) {
@@ -630,7 +603,7 @@ class Subadmin {
       const User = {
         api_secret: api_secret,
         demat_userid: demat_userid,
-        api_key: api_key
+        api_key: api_key,
       };
       let subadminUpdate = await User_model.findByIdAndUpdate(
         existingUsername._id,
@@ -642,9 +615,38 @@ class Subadmin {
     }
   }
 
+  async UpdateBrokerUrl(req, res) {
+    try {
+      const { id, brokerUrl, type } = req.body;
 
+      if (type == "get") {
+        const existingUsername = await User_model.find({ _id: id }).select(
+          "broker_url"
+        );
+        if (!existingUsername) {
+          return res.send({ status: false, msg: "User Not exists", data: [] });
+        }
+        return res.send({
+          status: true,
+          msg: "successfully Get Broker Data!",
+          data: existingUsername,
+        });
+      } else {
+        const result = await User_model.updateOne(
+          { _id: id },
+          { broker_url: brokerUrl },
+          {
+            upsert: true,
+          }
+        );
+        console.log("result", result);
 
-
+        return res.send({ status: true, msg: "successfully Edit!", data: [] });
+      }
+    } catch (error) {
+      console.log("Error", error);
+    }
+  }
 }
 
 module.exports = new Subadmin();

@@ -217,46 +217,46 @@ function Strategy() {
             type: 'security',
             showWhen: (values) => formik.values.Service_Type == 2,
         },
-        {
-            name: "security_fund_month",
-            label: "Monthly",
-            type: "text3",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type == 2,
+        // {
+        //     name: "security_fund_month",
+        //     label: "Monthly",
+        //     type: "text3",
+        //     label_size: 3,
+        //     col_size: 3,
+        //     disable: false,
+        //     showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type == 2,
 
-        },
-        {
-            name: "security_fund_quarterly",
-            label: "Quaterly",
-            type: "text3",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type == 2,
+        // },
+        // {
+        //     name: "security_fund_quarterly",
+        //     label: "Quaterly",
+        //     type: "text3",
+        //     label_size: 3,
+        //     col_size: 3,
+        //     disable: false,
+        //     showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type == 2,
 
-        },
-        {
-            name: "security_fund_half_early",
-            label: "Half Yearly",
-            type: "text3",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type == 2,
+        // },
+        // {
+        //     name: "security_fund_half_early",
+        //     label: "Half Yearly",
+        //     type: "text3",
+        //     label_size: 3,
+        //     col_size: 3,
+        //     disable: false,
+        //     showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type == 2,
 
-        },
-        {
-            name: "security_fund_early",
-            label: "Yearly",
-            type: "text3",
-            label_size: 3,
-            col_size: 3,
-            disable: false,
-            showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type == 2,
+        // },
+        // {
+        //     name: "security_fund_early",
+        //     label: "Yearly",
+        //     type: "text3",
+        //     label_size: 3,
+        //     col_size: 3,
+        //     disable: false,
+        //     showWhen: (values) => formik.values.Service_Type == 1 || formik.values.Service_Type == 2 || subadmin_service_type == 2,
 
-        },
+        // },
         {
             name: "security_fund_fixed",
             label: "Per trade fixed amount",
@@ -349,38 +349,38 @@ function Strategy() {
                 errors.max_trade = "Please enter maximum trade";
             }
 
-            if (!values.security_fund_month) {
-                errors.security_fund_month = "Please Enter Amount";
-            }
-            if (!values.security_fund_quarterly) {
-                errors.security_fund_quarterly = "Please Enter Amount";
-            }
-            if (!values.security_fund_half_early) {
-                errors.security_fund_half_early = "Please Enter Amount";
-            }
+            // if (!values.security_fund_month) {
+            //     errors.security_fund_month = "Please Enter Amount";
+            // }
+            // if (!values.security_fund_quarterly) {
+            //     errors.security_fund_quarterly = "Please Enter Amount";
+            // }
+            // if (!values.security_fund_half_early) {
+            //     errors.security_fund_half_early = "Please Enter Amount";
+            // }
 
-            if (!values.security_fund_early) {
-                errors.security_fund_early = "Please Enter Amount";
-            }
+            // if (!values.security_fund_early) {
+            //     errors.security_fund_early = "Please Enter Amount";
+            // }
 
-            if (!values.security_fund_early) {
-                errors.security_fund_early = "Please Enter Amount";
-            }
+            // if (!values.security_fund_early) {
+            //     errors.security_fund_early = "Please Enter Amount";
+            // }
 
 
 
-            if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_month) {
-                errors.fixed_amount_per_trade_month = "Please Enter Amount";
-            }
-            if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_quarterly) {
-                errors.fixed_amount_per_trade_quarterly = "Please Enter Amount";
-            }
-            if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_early) {
-                errors.fixed_amount_per_trade_early = "Please Enter Amount";
-            }
-            if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_half_early) {
-                errors.fixed_amount_per_trade_half_early = "Please Enter Amount";
-            }
+            // if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_month) {
+            //     errors.fixed_amount_per_trade_month = "Please Enter Amount";
+            // }
+            // if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_quarterly) {
+            //     errors.fixed_amount_per_trade_quarterly = "Please Enter Amount";
+            // }
+            // if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_early) {
+            //     errors.fixed_amount_per_trade_early = "Please Enter Amount";
+            // }
+            // if (subadmin_service_type == 1 && formik.values.Service_Type == 2 && !values.fixed_amount_per_trade_half_early) {
+            //     errors.fixed_amount_per_trade_half_early = "Please Enter Amount";
+            // }
             if (subadmin_service_type == 1 && !values.Service_Type) {
                 errors.Service_Type = "Please Select Service Type";
             }
@@ -691,7 +691,7 @@ function Strategy() {
                                                             <span>Demo</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
                                                         </li>
-                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                        {/* <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                             <span>Month</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_month}/month</span>
@@ -710,7 +710,7 @@ function Strategy() {
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                             <span>Yearly</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year</span>
-                                                        </li>
+                                                        </li> */}
                                                     </ul>
                                                 ) : subadmin_service_type == 1 && stg.Service_Type == 2 ? (
                                                     <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
@@ -729,7 +729,7 @@ function Strategy() {
                                                             <span>Demo</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
                                                         </li>
-                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                        {/* <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                             <span>Month</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_month}/month , {stg.fixed_amount_per_trade_month}/per trade</span>
@@ -748,7 +748,7 @@ function Strategy() {
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                             <span>Yearly</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year , {stg.fixed_amount_per_trade_early}/per trade</span>
-                                                        </li>
+                                                        </li> */}
                                                     </ul>
                                                 ) : subadmin_service_type == 2 ? (
                                                     <ul style={{ listStyleType: 'none', paddingLeft: '0' }}>
@@ -767,7 +767,7 @@ function Strategy() {
                                                             <span>Demo</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}>Free {stg.strategy_demo_days} days</span>
                                                         </li>
-                                                        <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
+                                                        {/* <li style={{ marginBottom: '10px', display: 'flex', alignItems: 'center' }}>
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                             <span>Month</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_month}/month</span>
@@ -786,7 +786,7 @@ function Strategy() {
                                                             <i className="fa-solid fa-circle-check" style={{ marginRight: '10px' }}></i>
                                                             <span>Yearly</span>
                                                             <span style={{ marginLeft: 'auto', color: '#999' }}><IndianRupee style={{ height: '1rem' }} />{stg.security_fund_early}/year</span>
-                                                        </li>
+                                                        </li> */}
                                                     </ul>
                                                 ) : (
                                                     ""

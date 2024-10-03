@@ -47,13 +47,13 @@ const DropDown = () => {
   const [profileImage, setProfileImage] = useState("");
   const [getsubadmin, setGetsubadmin] = useState([]);
   const [socket, setSocket] = useState(null);
+  const [setBrokerUrl, setSetBrokerUrl] = useState(null);
 
   const user_details = JSON.parse(localStorage.getItem("user_details"));
   var Role = JSON.parse(localStorage.getItem("user_details")).Role;
   var token = JSON.parse(localStorage.getItem("user_details")).token;
 
   const RunSocketUrl = async () => {
-    
     const companyData = await getCompany();
 
     if (companyData[0].BackendSocketurl) {
@@ -65,8 +65,6 @@ const DropDown = () => {
     }
   };
 
-
-
   useEffect(() => {
     fetchData();
     fetchIP();
@@ -75,8 +73,6 @@ const DropDown = () => {
     gettable();
     RunSocketUrl();
   }, []);
-
-
 
   useEffect(() => {
     const storedThemeMode = localStorage.getItem("theme_mode");
@@ -98,14 +94,11 @@ const DropDown = () => {
     );
   }, [themeMode]);
 
-
   useEffect(() => {
     RunLogoutSocket();
   }, [socket]);
 
-
   const RunLogoutSocket = () => {
-
     if (socket != null) {
       if (user_details) {
         socket.on("logout", (data) => {
@@ -121,37 +114,32 @@ const DropDown = () => {
     }
   };
 
-
-
   const fetchData = async () => {
     try {
-    
       let data = { id: user_details.user_id };
       const response = await dispatch(
         ProfileInfo({ req: data, token: token })
       ).unwrap();
       if (response.status) {
+        console.log(response.data2);
+        setSetBrokerUrl(response.data2);
+
         setProfileData(response.data);
         setProfileImage(response.data[0].profile_img);
         if (response.data[0].TradingStatus == "on") {
           setLoginStatus(true);
-           
         } else {
           setLoginStatus(false);
         }
       } else {
         if (response.msg === "Unauthorized!") {
-          
           LogoutUser();
         }
       }
     } catch (error) {
-    
       setError(error.message);
     }
   };
-
-
 
   const LogoutUser = async (e) => {
     const ip = await ipAddress();
@@ -192,8 +180,6 @@ const DropDown = () => {
         console.log("Error in logout user", error);
       });
   };
-
-
 
   const fetchIP = async () => {
     try {
@@ -247,7 +233,8 @@ const DropDown = () => {
       navigate("/subadmin/wallet");
     } else if (Role == "RESEARCH") {
       navigate("/research/wallet");
-    } if (Role == "USER") {
+    }
+    if (Role == "USER") {
       navigate("/user/wallet");
     }
   };
@@ -313,34 +300,30 @@ const DropDown = () => {
       : text;
   };
 
-
   // ADMIN NOTIFICATION NOTIFICATION
   const getSubadminTableData = async () => {
     try {
-      const today = new Date().toISOString().split("T")[0]; 
-  
+      const today = new Date().toISOString().split("T")[0];
+
       const response = await dispatch(
         admin_Msg_Get({ ownerId: user_details.user_id, key: 3 })
       ).unwrap();
-  
+
       if (response.status) {
         const filteredData = response.data.filter((data) => {
-          const dataDate = data.createdAt.split("T")[0]; 
-          return dataDate === today; 
+          const dataDate = data.createdAt.split("T")[0];
+          return dataDate === today;
         });
-  
-        setPipelineData(filteredData); 
+
+        setPipelineData(filteredData);
       } else {
-        setPipelineData([]); 
+        setPipelineData([]);
       }
     } catch (error) {
       console.log("Error", error);
     } finally {
-     
-      
     }
   };
-  
 
   const gettable = async () => {
     try {
@@ -354,17 +337,14 @@ const DropDown = () => {
 
             return dataDate === today;
           });
-         
+
           setGetsubadmin(filterData);
         } else {
           setGetsubadmin([]);
         }
       }
-    } catch (error) {
-  
-    }
+    } catch (error) {}
   };
-
 
   // USER NOTIFICATION
   const getusertable = async () => {
@@ -382,8 +362,7 @@ const DropDown = () => {
               dataDate === today
             );
           });
-           
-          
+
           setGetuserdata(filterData);
         } else {
           setGetuserdata([]);
@@ -416,7 +395,7 @@ const DropDown = () => {
       .unwrap()
       .then((response) => {
         setRefresh(!refresh);
-        if (response.status){
+        if (response.status) {
           Swal.fire({
             title: "Trading Off Successfully!",
             icon: "success",
@@ -424,13 +403,11 @@ const DropDown = () => {
           });
           fetchData();
         }
-       
       })
       .catch((error) => {
         // Handle error (optional)
       });
   };
-
 
   const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
     if (check) {
@@ -440,11 +417,10 @@ const DropDown = () => {
     }
   };
 
-
   return (
     <div className="mb-0 dropdown custom-dropdown">
       <ul className="nav nav-tabs user-menu">
-        {(Role === "USER" && profileData && profileData[0]?.license_type== 2) && (
+        {Role === "USER" && profileData && profileData[0]?.license_type == 2 ? (
           <li className="toggle-li">
             <style>
               {`
@@ -511,6 +487,22 @@ const DropDown = () => {
               </label>
             </div>
           </li>
+        ) : (
+          Role === "USER" &&   <li className="toggle-li">
+            <style>
+              {`
+           .checktoggle::after {
+             display: none !important;
+           }
+         `}
+            </style>
+            <button
+              className="btn btn-primary cancel-btn me-2 mt-2 iconclass"
+              onClick={() => (window.location.href = setBrokerUrl)}
+            >
+              Add Account
+            </button>
+          </li>
         )}
 
         {Role === "SUBADMIN" && (
@@ -520,7 +512,7 @@ const DropDown = () => {
               : "PER TRADE"}
           </li>
         )}
-        {!(Role === "EMPLOYEE") ? (
+        {/* {!(Role === "EMPLOYEE") ? (
           <li className="nav-item dropdown" onClick={toggleFundsVisibility}>
             <button
               type="button"
@@ -547,7 +539,7 @@ const DropDown = () => {
               )}
             </button>
           </li>
-        ) : null}
+        ) : null} */}
 
         <li className="nav-item dropdown  flag-nav dropdown-heads">
           <a
@@ -612,7 +604,7 @@ const DropDown = () => {
                     </li>
                   ))}
 
-                { Role === "SUBADMIN"
+                {Role === "SUBADMIN"
                   ? getuserdata &&
                     getuserdata.map((data, index) => (
                       <li
@@ -652,9 +644,7 @@ const DropDown = () => {
                         </a>
                       </li>
                     ))
-
-                  : 
-                  Role === "ADMIN"
+                  : Role === "ADMIN"
                   ? getsubadmin &&
                     getsubadmin.map((data, index) => (
                       <li

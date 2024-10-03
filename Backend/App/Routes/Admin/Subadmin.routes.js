@@ -4,7 +4,7 @@
 const router = require("express").Router()
 const { verifyToken } = require('../../Middlewares/autt.middleware')
 
-const { AddSubadmin,EditSubadmin,getallSubadmin,getallSubadminClients,getOneSubadmin,GetAllRechargeDetails,UpdateActiveStatusSubadmin,AddBalanceSubadmin,getallSubadminName,GetAllRechargeDetailsById,UpdateBrokerInfo,GetBrokerInfo} = require('../../Controllers/Admins/Subadmins/subadmin.controller')
+const { AddSubadmin,EditSubadmin,getallSubadmin,getallSubadminClients,getOneSubadmin,GetAllRechargeDetails,UpdateActiveStatusSubadmin,AddBalanceSubadmin,getallSubadminName,GetAllRechargeDetailsById,UpdateBrokerInfo,GetBrokerInfo,UpdateBrokerUrl} = require('../../Controllers/Admins/Subadmins/subadmin.controller')
 
 const {DashboardChartData,DashboardBalanceData} =require('../../Controllers/SubAdmins/DashBoardData/DashboardData')
 const {ProfileImagedata,updateProfile,profileId,Profilestatus, GetParentType }=require("../../Controllers/Admins/Profile/ProfileImage")
@@ -48,7 +48,7 @@ router.post("/Profilestatus",Profilestatus)
 router.post("/parentname/get",GetParentType)
 
 
-
+router.post("/brokerurl/update",UpdateBrokerUrl)
 
 
 

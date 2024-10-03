@@ -155,7 +155,7 @@ const EditClient = () => {
       label: "Subadmin Service Type",
       type: "select",
       options: [
-        { label: "Per Trade", value: "1" },
+        // { label: "Per Trade", value: "1" },
         { label: "Per Strategy", value: "2" },
       ],
       label_size: 12,

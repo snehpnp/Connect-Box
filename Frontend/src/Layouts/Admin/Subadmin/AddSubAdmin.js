@@ -74,9 +74,9 @@ const AddClient = () => {
       } else if (!/^\d{10}$/.test(values.phone)) {
         errors.phone = "Please enter a valid 10-digit phone number.";
       }
-      if (!values.balance) {
-        errors.balance = "Please Enter Balance";
-      }
+      // if (!values.balance) {
+      //   errors.balance = "Please Enter Balance";
+      // }
       if (!values.password) {
         errors.password = "Please Enter Password";
       }
@@ -178,14 +178,14 @@ const AddClient = () => {
       col_size: 6,
       disable: false,
     },
-    {
-      name: "balance",
-      label: "Balance",
-      type: "text3",
-      label_size: 12,
-      col_size: 6,
-      disable: false,
-    },
+    // {
+    //   name: "balance",
+    //   label: "Balance",
+    //   type: "text3",
+    //   label_size: 12,
+    //   col_size: 6,
+    //   disable: false,
+    // },
     {
       name: "password",
       label: "Password",
@@ -199,7 +199,7 @@ const AddClient = () => {
       label: "Subadmin Service Type",
       type: "select",
       options: [
-        { label: "Per Trade", value: "1" },
+        // { label: "Per Trade", value: "1" },
         { label: "Per Strategy", value: "2" },
       ],
       label_size: 12,

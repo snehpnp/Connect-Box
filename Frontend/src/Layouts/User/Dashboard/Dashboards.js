@@ -444,7 +444,7 @@ const Dashboards = () => {
               </div>
             </div>
 
-            <div className="col-xl-5 d-flex">
+            {/* <div className="col-xl-5 d-flex">
               <div className="card super-admin-dash-card">
                 <div className="card-header">
                   <div className="row align-center">
@@ -514,8 +514,8 @@ const Dashboards = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="col-xl-7 d-flex">
+            </div> */}
+            <div className="col-xl-12 d-flex">
               <div className="card super-admin-dash-card">
                 <div className="card-header">
                   <div className="d-flex justify-content-between align-items-center">

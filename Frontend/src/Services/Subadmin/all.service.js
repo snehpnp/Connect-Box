@@ -226,3 +226,15 @@ export async function UpdateStatus(data) {
         return await err
     }
 }
+
+export async function UPDATE_BROKER_URL(data) {
+    try {
+        const res = await axios.post(`${Config.base_url}brokerurl/update`, data, {
+            data: {}
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err
+    }
+}

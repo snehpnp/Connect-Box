@@ -70,7 +70,8 @@ function Payment() {
 
 
   return (
-    <>{getCompanyData && (
+    <>
+    {getCompanyData && (
       <div className="col-xl-12 col-md-12">
         <div className="card">
           <div className="card-body w-100">
@@ -78,7 +79,7 @@ function Payment() {
               <h5>Payment Settings</h5>
             </div>
 
-            {/* RAZORPAY */}
+ 
             <div className="form-group-item border-0 p-0">
               <div className="row">
                 <div className="col-12">
