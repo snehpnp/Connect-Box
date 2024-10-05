@@ -3,7 +3,7 @@
 const router = require("express").Router()
 const { verifyToken } = require('../../Middlewares/autt.middleware')
 
-const { AddStragegy, GetOneStragegy, EditStragegy, GetAllStrategy, DeleteStragegy, GetAllStrategyForClient, ClientsAccordingToStrategy, GetAddRemoveStrategy, UpdateAddRemoveStrategy,GetAllSubadminStrategy , getAllResearcherStrategy,subadminTradeCharges,userTradeCharges } = require('../../Controllers/SubAdmins/strategys/strategy.controller')
+const { AddStragegy, GetOneStragegy, EditStragegy, GetAllStrategy, DeleteStragegy, GetAllStrategyForClient, ClientsAccordingToStrategy, GetAddRemoveStrategy, UpdateAddRemoveStrategy,GetAllSubadminStrategy , getAllResearcherStrategy,subadminTradeCharges,userTradeCharges,AddPlandata,EditPlandata,DeletePlandata,GetOnePlan,GetAllPlan,GetPlanData } = require('../../Controllers/SubAdmins/strategys/strategy.controller')
 
 const { GetDashboardData ,EmployeeDashboardData} = require('../../Controllers/SubAdmins/DashBoardData/DashboardData')
 
@@ -19,20 +19,12 @@ router.post('/strategy_for_add_client/getall', GetAllStrategyForClient);
 router.post('/strategy/delete', DeleteStragegy);
 router.post('/strategy/client/get', ClientsAccordingToStrategy);
 router.post('/sub/strategy/getall', GetAllSubadminStrategy);
-
 router.post('/sub/trade/charges', subadminTradeCharges);
 router.post('/user/trade/charges', userTradeCharges);
-
-
- 
 
 //DashBoard Route
 router.post('/data/dashboard', GetDashboardData);
 router.post('/employee/dashboard', EmployeeDashboardData);
-
-
-
-
 
 //Employee Related Routes
 router.post('/employee/data', allEmployeeData);
@@ -44,6 +36,15 @@ router.post('/employee/statusUpdate', UpdateEmployeeStatus);
 router.post('/subadmin/allsearcher/strategy', getAllResearcherStrategy);
 router.post('/get/strategy', GetAllStrategyForEmployee);
 router.post('/get/allgroupServices', getAllgroupServices);
+
+
+//Plan Related Routes
+router.post('/plan/add', AddPlandata);
+router.post('/plan/edit', EditPlandata);
+router.post('/plan/delete', DeletePlandata);
+router.post('/plan/get', GetOnePlan);
+router.post('/plan/getall', GetAllPlan);
+router.post('/plan/getdata', GetPlanData);
 
 
 

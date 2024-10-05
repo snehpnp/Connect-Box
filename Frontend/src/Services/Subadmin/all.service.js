@@ -238,3 +238,15 @@ export async function UPDATE_BROKER_URL(data) {
         return await err
     }
 }
+export async function GetPlanData(data){
+   try{
+       const res= await axios.post(`${Config.base_url}plan/getdata`, data, {
+           data: {}
+       })
+       return await res?.data
+   }
+   catch(err){
+       
+       return await err
+   }
+}

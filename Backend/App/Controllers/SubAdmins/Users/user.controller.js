@@ -53,6 +53,7 @@ class Users {
         per_trade_value,
         Balance,
         employee_id,
+        plan
       } = req.body;
 
       var Role = "USER";
@@ -245,6 +246,7 @@ class Users {
           per_trade_value: per_trade_value,
           Balance: Balance || 0,
           employee_id: employee_id ? employee_id : null,
+          plan_id: plan,
         },
       ])
         .then(async (data) => {
@@ -1361,6 +1363,7 @@ class Users {
             ? EndDate1
             : null,
         employee_id: req.employee_id,
+        plan_id: req.plan,
       };
 
       const User_Update = await User_model.updateOne(

@@ -254,7 +254,7 @@ const AllResearcherStrategy = () => {
 
                             {stg.stg_active != 1 ? (
                               <div className="d-flex justify-content-center package-edit">
-                                <button
+                                {/* <button
                                   type="submit"
                                   className="btn btn-primary"
                                   onClick={(e) => {
@@ -263,7 +263,7 @@ const AllResearcherStrategy = () => {
                                   }}
                                 >
                                   Buy
-                                </button>
+                                </button> */}
                               </div>
                             ) : (
                               <div className="d-flex justify-content-center package-edit">

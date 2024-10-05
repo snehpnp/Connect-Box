@@ -7,6 +7,7 @@ const User = db.user;
 const strategy_client_model = db.strategy_client;
 const tradeCharge_Modal = db.tradeCharge;
 const Activity_logs = db.Activity_logs;
+const Plan = db.Plan;
 
 const mongoose = require("mongoose");
 
@@ -49,10 +50,9 @@ class strategy {
         });
       }
 
-
       const maker_id_find = await User.findOne({
         _id: maker_id,
-        Role: Role
+        Role: Role,
       });
       if (!maker_id_find) {
         return res.send({ status: false, msg: "Maker Id Is Wrong", data: [] });
@@ -134,19 +134,17 @@ class strategy {
         maker_id: maker_id_find._id,
         Service_Type: Service_Type,
         max_trade: max_trade || null,
-        strategy_percentage: strategy_percentage || null
+        strategy_percentage: strategy_percentage || null,
       });
 
       strategy_Data
         .save()
         .then(async (data) => {
-          return res
-            .status(200)
-            .json({
-              status: true,
-              msg: "Strategy Add successfully!",
-              data: strategy_Data._id,
-            });
+          return res.status(200).json({
+            status: true,
+            msg: "Strategy Add successfully!",
+            data: strategy_Data._id,
+          });
         })
         .catch((err) => {
           console.log("Error Add Time Error-", err);
@@ -191,9 +189,6 @@ class strategy {
         strategy_percentage,
         Role,
       } = req.body;
-
-
-
 
       if (!_id || _id == "" || _id == null) {
         return res.send({ status: false, msg: "Please Enter Id", data: [] });
@@ -263,27 +258,25 @@ class strategy {
       }
 
       function compareObjects(oldObj, newObj) {
-
         if (oldObj.strategy_category != newObj.strategy_category) {
           const Activity_logsData = new Activity_logs({
             user_Id: maker_id,
             admin_Id: maker_id,
             category: "EDIT_STRATEGY",
-            message: "Strategy Category Update " + oldObj.strategy_category + " " + newObj.strategy_category,
+            message:
+              "Strategy Category Update " +
+              oldObj.strategy_category +
+              " " +
+              newObj.strategy_category,
             maker_role: "SUBADMIN",
             device: "web",
-            system_ip: ""
+            system_ip: "",
           });
           Activity_logsData.save();
         }
-
       }
 
-
       const changes = compareObjects(strategy_check, req.body);
-
-
-
 
       const filter = { _id: _id };
       const update_strategy = {
@@ -308,7 +301,7 @@ class strategy {
           maker_id: maker_id_find._id,
           Service_Type: Service_Type,
           max_trade: max_trade || null,
-          strategy_percentage: strategy_percentage || null
+          strategy_percentage: strategy_percentage || null,
         },
       };
 
@@ -343,13 +336,11 @@ class strategy {
         });
       }
 
-      return res
-        .status(200)
-        .json({
-          status: true,
-          msg: "Strategy Get successfully!",
-          data: exist_strategy,
-        });
+      return res.status(200).json({
+        status: true,
+        msg: "Strategy Get successfully!",
+        data: exist_strategy,
+      });
     } catch (error) {
       console.log("Error Strategy Get One error -", error.keyValue);
     }
@@ -360,18 +351,17 @@ class strategy {
     try {
       const { page, id } = req.body;
 
-
       // var getAllTheme = await strategy_model.find()
       const getAllstrategy = await strategy_model
         .find({ maker_id: id })
         .sort({ createdAt: -1 })
         .populate({
-          path: 'researcher_id',
-          select: 'UserName',
+          path: "researcher_id",
+          select: "UserName",
         })
         .select(
-          '_id strategy_name strategy_description strategy_demo_days max_trade security_fund_month security_fund_quarterly security_fund_half_early security_fund_early fixed_amount_per_trade_early fixed_amount_per_trade_month fixed_amount_per_trade_quarterly fixed_amount_per_trade_half_early strategy_category strategy_segment strategy_image Service_Type maker_id createdAt updatedAt __v researcher_id');
-
+          "_id strategy_name strategy_description strategy_demo_days max_trade security_fund_month security_fund_quarterly security_fund_half_early security_fund_early fixed_amount_per_trade_early fixed_amount_per_trade_month fixed_amount_per_trade_quarterly fixed_amount_per_trade_half_early strategy_category strategy_segment strategy_image Service_Type maker_id createdAt updatedAt __v researcher_id"
+        );
 
       // IF DATA NOT EXIST
       if (getAllstrategy.length == 0) {
@@ -389,7 +379,6 @@ class strategy {
     }
   }
 
-
   // GET ALL STRATEGYS
   async GetAllSubadminStrategy(req, res) {
     try {
@@ -402,16 +391,18 @@ class strategy {
       }
 
       if (key == 1) {
-        const getAllstrategy = await strategy_model.find({
-          maker_id: id,
-          // $or: [
-          //   { security_fund_month: { $nin: [null, "", undefined] } },
-          //   { security_fund_quarterly: { $nin: [null, "", undefined] } },
-          //   { security_fund_half_early: { $nin: [null, "", undefined] } },
-          //   { security_fund_early: { $nin: [null, "", undefined] } }
-          // ]
-        }).sort({ createdAt: -1 }).select('_id strategy_name Service_Type');
-
+        const getAllstrategy = await strategy_model
+          .find({
+            maker_id: id,
+            // $or: [
+            //   { security_fund_month: { $nin: [null, "", undefined] } },
+            //   { security_fund_quarterly: { $nin: [null, "", undefined] } },
+            //   { security_fund_half_early: { $nin: [null, "", undefined] } },
+            //   { security_fund_early: { $nin: [null, "", undefined] } }
+            // ]
+          })
+          .sort({ createdAt: -1 })
+          .select("_id strategy_name Service_Type");
 
         // IF DATA NOT EXIST
         if (getAllstrategy.length == 0) {
@@ -425,24 +416,25 @@ class strategy {
           msg: "Get All Startegy",
           data: getAllstrategy,
         });
-
       } else if (key == 2) {
-
-        const findUser = await User.find({ _id: id }).select('prifix_key Role')
+        const findUser = await User.find({ _id: id }).select("prifix_key Role");
         const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
 
         if (findUser[0].Role == "SUBADMIN") {
-          const getAllstrategy = await strategy_model.find(
-            { strategy_name: { $regex: '^' + prefix } } // Using regex to match the starting 3 letters
-          )
+          const getAllstrategy = await strategy_model
+            .find(
+              { strategy_name: { $regex: "^" + prefix } } // Using regex to match the starting 3 letters
+            )
             .sort({ createdAt: -1 })
-            .select('_id strategy_name Service_Type');
-
-
+            .select("_id strategy_name Service_Type");
 
           // IF DATA NOT EXIST
           if (getAllstrategy.length == 0) {
-            res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+            res.send({
+              status: false,
+              msg: "Empty data",
+              data: getAllstrategy,
+            });
             return;
           }
 
@@ -453,17 +445,18 @@ class strategy {
             data: getAllstrategy,
           });
         } else if (findUser[0].Role == "RESEARCH") {
-          const getAllstrategy = await researcher_strategy.find(
-            { maker_id: findUser[0]._id }
-          )
+          const getAllstrategy = await researcher_strategy
+            .find({ maker_id: findUser[0]._id })
             .sort({ createdAt: -1 })
-            .select('_id strategy_name');
-
-
+            .select("_id strategy_name");
 
           // IF DATA NOT EXIST
           if (getAllstrategy.length == 0) {
-            res.send({ status: false, msg: "Empty data", data: getAllstrategy });
+            res.send({
+              status: false,
+              msg: "Empty data",
+              data: getAllstrategy,
+            });
             return;
           }
 
@@ -474,24 +467,19 @@ class strategy {
             data: getAllstrategy,
           });
         }
-
-
-
-
       } else {
-
-        const findUser = await User.find({ Role: "SUBADMIN", _id: id }).select('prifix_key')
+        const findUser = await User.find({ Role: "SUBADMIN", _id: id }).select(
+          "prifix_key"
+        );
 
         const prefix = findUser[0].prifix_key.substring(0, 3); // Extracting first 3 characters from prefix_key
 
-
-        const getAllstrategy = await strategy_model.find(
-          { strategy_name: { $regex: '^' + prefix } } // Using regex to match the starting 3 letters
-        )
+        const getAllstrategy = await strategy_model
+          .find(
+            { strategy_name: { $regex: "^" + prefix } } // Using regex to match the starting 3 letters
+          )
           .sort({ createdAt: -1 })
-          .select('_id strategy_name Service_Type');
-
-
+          .select("_id strategy_name Service_Type");
 
         // IF DATA NOT EXIST
         if (getAllstrategy.length == 0) {
@@ -506,26 +494,28 @@ class strategy {
           data: getAllstrategy,
         });
       }
-
-
-
     } catch (error) {
       console.log("Error Get All Strategy Error-", error);
     }
   }
-
-
 
   async GetAllStrategyForClient(req, res) {
     try {
       const { id } = req.body;
 
       // Retrieve strategies based on maker_id
-      const getAllStrategies = await strategy_model.find({ maker_id: id }, "_id strategy_name");
+      const getAllStrategies = await strategy_model.find(
+        { maker_id: id },
+        "_id strategy_name"
+      );
 
       // Check if data exists
       if (getAllStrategies.length === 0) {
-        return res.send({ status: false, msg: "Empty data", data: getAllStrategies });
+        return res.send({
+          status: false,
+          msg: "Empty data",
+          data: getAllStrategies,
+        });
       }
 
       // Data retrieval successful
@@ -539,7 +529,6 @@ class strategy {
       res.status(500).send({ status: false, msg: "Internal Server Error" });
     }
   }
-
 
   // DELETE STRATEGY IN A COLLECTION
   async DeleteStragegy(req, res) {
@@ -571,20 +560,17 @@ class strategy {
       // Delete the strategy
       const deleteResult = await strategy_model.deleteOne({ _id: _id });
       if (deleteResult.deletedCount === 1) {
-        return res
-          .status(200)
-          .send({
-            status: true,
-            msg: "Strategy deleted successfully!",
-            data: [],
-          });
+        return res.status(200).send({
+          status: true,
+          msg: "Strategy deleted successfully!",
+          data: [],
+        });
       } else {
         return res
           .status(500)
           .send({ status: false, msg: "Error deleting strategy", data: [] });
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.log("Error Delete Strategy Error:", error);
       return res
         .status(500)
@@ -746,12 +732,9 @@ class strategy {
 
   // Update Add Remove Strategy
   async UpdateAddRemoveStrategy(req, res) {
-
-
     try {
       if (req.body.clientId.length > 0) {
         req.body.clientId.forEach(async (element) => {
-
           //  ADD  STRATEGY CLIENT
           const strategy_client = new strategy_client_model({
             strategy_id: req.body.strategyId,
@@ -767,7 +750,6 @@ class strategy {
             strategy_id: req.body.strategyId,
             user_id: element,
           });
-
         });
       }
 
@@ -780,31 +762,26 @@ class strategy {
     }
   }
 
-
-
-
-
   // GET ALL RESEARCHER STRATEGYS
   async getAllResearcherStrategy(req, res) {
-
-    const { id } = req.body
+    const { id } = req.body;
 
     const researchUsersWithStrategies = await User.aggregate([
       {
         $match: {
-          Role: "RESEARCH"
-        }
+          Role: "RESEARCH",
+        },
       },
       {
         $lookup: {
           from: "researcher_strategies",
           localField: "_id",
           foreignField: "maker_id",
-          as: "strategies"
-        }
+          as: "strategies",
+        },
       },
       {
-        $unwind: "$strategies"
+        $unwind: "$strategies",
       },
       {
         $addFields: {
@@ -812,10 +789,10 @@ class strategy {
             $cond: {
               if: { $in: [new ObjectId(id), "$strategies.collaboration_id"] },
               then: 1,
-              else: 0
-            }
-          }
-        }
+              else: 0,
+            },
+          },
+        },
       },
       {
         $project: {
@@ -833,128 +810,431 @@ class strategy {
           strategy_percentage: "$strategies.strategy_percentage",
           security_fund: "$strategies.security_fund",
           monthly_charges: "$strategies.monthly_charges",
-          stg_active: "$stg_active"
-        }
-      }
+          stg_active: "$stg_active",
+        },
+      },
     ]);
-
-
 
     if (!researchUsersWithStrategies) {
       return res.send({
         status: false,
         msg: "NO Researcher Found",
-        data: []
-      })
+        data: [],
+      });
     }
 
-    return res.send({ status: true, msg: "All strategy fetche successfully ", data: researchUsersWithStrategies })
-
-
-
+    return res.send({
+      status: true,
+      msg: "All strategy fetche successfully ",
+      data: researchUsersWithStrategies,
+    });
   }
-
-
-
 
   async subadminTradeCharges(req, res) {
-
-    const { id } = req.body
+    const { id } = req.body;
     var TradechargesWithUserDetails = await tradeCharge_Modal.aggregate([
       {
         $lookup: {
           from: "users",
           localField: "user_id",
           foreignField: "_id",
-          as: "user_details"
-        }
+          as: "user_details",
+        },
       },
       {
-        $unwind: "$user_details"
+        $unwind: "$user_details",
       },
       {
         $match: {
-          "user_details.parent_id": id
-        }
+          "user_details.parent_id": id,
+        },
       },
       {
         $project: {
-          "UserName": "$user_details.UserName",
-          "parent_id": "$user_details.parent_id",
+          UserName: "$user_details.UserName",
+          parent_id: "$user_details.parent_id",
           order_id: 1,
           user_charge: 1,
           admin_charge: 1,
           createdAt: 1,
-          user_id: 1
-        }
+          user_id: 1,
+        },
       },
       {
         $sort: {
-          createdAt: -1
-        }
-      }
-
+          createdAt: -1,
+        },
+      },
     ]);
 
-    return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails })
-
+    return res.send({
+      status: true,
+      msg: "All strategy fetche successfully ",
+      data: TradechargesWithUserDetails,
+    });
   }
-
-
-
 
   async userTradeCharges(req, res) {
-
-    const { id } = req.body
+    const { id } = req.body;
 
     var TradechargesWithUserDetails = await tradeCharge_Modal.aggregate([
       {
         $match: {
-          user_id: new ObjectId(id)
-        }
+          user_id: new ObjectId(id),
+        },
       },
       {
         $lookup: {
           from: "users",
           localField: "user_id",
           foreignField: "_id",
-          as: "user_details"
-        }
+          as: "user_details",
+        },
       },
       {
-        $unwind: "$user_details"
+        $unwind: "$user_details",
       },
 
       {
         $project: {
-          "UserName": "$user_details.UserName",
-          "parent_id": "$user_details.parent_id",
-          "Balance": "$user_details.Balance",
+          UserName: "$user_details.UserName",
+          parent_id: "$user_details.parent_id",
+          Balance: "$user_details.Balance",
           order_id: 1,
           user_charge: 1,
           admin_charge: 1,
           createdAt: 1,
-          user_id: 1
-        }
+          user_id: 1,
+        },
       },
       {
         $sort: {
-          createdAt: -1
-        }
-      }
+          createdAt: -1,
+        },
+      },
     ]);
 
-
     const UserBalance = await User.findOne({
-      _id: new ObjectId(id)
-   
-    }).select("Balance")
+      _id: new ObjectId(id),
+    }).select("Balance");
 
-    return res.send({ status: true, msg: "All strategy fetche successfully ", data: TradechargesWithUserDetails, data1: UserBalance.Balance})
-
+    return res.send({
+      status: true,
+      msg: "All strategy fetche successfully ",
+      data: TradechargesWithUserDetails,
+      data1: UserBalance.Balance,
+    });
   }
 
+  async AddPlandata(req, res) {
+    try {
+      const {
+        plan,
+        Type,
+        plan_segment,
+        max_trade,
+        monthly_price,
+        quarterly_price,
+        half_yearly_price,
+        yearly_price,
+        admin_id,
+        description,
+        acttype,
+      } = req.body;
 
+      // Check if it's an add operation
+      if (acttype === "add") {
+        const exist_plan = await Plan.findOne({ name: plan });
+
+        // Plan already exists
+        if (exist_plan) {
+          return res.status(400).send({
+            status: false,
+            msg: "Plan already exists",
+            data: [],
+          });
+        }
+
+        // Create a new Plan
+        const newPlan = new Plan({
+          name: plan,
+          type: Type,
+          segments: plan_segment,
+          monthlyPrice: monthly_price,
+          quaterlyPrice: quarterly_price,
+          halfYearlyPrice: half_yearly_price,
+          yealryPrice: yearly_price,
+          admin_id: admin_id,
+          max_trade: max_trade,
+          description: description,
+        });
+
+        // Save the new plan
+        await newPlan.save();
+        return res.status(201).json({
+          status: true,
+          msg: "Plan added successfully!",
+          data: newPlan._id,
+        });
+      } else {
+        // Editing an existing plan
+        const exist_plan = await Plan.findOne({ name: plan });
+
+        if (!exist_plan) {
+          return res.status(404).send({
+            status: false,
+            msg: "Plan does not exist",
+            data: [],
+          });
+        }
+
+        // Update the existing plan
+        const updatedPlan = await Plan.findOneAndUpdate(
+          { _id: exist_plan._id },
+          {
+            $set: {
+              type: Type,
+              segments: plan_segment,
+              monthlyPrice: monthly_price,
+              quaterlyPrice: quarterly_price,
+              halfYearlyPrice: half_yearly_price,
+              yealryPrice: yearly_price,
+              max_trade: max_trade,
+              description: description,
+            },
+          },
+          { new: true }
+        );
+
+        if (!updatedPlan) {
+          return res.status(500).send({
+            status: false,
+            msg: "Failed to update the plan",
+            data: [],
+          });
+        }
+
+        return res.status(200).send({
+          status: true,
+          msg: "Plan updated successfully!",
+          data: updatedPlan,
+        });
+      }
+    } catch (error) {
+      console.error("Error occurred:", error);
+      return res.status(500).send({
+        status: false,
+        msg: "Server error",
+        data: [],
+      });
+    }
+  }
+
+  async EditPlandata(req, res) {
+    try {
+      const {
+        _id,
+        plan,
+        Type,
+        plan_segment,
+        max_trade,
+        monthly_price,
+        quarterly_price,
+        half_yearly_price,
+        yearly_price,
+        admin_id,
+        description,
+      } = req.body;
+
+      if (!_id || _id == "" || _id == null) {
+        return res.send({ status: false, msg: "Please Enter Id", data: [] });
+      }
+
+      const plan_check = await Plan.findOne({ _id: _id });
+      if (!plan_check) {
+        return res.send({ status: false, msg: "Plan Not exist", data: [] });
+      }
+
+      const filter = { _id: _id };
+      const update_plan = {
+        $set: {
+          name: plan,
+          type: Type,
+          segments: plan_segment,
+          monthlyPrice: monthly_price,
+          quaterlyPrice: quarterly_price,
+          halfYearlyPrice: half_yearly_price,
+          yealryPrice: yearly_price,
+          admin_id: admin_id,
+          max_trade: max_trade,
+          description: description,
+        },
+      };
+
+      // UPDATE STRATEGY INFORMATION
+      const result = await Plan.updateOne(filter, update_plan);
+      if (!result) {
+        return res.send({ status: false, msg: "Plan not Edit", data: [] });
+      }
+      return res.send({
+        status: true,
+        msg: "Plan Edit successfully!",
+        data: result,
+      });
+    } catch (error) {
+      console.log("Error Strategy add error -", error.keyValue);
+    }
+  }
+
+  async DeletePlandata(req, res) {
+    try {
+      const { _id } = req.body;
+
+      // CHECK IF STRATEGY EXISTS
+      const plan_check = await Plan.findOne({ _id: _id });
+      if (!plan_check) {
+        return res.send({
+          status: false,
+          msg: "Plan does not exist",
+          data: [],
+        });
+      }
+
+      const UserPlan = await User.find({ plan_id: plan_check._id });
+
+      if (UserPlan.length > 0) {
+        return res.send({
+          status: false,
+          msg: "Plan is assigned to a user",
+          data: [],
+        });
+      }
+
+      // Delete the strategy
+      const deleteResult = await Plan.deleteOne({ _id: _id });
+      if (deleteResult.deletedCount === 1) {
+        return res.status(200).send({
+          status: true,
+          msg: "Plan deleted successfully!",
+          data: [],
+        });
+      } else {
+        return res
+          .status(500)
+          .send({ status: false, msg: "Error deleting Plan", data: [] });
+      }
+    } catch (error) {
+      console.log("Error Delete Plan Error:", error);
+      return res
+        .status(500)
+        .send({ status: false, msg: "An error occurred", data: [] });
+    }
+  }
+
+  async GetOnePlan(req, res) {
+    try {
+      const { id } = req.body;
+
+      const exist_plan = await Plan.findOne({ _id: id });
+      if (!exist_plan) {
+        return res.send({
+          status: false,
+          msg: "Plan Not exists",
+          data: [],
+        });
+      }
+
+      return res.status(200).json({
+        status: true,
+        msg: "Plan Get successfully!",
+        data: exist_plan,
+      });
+    } catch (error) {
+      console.log("Error Plan Get One error -", error.keyValue);
+    }
+  }
+
+  async GetAllPlan(req, res) {
+    try {
+      const { page, id } = req.body;
+
+      const UserPlan = await User.find({ _id: id }).select(
+        "Role parent_id plan_id"
+      );
+
+
+      if (UserPlan && UserPlan.length == 0) {
+        return res.send({
+          status: false,
+          msg: "User not found",
+          data: [],
+        });
+      }
+
+      if (UserPlan[0].Role == "SUBADMIN") {
+        // var getAllTheme = await strategy_model.find()
+        const getAllPlan = await Plan.find({ admin_id: id }).sort({
+          createdAt: -1,
+        });
+
+        // IF DATA NOT EXIST
+        if (getAllPlan.length == 0) {
+          res.send({ status: false, msg: "Empty data", data: getAllPlan });
+          return;
+        }
+        // DATA GET SUCCESSFULLY
+        return res.send({
+          status: true,
+          msg: "Get All Plan",
+          data: getAllPlan,
+        });
+      } else {
+
+        const getAllPlan = await Plan.find({ admin_id: UserPlan[0].parent_id }).sort({
+          createdAt: -1,
+        });
+
+        // IF DATA NOT EXIST
+        if (getAllPlan.length == 0) {
+          res.send({ status: false, msg: "Empty data", data: getAllPlan });
+          return;
+        }
+        // DATA GET SUCCESSFULLY
+        return res.send({
+          status: true,
+          msg: "Get All Plan",
+          data: getAllPlan,
+          data1: UserPlan[0].plan_id,
+        });
+
+      }
+    } catch (error) {
+      console.log("Error Get All Plan Error-", error);
+    }
+  }
+
+  async GetPlanData(req, res) {
+    try {
+      const { id } = req.body;
+
+      const planData = await Plan.find({ admin_id: id }).select("name _id");
+      if (!planData) {
+        return res.send({
+          status: false,
+          msg: "No Plan Found",
+          data: [],
+        });
+      }
+
+      return res.send({
+        status: true,
+        msg: "Plan Found",
+        data: planData,
+      });
+    } catch (error) {
+      console.log("Error Get Plan Data Error-", error);
+    }
+  }
 }
 
 module.exports = new strategy();

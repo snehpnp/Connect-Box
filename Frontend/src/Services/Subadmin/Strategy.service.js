@@ -236,6 +236,74 @@ export async function  starategyTradeCharge(data, token) {
     }
 }
 
+export async function  GetAllPlan(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}plan/getall`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+export async function  AddPlan(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}plan/add`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+export async function  EditPlan(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}plan/edit`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+export async function  DeletePlan(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}plan/delete`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+export async function  GetPlanById(data, token) {
+    try {
+        const res = await axios.post(`${Config.base_url}plan/get`, data, {  
+            data: {},
+        })
+        return await res?.data;
+    }
+    catch (err) {
+        return await err;
+
+    }
+}
+
+
+
+
+
 
 
 

@@ -7,7 +7,7 @@ export const broker_redirect_url = "https://connectbox.tradestreet.in/backend/";
 export const socket_Url = `https://connectbox.tradestreet.in:1001`;
 
 
-// CONNECT BOX LIVE PANEL
+// // CONNECT BOX LIVE PANEL
 // export const broker_redirect_url = "https://connectbox.tradestreet.in/backend/";
 // export const socket_Url = `https://connectbox.tradestreet.in:1001`;
 // export const broker_backend = `https://connectbox.tradestreet.in/signal/broker-signals`;

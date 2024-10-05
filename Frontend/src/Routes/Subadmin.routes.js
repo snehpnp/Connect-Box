@@ -34,6 +34,8 @@ import AllResearcherStrategy from '../Layouts/SubAdmin/Researcher/AllResearcherS
 import UserClientService from "../Layouts/SubAdmin/Users/UserClientService.js";
 
 import Test from '../Layouts/SubAdmin/MessageBroadCast/test.js'
+import Plans from '../Layouts/SubAdmin/Services/Plans/Plans.js'
+
 
 
 import Tradecharges from '../Layouts/SubAdmin/Services/Strategys/Tradecharges.js'
@@ -93,6 +95,9 @@ const SubAdmin_Routing = () => {
 
           <Route exact path="/trade/charges" element={<Tradecharges/>} /> 
           <Route exact path="/pay/request" element={<Paymentrequest/>} /> 
+
+          <Route exact path="/plans" element={<Plans/>} /> 
+
 
 
 

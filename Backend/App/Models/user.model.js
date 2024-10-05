@@ -273,6 +273,10 @@ const userModel = Schema(
       type: String,
       default: null,
     },
+    plan_id: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,

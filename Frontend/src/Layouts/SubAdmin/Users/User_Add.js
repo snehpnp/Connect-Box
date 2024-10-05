@@ -13,6 +13,7 @@ import { GetSubStrategys } from "../../../ReduxStore/Slice/Subadmin/Strategy";
 import {
   AddUsers,
   Get_All_Broker,
+  GetPlanDatas
 } from "../../../ReduxStore/Slice/Subadmin/UsersSlice";
 import Loader from "../../../Utils/Loader";
 
@@ -42,6 +43,7 @@ const AddClient = () => {
 
 
   const [balance,setBalanace] = useState("")
+  const [getAllPlans, setAllPlans] = useState([]);
 
   const [employeeNames, setEmployeeNames] = useState({
     loading: true,
@@ -94,6 +96,7 @@ const AddClient = () => {
       balance: 0,
       per_trade_value: null,
       Employees: null,
+      plan: null,
     },
 
     validate: (values) => {
@@ -130,6 +133,10 @@ const AddClient = () => {
       if (!values.groupservice) {
         errors.groupservice = "Please select group service ";
       }
+      if (!values.plan) {
+        errors.plan = "Please select plan";
+      }
+
       return errors;
     },
 
@@ -154,6 +161,7 @@ const AddClient = () => {
         Service_Type: values.Service_Type,
         per_trade_value: values.per_trade_value || null,
         employee_id: values.Employees || null,
+        plan: values.plan,
       };
  
       await dispatch(AddUsers(req))
@@ -691,9 +699,23 @@ const AddClient = () => {
 
   useEffect(()=>{
     getCompanyData()
+    GetAllPlans()
   },[])
 
 
+  const GetAllPlans = async () => {
+    try {
+      const response = await dispatch(GetPlanDatas({ id: user_id })).unwrap();
+
+      if (response.status) {
+        setAllPlans(response.data);
+      } else {
+        setAllPlans([]);
+      }
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
 
 
   return (
@@ -713,6 +735,36 @@ const AddClient = () => {
             btn_name1_route={"/subadmin/users"}
             additional_field={
               <>
+
+<div className="input-block ">
+                  {" "}
+                  <label>All Plans</label>{" "}
+                </div>
+
+                <div className="row">
+                  {getAllPlans &&
+                    getAllPlans.map((item) => (
+                      <div className="col-lg-2" key={item._id}>
+                        <input
+                          type="radio"
+                          name="plan"
+                          id={item._id}
+                          value={item._id}
+                          onChange={(e) => {
+                            console.log(e.target.value);
+
+                            formik.setFieldValue("plan", e.target.value);
+                          }}
+                          checked={item._id === formik.values.plan}
+                        />
+                        <label htmlFor={item._id}>{item.name}</label>
+                      </div>
+                    ))}
+                </div>
+
+
+
+
                 {serviceName.data.length > 0 ? (
                   <div className="input-block ">
                     {" "}

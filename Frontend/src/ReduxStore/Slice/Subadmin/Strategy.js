@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG,getOrders_data,EmployeeData,AddEmployeeBySub,DeleteEmployee,UpdateEmployee,get_Employee_Id,get_Employee_Status,GetAllStrategyFor_Employee,GetAllServicesForEmployee,StrategyPurchaseBySubadmin,strategyOrderUpdate,starategyTradeCharge} from "../../../Services/Subadmin/Strategy.service";
+import { GetSubStrategy, ADD_STRATEGY, Delete_Strategy,EDIT_STRATEGY,Get_Strategy_By_Id , GET_ALL_STRETGY_WITH_IMG,getOrders_data,EmployeeData,AddEmployeeBySub,DeleteEmployee,UpdateEmployee,get_Employee_Id,get_Employee_Status,GetAllStrategyFor_Employee,GetAllServicesForEmployee,StrategyPurchaseBySubadmin,strategyOrderUpdate,starategyTradeCharge,GetAllPlan,AddPlan,EditPlan,DeletePlan} from "../../../Services/Subadmin/Strategy.service";
 
 
 export const GetEmployeeServices= createAsyncThunk(
@@ -223,6 +223,50 @@ export const TradeCharge  = createAsyncThunk("sub/trade/charges",
     }
 );
 
+export const GetAllPlanData  = createAsyncThunk("plan/getall",
+    async (data) => {
+        try {
+            const res = await GetAllPlan(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const AddPlanData  = createAsyncThunk("plan/add",
+    async (data) => {
+        try {
+            const res = await AddPlan(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const EditPlanData  = createAsyncThunk("plan/edit",
+    async (data) => {
+        try {
+            const res = await EditPlan(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
+export const DeletePlanData  = createAsyncThunk("plan/delete",
+    async (data) => {
+        try {
+            const res = await DeletePlan(data);
+            return res;
+        } catch (err) {
+            throw err;
+        }
+    }
+);
+
 
 
 
@@ -236,6 +280,10 @@ const StrategySlice = createSlice({
         delete_strategy:null,
         get_stretgy_with_img:null,
         TradeCharge:null,
+        plan_data:null,
+        Add_Plan:null,
+        Edit_Plan:null,
+        Delete_Plan:null,
 
     },
     reducers: {},
@@ -316,7 +364,18 @@ const StrategySlice = createSlice({
             .addCase(TradeCharge.fulfilled, (state, action) => {
                 state.isLoading = false;
             })
-        
+            .addCase(GetAllPlanData.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(AddPlanData.fulfilled, (state, action) => {
+                state.isLoading = false;
+            })
+            .addCase(EditPlanData.fulfilled, (state, action) => {
+                state.isLoading = false
+            })
+            .addCase(DeletePlanData.fulfilled, (state, action) => {
+                state.isLoading = false
+            })
           
     },
 });

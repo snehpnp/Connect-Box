@@ -1,71 +1,62 @@
-import React from 'react';
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 
-import Header from '../Components/Dashboard/Header/Header';
-import MainHeader from '../Components/Dashboard/Header/Main_header';
-import Faqs from '../Layouts/Comman/Faqs';
-import Dashboards from '../Layouts/User/Dashboard/Dashboards';
-import Help from '../Layouts/Comman/Help/Helpuser';
-import Stocklist from '../Layouts/User/Stock/Clientservice';
-import Strategies from '../Layouts/User/Strategy/Strategies';
-import Profile from '../Layouts/Comman/Profile/Profile';
-import Bresponse from '../Layouts/User/Brokerresponse/Bresponse';
+import Header from "../Components/Dashboard/Header/Header";
+import MainHeader from "../Components/Dashboard/Header/Main_header";
+import Faqs from "../Layouts/Comman/Faqs";
+import Dashboards from "../Layouts/User/Dashboard/Dashboards";
+import Help from "../Layouts/Comman/Help/Helpuser";
+import Stocklist from "../Layouts/User/Stock/Clientservice";
+import Strategies from "../Layouts/User/Strategy/Strategies";
+import Profile from "../Layouts/Comman/Profile/Profile";
+import Bresponse from "../Layouts/User/Brokerresponse/Bresponse";
 
-import Orders from '../Layouts/User/Trade/Order';
-import TradeHistory from '../Layouts/User/Trade/TradeHistory';
+import Orders from "../Layouts/User/Trade/Order";
+import TradeHistory from "../Layouts/User/Trade/TradeHistory";
 
-import Subscriptiondata from '../Layouts/User/Subscription/Subscriptiondata';
-import Settings from '../Layouts/Comman/Setting_Page/Settings';
-import TradeCharges from '../Layouts/User/Trade/TradeCharges';
-import BroadCastMessage from '../Layouts/User/BroadCastMessage/BroadCastMessage';
+import Subscriptiondata from "../Layouts/User/Subscription/Subscriptiondata";
+import Settings from "../Layouts/Comman/Setting_Page/Settings";
+import TradeCharges from "../Layouts/User/Trade/TradeCharges";
+import BroadCastMessage from "../Layouts/User/BroadCastMessage/BroadCastMessage";
 
+import Userwallet from "../Layouts/Comman/Wallet/Userwallet";
 
+import Orderrequest from "../Layouts/User/Trade/Orderrequest";
 
-import Userwallet from '../Layouts/Comman/Wallet/Userwallet';
-
-import Orderrequest from '../Layouts/User/Trade/Orderrequest';
-
-
+import Userplan from "../Layouts/User/BroadCastMessage/Userplan";
 
 // strategydesc
 const User_Routing = () => {
+  return (
+    <>
+      <MainHeader />
+      <Header />
+      <div className="page-wrapper">
+        <Routes>
+          <Route exact path="/dashboard" element={<Dashboards />} />
 
-    return (
-        <>
-            <MainHeader />
-            <Header />
-            <div className='page-wrapper' >
+          <Route path="/faqs" element={<Faqs />} />
+          <Route path="/help" element={<Help />} />
+          <Route path="/stock" element={<Stocklist />} />
+          <Route path="/strategy" element={<Strategies />} />
+          <Route path="/broker-response" element={<Bresponse />} />
 
-                <Routes>
-                    <Route exact path="/dashboard" element={<Dashboards />} />
+          <Route exact path="/profile" element={<Profile />} />
+          <Route exact path="/orders" element={<Orders />} />
+          <Route exact path="/positions" element={<TradeHistory />} />
+          <Route exact path="/subscription" element={<Subscriptiondata />} />
 
-                    <Route path="/faqs" element={<Faqs />} />
-                    <Route path="/help" element={<Help />} />
-                    <Route path="/stock" element={<Stocklist />} />
-                    <Route path="/strategy" element={<Strategies />} />
-                    <Route path="/broker-response" element={<Bresponse />} />
+          <Route exact path="/setting" element={<Settings />} />
+          <Route exact path="/tradecharge" element={<TradeCharges />} />
+          <Route exact path="/broadcast" element={<BroadCastMessage />} />
 
-                    <Route exact path="/profile" element={<Profile />} />
-                    <Route exact path="/orders" element={<Orders />} />
-                    <Route exact path="/positions" element={<TradeHistory />} />
-                    <Route exact path="/subscription" element={<Subscriptiondata />} />
-                   
-                
-                    <Route exact path="/setting" element={<Settings />} />
-                    <Route exact path="/tradecharge" element={<TradeCharges/>} />
-                    <Route exact path="/broadcast" element={<BroadCastMessage/>} />
-                   
+          <Route exact path="/wallet" element={<Userwallet />} />
+          <Route exact path="/orders/request" element={<Orderrequest />} />
+          <Route exact path="/userplan" element={<Userplan />} />
+        </Routes>
+      </div>
+    </>
+  );
+};
 
-                    <Route exact path="/wallet" element={<Userwallet/>} />
-                    <Route exact path="/orders/request" element={<Orderrequest/>} />
-
-
-
-                </Routes>
-
-            </div>
-        </>
-    )
-}
-
-export default User_Routing
+export default User_Routing;
