@@ -98,7 +98,9 @@ export default function AllEmployees() {
   const [GetAllStrategy, setAllStrategy] = useState([]);
 
 
-
+  useEffect(() => {
+    Get_AllStrategy();
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -890,9 +892,7 @@ export default function AllEmployees() {
 
 
 
-  useEffect(() => {
-    Get_AllStrategy();
-  }, []);
+
 
   return (
     <>
@@ -904,7 +904,7 @@ export default function AllEmployees() {
                 <div className="row align-center">
                   <div className="col">
                     <h5 className="card-title mb-0">
-                      <i className="pe-2 far fa-clock"></i>Trade Hisatory
+                      <i className="pe-2 far fa-clock"></i>Trade History
                     </h5>
                   </div>
                   <div className="col-auto">

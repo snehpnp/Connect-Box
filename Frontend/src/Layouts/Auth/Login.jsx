@@ -1,47 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 import { SignIn } from "../../ReduxStore/Slice/Auth/AuthSlice";
 import { useDispatch } from "react-redux";
 
-import Modal from '../../Components/Dashboard/Models/Model'
+import Modal from "../../Components/Dashboard/Models/Model";
 import OtpInput from "react-otp-input";
-import Swal from 'sweetalert2';
-import { ipAddress } from '../../Utils/Ipaddress';
+import Swal from "sweetalert2";
+import { ipAddress } from "../../Utils/Ipaddress";
 import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom';
-import ReCAPTCHA from 'react-google-recaptcha';
+import { Link } from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 import io from "socket.io-client";
 import * as Config from "../../Utils/Config";
 
-import useGetCompany from '../../Utils/ConnectSocket';
-
-
+import useGetCompany from "../../Utils/ConnectSocket";
 
 function Login() {
-
-
-
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  var theme_mode = localStorage.getItem('theme_mode')
+  const navigate = useNavigate();
+  var theme_mode = localStorage.getItem("theme_mode");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [typeOtp, setTypeOtp] = useState("");
   const [getData, SetData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [ip, setIp] = useState(null);
   const [isVerified, setIsVerified] = useState(false);
   const [socket, setSocket] = useState(null);
 
-   
   const getCompany = useGetCompany();
 
-
   // GOOGLE CAPTCH
-  var sitekey = "6LeLC88pAAAAAM8P1WFYgAHJOwwlZ3MLfV9hyStu"
+  var sitekey = "6LeLC88pAAAAAM8P1WFYgAHJOwwlZ3MLfV9hyStu";
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -52,75 +45,59 @@ function Login() {
       const ip = await ipAddress();
       setIp(ip);
     } catch (error) {
-
-
-      console.error('Failed to fetch IP address:', error);
-
+      console.error("Failed to fetch IP address:", error);
     }
   };
 
-
-
-
   const RunSocketUrl = async () => {
     const companyData = await getCompany();
-        
-        if(companyData[0].BackendSocketurl){
-      
-            const newSocket = io(companyData[0].BackendSocketurl);
-            setSocket(newSocket);
-            return () => {
-                newSocket.disconnect();
-            };
 
-        }
-   }
+    document.getElementById("logo").src = companyData[0].logo
+      ? companyData[0].logo
+      : "/assets/img/pnp.png";
+    if (companyData[0].BackendSocketurl) {
+      const newSocket = io(companyData[0].BackendSocketurl);
+      setSocket(newSocket);
+      return () => {
+        newSocket.disconnect();
+      };
+    }
+  };
 
-    useEffect(() => {
-        fetchIpAddress()
-        RunSocketUrl()
-    }, []); 
-
-
-
-
+  useEffect(() => {
+    fetchIpAddress();
+    RunSocketUrl();
+  }, []);
 
   // const handleRecaptchaChange = (value) => {
   //   setIsVerified(!!value);
   // };
 
-
-  
   const verifyOTP = async () => {
     var Otp = getData && getData.mobile.slice(-4);
 
     if (typeOtp.length !== 4) {
       Swal.fire({
-        icon: 'error',
-        title: 'Fill OTP',
+        icon: "error",
+        title: "Fill OTP",
         showConfirmButton: false,
-        timer: 800
+        timer: 800,
       });
-
-
     } else if (Otp !== typeOtp) {
       Swal.fire({
-        icon: 'error',
-        title: 'Otp Is Incorrect',
+        icon: "error",
+        title: "Otp Is Incorrect",
         showConfirmButton: false,
-        timer: 800
+        timer: 800,
       });
-
     } else {
-      var newMessage = { user_id: getData.user_id, token: getData.token }
-
+      var newMessage = { user_id: getData.user_id, token: getData.token };
 
       localStorage.setItem("user_details", JSON.stringify(getData));
       localStorage.setItem("user_role", JSON.stringify(getData.Role));
       setIsLoggedIn(true);
       setIsLoading(true);
       setShowModal(false);
-
 
       if (getData.Role === "ADMIN") {
         setTimeout(() => {
@@ -131,12 +108,10 @@ function Login() {
           navigate("/subadmin/dashboard");
         }, 2200);
       } else if (getData.Role === "EMPLOYEE") {
-
         setTimeout(() => {
           navigate("/employee/dashboard");
         }, 2200);
       } else if (getData.Role === "RESEARCH") {
-
         setTimeout(() => {
           navigate("/research/dashboard");
         }, 2200);
@@ -146,10 +121,7 @@ function Login() {
         }, 2200);
       }
       await socket.emit("login", newMessage);
-
-
     }
-
   };
 
   const handleEmailChange = (event) => {
@@ -160,28 +132,26 @@ function Login() {
     setPassword(event.target.value);
   };
 
-
-
   const handleSubmit = async () => {
     const trimmedEmail = email.trim();
     const trimmedPassword = password.trim();
 
     if (!trimmedEmail || !trimmedPassword) {
       Swal.fire({
-        title: 'Error',
-        text: 'Enter the credentials to login.',
-        icon: 'error',
-        confirmButtonText: 'OK'
+        title: "Error",
+        text: "Enter the credentials to login.",
+        icon: "error",
+        confirmButtonText: "OK",
       });
       return;
     }
 
     if (!/^\S+@\S+\.\S+$/.test(trimmedEmail)) {
       Swal.fire({
-        title: 'Error',
-        text: 'Enter a valid email address.',
-        icon: 'error',
-        confirmButtonText: 'OK'
+        title: "Error",
+        text: "Enter a valid email address.",
+        icon: "error",
+        confirmButtonText: "OK",
       });
       return;
     }
@@ -197,8 +167,6 @@ function Login() {
     //   });
     //   return;
     // }
-
-
 
     const req = {
       Email: email,
@@ -219,16 +187,28 @@ function Login() {
             showErrorModal("Incorrect Password", "Enter the correct password.");
             break;
           case "please contact admin you are inactive.":
-            showInactiveAccountModal("please contact admin you are inactive.", "please contact admin you are inactive.");
+            showInactiveAccountModal(
+              "please contact admin you are inactive.",
+              "please contact admin you are inactive."
+            );
             break;
           case "User Not exists":
-            showErrorModal("User Not Exists", "The user you are trying to access does not exist.");
+            showErrorModal(
+              "User Not Exists",
+              "The user you are trying to access does not exist."
+            );
             break;
           case "Server Side error":
-            showErrorModal("Server Side Error", "Oops! Something went wrong on the server. try again later.");
+            showErrorModal(
+              "Server Side Error",
+              "Oops! Something went wrong on the server. try again later."
+            );
             break;
           case "your service is terminated contact to admin":
-            showErrorModal("Service Terminated", "Your service has been terminated. Contact the administrator for assistance.");
+            showErrorModal(
+              "Service Terminated",
+              "Your service has been terminated. Contact the administrator for assistance."
+            );
             break;
           default:
             showSlowInternetModal();
@@ -243,96 +223,114 @@ function Login() {
 
   const showErrorModal = (title, message) => {
     Swal.fire({
-      icon: 'error',
+      icon: "error",
       title: `<span style="font-size: 24px; color: #ff5555;">${title}</span>`,
       html: `<span style="font-size: 18px; color: #333;">${message}</span>`,
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: '<span style="background-color: #3085d6; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px;">OK</span>'
+      confirmButtonColor: "#3085d6",
+      confirmButtonText:
+        '<span style="background-color: #3085d6; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px;">OK</span>',
     });
   };
 
   const showInactiveAccountModal = () => {
     Swal.fire({
-      icon: 'warning',
-      title: '<span style="font-size: 24px; color: #ff9900;"><BsExclamationTriangle /></span> Inactive Account',
+      icon: "warning",
+      title:
+        '<span style="font-size: 24px; color: #ff9900;"><BsExclamationTriangle /></span> Inactive Account',
       html: '<span style="font-size: 18px; color: #333;"> Contact admin as your account is inactive.</span>',
       showCloseButton: true,
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: '<span style="background-color: #3085d6; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px;">OK</span>'
+      confirmButtonColor: "#3085d6",
+      confirmButtonText:
+        '<span style="background-color: #3085d6; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px;">OK</span>',
     });
   };
 
   const showSlowInternetModal = () => {
     Swal.fire({
-      icon: 'warning',
-      title: '<span style="font-size: 24px; color: #ff9900;"><FaWifi /></span> Slow Internet Connection',
+      icon: "warning",
+      title:
+        '<span style="font-size: 24px; color: #ff9900;"><FaWifi /></span> Slow Internet Connection',
       html: '<span style="font-size: 18px; color: #333;">Your internet connection seems to be slow. Try again later.</span>',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'OK'
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
     });
   };
 
   const handleChange = (value) => {
-    const numericValue = value.replace(/\D/g, '');
+    const numericValue = value.replace(/\D/g, "");
     setTypeOtp(numericValue);
   };
 
   useEffect(() => {
-
     const htmlElement = document.querySelector("html");
     htmlElement.setAttribute("data-sidebar", theme_mode ? theme_mode : "light");
-    htmlElement.setAttribute("data-layout-mode", theme_mode ? theme_mode : "light");
+    htmlElement.setAttribute(
+      "data-layout-mode",
+      theme_mode ? theme_mode : "light"
+    );
     htmlElement.setAttribute("data-topbar", theme_mode ? theme_mode : "light");
- 
   }, [isLoggedIn, getData.Role, navigate]);
 
-
-
-
-
   const handleKeyPress = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       handleSubmit();
     }
   };
 
   return (
-
-    <div >
-      <div className="main-wrapper login-body" >
+    <div>
+      <div className="main-wrapper login-body">
         <div className="login-wrapper">
-          <div className="container" >
-
+          <div className="container">
             <div className="loginbox">
-
-              <div className='row'>
-                <div className='col-md-6 border-right'>
-                  <div className='login-left '>
+              <div className="row">
+                <div className="col-md-6 border-right">
+                  <div className="login-left ">
                     <p>IP Address: {ip}</p>
-                    <img src="/assets/img/gif/login.gif" className='login-light-img'></img>
+                    <img
+                      src="/assets/img/gif/login.gif"
+                      className="login-light-img"
+                    ></img>
 
-                    <img src="/assets/img/gif/login-dark.gif" className='login-dark-img'></img>
+                    <img
+                      src="/assets/img/gif/login-dark.gif"
+                      className="login-dark-img"
+                    ></img>
                   </div>
                 </div>
-                <div className='col-md-6'>
+                <div className="col-md-6">
                   <div className="login-right">
                     <div className="login-right-wrap">
                       <img
+                        id="logo"
                         className="img-fluid logo-dark mb-2 "
                         src="/assets/img/pnp.png"
                         alt="Logo"
                         style={{ width: "15rem" }}
                       />
 
-                      <div className='pt-5' data-aos="fade-left">
+                      <div className="pt-5" data-aos="fade-left">
                         <div className=" input-block mb-3">
-                          <label className="form-control-label d-flex justify-content-start" htmlFor="email">Email Address</label>
-                          <input type="email" id="email" className="form-control" value={email} onChange={handleEmailChange} />
+                          <label
+                            className="form-control-label d-flex justify-content-start"
+                            htmlFor="email"
+                          >
+                            Email Address
+                          </label>
+                          <input
+                            type="email"
+                            id="email"
+                            className="form-control"
+                            value={email}
+                            onChange={handleEmailChange}
+                          />
                         </div>
 
-
                         <div className="input-block mb-3">
-                          <label className="form-control-label d-flex justify-content-start" htmlFor="password">
+                          <label
+                            className="form-control-label d-flex justify-content-start"
+                            htmlFor="password"
+                          >
                             Password
                           </label>
                           <div className="pass-group">
@@ -345,19 +343,27 @@ function Login() {
                               onKeyPress={handleKeyPress}
                             />
                             <span
-                              className={showPassword ? "fas fa-eye-slash toggle-password" : "fas fa-eye toggle-password"}
+                              className={
+                                showPassword
+                                  ? "fas fa-eye-slash toggle-password"
+                                  : "fas fa-eye toggle-password"
+                              }
                               onClick={togglePasswordVisibility}
                             />
                           </div>
                         </div>
 
-                      {/*   <ReCAPTCHA
+                        {/*   <ReCAPTCHA
                           sitekey={sitekey}
                           onChange={handleRecaptchaChange}
                         /> */}
 
                         <div className="add-customer-btns d-flex justify-content-between text-end mt-3">
-                          <button className="btn customer-btn-save" onClick={handleSubmit} onKeyPress={handleKeyPress} >
+                          <button
+                            className="btn customer-btn-save"
+                            onClick={handleSubmit}
+                            onKeyPress={handleKeyPress}
+                          >
                             Login
                           </button>
                         </div>
@@ -372,26 +378,22 @@ function Login() {
                         Don't have an account yet?{" "}
                         <Link to="/register">Register</Link>
                       </div>
-                      <Link to="/forget" className='text-center d-block'>Forget Password</Link>
+                      <Link to="/forget" className="text-center d-block">
+                        Forget Password
+                      </Link>
                     </div>
                   </div>
                 </div>
               </div>
-
             </div>
-
           </div>
         </div>
-
-
-
 
         {/* For Varify OTP Modal */}
         {showModal ? (
           <>
             <div className="custom-modal-class">
               <Modal
-
                 isOpen={showModal}
                 handleClose={() => setShowModal(false)}
                 backdrop="static"
@@ -402,7 +404,7 @@ function Login() {
                 btn_name1="Verify1"
                 Submit_Function={verifyOTP}
               >
-                <section onSubmit={verifyOTP} className='section1'>
+                <section onSubmit={verifyOTP} className="section1">
                   <svg
                     width={250}
                     height={200}
@@ -454,7 +456,14 @@ function Login() {
                     </g>
                     <circle cx={220} cy={15} r={5} fill="#FFC691" />
                     <circle cx="119.606" cy={5} r={5} fill="#91FFAF" />
-                    <rect x="250.606" y={163} width={10} height={10} rx={1} fill="#E991FF" />
+                    <rect
+                      x="250.606"
+                      y={163}
+                      width={10}
+                      height={10}
+                      rx={1}
+                      fill="#E991FF"
+                    />
                     <rect
                       x={274}
                       y="47.0925"
@@ -496,9 +505,11 @@ function Login() {
                     </defs>
                   </svg>
                   <div className="title text-center">Verification Code</div>
-                  <p className='para w-100 text-center'>We have sent a verification code to your registered email address</p>
-                  <form onSubmit={verifyOTP} className='text-center'>
-
+                  <p className="para w-100 text-center">
+                    We have sent a verification code to your registered email
+                    address
+                  </p>
+                  <form onSubmit={verifyOTP} className="text-center">
                     <OtpInput
                       containerStyle="otp-div"
                       value={typeOtp}
@@ -506,12 +517,13 @@ function Login() {
                       numInputs={4}
                       renderSeparator={<span></span>}
                       renderInput={(props, index) => (
-                        <input className='text1'
+                        <input
+                          className="text1"
                           {...props}
                           type="tel"
                           autoFocus={index === 0}
                           onKeyPress={(event) => {
-                            if (event.key === 'Enter') {
+                            if (event.key === "Enter") {
                               event.preventDefault();
                               verifyOTP();
                             }
@@ -519,9 +531,7 @@ function Login() {
                         />
                       )}
                     />
-
                   </form>
-
                 </section>
               </Modal>
             </div>
@@ -535,12 +545,15 @@ function Login() {
             <div className="overlay-content">
               <div className="first-intro">
                 <div className="intro-fill">
-                  <span className="tf-user-welcome welcome-1">Hi `{getData.UserName}!`</span>
-                  <span className="tf-user-welcome welcome-2">Welcome to Connect Box</span>
+                  <span className="tf-user-welcome welcome-1">
+                    Hi `{getData.UserName}!`
+                  </span>
+                  <span className="tf-user-welcome welcome-2">
+                    Welcome to Connect Box
+                  </span>
                   {/* <span className="tf-user-welcome welcome-3">We’re delighted to be at your Service</span> */}
                 </div>
               </div>
-
             </div>
           </div>
         )}
@@ -548,8 +561,5 @@ function Login() {
     </div>
   );
 }
-
-
-
 
 export default Login;

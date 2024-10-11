@@ -253,20 +253,7 @@ const Settings = () => {
                         </a>
                       )}
 
-                      {Role === "USER" && (
-                        <a
-                          className="nav-link mb-1"
-                          id="v-trade-permission-tab"
-                          data-bs-toggle="pill"
-                          href="#v-trade-permission"
-                          role="tab"
-                          aria-controls="v-trade-permission"
-                          aria-selected="false"
-                          style={{ color: "black" }}
-                        >
-                          Trade Permission
-                        </a>
-                      )}
+                
 
                       {Role === "SUBADMIN" && (
                         <a

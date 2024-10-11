@@ -15,6 +15,9 @@ var dt = dateTime.create();
 class Dashboard {
   async GetDashboardData(req, res) {
     try {
+
+
+
       const counts = await User_model.aggregate([
         {
           $facet: {
@@ -29,7 +32,12 @@ class Dashboard {
                 $match: {
                   Role: "RESEARCH",
                   ActiveStatus: "1",
-                  $or: [{ End_Date: { $gte: new Date() } }, { End_Date: null }],
+                  
+                  $or: [
+                    { End_Date: { $gte: new Date() } },
+                    { End_Date: { $eq: null } }, 
+                    { End_Date: { $exists: false } }, 
+                  ],
                 },
               },
               { $count: "count" },
@@ -47,27 +55,8 @@ class Dashboard {
           },
         },
       ]);
-
-      const data = await count_licenses.aggregate([
-        {
-          $addFields: {
-            date: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-            balance: { $toDouble: "$Balance" },
-          },
-        },
-        {
-          $group: {
-            _id: "$date",
-            totalBalance: { $sum: "$balance" },
-          },
-        },
-        {
-          $sort: { _id: 1 }, // Sort by date in ascending order
-        },
-      ]);
-
-
-
+      
+   
 
 
       const {
@@ -89,7 +78,7 @@ class Dashboard {
       };
 
       // DATA GET SUCCESSFULLY
-      res.send({
+     return res.send({
         status: true,
         msg: "Get Subadmins",
         data: Count,

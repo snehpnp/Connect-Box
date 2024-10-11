@@ -188,7 +188,7 @@ class Clientservice {
 
     async updateClientServices(req, res) {
         try {
-            const { strategyId, maxQty, orderType, productType, userId, id, seriveId } = req.body;
+            const { strategyId, maxQty, orderType, productType, userId, id, seriveId,quantity } = req.body;
 
 
             const UserData = await User_model.findOne({ _id: userId });
@@ -203,7 +203,8 @@ class Clientservice {
                 strategy_id: strategyId,
                 lot_size: maxQty,
                 order_type: orderType,
-                product_type: productType
+                product_type: productType,
+                quantity: quantity,
             };
 
 

@@ -7,6 +7,7 @@ const SubAdminCompanyInfo = db.SubAdminCompanyInfo;
 const strategy_transaction = db.strategy_transaction;
 const tradeCharge_Modal = db.tradeCharge;
 const Strategies = db.Strategies;
+const company_information = db.company_information;
 
 const { CommonEmail } = require("../../../Helpers/CommonEmail");
 const { firstOptPass } = require("../../../Helpers/Email_formate/first_login");
@@ -280,15 +281,15 @@ class Subadmin {
       }
 
       
-      const getAllSubAdmins1 = await User_model.find({ _id: getAllSubAdmins[0].parent_id });
-      
+      const getAllSubAdmins1 = await company_information.find({}).select("broker_url");
+   
 
       // DATA GET SUCCESSFULLY
       return res.send({
         status: true,
         msg: "Get User",
         data: getAllSubAdmins,
-        data2:getAllSubAdmins1[0].broker_url
+        data2:getAllSubAdmins1 ? getAllSubAdmins1[0].broker_url : ""
       });
     } catch (error) {
       console.log("Error get Subadmin error -", error);

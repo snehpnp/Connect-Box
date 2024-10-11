@@ -157,7 +157,7 @@ function Clientservice() {
     }
   };
 
-  const handleInputChange = (key, value) => {
+  const handleInputChange = (key, value,lotsize) => {
     setData((prevData) => {
       if (key === "strategyId") {
         if (prevData.strategyId.includes(value)) {
@@ -173,8 +173,15 @@ function Clientservice() {
             strategyId: [...prevData.strategyId, value],
           };
         }
+      } else if(key =="maxQty"){
+        return {
+          ...prevData,
+          [key]: value,
+          quantity: value * lotsize,
+        };
+
       } else {
-        // For other keys, update the state as usual
+   
         return {
           ...prevData,
           [key]: value,
@@ -242,6 +249,7 @@ function Clientservice() {
       userId: user_id,
       id: data && data.id,
       seriveId: data && data.seriveId,
+      quantity: data && data.quantity,
     };
 
     await dispatch(UPDATE_CLIENT_SERVICE_DATA(req))
@@ -498,6 +506,7 @@ function Clientservice() {
                                     strategyId: item.strategy_id,
                                     quantity: item.quantity,
                                     serviceName: item.service.name,
+                                    FixLotSize: item.service.lotsize
                                   });
                                 }}
                               >
@@ -640,21 +649,32 @@ function Clientservice() {
                       <h6 className="mb-3">Lot Size : </h6>
                     </div>
                     <div className="col-lg-6 col-8 ps-0">
-                      <h6> {data.quantity}</h6>
+                      <h6> {data.FixLotSize}</h6>
                     </div>
                     <div className="col-lg-6 col-4">
-                      <h6 className="">Max Qty :</h6>
+                      <h6 className="">Lots :</h6>
                     </div>
                     <div className="col-lg-6 col-8 ps-0 mb-3">
                       <input
                         type="text"
                         className="form-control "
                         defaultValue={1}
+                        placeholder="Enter lots"
                         value={data.maxQty}
                         onChange={(e) =>
-                          handleInputChange("maxQty", e.target.value)
+                          handleInputChange("maxQty", e.target.value,data.FixLotSize)
                         }
                       />
+                    </div>
+
+
+
+                    <div className="col-lg-6 col-4">
+                      <h6 className="">Quantity :</h6>
+                    </div>
+
+                    <div className="col-lg-6 col-8 ps-0">
+                      <h6> {Number(data.FixLotSize) * Number(data.maxQty)}</h6>
                     </div>
 
                     <div className="col-lg-6 col-4">
