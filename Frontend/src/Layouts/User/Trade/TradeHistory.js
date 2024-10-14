@@ -208,14 +208,14 @@ export default function AllEmployees() {
       ),
     },
     {
-      dataField: "entry_qty",
+      dataField: "entry_qty_percent",
       text: "Entry Qty",
       formatter: (cell, row, rowIndex) => (
         <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>
       ),
     },
     {
-      dataField: "exit_qty",
+      dataField: "exit_qty_percent",
       text: "Exit Qty",
       formatter: (cell, row, rowIndex) => (
         <span className="text">{cell !== "" ? parseInt(cell) : "-"}</span>

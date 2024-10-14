@@ -983,7 +983,7 @@ class SignalController {
         for (const item of GetAllClientServices) {
           //  For Strategy
           if (strategy === "null" || strategy === "" || strategy.length == 0) {
-            stg1 = { $in: stgArr };
+            stg1 = { $in: [item.strategys.strategy_name] };
           } else {
             stg1 = strategy;
           }

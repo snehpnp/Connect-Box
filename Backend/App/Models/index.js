@@ -43,7 +43,7 @@ module.exports = {
     TradePermissionLogs:require("./Tradepermission.model"),
     semiautoModel:require("./Semiautoreq.model"),
 
-
+    existplan:require('./Existplan.model'),
 
     
 

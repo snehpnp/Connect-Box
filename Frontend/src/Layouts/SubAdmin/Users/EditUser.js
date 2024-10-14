@@ -140,6 +140,10 @@ const AddClient = () => {
       if (!values.plan) {
         errors.plan = "plan is required";
       }
+
+      console.log("Plan", values.plan);
+console.log(errors)
+
       return errors;
     },
     onSubmit: async (values) => {

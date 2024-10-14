@@ -205,12 +205,12 @@ function Strategy() {
             col_size: 12,
             disable: false,
         },
-        {
-            name: "security_fund",
-            label: "Strategy Plan",
-            type: 'security',
-            showWhen: (values) => formik.values.Service_Type == 1 || subadmin_service_type == 2,
-        },
+        // {
+        //     name: "security_fund",
+        //     label: "Strategy Plan",
+        //     type: 'security',
+        //     showWhen: (values) => formik.values.Service_Type == 1 || subadmin_service_type == 2,
+        // },
         {
             name: "security_plan",
             label: "Security fund",

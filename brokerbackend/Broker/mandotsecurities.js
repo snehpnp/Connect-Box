@@ -481,7 +481,7 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
         console.log("error.response.data", error.response.data);
 
         if (error) {
-          if (error.response.data.result.errors) {
+          if (error.response?.data?.result?.errors) {
             const message = JSON.stringify(
               error.response.data.result.errors
             ).replace(/["',]/g, "");
