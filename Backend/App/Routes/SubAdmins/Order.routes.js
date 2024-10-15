@@ -3,13 +3,14 @@
 const router = require("express").Router()
 const { verifyToken } = require('../../Middlewares/autt.middleware')
 
-const {Signal_data,MainSignal_data,getAllSignalByPrefix,update_stop_loss,Tradehistory_data,UserTradehistory_data}=require("../../Controllers/SubAdmins/Order/Order")
+const {Signal_data,MainSignal_data,getAllSignalByPrefix,update_stop_loss,Tradehistory_data,UserTradehistory_data,HoldingSignal_data}=require("../../Controllers/SubAdmins/Order/Order")
 
 
 
 //Order Releated Routes
 router.post('/orders/data',verifyToken, Signal_data);
 router.post('/trade/data', MainSignal_data);
+router.post('/holding/data', HoldingSignal_data);
 
 router.post('/update/trade', update_stop_loss);
 

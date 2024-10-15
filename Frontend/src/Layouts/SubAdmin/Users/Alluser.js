@@ -154,7 +154,15 @@ export default function AllUsers() {
       headerClassName: styles.boldHeader,
       renderCell: (params) => showLicenceName(params.row),
     },
-
+    {
+      field: "TradingStatus",
+      headerName: "Trading Status",
+      width: 120,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => <>
+      <span>{params.value == "on" ? <i class="fa fa-circle" style={{fontSize:"20px",color:"green"}}></i> :<i class="fa fa-circle" style={{fontSize:"20px",color:"red"}}></i>}</span>
+      </>,
+    },
     {
       field: "ActiveStatus",
       headerName: "Status",
@@ -252,24 +260,24 @@ export default function AllUsers() {
       ),
       headerClassName: styles.boldHeader,
     },
-    {
-      field: "Activity Logs",
-      headerName: "Activity Logs",
-      width: 130,
-      renderCell: (params) => (
-        <div style={{ marginLeft: "20px" }}>
-          <IconButton style={{ color: "#ee82ee" }}>
-            <RadioTower
-              onClick={() => {
-                UserActivity_logs(params.row._id);
-                setmodal(true);
-              }}
-            />
-          </IconButton>
-        </div>
-      ),
-      headerClassName: styles.boldHeader,
-    },
+    // {
+    //   field: "Activity Logs",
+    //   headerName: "Activity Logs",
+    //   width: 130,
+    //   renderCell: (params) => (
+    //     <div style={{ marginLeft: "20px" }}>
+    //       <IconButton style={{ color: "#ee82ee" }}>
+    //         <RadioTower
+    //           onClick={() => {
+    //             UserActivity_logs(params.row._id);
+    //             setmodal(true);
+    //           }}
+    //         />
+    //       </IconButton>
+    //     </div>
+    //   ),
+    //   headerClassName: styles.boldHeader,
+    // },
     {
       field: "Clent Service",
       headerName: "Clent Service",

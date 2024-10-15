@@ -37,6 +37,7 @@ import Test from '../Layouts/SubAdmin/MessageBroadCast/test.js'
 import Plans from '../Layouts/SubAdmin/Services/Plans/Plans.js'
 
 
+import Holdingposition from '../Layouts/SubAdmin/Option/Holdingposition.js';
 
 import Tradecharges from '../Layouts/SubAdmin/Services/Strategys/Tradecharges.js'
 
@@ -98,7 +99,7 @@ const SubAdmin_Routing = () => {
 
           <Route exact path="/plans" element={<Plans/>} /> 
 
-
+      <Route exact path="/holding/position" element={<Holdingposition />} />
 
 
         </Routes>

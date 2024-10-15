@@ -45,7 +45,7 @@ export default function AllEmployees() {
   const [exitOpenPosition, setExitOpenPosition] = useState("");
 
   const currentClientKeyRef = useRef("");
-  const currenPageStatusRef = useRef("openposition");
+  const currenPageStatusRef = useRef("holdingopenposition");
   const currentTypeABRRef = useRef("below");
   const [typeABROnclickFunc, setTypeABROnclickFunc] = useState("below");
 
@@ -1035,11 +1035,11 @@ export default function AllEmployees() {
 
             setTradeHistoryData({
               loading: false,
-              data: response.data,
+              data: response.data1,
             });
             setTradeHistoryAllData({
               loading: false,
-              data: response.data,
+              data: response.data1,
             });
           } else {
             setTradeHistoryData({
@@ -1054,12 +1054,12 @@ export default function AllEmployees() {
         } else {
           setTradeHistoryData({
             loading: false,
-            data: response.data,
+            data: response.data1,
           });
 
           setTradeHistoryAllData({
             loading: false,
-            data: response.data,
+            data: response.data1,
           });
         }
       })
@@ -1611,11 +1611,9 @@ export default function AllEmployees() {
 
   const selectPageStatus = (value) => {
     //alert(value)
-    if (value == "openposition") {
-      currenPageStatusRef.current = "openposition";
-    } else if (value == "pendingposition") {
-      currenPageStatusRef.current = "pendingposition";
-    } 
+   if (value == "holdingopenposition") {
+      currenPageStatusRef.current = "holdingopenposition";
+    }
   };
 
   return (
@@ -1629,29 +1627,18 @@ export default function AllEmployees() {
                 data-aos="fade-right"
               >
                 <ul className="nav nav-tabs nav-tabs-solid d-flex justify-content-center">
-                  <li className="nav-item">
+              
+                  <li className="nav-item active">
                     <a
-                      className="nav-link active"
-                      href="#solid-tab4"
+                      className="nav-link"
+                      href="#solid-tab6"
                       data-bs-toggle="tab"
-                      onClick={() => selectPageStatus("openposition")}
+                      onClick={() => selectPageStatus("holdingopenposition")}
                     >
                       <i className="fa-solid fa-landmark pe-2"></i>
-                      Open Position
+                      Holdings Position
                     </a>
                   </li>
-                  <li className="nav-item">
-                    <a
-                      className="nav-link ms-2"
-                      href="#solid-tab5"
-                      data-bs-toggle="tab"
-                      onClick={() => selectPageStatus("pendingposition")}
-                    >
-                      <i className="fa-solid fa-envelope pe-2"></i>
-                      Pending Position
-                    </a>
-                  </li>
-                 
                 </ul>
               </div>
 
@@ -1662,14 +1649,15 @@ export default function AllEmployees() {
               <div className="col-lg-12 col-md-12" data-aos="fade-left">
                 <div className="card-body">
                   <div className="tab-content">
-                    <div className="tab-pane show active" id="solid-tab4">
+                
+
+                    <div className="tab-pane show active" id="solid-tab6">
                       <div className="card">
                         <div className="card-header">
                           <div className="row align-center">
                             <div className="col">
                               <h5 className="card-title mb-0">
-                                <i className="pe-2 far fa-clock"></i>Open
-                                Position
+                                <i className="pe-2 far fa-clock"></i>Holdings Open Position
                               </h5>
                             </div>
                             <div className="col-auto">
@@ -1712,12 +1700,7 @@ export default function AllEmployees() {
                         </div>
 
                         <div className="card-body table-responsive">
-                          <button
-                            className="btn btn-primary mb-4 mx-2 ms-auto"
-                            onClick={(e) => UpdateStopLoss()}
-                          >
-                            Update Price
-                          </button>
+                        
                           <button
                             className="btn btn-primary mb-4 ms-auto"
                             onClick={(e) => SquareOfAll()}
@@ -1739,10 +1722,8 @@ export default function AllEmployees() {
                                 size="xl"
                                 title="Request Confirmation"
                                 cancel_btn={true}
-                                // hideBtn={false}
-                                btn_name="Confirm"
-                                // disabled_submit={disabled}
-                                // disabled_submit={ButtonDisabled}
+                            
+                                btn_name="Confirm"                   
                                 Submit_Function={Done_For_Trade}
                                 Submit_Cancel_Function={Cancel_Request}
                                 handleClose={() => setshowModal(false)}
@@ -1806,240 +1787,6 @@ export default function AllEmployees() {
                         </div>
                       </div>
                     </div>
-
-                    <div className="tab-pane" id="solid-tab5">
-                      <div className="card">
-                        <div className="card-header">
-                          <div className="row align-center">
-                            <div className="col">
-                              <h5 className="card-title mb-0">
-                                <i className="pe-2 far fa-clock"></i>Pending
-                                Position
-                              </h5>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="card-body table-responsive">
-                          <div
-                            className="col-lg-12 col-md-12"
-                            data-aos="fade-right"
-                          >
-                            <ul className="nav nav-tabs nav-tabs-solid d-flex justify-content-center">
-                              <li className="nav-item">
-                                <a
-                                  className="nav-link active"
-                                  href="#solid-tab1"
-                                  data-bs-toggle="tab"
-                                  onClick={() => handleClick_abr("below")}
-                                >
-                                  <i className="fa-solid fa-landmark pe-2"></i>
-                                  Below
-                                </a>
-                              </li>
-                              <li className="nav-item">
-                                <a
-                                  className="nav-link"
-                                  href="#solid-tab2"
-                                  data-bs-toggle="tab"
-                                  onClick={() => handleClick_abr("above")}
-                                >
-                                  <i className="fa-solid fa-envelope pe-2"></i>
-                                  Above
-                                </a>
-                              </li>
-                              <li className="nav-item">
-                                <a
-                                  className="nav-link"
-                                  href="#solid-tab3"
-                                  data-bs-toggle="tab"
-                                  onClick={() => handleClick_abr("range")}
-                                >
-                                  <i className="fa-regular fa-image pe-2"></i>
-                                  Range
-                                </a>
-                              </li>
-                            </ul>
-                          </div>
-
-                          {/* <button className='btn btn-success float-end' onClick={() => delete_data()}>DELETE</button>
-                    
-                        <button className='btn btn-success float-end' onClick={() => update_data()}>UPDATE</button> */}
-
-                          <div
-                            className="col-lg-12 col-md-12"
-                            data-aos="fade-left"
-                          >
-                            <div className="card h-100">
-                              <div className="card-body">
-                                <div className="tab-content">
-                                  <div
-                                    className="tab-pane show active"
-                                    id="solid-tab1"
-                                  >
-                                    <div className="d-flex">
-                                      <div className="preview-boxs mb-3">
-                                        <button
-                                          type="submit"
-                                          className="btn btn-primary"
-                                          onClick={() => update_data("below")}
-                                        >
-                                          Update
-                                        </button>
-                                      </div>
-                                      <div className="preview-boxs mb-3 ms-2 ">
-                                        <button
-                                          type="submit"
-                                          className="btn btn-primary"
-                                          onClick={() => delete_data("below")}
-                                        >
-                                          Delete
-                                        </button>
-                                      </div>
-                                    </div>
-
-                                    <div className="card-header d-flex justify-content-between align-items-center border-bottom">
-                                      <h5 className="card-title mb-0 w-auto">
-                                        {" "}
-                                        <i className="fa-solid fa-landmark pe-2"></i>
-                                        Below
-                                      </h5>
-                                      <div className="pay-btn text-end w-auto">
-                                        {/* <button className="btn btn-primary " data-bs-toggle="modal"
-                                                        data-bs-target="#company">
-                                                        Edit Customer Information
-                                                    </button> */}
-                                      </div>
-                                    </div>
-
-                                    <div className="card-body table-responsive">
-                                      <div className="invoice-total-box border">
-                                        <div className="invoice-total-inner">
-                                          <div className="inventory-table">
-                                            <FullDataTable
-                                              keyField="_id"
-                                              TableColumns={columnsM}
-                                              tableData={
-                                                aboveBelowRangData.data
-                                              }
-                                              pagination1={true}
-                                              selectRow={selectRowM}
-                                            />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  <div className="tab-pane" id="solid-tab2">
-                                    <div className="d-flex">
-                                      <div className="preview-boxs mb-3">
-                                        <button
-                                          type="submit"
-                                          className="btn btn-primary"
-                                          onClick={() => update_data("above")}
-                                        >
-                                          Update
-                                        </button>
-                                      </div>
-                                      <div className="preview-boxs mb-3 ms-2 ">
-                                        <button
-                                          type="submit"
-                                          className="btn btn-primary"
-                                          onClick={() => delete_data("above")}
-                                        >
-                                          Delete
-                                        </button>
-                                      </div>
-                                    </div>
-
-                                    <div className="card-header d-flex justify-content-between align-items-center border-bottom">
-                                      <h5 className="card-title mb-0 w-auto">
-                                        {" "}
-                                        <i className="fa-solid fa-envelope pe-2"></i>
-                                        Above
-                                      </h5>
-                                      <div className="pay-btn text-end w-auto">
-                                        {/* <button className="btn btn-primary " data-bs-toggle="modal"
-                                                        data-bs-target="#email">
-                                                        Edit Email Information
-                                                    </button> */}
-                                      </div>
-                                    </div>
-
-                                    <div className="card-body table-responsive">
-                                      <div className="invoice-total-box border">
-                                        <div className="invoice-total-inner">
-                                          <div className="inventory-table">
-                                            <FullDataTable
-                                              keyField="_id"
-                                              TableColumns={columnsM}
-                                              tableData={
-                                                aboveBelowRangData.data
-                                              }
-                                              pagination1={true}
-                                              selectRow={selectRowM}
-                                            />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="tab-pane" id="solid-tab3">
-                                    <div className="d-flex">
-                                      <div className="preview-boxs mb-3">
-                                        <button
-                                          type="submit"
-                                          className="btn btn-primary"
-                                          onClick={() => update_data("range")}
-                                        >
-                                          Update
-                                        </button>
-                                      </div>
-                                      <div className="preview-boxs mb-3 ms-2 ">
-                                        <button
-                                          type="submit"
-                                          className="btn btn-primary"
-                                          onClick={() => delete_data("range")}
-                                        >
-                                          Delete
-                                        </button>
-                                      </div>
-                                    </div>
-                                    <div className="card-header d-flex justify-content-between align-items-center border-bottom">
-                                      <h5 className="card-title mb-0 w-auto">
-                                        {" "}
-                                        <i className="fa-regular fa-image pe-2"></i>
-                                        Range
-                                      </h5>
-                                      <div className="pay-btn text-end w-auto"></div>
-                                    </div>
-                                    <div className="card-body table-responsive">
-                                      <div className="invoice-total-box border">
-                                        <div className="invoice-total-inner">
-                                          <div className="inventory-table">
-                                            <FullDataTable
-                                              keyField="_id"
-                                              TableColumns={columnsM}
-                                              tableData={
-                                                aboveBelowRangData.data
-                                              }
-                                              pagination1={true}
-                                              selectRow={selectRowM}
-                                            />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-               
                   </div>
                 </div>
               </div>

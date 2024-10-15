@@ -281,7 +281,7 @@ class Subadmin {
       }
 
       
-      const getAllSubAdmins1 = await company_information.find({}).select("broker_url");
+      const getAllSubAdmins1 = await User_model.find({_id:getAllSubAdmins[0].parent_id}).select("broker_url");
    
 
       // DATA GET SUCCESSFULLY

@@ -1,38 +1,41 @@
-"use strict"
+"use strict";
 
-const router = require("express").Router()
+const router = require("express").Router();
 
-const { verifyToken } = require('../../Middlewares/autt.middleware')
+const {
+  GetallCatagory,
+  GetServiceByCatagory,
+  Getgetexpirymanualtrade,
+  GetgetAllStrikePriceApi,
+  GetgetStrategyData,
+  Getgettokenbysocket,
+  GetLiveDataSession,
+  AddDataAboveBelowRange,
+  GetDataAboveBelowRange,
+  DeleteDataMakeCall,
+  UpdateDataMakeCall,
+} = require("../../Controllers/Comman/Makecall");
 
-const { GetallCatagory , GetServiceByCatagory ,Getgetexpirymanualtrade ,GetgetAllStrikePriceApi ,GetgetStrategyData , Getgettokenbysocket ,GetLiveDataSession ,AddDataAboveBelowRange ,GetDataAboveBelowRange ,DeleteDataMakeCall , UpdateDataMakeCall} = require('../../Controllers/Comman/Makecall')
+router.post("/make/allCatagory", GetallCatagory);
 
+router.post("/make/ServiceByCatagory", GetServiceByCatagory);
 
+router.post("/make/getexpirymanualtrade", Getgetexpirymanualtrade);
 
+router.post("/make/getAllStrikePriceApi", GetgetAllStrikePriceApi);
 
-router.post('/make/allCatagory', verifyToken ,GetallCatagory);
+router.post("/make/getStrategyData", GetgetStrategyData);
 
-router.post('/make/ServiceByCatagory', verifyToken ,GetServiceByCatagory);
+router.post("/make/gettokenbysocket", Getgettokenbysocket);
 
-router.post('/make/getexpirymanualtrade', verifyToken ,Getgetexpirymanualtrade);
+router.post("/make/LiveDataSession", GetLiveDataSession);
 
-router.post('/make/getAllStrikePriceApi', verifyToken ,GetgetAllStrikePriceApi);
+router.post("/make/AddDataAboveBelowRange", AddDataAboveBelowRange);
 
-router.post('/make/getStrategyData', verifyToken ,GetgetStrategyData);
+router.post("/make/GetDataAboveBelowRange", GetDataAboveBelowRange);
 
-router.post('/make/gettokenbysocket', verifyToken ,Getgettokenbysocket);
+router.post("/make/DeleteDataMakeCall", DeleteDataMakeCall);
 
-router.post('/make/LiveDataSession', verifyToken ,GetLiveDataSession);
-
-router.post('/make/AddDataAboveBelowRange', verifyToken ,AddDataAboveBelowRange);
-
-router.post('/make/GetDataAboveBelowRange', verifyToken , GetDataAboveBelowRange);
-
-router.post('/make/DeleteDataMakeCall', verifyToken , DeleteDataMakeCall);
-
-router.post('/make/UpdateDataMakeCall', verifyToken , UpdateDataMakeCall);
-
-
-
-
+router.post("/make/UpdateDataMakeCall", UpdateDataMakeCall);
 
 module.exports = router;

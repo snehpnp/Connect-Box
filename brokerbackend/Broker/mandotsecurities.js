@@ -56,7 +56,6 @@ const place_order = async (
             item.postdata.orderSide = "SELL";
           }
 
-          console.log("limitPrice", limitPrice);
           item.postdata.limitPrice = parseInt(limitPrice);
           if (item.tradepermission == "1") {
             EntryPlaceOrderSemiAuto(item, filePath, signals, signal_req);

@@ -382,7 +382,7 @@ class SignalController {
   // GET ALL TRADE HOSTORY DATA
   async MainSignal_data(req, res) {
     try {
-      const { subadminId } = req.body;
+      const { subadminId ,key} = req.body;
       const ObjSubAdminId = new ObjectId(subadminId);
 
       const resultUser = await User_model.findOne({
@@ -406,6 +406,7 @@ class SignalController {
         today.getDate().toString();
 
       if (resultUser.Role == "SUBADMIN") {
+
         var results = await Mainsignals.aggregate([
           {
             $match: { client_persnal_key: resultUser.client_key },
@@ -451,10 +452,58 @@ class SignalController {
           },
         ]);
 
+
+        var results1 = await Mainsignals.aggregate([
+          {
+            $match: { client_persnal_key: resultUser.client_key },
+          },
+          {
+            $addFields: {
+              entry_qty_percent_int: { $toInt: "$entry_qty_percent" },
+              exit_qty_percent_int: {
+                $cond: {
+                  if: {
+                    $or: [
+                      { $eq: ["$exit_qty_percent", ""] },
+                      { $eq: ["$exit_qty_percent", null] },
+                    ],
+                  },
+                  then: 0,
+                  else: { $toInt: "$exit_qty_percent" },
+                },
+              },
+            },
+          },
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $gt: ["$entry_qty_percent_int", "$exit_qty_percent_int"] },
+                  { $eq: ["$segment", "C"] },
+                ],
+              },
+            },
+          },
+
+          {
+            $lookup: {
+              from: "strategies",
+              localField: "strategy",
+              foreignField: "strategy_name",
+              as: "StrategyData",
+            },
+          },
+          {
+            $unwind: "$StrategyData",
+          },
+        ]);
+
+
         return res.send({
           status: true,
           msg: "Data Retrieved Successfully",
           data: results,
+          data1:results1
         });
       } else if (resultUser.Role == "RESEARCH") {
         var results = await Mainsignals.aggregate([
@@ -1205,7 +1254,6 @@ class SignalController {
         "/" +
         today.getDate().toString();
 
-      if (resultUser.Role == "SUBADMIN") {
         var results = await Mainsignals.aggregate([
           {
             $match: { client_persnal_key: resultUser.client_key },
@@ -1232,7 +1280,7 @@ class SignalController {
               $expr: {
                 $and: [
                   { $gt: ["$entry_qty_percent_int", "$exit_qty_percent_int"] },
-                  { $eq: ["$dt_date", formattedDate] },
+                  { $eq: ["$segment", "C"] },
                 ],
               },
             },
@@ -1256,57 +1304,7 @@ class SignalController {
           msg: "Data Retrieved Successfully",
           data: results,
         });
-      } else if (resultUser.Role == "RESEARCH") {
-        var results = await Mainsignals.aggregate([
-          {
-            $match: { client_persnal_key: resultUser.client_key },
-          },
-          {
-            $addFields: {
-              entry_qty_percent_int: { $toInt: "$entry_qty_percent" },
-              exit_qty_percent_int: {
-                $cond: {
-                  if: {
-                    $or: [
-                      { $eq: ["$exit_qty_percent", ""] },
-                      { $eq: ["$exit_qty_percent", null] },
-                    ],
-                  },
-                  then: 0,
-                  else: { $toInt: "$exit_qty_percent" },
-                },
-              },
-            },
-          },
-          {
-            $match: {
-              $expr: {
-                $and: [
-                  { $gt: ["$entry_qty_percent_int", "$exit_qty_percent_int"] },
-                  { $eq: ["$dt_date", formattedDate] },
-                ],
-              },
-            },
-          },
-          {
-            $lookup: {
-              from: "researcher_strategies",
-              localField: "strategy",
-              foreignField: "strategy_name",
-              as: "StrategyData",
-            },
-          },
-          {
-            $unwind: "$StrategyData",
-          },
-        ]);
-
-        return res.send({
-          status: true,
-          msg: "Data Retrieved Successfully",
-          data: results,
-        });
-      }
+      
     } catch (error) {
       console.log("Error retrieving data:", error);
       res.send({

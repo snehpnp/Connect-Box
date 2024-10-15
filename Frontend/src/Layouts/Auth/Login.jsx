@@ -120,7 +120,7 @@ function Login() {
           navigate("/user/dashboard");
         }, 2200);
       }
-      await socket.emit("login", newMessage);
+      // await socket.emit("login", newMessage);
     }
   };
 

@@ -167,15 +167,15 @@ const AddClient = () => {
       await dispatch(AddUsers(req))
         .unwrap()
         .then(async (response) => {
-          if(balance <= 0){
-            Swal.fire({
-                title: "Insufficient Balance",
-                icon: "error",
-                timerProgressBar: true,
-            });
+        //   if(balance <= 0){
+        //     Swal.fire({
+        //         title: "Insufficient Balance",
+        //         icon: "error",
+        //         timerProgressBar: true,
+        //     });
         
-            return;
-        }
+        //     return;
+        // }
           if (response.status) {
             
             Swal.fire({
