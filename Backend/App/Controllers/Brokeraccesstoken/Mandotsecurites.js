@@ -125,10 +125,9 @@ class mandotsecurities {
 
     // UPDATE SINGLE CLIENT BROKER RESPONSE
     async SingleOrderFullInformationmandotsecurities(req, res, user_info, broker_response_id, order_id) {
-        console.log("user_info", user_info)
-        console.log("broker_response_id", broker_response_id)
-        console.log("order_id", order_id)
-
+        console.log("user_info", user_info);
+        console.log("broker_response_id", broker_response_id);
+        console.log("order_id", order_id);
         try {
 
             const { user_id } = req.body
@@ -138,34 +137,21 @@ class mandotsecurities {
 
             var config = {
                 method: 'get',
-                url: 'https://apiconnect.angelbroking.com/rest/secure/angelbroking/order/v1/getOrderBook',
-                headers: {
-                    'Authorization': 'Bearer ' + user_info[0].access_token,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-UserType': 'USER',
-                    'X-SourceID': 'WEB',
-                    'X-ClientLocalIP': 'CLIENT_LOCAL_IP',
-                    'X-ClientPublicIP': 'CLIENT_PUBLIC_IP',
-                    'X-MACAddress': 'MAC_ADDRESS',
-                    'X-PrivateKey': user_info[0].api_key
-                },
-            };
+                url: 'https://webtrade.mandotsecurities.com/interactive/orders?appOrderID='+order_id,
+                headers: { 
+                    'Authorization': user_info[0].access_token,
+                    'Content-Type': 'application/json'
+                 },
+              };
             axios(config)
             .then(async (response) => {
-                if (response.data.data.length > 0) {
 
-                    const result_order = response.data.data.find(item2 => item2.orderid == order_id);
+                if(response.data.type == "success"){
+                if (response.data.result.length > 0) {
+
+                    const result_order = response.data.result[response.data.result.length - 1];
 
                     if (result_order != undefined) {
-
-                        var reject_reason;
-                        if (result_order.text) {
-                            reject_reason = result_order.text;
-                        } else {
-                            reject_reason = '';
-                        }
-
                         const message = (JSON.stringify(result_order));
 
                         let result = await BrokerResponse.findByIdAndUpdate(
@@ -173,8 +159,8 @@ class mandotsecurities {
                             {
                                 order_view_date: message,
                                 order_view_status: '1',
-                                order_view_response: result_order.status,
-                                reject_reason: reject_reason
+                                order_view_response: result_order.OrderStatus,
+                                reject_reason: result_order.CancelRejectReason
 
                             },
                             { new: true }
@@ -203,7 +189,10 @@ class mandotsecurities {
                     }
 
 
-                } else {
+                } 
+                
+            }
+                else {
                     return res.send({ status: false, msg: 'No data Available', data: [] });
                 }
 
