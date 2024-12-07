@@ -121,7 +121,7 @@ const DropDown = () => {
         ProfileInfo({ req: data, token: token })
       ).unwrap();
       if (response.status) {
-        console.log(response.data2);
+     
         setSetBrokerUrl(response.data2);
 
         setProfileData(response.data);

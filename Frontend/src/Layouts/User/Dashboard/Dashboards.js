@@ -663,10 +663,10 @@ const Dashboards = () => {
                                     }`}
                                   >
                                     {strategy.totalDifference >= 0
-                                      ? `+${strategy.totalDifference.toFixed(
+                                      ? `+${strategy.totalDifference && strategy.totalDifference?.toFixed(
                                           3
                                         )}`
-                                      : strategy.totalDifference.toFixed(3)}
+                                      : strategy.totalDifference?.toFixed(3)}
                                   </span>
                                 </div>
                               </div>
@@ -703,16 +703,16 @@ const Dashboards = () => {
                                   </span>
                                   <span
                                     className={`plane-profit fw-bold ${
-                                      strategy.totalDifference >= 0
+                                      strategy.totalDifference && strategy.totalDifference >= 0
                                         ? "text-success"
                                         : "text-danger"
                                     }`}
                                   >
                                     {strategy.totalDifference >= 0
-                                      ? `+${strategy.totalDifference.toFixed(
+                                      ? `+${strategy.totalDifference?.toFixed(
                                           3
                                         )}`
-                                      : strategy.totalDifference.toFixed(3)}
+                                      : strategy.totalDifference?.toFixed(3)}
                                   </span>
                                 </div>
                               </div>
@@ -755,10 +755,10 @@ const Dashboards = () => {
                                     }`}
                                   >
                                     {strategy.totalDifference >= 0
-                                      ? `+${strategy.totalDifference.toFixed(
+                                      ? `+${strategy.totalDifference?.toFixed(
                                           3
                                         )}`
-                                      : strategy.totalDifference.toFixed(3)}
+                                      : strategy.totalDifference?.toFixed(3)}
                                   </span>
                                 </div>
                               </div>

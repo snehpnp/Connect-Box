@@ -16,6 +16,7 @@ var dateTime = require("node-datetime");
 const semiautoModel = db.semiautoModel;
 const mongoose = require("mongoose");
 const { trade_charge } = require("../Helper/trade_charge");
+const get_option_chain_symbols = db.get_option_chain_symbols;
 
 const place_order = async (
   AllClientData,
@@ -56,6 +57,7 @@ const place_order = async (
             item.postdata.orderSide = "SELL";
           }
 
+          console.log("limitPrice", limitPrice);
           item.postdata.limitPrice = parseInt(limitPrice);
           if (item.tradepermission == "1") {
             EntryPlaceOrderSemiAuto(item, filePath, signals, signal_req);
@@ -355,7 +357,17 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
   var client_key = signals.Key;
   var demo = signals.Demo;
 
-  var send_rr = Buffer.from(qs.stringify(item.postdata)).toString("base64");
+
+
+  let findCashprice = await get_option_chain_symbols.find({symbol: input_symbol.split("#")[0]});
+   
+
+  if (segment.toUpperCase() == "C") {
+   
+    let qtyCreate = Number(item.stock_fund) / Number(findCashprice[0]?.price);
+    item.postdata.orderQuantity = Math.floor(qtyCreate) ? Math.floor(qtyCreate) : 1;
+  }
+
 
   fs.appendFile(
     filePath,
@@ -381,6 +393,8 @@ const EntryPlaceOrder = async (item, filePath, signals, signal_req) => {
   } else {
     url = "https://webtrade.mandotsecurities.com/interactive/orders";
   }
+
+  var send_rr = Buffer.from(qs.stringify(item.postdata)).toString("base64");
 
   var config = {
     method: "post",
@@ -563,8 +577,20 @@ const ExitPlaceOrder = async (
   var client_key = signals.Key;
   var demo = signals.Demo;
 
-  var send_rr = Buffer.from(qs.stringify(item.postdata)).toString("base64");
 
+  let findCashprice = await get_option_chain_symbols.find({symbol: input_symbol.split("#")[0]});
+   
+
+
+  if (segment.toUpperCase() == "C") {
+   
+    let qtyCreate = Number(item.stock_fund) / Number(findCashprice[0]?.price);
+    item.postdata.orderQuantity = Math.floor(qtyCreate) ? Math.floor(qtyCreate) : 1;
+
+  }
+
+
+  
   fs.appendFile(
     filePath,
     "TIME " +
@@ -580,6 +606,8 @@ const ExitPlaceOrder = async (
       }
     }
   );
+  
+  var send_rr = Buffer.from(qs.stringify(item.postdata)).toString("base64");
 
   var url;
   if (item.product_type == "3") {

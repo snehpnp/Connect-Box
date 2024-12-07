@@ -189,9 +189,7 @@ export default function AllEmployees() {
 
   let UserCreateOrder = (data) => {
     let url = "https://connectbox.tradestreet.in/signal/userorder";
-    // console.log("data", url);
-
-    // let url = "http://localhost:8000/userorder";
+    
 
     axios
       .post(url, {

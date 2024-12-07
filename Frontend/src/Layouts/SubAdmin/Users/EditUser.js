@@ -141,8 +141,6 @@ const AddClient = () => {
         errors.plan = "plan is required";
       }
 
-      console.log("Plan", values.plan);
-console.log(errors)
 
       return errors;
     },

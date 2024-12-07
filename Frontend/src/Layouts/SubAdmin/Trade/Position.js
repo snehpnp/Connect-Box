@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/DataTable";
-
 import { useDispatch } from "react-redux";
 import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
@@ -13,16 +12,13 @@ import { Trade_history_data } from "../../../ReduxStore/Slice/Comman/Trades";
 import { loginWithApi } from "../../../Utils/log_with_api";
 import { ipAddress } from "../../../Utils/Ipaddress";
 import { allStrategy_subAd } from "../../../ReduxStore/Slice/Admin/Subadmins";
-
 import Swal from "sweetalert2";
 import $ from "jquery";
 import { fDateTimeSuffix } from "../../../Utils/Date_formet";
 import { CreateSocketSession, ConnctSocket } from "../../../Utils/Alice_Socket";
 import { ShowColor1 } from "../../../Utils/ShowTradeColor";
 import { Eye } from "lucide-react";
-
 import DetailsView from "./DetailsView";
-
 import { GetBrokerLiveDatas } from "../../../ReduxStore/Slice/Comman/Makecall/make";
 
 export default function AllEmployees() {
@@ -31,9 +27,7 @@ export default function AllEmployees() {
   const Role = JSON.parse(localStorage.getItem("user_details")).Role;
   const token = JSON.parse(localStorage.getItem("user_details")).token;
   const userDetails = JSON.parse(localStorage.getItem("user_details"));
-
   const [showModal, setshowModal] = useState(false);
-
   const [SelectService, setSelectService] = useState("null");
   const [profileData, setProfileData] = useState([]);
   const [refresh, setrefresh] = useState(false);
@@ -58,7 +52,7 @@ export default function AllEmployees() {
   const [tableData, setTableData] = useState({ loading: false, data: [] });
   const [strategies, setStrategies] = useState({ loading: true, data: [] });
   const [rowData, setRowData] = useState({ loading: true, data: [] });
-
+  const [qtyDaynamic, setQtyDaynamic] = useState(1);
   useEffect(() => {
     GetBrokerLiveData(userIdSocketRun);
   }, [userIdSocketRun]);
@@ -96,7 +90,7 @@ export default function AllEmployees() {
               data: response.data,
             });
             if (response.data[0].TradingStatus == "on") {
-              setLoginStatus(true); 
+              setLoginStatus(true);
             } else {
               setLoginStatus(false);
             }
@@ -113,8 +107,6 @@ export default function AllEmployees() {
   useEffect(() => {
     fetchData();
   }, []);
-
-
 
   const handleTradingOff = async (id) => {
     const result = await Swal.fire({
@@ -137,7 +129,7 @@ export default function AllEmployees() {
       .unwrap()
       .then((response) => {
         setrefresh(!refresh);
-        if (response.status){
+        if (response.status) {
           Swal.fire({
             title: "Trading Off Successfully!",
             icon: "success",
@@ -145,15 +137,11 @@ export default function AllEmployees() {
           });
           fetchData();
         }
-       
       })
       .catch((error) => {
         // Handle error (optional)
       });
   };
-
-
-
 
   // LOGIN DEMAT WITH API
   const LogIn_WIth_Api = (check, brokerid, tradingstatus, UserDetails) => {
@@ -168,18 +156,13 @@ export default function AllEmployees() {
           timer: 1500,
           timerProgressBar: true,
         });
-       
+
         return false;
       }
     } else {
-     
       handleTradingOff(user_id);
     }
   };
-
-
-
-
 
   const columns = [
     {
@@ -395,6 +378,13 @@ export default function AllEmployees() {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
+          response.data.map((item) => {
+            item.entry_qty = item.entry_qty * qtyDaynamic ? qtyDaynamic :1;
+            item.exit_qty = item.exit_qty * qtyDaynamic ? qtyDaynamic :item.exit_qty == 0 ?"":1;
+            item.entry_qty_percent = item.entry_qty * qtyDaynamic ? qtyDaynamic :1;
+            item.exit_qty_percent = item.exit_qty * qtyDaynamic ? qtyDaynamic :1;
+          });
+
           setTableData({ loading: true, data: response.data });
           setTradeHistoryData({ loading: true, data: response.data });
         } else {
@@ -408,7 +398,7 @@ export default function AllEmployees() {
 
   useEffect(() => {
     userDataRes();
-  }, [refresh, fromDate, toDate, selectStrategy, SelectService]);
+  }, [refresh, fromDate, toDate, selectStrategy, SelectService, qtyDaynamic]);
 
   var CreatechannelList = "";
   let total = 0;
@@ -437,9 +427,6 @@ export default function AllEmployees() {
         }
       }
     });
-
-
-
 
   //  SHOW lIVE PRICE
   const ShowLivePrice = async () => {
@@ -809,8 +796,6 @@ export default function AllEmployees() {
     }
   };
 
-
-
   // CALCULATE PNL
   const calcultateRPL = (row, livePrice, pre_row) => {
     let get_ids = "_id_" + row.token + "_" + row._id;
@@ -859,8 +844,6 @@ export default function AllEmployees() {
     }
   };
 
-
-  
   useEffect(() => {
     ShowLivePrice();
   }, [tradeHistoryData.data, SocketState, livePriceDataDetails]);
@@ -878,13 +861,10 @@ export default function AllEmployees() {
     fetchIP();
   }, []);
 
-
-
-
   // FATCH STRATEGYS
   const fetchStrategies = async () => {
     try {
-      const data = {id: user_id };
+      const data = { id: user_id };
       await dispatch(allStrategy_subAd(data))
         .unwrap()
         .then((response) => {
@@ -924,8 +904,6 @@ export default function AllEmployees() {
       });
     }
   };
-
-
 
   useEffect(() => {
     fetchStrategies();
@@ -1074,6 +1052,23 @@ export default function AllEmployees() {
                           );
                         })}
                     </select>
+                  </div>
+
+                  <div className="input-block col-lg-2 mt-3 mb-3">
+                    <label>Enter Quantity</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Enter Quantity"
+                      onChange={(e) => {
+                        const value = e.target.value;
+                       
+                        if (/^\d{0,10}$/.test(value)) {
+                          setQtyDaynamic(value);
+                        }
+                      }}
+                      value={qtyDaynamic}
+                    />
                   </div>
                 </div>
 

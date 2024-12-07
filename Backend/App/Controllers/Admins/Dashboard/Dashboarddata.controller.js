@@ -13,11 +13,9 @@ var dt = dateTime.create();
 
 // Product CLASS
 class Dashboard {
+  
   async GetDashboardData(req, res) {
     try {
-
-
-
       const counts = await User_model.aggregate([
         {
           $facet: {
@@ -32,11 +30,10 @@ class Dashboard {
                 $match: {
                   Role: "RESEARCH",
                   ActiveStatus: "1",
-                  
                   $or: [
-                    { End_Date: { $gte: new Date() } },
-                    { End_Date: { $eq: null } }, 
-                    { End_Date: { $exists: false } }, 
+                    { End_Date: { $type: "date", $gte: new Date() } },
+                    { End_Date: { $eq: null } },
+                    { End_Date: { $exists: false } },
                   ],
                 },
               },
@@ -49,36 +46,29 @@ class Dashboard {
             Totalcount: { $arrayElemAt: ["$Totalcount.count", 0] },
             TotalActivecount: { $arrayElemAt: ["$TotalActivecount.count", 0] },
             TotalUsercount: { $arrayElemAt: ["$TotalUsercount.count", 0] },
-            TotalActiveUsercount: {
-              $arrayElemAt: ["$TotalActiveUsercount.count", 0],
-            },
+            TotalActiveUsercount: { $arrayElemAt: ["$TotalActiveUsercount.count", 0] },
           },
         },
       ]);
-      
-   
-
-
+  
       const {
         Totalcount,
         TotalActivecount,
         TotalUsercount,
         TotalActiveUsercount,
       } = counts[0];
-
+  
       var Count = {
         Totalcount: Totalcount,
         TotalActivecount: TotalActivecount,
         TotalInActivecount: Totalcount - TotalActivecount,
-
         TotalUsercount: TotalUsercount,
         TotalActiveUsercount: TotalActiveUsercount,
         TotalInActiveUsercount: TotalUsercount - TotalActiveUsercount,
-
       };
-
+  
       // DATA GET SUCCESSFULLY
-     return res.send({
+      return res.send({
         status: true,
         msg: "Get Subadmins",
         data: Count,
@@ -91,6 +81,7 @@ class Dashboard {
       });
     }
   }
+  
 
 
 
@@ -257,7 +248,7 @@ class Dashboard {
         data: dummyData,
       });
     } catch (error) {
-      console.log("Error getting Subadmins:", error);
+      console.log("Error getting Subadmins 1:", error);
       res.status(500).send({
         status: false,
         msg: "Internal Server Error",

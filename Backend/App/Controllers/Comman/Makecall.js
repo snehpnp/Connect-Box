@@ -893,7 +893,7 @@ async function run() {
 
   try {
 
-    const makecallabrView_excute_run = async () => {
+    const makecallabrView_excute_run = async (retries = 3) => {
       try {
 
         let rr = true
@@ -905,51 +905,6 @@ async function run() {
 
      
           if (makecallabrView_excute_result.length > 0) {
-
-
-
-            // [
-            //   {
-            //     _id: new ObjectId('66335258559fd8cbfd6aa184'),
-            //     user_id: new ObjectId('662b6ec4e8a32c05bc0ae639'),
-            //     Symbol: 'BANKNIFTY',
-            //     TType: 'LE',
-            //     Tr_Price: '0.00',
-            //     Price: '0',
-            //     EntryPrice: '',
-            //     Sq_Value: '0.00',
-            //     Sl_Value: '0.00',
-            //     TSL: '0.00',
-            //     Segment: 'O',
-            //     Strike: '49200',
-            //     OType: 'CALL',
-            //     Expiry: '08052024',
-            //     Strategy: 'SHK_DEMO',
-            //     Quntity: '100',
-            //     Key: 'SHK796872240426',
-            //     TradeType: 'MAKECALL',
-            //     Target: '10.00',
-            //     StopLoss: '0',
-            //     ExitTime: '15:25',
-            //     sl_status: '1',
-            //     token: '43763',
-            //     EntryPriceRange_one: '445',
-            //     EntryPriceRange_two: '480',
-            //     ABR_TYPE: 'range',
-            //     marketTimeAmo: '1',
-            //     WiseTypeDropdown: '1',
-            //     status: 0,
-            //     above_price: null,
-            //     below_price: null,
-            //     stockInfo_lp: 451.15,
-            //     stockInfo_curtime: '1416',
-            //     isAbove: false,
-            //     isBelow: false,
-            //     isRange: true
-            //   }
-            // ]
-
-
 
             makecallabrView_excute_result && makecallabrView_excute_result.map(async (item) => {
 
@@ -1021,15 +976,16 @@ async function run() {
 
 
 
-          } else {
           }
-
-
         } else {
         }
 
       } catch (error) {
-        console.log("Error in makecallabrView_excute_run loop", error);
+        if (error.code === 'ECONNRESET' && retries > 0) {
+          return makeCallWithRetries(retries - 1);
+        }
+        throw error; 
+      
       }
 
 

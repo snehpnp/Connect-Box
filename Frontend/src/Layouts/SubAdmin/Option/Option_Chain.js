@@ -126,7 +126,7 @@ function Option_Chain() {
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          console.log("response", response);
+        
           setLivePriceDataDetails(response.data);
         } else {
           Swal.fire({
