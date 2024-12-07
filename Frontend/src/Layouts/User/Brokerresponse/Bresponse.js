@@ -2,7 +2,8 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { useState, useEffect } from "react";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
-import { Broker_Response } from "../../../ReduxStore/Slice/Users/BrokerResponseSlice";
+import { Broker_Response ,GET_ALL_BROKER_RESPONSES } from "../../../ReduxStore/Slice/Users/BrokerResponseSlice";
+import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
 import { fa_time, fDateTimeSuffix } from "../../../Utils/Date_formet";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../Components/Dashboard/Models/Model";
@@ -12,6 +13,7 @@ import { Link } from "react-router-dom";
 
 export default function BrokerResponse() {
   const user_Id = JSON.parse(localStorage.getItem("user_details")).user_id;
+  const token = JSON.parse(localStorage.getItem("user_details")).token;
 
 
 
@@ -22,6 +24,9 @@ export default function BrokerResponse() {
   const [showModal, setshowModal] = useState(false);
   const [BrokerResponseId, setBrokerResponseId] = useState([]);
   const [DashboardData, setDashboardData] = useState({ loading: true, data: []});
+  const [profileData, setProfileData] = useState([]);
+  const [shouldAddNewColumn, setShouldAddNewColumn] = useState(false)
+
 
 
 
@@ -29,6 +34,48 @@ export default function BrokerResponse() {
 
   //  for Add Licence
   const [showAddLicenceModal, setshowAddLicenceModal] = useState(false);
+
+  // api for getting ProfileInfo
+  const fetchData = async () => {
+    try {
+      let data = { id: user_Id };
+      await dispatch(ProfileInfo({ req: data, token: token }))
+        .unwrap()
+        .then(async (response) => {
+          if (response.status) {
+            setProfileData(response.data);
+            if (response.data.length > 0) {
+              //Angel
+              if (parseInt(response.data[0].broker) == 12) {
+                setShouldAddNewColumn(true)
+              }
+
+              // Alice Blue
+              else if (parseInt(response.data[0].broker) == 12) {
+                setShouldAddNewColumn(true)
+              }
+
+              // Mandot
+              else if (parseInt(response.data[0].broker) == 8) {
+                setShouldAddNewColumn(true)
+              }
+            }
+          } else {
+
+          }
+        })
+        .catch((error) => {
+          console.log("Error", error);
+        });
+    } catch (error) {
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
 
   const styles = {
     container: {
@@ -127,6 +174,54 @@ export default function BrokerResponse() {
       ),
     },
   ];
+
+    // Conditionally add the new column based on `shouldAddNewColumn`
+    if (shouldAddNewColumn) {
+      columns.push({
+        field: 'refresh', // Unique field name for the column
+        headerName: 'Refresh',
+        width: 160,
+        headerClassName: styles.boldHeader,
+        renderCell: (params) => (
+          <div>
+            {params.row.order_id !== '' && params.row.order_id !== undefined && params.row.order_view_status === '0' ? (
+              <button
+                className="btn btn-primary d-flex ms-auto mb-3"
+                type="reset"
+                style={{ height: '40px' }}
+                onClick={(e) => Singlerefresh(e, params.row)}
+              >
+                Refresh
+              </button>
+            ) : (
+              ''
+            )}
+          </div>
+        ),
+      });
+    }
+  
+  
+    const Singlerefresh = async (e, row) => {
+  
+      await dispatch(GET_ALL_BROKER_RESPONSES({ user_id: user_Id ,broker_response_id: row._id, order_id: row.order_id})).unwrap()
+        .then((response) => {
+          if (response.status) {
+            // setrefresh(!refresh)
+            BrokerResponse()
+          } else {
+            // Swal.fire({
+            //   icon: 'error',
+            //   title: 'Oops...',
+            //   text: response.msg,
+            // })
+  
+            // setrefresh(!refresh)
+          }
+        })
+  
+  
+    }
 
 
   
