@@ -18,6 +18,9 @@ import Signal  from "../Layouts/Employee/Signal/Signal.js";
 import TradeHistory from '../Layouts/Employee/TradeHistory/TradeHistory.js' 
 import Settings from '../Layouts/Comman/Setting_Page/Settings.js';
 
+import UserBrokerResponse from "../Layouts/Employee/Users/UserBrokerResponse.js";
+import UserClientService from "../Layouts/Employee/Users/UserClientService.js";
+
 
 
 const Employee_Routing = () => {
@@ -35,13 +38,15 @@ const Employee_Routing = () => {
                     <Route exact path="/user/add" element={<AddUser />} />
                     <Route exact path="/user/edit/:id" element={<Edituser />} />
                     <Route exact path="/setting" element={<Settings />} />
-
+                
      
                     
                     <Route exact path="/faqs" element={<Faqs />} />
                     <Route exact path='/help' element = {<Help/>}/>
                     <Route exact path='/signal' element = {<Signal/>}/>
                     <Route exact path='/tradehistory' element = {<TradeHistory/>}/>
+                    <Route exact path="/user/UserBrokerResponse/:id" element={<UserBrokerResponse />} />
+                    <Route exact path="/user/UserClientService/:id" element={<UserClientService />} />
 
                 </Routes>
             </div>

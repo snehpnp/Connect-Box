@@ -122,7 +122,7 @@ const AddEmployee = () => {
         }
       }
 
-
+      
       return errors;
     },
     onSubmit: async (values) => {
@@ -291,7 +291,7 @@ const AddEmployee = () => {
       type: "checkbox",
       label_size: 12,
       col_size: 3,
-      check_box_true: formik.values.all || formik.values.detailsinfo ? true : false,
+      check_box_true: formik.values.all || formik.values.trading_status ? true : false,
     },
 
     {
@@ -300,7 +300,7 @@ const AddEmployee = () => {
       type: "checkbox",
       label_size: 12,
       col_size: 3,
-      check_box_true: formik.values.all || formik.values.detailsinfo ? true : false,
+      check_box_true: formik.values.all || formik.values.broker_response ? true : false,
     },
 
     {
@@ -309,7 +309,7 @@ const AddEmployee = () => {
       type: "checkbox",
       label_size: 12,
       col_size: 3,
-      check_box_true: formik.values.all || formik.values.detailsinfo ? true : false,
+      check_box_true: formik.values.all || formik.values.client_service ? true : false,
     },
 
     {
