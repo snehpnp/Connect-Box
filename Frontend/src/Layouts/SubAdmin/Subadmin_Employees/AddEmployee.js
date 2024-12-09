@@ -280,6 +280,33 @@ const AddEmployee = () => {
     //   check_box_true: formik.values.all || formik.values.tradehistory ? true : false,
     // },
     {
+      name: "trading_status",
+      label: "Trading Status",
+      type: "checkbox",
+      label_size: 12,
+      col_size: 3,
+      check_box_true: formik.values.all || formik.values.detailsinfo ? true : false,
+    },
+
+    {
+      name: "broker_response",
+      label: "Broker Response",
+      type: "checkbox",
+      label_size: 12,
+      col_size: 3,
+      check_box_true: formik.values.all || formik.values.detailsinfo ? true : false,
+    },
+
+    {
+      name: "client_service",
+      label: "Client Service",
+      type: "checkbox",
+      label_size: 12,
+      col_size: 3,
+      check_box_true: formik.values.all || formik.values.detailsinfo ? true : false,
+    },
+
+    {
       name: "detailsinfo",
       label: "Full Info View",
       type: "checkbox",
