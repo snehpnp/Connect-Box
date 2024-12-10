@@ -1,6 +1,7 @@
 export const react_domain = `${window.location.origin}`;
 
 export const broker_redirect_url = `${window.location.origin}/backend/`
+// export const base_url = `${window.location.origin}/backend/`
 export const base_url = `http://localhost:7701/`;
 export const broker_backend = `${window.location.origin}/signal/broker-signals`;
 
