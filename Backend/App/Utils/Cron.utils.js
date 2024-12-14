@@ -106,15 +106,13 @@ cron.schedule('30 6 * * *', () => {
 
 
 // delet live_token _price
-
-cron.schedule('0 0 * * *', async () => {
-    await  TruncateTable_live_token_price();
+cron.schedule('10 1 * * *', async () => {
+      TruncateTable_live_token_price();
 })
 
 
 
 ////////////////------------Token ADDD -------------/////////////////////
-
 const MainSignalsRemainToken = async () => {
 
 
@@ -475,7 +473,16 @@ const TruncateTableTokenChain = async () => {
 
 const TruncateTable_live_token_price = async() => {
 
-    const drop = await db_main.collection(live_price_token).deleteMany({});
+    const FindData = await live_price_token.find({trading_status:"on"});
+    if(FindData.length > 0){
+        FindData.forEach(async (element) => {
+            const filter = { _id: element._id };
+            const update = {
+                $set: { trading_status: "off",access_token:"" },
+            };
+            const update_token = await live_price_token.updateOne(filter, update);
+        });
+    }
 
 }
  

@@ -379,10 +379,17 @@ export default function AllEmployees() {
       .then(async (response) => {
         if (response.status) {
           response.data.map((item) => {
-            item.entry_qty = item.entry_qty * qtyDaynamic ? qtyDaynamic :1;
-            item.exit_qty = item.exit_qty * qtyDaynamic ? qtyDaynamic :item.exit_qty == 0 ?"":1;
-            item.entry_qty_percent = item.entry_qty * qtyDaynamic ? qtyDaynamic :1;
-            item.exit_qty_percent = item.exit_qty * qtyDaynamic ? qtyDaynamic :1;
+            item.entry_qty = item.entry_qty * qtyDaynamic ? qtyDaynamic : 1;
+            item.exit_qty =
+              item.exit_qty * qtyDaynamic
+                ? qtyDaynamic
+                : item.exit_qty == 0
+                ? ""
+                : 1;
+            item.entry_qty_percent =
+              item.entry_qty * qtyDaynamic ? qtyDaynamic : 1;
+            item.exit_qty_percent =
+              item.exit_qty * qtyDaynamic ? qtyDaynamic : 1;
           });
 
           setTableData({ loading: true, data: response.data });
@@ -432,6 +439,7 @@ export default function AllEmployees() {
   const ShowLivePrice = async () => {
     let type = { loginType: "API" };
     let channelList = CreatechannelList;
+    // LIVE PRICE DATA
 
     if (
       livePriceDataDetails &&
@@ -1062,7 +1070,7 @@ export default function AllEmployees() {
                       placeholder="Enter Quantity"
                       onChange={(e) => {
                         const value = e.target.value;
-                       
+
                         if (/^\d{0,10}$/.test(value)) {
                           setQtyDaynamic(value);
                         }

@@ -1,9 +1,9 @@
 export const react_domain = `${window.location.origin}`;
 
-export const broker_redirect_url = `${window.location.origin}/backend/`
-// export const base_url = `${window.location.origin}/backend/`
-export const base_url = `http://localhost:7701/`;
-export const broker_backend = `${window.location.origin}/signal/broker-signals`;
+// export const broker_redirect_url = `${window.location.origin}/backend/`
+// // export const base_url = `${window.location.origin}/backend/`
+// export const base_url = `http://localhost:7700/`;
+// export const broker_backend = `${window.location.origin}/signal/broker-signals`;
 
 
 
@@ -22,10 +22,10 @@ export const broker_backend = `${window.location.origin}/signal/broker-signals`;
 
 
 // THE ALGO CONNECTBOX LIVE
-// export const broker_redirect_url = "https://connect.thealgo.co.in/backend/";
-// export const socket_Url = `https://connect.thealgo.co.in:1001`;
-// export const broker_backend = `https://connect.thealgo.co.in/signal/broker-signals`;
-// export const base_url = `https://connect.thealgo.co.in/backend/`;
+export const broker_redirect_url = "https://connect.thealgo.co.in/backend/";
+export const socket_Url = `https://connect.thealgo.co.in:1001`;
+export const broker_backend = `https://connect.thealgo.co.in/signal/broker-signals`;
+export const base_url = `https://connect.thealgo.co.in/backend/`;
 
 
 // COMMAN BUILD
