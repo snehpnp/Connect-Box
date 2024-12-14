@@ -1097,7 +1097,7 @@ export default function AllEmployees() {
                   <FullDataTable
                     TableColumns={columns}
                     tableData={tradeHistoryData.data}
-                    pagination1={true}
+                    pagination1={false}
                   />
                   <DetailsView
                     showModal={showModal}
