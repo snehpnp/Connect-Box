@@ -30,7 +30,7 @@ const FullDataTable = ({
           columns={columns}
           pageSize={10}
           rowsPerPageOptions={[5, 10, 50, 100]}
-          pagination={true}
+          pagination={false}
           disableSelectionOnClick
           checkboxSelection={checkboxSelection}
           disableColumnFilter={true}
