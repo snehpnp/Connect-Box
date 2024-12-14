@@ -12,6 +12,7 @@ import { fDateTime } from "../../../Utils/Date_formet";
 import Loader from "../../../Utils/Loader";
 import { Get_Permission } from '../../../ReduxStore/Slice/Employee/EmployeeSlice'
 import { Get_All_Broker, Show_Status, DeleteUser, GetAllSubadminUsers } from '../../../ReduxStore/Slice/Subadmin/UsersSlice'
+import { Radio, RadioTower, UserRoundCog } from "lucide-react";
 
 
 export default function AllUsers() {
@@ -167,6 +168,57 @@ export default function AllUsers() {
       renderCell: (params) => showLicenceName(params.row),
 
     },
+
+    {
+      field: 'TradingStatus',
+      headerName: "Trading Status",
+      width: 120,
+      headerClassName: styles.boldHeader,
+      renderCell: (params) => params.value == "on" ? <i class="fa fa-circle" style={{ fontSize: "20px", color: "green" }}></i> : <i class="fa fa-circle" style={{ fontSize: "20px", color: "red" }}></i>,
+      hideColumn: getPermission.data && getPermission.data.Update_Api_Key == 1 ? true : getPermission.data && getPermission.data.trading_status == 1 ? true : false,
+
+    },
+
+    {
+      field: "Broker Response",
+      headerName: "Broker Response",
+      width: 150,
+      renderCell: (params) => (
+        <div style={{ marginLeft: "20px" }}>
+          <IconButton style={{ color: "blue" }}>
+            <Radio onClick={() => handlerbrokerresponse(params.row)} />
+          </IconButton>
+        </div>
+      ),
+      headerClassName: styles.boldHeader,
+      hideColumn: getPermission.data && getPermission.data.Update_Api_Key == 1 ? true : getPermission.data && getPermission.data.broker_response == 1 ? true : false
+    },
+
+   
+
+    {
+      field: "Clent Service",
+      headerName: "Clent Service",
+      width: 130,
+      renderCell: (params) => (
+        <div style={{ marginLeft: "20px" }}>
+          <IconButton style={{ color: "#800000" }}>
+          <UserRoundCog
+              onClick={() => {
+                clentuserservice(params.row);
+              }}
+            />
+          </IconButton>
+          
+        </div>
+      ),
+      headerClassName: styles.boldHeader,
+      hideColumn: getPermission.data && getPermission.data.Update_Api_Key == 1 ? true : getPermission.data && getPermission.data.client_service == 1 ? true : false
+
+    },
+
+    
+
     {
       field: "actions",
       headerName: "Actions",
@@ -220,7 +272,15 @@ export default function AllUsers() {
 
 
 
+  // broker response of client
+  const handlerbrokerresponse = async (row) => {
+    navigate("/employee/user/UserBrokerResponse/" + row._id);
+  };
 
+   // client service detail
+   const clentuserservice = async (row) => {
+    navigate("/employee/user/UserClientService/" + row._id);
+  };
 
   const getpermission = async () => {
     const data = { id: user_id }

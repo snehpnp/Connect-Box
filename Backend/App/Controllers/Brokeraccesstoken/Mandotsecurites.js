@@ -111,7 +111,6 @@ class mandotsecurities {
                 return res.send({ status: false, msg: 'Please Fill All Feild', data: [] });
             }
 
-            GetAllBrokerResponse(user_info, res)
 
 
         } catch (error) {
@@ -123,103 +122,101 @@ class mandotsecurities {
 
     }
 
-}
 
-const GetAllBrokerResponse = async (user_info, res) => {
-    try {
-        const objectId = new ObjectId(user_info[0]._id);
-        // var FindUserAccessToken = await User.find({ _id: objectId }).limit(1);
-        var FindUserBrokerResponse = await BrokerResponse.find({ user_id: objectId, order_view_status: "0" })
+    // UPDATE SINGLE CLIENT BROKER RESPONSE
+    async SingleOrderFullInformationmandotsecurities(req, res, user_info, broker_response_id, order_id) {
+        console.log("user_info", user_info);
+        console.log("broker_response_id", broker_response_id);
+        console.log("order_id", order_id);
+        try {
 
-        if (FindUserBrokerResponse.length > 0) {
+            const { user_id } = req.body
+            if (!user_id) {
+                return res.send({ status: false, msg: 'Please Fill All Feild', data: [] });
+            }
 
-            FindUserBrokerResponse.forEach((data1) => {
-                var config = {
-                    method: 'get',
-                    url: 'https://apiconnect.angelbroking.com/rest/secure/angelbroking/order/v1/getOrderBook',
-                    headers: {
-                        'Authorization': 'Bearer ' + user_info[0].access_token,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-UserType': 'USER',
-                        'X-SourceID': 'WEB',
-                        'X-ClientLocalIP': 'CLIENT_LOCAL_IP',
-                        'X-ClientPublicIP': 'CLIENT_PUBLIC_IP',
-                        'X-MACAddress': 'MAC_ADDRESS',
-                        'X-PrivateKey': user_info[0].api_key
-                    },
-                };
-                axios(config)
-                    .then(async (response) => {
+            var config = {
+                method: 'get',
+                url: 'https://webtrade.mandotsecurities.com/interactive/orders?appOrderID='+order_id,
+                headers: { 
+                    'Authorization': user_info[0].access_token,
+                    'Content-Type': 'application/json'
+                 },
+              };
+            axios(config)
+            .then(async (response) => {
 
-                        if (response.data.data.length > 0) {
+                if(response.data.type == "success"){
+                if (response.data.result.length > 0) {
 
-                            const result_order = response.data.data.find(item2 => item2.orderid === data1.order_id);
-                            if (result_order != undefined) {
+                    const result_order = response.data.result[response.data.result.length - 1];
 
-                                var reject_reason;
-                                if (result_order.text) {
-                                    reject_reason = result_order.text;
-                                } else {
-                                    reject_reason = '';
-                                }
+                    if (result_order != undefined) {
+                        const message = (JSON.stringify(result_order));
 
-                                const message = (JSON.stringify(result_order));
+                        let result = await BrokerResponse.findByIdAndUpdate(
+                            { _id: broker_response_id },
+                            {
+                                order_view_date: message,
+                                order_view_status: '1',
+                                order_view_response: result_order.OrderStatus,
+                                reject_reason: result_order.CancelRejectReason
 
-                                let result = await BrokerResponse.findByIdAndUpdate(
-                                    { _id: data1._id },
-                                    {
-                                        order_view_date: message,
-                                        order_view_status: '1',
-                                        order_view_response: result_order.status,
-                                        reject_reason: reject_reason
+                            },
+                            { new: true }
+                        )
 
-                                    },
-                                    { new: true }
-                                )
+                        return res.send({ status: true, msg: "broker response updated successfully" })
 
-                            } else {
+                    } else {
 
 
-                                const message = (JSON.stringify(result_order));
+                        const message = (JSON.stringify(result_order));
 
-                                let result = await BrokerResponse.findByIdAndUpdate(
-                                    { _id: data1._id },
-                                    {
-                                        order_view_date: message,
-                                        order_view_status: '1',
+                        let result = await BrokerResponse.findByIdAndUpdate(
+                            { _id: data1._id },
+                            {
+                                order_view_date: message,
+                                order_view_status: '1',
 
-                                    },
-                                    { new: true }
-                                )
+                            },
+                            { new: true }
+                        )
 
-                            }
-
-
-                        } else {
-                        }
+                        return res.send({ status: false, msg: 'result order undefined', data: [] });
 
 
-                    })
-                    .catch(async (error) => {
+                    }
 
-                    });
 
+                } 
+                
+            }
+                else {
+                    return res.send({ status: false, msg: 'No data Available', data: [] });
+                }
 
 
             })
-            res.send({ status: true, msg: "broker response updated successfully" })
+            .catch(async (error) => {
 
-        } else {
-            res.send({ status: false, msg: "no user found" })
+                return res.send({ status: false, msg: 'Order Api Err .', data: [] });
+            });
+
+
+
+        } catch (error) {
+
+            return res.send({ status: false, msg: 'error in Server side', data: error });
+
         }
 
-    } catch (error) {
-        console.log("Error in broker response in order Id".error);
+
     }
 
-
 }
+
+
 
 module.exports = new mandotsecurities();
 

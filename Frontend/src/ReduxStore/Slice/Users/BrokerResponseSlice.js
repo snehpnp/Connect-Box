@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { BROKER_RESPONSE} from "../../../Services/Users/allUsers.service";
+import { BROKER_RESPONSE ,GET_ALL_BROKER_RESPONSE} from "../../../Services/Users/allUsers.service";
 
 export const Broker_Response = createAsyncThunk("broker/response",
   async (data) => {
@@ -12,6 +12,15 @@ export const Broker_Response = createAsyncThunk("broker/response",
   }
 );
  
+
+export const GET_ALL_BROKER_RESPONSES = createAsyncThunk("getall/order/single", async (user_id) => {
+  try {
+      const res = await GET_ALL_BROKER_RESPONSE( user_id );
+      return await res;
+  } catch (err) {
+      return err;
+  }
+});
 
  
 

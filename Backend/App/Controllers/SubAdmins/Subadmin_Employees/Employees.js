@@ -111,6 +111,7 @@ class Employee {
       } = req.body;
       const Role = "EMPLOYEE";
 
+
       const existingEmail = await User_model.findOne({ Email });
       if (existingEmail) {
         return res.send({ status: false, msg: "Email already exists" });
@@ -164,7 +165,10 @@ class Employee {
         Update_Api_Key: Subadmin_permision_data.Update_Api_Key,
         employee_edit: Subadmin_permision_data.employee_edit,
         detailsinfo: Subadmin_permision_data.detailsinfo,
-        license_permision: Subadmin_permision_data.license_permision,
+        trading_status: Subadmin_permision_data.trading_status,
+        broker_response: Subadmin_permision_data.broker_response,
+        detailsinfo: Subadmin_permision_data.detailsinfo,
+        client_service: Subadmin_permision_data.client_service,
         go_To_Dashboard: Subadmin_permision_data.go_To_Dashboard,
         trade_history_old: Subadmin_permision_data.trade_history_old,
         strategy: Subadmin_permision_data.strategy,
@@ -241,7 +245,6 @@ class Employee {
         parent_role,
       } = req.body;
       const userId = new ObjectId(id);
-
       // IF USER ALEARDY EXIST
       const existingUsername = await User_model.findOne({ _id: userId });
       if (!existingUsername) {
@@ -272,6 +275,9 @@ class Employee {
         detailsinfo: Subadmin_permision_data.detailsinfo,
         Update_Api_Key: Subadmin_permision_data.Update_Api_Key,
         employee_edit: Subadmin_permision_data.employee_edit,
+        trading_status: Subadmin_permision_data.trading_status,
+        broker_response: Subadmin_permision_data.broker_response,
+        client_service: Subadmin_permision_data.client_service,
         license_permision: Subadmin_permision_data.license_permision,
         go_To_Dashboard: Subadmin_permision_data.go_To_Dashboard,
         trade_history_old: Subadmin_permision_data.trade_history_old,

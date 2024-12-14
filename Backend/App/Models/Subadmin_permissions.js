@@ -47,6 +47,21 @@ const SubadminPermission_Schema = new mongoose.Schema({
         enum: [0, 1],   // 0 == OLD VIEW ON  , 1 = ONLY TODAY VIEW
         default: 0
     },
+    trading_status: {
+        type: Number,
+        enum: [0, 1],   // 0 == OLD VIEW ON  , 1 = ONLY TODAY VIEW
+        default: 0
+    },
+    broker_response: {
+        type: Number,
+        enum: [0, 1],   // 0 == OLD VIEW ON  , 1 = ONLY TODAY VIEW
+        default: 0
+    },
+    client_service: {
+        type: Number,
+        enum: [0, 1],   // 0 == OLD VIEW ON  , 1 = ONLY TODAY VIEW
+        default: 0
+    },
     strategy: [
         {
             type: mongoose.Schema.Types.ObjectId,

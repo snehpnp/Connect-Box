@@ -2,80 +2,34 @@
 /* eslint-disable react/jsx-no-undef */
 import React, { useState, useEffect } from "react";
 import FullDataTable from "../../../Components/ExtraComponents/Tables/FullDataTable";
-import { Broker_Response ,GET_ALL_BROKER_RESPONSES } from "../../../ReduxStore/Slice/Users/BrokerResponseSlice";
-import { ProfileInfo } from "../../../ReduxStore/Slice/Admin/System";
+import { Broker_Response } from "../../../ReduxStore/Slice/Users/BrokerResponseSlice";
 import { fa_time, fDateTimeSuffix } from "../../../Utils/Date_formet";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../../../Components/Dashboard/Models/Model";
 import { Eye } from "lucide-react";
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-export default function BrokerResponse() {
-  const user_Id = JSON.parse(localStorage.getItem("user_details")).user_id;
-  const token = JSON.parse(localStorage.getItem("user_details")).token;
+export default function UserBrokerResponse() {
+//   const user_Id = JSON.parse(localStorage.getItem("user_details")).user_id;
 
-
-
+  const {id} = useParams()
   const dispatch = useDispatch();
+
+
+
 
   const [refresh, setrefresh] = useState(false);
   const [searchInput,setSearchInput] = useState("")
   const [showModal, setshowModal] = useState(false);
   const [BrokerResponseId, setBrokerResponseId] = useState([]);
   const [DashboardData, setDashboardData] = useState({ loading: true, data: []});
-  const [profileData, setProfileData] = useState([]);
-  const [shouldAddNewColumn, setShouldAddNewColumn] = useState(false)
-
 
 
 
   const [borkerData, setBrokerData] = useState();
 
-  //  for Add Licence
-  const [showAddLicenceModal, setshowAddLicenceModal] = useState(false);
-
-  // api for getting ProfileInfo
-  const fetchData = async () => {
-    try {
-      let data = { id: user_Id };
-      await dispatch(ProfileInfo({ req: data, token: token }))
-        .unwrap()
-        .then(async (response) => {
-          if (response.status) {
-            setProfileData(response.data);
-            if (response.data.length > 0) {
-              //Angel
-              if (parseInt(response.data[0].broker) == 12) {
-                setShouldAddNewColumn(true)
-              }
-
-              // Alice Blue
-              else if (parseInt(response.data[0].broker) == 12) {
-                setShouldAddNewColumn(true)
-              }
-
-              // Mandot
-              else if (parseInt(response.data[0].broker) == 8) {
-                setShouldAddNewColumn(true)
-              }
-            }
-          } else {
-
-          }
-        })
-        .catch((error) => {
-          console.log("Error", error);
-        });
-    } catch (error) {
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-
+  
 
   const styles = {
     container: {
@@ -175,59 +129,11 @@ export default function BrokerResponse() {
     },
   ];
 
-    // Conditionally add the new column based on `shouldAddNewColumn`
-    if (shouldAddNewColumn) {
-      columns.push({
-        field: 'refresh', // Unique field name for the column
-        headerName: 'Refresh',
-        width: 160,
-        headerClassName: styles.boldHeader,
-        renderCell: (params) => (
-          <div>
-            {params.row.order_id !== '' && params.row.order_id !== undefined && params.row.order_view_status === '0' ? (
-              <button
-                className="btn btn-primary d-flex ms-auto mb-3"
-                type="reset"
-                style={{ height: '40px' }}
-                onClick={(e) => Singlerefresh(e, params.row)}
-              >
-                Refresh
-              </button>
-            ) : (
-              ''
-            )}
-          </div>
-        ),
-      });
-    }
-  
-  
-    const Singlerefresh = async (e, row) => {
-  
-      await dispatch(GET_ALL_BROKER_RESPONSES({ user_id: user_Id ,broker_response_id: row._id, order_id: row.order_id})).unwrap()
-        .then((response) => {
-          if (response.status) {
-            // setrefresh(!refresh)
-            BrokerResponse()
-          } else {
-            // Swal.fire({
-            //   icon: 'error',
-            //   title: 'Oops...',
-            //   text: response.msg,
-            // })
-  
-            // setrefresh(!refresh)
-          }
-        })
-  
-  
-    }
-
 
   
   // GET BROKER RESPONSE ALL DATA
   const BrokerResponse = async (e) => {
-    const data = { id: user_Id };
+    const data = { id: id };
     await dispatch(Broker_Response(data))
       .unwrap()
       .then((response) => {
@@ -265,6 +171,9 @@ export default function BrokerResponse() {
     setrefresh(!refresh);
   };
 
+
+
+
   return (
     <>
       <div className="content container-fluid" data-aos="fade-left">
@@ -293,8 +202,10 @@ export default function BrokerResponse() {
                         </span>
                       </p>
                     </li>
+                    
                     <li className="serach-li">
                       <div className="input-group input-block">
+                        
                         <input
                           type="text"
                           className="form-control"
@@ -319,6 +230,15 @@ export default function BrokerResponse() {
                               fileName={'All Strategy'} />
                            */}
                       </div>
+                      <li>
+                          <Link
+                            to={"/employee/allusers"}
+                            className="btn btn-primary"
+                            style={{width:"120px"}}
+                          >
+                            Back
+                          </Link>
+                        </li>
                     </li>
                   </ul>
                 </div>
@@ -373,7 +293,7 @@ export default function BrokerResponse() {
                   <tr>
                     <td>Signal</td>
                     <td>
-                      {borkerData.send_request && atob(
+                      {atob(
                         borkerData.send_request ? borkerData.send_request : "-"
                       )}
                     </td>
@@ -401,3 +321,7 @@ export default function BrokerResponse() {
     </>
   );
 }
+
+
+
+

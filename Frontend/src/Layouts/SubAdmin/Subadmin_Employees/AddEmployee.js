@@ -58,6 +58,9 @@ const AddEmployee = () => {
       all: false,
       editemployee: false,
       addemployee: false,
+      trading_status: false,
+      broker_response: false,
+      client_service: false,
       tradehistory: false,
       updateapikeys: false,
       groupservice: false,
@@ -119,7 +122,7 @@ const AddEmployee = () => {
         }
       }
 
-
+      
       return errors;
     },
     onSubmit: async (values) => {
@@ -140,6 +143,9 @@ const AddEmployee = () => {
           employee_edit: values.editemployee ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           trade_history_old: values.tradehistory ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           detailsinfo: values.detailsinfo ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
+          trading_status: values.trading_status ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
+          broker_response: values.broker_response ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
+          client_service: values.client_service ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           strategy: StrategyId,
           group_services: groupId,
         },
@@ -279,6 +285,33 @@ const AddEmployee = () => {
     //   col_size: 3,
     //   check_box_true: formik.values.all || formik.values.tradehistory ? true : false,
     // },
+    {
+      name: "trading_status",
+      label: "Trading Status",
+      type: "checkbox",
+      label_size: 12,
+      col_size: 3,
+      check_box_true: formik.values.all || formik.values.trading_status ? true : false,
+    },
+
+    {
+      name: "broker_response",
+      label: "Broker Response",
+      type: "checkbox",
+      label_size: 12,
+      col_size: 3,
+      check_box_true: formik.values.all || formik.values.broker_response ? true : false,
+    },
+
+    {
+      name: "client_service",
+      label: "Client Service",
+      type: "checkbox",
+      label_size: 12,
+      col_size: 3,
+      check_box_true: formik.values.all || formik.values.client_service ? true : false,
+    },
+
     {
       name: "detailsinfo",
       label: "Full Info View",

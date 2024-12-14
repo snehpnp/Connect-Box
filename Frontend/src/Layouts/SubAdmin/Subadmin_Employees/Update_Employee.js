@@ -104,6 +104,9 @@ const Edit_Employee = () => {
       all: false,
       editemployee: false,
       addemployee: false,
+      trading_status: false,
+      broker_response: false,
+      client_service: false,
       tradehistory: false,
       updateapikeys: false,
       groupservice: false,
@@ -180,6 +183,9 @@ const Edit_Employee = () => {
           employee_edit: values.editemployee ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           trade_history_old: values.tradehistory ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           detailsinfo: values.detailsinfo ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
+          trading_status: values.trading_status ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
+          broker_response: values.broker_response ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
+          client_service: values.client_service ? "1" : values.all ? "1" : values.updateapikeys ? "0" : "0",
           strategy: values.Strategy ? selectedStrategyIds : [],
           group_services: values.groupservice ? selectedGroupIds : [],
         },
@@ -239,6 +245,9 @@ const Edit_Employee = () => {
     formik.setFieldValue("all", UserData.data[0] && UserData.data[0].subadmin_permissions[0].all == 1 ? true : false)
     formik.setFieldValue("addemployee", UserData.data[0] && UserData.data[0].subadmin_permissions[0].employee_add == 1 ? true : false)
     formik.setFieldValue("editemployee", UserData.data[0] && UserData.data[0].subadmin_permissions[0].employee_edit == 1 ? true : false)
+    formik.setFieldValue("trading_status", UserData.data[0] && UserData.data[0].subadmin_permissions[0].trading_status == 1 ? true : false)
+    formik.setFieldValue("broker_response", UserData.data[0] && UserData.data[0].subadmin_permissions[0].broker_response == 1 ? true : false)
+    formik.setFieldValue("client_service", UserData.data[0] && UserData.data[0].subadmin_permissions[0].client_service == 1 ? true : false)
     formik.setFieldValue("tradehistory", UserData.data[0] && UserData.data[0].subadmin_permissions[0].trade_history_old == 1 ? true : false)
     formik.setFieldValue("detailsinfo", UserData.data[0] && UserData.data[0].subadmin_permissions[0].detailsinfo == 1 ? true : false)
     formik.setFieldValue("groupservice", UserData.data[0] && UserData.data[0].subadmin_permissions[0].group_services.length > 0 ? true : false)
@@ -252,6 +261,9 @@ const Edit_Employee = () => {
     if (formik.values.all) {
       formik.setFieldValue("addemployee", true);
       formik.setFieldValue("editemployee", true);
+      formik.setFieldValue("trading_status", true);
+      formik.setFieldValue("broker_response", true);
+      formik.setFieldValue("client_service", true);
       formik.setFieldValue("groupservice", true);
       formik.setFieldValue("Strategy", true);
       formik.setFieldValue("detailsinfo", true);
@@ -263,6 +275,9 @@ const Edit_Employee = () => {
     else if (!formik.values.all) {
       formik.setFieldValue("addemployee", false);
       formik.setFieldValue("editemployee", false);
+      formik.setFieldValue("trading_status", false);
+      formik.setFieldValue("broker_response", false);
+      formik.setFieldValue("client_service", false);
       formik.setFieldValue("groupservice", false);
       formik.setFieldValue("Strategy", false);
       formik.setFieldValue("detailsinfo", false);
@@ -274,6 +289,9 @@ const Edit_Employee = () => {
   useEffect(() => {
     if (formik.values.updateapikeys) {
       formik.setFieldValue("addemployee", false);
+      formik.setFieldValue("trading_status", false);
+      formik.setFieldValue("broker_response", false);
+      formik.setFieldValue("client_service", false);
       formik.setFieldValue("all", false);
       formik.setFieldValue("editemployee", false);
       formik.setFieldValue("groupservice", false);
@@ -294,7 +312,7 @@ const Edit_Employee = () => {
 
 
     if (
-      formik.values.addemployee || formik.values.editemployee || formik.values.Strategy || formik.values.groupservice || formik.values.detailsinfo || formik.values.tradehistory) {
+      formik.values.addemployee || formik.values.editemployee || formik.values.trading_status || formik.values.broker_response || formik.values.client_service ||formik.values.Strategy || formik.values.groupservice || formik.values.detailsinfo || formik.values.tradehistory) {
       formik.setFieldValue("updateapikeys", false);
       setstate([]);
       setstate1([]);
@@ -430,6 +448,32 @@ const Edit_Employee = () => {
         formik.values.all || formik.values.editemployee ? true : false,
     },
 
+    {
+      name: "trading_status",
+      label: "Trading Status",
+      type: "checkbox",
+      label_size: 12,
+      col_size: 3,
+      check_box_true: formik.values.all || formik.values.trading_status ? true : false,
+    },
+
+    {
+      name: "broker_response",
+      label: "Broker Response",
+      type: "checkbox",
+      label_size: 12,
+      col_size: 3,
+      check_box_true: formik.values.all || formik.values.broker_response ? true : false,
+    },
+
+    {
+      name: "client_service",
+      label: "Client Service",
+      type: "checkbox",
+      label_size: 12,
+      col_size: 3,
+      check_box_true: formik.values.all || formik.values.client_service ? true : false,
+    },
 
     // {
     //   name: "tradehistory",
