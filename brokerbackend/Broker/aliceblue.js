@@ -78,8 +78,8 @@ const place_order = async (
             filePath_token
           );
 
-          // const command = `grep ,${pattern}, ${filePath_aliceblue}`;
-          const command = `findstr ,${pattern}, ${filePath_aliceblue}`;
+           const command = `grep ,${pattern}, ${filePath_aliceblue}`;
+         // const command = `findstr ,${pattern}, ${filePath_aliceblue}`;
 
           exec(command, (error, stdout, stderr) => {
             if (error) {
