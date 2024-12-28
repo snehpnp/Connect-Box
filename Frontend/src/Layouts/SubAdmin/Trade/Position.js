@@ -53,7 +53,7 @@ export default function AllEmployees() {
   const [strategies, setStrategies] = useState({ loading: true, data: [] });
   const [rowData, setRowData] = useState({ loading: true, data: [] });
   const [qtyDaynamic, setQtyDaynamic] = useState(1);
-  const [DaynamicFund, setDaynamicFund] = useState(1);
+  const [DaynamicFund, setDaynamicFund] = useState();
 
   useEffect(() => {
     GetBrokerLiveData(userIdSocketRun);
@@ -382,24 +382,24 @@ export default function AllEmployees() {
       .then(async (response) => {
         if (response.status) {
           response.data.forEach((item) => {
-            if (item.segment === "C") {
+            if (item.segment === "C" || item.segment === "C") {
               item.entry_qty = DaynamicFund
                 ? DaynamicFund / item.entry_price
                 : 1;
               item.exit_qty =
-                item.exit_qty == 0
+                item.exit_qty === 0 || item.exit_qty === "" || item.exit_qty === null || item.exit_qty === undefined
                   ? 0
                   : DaynamicFund
-                  ? DaynamicFund / item.exit_qty
+                  ? DaynamicFund / item.entry_price
                   : 1;
               item.entry_qty_percent = DaynamicFund
                 ? DaynamicFund / item.entry_price
                 : 1;
               item.exit_qty_percent =
-                item.exit_qty == 0
-                  ? ""
+              item.exit_qty === 0 || item.exit_qty === "" || item.exit_qty === null || item.exit_qty === undefined
+                  ? 0
                   : DaynamicFund
-                  ? DaynamicFund / item.exit_qty
+                  ? DaynamicFund / item.entry_price
                   : 1;
             } else {
               item.entry_qty = qtyDaynamic ? item.entry_qty * qtyDaynamic : 1;
