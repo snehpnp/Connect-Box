@@ -280,16 +280,16 @@ class Subadmin {
         return res.send({ status: false, msg: "Empty data", data: [] });
       }
 
-      
-      const getAllSubAdmins1 = await User_model.find({_id:getAllSubAdmins[0].parent_id}).select("broker_url");
-   
+      const getAllSubAdmins1 = await User_model.find({
+        _id: getAllSubAdmins[0]?.parent_id,
+      }).select("broker_url");
 
       // DATA GET SUCCESSFULLY
       return res.send({
         status: true,
         msg: "Get User",
         data: getAllSubAdmins,
-        data2:getAllSubAdmins1 ? getAllSubAdmins1[0].broker_url : ""
+        data2: getAllSubAdmins1 ? getAllSubAdmins1[0]?.broker_url : "",
       });
     } catch (error) {
       console.log("Error get Subadmin error -", error);

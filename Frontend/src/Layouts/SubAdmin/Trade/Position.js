@@ -53,6 +53,8 @@ export default function AllEmployees() {
   const [strategies, setStrategies] = useState({ loading: true, data: [] });
   const [rowData, setRowData] = useState({ loading: true, data: [] });
   const [qtyDaynamic, setQtyDaynamic] = useState(1);
+  const [DaynamicFund, setDaynamicFund] = useState(1);
+
   useEffect(() => {
     GetBrokerLiveData(userIdSocketRun);
   }, [userIdSocketRun]);
@@ -373,23 +375,46 @@ export default function AllEmployees() {
         endDate: endDate,
         service: SelectService,
         strategy: selectStrategy,
+        Fund: DaynamicFund,
       })
     )
       .unwrap()
       .then(async (response) => {
         if (response.status) {
-          response.data.map((item) => {
-            item.entry_qty = item.entry_qty * qtyDaynamic ? qtyDaynamic : 1;
-            item.exit_qty =
-              item.exit_qty * qtyDaynamic
-                ? qtyDaynamic
-                : item.exit_qty == 0
+          response.data.forEach((item) => {
+            if (item.segment === "C") {
+              item.entry_qty = DaynamicFund
+                ? DaynamicFund / item.entry_price
+                : 1;
+              item.exit_qty =
+                item.exit_qty == 0
+                  ? 0
+                  : DaynamicFund
+                  ? DaynamicFund / item.exit_qty
+                  : 1;
+              item.entry_qty_percent = DaynamicFund
+                ? DaynamicFund / item.entry_price
+                : 1;
+              item.exit_qty_percent =
+                item.exit_qty == 0
+                  ? ""
+                  : DaynamicFund
+                  ? DaynamicFund / item.exit_qty
+                  : 1;
+            } else {
+              item.entry_qty = qtyDaynamic ? item.entry_qty * qtyDaynamic : 1;
+              item.exit_qty = qtyDaynamic
+                ? item.exit_qty * qtyDaynamic
+                : item.exit_qty === 0
                 ? ""
                 : 1;
-            item.entry_qty_percent =
-              item.entry_qty * qtyDaynamic ? qtyDaynamic : 1;
-            item.exit_qty_percent =
-              item.exit_qty * qtyDaynamic ? qtyDaynamic : 1;
+              item.entry_qty_percent = qtyDaynamic
+                ? item.entry_qty * qtyDaynamic
+                : 1;
+              item.exit_qty_percent = qtyDaynamic
+                ? item.exit_qty * qtyDaynamic
+                : 1;
+            }
           });
 
           setTableData({ loading: true, data: response.data });
@@ -398,6 +423,7 @@ export default function AllEmployees() {
           setTradeHistoryData({ loading: true, data: [] });
         }
       })
+
       .catch((error) => {
         console.log("Error", error);
       });
@@ -405,7 +431,15 @@ export default function AllEmployees() {
 
   useEffect(() => {
     userDataRes();
-  }, [refresh, fromDate, toDate, selectStrategy, SelectService, qtyDaynamic]);
+  }, [
+    refresh,
+    fromDate,
+    toDate,
+    selectStrategy,
+    SelectService,
+    qtyDaynamic,
+    DaynamicFund,
+  ]);
 
   var CreatechannelList = "";
   let total = 0;
@@ -1076,6 +1110,22 @@ export default function AllEmployees() {
                         }
                       }}
                       value={qtyDaynamic}
+                    />
+                  </div>
+                  <div className="input-block col-lg-2 mt-3 mb-3">
+                    <label>Enter Fund</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Enter Fund"
+                      onChange={(e) => {
+                        const value = e.target.value;
+
+                        if (/^\d{0,10}$/.test(value)) {
+                          setDaynamicFund(value);
+                        }
+                      }}
+                      value={DaynamicFund}
                     />
                   </div>
                 </div>

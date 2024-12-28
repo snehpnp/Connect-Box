@@ -642,7 +642,7 @@ class SignalController {
   // SUBADMIN TRADE HISTORY DATA
   async Tradehistory_data(req, res) {
     try {
-      const { Role, subadminId, startDate, endDate, strategy, service, type } =
+      const { Role, subadminId, startDate, endDate, strategy, service, type,Fund } =
         req.body;
 
       const ObjSubAdminId = new ObjectId(subadminId);
