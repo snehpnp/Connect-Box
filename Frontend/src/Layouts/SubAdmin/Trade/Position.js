@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import FullDataTable from "../../../Components/ExtraComponents/Tables/DataTable";
 import { useDispatch } from "react-redux";
 import Loader from "../../../Utils/Loader";
 import ExportToExcel from "../../../Utils/ExportCSV";
@@ -20,6 +19,8 @@ import { ShowColor1 } from "../../../Utils/ShowTradeColor";
 import { Eye } from "lucide-react";
 import DetailsView from "./DetailsView";
 import { GetBrokerLiveDatas } from "../../../ReduxStore/Slice/Comman/Makecall/make";
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
 
 export default function AllEmployees() {
   const dispatch = useDispatch();
@@ -31,7 +32,6 @@ export default function AllEmployees() {
   const [SelectService, setSelectService] = useState("null");
   const [profileData, setProfileData] = useState([]);
   const [refresh, setrefresh] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
   const [ForGetCSV, setForGetCSV] = useState([]);
   const [ip, setIp] = useState(null);
   const [fromDate, setFromDate] = useState("");
@@ -54,6 +54,9 @@ export default function AllEmployees() {
   const [rowData, setRowData] = useState({ loading: true, data: [] });
   const [qtyDaynamic, setQtyDaynamic] = useState(1);
   const [DaynamicFund, setDaynamicFund] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
 
   useEffect(() => {
     GetBrokerLiveData(userIdSocketRun);
@@ -342,7 +345,6 @@ export default function AllEmployees() {
   const RefreshHandle = () => {
     setrefresh(!refresh);
     userDataRes();
-    setSearchInput("");
     setFromDate("");
     setToDate("");
     setSelectStrategy("");
@@ -357,12 +359,13 @@ export default function AllEmployees() {
     return formattedDate;
   };
 
-  const userDataRes = async () => {
+  const userDataRes = async (page, sizePerPage) => {
     let abc = new Date();
     let month = abc.getMonth() + 1;
     let date = abc.getDate();
     let year = abc.getFullYear();
     let full = `${year}/${month}/${date}`;
+
 
     const startDate = fromDate ? getActualDateFormate(fromDate) : full;
     const endDate = toDate ? getActualDateFormate(toDate) : full;
@@ -376,6 +379,8 @@ export default function AllEmployees() {
         service: SelectService,
         strategy: selectStrategy,
         Fund: DaynamicFund,
+        page: page ? page : 1,
+        limit: sizePerPage ? sizePerPage : 10,
       })
     )
       .unwrap()
@@ -387,7 +392,10 @@ export default function AllEmployees() {
                 ? DaynamicFund / item.entry_price
                 : 1;
               item.exit_qty =
-                item.exit_qty === 0 || item.exit_qty === "" || item.exit_qty === null || item.exit_qty === undefined
+                item.exit_qty === 0 ||
+                item.exit_qty === "" ||
+                item.exit_qty === null ||
+                item.exit_qty === undefined
                   ? 0
                   : DaynamicFund
                   ? DaynamicFund / item.entry_price
@@ -396,7 +404,10 @@ export default function AllEmployees() {
                 ? DaynamicFund / item.entry_price
                 : 1;
               item.exit_qty_percent =
-              item.exit_qty === 0 || item.exit_qty === "" || item.exit_qty === null || item.exit_qty === undefined
+                item.exit_qty === 0 ||
+                item.exit_qty === "" ||
+                item.exit_qty === null ||
+                item.exit_qty === undefined
                   ? 0
                   : DaynamicFund
                   ? DaynamicFund / item.entry_price
@@ -416,7 +427,7 @@ export default function AllEmployees() {
                 : 1;
             }
           });
-
+          setTotalRecords(response.total);
           setTableData({ loading: true, data: response.data });
           setTradeHistoryData({ loading: true, data: response.data });
         } else {
@@ -436,7 +447,6 @@ export default function AllEmployees() {
     fromDate,
     toDate,
     selectStrategy,
-    SelectService,
     qtyDaynamic,
     DaynamicFund,
   ]);
@@ -678,9 +688,7 @@ export default function AllEmployees() {
             livePriceDataDetails.access_token
           ).then((res) => {});
         } else {
-          // $(".UPL_").html("-");
-          // $(".show_rpl_").html("-");
-          // $(".TPL_").html("-");
+          console.log("Error in API response:", res);
         }
       }
     } else {
@@ -951,6 +959,22 @@ export default function AllEmployees() {
     fetchStrategies();
   }, [refresh]);
 
+  const paginationOptions = {
+    sizePerPage: 10, 
+    hideSizePerPage: false,
+    sizePerPageList: [5, 10, 20],
+    showTotal: true,
+    paginationSize: 4,
+    withFirstAndLast: true,
+  };
+
+  const handleTableChange = (type, { page, sizePerPage }) => {
+    if (type === "pagination") {
+      setCurrentPage(page);
+      setPageSize(sizePerPage);
+      userDataRes(page, sizePerPage);
+    }
+  };
   return (
     <>
       {tradeHistoryData.loading ? (
@@ -1152,11 +1176,42 @@ export default function AllEmployees() {
                   ) : (
                     ""
                   )}
-                  <FullDataTable
-                    TableColumns={columns}
-                    tableData={tradeHistoryData.data}
-                    pagination1={false}
-                  />
+                  <div className="table-container">
+                    {tableData?.length === 0 ? (
+                      <div
+                        style={{
+                          width: "50%",
+                          height: "40%",
+                          marginLeft: "25%",
+                        }}
+                      >
+                        <img
+                          src="assets/img/icons/Empty.jpg"
+                          alt="No data available"
+                        />
+                      </div>
+                    ) : (
+                      <BootstrapTable
+                        keyField="id"
+                        data={tableData?.data}
+                        columns={columns}
+                        remote={{ pagination: true }}
+                        pagination={paginationFactory({
+                          ...paginationOptions,
+                          page: currentPage,
+                          sizePerPage: pageSize,
+                          totalSize: totalRecords,
+                          onPageChange: (page) => setCurrentPage(page),
+                          onSizePerPageChange: (sizePerPage) =>
+                            setPageSize(sizePerPage),
+                        })}
+                        headerClasses="text-primary text-center header-class"
+                        rowClasses="text-center"
+                        onTableChange={handleTableChange}
+                      />
+                    )}
+                  </div>
+
                   <DetailsView
                     showModal={showModal}
                     setshowModal={() => setshowModal(false)}

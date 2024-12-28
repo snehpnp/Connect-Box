@@ -1170,7 +1170,7 @@ export default function AllEmployees() {
         }
       }
     } else {
-      alert("Market Is Closed Today");
+      toast.error("Market Is Closed Today");
     }
   };
 
@@ -1178,9 +1178,10 @@ export default function AllEmployees() {
   const SquareOfAll = () => {
     let MarketOpenToday = GetMarketOpenDays();
 
-    if (MarketOpenToday) {
+    // if (MarketOpenToday) {
       if (livePriceDataDetails && livePriceDataDetails.TradingStatus == "off") {
-        alert("Please Trading On First");
+ 
+        toast.error("Please Trading On First");
       } else {
         if (selected1.length > 0) {
           setshowModal(true);
@@ -1259,9 +1260,9 @@ export default function AllEmployees() {
           alert("Emplty Data");
         }
       }
-    } else {
-      alert("Market Is Closed Today");
-    }
+    // } else {
+    //   toast.error("Market Is Closed Today");
+    // }
   };
 
   var CreatechannelList = "";

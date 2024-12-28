@@ -642,140 +642,77 @@ class SignalController {
   // SUBADMIN TRADE HISTORY DATA
   async Tradehistory_data(req, res) {
     try {
-      const { Role, subadminId, startDate, endDate, strategy, service, type,Fund } =
-        req.body;
-
+      const {
+        Role,
+        subadminId,
+        startDate,
+        endDate,
+        strategy,
+        service,
+     
+        page,
+        limit,
+      } = req.body;
+  
       const ObjSubAdminId = new ObjectId(subadminId);
-      let resultUser;
-      let strategyNames;
-      let Stg_col_name;
-
-      if (Role == "SUBADMIN") {
-        Stg_col_name = "strategies";
-
-        resultUser = await Strategies.find({
-          maker_id: ObjSubAdminId,
-        }).select("strategy_name");
-
-        if (!resultUser) {
-          return res.status(404).send({
-            status: false,
-            msg: "User not found",
-          });
-        }
-
-        // Extracting strategy names from resultUser array
-        strategyNames = resultUser.map((user) => user.strategy_name);
-      }
-      if (Role == "RESEARCH") {
-        Stg_col_name = "researcher_strategies";
-        resultUser = await researcher_strategy
-          .find({
-            maker_id: ObjSubAdminId,
-          })
+      let strategyNames = [];
+      let Stg_col_name = "strategies";
+  
+      if (Role === "SUBADMIN" || Role === "RESEARCH") {
+        const collection =
+          Role === "SUBADMIN" ? Strategies : researcher_strategy;
+  
+        const resultUser = await collection
+          .find({ maker_id: ObjSubAdminId })
           .select("strategy_name");
-
-        if (!resultUser) {
-          return res.status(404).send({
-            status: false,
-            msg: "User not found",
-          });
+  
+        if (!resultUser || resultUser.length === 0) {
+          return res.status(404).send({ status: false, msg: "User not found" });
         }
-
-        // Extracting strategy names from resultUser array
         strategyNames = resultUser.map((user) => user.strategy_name);
       } else if (Role === "EMPLOYEE") {
-        Stg_col_name = "strategies";
-
-        let subadminStgFind = await Subadmin_Permission.aggregate([
-          {
-            $match: { user_id: ObjSubAdminId }, // İlgili kullanıcıya göre eşleşmeyi bulun
-          },
-          {
-            $unwind: "$strategy", // Diziyi açarak her bir strateji için ayrı bir belge oluşturun
-          },
+        const subadminStgFind = await Subadmin_Permission.aggregate([
+          { $match: { user_id: ObjSubAdminId } },
+          { $unwind: "$strategy" },
           {
             $lookup: {
-              from: "strategies", // Diğer koleksiyonun adı
-              localField: "strategy", // Subadmin_Permission koleksiyonundaki alan
-              foreignField: "_id", // Strategies koleksiyonundaki alan
-              as: "strategyInfo", // Eşleşen belgeleri buraya yerleştirin
+              from: "strategies",
+              localField: "strategy",
+              foreignField: "_id",
+              as: "strategyInfo",
             },
           },
-          {
-            $unwind: "$strategyInfo", // İç içe dizileri açarak her bir strateji bilgisini ayrı bir belge haline getirin
-          },
+          { $unwind: "$strategyInfo" },
           {
             $group: {
-              _id: "$_id", // Gruplama için bir alan seçin, burada _id kullanıyorum
-              strategyInfo: { $push: "$strategyInfo.strategy_name" }, // Her bir strateji bilgisini bir dizi içinde toplayın
-            },
-          },
-          {
-            $project: {
-              _id: 0, // İstediğiniz alanları seçin, burada _id'yi hariç tutuyorum
-              strategyInfo: 1, // İstediğiniz ek bilgi
+              _id: "$_id",
+              strategyInfo: { $push: "$strategyInfo.strategy_name" },
             },
           },
         ]);
-
-        resultUser = subadminStgFind[0].strategyInfo;
-
-        if (!resultUser) {
-          return res.status(404).send({
-            status: false,
-            msg: "User not found",
-          });
+  
+        if (!subadminStgFind.length) {
+          return res.status(404).send({ status: false, msg: "User not found" });
         }
-
-        // Extracting strategy names from resultUser array
-        strategyNames = resultUser;
-      } else {
-        Stg_col_name = "strategies";
-
-        resultUser = await Strategies.find({
-          maker_id: ObjSubAdminId,
-        }).select("strategy_name");
-
-        if (!resultUser) {
-          return res.status(404).send({
-            status: false,
-            msg: "User not found",
-          });
-        }
-
-        // Extracting strategy names from resultUser array
-        strategyNames = resultUser.map((user) => user.strategy_name);
+  
+        strategyNames = subadminStgFind[0].strategyInfo;
       }
-
-      let startDateObj = new Date(startDate);
-
-      let endDateObj = new Date(endDate);
+  
+      const startDateObj = new Date(startDate);
+      const endDateObj = new Date(endDate);
       endDateObj.setDate(endDateObj.getDate() + 1);
+  
+  console.log("strategyNames",strategy)
+      const stg1 = !strategy || strategy === "null" ? { $in: strategyNames } : strategy;
+  
+      const ser1 = !service || service === "null" ? { $exists: true } : service;
+      console.log("stg1",stg1)
+  
 
-      let stg1;
-      let ser1;
-      //  For Strategy
-      if (strategy === "null" || strategy === "") {
-        stg1 = { $in: strategyNames };
-      } else {
-        stg1 = strategy;
-      }
-
-      //  For Service
-      if (service === "null") {
-        ser1 = { $exists: true };
-      } else {
-        ser1 = service;
-      }
-
-      const filteredSignals = await Mainsignals.aggregate([
+      const baseQuery = [
         {
           $match: {
-            createdAt: {
-              $gte: startDateObj,
-              $lte: endDateObj,
-            },
+            createdAt: { $gte: startDateObj, $lte: endDateObj },
             trade_symbol: ser1,
             strategy: stg1,
           },
@@ -797,25 +734,15 @@ class SignalController {
           },
         },
         {
-          $sort: {
-            _id: -1,
+          $match: {
+            $expr: { $gt: [{ $size: "$result" }, 0] },
           },
         },
         {
           $match: {
-            $expr: {
-              $gt: [{ $size: "$result" }, 0],
-            },
+            $expr: { $gt: [{ $size: "$result1" }, 0] },
           },
         },
-        {
-          $match: {
-            $expr: {
-              $gt: [{ $size: "$result1" }, 0],
-            },
-          },
-        },
-
         {
           $lookup: {
             from: Stg_col_name,
@@ -824,10 +751,7 @@ class SignalController {
             as: "StrategyData",
           },
         },
-        {
-          $unwind: "$StrategyData",
-        },
-
+        { $unwind: "$StrategyData" },
         {
           $project: {
             symbol: 1,
@@ -835,8 +759,6 @@ class SignalController {
             exit_type: 1,
             entry_price: 1,
             exit_price: 1,
-            entry_qty_percent: 1,
-            exit_qty_percent: 1,
             entry_qty: 1,
             exit_qty: 1,
             entry_dt_date: 1,
@@ -844,107 +766,48 @@ class SignalController {
             exchange: 1,
             strategy: 1,
             option_type: 1,
-            dt: 1,
-            dt_date: 1,
-            strike: 1,
-            expiry: 1,
-            segment: 1,
             trade_symbol: 1,
             client_persnal_key: 1,
-            TradeType: 1,
-            token: 1,
-            lot_size: 1,
-            MakeStartegyName: 1,
-            target: 1,
-            stop_loss: 1,
-            exit_time: 1,
-            exit_time1: 1,
-            exit_status: 1,
-            sl_status: 1,
-            complete_trade: 1,
-            signals_id: 1,
             createdAt: 1,
             updatedAt: 1,
-            "StrategyData._id": 1,
+            token: 1,
+            exchange: 1,
             "StrategyData.strategy_name": 1,
-            "StrategyData.strategy_segment": 1,
-            "StrategyData.strategy_category": 1,
-
-            "result._id": 1,
             "result.symbol": 1,
-            "result.type": 1,
             "result.price": 1,
             "result.qty_percent": 1,
             "result.exchange": 1,
-            "result.sq_value": 1,
-            "result.sl_value": 1,
-            "result.tsl": 1,
-            "result.tr_price": 1,
-            "result.dt": 1,
-            "result.dt_date": 1,
-            "result.strategy": 1,
             "result.option_type": 1,
-            "result.strike": 1,
-            "result.expiry": 1,
-            "result.segment": 1,
-            "result.trade_symbol": 1,
-            "result.client_persnal_key": 1,
-            "result.TradeType": 1,
-            "result.token": 1,
-            "result.lot_size": 1,
-            "result.MakeStartegyName": 1,
-            "result.exit_status": 1,
-            "result.ft_time": 1,
-            "result.createdAt": 1,
-            "result.updatedAt": 1,
-
-            "result1._id": 1,
+            "result.strategy": 1,
             "result1.name": 1,
-            "result1.instrument_token": 1,
-            "result1.zebu_token": 1,
-            "result1.kotak_token": 1,
             "result1.instrumenttype": 1,
-            "result1.exch_seg": 1,
-            "result1.lotsize": 1,
-            "result1.unique_column": 1,
-            "result1.categorie_id": 1,
-            "result1.createdAt": 1,
-            "result1.updatedAt": 1,
           },
         },
+      ];
+  
+      // Fetch filtered signals with pagination
+      const filteredSignals = await Mainsignals.aggregate([
+        ...baseQuery,
+        { $skip: (page - 1) * limit },
+        { $limit: limit },
       ]);
+  
+      // Fetch total count
+      const TotalCount = await Mainsignals.aggregate([...baseQuery]);
+      
 
-      if (filteredSignals.length > 0) {
-        filteredSignals.filter(function (item) {
-          (item.entry_qty_percent =
-            Number(item.result1[0].lotsize) *
-            Math.ceil(Number(item.entry_qty_percent) / 100)),
-            (item.exit_qty_percent =
-              Number(item.result1[0].lotsize) *
-              Math.ceil(Number(item.exit_qty_percent) / 100));
-        });
-      }
-
-      if (filteredSignals.length === 0) {
-        return res.send({
-          status: false,
-          msg: "No signals founddate range.",
-          data: [],
-        });
-      }
-      return res.send({
+      return res.status(200).send({
         status: true,
-        msg: "Filtered Tradehistory",
         data: filteredSignals,
+        total: TotalCount.length,
+        msg: "Trade history fetched successfully",
       });
     } catch (error) {
-      console.log("Error retrieving data:", error);
-      res.send({
-        status: false,
-        msg: "Internal Server Error",
-      });
+      console.error(error);
+      return res.status(500).send({ status: false, msg: "Server error", error });
     }
   }
+  
 
   async UserTradehistory_data(req, res) {
     try {

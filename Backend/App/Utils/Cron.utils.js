@@ -99,7 +99,6 @@ cron.schedule('*/10 * * * *', async () => {
 });
 
 
-// OPTION CHAIN TABEL TRUNCATE
 cron.schedule('30 6 * * *', () => {
     TruncateTableTokenChain();
 });

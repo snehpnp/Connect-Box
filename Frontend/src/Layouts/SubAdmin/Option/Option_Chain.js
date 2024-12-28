@@ -861,9 +861,7 @@ function Option_Chain() {
       });
 
       setshowModal(true);
-      // } else {
-      //     alert("Please Login With Broker Account")
-      // }
+  
     }
   };
 

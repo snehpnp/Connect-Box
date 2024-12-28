@@ -372,7 +372,7 @@ const TradeHistory = () => {
             }
 
         } else {
-            alert('Market Is Closed Today');
+            toast.error("Market Is Closed Today");
         }
 
     }
@@ -488,7 +488,7 @@ const TradeHistory = () => {
 
         let MarketOpenToday = GetMarketOpenDays();
 
-        if (MarketOpenToday) {
+        // if (MarketOpenToday) {
             if (UserDetails && UserDetails.trading_status == "off") {
                 alert("Please Trading On First")
             } else {
@@ -536,10 +536,10 @@ const TradeHistory = () => {
                     alert("Emplty Data")
                 }
             }
-        }
-        else {
-            alert('Market Is Closed Today');
-        }
+        // }
+        // else {
+        //     toast.error("Market Is Closed Today");
+        // }
     }
 
 
