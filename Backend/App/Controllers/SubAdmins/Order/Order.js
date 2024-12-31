@@ -396,7 +396,6 @@ class SignalController {
         });
       }
 
-      // console.log("resultUser",resultUser)
       var today = new Date();
       var formattedDate =
         today.getFullYear() +
@@ -1108,7 +1107,6 @@ class SignalController {
         });
       }
 
-      // console.log("resultUser",resultUser)
       var today = new Date();
       var formattedDate =
         today.getFullYear() +

@@ -157,7 +157,11 @@ function Payment() {
         }
       })
       .catch((error) => {
-        console.log("Error", error);
+        setCompanyData({
+          loading: true,
+          data: [],
+        });
+        return error;
       });
 
 

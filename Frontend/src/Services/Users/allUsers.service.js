@@ -52,7 +52,7 @@ export async function BROKER_RESPONSE(data,token){
  
  // getall/order/info API Refresh Button
 export async function GET_ALL_BROKER_RESPONSE(user_id) {
-    console.log("user_id",user_id)
+ 
     try {
         const res = await axios.post(`${Config.base_url}getall/order/single`, user_id, {
             data: {},

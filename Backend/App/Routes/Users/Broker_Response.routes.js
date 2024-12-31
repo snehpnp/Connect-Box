@@ -36,7 +36,7 @@ router.post('/broker/response', BrokerResponse);
 const GetOrderFullInformationAll_broker = async (req, res) => {
 
     let user_id = req.body.user_id;
-     console.log("user_id",user_id)
+     
     
     const objectId = new ObjectId(user_id);
   

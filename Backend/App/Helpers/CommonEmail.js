@@ -29,18 +29,18 @@ const CommonEmail = async (toEmail, subjectEmail, htmlEmail, textEmail, res) => 
 
             transport.verify((error, success) => {
                 if (error) {
-                    // console.error("Error verifying transport:", error);
+                 
                 } else {
-                    // console.log("Server is ready to take our messages");
+
                 }
             });
 
             transport.sendMail(mailOptions, (err, info) => {
                 if (err) {
-                    // console.error("Error sending email:", err);
+                  
                     // return res.send({ status: 'Failed!!!' });
                 } else {
-                    // console.log("Email has been sent:", info.response);
+                  
                     // return res.send({ status: 'success', msg: "Mail send successfully", data: info.response });
                 }
             });

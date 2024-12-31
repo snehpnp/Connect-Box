@@ -59,7 +59,7 @@ class mandotsecurities {
             };
 
             const response = await axios.request(config);
-            // console.log("API Response:", response.data);
+          
 
             if (response.data.type == "success") {
                 const result = await User.findByIdAndUpdate(
@@ -125,9 +125,7 @@ class mandotsecurities {
 
     // UPDATE SINGLE CLIENT BROKER RESPONSE
     async SingleOrderFullInformationmandotsecurities(req, res, user_info, broker_response_id, order_id) {
-        console.log("user_info", user_info);
-        console.log("broker_response_id", broker_response_id);
-        console.log("order_id", order_id);
+      
         try {
 
             const { user_id } = req.body

@@ -313,7 +313,6 @@ class Dashboard {
   async GetTradePermissionLogs(req, res) {
     try {
       const { id } = req.body;
-      console.log("GetTradePermissionLogs", req.body);
       const logs = await TradePermissionLogs.find({ user_id: id }).sort({
         createdAt: -1,
       });

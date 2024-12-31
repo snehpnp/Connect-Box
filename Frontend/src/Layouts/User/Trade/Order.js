@@ -189,7 +189,7 @@ export default function AllEmployees() {
                 }
             })
             .catch((error) => {
-                console.log("Error", error);
+              return error
             });
     };
 

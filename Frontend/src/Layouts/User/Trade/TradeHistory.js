@@ -97,7 +97,6 @@ export default function AllEmployees() {
   const [userIdSocketRun, setUserIdSocketRun] = useState("none");
   const [GetAllStrategy, setAllStrategy] = useState([]);
 
-
   useEffect(() => {
     Get_AllStrategy();
   }, []);
@@ -126,9 +125,9 @@ export default function AllEmployees() {
           }
         })
         .catch((error) => {
-          console.log("Error", error);
+          return;
         });
-    } catch (error) { }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -304,7 +303,7 @@ export default function AllEmployees() {
                 : row.result[0].exit_status == "range"
                   ? "RANGE"
                   : " - "} */}
-                 { cell}
+            {cell}
           </span>
         </div>
       ),
@@ -380,9 +379,7 @@ export default function AllEmployees() {
           setTradeHistoryData({ loading: true, data: [] });
         }
       })
-      .catch((error) => {
-      
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
@@ -601,7 +598,7 @@ export default function AllEmployees() {
             channelList,
             livePriceDataDetails.demate_user_id,
             livePriceDataDetails.access_token
-          ).then((res) => { });
+          ).then((res) => {});
         } else {
           // $(".UPL_").html("-");
           // $(".show_rpl_").html("-");
@@ -812,7 +809,7 @@ export default function AllEmployees() {
     fetchIP();
 
     // Clean up function
-    return () => { };
+    return () => {};
   }, []);
 
   let total = 0;
@@ -869,15 +866,12 @@ export default function AllEmployees() {
     fetchStrategies();
   }, []);
 
-
-
   const Get_AllStrategy = async () => {
     const data = { id: user_id };
     await dispatch(Get_All_Strategy(data))
       .unwrap()
       .then((response) => {
         if (response.status) {
-          
           setAllStrategy({
             loading: false,
             data: response.data,
@@ -890,10 +884,6 @@ export default function AllEmployees() {
         }
       });
   };
-
-
-
-
 
   return (
     <>
@@ -951,13 +941,15 @@ export default function AllEmployees() {
                               <option value="null">All</option>
                               {GetAllStrategy.data &&
                                 GetAllStrategy.data.map((item) => (
-                                  <option key={item.strategy_name} value={item.strategy_name}>
+                                  <option
+                                    key={item.strategy_name}
+                                    value={item.strategy_name}
+                                  >
                                     {item.strategy_name}
                                   </option>
                                 ))}
                             </select>
                           </div>
-
                         </li>
                         <li>
                           <ExportToExcel
@@ -973,7 +965,6 @@ export default function AllEmployees() {
               </div>
 
               <div className="card-body">
-
                 <div className="card-body table-responsive">
                   {tradeHistoryData.data.length > 0 ? (
                     total >= 0 ? (

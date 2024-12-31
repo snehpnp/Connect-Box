@@ -46,7 +46,7 @@ const [showModal2, setShowModal2] = useState([]);
         }
       })
       .catch((err) => {
-        console.log("Error fetching the strategy", err);
+      return err;
       });
   };
   useEffect(() => {

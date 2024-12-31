@@ -194,9 +194,7 @@ class Angel {
 
     // UPDATE SINGLE CLIENT BROKER RESPONSE
     async SingleOrderFullInformationAngel(req, res, user_info, broker_response_id, order_id) {
-        console.log("user_info", user_info)
-        console.log("broker_response_id", broker_response_id)
-        console.log("order_id", order_id)
+    
 
         try {
 

@@ -35,6 +35,9 @@ module.exports = function (app) {
 
     //user
     app.use(require('./Users/Broker_Response.routes'))
+
+
+    app.use(require("./EmergencyApi/View"))
     //faq
     // app.use(require("./Comman/FAQ.routes"))
 

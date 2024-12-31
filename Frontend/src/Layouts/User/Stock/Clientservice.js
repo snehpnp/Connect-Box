@@ -271,7 +271,7 @@ function Clientservice() {
         }
       })
       .catch((error) => {
-        console.log("Error is found in finding client service detail", error);
+     
       });
   };
 

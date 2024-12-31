@@ -14,7 +14,6 @@ const db = client.db(process.env.DB_NAME); // Replace with your actual database 
 
 async function createViewKotakNeo() {
 
-// console.log("111")
   // All Client Trading on view
   try {
 
