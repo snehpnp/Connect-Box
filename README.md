@@ -1,7 +1,7 @@
 
 # 📦 Connect Box
 
-![Connect Box Banner](/Banner.jpg)
+![Connect Box Banner](/Banner1.jpg)
 
 
 **Connect Box** is a comprehensive algorithmic trading platform built using the MERN (MongoDB, Express.js, React, Node.js) stack. It caters to both B2B and B2C markets, providing robust solutions for business sales and teaching analytics.
