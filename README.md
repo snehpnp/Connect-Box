@@ -27,12 +27,9 @@
 ![Dashboard Screenshot](/dashboard.png)
 *Connect Box Dashboard*
 
-![Analytics Screenshot](https://example.com/analytics.png)
-*Sales Analytics Overview*
-
 ## 🎥 Demo Video
 
-[![Connect Box Demo](https://example.com/demo_thumbnail.png)](https://example.com/demo_video.mp4)
+[![Connect Box Demo](https://www.awesomescreenshot.com/video/37147842?key=8865fa7ae52a35a261848b7e5411a0a4)
 *Click the image above to watch the demo video.*
 
 ## 📦 Installation
