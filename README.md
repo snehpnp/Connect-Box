@@ -24,7 +24,7 @@
 
 ## 📸 Screenshots
 
-![Dashboard Screenshot](https://example.com/dashboard.png)
+![Dashboard Screenshot](/dashboard.png)
 *Connect Box Dashboard*
 
 ![Analytics Screenshot](https://example.com/analytics.png)
