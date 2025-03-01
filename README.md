@@ -27,7 +27,7 @@
 
 ## 🎥 Demo Video
 
-[Watch the Demo Video](https://example.com/demo.mp4)
+[Watch the Demo Video](/demo.mp4)
 
 ## 📦 Installation
 
