@@ -29,7 +29,7 @@
 
 ## 🎥 Demo Video
 
-[![Connect Box Demo](https://www.awesomescreenshot.com/video/37147842?key=8865fa7ae52a35a261848b7e5411a0a4)
+[![Connect Box Demo](/demo.mp4)
 *Click the image above to watch the demo video.*
 
 ## 📦 Installation
