@@ -113,7 +113,6 @@ const DropDown = () => {
         }
       } else {
         if (response.msg === "Unauthorized!") {
-          // console.log("Dropdown", user_details.user_id, ip);
           LogoutUser();
         }
       }
@@ -364,7 +363,6 @@ const DropDown = () => {
           });
            
           
-          // console.log("filterData",filterData)
           setGetuserdata(filterData);
         } else {
           setGetuserdata([]);

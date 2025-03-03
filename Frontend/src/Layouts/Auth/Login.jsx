@@ -36,7 +36,7 @@ function Login() {
   const [isVerified, setIsVerified] = useState(false);
   const [socket, setSocket] = useState(null);
 
-   
+
   const getCompany = useGetCompany();
 
 
@@ -64,22 +64,22 @@ function Login() {
 
   const RunSocketUrl = async () => {
     const companyData = await getCompany();
-        
-        if(companyData[0].BackendSocketurl){
-      
-            const newSocket = io(companyData[0].BackendSocketurl);
-            setSocket(newSocket);
-            return () => {
-                newSocket.disconnect();
-            };
 
-        }
-   }
+    if (companyData[0].BackendSocketurl) {
 
-    useEffect(() => {
-        fetchIpAddress()
-        RunSocketUrl()
-    }, []); 
+      const newSocket = io(companyData[0].BackendSocketurl);
+      setSocket(newSocket);
+      return () => {
+        newSocket.disconnect();
+      };
+
+    }
+  }
+
+  useEffect(() => {
+    fetchIpAddress()
+    RunSocketUrl()
+  }, []);
 
 
 
@@ -90,7 +90,7 @@ function Login() {
   };
 
 
-  
+
   const verifyOTP = async () => {
     var Otp = getData && getData.mobile.slice(-4);
 
@@ -281,7 +281,7 @@ function Login() {
     htmlElement.setAttribute("data-sidebar", theme_mode ? theme_mode : "light");
     htmlElement.setAttribute("data-layout-mode", theme_mode ? theme_mode : "light");
     htmlElement.setAttribute("data-topbar", theme_mode ? theme_mode : "light");
- 
+
   }, [isLoggedIn, getData.Role, navigate]);
 
 

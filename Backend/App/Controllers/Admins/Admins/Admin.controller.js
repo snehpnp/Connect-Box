@@ -16,7 +16,6 @@ var dt = dateTime.create();
 class Admin {
 
 
-
   // USER ADD
   async AddAdmin(req, res) {
     try {
@@ -237,6 +236,8 @@ class Admin {
     }
   }
 
+
+  
   async GetAll_Broker(req, res) {
     try {
       // THEME LIST DATA

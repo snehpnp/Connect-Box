@@ -228,7 +228,6 @@ const Profile = () => {
 
 
 
-
   //  profile information
   const profiledata = async () => {
     var data = { user_id: user_id };
@@ -244,7 +243,6 @@ const Profile = () => {
         console.log("Error", error);
       });
   };
-
 
 
 

@@ -90,10 +90,7 @@ require("./App/Routes")(app);
 
 
 
-app.get('/aliceblue/view', (req, res) => {
-  createViewAlice()
-  res.send("done")
-})
+
 
 
 // httpsserver.listen(1001)

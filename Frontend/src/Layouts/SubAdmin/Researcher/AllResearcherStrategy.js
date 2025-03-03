@@ -56,7 +56,7 @@ const AllResearcherStrategy = () => {
   }, []);
 
 
-  
+
 
   // State for modal visibility and selected option
   const [showModal, setShowModal] = useState(false);
@@ -70,7 +70,7 @@ const AllResearcherStrategy = () => {
 
 
 
-  
+
 
   const handleSubmit = async () => {
     const req = {
@@ -124,7 +124,7 @@ const AllResearcherStrategy = () => {
 
             const options = {
               key: response.data1.key,
-              amount: Number(response.data.amount) * 100,
+              amount: Number(response.data.amount),
               currency: "INR",
               name: response.data1.name,
               description: response.data.receipt,
